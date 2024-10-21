@@ -218,8 +218,23 @@ export const buildWorkflowVariableFromTrigger = (
                 ),
         }
 
+        const merchantInputs: WorkflowVariableGroup = {
+            name: 'Merchant inputs',
+            nodeType: 'merchant_input',
+            variables:
+                graph.inputs
+                    ?.filter((input) => !!input.name)
+                    .map((input) => ({
+                        name: input.name,
+                        value: `values.${input.id}`,
+                        nodeType: 'merchant_input',
+                        type: input.data_type,
+                    })) || [],
+        }
+
         return [
             ...(customInputs.variables.length ? [customInputs] : []),
+            ...(merchantInputs.variables.length ? [merchantInputs] : []),
             {
                 name: 'Existing customer',
                 nodeType: 'shopper_authentication',
@@ -1065,6 +1080,13 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'create_discount_code') {
+        return {
+            name: 'Create discount code success',
+            nodeType: 'create_discount_code',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     } else if (node.type === 'cancel_subscription') {
         return {
             name: 'Cancel subscription success',
@@ -1292,6 +1314,22 @@ export function extractVariablesFromNode(
                 ),
             ]
             break
+        case 'create_discount_code':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.amount).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.discountType).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.validFor).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
     }
 
     return variables
@@ -1397,6 +1435,12 @@ export function isValidLiquidSyntaxInNode(
             return (
                 isValidLiquidSyntax(node.data.productVariantId) &&
                 isValidLiquidSyntax(node.data.quantity)
+            )
+        case 'create_discount_code':
+            return (
+                isValidLiquidSyntax(node.data.discountType) &&
+                isValidLiquidSyntax(node.data.amount) &&
+                isValidLiquidSyntax(node.data.validFor)
             )
         default:
             return true

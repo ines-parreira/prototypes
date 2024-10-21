@@ -177,6 +177,18 @@ export type WorkflowStepRemoveItem = {
     }
 }
 
+export type WorkflowStepCreateDiscountCode = {
+    id: string
+    kind: 'create-discount-code'
+    settings: {
+        customer_id: string
+        integration_id: string
+        type: string // e.g. {{values.type}}
+        amount: string
+        valid_for: string
+    }
+}
+
 export type WorkflowStepCancelSubscription = {
     id: string
     kind: 'cancel-subscription'
@@ -216,6 +228,7 @@ export type WorkflowStep =
     | WorkflowStepRefundOrder
     | WorkflowStepUpdateShippingAddress
     | WorkflowStepRemoveItem
+    | WorkflowStepCreateDiscountCode
     | WorkflowStepCancelSubscription
     | WorkflowStepSkipCharge
 
@@ -323,6 +336,31 @@ export type WorkflowConfiguration = {
               type: 'app'
           }
     )[]
+    inputs?:
+        | (
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'string'
+                    options?: {value: string; label: string}[] | null
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'number'
+                    options?: {value: number; label: string}[] | null
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'boolean' | 'date'
+                }
+          )[]
+        | null
+    values?: Record<string, string | number | boolean> | null
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]

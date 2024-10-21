@@ -282,4 +282,79 @@ describe('baseReducer', () => {
             )
         ).toBeDefined()
     })
+
+    test('SET_INPUTS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'SET_INPUTS',
+            inputs: [
+                {
+                    name: 'name',
+                    description: 'name',
+                    data_type: 'string',
+                    id: 'id',
+                },
+            ],
+        })
+
+        expect(nextG.inputs).toEqual([
+            {
+                name: 'name',
+                description: 'name',
+                data_type: 'string',
+                id: 'id',
+            },
+        ])
+    })
+
+    test('INSERT_CREATE_DISCOUNT_CODE_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'create_discount_code' &&
+                    n.data.customerId === 'customerId' &&
+                    n.data.integrationId === 'integrationId'
+            )
+        ).toBeDefined()
+    })
+
+    test('SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS', () => {
+        const g = baseReducer(visualBuilderGraphSimpleChoicesFixture, {
+            type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+
+        const nodeId = g.nodes.find(
+            (n) => n.type === 'create_discount_code'
+        )!.id
+        const nextG = baseReducer(g, {
+            type: 'SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS',
+            createDiscountCodeNodeId: nodeId,
+            discountType: 'percentage',
+            amount: '10',
+            validFor: '1',
+        })
+
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'create_discount_code' &&
+                    n.data.discountType === 'percentage' &&
+                    n.data.amount === '10' &&
+                    n.data.validFor === '1'
+            )
+        ).toBeDefined()
+    })
 })

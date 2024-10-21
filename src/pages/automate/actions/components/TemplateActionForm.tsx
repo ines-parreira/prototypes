@@ -28,6 +28,7 @@ import TextArea from 'pages/common/forms/TextArea'
 import Alert from 'pages/common/components/Alert/Alert'
 
 import {
+    MerchantInput,
     StoreWorkflowsConfiguration,
     TemplateActionFormInputValues,
     TemplateConfiguration,
@@ -47,6 +48,7 @@ import ActionFormInputs from './ActionFormInputs'
 import TemplateCustomizationBanner from './TemplateCustomizationBanner'
 
 import css from './CustomActionForm.less'
+import ActionFormMerchantInputValue from './ActionFormMerchantInputValue'
 
 type Props = {
     configuration: WorkflowConfiguration
@@ -73,6 +75,8 @@ const TemplateActionForm = ({configuration, template}: Props) => {
             name: graph.name,
             trigger: (graph.nodes[0] as LLMPromptTriggerNodeType).data,
             apps: graph.apps,
+            inputs: graph.inputs,
+            values: graph.values || templateGraph.values,
         },
     })
 
@@ -210,6 +214,8 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         nextGraph.name = values.name
         nextGraph.nodes[0].data = values.trigger
         nextGraph.apps = values.apps
+        nextGraph.inputs = values.inputs
+        nextGraph.values = values.values
 
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             nextGraph,
@@ -466,6 +472,20 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                 />
                             )}
                         />
+                        {templateGraph.inputs?.map((input) => (
+                            <Controller
+                                key={input.id}
+                                control={control}
+                                name={`values.${input.id}`}
+                                render={({field}) => (
+                                    <ActionFormMerchantInputValue
+                                        input={input as MerchantInput}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                )}
+                            />
+                        ))}
                         <FormProvider {...methods}>
                             <ActionFormInputConditions variables={variables} />
                         </FormProvider>

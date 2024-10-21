@@ -14,6 +14,7 @@ import {
     WorkflowStepCancelSubscription,
     WorkflowStepChoices,
     WorkflowStepConditions,
+    WorkflowStepCreateDiscountCode,
     WorkflowStepEnd,
     WorkflowStepHandover,
     WorkflowStepHelpfulPrompt,
@@ -316,6 +317,21 @@ function setObjectInputs(
         })
 }
 
+function setStaticInputs(
+    c: WorkflowConfiguration,
+    inputs: Exclude<VisualBuilderGraph['inputs'], undefined | null>,
+    values: Exclude<VisualBuilderGraph['values'], undefined | null>
+) {
+    c.values = c.values || {}
+    inputs.forEach(({id}) => {
+        c.values![id] = values[id]
+    })
+
+    c.inputs = (c.inputs || [])
+        .filter(({id}) => !inputs.some((input) => input.id === id))
+        .concat(inputs)
+}
+
 export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
     isDraft = true
@@ -329,6 +345,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     c.transitions = []
     c.is_draft = isDraft
     c.apps = g.apps
+    c.inputs = g.inputs
+    c.values = g.values
     const stepIdByNodeId: Record<string, string> = {}
     walkVisualBuilderGraph(
         g,
@@ -694,6 +712,69 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 
                     setObjectInputs(g, node, trigger)
                 }
+            } else if (node.type === 'create_discount_code') {
+                // TODO remove when UI for merchant inputs is implemented
+                setStaticInputs(
+                    c,
+                    [
+                        {
+                            id: 'discount_type',
+                            name: 'Discount Type',
+                            description: '',
+                            data_type: 'string',
+                            options: [
+                                {
+                                    label: 'Fixed amount (currency set in Shopify)',
+                                    value: 'fixed',
+                                },
+                                {label: 'Percentange (%)', value: 'percent'},
+                            ],
+                        },
+                        {
+                            id: 'amount',
+                            name: 'Discount amount',
+                            description: '',
+                            data_type: 'number',
+                        },
+                        {
+                            id: 'valid_for',
+                            name: 'How many days should the discount code be valid?',
+                            description: '',
+                            data_type: 'number',
+                        },
+                    ],
+                    {
+                        discount_type: 'fixed',
+                        amount: 0,
+                        valid_for: 0,
+                    }
+                )
+
+                const step: WorkflowStepCreateDiscountCode = {
+                    id: node.id,
+                    kind: 'create-discount-code',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        integration_id: node.data.integrationId,
+                        type: '{{values.discount_type}}',
+                        amount: '{{values.amount}}',
+                        valid_for: '{{values.valid_for}}',
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: 'Created discount code',
+                        path: `steps_state.${node.id}.discount_code`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'cancel_subscription') {
                 const step: WorkflowStepCancelSubscription = {
                     id: node.id,
@@ -781,6 +862,7 @@ export function getIncoming(
         | 'refund_order'
         | 'update_shipping_address'
         | 'remove_item'
+        | 'create_discount_code'
         | 'cancel_subscription'
         | 'skip_charge'
 ) {
@@ -839,6 +921,7 @@ export function getIncoming(
         case 'refund_order':
         case 'update_shipping_address':
         case 'remove_item':
+        case 'create_discount_code':
         case 'cancel_subscription':
         case 'skip_charge': {
             const branchName = incomingEdge.data?.name

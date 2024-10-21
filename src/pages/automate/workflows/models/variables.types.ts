@@ -22,10 +22,12 @@ type BaseWorkflowVariable<T extends WorkflowVariableType> = {
         | 'refund_order'
         | 'update_shipping_address'
         | 'remove_item'
+        | 'create_discount_code'
         | 'cancel_subscription'
         | 'skip_charge'
         | 'app'
         | 'custom_input'
+        | 'merchant_input'
     type: T
     format?: WorkflowVariableFormat
     filter?: string
@@ -59,6 +61,7 @@ export type WorkflowVariableGroup = {
         | 'http_request'
         | 'shopper_authentication'
         | 'custom_input'
+        | 'merchant_input'
     variables: (WorkflowVariable | WorkflowVariableGroup)[]
 }
 

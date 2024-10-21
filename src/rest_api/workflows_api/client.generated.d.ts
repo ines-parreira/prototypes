@@ -313,8 +313,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -760,7 +803,9 @@ declare namespace Components {
           } | null;
         })[];
         awaited_callbacks: ({
-          kind: "modify-order";
+          kind: "edit-order";
+        } | {
+          kind: "create-discount-code";
         })[];
         event?: {
           id: string;
@@ -870,11 +915,18 @@ declare namespace Components {
           }[];
           kind: "order-line-item-selection";
         } | {
-          kind: "modify-order";
+          kind: "edit-order";
           success: boolean;
-          error?: {
-            [name: string]: any;
-          } | null;
+          errors: {
+            message: string;
+          }[];
+        } | {
+          kind: "create-discount-code";
+          discount_code?: string | null;
+          success: boolean;
+          errors: {
+            message: string;
+          }[];
         };
         parent_configuration_id?: string | null;
         parent_configuration_internal_id?: string | null;
@@ -1189,8 +1241,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -1463,6 +1558,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
+        };
+      } | {
+        id: string;
         kind: "conditions";
         settings: {
           name: string;
@@ -1471,6 +1586,38 @@ declare namespace Components {
         id: string;
         kind: "end";
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -1889,7 +2036,9 @@ declare namespace Components {
         } | null;
       })[];
       awaited_callbacks: ({
-        kind: "modify-order";
+        kind: "edit-order";
+      } | {
+        kind: "create-discount-code";
       })[];
       event?: {
         id: string;
@@ -1999,11 +2148,18 @@ declare namespace Components {
         }[];
         kind: "order-line-item-selection";
       } | {
-        kind: "modify-order";
+        kind: "edit-order";
         success: boolean;
-        error?: {
-          [name: string]: any;
-        } | null;
+        errors: {
+          message: string;
+        }[];
+      } | {
+        kind: "create-discount-code";
+        discount_code?: string | null;
+        success: boolean;
+        errors: {
+          message: string;
+        }[];
       };
       parent_configuration_id?: string | null;
       parent_configuration_internal_id?: string | null;
@@ -2022,6 +2178,7 @@ declare namespace Components {
         requires_confirmation: boolean;
         instructions: string;
         configuration_name: string;
+        configuration_template_slug: string | null;
         trigger: {
           custom_inputs: {
             [name: string]: {
@@ -2467,42 +2624,64 @@ declare namespace Components {
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "refund-order";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "update-shipping-address";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "cancel-subscription";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "skip-charge";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "remove-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               };
             } | null;
@@ -2520,42 +2699,64 @@ declare namespace Components {
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "refund-order";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "update-shipping-address";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "cancel-subscription";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "skip-charge";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "create-discount-code";
+            discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           };
         } | null;
@@ -2749,8 +2950,12 @@ declare namespace Components {
         custom_inputs?: {
           [name: string]: number | boolean | string /* date-time */  | string;
         } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
         user_journey_id?: string | null;
         channel?: "email";
+        callback_url?: string | null;
       } | null;
       outputs?: {
         [name: string]: {
@@ -3086,8 +3291,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -3281,6 +3529,7 @@ declare namespace Components {
       instructions: string;
       configuration_id: string;
       configuration_name: string;
+      configuration_template_slug: string | null;
       trigger: {
         custom_inputs: {
           [name: string]: {
@@ -3417,6 +3666,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
+        };
+      } | {
+        id: string;
         kind: "conditions";
         settings: {
           name: string;
@@ -3425,6 +3694,38 @@ declare namespace Components {
         id: string;
         kind: "end";
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -3900,8 +4201,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -4324,6 +4668,7 @@ declare namespace Components {
         requires_confirmation: boolean;
         instructions: string;
         configuration_name: string;
+        configuration_template_slug: string | null;
         trigger: {
           custom_inputs: {
             [name: string]: {
@@ -4982,42 +5327,64 @@ declare namespace Components {
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "refund-order";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "update-shipping-address";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "cancel-subscription";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "skip-charge";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "remove-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               };
             } | null;
@@ -5035,42 +5402,64 @@ declare namespace Components {
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "refund-order";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "update-shipping-address";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "cancel-subscription";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "skip-charge";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "create-discount-code";
+            discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           };
         } | null;
@@ -5264,8 +5653,12 @@ declare namespace Components {
         custom_inputs?: {
           [name: string]: number | boolean | string /* date-time */  | string;
         } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
         user_journey_id?: string | null;
         channel?: "email";
+        callback_url?: string | null;
       };
       outputs: {
         [name: string]: {
@@ -5541,6 +5934,7 @@ declare namespace Components {
         requires_confirmation: boolean;
         instructions: string;
         configuration_name: string;
+        configuration_template_slug: string | null;
         trigger: {
           custom_inputs: {
             [name: string]: {
@@ -6199,42 +6593,64 @@ declare namespace Components {
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "refund-order";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "update-shipping-address";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "cancel-subscription";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "skip-charge";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "remove-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               };
             } | null;
@@ -6252,42 +6668,64 @@ declare namespace Components {
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "refund-order";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "update-shipping-address";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "cancel-subscription";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "skip-charge";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "create-discount-code";
+            discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           };
         } | null;
@@ -6481,8 +6919,12 @@ declare namespace Components {
         custom_inputs?: {
           [name: string]: number | boolean | string /* date-time */  | string;
         } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
         user_journey_id?: string | null;
         channel?: "email";
+        callback_url?: string | null;
       };
       outputs: {
         [name: string]: {
@@ -6524,6 +6966,7 @@ declare namespace Components {
         requires_confirmation: boolean;
         instructions: string;
         configuration_name: string;
+        configuration_template_slug: string | null;
         trigger: {
           custom_inputs: {
             [name: string]: {
@@ -6969,42 +7412,64 @@ declare namespace Components {
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "refund-order";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "update-shipping-address";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "cancel-subscription";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "skip-charge";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               } | {
                 kind: "remove-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
-                } | null;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "create-discount-code";
+                discount_code?: string | null;
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
                 at: string; // date-time
               };
             } | null;
@@ -7022,42 +7487,64 @@ declare namespace Components {
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "refund-order";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "update-shipping-address";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "cancel-subscription";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "skip-charge";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           } | {
             kind: "remove-item";
             success: boolean;
             error?: {
               [name: string]: any;
-            } | null;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "create-discount-code";
+            discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
             at: string; // date-time
           };
         } | null;
@@ -7251,8 +7738,12 @@ declare namespace Components {
         custom_inputs?: {
           [name: string]: number | boolean | string /* date-time */  | string;
         } | null;
+        values?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
         user_journey_id?: string | null;
         channel?: "email";
+        callback_url?: string | null;
       } | null;
       outputs?: {
         [name: string]: {
@@ -7584,8 +8075,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -8073,8 +8607,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -8563,8 +9140,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -9052,8 +9672,51 @@ declare namespace Components {
           order_external_id: string;
           integration_id: string;
           product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
         };
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -9325,6 +9988,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
+        };
+      } | {
+        id: string;
         kind: "conditions";
         settings: {
           name: string;
@@ -9333,6 +10016,38 @@ declare namespace Components {
         id: string;
         kind: "end";
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;
@@ -9602,6 +10317,26 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "remove-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "create-discount-code";
+        settings: {
+          customer_id: string;
+          integration_id: string;
+          type: string;
+          amount: string;
+          valid_for: string;
+        };
+      } | {
+        id: string;
         kind: "conditions";
         settings: {
           name: string;
@@ -9610,6 +10345,38 @@ declare namespace Components {
         id: string;
         kind: "end";
       })[];
+      inputs?: ({
+        id: string;
+        name: string;
+        description: string;
+        data_type: "string";
+        options?: {
+          label: string;
+          value: string;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "number";
+        options?: {
+          label: string;
+          value: number;
+        }[] | null;
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "boolean";
+      } | {
+        id: string;
+        name: string;
+        description: string;
+        data_type: "date";
+      })[] | null;
+      values?: {
+        [name: string]: number | boolean | string /* date-time */  | string;
+      } | null;
       transitions: {
         id: string;
         from_step_id: string;

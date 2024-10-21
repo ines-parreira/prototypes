@@ -14,6 +14,7 @@ import {
     CancelOrderNodeType,
     CancelSubscriptionNodeType,
     ConditionsNodeType,
+    CreateDiscountCodeNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -349,6 +350,28 @@ export const buildRemoveItemNode = ({
             integrationId,
             productVariantId: '',
             quantity: '',
+        },
+    }
+}
+
+export const buildCreateDiscountCodeNode = ({
+    customerId,
+    integrationId,
+}: Pick<
+    CreateDiscountCodeNodeType['data'],
+    'customerId' | 'integrationId'
+>): CreateDiscountCodeNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'create_discount_code',
+        data: {
+            customerId,
+            integrationId,
+            discountType: '',
+            amount: '',
+            validFor: '',
         },
     }
 }

@@ -11,6 +11,7 @@ export const colorByVisualBuilderNodeType: Record<
           'channel_trigger' | 'llm_prompt_trigger' | 'end'
       >
     | 'custom_input'
+    | 'merchant_input'
     | 'app',
     {color: string; backgroundColor: string}
 > = {
@@ -54,6 +55,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
+    merchant_input: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
     cancel_order: {
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
@@ -67,6 +72,10 @@ export const colorByVisualBuilderNodeType: Record<
         backgroundColor: 'var(--neutral-grey-2)',
     },
     remove_item: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    create_discount_code: {
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
@@ -90,6 +99,7 @@ export const iconByVisualBuilderNodeType: Record<
           'channel_trigger' | 'llm_prompt_trigger' | 'end'
       >
     | 'custom_input'
+    | 'merchant_input'
     | 'app',
     ReactNode
 > = {
@@ -103,10 +113,12 @@ export const iconByVisualBuilderNodeType: Record<
     conditions: <img src={conditionsMergeIcon} alt="merge" />,
     order_line_item_selection: <i className="material-icons">label</i>,
     custom_input: <i className="material-icons">input</i>,
+    merchant_input: <i className="material-icons">settings</i>,
     cancel_order: <i className="material-icons">delete</i>,
     refund_order: <i className="material-icons">history</i>,
     update_shipping_address: <i className="material-icons">local_shipping</i>,
     remove_item: <i className="material-icons">remove</i>,
+    create_discount_code: <i className="material-icons">percent</i>,
     cancel_subscription: <i className="material-icons">unsubscribe</i>,
     skip_charge: <i className="material-icons">skip_next</i>,
     app: <i className="material-icons">key</i>,
@@ -134,6 +146,7 @@ export const labelByVisualBuilderNodeType: Record<
     cancel_subscription: 'Cancel subscription',
     skip_charge: 'Skip next subscription shipment',
     llm_prompt_trigger: 'Start Flow',
+    create_discount_code: 'Create discount code',
 }
 
 export const endNodeActionLabelByAction: Record<

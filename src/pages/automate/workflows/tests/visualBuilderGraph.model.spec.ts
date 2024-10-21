@@ -215,54 +215,44 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
         )
     })
 
-    it('should transform graph with an llm-prompt trigger', () => {
+    it('should transform graph with a create discount code step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration({
-            name: 'Remove order item',
+            name: 'Create discount code',
             available_languages: ['en-US'],
+            inputs: [
+                {
+                    id: 'test',
+                    name: 'test',
+                    description: '',
+                    data_type: 'string',
+                },
+            ],
+            values: {
+                test: 'test',
+            },
             nodes: [
                 {
                     ...buildNodeCommonProperties(),
                     id: 'trigger',
                     type: 'llm_prompt_trigger',
                     data: {
-                        instructions:
-                            'This action removes the item from the order',
+                        instructions: 'This action creates a discount code',
                         requires_confirmation: false,
-                        inputs: [
-                            {
-                                id: '01J7ZTR9XY9M0TQC99836A6PXC',
-                                name: 'Quantity',
-                                data_type: 'number',
-                                instructions: 'Quantity of items to remove',
-                            },
-                            {
-                                id: '01J7ZTRY44ZM21JPNY7A7JK00Z',
-                                name: 'Product variant id',
-                                data_type: 'string',
-                                instructions: 'id of the product variant',
-                            },
-                        ],
-                        conditionsType: 'and',
-                        conditions: [
-                            {
-                                equals: [
-                                    {var: '{{objects.order.external_id}}'},
-                                    '123',
-                                ],
-                            },
-                        ],
+                        inputs: [],
+                        conditionsType: null,
+                        conditions: [],
                     },
                 },
                 {
                     ...buildNodeCommonProperties(),
-                    id: 'remove_item',
-                    type: 'remove_item',
+                    id: 'create_discount_code',
+                    type: 'create_discount_code',
                     data: {
                         customerId: '{{objects.customer.id}}',
-                        orderExternalId: '{{objects.order.external_id}}',
                         integrationId: '{{store.helpdesk_integration_id}}',
-                        productVariantId: '',
-                        quantity: '',
+                        amount: '',
+                        discountType: '',
+                        validFor: '',
                     },
                 },
                 {
@@ -286,23 +276,23 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 {
                     ...buildEdgeCommonProperties(),
                     source: 'trigger',
-                    target: 'remove_item',
+                    target: 'create_discount_code',
                 },
                 {
                     ...buildEdgeCommonProperties(),
-                    source: 'remove_item',
+                    source: 'create_discount_code',
                     target: 'end_success',
                 },
                 {
                     ...buildEdgeCommonProperties(),
-                    source: 'remove_item',
+                    source: 'create_discount_code',
                     target: 'end_failure',
                 },
             ],
             wfConfigurationOriginal: {
                 internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
                 id: '01J7ZTERAST0PVVPF347XA37FR',
-                name: 'Remove order item',
+                name: 'Create discount code',
                 is_draft: false,
                 initial_step_id: 'trigger',
                 entrypoint: null,
@@ -328,7 +318,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
-                    instructions: 'This action removes the item from the order',
+                    instructions: 'This action creates a discount code',
                 },
             },
         ])
@@ -336,45 +326,19 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             {
                 kind: 'llm-prompt',
                 settings: {
-                    custom_inputs: [
-                        {
-                            id: '01J7ZTR9XY9M0TQC99836A6PXC',
-                            name: 'Quantity',
-                            data_type: 'number',
-                            instructions: 'Quantity of items to remove',
-                        },
-                        {
-                            id: '01J7ZTRY44ZM21JPNY7A7JK00Z',
-                            name: 'Product variant id',
-                            data_type: 'string',
-                            instructions: 'id of the product variant',
-                        },
-                    ],
+                    custom_inputs: [],
                     object_inputs: [
                         {
                             kind: 'customer',
                             integration_id: '{{store.helpdesk_integration_id}}',
                         },
-                        {
-                            kind: 'order',
-                            integration_id: '{{store.helpdesk_integration_id}}',
-                        },
                     ],
-                    conditions: {
-                        and: [
-                            {
-                                equals: [
-                                    {var: '{{objects.order.external_id}}'},
-                                    '123',
-                                ],
-                            },
-                        ],
-                    },
+                    conditions: null,
                     outputs: [
                         {
-                            id: 'remove_item',
-                            description: '',
-                            path: 'steps_state.remove_item.success',
+                            id: 'create_discount_code',
+                            description: 'Created discount code',
+                            path: 'steps_state.create_discount_code.discount_code',
                         },
                     ],
                 },
@@ -382,14 +346,14 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
         ])
         expect(configuration.steps).toEqual([
             {
-                id: 'remove_item',
-                kind: 'remove-item',
+                id: 'create_discount_code',
+                kind: 'create-discount-code',
                 settings: {
                     customer_id: '{{objects.customer.id}}',
-                    order_external_id: '{{objects.order.external_id}}',
                     integration_id: '{{store.helpdesk_integration_id}}',
-                    product_variant_id: '',
-                    quantity: '',
+                    amount: '{{values.amount}}',
+                    type: '{{values.discount_type}}',
+                    valid_for: '{{values.valid_for}}',
                 },
             },
             {
@@ -399,6 +363,48 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             {
                 id: 'end_failure',
                 kind: 'end',
+            },
+        ])
+        expect(configuration.values).toEqual({
+            discount_type: 'fixed',
+            amount: 0,
+            valid_for: 0,
+            test: 'test',
+        })
+        expect(configuration.inputs).toEqual([
+            {
+                id: 'test',
+                name: 'test',
+                description: '',
+                data_type: 'string',
+            },
+            {
+                id: 'discount_type',
+                name: 'Discount Type',
+                description: '',
+                data_type: 'string',
+                options: [
+                    {
+                        label: 'Fixed amount (currency set in Shopify)',
+                        value: 'fixed',
+                    },
+                    {
+                        label: 'Percentange (%)',
+                        value: 'percent',
+                    },
+                ],
+            },
+            {
+                id: 'amount',
+                name: 'Discount amount',
+                description: '',
+                data_type: 'number',
+            },
+            {
+                id: 'valid_for',
+                name: 'How many days should the discount code be valid?',
+                description: '',
+                data_type: 'number',
             },
         ])
     })

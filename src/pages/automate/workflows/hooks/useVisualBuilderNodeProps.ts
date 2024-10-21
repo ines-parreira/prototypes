@@ -58,6 +58,11 @@ export function useVisualBuilderNodeProps({
         id,
         'remove_item'
     )
+    const incomingCreateDiscountCodeCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'create_discount_code'
+    )
     const incomingCancelSubscriptionCondition = getIncoming(
         visualBuilderGraph,
         id,
@@ -94,6 +99,11 @@ export function useVisualBuilderNodeProps({
             visualBuilderGraph.nodeEditingId
         if (isRemoveItemSelected) return true
 
+        const isCreateDiscountSelected =
+            incomingCreateDiscountCodeCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isCreateDiscountSelected) return true
+
         const isCancelSubscriptionSelected =
             incomingCancelSubscriptionCondition?.nodeId ===
             visualBuilderGraph.nodeEditingId
@@ -111,6 +121,7 @@ export function useVisualBuilderNodeProps({
         incomingHttpRequestCondition,
         incomingUpdateShippingAddressCondition,
         incomingRemoveItemCondition,
+        incomingCreateDiscountCodeCondition,
         incomingCancelSubscriptionCondition,
         incomingSkipChargeCondition,
         visualBuilderGraph.branchIdsEditing,
@@ -182,6 +193,14 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingRemoveItemCondition.nodeId,
                       }
                     : undefined,
+            incomingCreateDiscountCodeCondition:
+                incomingCreateDiscountCodeCondition?.nodeId &&
+                incomingCreateDiscountCodeCondition?.label
+                    ? {
+                          label: incomingCreateDiscountCodeCondition.label,
+                          nodeId: incomingCreateDiscountCodeCondition.nodeId,
+                      }
+                    : undefined,
             incomingCancelSubscriptionCondition:
                 incomingCancelSubscriptionCondition?.nodeId &&
                 incomingCancelSubscriptionCondition?.label
@@ -221,6 +240,8 @@ export function useVisualBuilderNodeProps({
             incomingUpdateShippingAddressCondition?.nodeId,
             incomingRemoveItemCondition?.label,
             incomingRemoveItemCondition?.nodeId,
+            incomingCreateDiscountCodeCondition?.label,
+            incomingCreateDiscountCodeCondition?.nodeId,
             incomingCancelSubscriptionCondition?.label,
             incomingCancelSubscriptionCondition?.nodeId,
             incomingSkipChargeCondition?.label,

@@ -16,6 +16,7 @@ import {
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RemoveItemNodeType,
+    CreateDiscountCodeNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
     UpdateShippingAddressNodeType,
@@ -34,6 +35,7 @@ import {
     buildOrderSelectionNode,
     buildRefundOrderNode,
     buildRemoveItemNode,
+    buildCreateDiscountCodeNode,
     buildShopperAuthenticationNode,
     buildSkipChargeNode,
     buildTextReplyNode,
@@ -188,6 +190,19 @@ export type VisualBuilderBaseAction =
           quantity: string
       }
     | {
+          type: 'INSERT_CREATE_DISCOUNT_CODE_NODE'
+          beforeNodeId: string
+          customerId: string
+          integrationId: string
+      }
+    | {
+          type: 'SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS'
+          createDiscountCodeNodeId: string
+          discountType: string
+          amount: string
+          validFor: string
+      }
+    | {
           type: 'SET_BRANCH_IDS_EDITING'
           branchIds: VisualBuilderEdge['id'][]
       }
@@ -198,6 +213,10 @@ export type VisualBuilderBaseAction =
     | {
           type: 'SET_APPS'
           apps: NonNullable<VisualBuilderGraph['apps']>
+      }
+    | {
+          type: 'SET_INPUTS'
+          inputs: VisualBuilderGraph['inputs']
       }
     | {
           type: 'INSERT_CANCEL_SUBSCRIPTION_NODE'
@@ -471,6 +490,14 @@ export function baseReducer(
                     action.beforeNodeId
                 )
             )
+        case 'INSERT_CREATE_DISCOUNT_CODE_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildCreateDiscountCodeNode(action),
+                    action.beforeNodeId
+                )
+            )
         case 'INSERT_CANCEL_SUBSCRIPTION_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
@@ -499,6 +526,10 @@ export function baseReducer(
         case 'SET_APPS':
             return produce(graph, (draft) => {
                 draft.apps = action.apps
+            })
+        case 'SET_INPUTS':
+            return produce(graph, (draft) => {
+                draft.inputs = action.inputs
             })
         case 'SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS':
             return produce(graph, (draft) => {
@@ -530,6 +561,19 @@ export function baseReducer(
                 if (node) {
                     node.data.productVariantId = action.productVariantId
                     node.data.quantity = action.quantity
+                }
+            })
+        case 'SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is CreateDiscountCodeNodeType =>
+                        n.id === action.createDiscountCodeNodeId
+                )
+
+                if (node) {
+                    node.data.amount = action.amount
+                    node.data.validFor = action.validFor
+                    node.data.discountType = action.discountType
                 }
             })
         case 'SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS':
@@ -578,7 +622,8 @@ function insertNodeBefore(
 
         if (
             nodeToInsert.type !== 'refund_order' &&
-            nodeToInsert.type !== 'cancel_order'
+            nodeToInsert.type !== 'cancel_order' &&
+            nodeToInsert.type !== 'create_discount_code'
         ) {
             draft.nodeEditingId = nodeToInsert.id
             draft.choiceEventIdEditing = null
@@ -627,7 +672,8 @@ function insertFallibleNode(
 
         if (
             nodeToInsert.type !== 'refund_order' &&
-            nodeToInsert.type !== 'cancel_order'
+            nodeToInsert.type !== 'cancel_order' &&
+            nodeToInsert.type !== 'create_discount_code'
         ) {
             draft.nodeEditingId = nodeToInsert.id
             draft.choiceEventIdEditing = null

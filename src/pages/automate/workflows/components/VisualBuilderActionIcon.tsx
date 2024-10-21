@@ -14,6 +14,7 @@ type Props = {
               'channel_trigger' | 'llm_prompt_trigger' | 'end'
           >
         | 'custom_input'
+        | 'merchant_input'
         | 'app'
 }
 

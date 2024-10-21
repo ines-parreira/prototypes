@@ -14,6 +14,8 @@ type Props = {
         | 'cancel_order'
         | 'refund_order'
         | 'update_shipping_address'
+        | 'remove_item'
+        | 'create_discount_code'
         | 'cancel_subscription'
         | 'skip_charge'
 }

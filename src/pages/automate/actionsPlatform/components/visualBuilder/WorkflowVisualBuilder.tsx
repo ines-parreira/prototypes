@@ -30,6 +30,7 @@ import CancelSubscriptionNode from 'pages/automate/workflows/editor/visualBuilde
 import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
+import CreateDiscountCodeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CreateDiscountCodeNode'
 
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 
@@ -41,6 +42,7 @@ const nodeTypes = {
     refund_order: RefundOrderNode,
     update_shipping_address: UpdateShippingAddressNode,
     remove_item: RemoveItemNode,
+    create_discount_code: CreateDiscountCodeNode,
     cancel_subscription: CancelSubscriptionNode,
     skip_charge: SkipChargeNode,
     end: EndNode,

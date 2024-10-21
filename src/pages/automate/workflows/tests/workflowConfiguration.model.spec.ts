@@ -310,6 +310,15 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     },
                 },
             ],
+            inputs: [
+                {
+                    id: 'string_input',
+                    name: 'Test',
+                    description: 'test',
+                    data_type: 'string',
+                },
+            ],
+            values: {string_input: 'test'},
         }
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
@@ -418,6 +427,192 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 interactionWidth: 0,
                 data: {},
                 source: 'remove_item',
+                target: 'end_failure',
+            },
+        ])
+        expect(visualBuilderGraph.inputs).toEqual([
+            {
+                id: 'string_input',
+                name: 'Test',
+                description: 'test',
+                data_type: 'string',
+            },
+        ])
+        expect(visualBuilderGraph.values).toEqual({
+            string_input: 'test',
+        })
+    })
+    test('configuration containing create-discount-code step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Create Discount Code',
+            is_draft: true,
+            initial_step_id: 'create_discount_code',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'create_discount_code',
+                    kind: 'create-discount-code',
+                    settings: {
+                        amount: '',
+                        type: '',
+                        customer_id: '{{objects.customer.id}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        valid_for: '',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'create_discount_code',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'create_discount_code',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'create_discount_code',
+                                description: '',
+                                path: 'steps_state.create_discount_code.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action creates a discount code',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action creates a discount code',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'create_discount_code',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'create_discount_code',
+                data: {
+                    amount: '{{values.amount}}',
+                    customerId: '{{objects.customer.id}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                    discountType: '{{values.discount_type}}',
+                    validFor: '{{values.valid_for}}',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-create_discount_code',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'create_discount_code',
+            },
+            {
+                id: 'create_discount_code-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'create_discount_code',
+                target: 'end_success',
+            },
+            {
+                id: 'create_discount_code-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'create_discount_code',
                 target: 'end_failure',
             },
         ])

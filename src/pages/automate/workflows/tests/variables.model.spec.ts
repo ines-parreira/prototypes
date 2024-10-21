@@ -10,6 +10,7 @@ import {
 import {WorkflowVariableList} from '../models/variables.types'
 import {buildNodeCommonProperties} from '../models/visualBuilderGraph.model'
 import {
+    CreateDiscountCodeNodeType,
     OrderSelectionNodeType,
     VisualBuilderGraph,
 } from '../models/visualBuilderGraph.types'
@@ -394,6 +395,51 @@ describe('buildWorkflowVariableFromNode()', () => {
                     value: 'steps_state.order_selection1.order.fulfillments.0.external_shipment_status',
                 },
             ]),
+        })
+    })
+
+    it('should return create_discount_code node variables', () => {
+        const node: CreateDiscountCodeNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'create_discount_code1',
+            type: 'create_discount_code',
+            data: {
+                customerId: '',
+                integrationId: '',
+                discountType: '',
+                amount: '',
+                validFor: '',
+            },
+        }
+
+        const result = buildWorkflowVariableFromNode(
+            {
+                name: '',
+                available_languages: [],
+                nodes: [node],
+                edges: [],
+                apps: [],
+                wfConfigurationOriginal: {
+                    id: '',
+                    is_draft: false,
+                    name: '',
+                    internal_id: '',
+                    initial_step_id: 'create_discount_code1',
+                    steps: [],
+                    transitions: [],
+                    available_languages: [],
+                },
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            node
+        )
+        expect(result).toEqual({
+            name: 'Create discount code success',
+            nodeType: 'create_discount_code',
+            value: 'steps_state.create_discount_code1.success',
+            type: 'boolean',
         })
     })
 })

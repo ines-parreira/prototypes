@@ -3,7 +3,9 @@ import {Paths, Components} from 'rest_api/workflows_api/client.generated'
 import {
     HttpRequestNodeType,
     LLMPromptTriggerNodeType,
+    VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {WfConfigurationResponseDto} from '../workflows/types'
 
 export type StoreWorkflowsConfiguration =
     Paths.StoreWfConfigurationControllerList.Responses.$200[number]
@@ -22,6 +24,10 @@ export type CustomInput = LlmPromptTrigger['settings']['custom_inputs'][number]
 export type ObjectInput = LlmPromptTrigger['settings']['object_inputs'][number]
 
 export type Input = CustomInput | Extract<ObjectInput, {kind: 'product'}>
+export type MerchantInput = Exclude<
+    WfConfigurationResponseDto['inputs'],
+    null | undefined
+>[number]
 
 export type ActionFormInputValues = {
     name: string
@@ -34,6 +40,8 @@ export type CustomActionFormInputValues = ActionFormInputValues & {
 
 export type TemplateActionFormInputValues = ActionFormInputValues & {
     apps: TemplateConfiguration['apps']
+    inputs: VisualBuilderGraph['inputs']
+    values: VisualBuilderGraph['values']
 }
 
 export type ActionAppsConfiguration = NonNullable<

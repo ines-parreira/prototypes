@@ -237,6 +237,18 @@ export type RemoveItemNodeType = Node<
     'remove_item'
 >
 
+export type CreateDiscountCodeNodeType = Node<
+    {
+        customerId: string
+        integrationId: string
+        discountType: string
+        amount: string
+        validFor: string
+        isGreyedOut?: boolean | null
+    },
+    'create_discount_code'
+>
+
 export type CancelSubscriptionNodeType = Node<
     {
         customerId: string
@@ -276,6 +288,7 @@ export type VisualBuilderNode =
     | RefundOrderNodeType
     | UpdateShippingAddressNodeType
     | RemoveItemNodeType
+    | CreateDiscountCodeNodeType
     | CancelSubscriptionNodeType
     | SkipChargeNodeType
 
@@ -303,6 +316,37 @@ export type VisualBuilderGraph = {
               type: 'app'
           }
     )[]
+    inputs?:
+        | (
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'string'
+                    options?: {value: string; label: string}[] | null
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'boolean'
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'date'
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'number'
+                    options?: {value: number; label: string}[] | null
+                }
+          )[]
+        | null
+    values?: Record<string, string | number | boolean> | null
     wfConfigurationOriginal: WorkflowConfiguration
     nodeEditingId: VisualBuilderNode['id'] | null
     choiceEventIdEditing:

@@ -22,6 +22,7 @@ import {
     OrderSelectionNodeType,
     RefundOrderNodeType,
     RemoveItemNodeType,
+    CreateDiscountCodeNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -182,6 +183,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             edges,
             wfConfigurationOriginal: c,
             apps: c.apps,
+            inputs: c.inputs,
+            values: c.values,
             nodeEditingId: null,
             choiceEventIdEditing: null,
             branchIdsEditing: [],
@@ -456,6 +459,22 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
 
             nodeIdByStepId[step.id] = node.id
             nodes.push(node)
+        } else if (step.kind === 'create-discount-code') {
+            const node: CreateDiscountCodeNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'create_discount_code',
+                data: {
+                    customerId: step.settings.customer_id,
+                    integrationId: step.settings.integration_id,
+                    discountType: step.settings.type,
+                    amount: step.settings.amount,
+                    validFor: step.settings.valid_for,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
         } else if (step.kind === 'cancel-subscription') {
             const node: CancelSubscriptionNodeType = {
                 ...buildNodeCommonProperties(),
@@ -526,6 +545,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         edges,
         wfConfigurationOriginal: c,
         apps: c.apps,
+        inputs: c.inputs,
+        values: c.values,
         nodeEditingId: null,
         choiceEventIdEditing: null,
         branchIdsEditing: [],

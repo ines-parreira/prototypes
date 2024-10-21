@@ -679,6 +679,37 @@ const RemoveItemMenuItem = ({
     )
 }
 
+const CreateDiscountCodeMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    customerId: string
+    integrationId: string
+}) => {
+    const {dispatch} = useVisualBuilderContext()
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.create_discount_code}
+            description="Create discount code."
+            icon={iconByVisualBuilderNodeType.create_discount_code}
+            style={colorByVisualBuilderNodeType.create_discount_code}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_CREATE_DISCOUNT_CODE_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
+        />
+    )
+}
+
 const CancelSubscriptionMenuItem = ({
     nodeId,
     floatingRef,
@@ -879,6 +910,12 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                     orderExternalId="{{objects.order.external_id}}"
                                     integrationId="{{store.helpdesk_integration_id}}"
                                 />
+                                <CreateDiscountCodeMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                    customerId="{{objects.customer.id}}"
+                                    integrationId="{{store.helpdesk_integration_id}}"
+                                />
                             </>
                         )}
                         {visualBuilderGraph.apps?.some(
@@ -935,6 +972,14 @@ export type VisualBuilderEdgeProps = {
         label: string
         nodeId: string
     }
+    incomingRemoveItemCondition?: {
+        label: string
+        nodeId: string
+    }
+    incomingCreateDiscountCodeCondition?: {
+        label: string
+        nodeId: string
+    }
     incomingCancelSubscriptionCondition?: {
         label: string
         nodeId: string
@@ -953,6 +998,8 @@ export default function EdgeBlock({
     incomingCancelOrderCondition,
     incomingRefundOrderCondition,
     incomingUpdateShippingAddressCondition,
+    incomingRemoveItemCondition,
+    incomingCreateDiscountCodeCondition,
     incomingCancelSubscriptionCondition,
     incomingSkipChargeCondition,
     isSelected,
@@ -982,6 +1029,8 @@ export default function EdgeBlock({
                     incomingCancelOrderCondition ||
                     incomingRefundOrderCondition ||
                     incomingUpdateShippingAddressCondition ||
+                    incomingRemoveItemCondition ||
+                    incomingCreateDiscountCodeCondition ||
                     incomingCancelSubscriptionCondition ||
                     incomingSkipChargeCondition
                         ? -48
@@ -1042,6 +1091,34 @@ export default function EdgeBlock({
                     type="update_shipping_address"
                 >
                     {incomingUpdateShippingAddressCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingRemoveItemCondition && (
+                <EdgeLabel
+                    onClick={() => {
+                        dispatch({
+                            type: 'SET_NODE_EDITING_ID',
+                            nodeId: incomingRemoveItemCondition.nodeId,
+                        })
+                    }}
+                    isSelected={isSelected}
+                    type="remove_item"
+                >
+                    {incomingRemoveItemCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingCreateDiscountCodeCondition && (
+                <EdgeLabel
+                    onClick={() => {
+                        dispatch({
+                            type: 'SET_NODE_EDITING_ID',
+                            nodeId: incomingCreateDiscountCodeCondition.nodeId,
+                        })
+                    }}
+                    isSelected={isSelected}
+                    type="create_discount_code"
+                >
+                    {incomingCreateDiscountCodeCondition.label}
                 </EdgeLabel>
             )}
             {incomingCancelSubscriptionCondition && (
