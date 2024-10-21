@@ -47,7 +47,7 @@ const FormUrlencoded = ({
                         className={css.textInput}
                         placeholder="Key"
                         onChange={(key) => {
-                            onChange(index, {...item, key})
+                            onChange(index, {key, value: item.value})
                         }}
                         onBlur={onBlur}
                     />
@@ -56,7 +56,7 @@ const FormUrlencoded = ({
                         isDisabled={isDisabled}
                         value={item.value}
                         onChange={(value) => {
-                            onChange(index, {...item, value})
+                            onChange(index, {key: item.key, value})
                         }}
                         variables={variables}
                         noSelectedCategoryText={noSelectedCategoryText}

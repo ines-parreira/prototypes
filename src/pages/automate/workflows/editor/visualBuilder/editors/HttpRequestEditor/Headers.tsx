@@ -50,7 +50,7 @@ const Headers = ({
                         className={css.textInput}
                         placeholder="Key"
                         onChange={(name) => {
-                            onChange(index, {...header, name})
+                            onChange(index, {name, value: header.value})
                         }}
                     />
                     <TextInputWithVariables
@@ -59,7 +59,7 @@ const Headers = ({
                         isDisabled={isDisabled}
                         value={header.value}
                         onChange={(value) => {
-                            onChange(index, {...header, value})
+                            onChange(index, {name: header.name, value})
                         }}
                         variables={variables}
                         placeholder="Value"
