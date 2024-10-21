@@ -67,7 +67,6 @@ export default function StatsNavbarView() {
                         to="/app/stats/live-voice"
                         title="Voice"
                         commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                        isNew
                     />
                 </div>
             </NavbarBlock>
