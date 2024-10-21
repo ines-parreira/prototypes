@@ -61,8 +61,8 @@ export const storeConfigurationKeys = {
     list: (params: {query: string}) =>
         [...storeConfigurationKeys.lists(), params] as const,
     details: () => [...storeConfigurationKeys.all(), 'detail'] as const,
-    detail: (storeName: string) =>
-        [...storeConfigurationKeys.details(), storeName] as const,
+    detail: (params: GetStoreConfigurationParams) =>
+        [...storeConfigurationKeys.details(), params] as const,
 }
 
 export const useGetStoreConfigurationPure = (
@@ -72,7 +72,7 @@ export const useGetStoreConfigurationPure = (
     >
 ) => {
     return useQuery({
-        queryKey: storeConfigurationKeys.detail(params.storeName),
+        queryKey: storeConfigurationKeys.detail(params),
         queryFn: () => getStoreConfiguration(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

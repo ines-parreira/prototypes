@@ -26,7 +26,10 @@ export const useStoreConfigurationMutation = ({
     } = useCreateStoreConfigurationPure({
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: storeConfigurationKeys.detail(shopName),
+                queryKey: storeConfigurationKeys.detail({
+                    accountDomain,
+                    storeName: shopName,
+                }),
             })
         },
     })
@@ -38,7 +41,10 @@ export const useStoreConfigurationMutation = ({
     } = useUpsertStoreConfigurationPure({
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: storeConfigurationKeys.detail(shopName),
+                queryKey: storeConfigurationKeys.detail({
+                    accountDomain,
+                    storeName: shopName,
+                }),
             })
         },
     })
