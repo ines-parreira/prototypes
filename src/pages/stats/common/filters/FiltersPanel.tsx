@@ -43,6 +43,7 @@ import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
 import {StoreFilterFromContext} from 'pages/stats/common/filters/StoreFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
+import {ScoreFiltersWithState} from 'pages/stats/common/filters/ScoreFilter'
 import {CampaignStatusesFilterFromContext} from 'pages/stats/convert/components/CampaignStatusesFilter'
 import {
     activeParams,
@@ -89,6 +90,8 @@ export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
             return HelpCenterLanguageFilterWithState
         case FilterKey.SlaPolicies:
             return SLAPolicyFilterWithState
+        case FilterKey.Score:
+            return ScoreFiltersWithState
         case FilterComponentKey.BusiestTimesMetricSelectFilter:
             return BusiestTimesMetricSelectFilter
         case FilterComponentKey.CustomField:

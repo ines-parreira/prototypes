@@ -4,7 +4,7 @@ import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LegacyStatsFilters} from 'models/stat/types'
 
-import SelectFilter from './common/SelectFilter'
+import SelectFilter from 'pages/stats/common/SelectFilter'
 
 type Props = {
     value: LegacyStatsFilters['score']
@@ -18,7 +18,7 @@ export const scoreStatsFilterLabels = {
     singular: 'score',
 }
 
-export function ScoreStatsFilter({
+export function DEPRECATED_ScoreStatsFilter({
     value = [],
     minValue,
     maxValue,

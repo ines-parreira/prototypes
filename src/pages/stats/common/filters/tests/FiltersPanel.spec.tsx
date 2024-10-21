@@ -172,6 +172,7 @@ describe('FiltersPanel', () => {
         FilterComponentKey.PhoneIntegrations,
         FilterKey.Campaigns,
         FilterKey.CampaignStatuses,
+        FilterKey.Score,
     ]
 
     const someTags = tags
@@ -215,10 +216,10 @@ describe('FiltersPanel', () => {
     )
 
     it('should render a placeholder for unsupported filter', () => {
-        const unsupportedFilter = FilterKey.Score
+        const unsupportedFilter = 'someFilter'
         renderWithStore(
             <FiltersPanel
-                persistentFilters={[unsupportedFilter]}
+                persistentFilters={[unsupportedFilter as StaticFilter]}
                 optionalFilters={[]}
             />,
             defaultState

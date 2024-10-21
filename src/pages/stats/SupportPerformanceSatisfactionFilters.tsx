@@ -10,7 +10,7 @@ import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {ScoreStatsFilter} from 'pages/stats/ScoreStatsFilter'
+import {DEPRECATED_ScoreStatsFilter} from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getStatsFilters,
@@ -44,7 +44,7 @@ export const SupportPerformanceSatisfactionFilters = () => {
                 value={statsFilters.channels}
                 channelsFilter={[TicketChannel.Chat, TicketChannel.Email]}
             />
-            <ScoreStatsFilter
+            <DEPRECATED_ScoreStatsFilter
                 value={statsFilters.score}
                 minValue={SATISFACTION_SURVEY_MIN_SCORE}
                 maxValue={SATISFACTION_SURVEY_MAX_SCORE}
