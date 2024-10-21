@@ -10,6 +10,8 @@ import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {assumeMock} from 'utils/testing'
 import {message} from 'models/ticket/tests/mocks'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
 import AIAgentDraftMessage from '../AIAgentDraftMessage'
 
@@ -29,6 +31,14 @@ jest.mock('common/segment')
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
+jest.mock('state/ui/ticketAIAgentFeedback', () => ({
+    getSelectedAIMessage: jest.fn(),
+}))
+
+jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
+
+const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
+const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const logEventMock = assumeMock(logEvent)
@@ -50,6 +60,11 @@ describe('AIAgentDraftMessage', () => {
         isTrial: false,
     }
     beforeEach(() => {
+        getSelectedAIMessageMock.mockReturnValue(mockMessage)
+        useAIAgentSendFeedbackMock.mockReturnValue({
+            aiAgentSendFeedback: jest.fn(),
+            aiAgentDeleteFeedback: jest.fn(),
+        })
         getCurrentAccountIdMock.mockReturnValue(1)
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {

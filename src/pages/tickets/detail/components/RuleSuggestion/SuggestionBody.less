@@ -1,9 +1,14 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local .container {
     grid-column: 2;
-    border: 1px solid var(--neutral-grey-3);
-    border-radius: 4px;
     z-index: 1;
     overflow: hidden;
+
+    .content {
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3);
+    }
 
     .text {
         padding: 12px 16px;
@@ -12,5 +17,9 @@
 
     .action {
         padding: 10px 15px;
+    }
+
+    .banner {
+        margin: @layout-spacing-xs 0;
     }
 }

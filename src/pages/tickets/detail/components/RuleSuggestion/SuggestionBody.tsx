@@ -4,7 +4,9 @@ import {Collapse} from 'reactstrap'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 import {MacroAction} from 'models/macroAction/types'
+import {TicketMessage} from 'models/ticket/types'
 import useMeasure from 'hooks/useMeasure'
+import AIAgentBanner from '../TicketMessages/AIAgentBanner'
 import css from './SuggestionBody.less'
 import {SuggestionStates} from './InTicketSuggestion'
 
@@ -15,7 +17,8 @@ type Props = {
     state: SuggestionStates
     setSuggestionState: (state: SuggestionStates) => void
     isAIAgentDraftMessage?: boolean
-    messageId?: number
+    message?: TicketMessage
+    isTrialMessage?: boolean
 }
 
 const PREVIEW_HEIGHT = 110
@@ -27,19 +30,20 @@ export default function SuggestionBody({
     state,
     setSuggestionState,
     isAIAgentDraftMessage = false,
-    messageId,
+    message,
+    isTrialMessage,
 }: Props) {
     const [innerRef, {height}] = useMeasure<HTMLDivElement>()
 
     useEffect(() => {
-        if (state || height === 0) return
+        if ((state && !isTrialMessage) || height === 0) return
 
-        if (height < PREVIEW_HEIGHT) {
+        if (height < PREVIEW_HEIGHT || isTrialMessage) {
             setSuggestionState('expand')
         } else {
             setSuggestionState('preview')
         }
-    }, [height, setSuggestionState, state])
+    }, [height, isTrialMessage, setSuggestionState, state])
 
     const style: CSSProperties =
         state === null
@@ -72,10 +76,10 @@ export default function SuggestionBody({
             isOpen={state === 'expand'}
             style={style}
         >
-            <div ref={innerRef}>
+            <div ref={innerRef} className={css.content}>
                 <div className={css.text}>{content}</div>
-                {isAIAgentDraftMessage && !!messageId && (
-                    <AIAgentUsedData messageId={messageId} />
+                {isAIAgentDraftMessage && !!message?.id && (
+                    <AIAgentUsedData messageId={message.id} />
                 )}
 
                 <div>
@@ -93,6 +97,9 @@ export default function SuggestionBody({
                     })}
                 </div>
             </div>
+            {isTrialMessage && message && (
+                <AIAgentBanner message={message} className={css.banner} />
+            )}
         </Collapse>
     )
 }

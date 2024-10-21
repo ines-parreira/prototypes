@@ -16,6 +16,7 @@ import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,
 } from '../AIAgentFeedbackBar'
+import {TRIAL_MESSAGE_TAG} from '../constants'
 import {messageFeedback} from './fixtures'
 
 jest.mock('../AIAgentMessageFeedback', () => () => (
@@ -135,5 +136,26 @@ describe('AIAgentFeedbackBar', () => {
         expect(
             screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
         ).toHaveTextContent(ticketFeedbackSummary)
+    })
+
+    it('should not render feedback summary when message selected is a trial message', () => {
+        getSelectedAIMessageMock.mockReturnValue({
+            ...mockMessage,
+            body_html: TRIAL_MESSAGE_TAG,
+        })
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <AIAgentFeedbackBar />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(screen.queryByText('Response summary')).not.toBeInTheDocument()
+        expect(screen.queryByText('AI Agent overview')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+        ).not.toBeInTheDocument()
+        expect(screen.getByTestId('message-feedback')).toBeInTheDocument()
     })
 })

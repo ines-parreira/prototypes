@@ -1,4 +1,6 @@
 import {Action, Guidance, Knowledge} from 'models/aiAgentFeedback/types'
+import {TicketMessage} from 'models/ticket/types'
+import {TRIAL_MESSAGE_TAG} from './constants'
 
 export const getKnowledgeUrl = (knowledge: Knowledge) => {
     switch (knowledge.type) {
@@ -47,4 +49,11 @@ export const mapResourceLabelToType = (label: string) => {
         default:
             return 'soft_action'
     }
+}
+
+export const isTrialMessageFromAIAgent = (message: TicketMessage) => {
+    return !!(
+        message?.body_html &&
+        message?.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
+    )
 }

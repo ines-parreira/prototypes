@@ -35,6 +35,7 @@ import {isTeamLead} from 'utils'
 import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
 
 import css from './TicketInfobarContainer.less'
+import {isTrialMessageFromAIAgent} from './components/AIAgentFeedbackBar/utils'
 
 type OwnProps = {
     isEditingWidgets?: boolean
@@ -102,7 +103,9 @@ export const TicketInfobarContainer = ({
             dispatch(
                 changeTicketMessage({
                     message:
-                        aiMessages.length === 1 && aiMessages[0].public
+                        aiMessages.length === 1 &&
+                        (aiMessages[0].public ||
+                            isTrialMessageFromAIAgent(aiMessages[0]))
                             ? aiMessages[0]
                             : undefined,
                 })

@@ -85,7 +85,7 @@ const AIAgentDraftMessage = ({ticketId, message, isTrial}: Props) => {
             <InTicketSuggestion
                 isAIAgentDraftMessage
                 ticketId={ticketId}
-                messageId={message.id}
+                message={message}
                 actionsContent={<></>}
                 infoContent={
                     <div className={css.skeletonWrapper}>
@@ -113,7 +113,7 @@ const AIAgentDraftMessage = ({ticketId, message, isTrial}: Props) => {
         <InTicketSuggestion
             isAIAgentDraftMessage
             ticketId={ticketId}
-            messageId={message.id}
+            message={message}
             actionsContent={
                 <Button
                     intent="primary"
@@ -132,6 +132,7 @@ const AIAgentDraftMessage = ({ticketId, message, isTrial}: Props) => {
             }
             text={draftMessage.content || ''}
             macroActions={draftMessage.ticketActions || []}
+            isTrialMessage={isTrial}
         />
     )
 }

@@ -24,8 +24,8 @@ import {
     BANNER_TYPE,
     DRAFT_MESSAGE_TAG,
     SAMPLE_RATE,
-    TRIAL_MESSAGE_TAG,
 } from '../AIAgentFeedbackBar/constants'
+import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
 import Container from './Container'
 import Message from './Message'
 
@@ -79,10 +79,7 @@ export default function TicketMessages({
         message?.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
     )
 
-    const isAIAgentTrialMessage = !!(
-        message?.body_html &&
-        message?.body_html.indexOf(TRIAL_MESSAGE_TAG) !== -1
-    )
+    const isAIAgentTrialMessage = isTrialMessageFromAIAgent(message)
 
     useEffect(() => {
         let bannerType = ''

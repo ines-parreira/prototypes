@@ -1,9 +1,12 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    changeTicketMessage,
+    getSelectedAIMessage,
+} from 'state/ui/ticketAIAgentFeedback'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Button from 'pages/common/components/button/Button'
-import {changeTicketMessage} from 'state/ui/ticketAIAgentFeedback'
 
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
@@ -13,6 +16,7 @@ import css from './AIAgentFeedbackBar.less'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
+import {isTrialMessageFromAIAgent} from './utils'
 
 export const FEEDBACK_TICKET_SUMMARY_TEST_ID = 'feedback-bar'
 export const FEEDBACK_MESSAGE_CONTAINER_TEST_ID = 'feedback-message-container'
@@ -33,6 +37,11 @@ const AIAgentFeedbackBar = () => {
 
     const messageFeedback = useAiAgentMessageFeedback()
 
+    const selectedMessage = useAppSelector(getSelectedAIMessage)
+
+    const isSelectedTrialMessage =
+        !!selectedMessage && isTrialMessageFromAIAgent(selectedMessage)
+
     const handleSelectFirstMessage = () => {
         dispatch(changeTicketMessage({message: publicAIMessages[0]}))
         logEventWithSampling(
@@ -45,30 +54,34 @@ const AIAgentFeedbackBar = () => {
 
     return (
         <>
-            <div className={css.summaryContainer}>
-                <div className={css.title}>
-                    {messageFeedback ? 'Response summary' : 'AI Agent overview'}
-                </div>
-                <div
-                    className={css.summary}
-                    data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}
-                    dangerouslySetInnerHTML={{
-                        __html: messageFeedback?.summary
-                            ? messageFeedback.summary
-                            : ticketFeedback?.messages.length === 1 &&
-                                ticketMessageFeedbackSummary !== undefined
-                              ? ticketMessageFeedbackSummary
-                              : ticketFeedbackSummary,
-                    }}
-                />
-                {aiMessages.length > 1 && !messageFeedback && (
-                    <div className={css.selectFirstMessageWrapper}>
-                        <Button onClick={handleSelectFirstMessage}>
-                            Select First Message
-                        </Button>
+            {!isSelectedTrialMessage && (
+                <div className={css.summaryContainer}>
+                    <div className={css.title}>
+                        {messageFeedback
+                            ? 'Response summary'
+                            : 'AI Agent overview'}
                     </div>
-                )}
-            </div>
+                    <div
+                        className={css.summary}
+                        data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}
+                        dangerouslySetInnerHTML={{
+                            __html: messageFeedback?.summary
+                                ? messageFeedback.summary
+                                : ticketFeedback?.messages.length === 1 &&
+                                    ticketMessageFeedbackSummary !== undefined
+                                  ? ticketMessageFeedbackSummary
+                                  : ticketFeedbackSummary,
+                        }}
+                    />
+                    {aiMessages.length > 1 && !messageFeedback && (
+                        <div className={css.selectFirstMessageWrapper}>
+                            <Button onClick={handleSelectFirstMessage}>
+                                Select First Message
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
             {messageFeedback ? (
                 <AIAgentMessageFeedback messageFeedback={messageFeedback} />
             ) : (

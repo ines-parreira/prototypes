@@ -70,9 +70,14 @@ const FeedbackIconButton: FC<FeedbackIconButtonProps> = ({
 type Props = {
     message: TicketMessage
     messageFeedback?: MessageFeedback
+    isTrialMessage?: boolean
 }
 
-const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
+const AIAgentFeedback: React.FC<Props> = ({
+    message,
+    messageFeedback,
+    isTrialMessage,
+}) => {
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
@@ -217,7 +222,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 {isMessagePublic ? CORRECT_RESPONSE : ACCURATE_RESPONSE}
             </div>
             <div className={css.feedbackButtons}>
-                {messageFeedback?.allowsFeedback && (
+                {(messageFeedback?.allowsFeedback || isTrialMessage) && (
                     <>
                         <FeedbackIconButton
                             hasFeedback={hasPositiveFeedback}
@@ -232,22 +237,24 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                             isMessagePublic={isMessagePublic}
                         />
 
-                        <FeedbackIconButton
-                            hasFeedback={hasNegativeFeedback}
-                            iconType="thumb_down"
-                            onClick={() => {
-                                if (hasNegativeFeedback) {
-                                    return
-                                }
+                        {!isTrialMessage && (
+                            <FeedbackIconButton
+                                hasFeedback={hasNegativeFeedback}
+                                iconType="thumb_down"
+                                onClick={() => {
+                                    if (hasNegativeFeedback) {
+                                        return
+                                    }
 
-                                handleSubmitFeedback('thumbs_down')
-                            }}
-                            aria-label="Thumbs down button"
-                        />
+                                    handleSubmitFeedback('thumbs_down')
+                                }}
+                                aria-label="Thumbs down button"
+                            />
+                        )}
                     </>
                 )}
 
-                {isMessagePublic && (
+                {(isMessagePublic || isTrialMessage) && (
                     <Button
                         intent="secondary"
                         size="small"

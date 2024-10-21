@@ -8,6 +8,7 @@ import Button from 'pages/common/components/button/Button'
 import {setInTicketSuggestionState} from 'state/ticket/actions'
 import {ThemeContext} from 'theme'
 
+import {TicketMessage} from 'models/ticket/types'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
 import SuggestionHeader from './SuggestionHeader'
 import SuggestionBody from './SuggestionBody'
@@ -22,8 +23,9 @@ type Props = {
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
     isAIAgentDraftMessage?: boolean
-    messageId?: number
+    message?: TicketMessage
     hideExpandButton?: boolean
+    isTrialMessage?: boolean
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
@@ -36,8 +38,9 @@ export default function InTicketSuggestion({
     actionsContent,
     infoContent,
     isAIAgentDraftMessage = false,
-    messageId,
+    message,
     hideExpandButton = false,
+    isTrialMessage,
 }: Props) {
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
@@ -89,9 +92,9 @@ export default function InTicketSuggestion({
                 ticketId={ticketId}
                 setSuggestionState={setSuggestionState}
                 isAIAgentDraftMessage={isAIAgentDraftMessage}
-                messageId={messageId}
+                message={message}
+                isTrialMessage={isTrialMessage}
             />
-
             {suggestionState === 'preview' ? (
                 <FadeLayer
                     onClick={() => setSuggestionState('expand')}

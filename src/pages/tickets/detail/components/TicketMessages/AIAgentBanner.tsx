@@ -1,13 +1,11 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
-// import {useFlags} from 'launchdarkly-react-client-sdk'
-
-// import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketMessage} from 'models/ticket/types'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 
+import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
 import css from './AIAgentBanner.less'
 import AIAgentFeedback from './AIAgentFeedback'
 
@@ -30,7 +28,10 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
 
-    const allowsFeedback = messageFeedback?.allowsFeedback || isMessagePublic
+    const isTrialMessage = isTrialMessageFromAIAgent(message)
+
+    const allowsFeedback =
+        messageFeedback?.allowsFeedback || isMessagePublic || isTrialMessage
 
     const {messageSummaryContainer, messageSummaryHasError} = useMemo(() => {
         const messageSummaryElement = document.createElement('div')
@@ -65,17 +66,20 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
 
     return (
         <AIBanner className={className} hasError={messageSummaryHasError}>
-            <div
-                className={classNames({
-                    [css.boldMessage]: isMessagePublic,
-                })}
-            >
-                {messageToDisplay}
-            </div>
+            {!isTrialMessage && (
+                <div
+                    className={classNames({
+                        [css.boldMessage]: isMessagePublic,
+                    })}
+                >
+                    {messageToDisplay}
+                </div>
+            )}
             {allowsFeedback && (
                 <AIAgentFeedback
                     message={message}
                     messageFeedback={messageFeedback}
+                    isTrialMessage={isTrialMessage}
                 />
             )}
         </AIBanner>
