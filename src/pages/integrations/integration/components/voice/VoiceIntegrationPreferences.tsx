@@ -41,8 +41,12 @@ import css from './VoiceIntegrationPreferences.less'
 import {isValueInRange} from './utils'
 import {
     RING_TIME_DEFAULT_VALUE,
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
     WAIT_TIME_DEFAULT_ENABLED,
     WAIT_TIME_DEFAULT_VALUE,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
 } from './constants'
 
 type Props = {
@@ -117,14 +121,22 @@ export default function VoiceIntegrationPreferences({
         const errors: Record<string, string> = {}
         if (
             preferences.ring_time !== undefined &&
-            !isValueInRange(preferences.ring_time, 10, 600)
+            !isValueInRange(
+                preferences.ring_time,
+                RING_TIME_MIN_VALUE,
+                RING_TIME_MAX_VALUE
+            )
         ) {
             errors.ring_time =
                 'Ring time must be between 10 and 600 seconds (10 minutes).'
         }
         if (
             preferences.wait_time?.value !== undefined &&
-            !isValueInRange(preferences.wait_time.value, 10, 3600)
+            !isValueInRange(
+                preferences.wait_time.value,
+                WAIT_TIME_MIN_VALUE,
+                WAIT_TIME_MAX_VALUE
+            )
         ) {
             errors.wait_time =
                 'Wait time must be between 10 and 3600 seconds (1 hour).'

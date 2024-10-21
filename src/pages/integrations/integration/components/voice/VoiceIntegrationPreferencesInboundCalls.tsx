@@ -19,8 +19,12 @@ import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferences
 import css from './VoiceIntegrationPreferences.less'
 import {
     RING_TIME_DEFAULT_VALUE,
+    RING_TIME_MAX_VALUE,
+    RING_TIME_MIN_VALUE,
     WAIT_TIME_DEFAULT_ENABLED,
     WAIT_TIME_DEFAULT_VALUE,
+    WAIT_TIME_MAX_VALUE,
+    WAIT_TIME_MIN_VALUE,
 } from './constants'
 
 type Props = {
@@ -117,11 +121,16 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                 value={preferencesRingTime}
                                 onChange={(value) =>
                                     onPreferencesChange({
-                                        ring_time: Number(value),
+                                        ring_time:
+                                            value === ''
+                                                ? Number.NaN
+                                                : Number(value),
                                     })
                                 }
                                 caption="Set a time between 10 and 600 seconds (10 minutes)."
                                 error={errors?.ring_time}
+                                min={RING_TIME_MIN_VALUE}
+                                max={RING_TIME_MAX_VALUE}
                             />
                         </div>
                     )}
@@ -149,13 +158,18 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                     onPreferencesChange({
                                         wait_time: {
                                             enabled: preferencesWaitTimeEnabled,
-                                            value: Number(value),
+                                            value:
+                                                value === ''
+                                                    ? Number.NaN
+                                                    : Number(value),
                                         },
                                     })
                                 }
                                 caption="Set a time between 10 and 3600 seconds (1 hour)."
                                 isDisabled={!preferencesWaitTimeEnabled}
                                 error={errors?.wait_time}
+                                min={WAIT_TIME_MIN_VALUE}
+                                max={WAIT_TIME_MAX_VALUE}
                             />
                         </div>
                     )}

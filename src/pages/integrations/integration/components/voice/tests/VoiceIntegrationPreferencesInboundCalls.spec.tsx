@@ -143,19 +143,25 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.queryByLabelText(/Ring Time/i)).toBeNull()
     })
 
-    it('should call onPreferencesChange when ring time is changed', () => {
-        mockFlags({CustomizableAgentRingTime: true})
+    it.each([
+        {ringTimeInput: '40', ringTimeValue: 40},
+        {ringTimeInput: '', ringTimeValue: Number.NaN},
+    ])(
+        'should call onPreferencesChange when ring time is changed',
+        ({ringTimeInput, ringTimeValue}) => {
+            mockFlags({CustomizableAgentRingTime: true})
 
-        renderComponent(props)
+            renderComponent(props)
 
-        fireEvent.input(screen.getByLabelText(/Ring Time/i), {
-            target: {value: '40'},
-        })
+            fireEvent.input(screen.getByLabelText(/Ring Time/i), {
+                target: {value: ringTimeInput},
+            })
 
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            ring_time: 40,
-        })
-    })
+            expect(props.onPreferencesChange).toHaveBeenCalledWith({
+                ring_time: ringTimeValue,
+            })
+        }
+    )
 
     it('should show ring time-related errors', () => {
         mockFlags({CustomizableAgentRingTime: true})
@@ -183,19 +189,25 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.queryByText('Wait Time')).toBeNull()
     })
 
-    it('should call onPreferencesChange when wait time is changed', () => {
-        mockFlags({CustomizableWaitTime: true})
+    it.each([
+        {waitTimeInput: '45', waitTimeValue: 45},
+        {waitTimeInput: '', waitTimeValue: Number.NaN},
+    ])(
+        'should call onPreferencesChange when wait time is changed',
+        ({waitTimeInput, waitTimeValue}) => {
+            mockFlags({CustomizableWaitTime: true})
 
-        renderComponent(props)
+            renderComponent(props)
 
-        fireEvent.input(screen.getByLabelText('Wait Time'), {
-            target: {value: '20'},
-        })
+            fireEvent.input(screen.getByLabelText('Wait Time'), {
+                target: {value: waitTimeInput},
+            })
 
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            wait_time: {enabled: true, value: 20},
-        })
-    })
+            expect(props.onPreferencesChange).toHaveBeenCalledWith({
+                wait_time: {enabled: true, value: waitTimeValue},
+            })
+        }
+    )
 
     it('should call onPreferencesChange when wait time is disabled', () => {
         mockFlags({CustomizableWaitTime: true})
