@@ -18,22 +18,14 @@
     }
 
     .displayMore {
-        position: relative;
-        min-width: 50px;
+        padding: 4px 8px;
         cursor: pointer;
-        display: flex;
-        height: 24px;
-        justify-content: center;
+    }
 
-        &:global.badge-tag {
-            padding: 4px 4px 4px 8px;
-            transition: unset;
-        }
-
-        .icon {
-            font-size: 16px;
-            vertical-align: top;
-        }
+    .displayMoreIcon.displayMoreIcon {
+        // overrides !important in Button styles :(
+        font-size: 20px !important;
+        width: 16px;
     }
 
     .row {

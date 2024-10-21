@@ -14,24 +14,6 @@ import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'
 
-jest.mock('react', () => {
-    return {
-        ...jest.requireActual<typeof React>('react'),
-        useRef: jest.fn().mockImplementation((value) => {
-            return {current: value}
-        }),
-    }
-})
-
-const setSpyOnUseRef = (offsetWidth: number, scrollWidth: number) => {
-    jest.spyOn(React, 'useRef').mockReturnValue({
-        get current() {
-            return {offsetWidth, scrollWidth}
-        },
-        set current(_value) {},
-    })
-}
-
 jest.mock('pages/tickets/detail/hooks/useAIAgentGetOtherResources')
 jest.mock('state/ticket/actions')
 jest.mock('hooks/useAppDispatch')
@@ -348,8 +330,24 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         })
     })
 
-    it('renders tag tooltip', () => {
-        setSpyOnUseRef(5, 10)
+    it('renders tag tooltip', async () => {
+        let mockValue = 0
+        jest.spyOn(
+            HTMLElement.prototype,
+            'offsetWidth',
+            'get'
+        ).mockImplementation(() => {
+            mockValue += 5
+            return mockValue
+        })
+        jest.spyOn(
+            HTMLElement.prototype,
+            'scrollWidth',
+            'get'
+        ).mockImplementation(() => {
+            mockValue += 5
+            return mockValue
+        })
 
         const label = 'overflowing label'
         const {initialValues} = setupMockResourcesValues({
@@ -364,12 +362,23 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             initialValues,
         })
 
-        userEvent.hover(screen.getByText(label))
-        expect(screen.getByText(`TooltipMock${label}`)).toBeInTheDocument()
+        await waitFor(() => {
+            userEvent.hover(screen.getByText(label))
+            expect(screen.getByText(`TooltipMock${label}`)).toBeInTheDocument()
+        })
     })
 
-    it("doesn't render tag tooltip", () => {
-        setSpyOnUseRef(10, 10)
+    it("doesn't render tag tooltip", async () => {
+        jest.spyOn(
+            HTMLElement.prototype,
+            'offsetWidth',
+            'get'
+        ).mockImplementation(() => 0)
+        jest.spyOn(
+            HTMLElement.prototype,
+            'scrollWidth',
+            'get'
+        ).mockImplementation(() => 0)
 
         const label = 'label without tooltip'
         const {initialValues} = setupMockResourcesValues({
@@ -384,9 +393,11 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             initialValues,
         })
 
-        userEvent.hover(screen.getByText(label))
-        expect(
-            screen.queryByText(`TooltipMock${label}`)
-        ).not.toBeInTheDocument()
+        await waitFor(() => {
+            userEvent.hover(screen.getByText(label))
+            expect(
+                screen.queryByText(`TooltipMock${label}`)
+            ).not.toBeInTheDocument()
+        })
     })
 })

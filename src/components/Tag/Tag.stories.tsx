@@ -1,7 +1,20 @@
 import React, {ComponentProps} from 'react'
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 
-import Tag from './Tag'
+import Tag, {TagColor} from './Tag'
+
+const colors: TagColor[] = [
+    'black',
+    'red',
+    'green',
+    'yellow',
+    'blue',
+    'gray',
+    'pink',
+    'purple',
+    'orange',
+    'teal',
+]
 
 const storyConfig: Meta = {
     title: 'General/Tag',
@@ -14,27 +27,12 @@ const storyConfig: Meta = {
             description: 'Color of the tag.',
             control: {
                 type: 'select',
-                options: [
-                    'black',
-                    'red',
-                    'green',
-                    'yellow',
-                    'blue',
-                    'gray',
-                    'pink',
-                    'purple',
-                    'orange',
-                    'teal',
-                ],
             },
+            options: colors,
         },
         text: {
             description: 'Text to display in the tag.',
             control: {type: 'text'},
-        },
-        leadIcon: {
-            description: 'Icon to display before the text.',
-            control: {type: null},
         },
         trailIcon: {
             description: 'Icon to display after the text.',
@@ -44,27 +42,34 @@ const storyConfig: Meta = {
     },
 }
 
-const defaultProps: Pick<ComponentProps<typeof Tag>, 'text'> = {
+const defaultProps: ComponentProps<typeof Tag> = {
     text: 'Tag',
 }
 
-const Template: Story<ComponentProps<typeof Tag>> = (args) => <Tag {...args} />
+const Template: StoryFn<ComponentProps<typeof Tag>> = (args) => {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                gap: '4px',
+            }}
+        >
+            {colors.map((color) => (
+                <Tag key={color} {...args} color={color} />
+            ))}
+        </div>
+    )
+}
 
 export const DefaultTag = Template.bind({})
+
 DefaultTag.args = {...defaultProps}
 
 export const IconOnlyTag = Template.bind({})
 IconOnlyTag.args = {
     ...defaultProps,
     text: undefined,
-    leadIcon: <i className="material-icons">add</i>,
-}
-
-export const LeadIconTag = Template.bind({})
-LeadIconTag.args = {
-    ...defaultProps,
-    text: 'Add',
-    leadIcon: <i className="material-icons">add</i>,
+    trailIcon: <i className="material-icons">add</i>,
 }
 
 export const TrailIconTag = Template.bind({})

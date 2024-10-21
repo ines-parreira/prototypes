@@ -26,11 +26,13 @@ exports[`Detail should render 1`] = `
       >
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           MY CATEGORY
         </div>
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           WOW
         </div>

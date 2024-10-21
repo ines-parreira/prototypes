@@ -23,11 +23,13 @@ exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
   >
     <div
       class="badge topic upperCase"
+      style="border-radius: 100px;"
     >
       food
     </div>
     <div
       class="badge topic upperCase"
+      style="border-radius: 100px;"
     >
       stuff
     </div>
@@ -73,6 +75,7 @@ exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
   </span>
   <div
     class="badge pill upperCase"
+    style="border-radius: 100px;"
   >
     2
   </div>

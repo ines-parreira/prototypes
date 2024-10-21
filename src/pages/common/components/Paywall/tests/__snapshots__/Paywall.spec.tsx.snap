@@ -40,6 +40,7 @@ exports[`<Paywall /> should not render the default upgrade CTA if a custom upgra
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -127,6 +128,7 @@ exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -217,6 +219,7 @@ exports[`<Paywall /> should render a page header with custom header element 1`] 
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -306,6 +309,7 @@ exports[`<Paywall /> should render a page header with string header 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -386,6 +390,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Advanced paywa
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -466,6 +471,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Basic paywall 
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -546,6 +552,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Default paywal
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -626,6 +633,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Enterprise pay
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -706,6 +714,7 @@ exports[`<Paywall /> should render a paywall theme with badge for Pro paywall ty
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -786,6 +795,7 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -894,6 +904,7 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 <i
                   class="material-icons mr-1"
@@ -909,6 +920,7 @@ exports[`<Paywall /> should render with a legacy badge 1`] = `
               </i>
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -989,6 +1001,7 @@ exports[`<Paywall /> should render with a testimonial 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -1111,6 +1124,7 @@ exports[`<Paywall /> should render with an add-on update type 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Add-on
               </div>
@@ -1203,6 +1217,7 @@ exports[`<Paywall /> should render with minimal props 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>
@@ -1283,6 +1298,7 @@ exports[`<Paywall /> should render with modal 1`] = `
             >
               <div
                 class="badge upperCase"
+                style="border-radius: 100px;"
               >
                 Foo Plan
               </div>

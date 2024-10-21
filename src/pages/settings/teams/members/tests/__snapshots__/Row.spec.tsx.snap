@@ -57,6 +57,7 @@ exports[`<Row /> should render 1`] = `
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Admin
       </div>

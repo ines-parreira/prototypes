@@ -9,6 +9,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       Two-Factor Authentication (2FA)
       <div
         class="badge ml-3  upperCase"
+        style="border-radius: 100px;"
       >
         2FA Enabled
       </div>
@@ -57,6 +58,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       Two-Factor Authentication (2FA)
       <div
         class="badge ml-3  upperCase"
+        style="border-radius: 100px;"
       >
         2FA Disabled
       </div>
@@ -96,6 +98,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       Two-Factor Authentication (2FA)
       <div
         class="badge ml-3  upperCase"
+        style="border-radius: 100px;"
       >
         2FA Enabled
       </div>
@@ -136,6 +139,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       Two-Factor Authentication (2FA)
       <div
         class="badge ml-3  upperCase"
+        style="border-radius: 100px;"
       >
         2FA Disabled
       </div>

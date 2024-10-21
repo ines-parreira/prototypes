@@ -56,6 +56,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
           >
             <div
               class="badge statusLabel upperCase"
+              style="border-radius: 100px;"
             >
               open
             </div>

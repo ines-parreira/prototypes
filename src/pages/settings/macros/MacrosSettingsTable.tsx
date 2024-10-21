@@ -31,6 +31,7 @@ import {RootState} from 'state/types'
 import {formatDatetime, errorToChildren} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import Badge, {ColorType} from 'pages/common/components/Badge'
 
 import css from './MacrosSettingsTable.less'
 
@@ -213,17 +214,19 @@ export function MacrosSettingsTableContainer({
 
                         const tagId = `tags-${macroId}`
                         const tag = tags?.length ? (
-                            <div className="flex" id={tagId}>
+                            <div className={css.tags} id={tagId}>
                                 <TicketTag text={tags[0]} />
                                 {tags.length > 1 && (
                                     <>
                                         <Tooltip target={tagId}>
                                             {tags.join(', ')}
                                         </Tooltip>
-                                        <TicketTag
-                                            className="text-info"
-                                            text={`+${tags.length - 1}`}
-                                        />
+                                        <Badge
+                                            type={ColorType.LightDark}
+                                            corner="square"
+                                        >
+                                            +{tags.length - 1}
+                                        </Badge>
                                     </>
                                 )}
                             </div>

@@ -7,8 +7,6 @@ import {
 } from 'constants/integrations/types/shopify'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import css from './OrderStatus.less'
-
 type FulfillmentBadgeProps = {
     fulfillmentStatus: FulfillmentStatus
 }
@@ -61,11 +59,7 @@ function FulfillmentBadge({fulfillmentStatus}: FulfillmentBadgeProps) {
     if (!type) {
         return null
     }
-    return (
-        <Badge className={css.badge} type={type}>
-            {label}
-        </Badge>
-    )
+    return <Badge type={type}>{label}</Badge>
 }
 
 function FinancialBadge({financialStatus}: FinancialBadgeProps) {
@@ -75,17 +69,9 @@ function FinancialBadge({financialStatus}: FinancialBadgeProps) {
     }
     const financialLabel = humanizeString(financialStatus).replace(/_/g, ' ')
 
-    return (
-        <Badge className={css.badge} type={type}>
-            {financialLabel}
-        </Badge>
-    )
+    return <Badge type={type}>{financialLabel}</Badge>
 }
 
 function CancelledBadge() {
-    return (
-        <Badge className={css.badge} type={ColorType.Error}>
-            Cancelled
-        </Badge>
-    )
+    return <Badge type={ColorType.Error}>Cancelled</Badge>
 }

@@ -1,22 +1,22 @@
 @import '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
 
 :local {
     .badge {
-        .caption-allcaps();
+        &.upperCase {
+            .caption-allcaps();
+        }
 
         &:not(.upperCase) {
-            text-transform: none;
+            .caption-semibold();
         }
 
         align-items: center;
-        border-radius: 100px;
         display: inline-flex;
         padding: 2px 8px;
+        gap: 4px;
         text-align: center;
-
-        + .badge {
-            margin-left: 8px;
-        }
+        white-space: nowrap;
 
         --background-classic: var(--main-primary);
         --background-error: var(--feedback-error);

@@ -217,6 +217,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Foobar
       </div>
@@ -241,6 +242,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Error
       </div>

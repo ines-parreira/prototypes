@@ -96,6 +96,7 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
           </label>
           <div
             class="badge upperCase"
+            style="border-radius: 100px;"
           >
             ACTIVE
           </div>
@@ -345,6 +346,7 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
           </label>
           <div
             class="badge upperCase"
+            style="border-radius: 100px;"
           >
             ACTIVE
           </div>

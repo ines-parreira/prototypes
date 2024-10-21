@@ -5,18 +5,28 @@ import Badge, {ColorType} from '../Badge'
 
 describe('<Badge />', () => {
     it('should render a badge with specified color type', () => {
-        const {container} = render(
-            <Badge type={ColorType.Warning}>Shopify</Badge>
-        )
+        const type = ColorType.Warning
+        const {container} = render(<Badge type={type}>Shopify</Badge>)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild).toHaveStyle({
+            backgroundColor: `var(--background-${type})`,
+            color: `var(--text-${type}, var(--neutral-grey-0))`,
+            borderRadius: '100px',
+        })
     })
 
     it('should render a badge with custom style', () => {
-        const {container} = render(
-            <Badge style={{color: '#a541ab'}}>Shopify</Badge>
-        )
+        const style = {color: '#a541ab'}
+        const {container} = render(<Badge style={style}>Shopify</Badge>)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.firstChild).toHaveStyle(style)
+    })
+
+    it('should render a badge with square corners', () => {
+        const {container} = render(<Badge corner="square">Shopify</Badge>)
+
+        expect(container.firstChild).toHaveStyle({
+            borderRadius: '4px',
+        })
     })
 })

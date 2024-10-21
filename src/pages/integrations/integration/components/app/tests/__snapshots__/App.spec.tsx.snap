@@ -93,16 +93,19 @@ exports[`App should render 2`] = `
       >
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           ECOMMERCE
         </div>
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           REVIEWS & UGC
         </div>
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           14 DAYS FREE TRIAL
         </div>

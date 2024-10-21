@@ -155,7 +155,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             class="cellContent"
           >
             <div
-              class="flex"
+              class="tags"
               id="tags-1"
             >
               <div
@@ -171,13 +171,11 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
                 Tooltip
               </div>
               <div
-                class="tag black text-info"
+                class="badge upperCase"
+                style="border-radius: 4px;"
               >
-                <span
-                  class="text"
-                >
-                  +1
-                </span>
+                +
+                1
               </div>
             </div>
           </div>
@@ -286,7 +284,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             class="cellContent"
           >
             <div
-              class="flex"
+              class="tags"
               id="tags-2"
             >
               <div

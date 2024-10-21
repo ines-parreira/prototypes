@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 
 import {ThemeContext, useThemeContext} from '../src/theme'
+import {initLaunchDarkly} from '../src/utils/launchDarkly.ts'
 import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx';
+
+initLaunchDarkly()
 
 require('@storybook/addon-console')
 

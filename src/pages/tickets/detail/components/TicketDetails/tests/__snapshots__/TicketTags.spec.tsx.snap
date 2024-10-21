@@ -16,7 +16,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 1;"
       >
         <div
-          class="tag black withTrailIcon"
+          class="tag withTrailIcon black"
         >
           <span
             class="text"
@@ -38,7 +38,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 11;"
       >
         <div
-          class="tag black withTrailIcon"
+          class="tag withTrailIcon black"
         >
           <span
             class="text"
@@ -60,7 +60,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 21;"
       >
         <div
-          class="tag black withTrailIcon"
+          class="tag withTrailIcon black"
         >
           <span
             class="text"
@@ -82,7 +82,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         style="order: 31;"
       >
         <div
-          class="tag black withTrailIcon"
+          class="tag withTrailIcon black"
         >
           <span
             class="text"
@@ -103,20 +103,19 @@ exports[`<TicketTags /> should display current tags 1`] = `
       <div
         style="order: 5; display: block;"
       >
-        <span
-          class="badge-tag displayMore badge badge-secondary"
+        <div
+          class="badge displayMore"
           id="expand-tags-badge-42"
+          style="border-radius: 4px;"
         >
-          <span>
-            + 
-            3
-            <i
-              class="material-icons material-icons-round icon"
-            >
-              arrow_drop_down
-            </i>
+          + 
+          3
+          <span
+            class="icon material-icons-round displayMoreIcon"
+          >
+            arrow_drop_down
           </span>
-        </span>
+        </div>
       </div>
       <button
         aria-disabled="false"

@@ -21,6 +21,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Admin
       </div>
@@ -67,6 +68,7 @@ exports[`<RestrictedPage/> should render for admin role and include higher permi
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Admin
       </div>
@@ -113,6 +115,7 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Lead
       </div>
@@ -159,6 +162,7 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Basic
       </div>
@@ -205,6 +209,7 @@ exports[`<RestrictedPage/> should render for bot role and include higher permiss
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       />
     </div>
     <h2
@@ -249,6 +254,7 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Lite
       </div>
@@ -295,6 +301,7 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
     >
       <div
         class="badge upperCase"
+        style="border-radius: 100px;"
       >
         Observer
       </div>

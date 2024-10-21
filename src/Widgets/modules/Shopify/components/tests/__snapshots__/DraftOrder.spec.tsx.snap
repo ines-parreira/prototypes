@@ -23,6 +23,7 @@ exports[`<TitleWrapper/> should not render copy button if editing 1`] = `
   <div>
     <div
       class="badge badge upperCase"
+      style="border-radius: 100px;"
     >
       Open
     </div>
@@ -64,6 +65,7 @@ exports[`<TitleWrapper/> should render the invoice sent status 1`] = `
   <div>
     <div
       class="badge badge upperCase"
+      style="border-radius: 100px;"
     >
       Invoice Sent
     </div>
@@ -105,6 +107,7 @@ exports[`<TitleWrapper/> should render the open status 1`] = `
   <div>
     <div
       class="badge badge upperCase"
+      style="border-radius: 100px;"
     >
       Open
     </div>

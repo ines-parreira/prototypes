@@ -38,10 +38,6 @@ jest.mock('hooks/useMeasure', () => {
     }
 })
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 const useFlagsMock = useFlags as jest.Mock
 
 const middlewares = [thunk]

@@ -13,6 +13,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a no
       Automatically embed on your website
       <div
         class="badge badge upperCase"
+        style="border-radius: 100px;"
       >
         RECOMMENDED
       </div>
@@ -47,6 +48,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a sh
       Automatically embed on your website
       <div
         class="badge badge upperCase"
+        style="border-radius: 100px;"
       >
         RECOMMENDED
       </div>
@@ -111,6 +113,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - not connected to 
       Automatically embed on your website
       <div
         class="badge badge upperCase"
+        style="border-radius: 100px;"
       >
         RECOMMENDED
       </div>

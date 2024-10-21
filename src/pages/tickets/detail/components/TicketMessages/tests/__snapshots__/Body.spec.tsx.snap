@@ -540,6 +540,7 @@ exports[`Body should display the Yotpo product card if there's matching metadata
                     <th>
                       <div
                         class="badge upperCase"
+                        style="border-radius: 100px;"
                       >
                         electronics
                       </div>

@@ -11,6 +11,7 @@ import css from './Badge.less'
 
 type Props = {
     children: ReactNode
+    corner?: 'round' | 'square'
     style?: CSSProperties
     type?: ColorType
     upperCase?: boolean
@@ -41,7 +42,15 @@ export enum ColorType {
 }
 
 const Badge = (
-    {className, children, style, type, upperCase = true, ...props}: Props,
+    {
+        className,
+        children,
+        corner = 'round',
+        style,
+        type,
+        upperCase = true,
+        ...props
+    }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
     return (
@@ -56,6 +65,7 @@ const Badge = (
                           color: `var(--text-${type}, var(--neutral-grey-0))`,
                       }
                     : {}),
+                borderRadius: corner === 'round' ? '100px' : '4px',
                 ...style,
             }}
             ref={ref}

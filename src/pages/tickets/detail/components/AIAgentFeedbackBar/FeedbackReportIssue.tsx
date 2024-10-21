@@ -1,7 +1,6 @@
 import React, {useCallback, useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 
-import Tag from 'components/Tag'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
@@ -15,6 +14,8 @@ import {
 
 import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import BadgeIcon from 'pages/common/components/Badge/BadgeIcon'
 import css from './FeedbackReportIssue.less'
 
 const closeIcon = <i className="material-icons">close</i>
@@ -131,12 +132,18 @@ const ReportIssueSelect: React.FC<Props> = ({
                     }
 
                     return (
-                        <Tag
+                        <Badge
                             key={option.value}
-                            text={option.label}
-                            trailIcon={closeIcon}
-                            onTrailIconClick={() => onRemoveItem(option.value)}
-                        />
+                            corner="square"
+                            type={ColorType.LightDark}
+                            upperCase={false}
+                        >
+                            {option.label}
+                            <BadgeIcon
+                                icon={closeIcon}
+                                onClick={() => onRemoveItem(option.value)}
+                            />
+                        </Badge>
                     )
                 })}
             </div>

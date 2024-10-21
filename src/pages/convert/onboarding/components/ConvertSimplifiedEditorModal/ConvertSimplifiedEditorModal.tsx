@@ -1,15 +1,12 @@
 import React, {useEffect, useState, useMemo} from 'react'
 import {Map, fromJS} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {toJS} from 'utils'
 
-import Tag from 'components/Tag'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
@@ -62,6 +59,7 @@ import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {
@@ -272,17 +270,29 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                 <div className={css.modalContainer}>
                     <div className={css.leftSide}>
                         <div className={css.labelContainer}>
-                            <Tag color="orange" text={template.label} />
-                            <Tag
+                            <Badge
+                                type={ColorType.LightWarning}
+                                corner="square"
+                                upperCase={false}
+                            >
+                                {template.label}
+                            </Badge>
+                            <Badge
                                 className={css.estimationLabel}
-                                color="green"
-                                leadIcon={
-                                    <i className="material-icons">
-                                        monetization_on
-                                    </i>
-                                }
-                                text={`Generates ${estimatedRevenue} on average`}
-                            />
+                                type={ColorType.LightSuccess}
+                                corner="square"
+                                upperCase={false}
+                            >
+                                <BadgeIcon
+                                    icon={
+                                        <i className="material-icons">
+                                            monetization_on
+                                        </i>
+                                    }
+                                />
+
+                                {`Generates ${estimatedRevenue} on average`}
+                            </Badge>
                         </div>
 
                         <h2 className={css.templateTitle}>{template.name}</h2>

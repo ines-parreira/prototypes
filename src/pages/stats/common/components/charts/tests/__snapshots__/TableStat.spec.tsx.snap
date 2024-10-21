@@ -364,6 +364,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <div>
             <div
               class="badge upperCase"
+              style="border-radius: 100px;"
             >
               Online
             </div>
@@ -968,6 +969,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <div>
             <div
               class="badge upperCase"
+              style="border-radius: 100px;"
             >
               Online
             </div>
@@ -1765,6 +1767,7 @@ exports[`TableStat should render a table chart 1`] = `
           <div>
             <div
               class="badge upperCase"
+              style="border-radius: 100px;"
             >
               Online
             </div>
@@ -2243,6 +2246,7 @@ exports[`TableStat should render a table with online status disabled badge 1`] =
           <div>
             <div
               class="badge upperCase"
+              style="border-radius: 100px;"
             >
               Offline
             </div>
@@ -2618,6 +2622,7 @@ exports[`TableStat should render a table with the expand button and one line vis
           <div>
             <div
               class="badge upperCase"
+              style="border-radius: 100px;"
             >
               Online
             </div>

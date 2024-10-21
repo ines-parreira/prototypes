@@ -27,6 +27,7 @@ exports[`IfStatement component should not render alternate because there is none
     </button>
     <div
       class="badge unknownstatement upperCase"
+      style="border-radius: 100px;"
     >
       Unknown 
     </div>
@@ -89,6 +90,7 @@ exports[`IfStatement component should not render alternate because there is none
       <div>
         <div
           class="badge unknownstatement upperCase"
+          style="border-radius: 100px;"
         >
           Unknown 
         </div>
@@ -125,6 +127,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
     </button>
     <div
       class="badge unknownstatement upperCase"
+      style="border-radius: 100px;"
     >
       Unknown 
     </div>
@@ -187,6 +190,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       <div>
         <div
           class="badge unknownstatement upperCase"
+          style="border-radius: 100px;"
         >
           Unknown 
         </div>
@@ -264,6 +268,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       <div>
         <div
           class="badge unknownstatement upperCase"
+          style="border-radius: 100px;"
         >
           Unknown 
         </div>

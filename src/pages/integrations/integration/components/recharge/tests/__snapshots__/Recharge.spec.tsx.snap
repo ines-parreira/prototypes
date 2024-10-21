@@ -76,6 +76,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
       >
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           SUBSCRIPTIONS
         </div>

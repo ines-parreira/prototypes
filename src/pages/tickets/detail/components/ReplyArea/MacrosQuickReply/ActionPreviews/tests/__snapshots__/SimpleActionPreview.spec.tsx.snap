@@ -65,6 +65,7 @@ exports[`<SimpleActionPreview/> should render set status action 1`] = `
   >
     <div
       class="badge smallTag upperCase"
+      style="border-radius: 100px;"
     >
       open
     </div>
@@ -107,6 +108,7 @@ exports[`<SimpleActionPreview/> should render snooze action 1`] = `
   >
     <div
       class="badge text-center smallTag upperCase"
+      style="border-radius: 100px;"
     >
       1 day(s)
     </div>

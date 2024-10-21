@@ -3,6 +3,7 @@
 exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   400 BAD REQUEST
 </div>
@@ -11,6 +12,7 @@ exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1
 exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   500 INTERNAL SERVER ERROR
 </div>
@@ -19,6 +21,7 @@ exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1
 exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   300 MULTIPLE CHOICES
 </div>
@@ -27,6 +30,7 @@ exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 
 exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   100 CONTINUE
 </div>
@@ -35,6 +39,7 @@ exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status cod
 exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   78 UNKNOWN HTTP STATUS CODE
 </div>
@@ -43,6 +48,7 @@ exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status
 exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   200 OK
 </div>
@@ -51,6 +57,7 @@ exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 
 exports[`HTTPStatusLabel should render an error label for undefined requests 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   FAILED TO BUILD REQUEST
 </div>
@@ -59,6 +66,7 @@ exports[`HTTPStatusLabel should render an error label for undefined requests 1`]
 exports[`HTTPStatusLabel should render an error label for undefined statusCode 1`] = `
 <div
   class="badge upperCase"
+  style="border-radius: 100px;"
 >
   HTTP REQUEST FAILED
 </div>

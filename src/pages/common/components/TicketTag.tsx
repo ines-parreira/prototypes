@@ -3,8 +3,10 @@ import {fromJS, Map} from 'immutable'
 import {parseToHsla} from 'color2k'
 
 import Tag from 'components/Tag'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {Theme, ThemeContext} from 'theme'
 import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
+import {useFlag} from 'common/flags'
 
 type Props = {
     className?: string
@@ -15,6 +17,7 @@ type Props = {
 
 const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
     const context = useContext(ThemeContext)
+    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign, false)
 
     const tagColor = ((decoration || fromJS({})) as Map<any, any>).get(
         'color'
@@ -48,9 +51,15 @@ const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
     return (
         <Tag
             className={className}
-            style={style}
             text={text}
             title={title}
+            {...(hasNewTag
+                ? {
+                      customColor: color,
+                  }
+                : {
+                      style,
+                  })}
             {...props}
         />
     )

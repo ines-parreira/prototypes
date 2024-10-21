@@ -176,20 +176,19 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           <div
                             style="order: -1; display: none;"
                           >
-                            <span
-                              class="badge-tag displayMore badge badge-secondary"
+                            <div
+                              class="badge displayMore"
                               id="expand-tags-badge-1"
+                              style="border-radius: 4px;"
                             >
-                              <span>
-                                + 
-                                0
-                                <i
-                                  class="material-icons material-icons-round icon"
-                                >
-                                  arrow_drop_down
-                                </i>
+                              + 
+                              0
+                              <span
+                                class="icon material-icons-round displayMoreIcon"
+                              >
+                                arrow_drop_down
                               </span>
-                            </span>
+                            </div>
                           </div>
                           <button
                             aria-disabled="false"
@@ -419,20 +418,19 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           <div
                             style="order: -1; display: none;"
                           >
-                            <span
-                              class="badge-tag displayMore badge badge-secondary"
+                            <div
+                              class="badge displayMore"
                               id="expand-tags-badge-4"
+                              style="border-radius: 4px;"
                             >
-                              <span>
-                                + 
-                                0
-                                <i
-                                  class="material-icons material-icons-round icon"
-                                >
-                                  arrow_drop_down
-                                </i>
+                              + 
+                              0
+                              <span
+                                class="icon material-icons-round displayMoreIcon"
+                              >
+                                arrow_drop_down
                               </span>
-                            </span>
+                            </div>
                           </div>
                           <button
                             aria-disabled="false"

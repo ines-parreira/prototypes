@@ -1,7 +1,6 @@
-import React, {useContext, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
-import {Badge} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -11,8 +10,8 @@ import useElementSize from 'hooks/useElementSize'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
-import ThemeContext from 'theme/ThemeContext'
 
+import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import TagDropdown from './TagDropdown'
 import css from './TicketTags.less'
 
@@ -50,7 +49,6 @@ const TicketTags = ({
 
     const uniqueId = useMemo(() => _uniqueId(), [])
 
-    const themeContext = useContext(ThemeContext)
     const [showAllTags, setShowAllTags] = useState(false)
 
     const [element, setElement] = useCallbackRef()
@@ -147,27 +145,20 @@ const TicketTags = ({
                     >
                         <Badge
                             id={`expand-tags-badge-${uniqueId}`}
-                            className={classnames('badge-tag', css.displayMore)}
-                            style={{
-                                color: themeContext?.colorTokens.Neutral.Grey_6
-                                    .value,
-                                backgroundColor:
-                                    themeContext?.colorTokens.Neutral.Grey_3
-                                        .value,
-                            }}
+                            className={css.displayMore}
+                            type={ColorType.LightDark}
+                            corner="square"
+                            upperCase={false}
                             onClick={() => setShowAllTags(!showAllTags)}
                         >
-                            <span>
-                                + {wrappedElementCount || 0}
-                                <i
-                                    className={classnames(
-                                        'material-icons material-icons-round',
-                                        css.icon
-                                    )}
-                                >
-                                    arrow_drop_down
-                                </i>
-                            </span>
+                            + {wrappedElementCount || 0}
+                            <BadgeIcon
+                                className={classnames(
+                                    'material-icons-round',
+                                    css.displayMoreIcon
+                                )}
+                                icon="arrow_drop_down"
+                            />
                         </Badge>
                         <Tooltip
                             target={`expand-tags-badge-${uniqueId}`}

@@ -6,6 +6,7 @@ exports[`<LegacyPlanBadge /> should render a badge 1`] = `
 >
   <div
     class="badge upperCase"
+    style="border-radius: 100px;"
   >
     <i
       class="material-icons"

@@ -3,12 +3,12 @@ import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
-import Tag from 'components/Tag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
+import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {addTags, removeTag} from 'state/ticket/actions'
@@ -18,8 +18,6 @@ import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecate
 import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
 import css from './FeedbackOtherResourcesSelect.less'
 import InfoIconWithTooltip from './InfoIconWithTooltip'
-
-const closeIcon = <i className="material-icons">close</i>
 
 export const NO_RELEVANT_RESOURCES_LABEL = 'No relevant resources'
 export const AI_NO_RESOURCES_TAG = 'ai_no_resources'
@@ -48,7 +46,9 @@ const FeedbackOtherResourcesSelect = ({
     accountId,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [tagsElements, setTagsElements] = useState<Array<HTMLDivElement>>([])
+    const [badgeElements, setBadgeElements] = useState<Array<HTMLSpanElement>>(
+        []
+    )
     const [isTagOverflowing, setIsTagOverflowing] = useState<Array<boolean>>([])
     const {
         articlesOptions,
@@ -70,17 +70,18 @@ const FeedbackOtherResourcesSelect = ({
     const [values, setValues] = useState<string[]>([])
 
     useEffect(() => {
-        setTagsElements(Array(values.length).fill(undefined))
+        setBadgeElements(Array(values.length).fill(undefined))
     }, [values])
 
     useEffect(() => {
         setIsTagOverflowing(
-            tagsElements.map(
+            badgeElements.map(
                 (_item, i) =>
-                    tagsElements[i]?.offsetWidth < tagsElements[i]?.scrollWidth
+                    badgeElements[i]?.offsetWidth <
+                    badgeElements[i]?.scrollWidth
             )
         )
-    }, [tagsElements])
+    }, [badgeElements])
 
     const initialFormattedValues = useMemo(() => {
         return initialValues.map((v) => {
@@ -304,25 +305,39 @@ const FeedbackOtherResourcesSelect = ({
                     const type = textArray[textArray.length - 2]
                     return (
                         <Fragment key={option}>
-                            <Tag
-                                ref={(el: HTMLDivElement) => {
-                                    tagsElements[index] = el
-                                }}
-                                text={text}
-                                trailIcon={closeIcon}
-                                leadIcon={RESOURCE_ICONS[type]}
-                                onTrailIconClick={() => handleRemove(option)}
+                            <Badge
+                                type={ColorType.LightDark}
                                 className={css.tag}
-                                textClassName={css.tagText}
-                            />
-                            {tagsElements[index] && isTagOverflowing[index] && (
-                                <Tooltip
-                                    placement="bottom"
-                                    target={tagsElements[index]}
+                                upperCase={false}
+                                corner="square"
+                            >
+                                {!!RESOURCE_ICONS[type] && (
+                                    <BadgeIcon icon={RESOURCE_ICONS[type]} />
+                                )}
+                                <span
+                                    ref={(el: HTMLSpanElement) => {
+                                        badgeElements[index] = el
+                                    }}
+                                    className={css.tagText}
                                 >
                                     {text}
-                                </Tooltip>
-                            )}
+                                </span>
+                                <BadgeIcon
+                                    icon={
+                                        <i className="material-icons">close</i>
+                                    }
+                                    onClick={() => handleRemove(option)}
+                                />
+                            </Badge>
+                            {badgeElements[index] &&
+                                isTagOverflowing[index] && (
+                                    <Tooltip
+                                        placement="bottom"
+                                        target={badgeElements[index]}
+                                    >
+                                        {text}
+                                    </Tooltip>
+                                )}
                         </Fragment>
                     )
                 })}

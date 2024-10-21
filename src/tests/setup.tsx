@@ -363,3 +363,5 @@ global.fetch = jest.fn(() =>
 )
 
 jest.mock('theme/useTheme.ts', () => () => 'light')
+
+jest.mock('utils/launchDarkly')

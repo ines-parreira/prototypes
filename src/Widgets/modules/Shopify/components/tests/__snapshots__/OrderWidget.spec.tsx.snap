@@ -16,7 +16,9 @@ exports[`<TitleWrapper/> render() should not render copy button if editing 1`] =
       </div>
     </a>
   </div>
-  <div />
+  <div
+    class="orderStatus"
+  />
 </div>
 `;
 
@@ -51,6 +53,8 @@ exports[`<TitleWrapper/> render() should render copy button if not editing 1`] =
       </button>
     </span>
   </div>
-  <div />
+  <div
+    class="orderStatus"
+  />
 </div>
 `;

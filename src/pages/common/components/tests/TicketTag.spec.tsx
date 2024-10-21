@@ -2,10 +2,23 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
+import {useFlag} from 'common/flags'
 import {Theme, ThemeContext, useThemeContext} from 'theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import TicketTag from '../TicketTag'
+
+jest.mock('common/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+const mockFlagSet = {
+    [FeatureFlagKey.TagNewDesign]: false,
+}
+
+jest.mock('utils/launchDarkly')
 
 jest.mock(
     'utils/colors',
@@ -17,6 +30,14 @@ jest.mock(
 )
 
 describe('<TicketTag />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockImplementation(
+            (featureFlag: keyof typeof mockFlagSet) => {
+                return mockFlagSet[featureFlag]
+            }
+        )
+    })
+
     it('should render the tag', () => {
         const text = 'shipping'
         const color = '#123456' // hsl(210, 65%, 20%)
@@ -74,5 +95,18 @@ describe('<TicketTag />', () => {
 
         expect(container.firstChild).not.toHaveAttribute('style')
         expect(container.firstChild).toHaveClass('black')
+    })
+
+    it('should use new design', () => {
+        mockUseFlag.mockReturnValue(true)
+        const text = 'shipping'
+        const color = '#123456'
+
+        const {container} = render(
+            <TicketTag text={text} decoration={fromJS({color})} />
+        )
+
+        expect(container.firstChild).not.toHaveAttribute('style')
+        expect(screen.getByText(text)).toHaveStyle(`--tag-dot-color: ${color}`)
     })
 })

@@ -3870,7 +3870,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           </span>
           <div
             class="badge fakeTicketClosed upperCase"
-            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
+            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46); border-radius: 100px;"
           >
             closed
           </div>
@@ -3912,7 +3912,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           </span>
           <div
             class="badge fakeTicketClosed upperCase"
-            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
+            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46); border-radius: 100px;"
           >
             closed
           </div>

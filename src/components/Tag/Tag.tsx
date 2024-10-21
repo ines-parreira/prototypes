@@ -1,4 +1,6 @@
 import React, {
+    CSSProperties,
+    FC,
     ForwardedRef,
     forwardRef,
     HTMLAttributes,
@@ -7,6 +9,8 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './Tag.less'
 
 export type TagColor =
@@ -24,20 +28,18 @@ export type TagColor =
 type Props = {
     className?: string
     color?: TagColor
-    leadIcon?: React.ReactNode
-    onLeadIconClick?: () => void
+    customColor?: string | null
     onTrailIconClick?: () => void
     text?: string
     textClassName?: string
     trailIcon?: React.ReactNode
 }
 
-const Tag: React.FC<Props & HTMLAttributes<HTMLDivElement>> = (
+const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
     {
         className,
         color = 'black',
-        leadIcon,
-        onLeadIconClick,
+        customColor,
         onTrailIconClick,
         text,
         textClassName,
@@ -48,28 +50,31 @@ const Tag: React.FC<Props & HTMLAttributes<HTMLDivElement>> = (
 ) => {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
+    const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign, false)
 
     return (
         <div
-            className={classNames(css.tag, css[color], className, {
-                [css.withLeadIcon]: !!leadIcon,
+            className={classNames(css.tag, className, {
                 [css.withTrailIcon]: !!trailIcon,
                 [css.withIconOnly]: !text,
+                [css[color]]: !hasNewTag,
+                [css.newTag]: hasNewTag,
             })}
             {...props}
         >
-            {leadIcon && (
-                <span
-                    className={classNames(css.icon, {
-                        [css.withClick]: !!onLeadIconClick,
-                    })}
-                    onClick={onLeadIconClick}
-                >
-                    {leadIcon}
-                </span>
-            )}
             {text && (
-                <span ref={ref} className={classNames(css.text, textClassName)}>
+                <span
+                    ref={ref}
+                    className={classNames(css.text, textClassName, {
+                        [css[color]]: hasNewTag,
+                        [css.newText]: hasNewTag,
+                    })}
+                    {...(!!customColor && {
+                        style: {
+                            '--tag-dot-color': customColor,
+                        } as CSSProperties,
+                    })}
+                >
                     {text}
                 </span>
             )}

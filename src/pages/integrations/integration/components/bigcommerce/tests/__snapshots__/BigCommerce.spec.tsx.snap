@@ -76,11 +76,13 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
       >
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           FEATURED
         </div>
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           ECOMMERCE
         </div>

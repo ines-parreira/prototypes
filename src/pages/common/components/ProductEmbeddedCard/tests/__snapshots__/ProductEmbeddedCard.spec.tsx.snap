@@ -105,6 +105,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
                   <th>
                     <div
                       class="badge upperCase"
+                      style="border-radius: 100px;"
                     >
                       electronics
                     </div>
@@ -225,6 +226,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
                   <th>
                     <div
                       class="badge upperCase"
+                      style="border-radius: 100px;"
                     >
                       electronics
                     </div>
@@ -345,6 +347,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
                   <th>
                     <div
                       class="badge upperCase"
+                      style="border-radius: 100px;"
                     >
                       electronics
                     </div>

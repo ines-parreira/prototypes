@@ -308,7 +308,7 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
                     </span>
                 )}
             </div>
-            <div>
+            <div className={css.orderStatus}>
                 <OrderStatus
                     fulfillmentStatus={
                         source.get('fulfillment_status') as FulfillmentStatus

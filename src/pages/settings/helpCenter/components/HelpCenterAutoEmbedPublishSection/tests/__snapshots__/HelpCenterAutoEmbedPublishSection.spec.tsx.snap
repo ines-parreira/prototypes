@@ -16,6 +16,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
         Automatically embed on your website
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           RECOMMENDED
         </div>
@@ -92,6 +93,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
         Automatically embed on your website
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           RECOMMENDED
         </div>
@@ -130,6 +132,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
         Automatically embed on your website
         <div
           class="badge badge upperCase"
+          style="border-radius: 100px;"
         >
           RECOMMENDED
         </div>

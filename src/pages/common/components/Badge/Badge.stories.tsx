@@ -1,4 +1,4 @@
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
 import Badge, {ColorType} from './Badge'
@@ -19,15 +19,27 @@ const storyConfig: Meta = {
         type: {
             description: 'Preset color for background and text',
         },
+        corner: {
+            description: 'Corner style',
+            control: {
+                type: 'select',
+            },
+            options: ['round', 'square'],
+        },
     },
 }
 
-const Template: Story<ComponentProps<typeof Badge>> = (props) => (
+const Template: StoryFn<ComponentProps<typeof Badge>> = (props) => (
     <Badge {...props} />
 )
 
-const BadgesTemplate: Story<ComponentProps<typeof Badge>> = (props) => (
-    <>
+const BadgesTemplate: StoryFn<ComponentProps<typeof Badge>> = (props) => (
+    <div
+        style={{
+            display: 'flex',
+            gap: 4,
+        }}
+    >
         <Badge {...props} type={ColorType.Modern}>
             pineapple
         </Badge>
@@ -40,12 +52,12 @@ const BadgesTemplate: Story<ComponentProps<typeof Badge>> = (props) => (
         <Badge {...props} type={ColorType.Error}>
             carambola
         </Badge>
-    </>
+    </div>
 )
 
 const templateParameters = {
     controls: {
-        include: ['children', 'style', 'type'],
+        include: ['children', 'style', 'type', 'corner'],
     },
 }
 
@@ -56,15 +68,21 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 Default.parameters = templateParameters
 
-export const AvailableTypes = () => (
-    <>
+const AvailableTypes: StoryFn<ComponentProps<typeof Badge>> = (props) => (
+    <div
+        style={{
+            display: 'flex',
+            gap: 4,
+        }}
+    >
         {Object.values(ColorType).map((type) => (
-            <Badge key={type} type={type}>
+            <Badge key={type} type={type} {...props}>
                 {type}
             </Badge>
         ))}
-    </>
+    </div>
 )
+export const AllTypes = AvailableTypes.bind({})
 
 export const WithIcon = Template.bind({})
 WithIcon.args = {

@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .macroTitle {
         font-weight: 600;
@@ -32,5 +34,10 @@
                 opacity: 0;
             }
         }
+    }
+
+    .tags {
+        display: flex;
+        gap: @layout-spacing-xxs;
     }
 }

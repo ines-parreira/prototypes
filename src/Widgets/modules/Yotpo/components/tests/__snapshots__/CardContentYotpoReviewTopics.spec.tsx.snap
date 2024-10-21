@@ -23,11 +23,13 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
   >
     <div
       class="badge topic upperCase"
+      style="border-radius: 100px;"
     >
       bread
     </div>
     <div
       class="badge topic upperCase"
+      style="border-radius: 100px;"
     >
       test
     </div>

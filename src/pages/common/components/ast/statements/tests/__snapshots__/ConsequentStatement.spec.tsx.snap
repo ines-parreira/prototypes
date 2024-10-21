@@ -59,6 +59,7 @@ exports[`<ConsequentStatement/> component should render 1`] = `
     <div>
       <div
         class="badge unknownstatement upperCase"
+        style="border-radius: 100px;"
       >
         Unknown 
       </div>
