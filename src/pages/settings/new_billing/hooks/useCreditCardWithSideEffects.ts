@@ -1,16 +1,14 @@
-import {UseQueryOptions} from '@tanstack/react-query'
 import {useEffect} from 'react'
 import {useCreditCard} from 'models/billing/queries'
 import {
     FETCH_CREDIT_CARD_ERROR,
     FETCH_CREDIT_CARD_SUCCESS,
 } from 'state/billing/constants'
-import {getCreditCard} from 'models/billing/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 export const useCreditCardWithSideEffects = (
     overrides?: Omit<
-        UseQueryOptions<Awaited<ReturnType<typeof getCreditCard>>>,
+        Parameters<typeof useCreditCard>['0'],
         'onSuccess' | 'onError' | 'onSettled'
     >
 ) => {
@@ -22,7 +20,7 @@ export const useCreditCardWithSideEffects = (
         if (result.isSuccess && result.data) {
             dispatch({
                 type: FETCH_CREDIT_CARD_SUCCESS,
-                resp: result.data,
+                resp: result.data.data,
             })
         }
     }, [dispatch, result.data, result.isSuccess])

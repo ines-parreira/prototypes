@@ -12,11 +12,16 @@ export const renderHookWithStoreAndQueryClientProvider = <TProps, TResult>(
     const TestQueryClientProvider = mockQueryClientProvider()
     const store = mockStore(initialStoreState)
 
-    return renderHook(callback, {
-        wrapper: ({children}) => (
-            <Provider store={store}>
-                <TestQueryClientProvider>{children}</TestQueryClientProvider>
-            </Provider>
-        ),
-    })
+    return {
+        ...renderHook(callback, {
+            wrapper: ({children}) => (
+                <Provider store={store}>
+                    <TestQueryClientProvider>
+                        {children}
+                    </TestQueryClientProvider>
+                </Provider>
+            ),
+        }),
+        store,
+    }
 }
