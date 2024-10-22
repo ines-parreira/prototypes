@@ -1,6 +1,9 @@
 import moment from 'moment/moment'
 import {StatsFilters} from 'models/stat/types'
-import {statsFiltersToReportingFilters} from 'utils/reporting'
+import {
+    formatReportingQueryDate,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -17,6 +20,7 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import {TicketMember} from '../../cubes/TicketCube'
 
 const getAccountBusinessHoursTimezone = () =>
     (
@@ -41,20 +45,47 @@ export const getAdvancedVoicePeriodFilters = (
     return extraPeriodFilters
 }
 
+export const getTicketPeriodFilters = (filters: StatsFilters) => {
+    const extraFilters = []
+    if (filters.tags) {
+        extraFilters.push(
+            {
+                member: TicketMember.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                ],
+            },
+            {
+                member: TicketMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [formatReportingQueryDate(filters.period.end_datetime)],
+            }
+        )
+    }
+    return extraFilters
+}
+
 export const voiceCallDefaultFilters = (
     filters: StatsFilters,
     isAdvancedMetric = false
 ) => {
     if (isAdvancedMetric) {
         const extraPeriodFilters = getAdvancedVoicePeriodFilters(filters.period)
+        const correctFilters = {...filters, period: extraPeriodFilters}
         return [
-            ...statsFiltersToReportingFilters(VoiceCallFiltersMembers, {
-                ...filters,
-                ...{period: extraPeriodFilters},
-            }),
+            ...statsFiltersToReportingFilters(
+                VoiceCallFiltersMembers,
+                correctFilters
+            ),
+            ...getTicketPeriodFilters(correctFilters),
         ]
     }
-    return [...statsFiltersToReportingFilters(VoiceCallFiltersMembers, filters)]
+
+    return [
+        ...statsFiltersToReportingFilters(VoiceCallFiltersMembers, filters),
+        ...getTicketPeriodFilters(filters),
+    ]
 }
 
 const voiceCallListDimensions = [
@@ -102,11 +133,13 @@ export const liveDashboardConnectedCallsListQueryFactory = (
     filters: StatsFilters
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
 
     return connectedCallsListQueryFactory(
         {
             ...filters,
-            period: getLiveVoicePeriodFilter(timezone),
+            period,
+            ...getTicketPeriodFilters({...filters, period}),
         },
         timezone
     )
@@ -129,11 +162,13 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
     segment?: VoiceCallSegment
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
 
     return waitingTimeCallsListQueryFactory(
         {
             ...filters,
-            period: getLiveVoicePeriodFilter(timezone),
+            period,
+            ...getTicketPeriodFilters({...filters, period}),
         },
         timezone,
         segment
@@ -198,11 +233,13 @@ export const liveDashBoardVoiceCallListQueryFactory = (
     segment?: VoiceCallSegment
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
 
     return voiceCallListQueryFactory(
         {
             ...filters,
-            period: getLiveVoicePeriodFilter(timezone),
+            period,
+            ...getTicketPeriodFilters({...filters, period}),
         },
         timezone,
         segment

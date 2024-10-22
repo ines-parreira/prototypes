@@ -9,6 +9,7 @@ import {
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
@@ -221,6 +222,59 @@ describe('voice queries factories', () => {
                     ],
                 },
             ])
+        }
+    )
+
+    it.each([
+        voiceCallCountQueryFactory,
+        voiceCallAverageTalkTimeQueryFactory,
+        voiceCallAverageWaitTimeQueryFactory,
+        voiceCallCountPerFilteringAgentQueryFactory,
+        voiceCallCountPerAgentQueryFactory,
+        voiceCallListQueryFactory,
+        voiceCallAverageTalkTimePerAgentQueryFactory,
+        connectedCallsListQueryFactory,
+        waitingTimeCallsListQueryFactory,
+    ])(
+        'should append ticket period filters when requesting tags',
+        (factory) => {
+            const statsFilters: StatsFilters = {
+                period: {
+                    end_datetime: periodEnd,
+                    start_datetime: periodStart,
+                },
+                tags: [1, 2],
+            }
+            const query = factory(statsFilters, 'UTC')
+            expect(query.filters).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ])
+            )
         }
     )
 

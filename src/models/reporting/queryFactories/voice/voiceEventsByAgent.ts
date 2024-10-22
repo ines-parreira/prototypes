@@ -6,12 +6,16 @@ import {
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
 import {statsFiltersToReportingFilters} from 'utils/reporting'
+import {getTicketPeriodFilters} from './voiceCall'
 
 export const voiceEventsByAgentDefaultFilters = (filters: StatsFilters) => {
-    return statsFiltersToReportingFilters(
-        VoiceEventsByAgentFiltersMembers,
-        filters
-    )
+    return [
+        ...statsFiltersToReportingFilters(
+            VoiceEventsByAgentFiltersMembers,
+            filters
+        ),
+        ...getTicketPeriodFilters(filters),
+    ]
 }
 
 export const declinedVoiceCallsCountPerAgentQueryFactory = (

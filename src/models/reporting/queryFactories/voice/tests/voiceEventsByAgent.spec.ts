@@ -8,6 +8,7 @@ import {
     VoiceEventsByAgentSegment,
     VoiceEventsByAgentDimension,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,
@@ -72,4 +73,50 @@ describe('voice events by agent factories', () => {
             segments: [VoiceEventsByAgentSegment.declinedCalls],
         })
     })
+
+    it.each([
+        declinedVoiceCallsCountPerAgentQueryFactory,
+        declinedVoiceCallsCountQueryFactory,
+    ])(
+        'should append ticket period filters when requesting tags',
+        (factory) => {
+            const statsFilters: StatsFilters = {
+                period: {
+                    end_datetime: periodEnd,
+                    start_datetime: periodStart,
+                },
+                tags: [1, 2],
+            }
+            const query = factory(statsFilters, 'UTC')
+            expect(query.filters).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: VoiceEventsByAgentMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceEventsByAgentMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.Tags,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                    {
+                        member: TicketMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ])
+            )
+        }
+    )
 })
