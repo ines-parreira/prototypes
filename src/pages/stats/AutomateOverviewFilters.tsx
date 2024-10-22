@@ -1,12 +1,9 @@
 import React, {useEffect} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
@@ -23,8 +20,8 @@ export const AutomateOverviewFilters = ({
 }: {
     isAnalyticsNewFiltersAutomate?: boolean
 }) => {
-    const isAutomateOverviewChannelsFilter: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
+    // const isAutomateOverviewChannelsFilter: boolean | undefined =
+    //     useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
 
     const dispatch = useAppDispatch()
     const statsFilters = useAppSelector(getStatsFilters)
@@ -39,13 +36,14 @@ export const AutomateOverviewFilters = ({
 
     return isAnalyticsNewFiltersAutomate ? null : (
         <>
-            {isAutomateOverviewChannelsFilter && (
-                <ChannelsStatsFilter
-                    value={statsFilters.channels}
-                    channelsFilter={AUTOMATE_ENABLED_CHANNELS}
-                    variant="ghost"
-                />
-            )}
+            {/* Disable channel filter until fix channels for AI Agent events */}
+            {/* {isAutomateOverviewChannelsFilter && ( */}
+            {/*     <ChannelsStatsFilter */}
+            {/*         value={statsFilters.channels} */}
+            {/*         channelsFilter={AUTOMATE_ENABLED_CHANNELS} */}
+            {/*         variant="ghost" */}
+            {/*     /> */}
+            {/* )} */}
             <PeriodStatsFilter
                 initialSettings={{
                     maxSpan: 365,
