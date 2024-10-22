@@ -40,7 +40,7 @@ export default function NewPhoneNumber({customerId}: Props) {
         data: customerDetails,
         isLoading: isCustomerDetailsLoading,
         refetch: refetchCustomerDetails,
-    } = useGetCustomer(customerId, {
+    } = useGetCustomer(customerId, undefined, {
         query: {
             refetchOnWindowFocus: false,
         },
