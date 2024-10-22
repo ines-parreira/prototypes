@@ -13,6 +13,8 @@ import {
 } from 'custom-fields/helpers/typeGuards'
 import {useUpdateOrDeleteCustomerFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
 import {CustomField, CustomFieldValue} from 'custom-fields/types'
+
+import {MIN_CHARACTERS_TO_TOOLTIP} from './contstants'
 import css from './CustomerField.less'
 
 export default function CustomerField({
@@ -27,17 +29,15 @@ export default function CustomerField({
     const [previousQueryValue, setPreviousQueryValue] = useState<
         CustomFieldValue | undefined
     >(queryValue)
-
     const [currentValue, setCurrentValue] = useState<
         CustomFieldValue | undefined
     >(queryValue)
-
     const [isActive, setActive] = useState(false)
-
     const {mutate: rootMutate} = useUpdateOrDeleteCustomerFieldValue(
         {},
         {isDisabled: !customerId}
     )
+    const isDropdownInputField = isDropdownInput(field)
 
     const mutate = (value: CustomFieldValue | undefined) => {
         return rootMutate([
@@ -51,7 +51,7 @@ export default function CustomerField({
     }
 
     const handleChange = (newValue: CustomFieldValue | undefined) => {
-        if (isDropdownInput(field)) {
+        if (isDropdownInputField) {
             setCurrentValue(newValue)
             return mutate(newValue)
         }
@@ -67,7 +67,7 @@ export default function CustomerField({
 
     const handleBlur = () => {
         setActive(false)
-        if (!isDropdownInput(field)) {
+        if (!isDropdownInputField) {
             let newValue = currentValue
             if (isTextInput(field)) {
                 newValue = newValue?.toString().trim() || undefined
@@ -86,11 +86,22 @@ export default function CustomerField({
     }
 
     const inputId = `customer-${customerId}-custom-field-value-input-${field.id}`
+    const shouldShowTooltip =
+        (isDropdownInputField ? true : !isActive) &&
+        typeof currentValue === 'string' &&
+        currentValue.length >= MIN_CHARACTERS_TO_TOOLTIP
 
     return (
         <Label label={field.label} className={css.customerFieldWrapper}>
-            {!!currentValue && !isActive && (
-                <Tooltip placement="top" target={inputId} autohide={false}>
+            {shouldShowTooltip && (
+                <Tooltip
+                    placement="left"
+                    target={inputId}
+                    autohide={false}
+                    innerProps={{
+                        boundariesElement: document.body,
+                    }}
+                >
                     {getLabel(currentValue)}
                 </Tooltip>
             )}

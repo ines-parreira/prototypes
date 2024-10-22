@@ -1,0 +1,1 @@
+export const MIN_CHARACTERS_TO_TOOLTIP = 9
