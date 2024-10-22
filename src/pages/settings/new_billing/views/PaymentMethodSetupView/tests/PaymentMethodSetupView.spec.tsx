@@ -83,30 +83,12 @@ describe('PaymentMethodSetupView', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should render Loader when clientSecret is not available', () => {
-        assumeMock(useSetupIntent).mockReturnValue({
-            isLoading: false,
-            clientSecret: undefined,
-        } as any)
-
-        assumeMock(useHasCreditCard).mockReturnValue({isSuccess: true} as any)
-
-        render(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />
-        )
-
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
-    })
-
-    it('should render Loader when hasCreditCard is not successful', () => {
+    it('should render Loader when hasCreditCard is loading', () => {
         assumeMock(useSetupIntent).mockReturnValue({
             isLoading: false,
             clientSecret: 'mockClientSecret',
         } as any)
-        assumeMock(useHasCreditCard).mockReturnValue({isSuccess: false} as any)
+        assumeMock(useHasCreditCard).mockReturnValue({isLoading: true} as any)
 
         render(
             <PaymentMethodSetupView

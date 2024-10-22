@@ -7,7 +7,7 @@ export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({
     ...props
 }) => {
     const {data: {data: {shipping: billingContactShipping}} = {data: {}}} =
-        useBillingContact()
+        useBillingContact({staleTime: Infinity})
 
     return (
         <AddressElement

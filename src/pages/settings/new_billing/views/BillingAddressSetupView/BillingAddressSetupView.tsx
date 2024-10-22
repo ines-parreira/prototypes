@@ -10,7 +10,7 @@ import BackLink from 'pages/settings/new_billing/components/BackLink'
 import css from './BillingAddressSetupView.less'
 
 export const BillingAddressSetupView: React.FC = () => {
-    const billingContact = useBillingContact()
+    const billingContact = useBillingContact({refetchOnWindowFocus: false})
 
     if (billingContact.isLoading) {
         return <Loader />

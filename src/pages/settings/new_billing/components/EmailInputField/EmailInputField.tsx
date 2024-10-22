@@ -5,7 +5,7 @@ import {useBillingContact} from 'models/billing/queries'
 
 export const EmailInputField: React.FC = () => {
     const {data: {data: {email: billingContactEmail}} = {data: {}}} =
-        useBillingContact()
+        useBillingContact({staleTime: Infinity})
 
     const [email, setEmail] = useState<string>(billingContactEmail ?? '')
 

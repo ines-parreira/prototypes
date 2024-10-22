@@ -24,22 +24,20 @@ export const PaymentMethodSetupView: React.FC<IPaymentMethodSetupViewProps> = ({
     contactBilling,
     dispatchBillingError,
 }) => {
-    const hasCreditCard = useHasCreditCard()
-    const billingContact = useBillingContact()
-
-    const {clientSecret, isLoading} = useSetupIntent()
+    const hasCreditCard = useHasCreditCard({refetchOnWindowFocus: false})
+    const billingContact = useBillingContact({refetchOnWindowFocus: false})
+    const setupIntent = useSetupIntent()
 
     if (
-        isLoading ||
-        !clientSecret ||
-        !hasCreditCard.isSuccess ||
+        setupIntent.isLoading ||
+        hasCreditCard.isLoading ||
         billingContact.isLoading
     ) {
         return <Loader />
     }
 
     return (
-        <StripeElementsProvider clientSecret={clientSecret}>
+        <StripeElementsProvider clientSecret={setupIntent.clientSecret}>
             <div className={css.container}>
                 <BackLink />
                 <Form

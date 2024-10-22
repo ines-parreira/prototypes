@@ -17,7 +17,9 @@ export const useConfirmStripeSetupIntent = (
     const stripe = useStripe()
     const elements = useElements()
 
-    const {data: {data: billingContact} = {}} = useBillingContact()
+    const {data: {data: billingContact} = {}} = useBillingContact({
+        staleTime: Infinity,
+    })
 
     const defaultBillingDetails = {
         ...billingContact?.shipping,
