@@ -23,8 +23,10 @@ export const useStripeAddressElement = () => {
 
             /* we're handling this validation as a "global" validation/error
             // because we cannot show the error in the Stripe address field,
-            // so this will be shown below the submit button instead */
-            setError(postalCodeError)
+            // so this will be shown below the submit button instead.
+            // We only show the "global" zip code error if/when the address
+            // element form was succesfuly completed */
+            setError(event.complete ? postalCodeError : undefined)
 
             setIsComplete(!postalCodeError && event.complete)
         })
