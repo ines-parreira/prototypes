@@ -18,7 +18,11 @@ import {
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getFilterDateRange} from 'utils/reporting'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
+    getFilterDateRange,
+} from 'utils/reporting'
 
 describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
     const periodStart = moment()
@@ -40,6 +44,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [TicketSLAMeasure.TicketCount],
                 filters: [
                     {
@@ -118,6 +123,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [TicketSLAMeasure.TicketCount],
                 filters: [
                     {

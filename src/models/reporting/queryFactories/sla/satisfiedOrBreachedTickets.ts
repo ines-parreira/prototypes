@@ -16,6 +16,7 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
@@ -100,6 +101,7 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
             values: [TicketSLAStatus.Satisfied, TicketSLAStatus.Breached],
         },
     ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[TicketDimension.CreatedDatetime, sorting]],
@@ -137,6 +139,7 @@ export const breachedTicketsDrillDownQueryFactory = (
             values: [TicketSLAStatus.Breached],
         },
     ],
+    limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
               order: [[TicketDimension.CreatedDatetime, sorting]],
