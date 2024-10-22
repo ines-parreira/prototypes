@@ -366,9 +366,7 @@ export class Navbar extends Component<Props, State> {
             savedTheme,
         } = this.props
         const {isResizing, navbarWidth} = this.state
-        const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
-            currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
-        )
+        const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
 
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
 
@@ -670,43 +668,39 @@ export class Navbar extends Component<Props, State> {
                                             Learn
                                         </DropdownItemLabel>
                                     </div>
-                                    {isBasicOrPro &&
-                                        !isTrialing &&
-                                        hasOfficeHours && (
-                                            <a
-                                                className={classnames(
-                                                    css[
-                                                        'dropdown-item-user-menu'
-                                                    ]
-                                                )}
-                                                onClick={() => {
-                                                    logEvent(
-                                                        SegmentEvent.MenuUserLinkClicked,
-                                                        {
-                                                            link: 'office-hours',
-                                                        }
-                                                    )
-                                                    window.open(
-                                                        'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu',
-                                                        '_blank',
-                                                        'noopener'
-                                                    )
-                                                    this._toggleBottomDropdown()
-                                                }}
-                                            >
-                                                <span title="Book a meeting with a Customer Success Manager at Gorgias.">
-                                                    <i
-                                                        className={classnames(
-                                                            'material-icons mr-2',
-                                                            css.icon
-                                                        )}
-                                                    >
-                                                        event
-                                                    </i>
-                                                    Book office hours
-                                                </span>
-                                            </a>
-                                        )}
+                                    {isPro && !isTrialing && hasOfficeHours && (
+                                        <a
+                                            className={classnames(
+                                                css['dropdown-item-user-menu']
+                                            )}
+                                            onClick={() => {
+                                                logEvent(
+                                                    SegmentEvent.MenuUserLinkClicked,
+                                                    {
+                                                        link: 'office-hours',
+                                                    }
+                                                )
+                                                window.open(
+                                                    'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu',
+                                                    '_blank',
+                                                    'noopener'
+                                                )
+                                                this._toggleBottomDropdown()
+                                            }}
+                                        >
+                                            <span title="Book a meeting with a Customer Success Manager at Gorgias.">
+                                                <i
+                                                    className={classnames(
+                                                        'material-icons mr-2',
+                                                        css.icon
+                                                    )}
+                                                >
+                                                    event
+                                                </i>
+                                                Book office hours
+                                            </span>
+                                        </a>
+                                    )}
                                     <NavLink
                                         to="/app/referral-program"
                                         onClick={() => {
