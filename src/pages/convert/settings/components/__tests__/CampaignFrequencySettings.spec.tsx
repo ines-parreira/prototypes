@@ -39,10 +39,10 @@ describe('<CampaignFrequencySetting />', () => {
 
         await waitFor(() => {
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
-                max_campaign_in_session: {value: 3},
+                max_campaign_in_session: {value: 8},
             })
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
-                min_time_between_campaigns: {value: 30, unit: 'seconds'},
+                min_time_between_campaigns: {unit: 'seconds', value: 30},
             })
         })
     })
@@ -80,6 +80,7 @@ describe('<CampaignFrequencySetting />', () => {
 
         await waitFor(() => {
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
+                max_campaign_in_session: null,
                 min_time_between_campaigns: {value: 10, unit: 'seconds'},
             })
         })

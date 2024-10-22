@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {produce} from 'immer'
 
@@ -16,35 +16,58 @@ import css from './CampaignFrequencySetting.less'
 type Props = {
     campaignFrequencySettings?: CampaignFrequencySettings | null
     onSettingsChange: (value: CampaignFrequencySettings) => void
+    onValidationChange?: (isValid: boolean) => void
+}
+
+export const defaultValidationValues = {
+    maximumCampaignsDisplayed: {
+        defaultValue: 8,
+        minValue: 3,
+        maxValue: 30,
+    },
+    timeBetweenCampaigns: {
+        defaultValue: 30,
+        minValue: 5,
+        maxValue: 3 * 60,
+    },
 }
 
 export const CampaignFrequencySetting: React.FC<Props> = ({
     campaignFrequencySettings,
     onSettingsChange,
+    onValidationChange,
 }) => {
+    const [, setValidationState] = useState({})
+    const onFrequentValidationChange = useCallback(
+        (field: string) => (isValid: boolean) => {
+            setValidationState((prevState) => {
+                const newValidationState = {
+                    ...prevState,
+                    [field]: isValid,
+                }
+
+                onValidationChange?.(
+                    Object.values(newValidationState).every(Boolean)
+                )
+
+                return newValidationState
+            })
+        },
+        [onValidationChange]
+    )
     const onMaximumSettingChange = (
         value: MaxCampaignDisplaysInSession | null
     ) => {
         onSettingsChange(
             produce(campaignFrequencySettings ?? {}, (draft) => {
-                if (value === null) {
-                    delete draft.max_campaign_in_session
-                } else {
-                    draft.max_campaign_in_session = value
-                }
+                draft.max_campaign_in_session = value
             })
         )
     }
     const onTimeBetweenChange = (value: MinimumTimeBetweenCampaigns | null) => {
         onSettingsChange(
             produce(campaignFrequencySettings ?? {}, (draft) => {
-                if (value === null) {
-                    delete draft.min_time_between_campaigns
-                } else {
-                    draft.min_time_between_campaigns = value
-                }
-
-                return draft
+                draft.min_time_between_campaigns = value
             })
         )
     }
@@ -66,6 +89,10 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     onChange={onMaximumSettingChange}
                     label="Maximum campaigns in 24 hours"
                     description="Set the number of campaigns displayed on your store within 24 hours."
+                    onValidationChange={onFrequentValidationChange(
+                        'max_campaign_in_session'
+                    )}
+                    {...defaultValidationValues.maximumCampaignsDisplayed}
                 />
             </div>
 
@@ -77,6 +104,10 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     onChange={onTimeBetweenChange}
                     label="Minimum time between campaigns"
                     description="Set the time interval between two campaigns displayed on your store."
+                    onValidationChange={onFrequentValidationChange(
+                        'time_between_campaigns'
+                    )}
+                    {...defaultValidationValues.timeBetweenCampaigns}
                 />
             </div>
         </div>

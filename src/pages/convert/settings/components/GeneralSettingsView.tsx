@@ -6,7 +6,10 @@ import {SettingRequest} from 'models/convert/settings/types'
 import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-import {CampaignFrequencySetting} from 'pages/convert/settings/components/CampaignFrequencySetting'
+import {
+    CampaignFrequencySetting,
+    defaultValidationValues,
+} from 'pages/convert/settings/components/CampaignFrequencySetting'
 import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
 import {toJS} from 'utils'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
@@ -24,6 +27,8 @@ import settingsCss from 'pages/settings/settings.less'
 import css from './GeneralSettingsView.less'
 
 export const GeneralSettingsView = () => {
+    // We can set `true` as by default we set default values in the state
+    const [isValid, setIsValid] = useState(true)
     const [disclaimerSettings, setDisclaimerSettings] =
         useState<DisclaimerSettings>({
             disclaimerEnabled: false,
@@ -32,7 +37,13 @@ export const GeneralSettingsView = () => {
             preSelectDisclaimer: false,
         })
     const [campaignFrequencySetting, setCampaignFrequencySettings] =
-        useState<CampaignFrequencySettings>({})
+        useState<CampaignFrequencySettings>({
+            min_time_between_campaigns: {
+                value: defaultValidationValues.timeBetweenCampaigns
+                    .defaultValue,
+                unit: 'seconds',
+            },
+        })
 
     const {mutateAsync: updateSetting, isLoading: isSubmitLoading} =
         useUpdateSetting()
@@ -40,7 +51,7 @@ export const GeneralSettingsView = () => {
     const {channelConnection} = useGetOrCreateChannelConnection(
         toJS(integration)
     )
-    const [disclaimerOnError, setDisclaimerOnError] = useState(false)
+
     const dispatch = useAppDispatch()
 
     const {
@@ -126,6 +137,13 @@ export const GeneralSettingsView = () => {
         updateSetting,
     ])
 
+    const onValidationChange = useCallback(
+        (isValid: boolean) => {
+            setIsValid(isValid)
+        },
+        [setIsValid]
+    )
+
     return (
         <div
             className={cn(
@@ -142,12 +160,13 @@ export const GeneralSettingsView = () => {
                         <CampaignFrequencySetting
                             campaignFrequencySettings={campaignFrequencySetting}
                             onSettingsChange={setCampaignFrequencySettings}
+                            onValidationChange={onValidationChange}
                         />
                     )}
                     <TermsAndConditionsSetting
                         disclaimerSettings={disclaimerSettings}
                         onDisclaimerSettingsChange={setDisclaimerSettings}
-                        onErrorChange={setDisclaimerOnError}
+                        onErrorChange={setIsValid}
                         chatIntegration={integration}
                     />
                 </>
@@ -157,7 +176,7 @@ export const GeneralSettingsView = () => {
                     isLoading={isSubmitLoading}
                     intent="primary"
                     onClick={handleSubmit}
-                    isDisabled={disclaimerOnError}
+                    isDisabled={!isValid}
                 >
                     Save Changes
                 </Button>

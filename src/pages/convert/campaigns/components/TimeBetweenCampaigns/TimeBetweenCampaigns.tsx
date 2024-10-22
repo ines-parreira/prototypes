@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import moment from 'moment'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -11,15 +12,21 @@ import {
     DEFAULT_TIME_UNIT,
     DEFAULT_DESCRIPTION,
     DEFAULT_LABEL,
+    MINUTES_UNITS,
+    SECONDS_UNITS,
 } from './constants'
 
 import css from './TimeBetweenCampaigns.less'
 
 type Props = {
     config?: MinimumTimeBetweenCampaigns | null
-    onChange: (value: MinimumTimeBetweenCampaigns | null) => void
     label?: string
     description?: string
+    defaultValue?: number
+    minValue: number
+    maxValue: number // The maximum value should be defined as seconds
+    onChange: (value: MinimumTimeBetweenCampaigns | null) => void
+    onValidationChange?: (isValid: boolean) => void
 }
 
 export const TimeBetweenCampaigns: React.FC<Props> = ({
@@ -27,29 +34,119 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
     onChange,
     label,
     description,
+    defaultValue = DEFAULT_TIME,
+    minValue,
+    maxValue,
+    onValidationChange,
 }): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
-    const [internalValue, setInternalValue] = useState<number>(
-        config?.value ?? DEFAULT_TIME
+    const [internalValue, setInternalValue] = useState<number | undefined>(
+        config?.value ?? defaultValue
     )
     const [internalUnitValue, setInternalUnitValue] = useState(
         config?.unit ?? DEFAULT_TIME_UNIT
     )
 
+    const [min, setMin] = useState(minValue)
+    const [max, setMax] = useState(maxValue)
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
     const handleClickToggle = (nextValue: boolean) => {
         setEnabled(nextValue)
-
         updateCampaignState(nextValue, internalValue, internalUnitValue)
     }
 
-    const handleChangeValue = (value: number | undefined) => {
-        setInternalValue(value as number)
-        updateCampaignState(isEnabled, value as number, internalUnitValue)
+    const handleChangeValue = (value?: number) => {
+        setInternalValue(value)
+
+        const isValid = validateAndSetErrorMessage(
+            value,
+            min,
+            max,
+            internalUnitValue
+        )
+
+        onValidationChange?.(isValid)
+
+        if (!isValid) {
+            return
+        }
+
+        updateCampaignState(isEnabled, value, internalUnitValue)
     }
 
-    const handleChangeUnitValue = (value: any) => {
-        setInternalUnitValue(value)
-        updateCampaignState(isEnabled, internalValue, value)
+    const convertValue = (value: number, unit: string): number => {
+        const isMinutes = unit === MINUTES_UNITS
+
+        return isMinutes
+            ? Math.max(1, moment.duration(value, SECONDS_UNITS).asMinutes())
+            : moment.duration(value, MINUTES_UNITS).asSeconds()
+    }
+
+    const setNewMinMaxValue = (newUnitValue: any) => {
+        const isMinutes = newUnitValue === MINUTES_UNITS
+
+        const newMin = isMinutes
+            ? Math.max(1, moment.duration(minValue, SECONDS_UNITS).asMinutes())
+            : minValue
+
+        const newMax = isMinutes
+            ? moment.duration(maxValue, SECONDS_UNITS).asMinutes()
+            : maxValue
+
+        setMin(newMin)
+        setMax(newMax)
+
+        return [newMin, newMax]
+    }
+
+    const handleChangeUnitValue = (newUnitValue: any) => {
+        // internalValue can be undefined, so we need to handle this case to avoid potential errors.
+        // This involves checking if internalValue is undefined and providing a default value or handling it appropriately.
+        const newInternalValue = convertValue(internalValue ?? 0, newUnitValue)
+        const [newMin, newMax] = setNewMinMaxValue(newUnitValue)
+        setInternalValue(newInternalValue)
+        setInternalUnitValue(newUnitValue)
+
+        // Validate on unit change
+        const isValid = validateAndSetErrorMessage(
+            newInternalValue,
+            newMin,
+            newMax,
+            newUnitValue
+        )
+
+        onValidationChange?.(isValid)
+
+        if (!isValid) {
+            return
+        }
+
+        updateCampaignState(isEnabled, newInternalValue, newUnitValue)
+    }
+
+    // Validate the value and set the error message if necessary
+    const validateAndSetErrorMessage = (
+        value: number | undefined,
+        minValue: number,
+        maxValue: number,
+        unit: string
+    ): boolean => {
+        if (value === undefined) {
+            return false
+        }
+
+        if (value < minValue || value > maxValue) {
+            setErrorMessage(
+                `Value should be between ${min} and ${max} ${
+                    unit === MINUTES_UNITS ? 'minutes' : 'seconds'
+                }`
+            )
+            return false
+        }
+
+        setErrorMessage(null)
+        return true
     }
 
     const updateCampaignState = (
@@ -69,9 +166,14 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
 
     useEffect(() => {
         setEnabled(!!config?.value)
-        setInternalValue(config?.value ?? DEFAULT_TIME)
+        setInternalValue(config?.value ?? defaultValue)
         setInternalUnitValue(config?.unit ?? DEFAULT_TIME_UNIT)
-    }, [config])
+
+        // Update min and max values when the component is mounted
+        setNewMinMaxValue(config?.unit ?? DEFAULT_TIME_UNIT)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [config, defaultValue])
 
     return (
         <>
@@ -95,18 +197,28 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                         </span>
 
                         {isEnabled && (
-                            <div className={css.settings}>
-                                <NumberInput
-                                    className={css.numberInput}
-                                    value={internalValue}
-                                    onChange={handleChangeValue}
-                                />
-                                <SelectField
-                                    value={internalUnitValue}
-                                    onChange={handleChangeUnitValue}
-                                    options={SELECT_OPTIONS}
-                                />
-                            </div>
+                            <>
+                                <div className={css.settings}>
+                                    <NumberInput
+                                        className={css.numberInput}
+                                        value={internalValue}
+                                        onChange={handleChangeValue}
+                                        onFocus={() => setErrorMessage(null)}
+                                        min={min}
+                                        max={max}
+                                    />
+                                    <SelectField
+                                        value={internalUnitValue}
+                                        onChange={handleChangeUnitValue}
+                                        options={SELECT_OPTIONS}
+                                    />
+                                </div>
+                                {errorMessage && (
+                                    <div className={css.error}>
+                                        {errorMessage}
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

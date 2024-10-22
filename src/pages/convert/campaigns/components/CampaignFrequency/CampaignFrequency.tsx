@@ -22,6 +22,20 @@ type Props = {
     onChangeTimeBetweenCampaigns: (
         value: MinimumTimeBetweenCampaigns | null
     ) => void
+    onValidationChange?: (isValid: boolean) => void
+}
+
+const defaultValidationValues = {
+    maximumCampaignsDisplayed: {
+        defaultValue: 8,
+        minValue: 1,
+        maxValue: 15,
+    },
+    timeBetweenCampaigns: {
+        defaultValue: 30,
+        minValue: 5, // 5 seconds
+        maxValue: 60 * 60, // 3600 seconds / 60 minutes
+    },
 }
 
 const CampaignFrequency: React.FC<Props> = ({
@@ -30,6 +44,7 @@ const CampaignFrequency: React.FC<Props> = ({
     onChangeMaximumCampaignDisplayed,
     timeBetweenCampaigns,
     onChangeTimeBetweenCampaigns,
+    onValidationChange,
 }) => {
     return (
         <>
@@ -55,10 +70,14 @@ const CampaignFrequency: React.FC<Props> = ({
                 <MaximumCampaignDisplayed
                     config={maximumCampaignsDisplayed}
                     onChange={onChangeMaximumCampaignDisplayed}
+                    onValidationChange={onValidationChange}
+                    {...defaultValidationValues.maximumCampaignsDisplayed}
                 />
                 <TimeBetweenCampaigns
                     config={timeBetweenCampaigns}
                     onChange={onChangeTimeBetweenCampaigns}
+                    onValidationChange={onValidationChange}
+                    {...defaultValidationValues.timeBetweenCampaigns}
                 />
             </div>
         </>

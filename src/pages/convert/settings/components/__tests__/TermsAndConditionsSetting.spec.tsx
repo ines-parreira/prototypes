@@ -55,6 +55,6 @@ describe('<TermsAndConditionsSetting />', () => {
                 'The disclaimer should be under or equals to 280 characters.'
             )
         ).toBeInTheDocument()
-        expect(mockOnError).toHaveBeenCalledWith(true)
+        expect(mockOnError).toHaveBeenCalledWith(false)
     })
 })

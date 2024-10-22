@@ -252,6 +252,7 @@ export const CampaignAudienceStep = ({
                                 onChangeMaximumCampaignDisplayed={
                                     handleUpdateMaxDisplaysInSession
                                 }
+                                onValidationChange={onValidationChange}
                             />
                         </AccordionBody>
                     </AccordionItem>

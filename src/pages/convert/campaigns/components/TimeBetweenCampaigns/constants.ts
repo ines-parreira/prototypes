@@ -1,14 +1,17 @@
 export const DEFAULT_TIME = 30
 export const DEFAULT_TIME_UNIT = 'seconds'
 
+export const SECONDS_UNITS = 'seconds'
+export const MINUTES_UNITS = 'minutes'
+
 export const SELECT_OPTIONS = [
     {
         label: 'Seconds',
-        value: 'seconds',
+        value: SECONDS_UNITS,
     },
     {
         label: 'Minutes',
-        value: 'minutes',
+        value: MINUTES_UNITS,
     },
 ]
 

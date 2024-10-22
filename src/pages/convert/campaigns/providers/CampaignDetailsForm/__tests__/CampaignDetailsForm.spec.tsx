@@ -501,7 +501,7 @@ describe('<CampaignDetailsForm />', () => {
                 expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
                     expect.objectContaining({
                         meta: expect.objectContaining({
-                            maxCampaignDisplaysInSession: {value: 3},
+                            maxCampaignDisplaysInSession: {value: 8},
                             minimumTimeBetweenCampaigns: {
                                 value: 30,
                                 unit: 'seconds',

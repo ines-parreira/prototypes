@@ -109,7 +109,7 @@ export const TermsAndConditionsSetting = ({
     }
 
     useEffect(() => {
-        onErrorChange(onError)
+        onErrorChange(!onError)
     }, [onError, onErrorChange])
 
     const languageOptions = mapIntegrationLanguagesToLanguagePicker(
