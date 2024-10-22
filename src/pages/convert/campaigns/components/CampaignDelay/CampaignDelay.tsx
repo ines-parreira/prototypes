@@ -21,7 +21,7 @@ export const CampaignDelay = ({delay, onChangeDelay}: Props): JSX.Element => {
         <>
             <div className={css.title}>
                 <h5>Delay after the conditions are fulfilled</h5>
-                <IconTooltip icon="help_outline" className={css.helpIcon}>
+                <IconTooltip icon="info" className={css.helpIcon}>
                     Delay displaying the message after all triggers are valid
                 </IconTooltip>
             </div>

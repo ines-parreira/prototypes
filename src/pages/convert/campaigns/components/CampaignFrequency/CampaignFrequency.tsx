@@ -51,7 +51,7 @@ const CampaignFrequency: React.FC<Props> = ({
             <div className={css.title}>
                 <h5>Frequency settings</h5>
                 <span id="frequency-tooltip" className={css.helpIcon}>
-                    <i className="material-icons">help_outline</i>
+                    <i className="material-icons-outlined">info</i>
                 </span>
                 <Tooltip
                     target="frequency-tooltip"

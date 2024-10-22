@@ -89,6 +89,7 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     onChange={onMaximumSettingChange}
                     label="Maximum campaigns in 24 hours"
                     description="Set the number of campaigns displayed on your store within 24 hours."
+                    tooltip="To ensure a smooth shopping experience and avoid overwhelming customers, limit the number of active campaigns displayed within 24 hours."
                     onValidationChange={onFrequentValidationChange(
                         'max_campaign_in_session'
                     )}
@@ -104,6 +105,7 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     onChange={onTimeBetweenChange}
                     label="Minimum time between campaigns"
                     description="Set the time interval between two campaigns displayed on your store."
+                    tooltip="To ensure a smooth shopping experience and avoid overwhelming customers, set the time interval between two campaigns displayed on your store."
                     onValidationChange={onFrequentValidationChange(
                         'time_between_campaigns'
                     )}

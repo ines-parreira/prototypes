@@ -5,6 +5,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {MinimumTimeBetweenCampaigns} from 'pages/convert/campaigns/types/CampaignMeta'
 import {
     SELECT_OPTIONS,
@@ -27,6 +28,7 @@ type Props = {
     maxValue: number // The maximum value should be defined as seconds
     onChange: (value: MinimumTimeBetweenCampaigns | null) => void
     onValidationChange?: (isValid: boolean) => void
+    tooltip?: string
 }
 
 export const TimeBetweenCampaigns: React.FC<Props> = ({
@@ -38,6 +40,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
     minValue,
     maxValue,
     onValidationChange,
+    tooltip,
 }): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number | undefined>(
@@ -186,12 +189,25 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                         onClick={handleClickToggle}
                     />
                     <div>
-                        <label
-                            htmlFor="time-between-campaigns"
-                            className={css.label}
-                        >
-                            {label ?? DEFAULT_LABEL}
-                        </label>
+                        <div className={css.labelWrapper}>
+                            <label
+                                htmlFor="time-between-campaigns"
+                                className={css.label}
+                            >
+                                {label ?? DEFAULT_LABEL}
+                            </label>
+                            {tooltip && (
+                                <IconTooltip
+                                    icon="info"
+                                    className={css.helpIcon}
+                                    tooltipProps={{
+                                        placement: 'top-start',
+                                    }}
+                                >
+                                    {tooltip}
+                                </IconTooltip>
+                            )}
+                        </div>
                         <span className={css.labelDescription}>
                             {description ?? DEFAULT_DESCRIPTION}
                         </span>
@@ -211,6 +227,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                                         value={internalUnitValue}
                                         onChange={handleChangeUnitValue}
                                         options={SELECT_OPTIONS}
+                                        className={css.selectUnit}
                                     />
                                 </div>
                                 {errorMessage && (

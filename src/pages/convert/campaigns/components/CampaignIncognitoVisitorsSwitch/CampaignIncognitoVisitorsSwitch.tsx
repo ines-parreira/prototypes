@@ -142,7 +142,7 @@ const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
                     className={css.label}
                 >
                     Incognito visitors will also see the campaign
-                    <IconTooltip className={css.helpIcon} icon="help_outline">
+                    <IconTooltip className={css.helpIcon} icon="info">
                         When a visitor is not matched with an existing Shopify
                         customer profile (because they are not logged in or
                         because they don’t have a Shopify profile in this

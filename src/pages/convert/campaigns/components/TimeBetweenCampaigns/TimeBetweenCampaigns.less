@@ -12,6 +12,16 @@
         flex-direction: row;
     }
 
+    .labelWrapper {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .helpIcon {
+        font-size: 16px;
+    }
+
     .label {
         .body-semibold();
 
@@ -42,5 +52,9 @@
     .error {
         color: var(--feedback-error);
         margin-top: @layout-spacing-xxs;
+    }
+
+    .selectUnit {
+        width: 160px;
     }
 }

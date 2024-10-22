@@ -39,8 +39,22 @@
         margin-right: @layout-spacing-xs;
     }
 
-    .disableInput {
+    .suffix {
+        .body-regular();
         pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .labelWrapper {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .helpIcon {
+        font-size: 16px;
     }
 
     .error {

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import InputField from 'pages/common/forms/input/InputField'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {CampaignDisplaysInSession} from 'pages/convert/campaigns/types/CampaignMeta'
 import css from './MaximumCampaignDisplayed.less'
 
@@ -19,6 +19,7 @@ type Props = {
     minValue: number
     maxValue: number
     onValidationChange?: (isValid: boolean) => void
+    tooltip?: string
 }
 
 export const MaximumCampaignDisplayed = ({
@@ -30,6 +31,7 @@ export const MaximumCampaignDisplayed = ({
     minValue,
     maxValue,
     onValidationChange,
+    tooltip,
 }: Props): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number>(
@@ -104,12 +106,25 @@ export const MaximumCampaignDisplayed = ({
                         onClick={handleClickToggle}
                     />
                     <div>
-                        <label
-                            htmlFor="maximum-displayed-campaigns"
-                            className={css.label}
-                        >
-                            {label ?? DEFAULT_LABEL}
-                        </label>
+                        <div className={css.labelWrapper}>
+                            <label
+                                htmlFor="maximum-displayed-campaigns"
+                                className={css.label}
+                            >
+                                {label ?? DEFAULT_LABEL}
+                            </label>
+                            {tooltip && (
+                                <IconTooltip
+                                    icon="info"
+                                    className={css.helpIcon}
+                                    tooltipProps={{
+                                        placement: 'top-start',
+                                    }}
+                                >
+                                    {tooltip}
+                                </IconTooltip>
+                            )}
+                        </div>
                         <span className={css.labelDescription}>
                             {description ?? DEFAULT_DESCRIPTION}
                         </span>
@@ -120,13 +135,12 @@ export const MaximumCampaignDisplayed = ({
                                         className={css.numberInput}
                                         value={internalValue}
                                         onChange={handleChangeValue}
-                                        min={minValue}
-                                        max={maxValue}
+                                        min={3}
+                                        max={30}
                                     />
-                                    <InputField
-                                        value={'in 24 hours'}
-                                        className={css.disableInput}
-                                    />
+                                    <div className={css.suffix}>
+                                        in 24 hours
+                                    </div>
                                 </div>
                                 {errorMessage && (
                                     <div className={css.error}>
