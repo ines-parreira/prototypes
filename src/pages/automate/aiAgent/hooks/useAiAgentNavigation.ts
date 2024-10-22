@@ -1,15 +1,21 @@
 import {useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ACTIONS} from 'pages/automate/common/components/constants'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showAutomateActions = useShowAutomateActions()
+
+    const isAiAgentSnippetsFromExternalFilesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
 
     const routes = useMemo(
         () => ({
             automation: `/app/automation`,
             test: `/app/automation/shopify/${shopName}/ai-agent/test`,
             guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
+            knowledge: `/app/automation/shopify/${shopName}/ai-agent/knowledge`,
             newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
             configuration: (section?: 'knowledge' | 'email') =>
                 `/app/automation/shopify/${shopName}/ai-agent${
@@ -45,6 +51,15 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Configuration',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
+            ...(isAiAgentSnippetsFromExternalFilesEnabled
+                ? [
+                      {
+                          route: routes.knowledge,
+                          title: 'Knowledge',
+                          dataCanduId: 'ai-agent-navbar-knowledge',
+                      },
+                  ]
+                : []),
             {
                 route: routes.guidance,
                 title: 'Guidance',
@@ -65,7 +80,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Test',
             },
         ],
-        [routes, showAutomateActions]
+        [isAiAgentSnippetsFromExternalFilesEnabled, routes, showAutomateActions]
     )
 
     return {headerNavbarItems, routes}

@@ -151,6 +151,7 @@ import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWiz
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
+import {AiAgentKnowledgeContainer} from 'pages/automate/aiAgent/AiAgentKnowledgeContainer'
 import SettingsRoutes from 'routes/settings'
 import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
 import {OverviewView} from 'pages/convert/overview/OverviewView'
@@ -766,6 +767,9 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
 
+    const isAiAgentSnippetsFromExternalFilesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -872,6 +876,18 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                 path={`${path}/new`}
                                 exact
                                 component={AiAgentOnboardingWizard}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
+                    {isAiAgentSnippetsFromExternalFilesEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-knowledge"
+                            team={OBS_ADOPT_SENTRY_TEAM}
+                        >
+                            <Route
+                                path={`${path}/knowledge`}
+                                exact
+                                component={AiAgentKnowledgeContainer}
                             />
                         </AiAgentErrorBoundary>
                     )}

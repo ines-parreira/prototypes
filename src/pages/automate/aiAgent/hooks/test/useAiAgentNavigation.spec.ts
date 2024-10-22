@@ -1,11 +1,23 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
+import {assumeMock} from 'utils/testing'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useAiAgentNavigation} from '../useAiAgentNavigation'
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlag: jest.fn(),
+}))
+const useFlagsMock = assumeMock(useFlags)
 
 jest.mock('pages/automate/actions/hooks/useShowAutomateActions')
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: false,
+        })
     })
 
     it('should return headerNavbarItems with guidance and playground', () => {
@@ -58,5 +70,25 @@ describe('useAiAgentNavigation', () => {
                 title: 'Test',
             },
         ])
+    })
+
+    it('should add Knowledge to navbar if feature flag is on', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+        })
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+
+        expect(result.current.headerNavbarItems).toEqual(
+            expect.arrayContaining([
+                {
+                    dataCanduId: 'ai-agent-navbar-knowledge',
+                    route: '/app/automation/shopify/test/ai-agent/knowledge',
+                    title: 'Knowledge',
+                },
+            ])
+        )
     })
 })

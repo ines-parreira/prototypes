@@ -1,0 +1,34 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        max-width: 728px; // because 680 + 24 + 24 (paddings)
+    }
+
+    .sectionContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-l;
+    }
+
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xxs;
+
+        &.error {
+            color: var(--feedback-error);
+        }
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .buttons {
+        margin-top: 48px;
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+}

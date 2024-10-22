@@ -12,9 +12,12 @@ import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import LiveOverview from 'pages/stats/LiveOverview'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
+import {RootState} from 'state/types'
 
 import {logPageChange} from 'common/segment'
 import {user} from 'fixtures/users'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {useFlag} from 'common/flags'
 
@@ -81,6 +84,32 @@ jest.mock(
 jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
     <div>AutomateAiAgentStats</div>
 ))
+jest.mock(
+    'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider',
+    () => ({
+        AiAgentAccountConfigurationProvider: ({
+            children,
+        }: PropsWithChildren<any>) => (
+            <>
+                <div>AiAgentAccountConfigurationProvider</div>
+                <>{children}</>
+            </>
+        ),
+    })
+)
+jest.mock(
+    'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider',
+    () =>
+        ({children}: PropsWithChildren<any>) => (
+            <>
+                <div>AiAgentStoreConfigurationProvider</div>
+                <>{children}</>
+            </>
+        )
+)
+jest.mock('pages/automate/aiAgent/AiAgentKnowledgeContainer', () => ({
+    AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
+}))
 jest.mock(
     'pages/stats/DefaultStatsFilters',
     () =>
@@ -498,6 +527,39 @@ describe('<Routes/>', () => {
                     'The page you’re looking for couldn’t be found.'
                 )
             ).toBeVisible()
+        })
+    })
+
+    describe('AiAgentRoutes', () => {
+        const defaultState: Partial<RootState> = {
+            currentUser: fromJS(user),
+            currentAccount: fromJS(account),
+            billing: fromJS(billingState),
+            integrations: fromJS({
+                integrations: [],
+            }),
+        } as unknown as RootState
+
+        it('should render knowledge page', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/automation/shopify/test-shop/ai-agent/knowledge',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('AiAgentKnowledgeContainer')
+            ).toBeInTheDocument()
         })
     })
 })
