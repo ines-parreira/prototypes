@@ -1,8 +1,9 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {DropdownItem} from 'reactstrap'
-import {shallow} from 'enzyme'
 
-import RichDropdownOptions from '../RichDropdownOptions'
+import {render, screen} from '@testing-library/react'
+import {UncontrolledButtonDropdown} from 'reactstrap'
+import RichDropdownOptions from 'pages/common/components/RichDropdown/RichDropdownOptions'
 
 describe('<RichDropdownOptions/>', () => {
     const onClick = jest.fn()
@@ -12,45 +13,50 @@ describe('<RichDropdownOptions/>', () => {
     })
 
     it('should render a dropdown with options', () => {
-        const component = shallow(
-            <RichDropdownOptions
-                onClick={onClick}
-                options={[
-                    {
-                        key: 'foo',
-                        label: 'Foo',
-                    },
-                    {
-                        description: 'foobar',
-                        key: 'bar',
-                        label: 'Bar',
-                    },
-                ]}
-            />
+        const {container} = render(
+            <UncontrolledButtonDropdown>
+                <RichDropdownOptions
+                    onClick={onClick}
+                    options={[
+                        {
+                            key: 'foo',
+                            label: 'Foo',
+                        },
+                        {
+                            description: 'foobar',
+                            key: 'bar',
+                            label: 'Bar',
+                        },
+                    ]}
+                />
+            </UncontrolledButtonDropdown>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call onClick when option is clicked', () => {
-        const component = shallow(
-            <RichDropdownOptions
-                onClick={onClick}
-                options={[
-                    {
-                        key: 'foo',
-                        label: 'Foo',
-                    },
-                    {
-                        description: 'foobar',
-                        key: 'bar',
-                        label: 'Bar',
-                    },
-                ]}
-            />
+        render(
+            <UncontrolledButtonDropdown>
+                <RichDropdownOptions
+                    onClick={onClick}
+                    options={[
+                        {
+                            key: 'foo',
+                            label: 'Foo',
+                        },
+                        {
+                            description: 'foobar',
+                            key: 'bar',
+                            label: 'Bar',
+                        },
+                    ]}
+                />
+            </UncontrolledButtonDropdown>
         )
 
-        component.find(DropdownItem).at(0).simulate('click')
+        userEvent.click(screen.getByRole('menuitem', {name: 'Foo'}))
+
         expect(onClick.mock.calls.length).toBe(1)
         expect(onClick).toHaveBeenCalledTimes(1)
         expect(onClick).toHaveBeenLastCalledWith('foo')
