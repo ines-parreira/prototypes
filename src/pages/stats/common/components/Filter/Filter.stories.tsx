@@ -166,4 +166,10 @@ FilterWithSingleSelect.args = {
     isMultiple: false,
 }
 
+export const FilterWithWarning = Template.bind({})
+FilterWithWarning.args = {
+    ...defaultProps,
+    warning: 'non-existent',
+}
+
 export default storyConfig

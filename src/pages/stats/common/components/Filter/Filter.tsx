@@ -52,6 +52,7 @@ type Props = {
     selectedOptions: FilterOptionGroup['options']
     showQuickSelect?: boolean
     showSearch?: boolean
+    warning?: 'non-existent' | 'not-applicable'
 }
 
 type WithInfiniteScrollProps = PropsWithChildren<{
@@ -101,6 +102,7 @@ const Filter = ({
     selectedOptions,
     showQuickSelect = true,
     showSearch = true,
+    warning,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
@@ -138,7 +140,7 @@ const Filter = ({
 
     return (
         <div className={classNames(css.container, className)}>
-            <FilterName name={filterName} />
+            <FilterName name={filterName} warningType={warning} />
             <FilterValue
                 ref={ref}
                 optionsLabels={selectedLabels}

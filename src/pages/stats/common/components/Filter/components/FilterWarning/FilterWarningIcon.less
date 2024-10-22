@@ -1,0 +1,17 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .icon {
+        font-size: 130%;
+        align-self: center;
+        padding-right: @layout-spacing-xs;
+
+        &.nonExistent {
+            color: var(--feedback-warning);
+        }
+
+        &.notApplicable {
+            color: var(--neutral-grey-4);
+        }
+    }
+}
