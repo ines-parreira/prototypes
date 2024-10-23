@@ -11,7 +11,10 @@ import {
     getCurrentAccountState,
     getIsCurrentSubscriptionTrialingOrCanceled,
 } from 'state/currentAccount/selectors'
-import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
+import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_PATH,
+} from 'pages/settings/new_billing/constants'
 import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
 import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
 import {useStripePaymentElement} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentElement/useStripePaymentElement'
@@ -63,7 +66,7 @@ export const Form: React.FC<IFormProps> = ({
                 history.push(BILLING_BASE_PATH)
             }
 
-            history.goBack()
+            history.push(BILLING_PAYMENT_PATH)
         },
     })
 
@@ -76,10 +79,6 @@ export const Form: React.FC<IFormProps> = ({
             user_id: currentUser.get('id'),
             account_domain: currentAccount.get('domain'),
         })
-
-        if (!isComplete) {
-            return Promise.resolve()
-        }
 
         if (isAddressProvided) {
             return submitPaymentMethodWithBillingContact({

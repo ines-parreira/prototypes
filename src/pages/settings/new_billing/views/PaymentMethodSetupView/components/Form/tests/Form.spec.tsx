@@ -1,168 +1,217 @@
-import {render, fireEvent, waitFor, screen} from '@testing-library/react'
+import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import React from 'react'
-import {useStore} from 'react-redux'
 import {fromJS} from 'immutable'
-import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
-import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useElements} from '@stripe/react-stripe-js'
+import {
+    SetupIntentResult,
+    StripeAddressElementChangeEvent,
+    StripePaymentElementChangeEvent,
+} from '@stripe/stripe-js'
+import MockAdapter from 'axios-mock-adapter'
+import {confirmBillingPaymentMethodSetup} from '@gorgias/api-client'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 import {assumeMock} from 'utils/testing'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {useStripePaymentElement} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentElement/useStripePaymentElement'
-import {useStartSubscription} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
-import {useSubmitPaymentMethodWithBillingContact} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
+import {account} from 'fixtures/account'
+import {products} from 'fixtures/productPrices'
+import client from 'models/api/resources'
+import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_PATH,
+} from 'pages/settings/new_billing/constants'
+import {EmailInputField} from 'pages/settings/new_billing/components/EmailInputField/EmailInputField'
 import {Form} from '../Form'
 
-jest.mock(
-    'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
-)
-jest.mock(
-    'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
-)
-jest.mock(
-    'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentElement/useStripePaymentElement'
-)
-jest.mock(
-    'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
-)
-jest.mock(
-    'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
-)
-jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn().mockReturnValue({
-        push: mockHistoryPush,
-        goBack: mockHistoryGoBack,
-    } as any),
+jest.mock('@stripe/react-stripe-js', () => ({
+    useStripe: jest.fn(() => ({
+        confirmSetup: jest
+            .fn()
+            .mockResolvedValue({setupIntent: {id: 'id'}} as SetupIntentResult),
+    })),
+    useElements: jest.fn(() => ({getElement: jest.fn()})),
 }))
-jest.mock('react-redux', () => ({useStore: jest.fn()}))
-jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector')
-jest.mock('state/currentUser/selectors')
-jest.mock('state/currentAccount/selectors')
-jest.mock(
-    'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary',
-    () => ({
-        SubscriptionSummary: jest.fn(({handleSubmit}) => (
-            <div>
-                <h1>Mocked Subscription Summary</h1>
-                <button onClick={handleSubmit}>On Submit</button>
-            </div>
-        )),
-    })
-)
-jest.mock('state/notifications/actions')
 
-const mockDispatch = jest.fn()
-const mockHistoryPush = jest.fn()
-const mockHistoryGoBack = jest.fn()
+jest.mock('@gorgias/api-client')
 
-assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
-assumeMock(getCurrentUser).mockReturnValue(fromJS({id: 'mockUserId'}))
-assumeMock(getCurrentAccountState).mockReturnValue(
-    fromJS({domain: 'mockDomain'})
-)
+const mockedServer = new MockAdapter(client)
+
+mockedServer.onPut('/api/billing/contact/').reply(200, {})
+assumeMock(confirmBillingPaymentMethodSetup).mockResolvedValue({} as any)
 
 describe('Form', () => {
-    let mockSubmitPaymentMethodWithBillingContact: jest.Mock
-    let mockSubmitPaymentMethod: jest.Mock
-    let mockStartSubscription: jest.Mock
+    let paymentChangeHandler: (event: StripePaymentElementChangeEvent) => void
+    let addressChangeHandler: (event: StripeAddressElementChangeEvent) => void
 
-    beforeEach(() => {
-        mockSubmitPaymentMethodWithBillingContact = jest
-            .fn()
-            .mockResolvedValue({})
-        mockSubmitPaymentMethod = jest.fn().mockResolvedValue({})
-        mockStartSubscription = jest.fn().mockResolvedValue({})
+    describe('when subscription is not trialing or canceled', () => {
+        const mockInitialStoreState = {
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    status: 'active',
+                },
+            }),
+            billing: fromJS({
+                invoices: [],
+                products,
+                currentProductsUsage: {},
+            }),
+        }
 
-        assumeMock(useSubmitPaymentMethodWithBillingContact).mockReturnValue({
-            submitPaymentMethodWithBillingContact:
-                mockSubmitPaymentMethodWithBillingContact,
-            submitPaymentMethod: mockSubmitPaymentMethod,
-            isLoading: false,
-        } as any)
+        beforeEach(() => {
+            assumeMock(useElements).mockReturnValue({
+                getElement: jest.fn((element) => {
+                    if (element === 'payment') {
+                        return {
+                            on: jest.fn((_event, handler) => {
+                                paymentChangeHandler = handler
+                            }),
+                        }
+                    }
 
-        assumeMock(useStartSubscription).mockReturnValue(mockStartSubscription)
-        assumeMock(useStripePaymentElement).mockReturnValue({isComplete: true})
-        assumeMock(useStripeAddressElement).mockReturnValue({
-            getSelf: jest.fn().mockReturnValue(true),
-            isComplete: true,
-            getValue: jest.fn().mockReturnValue({address: 'mock address'}),
-            error: undefined,
+                    return null
+                }),
+            } as any)
         })
-        assumeMock(useEmailInputField).mockReturnValue({
-            isComplete: true,
-            getValue: jest.fn().mockReturnValue('test@example.com'),
-        })
-        assumeMock(useStore).mockReturnValue({getState: jest.fn()} as any)
-    })
 
-    it('should render form with submit button', () => {
-        render(
-            <Form contactBilling={jest.fn()} dispatchBillingError={jest.fn()} />
-        )
+        it('should render form with Update card button when subscription is not trialing or canceled', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <Form
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />,
+                mockInitialStoreState
+            )
 
-        expect(
-            screen.getByRole('button', {name: 'Add payment method'})
-        ).toBeVisible()
-    })
-
-    it('should call submitPaymentMethodWithBillingContact on form submit', async () => {
-        render(
-            <Form contactBilling={jest.fn()} dispatchBillingError={jest.fn()} />
-        )
-
-        fireEvent.click(
-            screen.getByRole('button', {name: 'Add payment method'})
-        )
-
-        await waitFor(() => {
             expect(
-                mockSubmitPaymentMethodWithBillingContact
-            ).toHaveBeenCalledWith({
-                email: 'test@example.com',
-                shipping: {address: 'mock address'},
+                screen.getByRole('button', {name: 'Update card'})
+            ).toBeVisible()
+        })
+
+        it('should redirect to BILLING_PAYMENT_PATH when submit is successful', async () => {
+            const {history} = renderWithStoreAndQueryClientAndRouter(
+                <Form
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                />,
+                mockInitialStoreState
+            )
+
+            expect(history.location.pathname).not.toBe(BILLING_PAYMENT_PATH)
+
+            expect(
+                screen.getByRole('button', {name: 'Update card'})
+            ).toBeAriaDisabled()
+
+            act(() => {
+                paymentChangeHandler({
+                    complete: true,
+                } as any)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Update card'})
+                ).not.toBeAriaDisabled()
+            })
+
+            fireEvent.click(screen.getByRole('button', {name: 'Update card'}))
+
+            await waitFor(() => {
+                expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
             })
         })
     })
 
-    it('should disable submit button if payment is not complete', () => {
-        assumeMock(useStripePaymentElement).mockReturnValue({isComplete: false})
+    describe('when subscription is trialing', () => {
+        const mockInitialStoreState = {
+            currentAccount: fromJS(account),
+            billing: fromJS({
+                invoices: [],
+                products,
+                currentProductsUsage: {},
+            }),
+        }
 
-        render(
-            <Form contactBilling={jest.fn()} dispatchBillingError={jest.fn()} />
-        )
+        beforeEach(() => {
+            assumeMock(useElements).mockReturnValue({
+                getElement: jest.fn((element) => {
+                    if (element === 'payment') {
+                        return {
+                            on: jest.fn((_event, handler) => {
+                                paymentChangeHandler = handler
+                            }),
+                        }
+                    }
 
-        expect(
-            screen.getByRole('button', {name: 'Add payment method'})
-        ).toBeAriaDisabled()
-    })
+                    return {
+                        on: jest.fn((_event, handler) => {
+                            addressChangeHandler = handler
+                        }),
+                        getSelf: jest.fn().mockReturnValue(true),
+                    }
+                }),
+            } as any)
+        })
 
-    it('should disable submit button if address element is incomplete', () => {
-        assumeMock(useStripeAddressElement).mockReturnValue({
-            getSelf: jest.fn().mockReturnValue(true),
-            isComplete: false,
-        } as any)
+        it('should redirect to BILLING_BASE_PATH when submit is successful', async () => {
+            const {history} = renderWithStoreAndQueryClientAndRouter(
+                <Form
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                >
+                    <EmailInputField />
+                </Form>,
+                mockInitialStoreState
+            )
 
-        render(
-            <Form contactBilling={jest.fn()} dispatchBillingError={jest.fn()} />
-        )
+            expect(history.location.pathname).not.toBe(BILLING_BASE_PATH)
 
-        expect(
-            screen.getByRole('button', {name: 'Add payment method'})
-        ).toBeAriaDisabled()
-    })
+            expect(
+                screen.getByRole('button', {name: 'Subscribe now'})
+            ).toBeAriaDisabled()
 
-    it('should disable submit button if email field is incomplete', () => {
-        assumeMock(useEmailInputField).mockReturnValue({
-            isComplete: false,
-        } as any)
+            act(() => {
+                paymentChangeHandler({
+                    complete: true,
+                } as any)
+            })
 
-        render(
-            <Form contactBilling={jest.fn()} dispatchBillingError={jest.fn()} />
-        )
+            act(() => {
+                addressChangeHandler({
+                    complete: true,
+                    value: {
+                        address: {
+                            postal_code: '12345',
+                            country: 'US',
+                        },
+                    },
+                } as any)
+            })
 
-        expect(
-            screen.getByRole('button', {name: 'Add payment method'})
-        ).toBeAriaDisabled()
+            fireEvent.input(
+                screen.getByRole('textbox', {name: 'Email required'}),
+                {
+                    target: {value: 'example@gorgias.com'},
+                }
+            )
+
+            fireEvent.click(
+                screen.getByRole('checkbox', {
+                    name: 'I agree to the Gorgias Master Subscription Agreement and Terms . Learn about how we use and protect your data in our Privacy Policy .',
+                })
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Subscribe now'})
+                ).not.toBeAriaDisabled()
+            })
+
+            fireEvent.click(screen.getByRole('button', {name: 'Subscribe now'}))
+
+            await waitFor(() => {
+                expect(history.location.pathname).toBe(BILLING_BASE_PATH)
+            })
+        })
     })
 })
