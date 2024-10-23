@@ -202,6 +202,12 @@ export const buildWorkflowVariableFromTrigger = (
                                       type: 'string',
                                   },
                                   {
+                                      name: 'Product variant global id',
+                                      value: `objects.products.${input.id}.selected_variant.external_gid`,
+                                      nodeType: 'custom_input',
+                                      type: 'string',
+                                  },
+                                  {
                                       name: 'Product variant quantity in stock',
                                       value: `objects.products.${input.id}.selected_variant.quantity`,
                                       nodeType: 'custom_input',

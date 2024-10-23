@@ -572,6 +572,12 @@ describe('buildWorkflowVariableFromTrigger()', () => {
                                     value: 'objects.products.someid.selected_variant.external_id',
                                 },
                                 {
+                                    name: 'Product variant global id',
+                                    nodeType: 'custom_input',
+                                    type: 'string',
+                                    value: 'objects.products.someid.selected_variant.external_gid',
+                                },
+                                {
                                     name: 'Product variant quantity in stock',
                                     nodeType: 'custom_input',
                                     type: 'number',
