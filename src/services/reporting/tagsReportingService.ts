@@ -7,7 +7,7 @@ import {createCsv, saveZippedFiles} from 'utils/file'
 const getTagsTabularData = (data: FormattedDataItem[], dateTimes: string[]) => {
     const labelsRow = ['tag', 'total', ...dateTimes]
     const dataRows = data.map((row) => [
-        row.tag.name,
+        row.tag?.name ?? row.tagId,
         row.total,
         ...row.timeSeries.map((item) => item.value),
     ])

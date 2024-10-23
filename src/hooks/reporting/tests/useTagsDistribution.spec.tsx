@@ -122,7 +122,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
         })
     })
 
-    it('should return undefined name for unknown tag id', () => {
+    it('should return the tag id instead of name for a missing Tag', () => {
         const unknownTagId = 'unknown_tag_id'
         useTagsTicketCountMock.mockReturnValue({
             ...mockValue,
@@ -150,7 +150,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
                 {
                     category: unknownTagId,
                     gaugePercentage: 100,
-                    name: undefined,
+                    name: unknownTagId,
                     previousValueInPercentage: 200,
                     valueInPercentage: 100,
                     value: 20,
@@ -176,7 +176,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
                 {
                     category: undefined,
                     gaugePercentage: 0,
-                    name: undefined,
+                    name: '',
                     previousValueInPercentage: 0,
                     valueInPercentage: 0,
                     value: 0,

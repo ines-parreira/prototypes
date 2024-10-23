@@ -94,7 +94,7 @@ export const useTagsDistribution = (topAmount = 10) => {
                     getTicketCount(item),
                     Math.max(topDataMaxValue, outsideTopTotal)
                 ),
-                name: tags[tagKey]?.name,
+                name: tags[tagKey]?.name ?? tagKey,
             }
         }),
     }

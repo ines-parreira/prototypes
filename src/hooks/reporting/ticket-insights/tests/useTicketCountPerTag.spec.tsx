@@ -49,6 +49,7 @@ describe('useTicketCountPerTag', () => {
     const tagId = '1'
     const anotherTagId = '2'
     const thirdTagId = '3'
+    const deletedTagId = '789'
     const exampleResponse = {
         [tagId]: [
             [
@@ -91,6 +92,21 @@ describe('useTicketCountPerTag', () => {
                 {
                     dateTime: '2024-09-27T00:00:00.000',
                     value: 30,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+            ],
+        ],
+        [deletedTagId]: [
+            [
+                {
+                    dateTime: '2024-09-26T00:00:00.000',
+                    value: 999,
+                    label: 'TicketTagsEnriched.ticketCount',
+                },
+
+                {
+                    dateTime: '2024-09-27T00:00:00.000',
+                    value: 999,
                     label: 'TicketTagsEnriched.ticketCount',
                 },
             ],
@@ -267,6 +283,9 @@ describe('useTicketCountPerTag', () => {
 
             expect(result.current.data).toEqual([
                 expect.objectContaining({
+                    tag: undefined,
+                }),
+                expect.objectContaining({
                     tag: expect.objectContaining({
                         name: 'billing',
                     }),
@@ -289,6 +308,9 @@ describe('useTicketCountPerTag', () => {
             })
 
             expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    tag: undefined,
+                }),
                 expect.objectContaining({
                     tag: expect.objectContaining({
                         name: 'billing',
@@ -323,6 +345,9 @@ describe('useTicketCountPerTag', () => {
 
             expect(result.current.data).toEqual([
                 expect.objectContaining({
+                    total: 1998,
+                }),
+                expect.objectContaining({
                     total: 57,
                 }),
                 expect.objectContaining({
@@ -338,6 +363,9 @@ describe('useTicketCountPerTag', () => {
             })
 
             expect(result.current.data).toEqual([
+                expect.objectContaining({
+                    total: 1998,
+                }),
                 expect.objectContaining({
                     total: 57,
                 }),

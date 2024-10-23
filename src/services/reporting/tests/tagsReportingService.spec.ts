@@ -9,6 +9,7 @@ jest.mock('utils/file')
 
 describe('TagsReportingService', () => {
     const tag = tags[0]
+    const deletedTagId = '789'
     const data: FormattedDataItem[] = [
         {
             tagId: String(tag.id),
@@ -23,6 +24,19 @@ describe('TagsReportingService', () => {
             ],
             total: 123,
         },
+        {
+            tagId: deletedTagId,
+            tag: undefined,
+            timeSeries: [
+                {value: 200, dateTime: '2023-06-07'},
+                {value: 13, dateTime: '2023-06-08'},
+                {
+                    value: 0,
+                    dateTime: '2023-06-09',
+                },
+            ],
+            total: 213,
+        },
     ]
     const dateTimes = ['2023-06-07', '2023-06-08', '2023-06-09']
     const period = {
@@ -34,6 +48,7 @@ describe('TagsReportingService', () => {
         const expectedData = [
             ['tag', 'total', '2023-06-07', '2023-06-08', '2023-06-09'],
             ['billing', 123, 100, 23, 0],
+            [deletedTagId, 213, 200, 13, 0],
         ]
         const csvSpy = jest
             .spyOn(files, 'createCsv')

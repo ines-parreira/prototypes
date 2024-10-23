@@ -190,7 +190,7 @@ const TableRow = ({
     columnTotals,
 }: {
     tagId: string
-    tag: Tag
+    tag?: Tag
     total: number
     timeSeries: TimeSeriesDataItem[]
     isTableScrolled: boolean
@@ -211,10 +211,14 @@ const TableRow = ({
                 )}
                 innerClassName={css.small}
             >
-                <TicketTag
-                    text={tag.name}
-                    decoration={fromJS(tag.decoration)}
-                />
+                {tag ? (
+                    <TicketTag
+                        text={tag?.name}
+                        decoration={fromJS(tag?.decoration)}
+                    />
+                ) : (
+                    tagId
+                )}
             </BodyCell>
             <BodyCell
                 className={classNames(css.BodyCell)}
@@ -225,7 +229,7 @@ const TableRow = ({
                 <DrillDownModalTrigger
                     enabled={total !== 0}
                     metricData={{
-                        title: `${tag.name}`,
+                        title: `${tag?.name ?? tagId}`,
                         tagId: tagId,
                         metricName: TagsMetric.TicketCount,
                     }}
@@ -256,7 +260,7 @@ const TableRow = ({
                     <DrillDownModalTrigger
                         enabled={data.value !== 0}
                         metricData={{
-                            title: `${tag.name} | ${formatDates(
+                            title: `${tag?.name ?? tagId} | ${formatDates(
                                 granularity,
                                 data.dateTime
                             )}`,

@@ -44,6 +44,7 @@ describe('<AllUsedTagsTable />', () => {
         },
     } as RootState
     const tag = tags[0]
+    const deletedTagId = '345'
     const someDateTimes = ['2024-05-01', '2024-05-02', '2024-05-03']
     const granularity = ReportingGranularity.Day
     const exampleDataRow = {
@@ -90,12 +91,34 @@ describe('<AllUsedTagsTable />', () => {
             },
         ],
     }
+    const dataRowForDeletedTag = {
+        tagId: deletedTagId,
+        tag: undefined,
+        total: 123,
+        timeSeries: [
+            {
+                dateTime: '2024-05-01',
+                value: 50,
+                label: '2024-05-01',
+            },
+            {
+                dateTime: '2024-05-02',
+                value: 23,
+                label: '2024-05-02',
+            },
+            {
+                dateTime: '2024-05-02',
+                value: 0,
+                label: '2024-05-02',
+            },
+        ],
+    }
     const grandTotal = 196
     const columnTotals = [150, 46, 0]
 
     beforeEach(() => {
         useTicketCountPerTagMock.mockReturnValue({
-            data: [exampleDataRow, anotherExampleDataRow],
+            data: [exampleDataRow, anotherExampleDataRow, dataRowForDeletedTag],
             grandTotal,
             columnTotals,
             dateTimes: someDateTimes,

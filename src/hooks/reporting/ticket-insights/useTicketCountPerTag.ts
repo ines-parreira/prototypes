@@ -19,14 +19,14 @@ import {getFilterDateRange} from 'utils/reporting'
 
 export type FormattedDataItem = {
     tagId: string
-    tag: Tag
+    tag?: Tag
     total: number
     timeSeries: TimeSeriesDataItem[]
 }
 
 const formatTimeSeriesPerDimension = (
     timeSeriesData: TimeSeriesPerDimension,
-    tags: Record<string, Tag>
+    tags: Record<string, Tag | undefined>
 ): FormattedDataItem[] =>
     Object.entries(timeSeriesData).map(([key, value]) => ({
         tagId: key,
@@ -42,7 +42,7 @@ const getOrderBy = (order: TagsTableOrder) => {
             return (data: FormattedDataItem[]) =>
                 orderBy(
                     data,
-                    (item: FormattedDataItem) => item.tag.name,
+                    (item: FormattedDataItem) => item.tag?.name ?? item.tagId,
                     order.direction
                 )
         case 'total':
