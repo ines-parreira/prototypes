@@ -28,7 +28,9 @@ export const ChannelToggleInput = ({isToggled, onUpdate, channel}: Props) => {
             name={`toggle-ai-agent-${channel}`}
             // Add new candu selectors after we define them
             dataCanduId={
-                channel === 'email' ? 'ai-agent-configuration-toggle' : ''
+                channel === 'email'
+                    ? 'ai-agent-configuration-toggle'
+                    : 'ai-agent-configuration-chat-toggle'
             }
         >
             Enable AI Agent on {channel === 'chat' ? 'Chat' : 'Email'}

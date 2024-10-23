@@ -506,7 +506,10 @@ export const StoreConfigForm = ({
                 )}
 
                 {isAiAgentChatEnabled && (
-                    <ConfigurationSection title="Chat settings">
+                    <ConfigurationSection
+                        title="Chat settings"
+                        data-candu-id="ai-agent-configuration-chat-settings"
+                    >
                         <SettingsBanner
                             type={SettingsBannerType.Chat}
                             deactivatedDatetime={
