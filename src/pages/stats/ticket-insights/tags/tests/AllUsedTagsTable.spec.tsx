@@ -34,10 +34,12 @@ describe('<AllUsedTagsTable />', () => {
         },
         ui: {
             stats: {
-                cleanStatsFilters: {
-                    period: {
-                        start_datetime: '2024-05-01T00:00:00+00:00',
-                        end_datetime: '2024-05-03T00:00:00+00:00',
+                filters: {
+                    cleanStatsFilters: {
+                        period: {
+                            start_datetime: '2024-05-01T00:00:00+00:00',
+                            end_datetime: '2024-05-03T00:00:00+00:00',
+                        },
                     },
                 },
             },

@@ -3,7 +3,6 @@ import {useDispatch} from 'react-redux'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
 import {
@@ -16,6 +15,7 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {notEmpty} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 

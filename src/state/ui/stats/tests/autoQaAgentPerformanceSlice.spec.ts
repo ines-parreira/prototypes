@@ -8,6 +8,7 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {RootState} from 'state/types'
 
 import {
@@ -28,8 +29,6 @@ import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
-import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
-import {AutoQAMetric} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
@@ -158,8 +157,11 @@ describe('agentPerformanceSlice', () => {
         it('should return the current sorting', () => {
             const state = {
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]:
+                                initialState,
+                        },
                     },
                 },
             } as RootState
@@ -172,8 +174,11 @@ describe('agentPerformanceSlice', () => {
         it('should return the loading state of current sorting', () => {
             const state = {
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]:
+                                initialState,
+                        },
                     },
                 },
             } as RootState
@@ -189,10 +194,13 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]:
+                                initialState,
+                        },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -204,10 +212,12 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: {
                     filters: {
@@ -235,12 +245,14 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
-                    },
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]:
+                                initialState,
+                        },
+                        filters: {
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
                 stats: {
@@ -268,12 +280,14 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: initialState,
-                    },
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]:
+                                initialState,
+                        },
+                        filters: {
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
                 stats: {
@@ -293,17 +307,19 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AutoQAAgentsTableColumn.CommunicationSkills,
-                                direction: OrderDirection.Asc,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AutoQAAgentsTableColumn.CommunicationSkills,
+                                    direction: OrderDirection.Asc,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -317,15 +333,17 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            sorting: {
-                                ...initialState.sorting,
-                                direction: OrderDirection.Desc,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                sorting: {
+                                    ...initialState.sorting,
+                                    direction: OrderDirection.Desc,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -339,19 +357,21 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AutoQAAgentsTableColumn.CommunicationSkills,
-                                direction: OrderDirection.Desc,
-                                isLoading: false,
-                                lastSortingMetric: metricData,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AutoQAAgentsTableColumn.CommunicationSkills,
+                                    direction: OrderDirection.Desc,
+                                    isLoading: false,
+                                    lastSortingMetric: metricData,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -382,19 +402,21 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AutoQAAgentsTableColumn.CommunicationSkills,
-                                direction: OrderDirection.Desc,
-                                isLoading: false,
-                                lastSortingMetric: metricData,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AutoQAAgentsTableColumn.CommunicationSkills,
+                                    direction: OrderDirection.Desc,
+                                    isLoading: false,
+                                    lastSortingMetric: metricData,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -407,7 +429,7 @@ describe('agentPerformanceSlice', () => {
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
             ]
-            const metricData = [
+            const metricData: ReportingMetricItem[] = [
                 {
                     [TicketDimension.AssigneeUserId]: '2',
                     [TicketQAScoreMeasure.AverageScore]: '10',
@@ -419,20 +441,22 @@ describe('agentPerformanceSlice', () => {
                 ({
                     agents: fromJS({all: fromJS(agents)}),
                     ui: {
-                        statsTables: {
-                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                                sorting: {
-                                    field: AutoQAMetric.CommunicationSkills,
-                                    direction,
-                                    isLoading: false,
-                                    lastSortingMetric: metricData,
+                        stats: {
+                            statsTables: {
+                                [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                    sorting: {
+                                        field: AutoQAAgentsTableColumn.CommunicationSkills,
+                                        direction,
+                                        isLoading: false,
+                                        lastSortingMetric: metricData,
+                                    },
                                 },
                             },
+                            filters: uiFiltersInitialState,
                         },
-                        stats: initialUiStatsState,
                     },
                     stats: initialStatsFiltersState,
-                }) as unknown as RootState
+                }) as RootState
 
             expect(
                 getSortedAutoQAAgents(
@@ -449,35 +473,41 @@ describe('agentPerformanceSlice', () => {
 
         it('should not contain undefined or empty values throughout the result if the lastSortingMetric has more agents than the filtered ones', () => {
             const agents = personNames.map((name, idx) => ({id: idx, name}))
-            const lastSortingMetric = agents.map((agent) => ({
-                [TicketMember.AssigneeUserId]: String(agent.id),
-                [TicketQAScoreMeasure.AverageScore]: '10',
-            }))
+            const lastSortingMetric: ReportingMetricItem[] = agents.map(
+                (agent) => ({
+                    [TicketMember.AssigneeUserId]: String(agent.id),
+                    [TicketQAScoreMeasure.AverageScore]: '10',
+                })
+            )
             const filteredAgents = [1, 4, 5, 10]
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AutoQAMetric.CommunicationSkills,
-                                direction: OrderDirection.Asc,
-                                isLoading: false,
-                                lastSortingMetric,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AutoQAAgentsTableColumn.CommunicationSkills,
+                                    direction: OrderDirection.Asc,
+                                    isLoading: false,
+                                    lastSortingMetric,
+                                },
                             },
                         },
-                    },
-                    stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: {
-                            agents: withDefaultLogicalOperator(filteredAgents),
+                        filters: {
+                            ...uiFiltersInitialState,
+                            cleanStatsFilters: {
+                                agents: withDefaultLogicalOperator(
+                                    filteredAgents
+                                ),
+                            },
                         },
                     },
                 },
                 stats: initialStatsFiltersState,
-            } as unknown as RootState
+            } as RootState
 
             const sortedAgents = getSortedAutoQAAgents(state)
 
@@ -495,19 +525,21 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                            sorting: {
-                                ...initialState.sorting,
-                                direction: OrderDirection.Asc,
-                            },
-                            pagination: {
-                                currentPage,
-                                perPage,
+                    stats: {
+                        statsTables: {
+                            [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                                sorting: {
+                                    ...initialState.sorting,
+                                    direction: OrderDirection.Asc,
+                                },
+                                pagination: {
+                                    currentPage,
+                                    perPage,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState

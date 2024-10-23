@@ -4,17 +4,15 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import {TagFilterInstanceId} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
-import {
-    ChannelColumnConfig,
-    ChannelsTableColumns,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     statsSlice,
     initialState as statsInitialState,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {renderWithStore} from 'utils/testing'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -40,10 +38,12 @@ describe('<ChannelsCellContent />', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
-            [channelsSlice.name]: initialState,
+            stats: {
+                filters: uiStatsInitialState,
+                [channelsSlice.name]: initialState,
+            },
         },
-    } as Partial<RootState>
+    } as RootState
 
     const channel = {
         id: '',
@@ -152,10 +152,12 @@ describe('<ChannelsCellContent />', () => {
             {
                 ...defaultState,
                 ui: {
-                    ...defaultState.ui,
-                    [channelsSlice.name]: {
-                        ...initialState,
-                        heatmapMode: true,
+                    stats: {
+                        ...defaultState.ui.stats,
+                        [channelsSlice.name]: {
+                            ...initialState,
+                            heatmapMode: true,
+                        },
                     },
                 },
             } as RootState

@@ -34,9 +34,9 @@ jest.mock('common/segment', () => ({
 describe('CustomFieldFilter', () => {
     const defaultState = {
         ui: {
-            [ticketInsightsSlice.name]: initialState,
+            stats: {[ticketInsightsSlice.name]: initialState},
         },
-    } as unknown as RootState
+    } as RootState
 
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
@@ -105,16 +105,18 @@ describe('CustomFieldFilter', () => {
     it('should render CustomFieldFilter selected options - Dropdown Custom Fields', () => {
         const state = {
             ui: {
-                [ticketInsightsSlice.name]: {
-                    ...initialState,
-                    selectedCustomField: {
-                        id: ticketFieldDefinitions[1].id,
-                        label: ticketFieldDefinitions[1].label,
-                        isLoading: false,
+                stats: {
+                    [ticketInsightsSlice.name]: {
+                        ...initialState,
+                        selectedCustomField: {
+                            id: ticketFieldDefinitions[1].id,
+                            label: ticketFieldDefinitions[1].label,
+                            isLoading: false,
+                        },
                     },
                 },
             },
-        } as unknown as RootState
+        } as RootState
 
         renderWithStore(<CustomFieldFilter />, state)
 

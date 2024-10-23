@@ -22,7 +22,7 @@ import {
     sortingSet,
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -30,13 +30,14 @@ describe('useAgentsSortingQuery', () => {
     const defaultState = {
         stats: filtersInitialState,
         ui: {
-            statsTables: {
-                [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAInitialState,
+            stats: {
+                statsTables: {
+                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAInitialState,
+                },
+                filters: uiStatsInitialState,
             },
-
-            stats: uiStatsInitialState,
         },
-    } as unknown as RootState
+    } as RootState
     const column = AutoQAAgentsTableColumn.ResolutionCompleteness
     const queryHook = jest.fn()
 
@@ -109,13 +110,15 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                ...defaultState.ui,
-                statsTables: {
-                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                        sorting: {
-                            field: column,
-                            direction: OrderDirection.Asc,
-                            isLoading: true,
+                stats: {
+                    ...defaultState.ui.stats,
+                    statsTables: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                            sorting: {
+                                field: column,
+                                direction: OrderDirection.Asc,
+                                isLoading: true,
+                            },
                         },
                     },
                 },
@@ -182,17 +185,19 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                statsTables: {
-                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...autoQAInitialState,
-                        sorting: {
-                            field: agentNameColumn,
-                            direction: OrderDirection.Asc,
-                            isLoading: true,
+                stats: {
+                    filters: uiStatsInitialState,
+                    statsTables: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                            ...autoQAInitialState,
+                            sorting: {
+                                field: agentNameColumn,
+                                direction: OrderDirection.Asc,
+                                isLoading: true,
+                            },
                         },
                     },
                 },
-                stats: uiStatsInitialState,
             },
         } as RootState)
 
@@ -216,17 +221,19 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                statsTables: {
-                    [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...autoQAInitialState,
-                        sorting: {
-                            field: column,
-                            direction: OrderDirection.Asc,
-                            isLoading: false,
+                stats: {
+                    filters: uiStatsInitialState,
+                    statsTables: {
+                        [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: {
+                            ...autoQAInitialState,
+                            sorting: {
+                                field: column,
+                                direction: OrderDirection.Asc,
+                                isLoading: false,
+                            },
                         },
                     },
                 },
-                stats: uiStatsInitialState,
             },
         } as RootState)
         queryHook.mockReturnValue({

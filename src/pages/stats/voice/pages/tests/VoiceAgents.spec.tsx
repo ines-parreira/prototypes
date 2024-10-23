@@ -76,12 +76,15 @@ const getState = (featureEnabled: boolean) =>
         integrations: fromJS({integrations: []}),
         ui: {
             stats: {
-                cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
-                isFilterDirty: false,
+                filters: {
+                    cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+                    isFilterDirty: false,
+                },
                 fetchingMap: {},
-            },
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
         },
         entities: {tags: {[tags[0].id]: tags[0]}},

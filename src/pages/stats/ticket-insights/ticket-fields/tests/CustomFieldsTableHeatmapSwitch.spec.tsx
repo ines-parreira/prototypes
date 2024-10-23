@@ -17,7 +17,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<TicketInsightsHeatmapSwitch />', () => {
     const defaultState = {
         ui: {
-            [ticketInsightsSlice.name]: initialState,
+            stats: {
+                [ticketInsightsSlice.name]: initialState,
+            },
         },
     } as RootState
 

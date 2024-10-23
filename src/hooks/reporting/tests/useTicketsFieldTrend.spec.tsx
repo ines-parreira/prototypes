@@ -12,7 +12,7 @@ import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsDimension,
@@ -31,12 +31,14 @@ describe('useTicketsFieldTrend', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            [ticketInsightsSlice.name]: {
-                selectedCustomField: {id: 2},
+            stats: {
+                filters: uiStatsInitialState,
+                [ticketInsightsSlice.name]: {
+                    selectedCustomField: {id: 2},
+                },
             },
-            stats: uiStatsInitialState,
         },
-    } as unknown as RootState
+    } as RootState
 
     useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
         data: {

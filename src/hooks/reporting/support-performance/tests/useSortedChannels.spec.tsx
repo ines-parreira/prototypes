@@ -5,8 +5,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {channels as mockChannels} from 'fixtures/channels'
+import {RootState} from 'state/types'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {OrderDirection} from 'models/api/types'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
@@ -21,9 +22,9 @@ const mockStore = configureMockStore([thunk])
 describe('useSortedChannels', () => {
     const defaultState = {
         ui: {
-            [channelsSlice.name]: initialState,
+            stats: {[channelsSlice.name]: initialState},
         },
-    }
+    } as RootState
 
     it('should return channels as is with default sorting', () => {
         const {result} = renderHook(() => useSortedChannels(), {
@@ -49,17 +50,19 @@ describe('useSortedChannels', () => {
     it('should return channels in reversed order with default sorting', () => {
         const state = {
             ui: {
-                [channelsSlice.name]: {
-                    sorting: {
-                        field: ChannelsTableColumns.Channel,
-                        direction: OrderDirection.Desc,
-                        isLoading: false,
-                        lastSortingMetric: null,
+                stats: {
+                    [channelsSlice.name]: {
+                        sorting: {
+                            field: ChannelsTableColumns.Channel,
+                            direction: OrderDirection.Desc,
+                            isLoading: false,
+                            lastSortingMetric: null,
+                        },
+                        heatmapMode: false,
                     },
-                    heatmapMode: false,
                 },
             },
-        }
+        } as RootState
         const {result} = renderHook(() => useSortedChannels(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
@@ -94,17 +97,19 @@ describe('useSortedChannels', () => {
         ]
         const state = {
             ui: {
-                [channelsSlice.name]: {
-                    sorting: {
-                        field: ChannelsTableColumns.CustomerSatisfaction,
-                        direction: OrderDirection.Desc,
-                        isLoading: false,
-                        lastSortingMetric: channelSorting,
+                stats: {
+                    [channelsSlice.name]: {
+                        sorting: {
+                            field: ChannelsTableColumns.CustomerSatisfaction,
+                            direction: OrderDirection.Desc,
+                            isLoading: false,
+                            lastSortingMetric: channelSorting,
+                        },
+                        heatmapMode: false,
                     },
-                    heatmapMode: false,
                 },
             },
-        }
+        } as RootState
         const {result} = renderHook(() => useSortedChannels(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
@@ -132,17 +137,20 @@ describe('useSortedChannels', () => {
     it('should return channels as is if sorting order missing', () => {
         const state = {
             ui: {
-                [channelsSlice.name]: {
-                    sorting: {
-                        field: ChannelsTableColumns.CustomerSatisfaction,
-                        direction: OrderDirection.Desc,
-                        isLoading: false,
-                        lastSortingMetric: null,
+                stats: {
+                    [channelsSlice.name]: {
+                        sorting: {
+                            field: ChannelsTableColumns.CustomerSatisfaction,
+                            direction: OrderDirection.Desc,
+                            isLoading: false,
+                            lastSortingMetric: null,
+                        },
+                        heatmapMode: false,
                     },
-                    heatmapMode: false,
                 },
             },
-        }
+        } as RootState
+
         const {result} = renderHook(() => useSortedChannels(), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(state)}> {children} </Provider>

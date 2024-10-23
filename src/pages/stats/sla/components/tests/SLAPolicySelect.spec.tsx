@@ -22,7 +22,7 @@ import {
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -82,7 +82,7 @@ describe('<SLAPolicySelect />', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

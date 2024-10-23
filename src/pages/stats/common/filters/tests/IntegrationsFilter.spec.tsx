@@ -12,6 +12,7 @@ import {
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+import {statFiltersClean} from 'state/ui/stats/actions'
 
 import {renderWithStore} from 'utils/testing'
 import {
@@ -28,7 +29,6 @@ import {
 } from 'pages/stats/common/filters/IntegrationsFilter'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
@@ -270,7 +270,7 @@ describe('IntegrationsFilter', () => {
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Integrations,
             logical_operator:

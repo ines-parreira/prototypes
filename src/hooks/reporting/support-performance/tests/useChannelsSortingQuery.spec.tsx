@@ -10,10 +10,7 @@ import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {
-    ChannelColumnConfig,
-    ChannelsTableColumns,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
@@ -26,7 +23,8 @@ import {
     channelsSlice,
 } from 'state/ui/stats/channelsSlice'
 import {initialState as filtersInitialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {notEmpty} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
@@ -39,10 +37,12 @@ describe('useChannelsSortingQuery', () => {
     const defaultState = {
         stats: filtersInitialState,
         ui: {
-            [channelsSlice.name]: initialState,
-            stats: uiStatsInitialState,
+            stats: {
+                [channelsSlice.name]: initialState,
+                filters: uiFiltersInitialState,
+            },
         },
-    } as unknown as RootState
+    } as RootState
 
     const queryHook = jest.fn()
 
@@ -129,17 +129,19 @@ describe('useChannelsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                ...defaultState.ui,
-                [channelsSlice.name]: {
-                    ...initialState,
-                    sorting: {
-                        field: column,
-                        direction: OrderDirection.Asc,
-                        isLoading: true,
+                stats: {
+                    ...defaultState.ui.stats,
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            field: column,
+                            direction: OrderDirection.Asc,
+                            isLoading: true,
+                        },
                     },
                 },
             },
-        } as unknown as RootState)
+        } as RootState)
         queryHook.mockReturnValue({
             isFetching: false,
             data: metricData,
@@ -166,17 +168,19 @@ describe('useChannelsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                ...defaultState.ui,
-                [channelsSlice.name]: {
-                    ...initialState,
-                    sorting: {
-                        field: column,
-                        direction: OrderDirection.Asc,
-                        isLoading: true,
+                stats: {
+                    ...defaultState.ui.stats,
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            field: column,
+                            direction: OrderDirection.Asc,
+                            isLoading: true,
+                        },
                     },
                 },
             },
-        } as unknown as RootState)
+        } as RootState)
         queryHook.mockReturnValue({
             isFetching: false,
             data: undefined,
@@ -207,17 +211,19 @@ describe('useChannelsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                ...defaultState.ui,
-                [channelsSlice.name]: {
-                    ...initialState,
-                    sorting: {
-                        field: column,
-                        direction: OrderDirection.Asc,
-                        isLoading: true,
+                stats: {
+                    ...defaultState.ui.stats,
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            field: column,
+                            direction: OrderDirection.Asc,
+                            isLoading: true,
+                        },
                     },
                 },
             },
-        } as unknown as RootState)
+        } as RootState)
         queryHook.mockReturnValue({
             isFetching: true,
             data: metricData,
@@ -244,18 +250,20 @@ describe('useChannelsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                [channelsSlice.name]: {
-                    ...initialState,
-                    sorting: {
-                        field: column,
-                        direction: OrderDirection.Asc,
-                        isLoading: true,
-                        lastSortingMetric: null,
+                stats: {
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            field: column,
+                            direction: OrderDirection.Asc,
+                            isLoading: true,
+                            lastSortingMetric: null,
+                        },
                     },
+                    filters: uiFiltersInitialState,
                 },
-                stats: uiStatsInitialState,
             },
-        } as unknown as RootState)
+        } as RootState)
 
         renderHook(
             () =>
@@ -278,17 +286,19 @@ describe('useChannelsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                [channelsSlice.name]: {
-                    ...initialState,
-                    sorting: {
-                        field: column,
-                        direction: OrderDirection.Asc,
-                        isLoading: false,
+                stats: {
+                    [channelsSlice.name]: {
+                        ...initialState,
+                        sorting: {
+                            field: column,
+                            direction: OrderDirection.Asc,
+                            isLoading: false,
+                        },
                     },
+                    filters: uiFiltersInitialState,
                 },
-                stats: uiStatsInitialState,
             },
-        } as unknown as RootState)
+        } as RootState)
         queryHook.mockReturnValue({
             ...defaultState,
             isFetching: true,
@@ -318,8 +328,10 @@ describe('useChannelsSortingQuery', () => {
                 },
             },
             ui: {
-                [channelsSlice.name]: initialState,
-                stats: uiStatsInitialState,
+                stats: {
+                    [channelsSlice.name]: initialState,
+                    filters: uiFiltersInitialState,
+                },
             },
         } as RootState
         const store = mockStore(state)
@@ -360,8 +372,10 @@ describe('useChannelsSortingQuery', () => {
                 },
             },
             ui: {
-                [channelsSlice.name]: initialState,
-                stats: uiStatsInitialState,
+                stats: {
+                    [channelsSlice.name]: initialState,
+                    filters: uiFiltersInitialState,
+                },
             },
         } as RootState
         const store = mockStore(state)

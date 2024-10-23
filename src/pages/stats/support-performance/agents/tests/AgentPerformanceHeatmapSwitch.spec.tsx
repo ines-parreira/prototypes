@@ -11,17 +11,20 @@ import {
     toggleHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentPerformanceHeatmapSwitch />', () => {
     const defaultState = {
         ui: {
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            stats: {
+                filters: uiStatsInitialState,
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
-            stats: uiStatsInitialState,
         },
     } as RootState
 

@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
@@ -33,12 +34,15 @@ const renderComponent = (mockUseMetric: typeof useTotalCallsMetric) => {
         },
         ui: {
             stats: {
-                cleanStatsFilters: statsFilters,
-                isFilterDirty: false,
+                filters: {
+                    cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+                    isFilterDirty: false,
+                },
                 fetchingMap: {},
-            },
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
         },
     } as RootState

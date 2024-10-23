@@ -14,7 +14,7 @@ import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -43,7 +43,7 @@ describe('<AutomateOverviewFilters />', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

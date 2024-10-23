@@ -15,7 +15,7 @@ import {
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 
@@ -39,7 +39,7 @@ const defaultState = {
         },
     },
     ui: {
-        stats: uiStatsInitialState,
+        stats: {filters: uiStatsInitialState},
     },
 }
 const exampleData: Record<string, TimeSeriesDataItem[][]> = {

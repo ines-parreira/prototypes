@@ -56,11 +56,13 @@ import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constant
 
 const initialState = {
     ui: {
-        drillDown: {
-            currentPage: 1,
+        stats: {
+            drillDown: {
+                currentPage: 1,
+            },
         },
     },
-} as unknown as RootState
+} as RootState
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -182,12 +184,14 @@ describe('DrillDownData hooks', () => {
         it('should return formatted Data when stats filters have logical operators', () => {
             const state = {
                 ui: {
-                    drillDown: {
-                        ...initialState.ui.drillDown,
-                        isNewFilter: true,
+                    stats: {
+                        drillDown: {
+                            ...initialState.ui.stats.drillDown,
+                            isNewFilter: true,
+                        },
                     },
                 },
-            } as unknown as RootState
+            } as RootState
             const {result} = renderHook(
                 () =>
                     useEnrichedDrillDownData(

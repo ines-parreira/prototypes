@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {Channel, getChannels} from 'services/channels'
 import {ChannelsSlice, getChannelsSorting} from 'state/ui/stats/channelsSlice'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 const sortBySlugCustomOrderedWithEmptyLast =
     (order: string[]) =>

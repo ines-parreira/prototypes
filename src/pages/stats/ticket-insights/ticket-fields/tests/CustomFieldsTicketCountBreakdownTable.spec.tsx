@@ -73,9 +73,9 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             filters: defaultStatsFilters,
         },
         ui: {
-            [ticketInsightsSlice.name]: initialState,
+            stats: {[ticketInsightsSlice.name]: initialState},
         },
-    } as unknown as RootState
+    } as RootState
     const exampleData = [
         {
             [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: 668,

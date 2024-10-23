@@ -23,7 +23,9 @@ describe('tagsReportSlice', () => {
     }
     const state = {
         ui: {
-            [tagsReportSlice.name]: tagsState,
+            stats: {
+                [tagsReportSlice.name]: tagsState,
+            },
         },
     } as RootState
 
@@ -104,13 +106,13 @@ describe('tagsReportSlice', () => {
     describe('selectors', () => {
         it('should return expected value', () => {
             expect(getValueMode(state)).toEqual(
-                state.ui[tagsReportSlice.name].valueMode
+                state.ui.stats[tagsReportSlice.name].valueMode
             )
             expect(getTagsOrder(state)).toEqual(
-                state.ui[tagsReportSlice.name].order
+                state.ui.stats[tagsReportSlice.name].order
             )
             expect(getHeatmapMode(state)).toEqual(
-                state.ui[tagsReportSlice.name].heatmapMode
+                state.ui.stats[tagsReportSlice.name].heatmapMode
             )
         })
     })

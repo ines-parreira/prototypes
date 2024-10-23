@@ -112,9 +112,10 @@ describe('VoiceOverview', () => {
             integrations: fromJS({integrations: []}),
             ui: {
                 stats: {
-                    cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
-                    isFilterDirty: false,
-                    fetchingMap: {},
+                    filters: {
+                        cleanStatsFilters: fromLegacyStatsFilters(statsFilters),
+                        isFilterDirty: false,
+                    },
                 },
             },
             entities: {tags: {[tags[0].id]: tags[0]}},

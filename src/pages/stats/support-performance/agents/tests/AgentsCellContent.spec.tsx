@@ -10,7 +10,7 @@ import {
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {User} from 'config/types/user'
@@ -37,7 +37,7 @@ describe('<AgentsCellContent />', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

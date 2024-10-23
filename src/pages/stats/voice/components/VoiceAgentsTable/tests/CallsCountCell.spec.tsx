@@ -50,13 +50,16 @@ const renderComponent = (
             filters: statsFilters,
         },
         ui: {
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
-            },
             stats: {
-                cleanStatsFilters: statsFilters,
-                isFilterDirty: false,
+                filters: {
+                    cleanStatsFilters: statsFilters,
+                    isFilterDirty: false,
+                },
                 fetchingMap: {},
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
         },
     } as RootState

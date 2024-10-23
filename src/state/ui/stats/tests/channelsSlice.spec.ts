@@ -1,5 +1,4 @@
 import {OrderDirection} from 'models/api/types'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {RootState} from 'state/types'
 import {
     channelsSlice,
@@ -11,11 +10,12 @@ import {
     sortingSet,
     toggleHeatmapMode,
 } from 'state/ui/stats/channelsSlice'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 describe('channelsSlice', () => {
     const defaultState = {
         ui: {
-            [channelsSlice.name]: initialState,
+            stats: {[channelsSlice.name]: initialState},
         },
     } as RootState
 
@@ -30,7 +30,7 @@ describe('channelsSlice', () => {
         )
 
         expect(newState.heatmapMode).toEqual(
-            !defaultState.ui[channelsSlice.name].heatmapMode
+            !defaultState.ui.stats[channelsSlice.name].heatmapMode
         )
     })
 
@@ -92,7 +92,7 @@ describe('channelsSlice', () => {
 
         it('should return the sorting', () => {
             expect(getChannelsSorting(defaultState)).toEqual(
-                defaultState.ui[channelsSlice.name].sorting
+                defaultState.ui.stats[channelsSlice.name].sorting
             )
         })
     })

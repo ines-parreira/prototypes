@@ -4,7 +4,7 @@ import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMet
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
 import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
 import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AutoQAMetric} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
@@ -28,7 +28,7 @@ describe('ResolutionCompletenessTrendCard', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
     const value = 5

@@ -17,7 +17,7 @@ import {renderWithStore} from 'utils/testing'
 describe('ChannelsHeatmapSwitch', () => {
     const defaultState = {
         ui: {
-            [channelsSlice.name]: initialState,
+            stats: {[channelsSlice.name]: initialState},
         },
     } as RootState
 
@@ -33,7 +33,7 @@ describe('ChannelsHeatmapSwitch', () => {
     it('Should render Heatmap mode', () => {
         const state = {
             ui: {
-                [channelsSlice.name]: {heatmapMode: true},
+                stats: {[channelsSlice.name]: {heatmapMode: true}},
             },
         } as RootState
 

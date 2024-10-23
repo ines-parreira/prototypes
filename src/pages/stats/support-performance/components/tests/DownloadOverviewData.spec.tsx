@@ -41,7 +41,7 @@ import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
@@ -109,8 +109,10 @@ describe('DownloadOverviewData', () => {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
-            stats: uiStatsInitialState,
-            [drillDownSlice.name]: initialState,
+            stats: {
+                filters: uiStatsInitialState,
+                [drillDownSlice.name]: initialState,
+            },
         },
     } as RootState
 

@@ -10,7 +10,7 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {userPerformanceOverview} from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {renderWithRouter} from 'utils/testing'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
@@ -75,7 +75,7 @@ describe('LiveAgents', () => {
             tags: {},
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiFiltersInitialState},
         },
     } as RootState
 

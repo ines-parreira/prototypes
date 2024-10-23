@@ -23,7 +23,7 @@ import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/reducer'
+import {initialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
@@ -157,7 +157,7 @@ describe('<AutomateOverview />', () => {
             ],
         }),
         ui: {
-            stats: initialState,
+            stats: {filters: initialState},
         },
     } as RootState
 
@@ -274,7 +274,7 @@ describe('<AutomateOverview />', () => {
                 filters: defaultStatsFilters,
             },
             ui: {
-                stats: initialState,
+                stats: {filters: initialState},
             },
         } as RootState
         const {container} = render(

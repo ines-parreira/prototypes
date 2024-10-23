@@ -1,46 +1,19 @@
 import {fromLegacyStatsFilters} from 'state/stats/utils'
-import reducer, {initialState} from 'state/ui/stats/reducer'
 import {
-    fetchStatStarted,
-    fetchStatEnded,
-    statFiltersDirty,
     statFiltersClean,
     statFiltersCleanWithPayload,
+    statFiltersDirty,
     statFiltersWithLogicalOperatorsCleanWithPayload,
 } from 'state/ui/stats/actions'
+import {filtersSlice, initialState} from 'state/ui/stats/filtersSlice'
 
-describe('stats reducer', () => {
-    describe('fetchStatStarted action', () => {
-        it('should set the stat fetching status to true', () => {
-            const newState = reducer(
-                initialState,
-                fetchStatStarted({
-                    statName: 'overview',
-                    resourceName: 'total-tickets-replied',
-                })
-            )
-
-            expect(newState).toMatchSnapshot()
-        })
-    })
-
-    describe('fetchStatEnded action', () => {
-        it('should set the stat fetching status to false', () => {
-            const newState = reducer(
-                initialState,
-                fetchStatEnded({
-                    statName: 'overview',
-                    resourceName: 'total-tickets-replied',
-                })
-            )
-
-            expect(newState).toMatchSnapshot()
-        })
-    })
-
+describe('filtersSlice', () => {
     describe('statFiltersDirty action', () => {
         it('should set the isDirty flag to true', () => {
-            const newState = reducer(initialState, statFiltersDirty())
+            const newState = filtersSlice.reducer(
+                initialState,
+                statFiltersDirty()
+            )
 
             expect(newState.isFilterDirty).toBe(true)
         })
@@ -48,7 +21,10 @@ describe('stats reducer', () => {
 
     describe('statFiltersClean action', () => {
         it('should set the isDirty flag to false', () => {
-            const newState = reducer(initialState, statFiltersClean())
+            const newState = filtersSlice.reducer(
+                initialState,
+                statFiltersClean()
+            )
 
             expect(newState.isFilterDirty).toBe(false)
         })
@@ -64,7 +40,7 @@ describe('stats reducer', () => {
                 agents: [1, 2],
             }
 
-            const newState = reducer(
+            const newState = filtersSlice.reducer(
                 {...initialState, isFilterDirty: true},
                 statFiltersCleanWithPayload(newFilters)
             )
@@ -86,7 +62,7 @@ describe('stats reducer', () => {
                 agents: [1, 2],
             })
 
-            const newState = reducer(
+            const newState = filtersSlice.reducer(
                 {...initialState, isFilterDirty: true},
                 statFiltersWithLogicalOperatorsCleanWithPayload(newFilters)
             )

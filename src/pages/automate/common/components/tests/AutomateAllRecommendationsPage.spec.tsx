@@ -154,9 +154,9 @@ describe('<AutomateAllRecommendationsPage />', () => {
     const history = createMemoryHistory()
     const defaultState = {
         ui: {
-            drillDown: initialState,
+            stats: {drillDown: initialState},
         },
-    } as unknown as RootState
+    } as RootState
 
     const renderComponent = () =>
         render(

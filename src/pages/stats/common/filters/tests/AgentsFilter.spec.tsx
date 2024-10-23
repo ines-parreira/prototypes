@@ -11,6 +11,7 @@ import {
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {Team} from 'models/team/types'
+import {statFiltersClean} from 'state/ui/stats/actions'
 
 import {renderWithStore} from 'utils/testing'
 import {
@@ -27,7 +28,6 @@ import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
 import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
 import {FilterKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
@@ -362,7 +362,7 @@ describe('AgentsFilter', () => {
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Agents,
             logical_operator:

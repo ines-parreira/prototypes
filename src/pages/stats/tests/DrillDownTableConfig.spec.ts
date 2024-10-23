@@ -7,7 +7,6 @@ import {
 } from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -26,6 +25,7 @@ import {
     AutoQAMetric,
     VoiceAgentsMetric,
     TagsMetric,
+    ChannelsTableColumns,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {

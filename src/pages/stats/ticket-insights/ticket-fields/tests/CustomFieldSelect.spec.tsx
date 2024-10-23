@@ -32,9 +32,11 @@ const mockStore = configureMockStore([thunk])
 describe('<CustomFieldSelect />', () => {
     const defaultState = {
         ui: {
-            [ticketInsightsSlice.name]: initialState,
+            stats: {
+                [ticketInsightsSlice.name]: initialState,
+            },
         },
-    } as unknown as RootState
+    } as RootState
 
     const dropdownField = ticketFieldDefinitions[1]
 
@@ -103,11 +105,13 @@ describe('<CustomFieldSelect />', () => {
             const selectedCustomFieldId = dropdownField.id
             const state = {
                 ui: {
-                    [ticketInsightsSlice.name]: {
-                        selectedCustomField: {id: selectedCustomFieldId},
+                    stats: {
+                        [ticketInsightsSlice.name]: {
+                            selectedCustomField: {id: selectedCustomFieldId},
+                        },
                     },
                 },
-            }
+            } as RootState
             useCustomFieldDefinitionsMock.mockReturnValue({
                 data: response,
                 isLoading: false,
@@ -129,11 +133,13 @@ describe('<CustomFieldSelect />', () => {
         const selectedCustomFieldId = dropdownField.id
         const state = {
             ui: {
-                [ticketInsightsSlice.name]: {
-                    selectedCustomField: {id: selectedCustomFieldId},
+                stats: {
+                    [ticketInsightsSlice.name]: {
+                        selectedCustomField: {id: selectedCustomFieldId},
+                    },
                 },
             },
-        }
+        } as RootState
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,
@@ -153,9 +159,9 @@ describe('<CustomFieldSelect />', () => {
     it('should list all available Dropdown-Text Custom Fields and dispatch selection', () => {
         const state = {
             ui: {
-                [ticketInsightsSlice.name]: initialState,
+                stats: {[ticketInsightsSlice.name]: initialState},
             },
-        }
+        } as RootState
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {data: ticketFieldDefinitions},
             isLoading: false,

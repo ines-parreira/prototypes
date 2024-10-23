@@ -13,10 +13,10 @@ import {RootState} from 'state/types'
 import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 
 export const isCleanStatsDirty = (state: RootState) =>
-    state.ui.stats.isFilterDirty
+    state.ui.stats.filters.isFilterDirty
 
 export const getCleanStatsFilters = (state: RootState) =>
-    state.ui.stats.cleanStatsFilters
+    state.ui.stats.filters.cleanStatsFilters
 
 export const getCleanStatsFiltersWithTimezone = createSelector(
     getCleanStatsFilters,

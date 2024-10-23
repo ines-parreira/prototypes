@@ -29,7 +29,7 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 } from 'state/ui/stats/selectors'
 import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -80,9 +80,11 @@ describe('<DrillDownDownloadButton />', () => {
     const defaultState = {
         currentUser: fromJS(user),
         ui: {
-            [drillDownSlice.name]: initialState,
+            stats: {
+                [drillDownSlice.name]: initialState,
+            },
         },
-    } as unknown as RootState
+    } as RootState
 
     it('should render button', () => {
         render(
@@ -98,65 +100,62 @@ describe('<DrillDownDownloadButton />', () => {
     })
 
     it('should render disabled button when user is not allowed', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({
-                        ...agents[0],
-                        role: {name: UserRole.ObserverAgent},
-                    }),
-                    ui: {
-                        [drillDownSlice.name]: initialState,
-                    },
-                } as unknown as RootState)}
-            >
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        const state = {
+            currentUser: fromJS({
+                ...agents[0],
+                role: {name: UserRole.ObserverAgent},
+            }),
+            ui: {
+                stats: {
+                    [drillDownSlice.name]: initialState,
+                },
+            },
+        } as RootState
+
+        renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            state
         )
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should render disabled button when background Jobs are running', () => {
+        const state = {
+            currentUser: fromJS({
+                ...agents[0],
+                role: {name: UserRole.Admin},
+            }),
+            ui: {
+                stats: {[drillDownSlice.name]: initialState},
+            },
+        } as RootState
         mockUseRunningJobs.mockReturnValue({
             running: true,
             refetch: jest.fn(),
             jobs: [],
         })
-        render(
-            <Provider
-                store={mockStore({
-                    currentUser: fromJS({
-                        ...agents[0],
-                        role: {name: UserRole.Admin},
-                    }),
-                    ui: {
-                        [drillDownSlice.name]: initialState,
-                    },
-                } as unknown as RootState)}
-            >
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            state
         )
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should dispatch export action', () => {
-        const store = mockStore(defaultState)
-        render(
-            <Provider store={store}>
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        const {store} = renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            defaultState
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -169,27 +168,28 @@ describe('<DrillDownDownloadButton />', () => {
     })
 
     it('should render requested label after button click', () => {
-        const store = mockStore({
+        const state = {
             ...defaultState,
             ui: {
-                [drillDownSlice.name]: {
-                    ...initialState,
-                    export: {
-                        isRequested: true,
-                        isLoading: false,
-                        isError: false,
+                stats: {
+                    [drillDownSlice.name]: {
+                        ...initialState,
+                        export: {
+                            isRequested: true,
+                            isLoading: false,
+                            isError: false,
+                        },
                     },
                 },
             },
-        })
+        } as RootState
 
-        render(
-            <Provider store={store}>
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            state
         )
         fireEvent.click(screen.getByRole('button'))
 
@@ -197,54 +197,56 @@ describe('<DrillDownDownloadButton />', () => {
     })
 
     it('should render loading label', () => {
-        const store = mockStore({
+        const state = {
             ...defaultState,
             ui: {
-                [drillDownSlice.name]: {
-                    ...initialState,
-                    export: {
-                        isRequested: true,
-                        isLoading: true,
-                        isError: false,
+                stats: {
+                    [drillDownSlice.name]: {
+                        ...initialState,
+                        export: {
+                            isRequested: true,
+                            isLoading: true,
+                            isError: false,
+                        },
                     },
                 },
             },
-        })
+        } as RootState
 
-        render(
-            <Provider store={store}>
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            state
         )
 
         expect(screen.getByText(DOWNLOAD_LOADING_LABEL)).toBeInTheDocument()
     })
 
     it('should render default state on error', () => {
-        const store = mockStore({
+        const state = {
             ...defaultState,
             ui: {
-                [drillDownSlice.name]: {
-                    ...initialState,
-                    export: {
-                        isRequested: true,
-                        isLoading: false,
-                        isError: true,
+                stats: {
+                    [drillDownSlice.name]: {
+                        ...initialState,
+                        export: {
+                            isRequested: true,
+                            isLoading: false,
+                            isError: true,
+                        },
                     },
                 },
             },
-        })
+        } as RootState
 
-        render(
-            <Provider store={store}>
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
-            </Provider>
+        renderWithStore(
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />,
+            state
         )
 
         expect(

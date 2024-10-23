@@ -1,10 +1,10 @@
 import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {Notification} from 'state/notifications/types'
 import {
     AgentsTableColumn,
+    ChannelsTableColumns,
     TableColumnSet,
     TableSetting,
 } from 'state/ui/stats/types'

@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {OrderDirection} from 'models/api/types'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {RootState} from 'state/types'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 type ChannelsSorting = {
     field: ChannelsTableColumns
@@ -52,7 +52,7 @@ export const {toggleHeatmapMode, sortingSet, sortingLoading, sortingLoaded} =
     channelsSlice.actions
 
 export const getHeatmapMode = (state: RootState) =>
-    state.ui[channelsSlice.name].heatmapMode
+    state.ui.stats[channelsSlice.name].heatmapMode
 
 export const getChannelsSorting = (state: RootState) =>
-    state.ui[channelsSlice.name].sorting
+    state.ui.stats[channelsSlice.name].sorting

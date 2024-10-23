@@ -18,7 +18,7 @@ import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -37,15 +37,18 @@ describe('<AgentsTableSummaryCell', () => {
             }),
         },
         ui: {
-            stats: uiStatsInitialState,
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            stats: {
+                filters: uiStatsInitialState,
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
         },
         agents: fromJS({
             all: agents,
         }),
-    } as unknown as RootState
+    } as RootState
 
     const metricValue = 123
     const metricQuery = () => ({

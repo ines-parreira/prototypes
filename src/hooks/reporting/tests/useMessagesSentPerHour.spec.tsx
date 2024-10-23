@@ -12,8 +12,7 @@ import {
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metrics')
@@ -35,10 +34,11 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
     const defaultState = {
         stats: {filters: fromLegacyStatsFilters(statsFilters)},
         ui: {
-            agentPerformance: initialState,
-            stats: uiStatsInitialState,
+            stats: {
+                filters: uiStatsInitialState,
+            },
         },
-    } as unknown as RootState
+    } as RootState
 
     const timeZone = 'UTC'
     const messagesSentValue = 50
@@ -108,10 +108,11 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
         const state = {
             stats: {filters: {period: statsFilters.period}},
             ui: {
-                agentPerformance: initialState,
-                stats: uiStatsInitialState,
+                stats: {
+                    filters: uiStatsInitialState,
+                },
             },
-        } as unknown as RootState
+        } as RootState
 
         renderHook(() => useMessagesSentPerHour(), {
             wrapper: ({children}) => (

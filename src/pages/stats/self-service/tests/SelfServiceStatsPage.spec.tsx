@@ -10,7 +10,7 @@ import _noop from 'lodash/noop'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
@@ -349,7 +349,7 @@ describe('<SelfServiceStatsPage />', () => {
         }),
         billing: fromJS(billingState),
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

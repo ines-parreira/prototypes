@@ -21,11 +21,11 @@ import {
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+import {statFiltersClean} from 'state/ui/stats/actions'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey} from 'models/stat/types'
-import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedChannels = channels
@@ -272,7 +272,7 @@ describe('ChannelsFilter', () => {
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Channels,
             logical_operator:

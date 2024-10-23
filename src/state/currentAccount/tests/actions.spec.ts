@@ -2,7 +2,6 @@ import {fromJS, Map} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
 import {billingState} from 'fixtures/billing'
 import {
@@ -16,7 +15,7 @@ import {
     submitAgentTableConfigView,
     submitChannelsTableConfigView,
 } from 'state/currentAccount/actions'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
 import * as actions from 'state/currentAccount/actions'
 import * as constants from 'state/currentAccount/constants'
 import {initialState} from 'state/currentAccount/reducers'

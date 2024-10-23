@@ -21,10 +21,10 @@ import {
 } from 'pages/stats/common/utils'
 import {
     ChannelColumnConfig,
-    ChannelsTableColumns,
     ChannelsTableLabels,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
 import {DATE_TIME_FORMAT} from './constants'
 

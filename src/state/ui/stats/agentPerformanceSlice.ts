@@ -94,7 +94,7 @@ export const {
 } = agentPerformanceSlice.actions
 
 const getSliceState = (state: RootState) =>
-    state.ui.statsTables[agentPerformanceSlice.name]
+    state.ui.stats.statsTables[agentPerformanceSlice.name]
 
 export const getAgentSorting = createSelector(
     getSliceState,

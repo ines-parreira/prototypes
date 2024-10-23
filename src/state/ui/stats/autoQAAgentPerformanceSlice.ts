@@ -81,7 +81,7 @@ export const {
 } = autoQAAgentPerformanceSlice.actions
 
 const getSliceState = (state: RootState) =>
-    state.ui.statsTables[autoQAAgentPerformanceSlice.name]
+    state.ui.stats.statsTables[autoQAAgentPerformanceSlice.name]
 
 export const getAgentSorting = createSelector(
     getSliceState,

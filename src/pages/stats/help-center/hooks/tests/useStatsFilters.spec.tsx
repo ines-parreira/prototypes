@@ -29,9 +29,14 @@ const defaultState = {
         filters: defaultStatsFilters,
     },
     ui: {
-        stats: defaultStatsFilters,
+        stats: {
+            filters: {
+                cleanStatsFilters: defaultStatsFilters,
+                isFilterDirty: false,
+            },
+        },
     },
-} as unknown as RootState
+} as RootState
 
 const mockStore = configureMockStore([thunk])(defaultState)
 

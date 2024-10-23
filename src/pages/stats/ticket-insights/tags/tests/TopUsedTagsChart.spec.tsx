@@ -6,7 +6,7 @@ import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
 
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {
     TopUsedTagsChart,
     TAGS_CARD_TITLE,
@@ -48,7 +48,7 @@ const useTagsDistributionReturnValue = {
 const mockStore = {
     stats: initialState,
     ui: {
-        stats: uiStatsInitialState,
+        stats: {filters: uiFiltersInitialState},
     },
 } as RootState
 

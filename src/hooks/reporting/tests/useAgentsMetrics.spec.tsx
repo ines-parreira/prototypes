@@ -17,9 +17,10 @@ import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOne
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import {RootState} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 
 import {assumeMock, mockStore} from 'utils/testing'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
@@ -109,12 +110,15 @@ describe('useAgentsMetric', () => {
             filters: {period},
         },
         ui: {
-            stats: uiStatsInitialState,
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceInitialState,
+            stats: {
+                filters: uiStatsInitialState,
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]:
+                        agentPerformanceInitialState,
+                },
             },
         },
-    } as any
+    } as RootState
 
     beforeEach(() => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(metricData)

@@ -1,21 +1,11 @@
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
 import {AgentPerformanceState} from 'state/ui/stats/agentPerformanceSlice'
 import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
-
-export type StatsState = {
-    fetchingMap: {
-        [key: string]: boolean | undefined
-    }
-    isFilterDirty: boolean
-    cleanStatsFilters: StatsFiltersWithLogicalOperator | null
-}
 
 export enum OverviewMetric {
     CustomerSatisfaction = 'customer_satisfaction',
@@ -111,6 +101,19 @@ export type TableView<T> = {
 export type TableSetting<T> = {
     active_view: string
     views: TableView<T>[]
+}
+
+export enum ChannelsTableColumns {
+    Channel = 'channels_channel',
+    TicketsCreated = 'channels_tickets_created',
+    CreatedTicketsPercentage = 'channels_created_tickets_as_percentage',
+    ClosedTickets = 'channels_closed_tickets',
+    TicketHandleTime = 'channels_ticket_handle_time',
+    FirstResponseTime = 'channels_first_response_time',
+    MedianResolutionTime = 'channels_median_resolution_time',
+    TicketsReplied = 'channels_tickets_replied',
+    MessagesSent = 'channels_messages_sent',
+    CustomerSatisfaction = 'channels_customer_satisfaction',
 }
 
 export type TableColumnSet =

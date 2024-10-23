@@ -18,7 +18,7 @@ describe('<BusiestTimesOfDaysMetricSelect />', () => {
         (metric) => {
             const state = {
                 ui: {
-                    [busiestTimesSlice.name]: {selectedMetric: metric},
+                    stats: {[busiestTimesSlice.name]: {selectedMetric: metric}},
                 },
             } as RootState
 
@@ -34,7 +34,9 @@ describe('<BusiestTimesOfDaysMetricSelect />', () => {
         const selectedLabel = metricLabels[selectedMetric]
         const state = {
             ui: {
-                [busiestTimesSlice.name]: {selectedMetric: currentMetric},
+                stats: {
+                    [busiestTimesSlice.name]: {selectedMetric: currentMetric},
+                },
             },
         } as RootState
 

@@ -19,7 +19,7 @@ import {channelsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_C
 import {integrationsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import {tagsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -60,7 +60,7 @@ describe('Support Performance Filters', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

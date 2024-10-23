@@ -57,7 +57,7 @@ describe('<StatsRoutes/>', () => {
         notifications: fromJS([]),
         ui: {
             stats: {
-                isFilterDirty: false,
+                filters: {isFilterDirty: false},
             },
         },
     } as RootState

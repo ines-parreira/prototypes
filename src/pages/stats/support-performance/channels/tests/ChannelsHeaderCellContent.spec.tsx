@@ -3,10 +3,8 @@ import React from 'react'
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
-import {
-    ChannelsTableColumns,
-    ChannelsTableLabels,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelsTableLabels} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useChannelsSortingQuery')

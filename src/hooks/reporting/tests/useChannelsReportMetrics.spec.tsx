@@ -9,7 +9,7 @@ import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedCh
 import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
 import {RootState} from 'state/types'
 import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, mockStore} from 'utils/testing'
 import {
     useClosedTicketsMetricPerChannel,
@@ -82,10 +82,12 @@ describe('useChannelsReportMetrics', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
-            statsTables: {
-                [agentPerformanceSlice.name]:
-                    agentPerformanceSlice.getInitialState(),
+            stats: {
+                filters: uiStatsInitialState,
+                statsTables: {
+                    [agentPerformanceSlice.name]:
+                        agentPerformanceSlice.getInitialState(),
+                },
             },
         },
     } as RootState

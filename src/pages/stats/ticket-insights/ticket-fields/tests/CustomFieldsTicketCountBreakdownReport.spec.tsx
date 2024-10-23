@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
@@ -30,7 +30,7 @@ describe('<CustomFieldsTicketCountBreakdownReport />', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiFiltersInitialState},
         },
     } as RootState
 

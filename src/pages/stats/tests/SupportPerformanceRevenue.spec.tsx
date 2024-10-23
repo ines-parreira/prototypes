@@ -17,7 +17,7 @@ import {
     revenuePerDay,
     revenuePerTicket,
 } from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {
     REVENUE_OVERVIEW,
@@ -221,7 +221,7 @@ describe('SupportPerformanceRevenue', () => {
         }),
         billing: fromJS(billingState),
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

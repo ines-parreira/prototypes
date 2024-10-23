@@ -49,7 +49,7 @@ import {
     busiestTimesSlice,
     initialState as busiestTimesInitialState,
 } from 'state/ui/stats/busiestTimesSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {
     initialState as ticketInsightsSliceStatsInitialState,
     ticketInsightsSlice,
@@ -94,14 +94,16 @@ const defaultState = {
         },
     },
     ui: {
-        stats: uiStatsInitialState,
-        [busiestTimesSlice.name]: busiestTimesInitialState,
-        [ticketInsightsSlice.name]: {
-            ...ticketInsightsSliceStatsInitialState,
-            selectedCustomField: {
-                id: 1,
-                label: '',
-                isLoading: false,
+        stats: {
+            filters: uiStatsInitialState,
+            [busiestTimesSlice.name]: busiestTimesInitialState,
+            [ticketInsightsSlice.name]: {
+                ...ticketInsightsSliceStatsInitialState,
+                selectedCustomField: {
+                    id: 1,
+                    label: '',
+                    isLoading: false,
+                },
             },
         },
     },

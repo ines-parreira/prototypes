@@ -9,7 +9,6 @@ import {
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     ChannelColumnConfig,
-    ChannelsTableColumns,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
@@ -26,6 +25,7 @@ import {
     ConvertMetric,
     VoiceAgentsMetric,
     AutoQAMetric,
+    ChannelsTableColumns,
 } from 'state/ui/stats/types'
 import {
     initialState,
@@ -56,7 +56,7 @@ const createJobMock = assumeMock(createJob)
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const store = mockStore({
     ui: {
-        [drillDownSlice.name]: initialState,
+        stats: {[drillDownSlice.name]: initialState},
     },
 } as RootState)
 
@@ -156,14 +156,16 @@ describe('drillDownSlice', () => {
 
         const state = {
             ui: {
-                [drillDownSlice.name]: {
-                    isOpen,
-                    currentPage,
-                    metricData,
-                    isNewFilter: false,
+                stats: {
+                    [drillDownSlice.name]: {
+                        isOpen,
+                        currentPage,
+                        metricData,
+                        isNewFilter: false,
+                    },
                 },
             },
-        } as unknown as RootState
+        } as RootState
 
         const voiceAgentsMetricsWithExpectedValues = Object.values(
             VoiceAgentsMetric
@@ -315,8 +317,10 @@ describe('drillDownSlice', () => {
                 getDrillDownMetricColumn({
                     ...state,
                     ui: {
-                        [drillDownSlice.name]: {
-                            metricData,
+                        stats: {
+                            [drillDownSlice.name]: {
+                                metricData,
+                            },
                         },
                     },
                 } as RootState)
@@ -349,8 +353,8 @@ describe('drillDownSlice', () => {
         createJobMock.mockResolvedValue({id: 123} as unknown as Job)
 
         beforeEach(() => {
-            store.getState().ui[drillDownSlice.name] = {
-                ...store.getState().ui[drillDownSlice.name],
+            store.getState().ui.stats[drillDownSlice.name] = {
+                ...store.getState().ui.stats[drillDownSlice.name],
                 metricData: {
                     metricName: OverviewMetric.OpenTickets,
                 },
@@ -370,8 +374,8 @@ describe('drillDownSlice', () => {
             const context = {
                 channel_connection_external_ids: ['3', '5'],
             }
-            store.getState().ui[drillDownSlice.name] = {
-                ...store.getState().ui[drillDownSlice.name],
+            store.getState().ui.stats[drillDownSlice.name] = {
+                ...store.getState().ui.stats[drillDownSlice.name],
                 metricData: {
                     metricName: ConvertMetric.CampaignSalesCount,
                     campaignsOperator: LogicalOperatorEnum.ONE_OF,

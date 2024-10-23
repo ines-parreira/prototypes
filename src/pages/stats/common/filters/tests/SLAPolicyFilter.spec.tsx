@@ -17,7 +17,7 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean} from 'state/ui/stats/actions'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FilterKey, TagFilterInstanceId} from 'models/stat/types'
@@ -82,7 +82,7 @@ describe('SLAPolicyFilter', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

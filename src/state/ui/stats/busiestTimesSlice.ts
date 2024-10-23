@@ -29,4 +29,4 @@ export const busiestTimesSlice = createSlice({
 export const {setSelectedMetric} = busiestTimesSlice.actions
 
 export const getSelectedMetric = (state: RootState) =>
-    state.ui[busiestTimesSlice.name].selectedMetric
+    state.ui.stats[busiestTimesSlice.name].selectedMetric

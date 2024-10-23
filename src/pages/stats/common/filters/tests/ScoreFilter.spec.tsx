@@ -13,11 +13,11 @@ import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
+import {statFiltersClean} from 'state/ui/stats/actions'
 import {renderWithStore} from 'utils/testing'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {FilterKey} from 'models/stat/types'
-import {STAT_FILTERS_CLEAN} from 'state/ui/stats/constants'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {
     MAX_SCORE_VALUE,
@@ -235,7 +235,7 @@ describe('ScoreFilter', () => {
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({type: STAT_FILTERS_CLEAN})
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Score,
             logical_operator:

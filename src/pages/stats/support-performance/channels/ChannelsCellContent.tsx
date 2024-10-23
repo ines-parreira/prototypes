@@ -17,7 +17,6 @@ import heatmapCss from 'pages/stats/heatmap.less'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
     ChannelColumnConfig,
-    ChannelsTableColumns,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {getHeatmapMode} from 'state/ui/stats/channelsSlice'
@@ -26,6 +25,7 @@ import {
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 export const ChannelsCellContent = ({
     column,

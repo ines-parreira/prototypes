@@ -11,7 +11,7 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {latestSatisfactionSurveys, satisfactionSurveys} from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {renderWithRouter} from 'utils/testing'
 import {SATISFACTION_SURVEYS} from 'config/stats'
 import {integrationsState} from 'fixtures/integrations'
@@ -86,7 +86,7 @@ describe('SupportPerformanceSatisfaction', () => {
             all: teams,
         }),
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiFiltersInitialState},
         },
     } as RootState
 

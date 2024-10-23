@@ -47,7 +47,7 @@ jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
 describe('ChannelsReport', () => {
     const defaultState = {
         ui: {
-            [channelsSlice.name]: initialState,
+            stats: {[channelsSlice.name]: initialState},
         },
     } as RootState
 

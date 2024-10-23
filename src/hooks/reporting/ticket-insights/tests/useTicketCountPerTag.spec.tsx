@@ -39,9 +39,11 @@ describe('useTicketCountPerTag', () => {
         },
         ui: {
             stats: {
-                cleanStatsFilters: {period},
+                filters: {
+                    cleanStatsFilters: {period},
+                },
+                [tagsReportSlice.name]: initialState,
             },
-            [tagsReportSlice.name]: initialState,
         },
     } as RootState
 
@@ -155,11 +157,14 @@ describe('useTicketCountPerTag', () => {
             ...defaultState,
             ui: {
                 ...defaultState.ui,
-                [tagsReportSlice.name]: {
-                    ...initialState,
-                    order: {
-                        column: 'total',
-                        direction: OrderDirection.Asc,
+                stats: {
+                    ...defaultState.ui.stats,
+                    [tagsReportSlice.name]: {
+                        ...initialState,
+                        order: {
+                            column: 'total',
+                            direction: OrderDirection.Asc,
+                        },
                     },
                 },
             },
@@ -191,11 +196,14 @@ describe('useTicketCountPerTag', () => {
             ...defaultState,
             ui: {
                 ...defaultState.ui,
-                [tagsReportSlice.name]: {
-                    ...initialState,
-                    order: {
-                        column: 0,
-                        direction: OrderDirection.Asc,
+                stats: {
+                    ...defaultState.ui.stats,
+                    [tagsReportSlice.name]: {
+                        ...initialState,
+                        order: {
+                            column: 0,
+                            direction: OrderDirection.Asc,
+                        },
                     },
                 },
             },

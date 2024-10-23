@@ -12,7 +12,7 @@ import {
     intentsOccurrence,
     intentsOverview,
 } from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {renderWithRouter} from 'utils/testing'
 import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 
@@ -47,7 +47,7 @@ describe('AutomateIntents', () => {
             }),
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 

@@ -6,6 +6,7 @@ import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 import {assumeMock, renderWithStore} from 'utils/testing'
 import {
@@ -232,9 +233,7 @@ describe('CampaignsFilter', () => {
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        expect(mockedDispatch).toHaveBeenCalledWith({
-            type: 'STAT/STAT_FILTERS_DIRTY',
-        })
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersDirty())
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -246,9 +245,7 @@ describe('CampaignsFilter', () => {
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({
-            type: 'STAT/STAT_FILTERS_CLEAN',
-        })
+        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {

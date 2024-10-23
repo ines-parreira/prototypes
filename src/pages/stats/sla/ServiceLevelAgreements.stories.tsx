@@ -1,3 +1,4 @@
+import {Tag} from '@gorgias/api-queries'
 import React, {ComponentProps} from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {Meta, StoryFn} from '@storybook/react'
@@ -98,16 +99,18 @@ const defaultState = {
     },
     ui: {
         stats: {
-            isFilterDirty: false,
-            cleanStatsFilters: {
-                period: {
-                    start_datetime: '2024-07-26T00:00:00.000',
-                    end_datetime: '2024-08-01T23:59:59.000',
+            filters: {
+                isFilterDirty: false,
+                cleanStatsFilters: {
+                    period: {
+                        start_datetime: '2024-07-26T00:00:00.000',
+                        end_datetime: '2024-08-01T23:59:59.000',
+                    },
                 },
             },
-        },
-        drillDown: {
-            isOpen: false,
+            drillDown: {
+                isOpen: false,
+            },
         },
     },
     entities: {},
@@ -124,7 +127,7 @@ const defaultState = {
                 name: 'ai_wait',
                 uri: '/api/tags/641396/',
                 usage: 132,
-            },
+            } as Tag,
         ],
     },
 }

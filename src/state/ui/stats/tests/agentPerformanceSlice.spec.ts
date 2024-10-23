@@ -26,9 +26,9 @@ import {
     toggleHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 
 describe('agentPerformanceSlice', () => {
     const agents = [
@@ -156,8 +156,10 @@ describe('agentPerformanceSlice', () => {
         it('should return the current sorting', () => {
             const state = {
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
                     },
                 },
             } as RootState
@@ -170,8 +172,10 @@ describe('agentPerformanceSlice', () => {
         it('should return the loading state of current sorting', () => {
             const state = {
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
                     },
                 },
             } as RootState
@@ -187,12 +191,13 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
-                stats: initialStatsFiltersState,
             } as RootState
 
             expect(getFilteredAgents(state).length).toEqual(agents.length)
@@ -202,10 +207,12 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: {
                     filters: {
@@ -213,10 +220,10 @@ describe('agentPerformanceSlice', () => {
                             start_datetime: '1970-01-01T00:00:00+00:00',
                             end_datetime: '1970-01-01T00:00:00+00:00',
                         },
-                        agents: [],
+                        // agents: withDefaultLogicalOperator([]),
                     },
                 },
-            } as unknown as RootState
+            } as RootState
 
             expect(getFilteredAgents(state).length).toEqual(agents.length)
         })
@@ -233,12 +240,14 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
-                    },
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: {
+                            ...uiFiltersInitialState,
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
                 stats: {
@@ -266,12 +275,14 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
-                    },
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                        },
+                        filters: {
+                            ...uiFiltersInitialState,
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
                 stats: {
@@ -291,17 +302,19 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AgentsTableColumn.ClosedTickets,
-                                direction: OrderDirection.Asc,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AgentsTableColumn.ClosedTickets,
+                                    direction: OrderDirection.Asc,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -313,15 +326,17 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            sorting: {
-                                ...initialState.sorting,
-                                direction: OrderDirection.Desc,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                sorting: {
+                                    ...initialState.sorting,
+                                    direction: OrderDirection.Desc,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -335,19 +350,21 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AgentsTableColumn.MedianFirstResponseTime,
-                                direction: OrderDirection.Desc,
-                                isLoading: false,
-                                lastSortingMetric: metricData,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AgentsTableColumn.MedianFirstResponseTime,
+                                    direction: OrderDirection.Desc,
+                                    isLoading: false,
+                                    lastSortingMetric: metricData,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -371,7 +388,7 @@ describe('agentPerformanceSlice', () => {
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
             ]
-            const metricData = [
+            const metricData: ReportingMetricItem[] = [
                 {
                     [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
                     [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
@@ -381,22 +398,24 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AgentsTableColumn.ClosedTickets,
-                                direction: OrderDirection.Desc,
-                                isLoading: false,
-                                lastSortingMetric: metricData,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AgentsTableColumn.ClosedTickets,
+                                    direction: OrderDirection.Desc,
+                                    isLoading: false,
+                                    lastSortingMetric: metricData,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
-            } as unknown as RootState
+            } as RootState
 
             expect(getSortedAgents(state).pop()).toEqual(agents[0])
         })
@@ -406,7 +425,7 @@ describe('agentPerformanceSlice', () => {
                 {id: 1, name: 'Adam'},
                 {id: 2, name: 'Zoey'},
             ]
-            const metricData = [
+            const metricData: ReportingMetricItem[] = [
                 {
                     [TicketMessagesDimension.FirstHelpdeskMessageUserId]: '2',
                     [TicketMessagesMeasure.MedianFirstResponseTime]: '10',
@@ -418,20 +437,21 @@ describe('agentPerformanceSlice', () => {
                 ({
                     agents: fromJS({all: fromJS(agents)}),
                     ui: {
-                        statsTables: {
-                            [AGENT_PERFORMANCE_SLICE_NAME]: {
-                                sorting: {
-                                    field: AgentsTableColumn.ClosedTickets,
-                                    direction,
-                                    isLoading: false,
-                                    lastSortingMetric: metricData,
+                        stats: {
+                            statsTables: {
+                                [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                    sorting: {
+                                        field: AgentsTableColumn.ClosedTickets,
+                                        direction,
+                                        isLoading: false,
+                                        lastSortingMetric: metricData,
+                                    },
                                 },
                             },
+                            filters: uiFiltersInitialState,
                         },
-                        stats: initialUiStatsState,
                     },
-                    stats: initialStatsFiltersState,
-                }) as unknown as RootState
+                }) as RootState
 
             expect(
                 getSortedAgents(
@@ -456,22 +476,26 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            ...initialState,
-                            sorting: {
-                                ...initialState.sorting,
-                                field: AgentsTableColumn.MedianFirstResponseTime,
-                                direction: OrderDirection.Asc,
-                                isLoading: false,
-                                lastSortingMetric,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                ...initialState,
+                                sorting: {
+                                    ...initialState.sorting,
+                                    field: AgentsTableColumn.MedianFirstResponseTime,
+                                    direction: OrderDirection.Asc,
+                                    isLoading: false,
+                                    lastSortingMetric,
+                                },
                             },
                         },
-                    },
-                    stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: {
-                            agents: withDefaultLogicalOperator(filteredAgents),
+                        filters: {
+                            ...uiFiltersInitialState,
+                            cleanStatsFilters: {
+                                agents: withDefaultLogicalOperator(
+                                    filteredAgents
+                                ),
+                            },
                         },
                     },
                 },
@@ -494,19 +518,21 @@ describe('agentPerformanceSlice', () => {
             const state = {
                 agents: fromJS({all: fromJS(agents)}),
                 ui: {
-                    statsTables: {
-                        [AGENT_PERFORMANCE_SLICE_NAME]: {
-                            sorting: {
-                                ...initialState.sorting,
-                                direction: OrderDirection.Asc,
-                            },
-                            pagination: {
-                                currentPage,
-                                perPage,
+                    stats: {
+                        statsTables: {
+                            [AGENT_PERFORMANCE_SLICE_NAME]: {
+                                sorting: {
+                                    ...initialState.sorting,
+                                    direction: OrderDirection.Asc,
+                                },
+                                pagination: {
+                                    currentPage,
+                                    perPage,
+                                },
                             },
                         },
+                        filters: uiFiltersInitialState,
                     },
-                    stats: initialUiStatsState,
                 },
                 stats: initialStatsFiltersState,
             } as RootState

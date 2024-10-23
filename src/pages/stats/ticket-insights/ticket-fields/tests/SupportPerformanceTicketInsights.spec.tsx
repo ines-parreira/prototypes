@@ -26,7 +26,6 @@ import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-field
 
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {
     initialState as ticketInsightsState,
     ticketInsightsSlice,
@@ -79,7 +78,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
         stats: initialState,
         ui: {
             [ticketInsightsSlice.name]: ticketInsightsState,
-            stats: uiStatsInitialState,
         },
     } as unknown as RootState
 

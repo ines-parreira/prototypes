@@ -20,7 +20,7 @@ const AllUsedTagsTableMock = assumeMock(AllUsedTagsTable)
 describe('<AllUsedTagsTableChart />', () => {
     const defaultState = {
         ui: {
-            [tagsReportSlice.name]: initialState,
+            stats: {[tagsReportSlice.name]: initialState},
         },
     } as RootState
 

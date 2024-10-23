@@ -47,8 +47,10 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         },
         ui: {
             stats: {
-                isFilterDirty: false,
-                cleanStatsFilters: filters,
+                filters: {
+                    isFilterDirty: false,
+                    cleanStatsFilters: filters,
+                },
             },
         },
     } as RootState

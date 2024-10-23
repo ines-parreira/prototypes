@@ -1,11 +1,19 @@
 import {OrderDirection} from 'models/api/types'
 import {RootState} from 'state/types'
 import {
+    getCustomFieldsOrder,
+    getHeatmapMode,
     getSelectedCustomField,
+    getValueMode,
     initialState,
+    setOrder,
     setSelectedCustomField,
+    TicketInsightsOrder,
     ticketInsightsSlice,
+    toggleHeatmapMode,
+    toggleValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {ValueMode} from 'state/ui/stats/types'
 
 describe('ticketInsightsSlice', () => {
     const fieldId = 123
@@ -30,26 +38,77 @@ describe('ticketInsightsSlice', () => {
             expect(newState.selectedCustomField.id).toEqual(fieldId)
             expect(newState.selectedCustomField.label).toEqual(fieldLabel)
         })
+
+        it('should set order', () => {
+            const sortingColumn: TicketInsightsOrder['column'] = 'total'
+            const newState = ticketInsightsSlice.reducer(
+                initialState,
+                setOrder({column: sortingColumn})
+            )
+
+            expect(newState.order).toEqual({
+                direction: OrderDirection.Desc,
+                column: sortingColumn,
+            })
+        })
+
+        it('should toggle value mode', () => {
+            const newState = ticketInsightsSlice.reducer(
+                initialState,
+                toggleValueMode()
+            )
+
+            expect(newState.valueMode).not.toEqual(initialState.valueMode)
+            expect(newState.valueMode).toEqual(ValueMode.Percentage)
+        })
+
+        it('should toggle heatmap mode', () => {
+            const newState = ticketInsightsSlice.reducer(
+                initialState,
+                toggleHeatmapMode()
+            )
+
+            expect(newState.heatmapMode).toEqual(!initialState.heatmapMode)
+        })
     })
 
-    describe('getSelectedCustomField selector', () => {
+    describe('selectors', () => {
+        const order = {column: 'label', direction: OrderDirection.Asc}
+        const valueMode = ValueMode.TotalCount
+        const isHeatmapMode = true
         const state = {
             ui: {
-                [ticketInsightsSlice.name]: {
-                    selectedCustomField: {
-                        id: fieldId,
-                        label: fieldLabel,
-                        isLoading: false,
+                stats: {
+                    [ticketInsightsSlice.name]: {
+                        selectedCustomField: {
+                            id: fieldId,
+                            label: fieldLabel,
+                            isLoading: false,
+                        },
+                        order,
+                        valueMode,
+                        heatmapMode: isHeatmapMode,
                     },
-                    order: {column: 'label', direction: OrderDirection.Asc},
                 },
             },
         } as RootState
 
-        it('getSelectedCustomField', () => {
+        it('should return selected custom field', () => {
             expect(getSelectedCustomField(state)).toEqual(field)
             expect(getSelectedCustomField(state).id).toEqual(fieldId)
             expect(getSelectedCustomField(state).label).toEqual(fieldLabel)
+        })
+
+        it('should return ordering', () => {
+            expect(getCustomFieldsOrder(state)).toEqual(order)
+        })
+
+        it('should return heatmapMode', () => {
+            expect(getHeatmapMode(state)).toEqual(isHeatmapMode)
+        })
+
+        it('should return valueMode', () => {
+            expect(getValueMode(state)).toEqual(valueMode)
         })
     })
 })

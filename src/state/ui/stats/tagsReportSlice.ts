@@ -58,10 +58,10 @@ export const {setOrder, toggleValueMode, toggleHeatmapMode} =
     tagsReportSlice.actions
 
 export const getValueMode = (state: RootState) =>
-    state.ui[tagsReportSlice.name].valueMode
+    state.ui.stats[tagsReportSlice.name].valueMode
 
 export const getTagsOrder = (state: RootState) =>
-    state.ui[tagsReportSlice.name].order
+    state.ui.stats[tagsReportSlice.name].order
 
 export const getHeatmapMode = (state: RootState) =>
-    state.ui[tagsReportSlice.name].heatmapMode
+    state.ui.stats[tagsReportSlice.name].heatmapMode

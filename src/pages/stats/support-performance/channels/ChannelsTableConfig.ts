@@ -19,12 +19,12 @@ import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
+import {MetricValueFormat} from 'pages/stats/common/utils'
+import {DrillDownQueryFactory} from 'pages/stats/DrillDownTableConfig'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {MetricValueFormat} from 'pages/stats/common/utils'
-import {DrillDownQueryFactory} from 'pages/stats/DrillDownTableConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {
@@ -39,23 +39,11 @@ import {
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
 import {
+    ChannelsTableColumns,
     ChannelsTableViewIdentifier,
     OverviewMetric,
     TableSetting,
 } from 'state/ui/stats/types'
-
-export enum ChannelsTableColumns {
-    Channel = 'channels_channel',
-    TicketsCreated = 'channels_tickets_created',
-    CreatedTicketsPercentage = 'channels_created_tickets_as_percentage',
-    ClosedTickets = 'channels_closed_tickets',
-    TicketHandleTime = 'channels_ticket_handle_time',
-    FirstResponseTime = 'channels_first_response_time',
-    MedianResolutionTime = 'channels_median_resolution_time',
-    TicketsReplied = 'channels_tickets_replied',
-    MessagesSent = 'channels_messages_sent',
-    CustomerSatisfaction = 'channels_customer_satisfaction',
-}
 
 export const LeadColumn = ChannelsTableColumns.Channel
 export const columnsOrder: ChannelsTableColumns[] = [

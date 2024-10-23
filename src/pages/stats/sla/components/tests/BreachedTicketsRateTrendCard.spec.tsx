@@ -8,7 +8,7 @@ import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {useBreachedSlaTicketsTrend} from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {SlaMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -28,7 +28,7 @@ describe('BreachedTicketsRateTrendCard', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     }
     const value = 5

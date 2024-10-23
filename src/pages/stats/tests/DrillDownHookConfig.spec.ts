@@ -1,4 +1,3 @@
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -13,6 +12,7 @@ import {
     ConvertMetric,
     VoiceMetric,
     VoiceAgentsMetric,
+    ChannelsTableColumns,
 } from 'state/ui/stats/types'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
 import {

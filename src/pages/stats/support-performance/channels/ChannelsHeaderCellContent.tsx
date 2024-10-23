@@ -5,10 +5,10 @@ import {OrderDirection} from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {
     ChannelColumnConfig,
-    ChannelsTableColumns,
     ChannelsTableLabels,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 type ChannelsHeaderCellContentProps = {
     column: ChannelsTableColumns

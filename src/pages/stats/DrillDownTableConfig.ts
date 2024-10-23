@@ -41,15 +41,13 @@ import {
 } from 'models/stat/types'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {
-    ChannelColumnConfig,
-    ChannelsTableColumns,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
     AutoQAMetric,
+    ChannelsTableColumns,
     ConvertMetric,
     OverviewMetric,
     SlaMetric,

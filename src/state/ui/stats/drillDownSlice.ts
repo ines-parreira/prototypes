@@ -23,7 +23,6 @@ import {
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     ChannelColumnConfig,
-    ChannelsTableColumns,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
@@ -34,6 +33,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     AgentsTableColumn,
     AutoQAMetric,
+    ChannelsTableColumns,
     ConvertMetric,
     OverviewMetric,
     SlaMetric,
@@ -312,19 +312,19 @@ export const {
 } = drillDownSlice.actions
 
 export const getDrillDownModalState = (state: RootState) =>
-    state.ui[drillDownSlice.name].isOpen
+    state.ui.stats[drillDownSlice.name].isOpen
 
 export const getDrillDownCurrentPage = (state: RootState) =>
-    state.ui[drillDownSlice.name].currentPage
+    state.ui.stats[drillDownSlice.name].currentPage
 
 export const getDrillDownExport = (state: RootState) =>
-    state.ui[drillDownSlice.name].export
+    state.ui.stats[drillDownSlice.name].export
 
 export const getDrillDownMetric = (state: RootState) =>
-    state.ui[drillDownSlice.name].metricData
+    state.ui.stats[drillDownSlice.name].metricData
 
 export const getIsNewFilter = (state: RootState) =>
-    state.ui[drillDownSlice.name].isNewFilter
+    state.ui.stats[drillDownSlice.name].isNewFilter
 
 export const getDrillDownMetricColumn = (
     state: RootState
@@ -333,7 +333,7 @@ export const getDrillDownMetricColumn = (
     showMetric: boolean
     metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
 } => {
-    const metricData = state.ui[drillDownSlice.name].metricData
+    const metricData = state.ui.stats[drillDownSlice.name].metricData
     let metricTitle = ''
     let metricValueFormat: MetricValueFormat | typeof SLA_FORMAT = 'decimal'
 

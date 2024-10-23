@@ -14,7 +14,7 @@ import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {Cubes} from 'models/reporting/cubes'
 
@@ -40,12 +40,14 @@ describe('useTicketsDistribution', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            [ticketInsightsSlice.name]: {
-                selectedCustomField: {id: 2},
+            stats: {
+                [ticketInsightsSlice.name]: {
+                    selectedCustomField: {id: 2},
+                },
+                filters: uiStatsInitialState,
             },
-            stats: uiStatsInitialState,
         },
-    } as unknown as RootState
+    } as RootState
 
     const maxTicketCount = 16
     const ticketsCountTotal = 20

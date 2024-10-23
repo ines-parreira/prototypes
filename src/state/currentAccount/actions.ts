@@ -2,15 +2,16 @@ import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 import {AgentsTableViews} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {
-    ChannelsTableColumns,
-    ChannelsTableViews,
-} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {ChannelsTableViews} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
 } from 'state/currentAccount/selectors'
-import {AgentsTableColumn, TableView} from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    ChannelsTableColumns,
+    TableView,
+} from 'state/ui/stats/types'
 
 import {RootState, StoreDispatch} from 'state/types'
 import client from 'models/api/resources'

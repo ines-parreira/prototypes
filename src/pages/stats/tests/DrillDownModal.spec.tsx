@@ -34,12 +34,14 @@ describe('<DrillDownModal />', () => {
     }
     const defaultState = {
         ui: {
-            drillDown: {
-                isOpen: true,
-                metricData,
+            stats: {
+                drillDown: {
+                    isOpen: true,
+                    metricData,
+                },
             },
         },
-    } as unknown as RootState
+    } as RootState
     const componentMock = () => <div />
 
     beforeEach(() => {
@@ -89,15 +91,17 @@ describe('<DrillDownModal />', () => {
         (metric, ExpectedTableContentComponent) => {
             const state = {
                 ui: {
-                    drillDown: {
-                        isOpen: true,
-                        metricData: {
-                            title: 'Metric title',
-                            metricName: metric,
+                    stats: {
+                        drillDown: {
+                            isOpen: true,
+                            metricData: {
+                                title: 'Metric title',
+                                metricName: metric,
+                            },
                         },
                     },
                 },
-            } as unknown as RootState
+            } as RootState
 
             render(
                 <Provider store={mockStore(state)}>
@@ -107,7 +111,7 @@ describe('<DrillDownModal />', () => {
 
             expect(DrillDownTableMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    metricData: state.ui.drillDown.metricData,
+                    metricData: state.ui.stats.drillDown.metricData,
                     useDataHook: expect.any(Function),
                     TableContent: ExpectedTableContentComponent,
                 }),
@@ -115,7 +119,7 @@ describe('<DrillDownModal />', () => {
             )
             expect(DrillDownInfobarMock).toHaveBeenCalledWith(
                 {
-                    metricData: state.ui.drillDown.metricData,
+                    metricData: state.ui.stats.drillDown.metricData,
                     useDataHook: expect.any(Function),
                 },
                 {}

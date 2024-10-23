@@ -40,7 +40,7 @@ describe('useShoutoutTopResults', () => {
         agents: fromJS({
             all: agents,
         }),
-        ui: {stats: {cleanStatsFilters: null}},
+        ui: {stats: {filters: {cleanStatsFilters: null}}},
     } as RootState
 
     it.each(agentsShoutoutsConfig)(

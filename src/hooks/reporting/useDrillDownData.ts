@@ -16,7 +16,6 @@ import {
     DrillDownFormatterProps,
 } from 'pages/stats/DrillDownFormatters'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {
     DrillDownMetric,
@@ -31,6 +30,7 @@ import {
 import {
     AgentsTableColumn,
     AutoQAMetric,
+    ChannelsTableColumns,
     OverviewMetric,
     SlaMetric,
 } from 'state/ui/stats/types'

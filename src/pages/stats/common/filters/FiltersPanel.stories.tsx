@@ -12,7 +12,7 @@ import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {initialState} from 'state/stats/statsSlice'
 import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {RootState} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {customFieldsMockResponse} from 'fixtures/customField'
@@ -20,7 +20,7 @@ import {customFieldsMockResponse} from 'fixtures/customField'
 const defaultState = {
     stats: initialState,
     ui: {
-        stats: uiStatsInitialState,
+        stats: {filters: uiStatsInitialState},
     },
     integrations: fromJS(integrationsState),
 } as RootState

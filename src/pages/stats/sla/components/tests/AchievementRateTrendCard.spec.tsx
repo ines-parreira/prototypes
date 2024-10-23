@@ -8,7 +8,8 @@ import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {RootState} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {SlaMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -30,9 +31,9 @@ describe('AchievementRateTrendCard', () => {
             },
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
-    }
+    } as RootState
     const value = 5
     const prevValue = 10
 

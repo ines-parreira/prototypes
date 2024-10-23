@@ -17,7 +17,7 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {
     ticketInsightsSlice,
     getCustomFieldsOrder,
@@ -55,7 +55,9 @@ describe('DownloadTicketFieldsDataButton', () => {
             [ticketInsightsSlice.name]: {
                 selectedCustomField: {id: selectedCustomFieldId},
             },
-            stats: uiStatsInitialState,
+            stats: {
+                filters: uiFiltersInitialState,
+            },
         },
         period,
     } as unknown as RootState

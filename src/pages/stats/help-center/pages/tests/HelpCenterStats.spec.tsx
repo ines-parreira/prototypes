@@ -262,23 +262,25 @@ describe('<HelpCenterStats />', () => {
             stats: {
                 filters: {
                     ...initialState.filters,
-                    helpCenters: withDefaultLogicalOperator([]),
-                    localeCodes: withDefaultLogicalOperator([]),
+                    helpCenters: withDefaultLogicalOperator<number>([]),
+                    localeCodes: withDefaultLogicalOperator<string>([]),
                 },
             },
             ui: {
                 stats: {
-                    cleanStatsFilters: {
-                        ...initialState.filters,
-                        helpCenters: withDefaultLogicalOperator([]),
-                        localeCodes: withDefaultLogicalOperator([]),
+                    filters: {
+                        cleanStatsFilters: {
+                            ...initialState.filters,
+                            helpCenters: withDefaultLogicalOperator<number>([]),
+                            localeCodes: withDefaultLogicalOperator<string>([]),
+                        },
                     },
                 },
             },
             integrations: fromJS({
                 integrations: [],
             }),
-        } as unknown as RootState
+        } as RootState
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,
             helpCenters: helpCenters,
@@ -305,24 +307,26 @@ describe('<HelpCenterStats />', () => {
                     helpCenters: withDefaultLogicalOperator([
                         selectedHelpCenter.id,
                     ]),
-                    localeCodes: withDefaultLogicalOperator([]),
+                    localeCodes: withDefaultLogicalOperator<string>([]),
                 },
             },
             ui: {
                 stats: {
-                    cleanStatsFilters: {
-                        ...initialState.filters,
-                        helpCenters: withDefaultLogicalOperator([
-                            selectedHelpCenter.id,
-                        ]),
-                        localeCodes: withDefaultLogicalOperator([]),
+                    filters: {
+                        cleanStatsFilters: {
+                            ...initialState.filters,
+                            helpCenters: withDefaultLogicalOperator([
+                                selectedHelpCenter.id,
+                            ]),
+                            localeCodes: withDefaultLogicalOperator<string>([]),
+                        },
                     },
                 },
             },
             integrations: fromJS({
                 integrations: [],
             }),
-        } as unknown as RootState
+        } as RootState
         mockUseHelpCenterList.mockReturnValue({
             isLoading: false,
             helpCenters: [

@@ -15,10 +15,7 @@ import {
 } from 'state/stats/selectors'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState, StoreState} from 'state/types'
-import {
-    initialState as initialUiStatsState,
-    initialState,
-} from 'state/ui/stats/reducer'
+import {initialState} from 'state/ui/stats/filtersSlice'
 import {
     getCleanStatsFilters,
     getCleanStatsFiltersWithInitialStoreIntegration,
@@ -30,7 +27,7 @@ import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constant
 
 const store = {
     ui: {
-        stats: initialState,
+        stats: {filters: initialState},
     },
 } as StoreState
 
@@ -65,7 +62,7 @@ describe('ui/stats/selectors', () => {
                 })
             ),
             ui: {
-                stats: initialUiStatsState,
+                stats: {filters: initialState},
             },
             stats: initialStatsFiltersState,
         } as RootState
@@ -88,8 +85,10 @@ describe('ui/stats/selectors', () => {
                 ...defaultState,
                 ui: {
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        filters: {
+                            ...initialState,
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
             } as RootState
@@ -121,7 +120,7 @@ describe('ui/stats/selectors', () => {
                     })
                 ),
                 ui: {
-                    stats: initialUiStatsState,
+                    stats: {filters: initialState},
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -148,7 +147,7 @@ describe('ui/stats/selectors', () => {
                 })
             ),
             ui: {
-                stats: initialUiStatsState,
+                stats: {filters: initialState},
             },
             stats: initialStatsFiltersState,
         } as RootState
@@ -173,8 +172,10 @@ describe('ui/stats/selectors', () => {
                 ...defaultState,
                 ui: {
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: cleanStatsFilters,
+                        filters: {
+                            ...initialState,
+                            cleanStatsFilters: cleanStatsFilters,
+                        },
                     },
                 },
             } as RootState
@@ -208,7 +209,7 @@ describe('ui/stats/selectors', () => {
                     })
                 ),
                 ui: {
-                    stats: initialUiStatsState,
+                    stats: {filters: initialState},
                 },
                 stats: initialStatsFiltersState,
             } as RootState
@@ -226,12 +227,14 @@ describe('ui/stats/selectors', () => {
             const state = {
                 ui: {
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: {
-                            period: initialStatsFiltersState.filters.period,
-                            integrations: withDefaultLogicalOperator([
-                                selectedIntegrationId,
-                            ]),
+                        filters: {
+                            ...initialState,
+                            cleanStatsFilters: {
+                                period: initialStatsFiltersState.filters.period,
+                                integrations: withDefaultLogicalOperator([
+                                    selectedIntegrationId,
+                                ]),
+                            },
                         },
                     },
                 },
@@ -264,12 +267,14 @@ describe('ui/stats/selectors', () => {
             const state = {
                 ui: {
                     stats: {
-                        ...initialUiStatsState,
-                        cleanStatsFilters: {
-                            period: initialStatsFiltersState.filters.period,
-                            integrations: withLogicalOperator([
-                                selectedIntegrationId,
-                            ]),
+                        filters: {
+                            ...initialState,
+                            cleanStatsFilters: {
+                                period: initialStatsFiltersState.filters.period,
+                                integrations: withLogicalOperator([
+                                    selectedIntegrationId,
+                                ]),
+                            },
                         },
                     },
                 },
@@ -301,7 +306,7 @@ describe('ui/stats/selectors', () => {
         it('should return integrations filter with first storeIntegration if not set', () => {
             const state = {
                 ui: {
-                    stats: initialUiStatsState,
+                    stats: {filters: initialState},
                 },
                 stats: initialStatsFiltersState,
                 integrations: integrationsStateWithShopify,

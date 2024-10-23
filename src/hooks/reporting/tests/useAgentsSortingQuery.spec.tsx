@@ -21,7 +21,7 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -30,11 +30,12 @@ describe('useAgentsSortingQuery', () => {
     const defaultState = {
         stats: filtersInitialState,
         ui: {
-            statsTables: {
-                [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+            stats: {
+                statsTables: {
+                    [AGENT_PERFORMANCE_SLICE_NAME]: initialState,
+                },
+                filters: uiStatsInitialState,
             },
-
-            stats: uiStatsInitialState,
         },
     } as RootState
 
@@ -110,13 +111,15 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                ...defaultState.ui,
-                statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        sorting: {
-                            field: column,
-                            direction: OrderDirection.Asc,
-                            isLoading: true,
+                stats: {
+                    ...defaultState.ui.stats,
+                    statsTables: {
+                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                            sorting: {
+                                field: column,
+                                direction: OrderDirection.Asc,
+                                isLoading: true,
+                            },
                         },
                     },
                 },
@@ -184,17 +187,19 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...initialState,
-                        sorting: {
-                            field: column,
-                            direction: OrderDirection.Asc,
-                            isLoading: true,
+                stats: {
+                    statsTables: {
+                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                            ...initialState,
+                            sorting: {
+                                field: column,
+                                direction: OrderDirection.Asc,
+                                isLoading: true,
+                            },
                         },
                     },
+                    filters: uiStatsInitialState,
                 },
-                stats: uiStatsInitialState,
             },
         } as RootState)
 
@@ -219,17 +224,19 @@ describe('useAgentsSortingQuery', () => {
         const store = mockStore({
             ...defaultState,
             ui: {
-                statsTables: {
-                    [AGENT_PERFORMANCE_SLICE_NAME]: {
-                        ...initialState,
-                        sorting: {
-                            field: column,
-                            direction: OrderDirection.Asc,
-                            isLoading: false,
+                stats: {
+                    filters: uiStatsInitialState,
+                    statsTables: {
+                        [AGENT_PERFORMANCE_SLICE_NAME]: {
+                            ...initialState,
+                            sorting: {
+                                field: column,
+                                direction: OrderDirection.Asc,
+                                isLoading: false,
+                            },
                         },
                     },
                 },
-                stats: uiStatsInitialState,
             },
         } as RootState)
         queryHook.mockReturnValue({

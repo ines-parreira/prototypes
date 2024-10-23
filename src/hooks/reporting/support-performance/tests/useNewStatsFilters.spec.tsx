@@ -7,7 +7,7 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 import {FeatureFlagKey} from 'config/featureFlags'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {mockStore} from 'utils/testing'
 
 describe('useNewStatsFilters', () => {
@@ -22,7 +22,7 @@ describe('useNewStatsFilters', () => {
             filters: {period},
         },
         ui: {
-            stats: uiStatsInitialState,
+            stats: {filters: uiStatsInitialState},
         },
     } as RootState
 
@@ -87,12 +87,14 @@ describe('useNewStatsFilters', () => {
             },
             ui: {
                 stats: {
-                    ...uiStatsInitialState,
-                    cleanStatsFilters: {
-                        period,
-                        channels: withDefaultLogicalOperator([
-                            'anotherChannel',
-                        ]),
+                    filters: {
+                        ...uiStatsInitialState,
+                        cleanStatsFilters: {
+                            period,
+                            channels: withDefaultLogicalOperator([
+                                'anotherChannel',
+                            ]),
+                        },
                     },
                 },
             },
@@ -105,8 +107,9 @@ describe('useNewStatsFilters', () => {
         })
 
         expect(result.current.cleanStatsFilters).toEqual({
-            period: state.ui.stats.cleanStatsFilters?.period,
-            channels: state.ui.stats.cleanStatsFilters?.channels?.values,
+            period: state.ui.stats.filters.cleanStatsFilters?.period,
+            channels:
+                state.ui.stats.filters.cleanStatsFilters?.channels?.values,
         })
     })
 
@@ -214,12 +217,14 @@ describe('useNewStatsFilters', () => {
             },
             ui: {
                 stats: {
-                    ...uiStatsInitialState,
-                    cleanStatsFilters: {
-                        period,
-                        channels: withDefaultLogicalOperator([
-                            'anotherChannel',
-                        ]),
+                    filters: {
+                        ...uiStatsInitialState,
+                        cleanStatsFilters: {
+                            period,
+                            channels: withDefaultLogicalOperator([
+                                'anotherChannel',
+                            ]),
+                        },
                     },
                 },
             },
@@ -232,8 +237,8 @@ describe('useNewStatsFilters', () => {
         })
 
         expect(result.current.cleanStatsFilters).toEqual({
-            period: state.ui.stats.cleanStatsFilters?.period,
-            channels: state.ui.stats.cleanStatsFilters?.channels,
+            period: state.ui.stats.filters.cleanStatsFilters?.period,
+            channels: state.ui.stats.filters.cleanStatsFilters?.channels,
         })
     })
 })

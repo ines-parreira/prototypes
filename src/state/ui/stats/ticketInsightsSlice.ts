@@ -75,13 +75,13 @@ export const {
 } = ticketInsightsSlice.actions
 
 export const getSelectedCustomField = (state: RootState) =>
-    state.ui[ticketInsightsSlice.name].selectedCustomField
+    state.ui.stats[ticketInsightsSlice.name].selectedCustomField
 
 export const getValueMode = (state: RootState) =>
-    state.ui[ticketInsightsSlice.name].valueMode
+    state.ui.stats[ticketInsightsSlice.name].valueMode
 
 export const getCustomFieldsOrder = (state: RootState) =>
-    state.ui[ticketInsightsSlice.name].order
+    state.ui.stats[ticketInsightsSlice.name].order
 
 export const getHeatmapMode = (state: RootState) =>
-    state.ui[ticketInsightsSlice.name].heatmapMode
+    state.ui.stats[ticketInsightsSlice.name].heatmapMode

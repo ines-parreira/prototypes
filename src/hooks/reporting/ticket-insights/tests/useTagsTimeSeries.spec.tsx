@@ -3,7 +3,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
+import {TagsState} from 'state/entities/tags/types'
 import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
@@ -11,7 +11,7 @@ import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import {
     TicketTagsEnrichedDimension,
@@ -35,10 +35,12 @@ describe('useTagsTimeSeries', () => {
     const defaultState = {
         stats: initialState,
         ui: {
-            [ticketInsightsSlice.name]: {
-                selectedCustomField: {id: 2},
+            stats: {
+                [ticketInsightsSlice.name]: {
+                    selectedCustomField: {id: 2},
+                },
+                filters: uiStatsInitialState,
             },
-            stats: uiStatsInitialState,
         },
         entities: {
             tags: {
@@ -66,9 +68,9 @@ describe('useTagsTimeSeries', () => {
                     uri: '/api/tags/123/',
                     usage: 80,
                 },
-            },
+            } as TagsState,
         },
-    } as unknown as RootState
+    } as RootState
 
     useTagsTicketCountTimeSeriesMock.mockReturnValue({
         data: {

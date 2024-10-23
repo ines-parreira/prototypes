@@ -36,7 +36,9 @@ describe('DefaultStatsFilters', () => {
         },
         ui: {
             stats: {
-                isFilterDirty: false,
+                filters: {
+                    isFilterDirty: false,
+                },
             },
         },
     } as RootState

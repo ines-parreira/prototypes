@@ -23,7 +23,7 @@ jest.mock('common/segment', () => ({
 describe('BusiestTimesMetricSelectFilter', () => {
     const defaultState = {
         ui: {
-            [busiestTimesSlice.name]: initialState,
+            stats: {[busiestTimesSlice.name]: initialState},
         },
     } as RootState
 
