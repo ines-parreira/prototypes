@@ -10,6 +10,7 @@ import {act} from '@testing-library/react-hooks'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {PhoneRingingBehaviour} from 'models/integration/types'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
+import {isValueInRange} from '../utils'
 
 jest.mock('models/team/queries', () => ({
     useListTeams: jest.fn(),
@@ -28,6 +29,12 @@ jest.mock(
         )
 )
 
+jest.mock('../utils', () => {
+    return {
+        isValueInRange: jest.fn(),
+    }
+})
+
 describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     const handleChange = jest.fn()
 
@@ -40,6 +47,10 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         onPreferencesChange: jest.fn(),
         phoneTeamId: 1,
         onPhoneTeamIdChange: jest.fn(),
+        integrationPreferences: {
+            ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
+            ring_time: 30,
+        },
     }
 
     const renderComponent = (props: any = {}): RenderResult => {
@@ -246,5 +257,66 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         expect(screen.getByText('Enable wait time')).toBeChecked()
         expect(screen.getByLabelText('Wait Time')).toBeEnabled()
+    })
+
+    it.each([
+        {
+            preferences: {wait_time: {enabled: true, value: 0}},
+            integrationPreferences: {wait_time: {enabled: true, value: 40}},
+            expectedWaitTimeValue: 40,
+        },
+        {
+            preferences: {wait_time: {enabled: true, value: 0}},
+            integrationPreferences: {},
+            expectedWaitTimeValue: 120,
+        },
+    ])(
+        'should revert to the integration wait value when wait time is disabled with an invalid value',
+        ({preferences, integrationPreferences, expectedWaitTimeValue}) => {
+            ;(isValueInRange as jest.Mock).mockReturnValue(false)
+
+            mockFlags({CustomizableWaitTime: true})
+
+            renderComponent({
+                ...props,
+                preferences: {
+                    ...props.preferences,
+                    ...preferences,
+                },
+                integrationPreferences: {
+                    ...props.integrationPreferences,
+                    ...integrationPreferences,
+                },
+            })
+
+            fireEvent.click(screen.getByText('Enable wait time'))
+
+            expect(props.onPreferencesChange).toHaveBeenCalledWith({
+                wait_time: {enabled: false, value: expectedWaitTimeValue},
+            })
+        }
+    )
+
+    it('should pass previos wait time value when enabling it', () => {
+        ;(isValueInRange as jest.Mock).mockReturnValue(true)
+
+        mockFlags({CustomizableWaitTime: true})
+
+        renderComponent({
+            ...props,
+            preferences: {
+                ...props.preferences,
+                wait_time: {
+                    enabled: false,
+                    value: 30,
+                },
+            },
+        })
+
+        fireEvent.click(screen.getByText('Enable wait time'))
+
+        expect(props.onPreferencesChange).toHaveBeenCalledWith({
+            wait_time: {enabled: true, value: 30},
+        })
     })
 })

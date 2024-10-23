@@ -26,6 +26,7 @@ import {
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
 } from './constants'
+import {isValueInRange} from './utils'
 
 type Props = {
     isIvr: boolean
@@ -35,6 +36,7 @@ type Props = {
     ) => void
     phoneTeamId: Maybe<number | undefined>
     onPhoneTeamIdChange: (teamId: number | null) => void
+    integrationPreferences: PhoneIntegrationPreferences
     errors: Record<string, string>
 }
 
@@ -44,6 +46,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     onPreferencesChange,
     phoneTeamId,
     onPhoneTeamIdChange,
+    integrationPreferences,
     errors,
 }: Props): JSX.Element {
     const useCallRecordings: boolean | undefined =
@@ -58,6 +61,26 @@ export default function VoiceIntegrationPreferencesInboundCalls({
         preferences.wait_time?.value ?? WAIT_TIME_DEFAULT_VALUE
     const preferencesWaitTimeEnabled =
         preferences.wait_time?.enabled ?? WAIT_TIME_DEFAULT_ENABLED
+
+    const validWaitTimeValue = (
+        isWaitTimeEnabled: boolean,
+        waitTimeValue: number
+    ) => {
+        if (
+            !isWaitTimeEnabled &&
+            !isValueInRange(
+                waitTimeValue,
+                WAIT_TIME_MIN_VALUE,
+                WAIT_TIME_MAX_VALUE
+            )
+        ) {
+            return (
+                integrationPreferences.wait_time?.value ??
+                WAIT_TIME_DEFAULT_VALUE
+            )
+        }
+        return waitTimeValue
+    }
 
     return (
         <>
@@ -142,7 +165,10 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                     onPreferencesChange({
                                         wait_time: {
                                             enabled: value,
-                                            value: preferencesWaitTimeValue,
+                                            value: validWaitTimeValue(
+                                                value,
+                                                preferencesWaitTimeValue
+                                            ),
                                         },
                                     })
                                 }
