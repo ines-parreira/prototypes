@@ -147,6 +147,8 @@ const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
 
+window.loadGorgiasChat = jest.fn()
+
 describe('<Routes/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
@@ -187,6 +189,63 @@ describe('<Routes/>', () => {
         act(() => mockHistory.push('/app/settings/profile'))
 
         expect(logPageMock).not.toHaveBeenCalled()
+    })
+
+    it('should call window.loadGorgiasChat with the param set to false for non-AI Agent routes', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={mockStore({})}>
+                <Routes />
+            </Provider>,
+            {
+                history: mockHistory,
+            }
+        )
+
+        act(() => mockHistory.push('/app/settings/profile'))
+
+        expect(window.loadGorgiasChat).toHaveBeenCalledWith(false)
+    })
+
+    it('should call window.loadGorgiasChat for AI Agent routes if the flag is on', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={mockStore({})}>
+                <Routes />
+            </Provider>,
+            {
+                history: mockHistory,
+            }
+        )
+
+        act(() =>
+            mockHistory.push('app/automation/shopify/dummystore/ai-agent')
+        )
+
+        expect(window.loadGorgiasChat).toHaveBeenCalledWith(true)
+    })
+
+    it('should not call window.loadGorgiasChat if the flag is off', () => {
+        mockUseFlag.mockReturnValue(false)
+
+        renderWithRouter(
+            <Provider store={mockStore({})}>
+                <Routes />
+            </Provider>,
+            {
+                history: mockHistory,
+            }
+        )
+
+        act(() => mockHistory.push('/app/settings/profile'))
+        expect(window.loadGorgiasChat).not.toHaveBeenCalled()
+
+        act(() =>
+            mockHistory.push('app/automation/shopify/dummystore/ai-agent')
+        )
+        expect(window.loadGorgiasChat).not.toHaveBeenCalled()
     })
 
     it.each(['/app/stats/live-overview', '/app/convert/setup'])(

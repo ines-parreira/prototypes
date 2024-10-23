@@ -47,6 +47,7 @@ declare global {
                 flowId: string
             }) => void
         }
+        loadGorgiasChat?: (isAiAgentPath: boolean) => void
         GORGIAS_SUPPORT_EMAIL: string
         STRIPE_PUBLIC_KEY?: string
         Hotswap?: (params: {token: string; onClose?: () => void}) => {

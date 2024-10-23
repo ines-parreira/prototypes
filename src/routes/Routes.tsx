@@ -166,6 +166,17 @@ export default function Routes() {
 
 export function AppRoutes() {
     const {path} = useRouteMatch()
+    const location = useLocation()
+    const isAiAgentAssistantEnabled = useFlag(
+        FeatureFlagKey.AiAgentAssistant,
+        false
+    )
+
+    useEffect(() => {
+        if (isAiAgentAssistantEnabled) {
+            window.loadGorgiasChat?.(location.pathname.includes('ai-agent'))
+        }
+    }, [location.pathname, isAiAgentAssistantEnabled])
 
     const splitTicketLayoutProps = useSplitTicketPage()
     const splitViewLayoutProps = useSplitViewPage()

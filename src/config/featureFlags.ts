@@ -8,6 +8,7 @@ export enum FeatureFlagKey {
     AdvancedSearchSorting = 'advanced-search-sorting',
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
+    AiAgentAssistant = 'ai-agent-assistant',
     AiAgentChat = 'ai-agent-for-chat',
     AiAgentChatTestMode = 'ai-agent-chat-test-mode',
     AiAgentMultiChannelEnablement = 'ai-agent-multi-channel-enablement',
