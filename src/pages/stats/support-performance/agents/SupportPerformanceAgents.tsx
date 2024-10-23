@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
@@ -43,7 +43,7 @@ export default function SupportPerformanceAgents() {
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 persistentFilters={[FilterKey.Period]}
                                 optionalFilters={[
                                     FilterKey.Channels,

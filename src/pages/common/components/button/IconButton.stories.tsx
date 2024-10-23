@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import IconButton from './IconButton'
+import IconButton from 'pages/common/components/button/IconButton'
 
 const storyConfig: Meta = {
     title: 'General/Button/IconButton',

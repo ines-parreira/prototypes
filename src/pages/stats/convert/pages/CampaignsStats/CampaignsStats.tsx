@@ -13,7 +13,7 @@ import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitB
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
 import {RevenueFilters} from 'pages/stats/convert/containers/RevenueFilters'
@@ -62,7 +62,7 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

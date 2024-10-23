@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
@@ -58,7 +58,7 @@ export function SupportPerformanceTicketInsights() {
                         size={getGridCellSize(12)}
                         className="pb-0"
                     >
-                        <FiltersPanel
+                        <FiltersPanelWrapper
                             persistentFilters={[
                                 FilterKey.Period,
                                 FilterComponentKey.CustomField,

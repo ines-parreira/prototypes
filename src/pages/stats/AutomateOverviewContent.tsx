@@ -3,7 +3,6 @@ import React, {useMemo, useState} from 'react'
 import moment from 'moment'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
 import {ReportingGranularity} from 'models/reporting/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -73,6 +72,7 @@ import TipsToggle from 'pages/stats/TipsToggle'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
@@ -375,7 +375,7 @@ export default function AutomateOverviewContent({
                 {isAnalyticsNewFiltersAutomate && (
                     <DashboardSection className={'pb-0'}>
                         <DashboardGridCell size={12}>
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 persistentFilters={[
                                     FilterKey.Period,
                                     FilterKey.AggregationWindow,

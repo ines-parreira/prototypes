@@ -57,7 +57,7 @@ import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/Voic
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {ProductType} from 'models/billing/types'
 import {VoiceMetric} from 'state/ui/stats/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {FilterKey, FilterComponentKey} from 'models/stat/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -201,7 +201,7 @@ function VoiceOverview() {
             {isAnalyticsNewFilters && (
                 <DashboardSection>
                     <DashboardGridCell size={12} className="pb-0">
-                        <FiltersPanel
+                        <FiltersPanelWrapper
                             persistentFilters={[FilterKey.Period]}
                             optionalFilters={[
                                 FilterComponentKey.PhoneIntegrations,

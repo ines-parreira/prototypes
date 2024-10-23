@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 export default function LiveVoiceFilters() {
@@ -16,7 +16,7 @@ export default function LiveVoiceFilters() {
     return (
         <DashboardSection>
             <DashboardGridCell size={12}>
-                <FiltersPanel
+                <FiltersPanelWrapper
                     persistentFilters={[
                         FilterComponentKey.PhoneIntegrations,
                         FilterKey.Agents,

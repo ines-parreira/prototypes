@@ -45,7 +45,7 @@ export const BusiestTimesMetricSelectFilter = () => {
     return (
         <Filter
             filterName={BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME}
-            isPersistent={true}
+            isPersistent
             isMultiple={false}
             showSearch={false}
             showQuickSelect={false}

@@ -14,7 +14,7 @@ import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {FilterKey} from 'models/stat/types'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 
@@ -45,7 +45,7 @@ export default function AutoQA() {
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

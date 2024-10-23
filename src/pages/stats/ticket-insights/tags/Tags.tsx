@@ -4,7 +4,6 @@ import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useClean
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -13,6 +12,7 @@ import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/Tag
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 
 export const TAGS_TITLE = 'Tags'
 
@@ -32,7 +32,7 @@ export function Tags() {
                         size={getGridCellSize(12)}
                         className="pb-0"
                     >
-                        <FiltersPanel
+                        <FiltersPanelWrapper
                             persistentFilters={[
                                 FilterKey.Period,
                                 FilterKey.AggregationWindow,

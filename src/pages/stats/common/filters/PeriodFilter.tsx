@@ -113,10 +113,7 @@ export function PeriodFilter({
 
     return (
         <div className={css.filterContainer}>
-            <FilterName
-                className={css.filterName}
-                name={FilterLabels[FilterKey.Period]}
-            />
+            <FilterName name={FilterLabels[FilterKey.Period]} />
             <PeriodPicker
                 startDatetime={moment(value.start_datetime)}
                 endDatetime={moment(value.end_datetime)}

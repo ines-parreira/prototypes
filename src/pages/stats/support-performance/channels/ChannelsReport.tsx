@@ -6,7 +6,7 @@ import {FilterKey} from 'models/stat/types'
 
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import ChartCard from 'pages/stats/ChartCard'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -44,7 +44,7 @@ export function ChannelsReport() {
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 persistentFilters={[FilterKey.Period]}
                                 optionalFilters={[
                                     FilterKey.Channels,

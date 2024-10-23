@@ -29,7 +29,7 @@ import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {ProductType} from 'models/billing/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {useGridSize} from 'hooks/useGridSize'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -94,7 +94,7 @@ function VoiceAgents() {
                         size={getGridCellSize(12)}
                         className="pb-0"
                     >
-                        <FiltersPanel
+                        <FiltersPanelWrapper
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {

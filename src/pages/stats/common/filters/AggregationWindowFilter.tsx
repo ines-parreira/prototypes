@@ -81,7 +81,7 @@ export const AggregationWindowFilter = ({value, period}: Props) => {
             isMultiple={false}
             showSearch={false}
             showQuickSelect={false}
-            isPersistent={true}
+            isPersistent
         />
     )
 }

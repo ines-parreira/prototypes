@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 import React, {ReactNode, useContext} from 'react'
 
-import {BaseButtonContext} from './BaseButton'
-import css from './ButtonIconLabel.less'
+import {BaseButtonContext} from 'pages/common/components/button/BaseButton'
+import css from 'pages/common/components/button/ButtonIconLabel.less'
 
 export type ButtonIconPosition = 'left' | 'right'
 

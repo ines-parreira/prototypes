@@ -51,9 +51,11 @@ import {
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
-type Props = {
+export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
+
+export type FiltersPanelProps = {
     persistentFilters?: StaticFilter[]
-    optionalFilters?: (FilterKey | FilterComponentKey)[]
+    optionalFilters?: OptionalFilter[]
     filterSettingsOverrides?: {
         [FilterKey.Period]?: Omit<
             ComponentProps<typeof PeriodFilterWithState>,
@@ -220,9 +222,10 @@ export const FiltersPanel = ({
     persistentFilters = [],
     optionalFilters = [],
     filterSettingsOverrides,
-}: Props) => {
+}: FiltersPanelProps) => {
     const isAnalyticsCustomFieldsFilter =
         !!useFlags()[FeatureFlagKey.AnalyticsCustomFieldsFilter]
+
     const {cleanStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithLogicalOperatorsWithTimezone
     )

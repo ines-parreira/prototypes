@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
@@ -89,7 +89,7 @@ export const BusiestTimesOfDays = () => {
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 persistentFilters={[
                                     FilterKey.Period,
                                     FilterComponentKey.BusiestTimesMetricSelectFilter,

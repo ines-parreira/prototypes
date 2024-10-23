@@ -43,7 +43,7 @@ import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters
 import PartialDataAlert from 'pages/stats/help-center/components/PartialDataAlert/PartialDataAlert'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
 import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {useGridSize} from 'hooks/useGridSize'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
@@ -132,7 +132,7 @@ const HelpCenterStatsComponent = ({
                             size={getGridCellSize(12)}
                             className="pb-0"
                         >
-                            <FiltersPanel
+                            <FiltersPanelWrapper
                                 persistentFilters={[
                                     FilterKey.Period,
                                     FilterKey.HelpCenters,

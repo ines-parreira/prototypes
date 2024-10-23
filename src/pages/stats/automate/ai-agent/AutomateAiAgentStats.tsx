@@ -38,7 +38,7 @@ import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-field
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
@@ -131,7 +131,7 @@ export default function AutomateAiAgentStats() {
 
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
-                    <FiltersPanel
+                    <FiltersPanelWrapper
                         persistentFilters={[FilterKey.Period]}
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {
