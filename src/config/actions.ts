@@ -65,6 +65,11 @@ export const actions = [
         objectType: 'address',
     },
     {
+        name: ShopifyActionType.ShopifyEditNoteOfOrder,
+        label: 'Edit note of order',
+        objectType: 'order',
+    },
+    {
         name: BigCommerceActionType.CreateOrder,
         label: 'Create Order',
         objectType: 'order',

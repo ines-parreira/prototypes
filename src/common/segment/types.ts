@@ -289,6 +289,7 @@ export enum SegmentEvent {
     ShopifyEditOrderDiscountPopoverRemove = 'shopify/edit-order/discount-popover/remove',
     ShopifyEditOrderLineItemAdded = 'shopify/edit-order/line-item/added',
     ShopifyEditOrderLineItemQuantityChanged = 'shopify/edit-order/line-item/quantity/changed',
+    ShopifyEditOrderNoteEditStarted = 'shopify/edit-order-note/edit-started',
     ShopifyEditOrderTagEditStarted = 'shopify/edit-order-tag/edit-started',
     ShopifyInsertProductLinkAdded = 'shopify/insert-product-link/product-link-added',
     ShopifyInsertProductLinkOpen = 'shopify/insert-product-link/open',

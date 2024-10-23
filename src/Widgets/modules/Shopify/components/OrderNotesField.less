@@ -1,0 +1,42 @@
+:local {
+    .orderNote {
+        display: flex;
+        align-items: flex-start;
+
+        .noteInputContainer {
+            flex-grow: 1;
+            margin-left: 6px;
+            position: relative;
+
+            .noteInput {
+                width: 100%;
+                min-height: 1.7rem;
+                padding: 0 5px 5px 0;
+                border: 1px solid transparent;
+                border-radius: 3px;
+
+                color: var(--neutral-grey-6);
+                letter-spacing: 0.14px;
+                font-size: 1em;
+                font-weight: 600;
+                -webkit-font-smoothing: antialiased;
+
+                transition: border-color 0.2s, padding 0.2s;
+
+                cursor: text;
+                resize: none;
+                overflow: hidden;
+
+                &:hover,
+                &:focus {
+                    border-color: var(--main-primary);
+                    padding-left: 5px;
+                }
+
+                &::placeholder {
+                    color: var(--neutral-grey-4);
+                }
+            }
+        }
+    }
+}

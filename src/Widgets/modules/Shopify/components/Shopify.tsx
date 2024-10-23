@@ -13,6 +13,7 @@ import {itemCustomization} from './Item'
 import {fulfillmentCustomization} from './Fulfillment'
 import {shippingAddressCustomization} from './ShippingAddress'
 import {editableListCustomization} from './EditableListField'
+import {orderNotesCustomization} from './OrderNotesField'
 
 export const customization: TemplateCustomization = {
     card: [
@@ -41,7 +42,7 @@ export const customization: TemplateCustomization = {
             customization: shippingAddressCustomization,
         },
     ],
-    field: [editableListCustomization],
+    field: [editableListCustomization, orderNotesCustomization],
 }
 
 export default function ShopifyWidget(props: WidgetProps) {
