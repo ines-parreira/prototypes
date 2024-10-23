@@ -27,7 +27,7 @@ describe('useAiAgentNavigation', () => {
         expect(result.current.headerNavbarItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent',
-                title: 'Configuration',
+                title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
@@ -51,7 +51,7 @@ describe('useAiAgentNavigation', () => {
         expect(result.current.headerNavbarItems).toEqual([
             {
                 route: '/app/automation/shopify/test/ai-agent',
-                title: 'Configuration',
+                title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             {

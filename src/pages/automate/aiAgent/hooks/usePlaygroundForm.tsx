@@ -71,7 +71,7 @@ export const usePlaygroundForm = ({
                 <div>
                     Testing currently disabled. Please add Help Center or Public
                     URL on{' '}
-                    <Link to={routes.configuration()}>Configuration page</Link>.
+                    <Link to={routes.configuration()}>Settings page</Link>.
                 </div>
             )
         }

@@ -48,7 +48,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
         () => [
             {
                 route: routes.configuration(),
-                title: 'Configuration',
+                title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
             ...(isAiAgentSnippetsFromExternalFilesEnabled
