@@ -167,6 +167,7 @@ describe('RichFieldEditor', () => {
         expect(shortcutManager.denylist).toHaveBeenCalledWith([
             'SpotlightModal',
             'Dialpad',
+            'PhoneCall',
         ])
     })
 
@@ -187,6 +188,7 @@ describe('RichFieldEditor', () => {
         expect(shortcutManager.clear).toHaveBeenCalledWith([
             'SpotlightModal',
             'Dialpad',
+            'PhoneCall',
         ])
     })
 

@@ -259,7 +259,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     componentWillUnmount() {
-        shortcutManager.clear(['SpotlightModal', 'Dialpad'])
+        shortcutManager.clear(['SpotlightModal', 'Dialpad', 'PhoneCall'])
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -283,7 +283,11 @@ export class RichFieldEditor extends Component<Props, State> {
                     scrollToReactNode(this.editor as any)
                 }
 
-                shortcutManager.denylist(['SpotlightModal', 'Dialpad'])
+                shortcutManager.denylist([
+                    'SpotlightModal',
+                    'Dialpad',
+                    'PhoneCall',
+                ])
             }
         }, 0)
     }
@@ -405,7 +409,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     _onEditorFocus = (event: MouseEvent<HTMLDivElement>) => {
-        shortcutManager.denylist(['SpotlightModal', 'Dialpad'])
+        shortcutManager.denylist(['SpotlightModal', 'Dialpad', 'PhoneCall'])
         const {onFocus, detectGrammarly} = this.props
         onFocus(event)
         detectGrammarly()
@@ -413,7 +417,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
     _onEditorBlur = () => {
         this.props.onBlur()
-        shortcutManager.clear(['SpotlightModal', 'Dialpad'])
+        shortcutManager.clear(['SpotlightModal', 'Dialpad', 'PhoneCall'])
     }
 
     render() {
