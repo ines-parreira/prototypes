@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {ComponentProps, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
@@ -16,15 +16,15 @@ import TagDropdown from './TagDropdown'
 import css from './TicketTags.less'
 
 type Props = {
-    addTag: (tag: string) => void
+    addTag?: (tag: string) => void
     className?: string
     isDisabled?: boolean
-    removeTag: (tag: string) => void
+    removeTag?: (tag: string) => void
     right?: boolean
     shouldBindKeys?: boolean
     ticketTags: List<Map<any, any>>
     transparent?: boolean
-}
+} & Pick<ComponentProps<typeof TicketTag>, 'textClassName'>
 
 const TicketTags = ({
     addTag,
@@ -34,6 +34,7 @@ const TicketTags = ({
     right = false,
     shouldBindKeys = false,
     ticketTags,
+    textClassName,
     transparent = false,
 }: Props) => {
     const tags = useMemo(
@@ -88,7 +89,7 @@ const TicketTags = ({
 
     const expandBadgeDisplay =
         !showAllTags && wrappedElementCount && wrappedElementCount > 0
-            ? 'block'
+            ? 'flex'
             : 'none'
 
     return (
@@ -111,7 +112,7 @@ const TicketTags = ({
                 >
                     {!isDisabled && (
                         <TagDropdown
-                            addTag={({name}) => addTag(name!)}
+                            addTag={({name}) => addTag?.(name!)}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}
@@ -127,12 +128,13 @@ const TicketTags = ({
                             <TicketTag
                                 decoration={tag!.get('decoration')}
                                 text={tag!.get('name')}
+                                textClassName={textClassName}
                                 {...(!isDisabled && {
                                     trailIcon: (
                                         <i className="material-icons">close</i>
                                     ),
                                     onTrailIconClick: () =>
-                                        removeTag(tag!.get('name') as string),
+                                        removeTag?.(tag!.get('name') as string),
                                 })}
                             />
                         </div>
@@ -152,13 +154,15 @@ const TicketTags = ({
                             onClick={() => setShowAllTags(!showAllTags)}
                         >
                             + {wrappedElementCount || 0}
-                            <BadgeIcon
-                                className={classnames(
-                                    'material-icons-round',
-                                    css.displayMoreIcon
-                                )}
-                                icon="arrow_drop_down"
-                            />
+                            {!isDisabled && (
+                                <BadgeIcon
+                                    className={classnames(
+                                        'material-icons-round',
+                                        css.displayMoreIcon
+                                    )}
+                                    icon="arrow_drop_down"
+                                />
+                            )}
                         </Badge>
                         <Tooltip
                             target={`expand-tags-badge-${uniqueId}`}

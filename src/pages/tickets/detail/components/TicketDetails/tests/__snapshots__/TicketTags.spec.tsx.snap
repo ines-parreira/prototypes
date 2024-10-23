@@ -11,7 +11,9 @@ exports[`<TicketTags /> should display current tags 1`] = `
     <div
       class="tags"
     >
-      TagDropdownMock
+      <div>
+        TagDropdownMock
+      </div>
       <div
         style="order: 1;"
       >
@@ -101,7 +103,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        style="order: 5; display: block;"
+        style="order: 5; display: flex;"
       >
         <div
           class="badge displayMore"

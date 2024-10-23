@@ -53,7 +53,7 @@ const TagDropdown = ({
     })
 
     return (
-        <>
+        <div>
             <Button
                 ref={targetRef}
                 onClick={() => onToggle(!isDropdownOpen)}
@@ -71,7 +71,7 @@ const TagDropdown = ({
             >
                 <TagDropdownMenu filterBy={filterBy} onClick={addTag} />
             </Dropdown>
-        </>
+        </div>
     )
 }
 

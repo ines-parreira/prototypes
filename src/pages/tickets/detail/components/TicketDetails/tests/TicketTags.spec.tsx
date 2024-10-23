@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Map, fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -26,7 +26,13 @@ jest.mock('hooks/useElementSize')
 const useElementSizeMock = useElementSize as jest.Mock
 useElementSizeMock.mockReturnValue([160, 100])
 
-jest.mock('../TagDropdown', () => () => 'TagDropdownMock')
+jest.mock(
+    '../TagDropdown',
+    () =>
+        ({addTag}: {addTag: ({name}: {name: string}) => void}) => (
+            <div onClick={() => addTag({name: 'mock'})}>TagDropdownMock</div>
+        )
+)
 
 describe('<TicketTags />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>
@@ -71,5 +77,29 @@ describe('<TicketTags />', () => {
 
         fireEvent.click(expandButton)
         expect(container.firstChild).toHaveStyle('height: 100px')
+    })
+
+    it('should add a tag', () => {
+        render(
+            <Provider store={store}>
+                <TicketTags {...minProps} />
+            </Provider>
+        )
+
+        fireEvent.click(screen.getByText('TagDropdownMock'))
+
+        expect(minProps.addTag).toHaveBeenCalled()
+    })
+
+    it('should remove a tag', () => {
+        render(
+            <Provider store={store}>
+                <TicketTags {...minProps} />
+            </Provider>
+        )
+
+        fireEvent.click(screen.getAllByText('close')[0])
+
+        expect(minProps.removeTag).toHaveBeenCalledWith('angry')
     })
 })

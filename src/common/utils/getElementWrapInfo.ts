@@ -16,12 +16,11 @@ export default function getElementWrapInfo(
     })
 
     let filledWidth = 0
-    filledWidth += firstRect.width
     if (firstRect.top !== last.getBoundingClientRect().top) {
         let i = 0
         while (filledWidth < totalWidth && i < sortedElements.length) {
             const rect = sortedElements[i].getBoundingClientRect()
-            filledWidth += rect.width + 8
+            filledWidth += rect.width + 4
             if (filledWidth <= totalWidth) {
                 i++
             }

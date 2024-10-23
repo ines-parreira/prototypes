@@ -17,13 +17,12 @@ import {
 import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
-import TicketTag from 'pages/common/components/TicketTag'
 import {sanitizeHtmlDefault} from 'utils/html'
 import ticketLanguages from 'config/ticketLanguages'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import css from './views.less'
+import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
@@ -403,7 +402,7 @@ export const defaultTicketView = {
                         />
                         {!!body && (
                             <div
-                                className="description"
+                                className="description skip-bold"
                                 dangerouslySetInnerHTML={{
                                     __html: sanitizeHtmlDefault(body),
                                 }}
@@ -431,24 +430,19 @@ export const defaultTicketView = {
             }
             case ViewField.Tags: {
                 return (
-                    <div className={css.tags}>
-                        {(item.get('tags', fromJS([])) as List<any>)
-                            .sort(
+                    <TicketTags
+                        isDisabled
+                        textClassName="skip-bold"
+                        ticketTags={
+                            (item.get('tags', fromJS([])) as List<any>).sort(
                                 ((a: Map<any, any>, b: Map<any, any>) =>
                                     (a.get('name') as string).toLowerCase() >
                                     (
                                         b.get('name') as string
                                     ).toLowerCase()) as any
-                            )
-                            .map((tag: Map<any, any>) => (
-                                <TicketTag
-                                    key={tag.get('id')}
-                                    decoration={tag.get('decoration')}
-                                    title={tag.get('name')}
-                                    text={tag.get('name')}
-                                />
-                            ))}
-                    </div>
+                            ) as List<any>
+                        }
+                    />
                 )
             }
             case ViewField.TicketId: {

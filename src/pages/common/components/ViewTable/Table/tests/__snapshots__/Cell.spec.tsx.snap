@@ -14,7 +14,7 @@ exports[`ViewTable::Table::Cell should use default props 1`] = `
         undefined
       </div>
       <div
-        class="description"
+        class="description skip-bold"
       >
         undefined
       </div>

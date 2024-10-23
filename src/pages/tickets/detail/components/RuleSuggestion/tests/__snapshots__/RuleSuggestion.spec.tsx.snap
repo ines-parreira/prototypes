@@ -183,11 +183,6 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                             >
                               + 
                               0
-                              <span
-                                class="icon material-icons-round displayMoreIcon"
-                              >
-                                arrow_drop_down
-                              </span>
                             </div>
                           </div>
                           <button
@@ -425,11 +420,6 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                             >
                               + 
                               0
-                              <span
-                                class="icon material-icons-round displayMoreIcon"
-                              >
-                                arrow_drop_down
-                              </span>
                             </div>
                           </div>
                           <button

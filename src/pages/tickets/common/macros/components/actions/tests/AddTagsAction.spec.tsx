@@ -80,8 +80,8 @@ describe('<AddTagsAction />', () => {
         const newTag = 'new tag'
 
         mockedTicketTags.mockImplementation(
-            ({addTag}: {addTag: (tag: string) => void}) => (
-                <div onClick={() => addTag(newTag)}>TicketTagsMock</div>
+            ({addTag}: {addTag?: (tag: string) => void}) => (
+                <div onClick={() => addTag?.(newTag)}>TicketTagsMock</div>
             )
         )
 
@@ -103,8 +103,10 @@ describe('<AddTagsAction />', () => {
         const removedTag = 'tag1'
 
         mockedTicketTags.mockImplementation(
-            ({removeTag}: {removeTag: (tag: string) => void}) => (
-                <div onClick={() => removeTag(removedTag)}>TicketTagsMock</div>
+            ({removeTag}: {removeTag?: (tag: string) => void}) => (
+                <div onClick={() => removeTag?.(removedTag)}>
+                    TicketTagsMock
+                </div>
             )
         )
 

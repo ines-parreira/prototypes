@@ -62,7 +62,7 @@ describe('getElementWrapInfo', () => {
             },
         ] as unknown as HTMLCollection
 
-        const mockTotalWidth = 170
+        const mockTotalWidth = 150
 
         const result = getElementWrapInfo(mockChildren, mockTotalWidth)
 
