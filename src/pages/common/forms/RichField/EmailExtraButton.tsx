@@ -1,7 +1,13 @@
+import {EditorState} from 'draft-js'
 import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {EditorState} from 'draft-js'
 
+import {TicketChannel} from '../../../../business/types/ticket'
+import {addEmailExtra} from '../../../../state/newMessage/actions'
+import {
+    getReplyThreadMessages,
+    isSignatureTextAdded,
+} from '../../../../state/newMessage/emailExtraUtils'
 import {
     getNewMessageChannel,
     getNewMessageSignature,
@@ -9,16 +15,10 @@ import {
     isNewMessageEmailExtraAdded,
     isForward,
 } from '../../../../state/newMessage/selectors'
-import {addEmailExtra} from '../../../../state/newMessage/actions'
-import Ellipsis from '../../components/Ellipsis'
-import {RootState} from '../../../../state/types'
 import {getBody, DEPRECATED_getTicket} from '../../../../state/ticket/selectors'
-import {
-    getReplyThreadMessages,
-    isSignatureTextAdded,
-} from '../../../../state/newMessage/emailExtraUtils'
+import {RootState} from '../../../../state/types'
 import {convertFromHTML} from '../../../../utils/editor'
-import {TicketChannel} from '../../../../business/types/ticket'
+import Ellipsis from '../../components/Ellipsis'
 
 type OwnProps = {
     editorState: EditorState

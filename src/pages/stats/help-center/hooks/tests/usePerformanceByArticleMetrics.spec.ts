@@ -1,15 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {UseQueryResult} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
+
 import {useMetric} from 'hooks/reporting/useMetric'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {usePerformanceByArticleMetrics} from '../usePerformanceByArticleMetrics'
 
 jest.mock('hooks/reporting/useMetric', () => ({

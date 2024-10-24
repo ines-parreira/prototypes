@@ -1,9 +1,12 @@
 import _noop from 'lodash/noop'
 import React, {useEffect, useMemo} from 'react'
+
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {FilterComponentKey} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
     activeParams,
     selectDropdownTextFields,
@@ -13,8 +16,7 @@ import {
     getSelectedCustomField,
     setSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {FilterComponentKey} from 'models/stat/types'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+
 import {logSegmentEvent} from './helpers'
 
 export const CUSTOM_FIELD_FILTER_NAME =

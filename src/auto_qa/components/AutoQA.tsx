@@ -11,10 +11,10 @@ import {getTicket} from 'state/ticket/selectors'
 
 import {dimensionConfig} from '../config'
 import useAutoQA from '../hooks/useAutoQA'
+import css from './AutoQA.less'
 import AutoQASkeleton from './AutoQASkeleton'
 import Dimension from './Dimension'
 import SaveBadge from './SaveBadge'
-import css from './AutoQA.less'
 
 export default function AutoQA() {
     const ticket = useAppSelector(getTicket)

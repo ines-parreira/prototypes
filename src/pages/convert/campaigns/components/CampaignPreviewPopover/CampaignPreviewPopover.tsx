@@ -1,3 +1,4 @@
+import _uniqBy from 'lodash/uniqBy'
 import React, {
     ReactNode,
     cloneElement,
@@ -7,7 +8,6 @@ import React, {
     useState,
 } from 'react'
 import {Popover} from 'reactstrap'
-import _uniqBy from 'lodash/uniqBy'
 
 import {useAppNode} from 'appNode'
 

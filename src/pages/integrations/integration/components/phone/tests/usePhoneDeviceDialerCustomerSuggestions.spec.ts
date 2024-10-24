@@ -1,7 +1,9 @@
-import {renderHook, act} from '@testing-library/react-hooks'
 import {useSearch} from '@gorgias/api-queries'
+import {renderHook, act} from '@testing-library/react-hooks'
+
 import * as searchTypes from 'models/search/types'
 import {assumeMock} from 'utils/testing'
+
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 
 jest.mock(

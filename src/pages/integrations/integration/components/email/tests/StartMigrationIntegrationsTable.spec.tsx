@@ -5,12 +5,14 @@ import {
     screen,
     within,
 } from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {mockStore} from 'utils/testing'
+
 import {IntegrationType} from 'models/integration/constants'
 import * as actions from 'state/integrations/actions'
+import {mockStore} from 'utils/testing'
+
 import StartMigrationIntegrationsTable from '../EmailMigration/StartMigrationIntegrationsTable'
 
 jest.spyOn(actions, 'deleteIntegration')

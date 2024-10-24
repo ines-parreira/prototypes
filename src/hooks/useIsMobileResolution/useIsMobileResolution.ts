@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 
-import useWindowSize from '../useWindowSize'
 import useDebouncedValue from '../useDebouncedValue'
+import useWindowSize from '../useWindowSize'
 
 import {MOBILE_BREAKPOINT, UPDATE_DEBOUNCE_TIME} from './constants'
 

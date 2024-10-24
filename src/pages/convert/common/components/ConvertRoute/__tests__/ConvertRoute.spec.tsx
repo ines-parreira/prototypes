@@ -1,14 +1,16 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {RedirectProps} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {RedirectProps} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
-import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+
 import ConvertRoute from '../ConvertRoute'
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')

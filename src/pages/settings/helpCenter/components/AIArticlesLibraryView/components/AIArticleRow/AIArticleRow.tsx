@@ -1,9 +1,9 @@
-import React, {Dispatch, SetStateAction, useRef} from 'react'
 import classNames from 'classnames'
-
-import {AILibraryArticleItem} from 'models/helpCenter/types'
+import React, {Dispatch, SetStateAction, useRef} from 'react'
 
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
+import {AILibraryArticleItem} from 'models/helpCenter/types'
+
 import css from './AIArticleRow.less'
 
 export type AIArticleRowProps = {

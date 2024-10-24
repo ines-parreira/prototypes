@@ -1,16 +1,16 @@
-import {useHistory} from 'react-router-dom'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {LocationDescriptor} from 'history'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
-import LocalForageManager from 'services/localForageManager/localForageManager'
+import {logEvent, SegmentEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     DRAFT_TICKET_STORE,
     isTicketDraftEmpty,
     TicketDraft,
 } from 'hooks/useTicketDraft'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {logEvent, SegmentEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
+import LocalForageManager from 'services/localForageManager/localForageManager'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
 export default function useHandleTicketDraft() {

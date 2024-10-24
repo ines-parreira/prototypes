@@ -1,13 +1,14 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 import {assumeMock} from 'utils/testing'
+
 import FeedbackReportIssue from '../FeedbackReportIssue'
 
 jest.mock('common/segment/segment')

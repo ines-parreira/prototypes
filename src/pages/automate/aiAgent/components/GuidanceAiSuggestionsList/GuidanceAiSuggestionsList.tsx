@@ -1,10 +1,12 @@
 import React from 'react'
-import history from 'pages/history'
+
 import {SegmentEvent, logEvent} from 'common/segment'
-import {AIGuidance} from '../../types'
+import history from 'pages/history'
+
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {SeeAllSuggestionsCard} from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
+import {AIGuidance} from '../../types'
 import {GuidanceAiSuggestionCard} from '../GuidanceAiSuggestionCard/GuidanceAiSuggestionCard'
+import {SeeAllSuggestionsCard} from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
 import css from './GuidanceAiSuggestionsList.less'
 
 type Props = {

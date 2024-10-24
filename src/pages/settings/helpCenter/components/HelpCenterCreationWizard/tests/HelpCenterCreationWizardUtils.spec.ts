@@ -4,9 +4,15 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {HELP_CENTER_LANGUAGE_DEFAULT_UI} from 'pages/settings/helpCenter/constants'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
+import {HELP_CENTER_LANGUAGE_DEFAULT_UI} from 'pages/settings/helpCenter/constants'
+import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import {
+    ArticleTemplatesListFixture,
+    HelpCenterItemsListFixture,
+    ArticlesListFixture,
+} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {
     EmptyHelpCenterUiFixture,
     HelpCenterApiBasicsFixture,
@@ -14,17 +20,12 @@ import {
     InvalidHelpCenterApiFixture,
     PartialHelpCenterApiFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {
-    ArticleTemplatesListFixture,
-    HelpCenterItemsListFixture,
-    ArticlesListFixture,
-} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
-import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+
 import {
     findArticleByKey,
     getEnabledArticlesCount,

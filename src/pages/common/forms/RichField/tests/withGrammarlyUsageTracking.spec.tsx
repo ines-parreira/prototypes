@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
 import {mount, shallow} from 'enzyme'
+import React, {Component} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 

@@ -1,11 +1,12 @@
-import React, {useCallback, useContext} from 'react'
 import _noop from 'lodash/noop'
+import React, {useCallback, useContext} from 'react'
 
+import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
 import {IntegrationDataItem} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
 
 import {SearchResultType} from 'services/gorgiasApi'
+
 import SearchInput, {
     Props as SearchInputProps,
 } from '../SearchInput/SearchInput'

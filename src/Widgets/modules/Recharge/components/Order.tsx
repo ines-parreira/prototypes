@@ -1,3 +1,4 @@
+import {fromJS, Map, List} from 'immutable'
 import React, {
     ContextType,
     ReactNode,
@@ -5,25 +6,24 @@ import React, {
     useContext,
     FunctionComponent,
 } from 'react'
-import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {renderTemplate} from 'pages/common/utils/template'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
 import css from './Order.less'

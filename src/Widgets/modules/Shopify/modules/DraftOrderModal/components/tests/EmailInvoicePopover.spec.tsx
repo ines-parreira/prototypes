@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {Button, Form, Popover} from 'reactstrap'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+import {Button, Form, Popover} from 'reactstrap'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 

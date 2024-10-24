@@ -1,19 +1,19 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useSearch from 'hooks/useSearch'
 import {
     WhatsAppMigrationContextProvider,
     WhatsAppMigrationStep,
 } from 'hooks/useWhatsAppMigration'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import {FeatureFlagKey} from 'config/featureFlags'
 
-import WhatsAppMigrationPreamble from './WhatsAppMigrationPreamble'
 import WhatsAppMigrationConnect from './WhatsAppMigrationConnect'
-import WhatsAppMigrationForm from './WhatsAppMigrationForm'
-import WhatsAppMigrationVerificationForm from './WhatsAppMigrationVerificationForm'
 import WhatsAppMigrationDebug from './WhatsAppMigrationDebug'
+import WhatsAppMigrationForm from './WhatsAppMigrationForm'
+import WhatsAppMigrationPreamble from './WhatsAppMigrationPreamble'
+import WhatsAppMigrationVerificationForm from './WhatsAppMigrationVerificationForm'
 
 export default function WhatsAppIntegrationMigration(): JSX.Element | null {
     const {step} = useSearch<{step: string | undefined}>()

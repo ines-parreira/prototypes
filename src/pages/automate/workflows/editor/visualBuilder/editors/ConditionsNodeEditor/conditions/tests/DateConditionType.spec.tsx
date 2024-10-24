@@ -1,5 +1,5 @@
-import React from 'react'
 import {screen, act, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import {renderWithStore} from 'utils/testing'
 

@@ -1,9 +1,10 @@
 import React from 'react'
+
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     COMPLETENESS_STATUS_COMPLETE,
     COMPLETENESS_STATUS_INCOMPLETE,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 export const AutoQACompletenessCell = ({data}: {data: string | undefined}) => {
     const badgeType =

@@ -1,14 +1,14 @@
+import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 
-import {act, render, screen} from '@testing-library/react'
+import {macros as macrosFixtures} from 'fixtures/macro'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {OrderDirection} from 'models/api/types'
 import {createMacro, deleteMacro} from 'models/macro/resources'
 import {Macro, MacroSortableProperties} from 'models/macro/types'
-import {macros as macrosFixtures} from 'fixtures/macro'
-import {MacrosState} from 'state/entities/macros/types'
 import history from 'pages/history'
-import {OrderDirection} from 'models/api/types'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {MacrosState} from 'state/entities/macros/types'
 
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 

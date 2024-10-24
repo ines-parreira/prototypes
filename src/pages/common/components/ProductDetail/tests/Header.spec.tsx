@@ -1,7 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
 import Header from 'pages/common/components/ProductDetail/Header'
+
 import {dummyProduct} from './fixtures'
 
 describe(`Header`, () => {

@@ -1,8 +1,9 @@
 // g/integrations/email/schemas.py
 import type {SenderVerification} from 'models/singleSenderVerification/types'
+
 import {EmailProvider, IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export enum OutboundVerificationStatusValue {
     Unverified = 'unverified',

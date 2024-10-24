@@ -1,15 +1,16 @@
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import axios from 'axios'
 import _pick from 'lodash/pick'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import userEvent from '@testing-library/user-event'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import {OrderDirection} from 'models/api/types'
 import {fetchMacros} from 'models/macro/resources'
 import {Macro, MacroSortableProperties} from 'models/macro/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 

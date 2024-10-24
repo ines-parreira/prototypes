@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
+import React, {ComponentProps} from 'react'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
-import ToggleCell from 'pages/settings/SLAs/features/SLAList/views/ToggleCell'
-import DatetimeCell from 'pages/settings/SLAs/features/SLAList/views/DatetimeCell'
-import ChannelListCell from 'pages/settings/SLAs/features/SLAList/views/ChannelListCell'
 import {isExtraLargeScreen} from 'pages/common/utils/mobile'
+import ChannelListCell from 'pages/settings/SLAs/features/SLAList/views/ChannelListCell'
+import DatetimeCell from 'pages/settings/SLAs/features/SLAList/views/DatetimeCell'
+import ToggleCell from 'pages/settings/SLAs/features/SLAList/views/ToggleCell'
 
 import {TableColumn} from '../types'
 

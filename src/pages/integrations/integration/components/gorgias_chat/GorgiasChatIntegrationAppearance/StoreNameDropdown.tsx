@@ -1,7 +1,7 @@
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import React, {useState} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
+import React, {useState} from 'react'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import {getIconFromType} from 'state/integrations/helpers'

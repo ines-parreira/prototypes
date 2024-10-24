@@ -1,10 +1,8 @@
-import React from 'react'
-
+import {render, screen, fireEvent} from '@testing-library/react'
 import {Map, List} from 'immutable'
 
-import {render, screen, fireEvent} from '@testing-library/react'
-
 import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroActionName} from 'models/macroAction/types'

@@ -1,11 +1,11 @@
 import {render} from '@testing-library/react'
+import {ContentState} from 'draft-js'
 import * as React from 'react'
 
-import {ContentState} from 'draft-js'
 import {convertFromHTML} from 'utils/editor'
 
-import discountCodeLink from '../discountCodeLink'
 import {DecoratorComponentProps} from '../../../types'
+import discountCodeLink from '../discountCodeLink'
 
 describe('discountCodeLink decorator', () => {
     describe('strategy', () => {

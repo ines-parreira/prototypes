@@ -1,14 +1,14 @@
-import React, {createRef, useState, useMemo} from 'react'
-import _intersection from 'lodash/intersection'
 import cn from 'classnames'
+import _intersection from 'lodash/intersection'
+import React, {createRef, useState, useMemo} from 'react'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {CONVERT_SHOPIFY_TRIGGERS} from 'pages/convert/campaigns/constants/triggers'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './CampaignIncognitoVisitorsSwitch.less'
 

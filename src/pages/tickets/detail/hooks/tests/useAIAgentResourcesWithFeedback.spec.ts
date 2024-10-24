@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {MessageFeedback} from 'models/aiAgentFeedback/types'
+
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
+import {MessageFeedback} from 'models/aiAgentFeedback/types'
+
 import {useAIAgentResourcesWithFeedback} from '../useAIAgentResourcesWithFeedback'
 
 describe('useAIAgentResourcesWithFeedback', () => {

@@ -1,4 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
+
+import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {
@@ -14,7 +16,6 @@ import {
     getWorkingHoursInTimeZone,
     weekDayLabel,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,

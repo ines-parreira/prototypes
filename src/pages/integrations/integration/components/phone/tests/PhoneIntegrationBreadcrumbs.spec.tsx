@@ -2,15 +2,15 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {PhoneFunction, PhoneCountry} from 'business/twilio'
+import {phoneNumbers} from 'fixtures/phoneNumber'
 import {
     PhoneIntegration,
     IntegrationType,
     VoiceMessageType,
     PhoneRingingBehaviour,
 } from 'models/integration/types'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'

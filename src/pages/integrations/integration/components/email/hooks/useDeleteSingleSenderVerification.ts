@@ -1,5 +1,6 @@
-import {useState} from 'react'
 import {AxiosError} from 'axios'
+import {useState} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {deleteVerification as deleteVerificationRequest} from 'models/singleSenderVerification/resources'
 import {notify} from 'state/notifications/actions'

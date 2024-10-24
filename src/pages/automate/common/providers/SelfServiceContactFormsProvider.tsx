@@ -1,9 +1,9 @@
 import React, {ReactNode, useCallback, useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 
 type Props = {
     children?: ReactNode

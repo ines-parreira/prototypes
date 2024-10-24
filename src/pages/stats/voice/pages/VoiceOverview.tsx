@@ -1,11 +1,30 @@
-import React, {useMemo, useState} from 'react'
-import moment from 'moment/moment'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment/moment'
+import React, {useMemo, useState} from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
+import {ProductType} from 'models/billing/types'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {FilterKey, FilterComponentKey} from 'models/stat/types'
+import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import ChartCard from 'pages/stats/ChartCard'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
+import VoiceCallDirectionFilter from 'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
+import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
+import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
+import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     AVERAGE_TALK_TIME_METRIC_HINT,
     AVERAGE_TALK_TIME_METRIC_TITLE,
@@ -26,40 +45,21 @@ import {
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
-import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import ChartCard from 'pages/stats/ChartCard'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import VoiceCallVolumeMetric from 'pages/stats/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
-import {VoiceCallTable} from 'pages/stats/voice/components/VoiceCallTable/VoiceCallTable'
-import VoiceCallDirectionFilter from 'pages/stats/voice/components/VoiceCallDirectionFilter/VoiceCallDirectionFilter'
+import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {
     VoiceCallAverageTimeMetric,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
-import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
-import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import {ProductType} from 'models/billing/types'
+import {AccountFeature} from 'state/currentAccount/types'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 import {VoiceMetric} from 'state/ui/stats/types'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {FilterKey, FilterComponentKey} from 'models/stat/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 function VoiceOverview() {
     const [tableFilterOption, setTableFilterOption] = useState(

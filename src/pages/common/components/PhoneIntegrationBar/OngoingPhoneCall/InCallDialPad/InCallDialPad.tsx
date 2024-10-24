@@ -1,6 +1,7 @@
+import {Call} from '@twilio/voice-sdk'
 import React, {useState} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
-import {Call} from '@twilio/voice-sdk'
+
 import DialPad from 'pages/integrations/integration/components/phone/DialPad'
 
 import IconButtonTooltip from '../IconButtonTooltip'

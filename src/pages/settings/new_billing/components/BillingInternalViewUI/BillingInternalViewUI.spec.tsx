@@ -1,9 +1,16 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen, within} from '@testing-library/react'
+import user from '@testing-library/user-event'
 import MockDate from 'mockdate'
 
 import React from 'react'
-import {render, screen, within} from '@testing-library/react'
-import user from '@testing-library/user-event'
-import {QueryClientProvider} from '@tanstack/react-query'
+
+import {
+    automate02MonthlyMeteredPlan,
+    basicMonthlyHelpdeskPlan,
+    proMonthlyHelpdeskPlan,
+} from 'fixtures/productPrices'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     BillingState,
     CouponSummary,
@@ -13,17 +20,11 @@ import {
     SubscriptionSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import {assumeMock} from 'utils/testing'
-import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {BillingInternalViewUI} from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import {
-    automate02MonthlyMeteredPlan,
-    basicMonthlyHelpdeskPlan,
-    proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 const availableHdAoCoupons = [
     'sales-hd+ao-year-05%-once',

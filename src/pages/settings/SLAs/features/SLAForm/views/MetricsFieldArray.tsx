@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react'
 import {CreateSlaPolicyBody} from '@gorgias/api-types'
-import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 import classNames from 'classnames'
+import React, {useEffect, useState} from 'react'
+import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 
-import settingsCss from 'pages/settings/settings.less'
 import Caption from 'pages/common/forms/Caption/Caption'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import settingsCss from 'pages/settings/settings.less'
 
 import FormField from './FormField'
-import TimeUnitSelectBox from './TimeUnitSelectBox'
-import NumberInputField from './NumberInputField'
 import css from './MetricsFieldArray.less'
+import NumberInputField from './NumberInputField'
+import TimeUnitSelectBox from './TimeUnitSelectBox'
 
 const fieldTexts = {
     FRT: {

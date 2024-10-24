@@ -1,16 +1,16 @@
+import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Attachment} from 'models/ticket/types'
-import {integrationsState} from 'fixtures/integrations'
 
 import MacroEdit from '../MacroEdit'
 

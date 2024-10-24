@@ -1,20 +1,16 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {fireEvent, screen} from '@testing-library/react'
 import {UseQueryResult, QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import _range from 'lodash/range'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {RootState, StoreDispatch} from 'state/types'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {Paths} from 'rest_api/workflows_api/client.generated'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {shopifyIntegration} from 'fixtures/integrations'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {statsFilters} from 'fixtures/stats'
-import {renderWithRouter, assumeMock} from 'utils/testing'
 import {
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
@@ -23,8 +19,14 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import {Paths} from 'rest_api/workflows_api/client.generated'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter, assumeMock} from 'utils/testing'
+
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useGetAppImageUrl')

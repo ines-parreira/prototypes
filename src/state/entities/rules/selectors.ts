@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 
-import {RootState} from '../../types'
 import {RuleLimitStatus} from '../../rules/types'
+import {RootState} from '../../types'
 
 import {RulesState} from './types'
 

@@ -1,9 +1,9 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
 import graphsImage from 'assets/img/stats/graphs.png'
+import Button from 'pages/common/components/button/Button'
 import css from 'pages/stats/BlankState.less'
 
 export const BLANK_STATE_TITLE = 'Nothing to report on'

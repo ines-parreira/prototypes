@@ -1,5 +1,5 @@
-import {useMemo} from 'react'
 import _orderBy from 'lodash/orderBy'
+import {useMemo} from 'react'
 
 import {ActionTemplateApp} from 'pages/automate/actionsPlatform/types'
 

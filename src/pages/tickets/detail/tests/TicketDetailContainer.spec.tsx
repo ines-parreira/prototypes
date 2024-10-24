@@ -1,29 +1,39 @@
-import React, {ComponentProps} from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {act, waitFor, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {QueryClientProvider} from '@tanstack/react-query'
+import MockAdapter from 'axios-mock-adapter'
+import {createMemoryHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
-import {createMemoryHistory} from 'history'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 
-import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
-import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {MacroActionName} from 'models/macroAction/types'
+import {
+    ticketDropdownFieldDefinition,
+    ticketInputFieldDefinition,
+} from 'fixtures/customField'
 import client from 'models/api/resources'
+import {MacroActionName} from 'models/macroAction/types'
+import * as voiceCallQueries from 'models/voiceCall/queries'
+import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {initialState as currentUser} from 'state/currentUser/reducers'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
+import {triggerTicketFieldsErrors} from 'state/ticket/actions'
+import * as ticketUtils from 'state/ticket/utils'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import * as customFieldsUtils from 'utils/customFields'
 import {
     assumeMock,
     flushPromises,
@@ -31,16 +41,6 @@ import {
     renderWithRouter,
 } from 'utils/testing'
 
-import {
-    ticketDropdownFieldDefinition,
-    ticketInputFieldDefinition,
-} from 'fixtures/customField'
-import {triggerTicketFieldsErrors} from 'state/ticket/actions'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import * as voiceCallQueries from 'models/voiceCall/queries'
-import * as customFieldsUtils from 'utils/customFields'
-import * as ticketUtils from 'state/ticket/utils'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
 import {TicketDetailContainer} from '../TicketDetailContainer'

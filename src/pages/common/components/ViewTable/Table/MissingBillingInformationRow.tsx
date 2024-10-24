@@ -1,31 +1,31 @@
+import {fromJS} from 'immutable'
 import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Modal, ModalHeader, Form, ModalBody, ModalFooter} from 'reactstrap'
-import {fromJS} from 'immutable'
 import {AnyAction} from 'redux'
 
 import {useAppNode} from 'appNode'
-import useDimensions from 'hooks/useDimensions'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import {AlertType} from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
-import {hasRole} from 'utils'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {UserRole} from 'config/types/user'
-import {
-    paymentMethod as getPaymentMethod,
-    hasCreditCard as getHasCreditCard,
-} from 'state/currentAccount/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useDimensions from 'hooks/useDimensions'
+import useWindowSize from 'hooks/useWindowSize'
+import {AlertType} from 'pages/common/components/Alert/Alert'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import Button from 'pages/common/components/button/Button'
+import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
+import {fetchContact, updateContact} from 'state/billing/actions'
 import {
     isMissingContactInformation as getIsMissingContactInformation,
     getContact,
 } from 'state/billing/selectors'
 import {BillingContact, PaymentMethodType} from 'state/billing/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-import useWindowSize from 'hooks/useWindowSize'
-import {fetchContact, updateContact} from 'state/billing/actions'
-import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
+import {
+    paymentMethod as getPaymentMethod,
+    hasCreditCard as getHasCreditCard,
+} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {hasRole} from 'utils'
 
 import css from './MissingBillingInformationRow.less'
 

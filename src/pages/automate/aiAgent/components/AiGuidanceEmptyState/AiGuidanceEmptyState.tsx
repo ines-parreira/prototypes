@@ -1,15 +1,15 @@
+import classNames from 'classnames'
 import React from 'react'
 
-import classNames from 'classnames'
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
-import history from 'pages/history'
-import Button from 'pages/common/components/button/Button'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {AIGuidance} from 'pages/automate/aiAgent/types'
-import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
+import history from 'pages/history'
 
-import {SegmentEvent, logEvent} from 'common/segment'
 import css from './AiGuidanceEmptyState.less'
 
 type Props = {

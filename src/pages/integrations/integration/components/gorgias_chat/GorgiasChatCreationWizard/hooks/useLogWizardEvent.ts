@@ -1,6 +1,6 @@
+import {fromJS, List, Map} from 'immutable'
 import {useCallback, useContext} from 'react'
 import {useParams} from 'react-router-dom'
-import {fromJS, List, Map} from 'immutable'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

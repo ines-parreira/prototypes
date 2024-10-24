@@ -1,10 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
+
+import GroupAddon from './GroupAddon'
 import InputGroup from './InputGroup'
 import TextInput from './TextInput'
-import GroupAddon from './GroupAddon'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/Addon',

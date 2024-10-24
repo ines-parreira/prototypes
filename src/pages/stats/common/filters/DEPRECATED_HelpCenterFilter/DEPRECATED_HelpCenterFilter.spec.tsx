@@ -1,9 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
-import {mockStore} from 'utils/testing'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {mockStore} from 'utils/testing'
+
 import DEPRECATED_HelpCenterFilter from './DEPRECATED_HelpCenterFilter'
 
 const helpCenters = getHelpCentersResponseFixture.data

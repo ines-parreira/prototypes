@@ -1,5 +1,6 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import noop from 'lodash/noop'
+
 import useMeasure from '../useMeasure'
 
 type MockedResizeObserver = (listener: any) => any

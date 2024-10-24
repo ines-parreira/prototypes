@@ -1,50 +1,49 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {MouseEvent, useCallback, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
-import {fromJS, Map} from 'immutable'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
-
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import Button from 'pages/common/components/button/Button'
-import PageHeader from 'pages/common/components/PageHeader'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
 } from 'models/convert/campaign/types'
-import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
-import {getIntegrationById} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
 
-import {toJS} from 'utils'
-import history from 'pages/history'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertUpsellBanner from 'pages/convert/campaigns/components/ConvertUpsellBanner/ConvertUpsellBanner'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
 
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
-import {Campaign} from './types/Campaign'
+import history from 'pages/history'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {toJS} from 'utils'
+
 import css from './CampaignsView.less'
 import ConvertLibraryBanner from './components/ConvertLibraryBanner'
-import {useUpdateCampaign} from './hooks/useUpdateCampaign'
+import CampaignsList from './containers/CampaignsList/CampaignsList'
 import {useCreateCampaign} from './hooks/useCreateCampaign'
 import {useDeleteCampaign} from './hooks/useDeleteCampaign'
+import {useUpdateCampaign} from './hooks/useUpdateCampaign'
+import {Campaign} from './types/Campaign'
+import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
 import {duplicateCampaign} from './utils/duplicateCampaign'
-import CampaignsList from './containers/CampaignsList/CampaignsList'
 
 export const CampaignsView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =

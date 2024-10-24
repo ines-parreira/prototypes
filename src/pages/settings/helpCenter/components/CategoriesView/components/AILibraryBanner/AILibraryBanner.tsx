@@ -1,10 +1,10 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {assetsUrl} from 'utils'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import Button from 'pages/common/components/button/Button'
+import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import {assetsUrl} from 'utils'
 
 import css from './AILibraryBanner.less'
 

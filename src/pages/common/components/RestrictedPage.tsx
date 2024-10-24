@@ -1,12 +1,13 @@
-import React, {useMemo} from 'react'
 import indefinite from 'indefinite'
 import _startCase from 'lodash/startCase'
+import React, {useMemo} from 'react'
 
-import {RoleLabel} from 'pages/common/utils/labels'
-import {UserRole} from 'config/types/user'
-import {roleRestrictionConfigs} from 'config/roleRestrictions'
-import {USER_ROLES_ORDERED_BY_PRIVILEGES} from 'config/user'
 import {PageSection} from 'config/pages'
+import {roleRestrictionConfigs} from 'config/roleRestrictions'
+import {UserRole} from 'config/types/user'
+import {USER_ROLES_ORDERED_BY_PRIVILEGES} from 'config/user'
+import {RoleLabel} from 'pages/common/utils/labels'
+
 import PageHeader from './PageHeader'
 
 import css from './RestrictedPage.less'

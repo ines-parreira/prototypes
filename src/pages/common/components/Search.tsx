@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     KeyboardEvent,
     InputHTMLAttributes,
@@ -8,11 +9,10 @@ import React, {
     forwardRef,
     useImperativeHandle,
 } from 'react'
-import classnames from 'classnames'
 
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import css from './Search.less'
 

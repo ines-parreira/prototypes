@@ -1,15 +1,15 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import {InventoryManagement} from 'constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import {InventoryManagement} from 'constants/integrations/types/shopify'
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 

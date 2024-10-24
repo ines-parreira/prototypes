@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React, {useMemo} from 'react'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 

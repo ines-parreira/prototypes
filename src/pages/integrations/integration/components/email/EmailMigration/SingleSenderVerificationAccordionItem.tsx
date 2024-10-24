@@ -1,25 +1,26 @@
-import React from 'react'
-import classNames from 'classnames'
 import {Card} from '@gorgias/analytics-ui-kit'
+import classNames from 'classnames'
+import React from 'react'
+
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import Button from 'pages/common/components/button/Button'
+
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
+import css from './MigrationDomainList.less'
+import SingleSenderVerificationTable from './SingleSenderVerificationTable'
 import {
     computeDomainSingleSenderVerificationStatus,
     getSingleSenderUnverifiedIntegrations,
     getSubmittedIncompleteVerifications,
     listAddressDetailsInline,
 } from './utils'
-import SingleSenderVerificationTable from './SingleSenderVerificationTable'
-
-import css from './MigrationDomainList.less'
 
 type Props = {
     verification: EmailMigrationOutboundVerification

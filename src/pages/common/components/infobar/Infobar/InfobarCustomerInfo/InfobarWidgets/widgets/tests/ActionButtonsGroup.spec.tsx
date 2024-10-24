@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 
-import {render} from '@testing-library/react'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import {renderWithStore} from 'utils/testing'
 

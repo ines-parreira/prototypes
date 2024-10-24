@@ -1,13 +1,14 @@
 import {render, screen} from '@testing-library/react'
-import React from 'react'
 import userEvent from '@testing-library/user-event'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
+import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {columnsOrder} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {assumeMock} from 'utils/testing'
 import * as channelsReportingService from 'services/reporting/channelsReportingService'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useChannelsReportMetrics')
 const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)

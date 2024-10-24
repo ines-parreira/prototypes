@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
 export const ErrorMessage = styled.span`

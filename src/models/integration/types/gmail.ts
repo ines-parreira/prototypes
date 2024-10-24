@@ -1,13 +1,13 @@
 // g/integrations/gmail/schemas.py
 import {IntegrationType} from '../constants'
-import type {EmailIntegrationMeta} from './email'
+import type {Integration} from './'
 import type {IntegrationBase} from './base'
-import type {OAuth2} from './misc'
+import type {EmailIntegrationMeta} from './email'
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from './email'
-import type {Integration} from './'
+import type {OAuth2} from './misc'
 
 export type GmailIntegration = IntegrationBase & {
     type: IntegrationType.Gmail

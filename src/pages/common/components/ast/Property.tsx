@@ -1,10 +1,10 @@
-import React, {ComponentProps, useMemo} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
+import React, {ComponentProps, useMemo} from 'react'
 
-import Widget from './Widget'
-import Errors from './Errors'
 import {Argument, Properties} from './actions/config'
+import Errors from './Errors'
+import Widget from './Widget'
 
 type Props = {
     config?: ValueOf<Argument>

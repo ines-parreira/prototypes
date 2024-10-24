@@ -1,14 +1,9 @@
 import * as esprima from 'esprima'
-import moment from 'moment'
 import {fromJS, Map, List} from 'immutable'
+import moment from 'moment'
 import randomstring from 'randomstring'
 
 import {isPrivateAsset} from 'common/utils'
-import * as utils from 'utils'
-import * as envUtils from 'utils/environment'
-import schemasJSON from 'fixtures/openapi.json'
-import {Account} from 'state/currentAccount/types'
-import {isDevelopment, isProduction, isStaging} from 'utils/environment'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
@@ -16,14 +11,19 @@ import {
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
-import {assertUnreachable, getCode} from 'utils'
-import {mockProductionEnvironment} from 'utils/testing'
-import {getDateAndTimeFormat} from 'utils/datetime'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     TimeFormatType,
 } from 'constants/datetime'
+import schemasJSON from 'fixtures/openapi.json'
+import {Account} from 'state/currentAccount/types'
+import * as utils from 'utils'
+import {assertUnreachable, getCode} from 'utils'
+import {getDateAndTimeFormat} from 'utils/datetime'
+import * as envUtils from 'utils/environment'
+import {isDevelopment, isProduction, isStaging} from 'utils/environment'
+import {mockProductionEnvironment} from 'utils/testing'
 
 jest.mock('common/utils')
 jest.mock('utils/environment')

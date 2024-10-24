@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
 import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 

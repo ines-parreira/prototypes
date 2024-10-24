@@ -1,23 +1,24 @@
+import _isEqual from 'lodash/isEqual'
 import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
     isPhoneIntegration,
 } from 'models/integration/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {updatePhoneIvrConfiguration} from 'pages/integrations/integration/components/phone/actions'
-import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray'
+import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 
 import settingsCss from 'pages/settings/settings.less'
-import css from './VoiceIntegrationIvr.less'
+
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+import css from './VoiceIntegrationIvr.less'
 
 type Props = {
     integration: Maybe<PhoneIntegration>

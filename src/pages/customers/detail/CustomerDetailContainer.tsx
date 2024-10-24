@@ -1,32 +1,33 @@
+import {fromJS, List} from 'immutable'
+import _pick from 'lodash/pick'
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List} from 'immutable'
 import {useParams} from 'react-router-dom'
-import _pick from 'lodash/pick'
-import {PickedCustomer, pickedCustomerFields} from 'models/search/types'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
-import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
-import Loader from 'pages/common/components/Loader/Loader'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import Timeline from 'pages/common/components/timeline/Timeline'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {Customer} from 'models/customer/types'
+import {PickedCustomer, pickedCustomerFields} from 'models/search/types'
+import Button from 'pages/common/components/button/Button'
+import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
+import Timeline from 'pages/common/components/timeline/Timeline'
+import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import * as customersHelpers from 'state/customers/helpers'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomerHistory,
     makeGetActiveCustomerChannelsByType,
     makeIsLoading,
 } from 'state/customers/selectors'
-import * as customersHelpers from 'state/customers/helpers'
 import {RootState} from 'state/types'
-import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import css from './CustomerDetailContainer.less'
 
 const getActiveCustomerTicketChannels = makeGetActiveCustomerChannelsByType([

@@ -1,8 +1,8 @@
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'

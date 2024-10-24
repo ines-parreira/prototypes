@@ -1,13 +1,13 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import _debounce from 'lodash/debounce'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import {useProductsFromShopifyIntegration} from 'models/integration/queries'
 
 import Button from 'pages/common/components/button/Button'
-import {Value} from 'pages/common/forms/SelectField/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
 
 import {useIntegrationContext} from '../../containers/IntegrationProvider'
 
@@ -17,9 +17,9 @@ import {
     isPurchasedProductValue,
 } from '../../types/CampaignValue'
 
+import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps

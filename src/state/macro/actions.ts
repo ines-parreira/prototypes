@@ -10,8 +10,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 
 import * as constants from './constants'
-import {getErrorReason} from './utils'
 import {MacroApiError} from './types'
+import {getErrorReason} from './utils'
 
 export function fetchMacros(
     options: FetchMacrosOptions,

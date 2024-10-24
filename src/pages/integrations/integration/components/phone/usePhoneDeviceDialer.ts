@@ -1,9 +1,10 @@
-import {createRef, useState} from 'react'
 import {isValidPhoneNumber} from 'libphonenumber-js'
-import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {UserSearchResult} from 'models/search/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import {createRef, useState} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {UserSearchResult} from 'models/search/types'
+import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
 
 import useDialerOutboundCall from './useDialerOutboundCall'
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'

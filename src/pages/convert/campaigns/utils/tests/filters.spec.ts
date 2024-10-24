@@ -1,11 +1,23 @@
+import {AttachmentEnum} from 'common/types'
+import {campaignWithABGroup} from 'fixtures/abGroup'
 import {
     campaign,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
-import {campaignWithABGroup} from 'fixtures/abGroup'
-import {AttachmentEnum} from 'common/types'
+
+import {
+    CONTAINS_DISCOUNT_CODES,
+    CONTAINS_PRODUCT_CARDS,
+    TRIGGERED_ON_EXIT_INTENT,
+} from '../../constants/filters'
 import {Campaign} from '../../types/Campaign'
 
+import {ABGroupStatus} from '../../types/enums/ABGroupStatus.enum'
+import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import {createTrigger} from '../createTrigger'
 import {
     filterWithProductCards,
     filterWithDiscountCodes,
@@ -14,18 +26,6 @@ import {
     filterWithABTests,
     quickFiltersInvoke,
 } from '../filters'
-
-import {createTrigger} from '../createTrigger'
-import {
-    CONTAINS_DISCOUNT_CODES,
-    CONTAINS_PRODUCT_CARDS,
-    TRIGGERED_ON_EXIT_INTENT,
-} from '../../constants/filters'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-import {ABGroupStatus} from '../../types/enums/ABGroupStatus.enum'
 
 const campaignOne: Campaign = {
     ...campaign,

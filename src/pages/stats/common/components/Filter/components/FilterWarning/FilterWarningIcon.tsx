@@ -1,8 +1,9 @@
 import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import React, {useRef} from 'react'
-import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
+
 import css from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon.less'
+import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
 
 type Props = {
     warningType: 'non-existent' | 'not-applicable'

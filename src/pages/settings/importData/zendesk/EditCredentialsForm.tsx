@@ -1,22 +1,22 @@
-import React, {FormEvent, useState} from 'react'
-import classNames from 'classnames'
-import {Form} from 'reactstrap'
-import {fromJS} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import {fromJS} from 'immutable'
+import React, {FormEvent, useState} from 'react'
+import {Form} from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
-import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {ZendeskIntegration} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {getAreIntegrationsLoading} from 'state/integrations/selectors'
-import {ZendeskIntegration} from 'models/integration/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppSelector from 'hooks/useAppSelector'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {ImportStatus, ZENDESK_CONNECTION_TYPE} from './types'
 
 import css from './EditCredentialsForm.less'
+import {ImportStatus, ZENDESK_CONNECTION_TYPE} from './types'
 
 type Props = {
     integration: ZendeskIntegration

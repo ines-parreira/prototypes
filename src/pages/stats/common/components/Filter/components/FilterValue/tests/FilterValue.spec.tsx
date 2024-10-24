@@ -1,7 +1,8 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _times from 'lodash/times'
+import React from 'react'
+
 import FilterValue, {
     getTooltipLabels,
 } from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'

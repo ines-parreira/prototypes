@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 
 import Wizard, {WizardContext} from './Wizard'
-import WizardStep from './WizardStep'
 import WizardProgressHeader from './WizardProgressHeader'
+import WizardStep from './WizardStep'
 
 const storyConfig: Meta = {
     title: 'General/Wizard container/WizardProgressHeader',

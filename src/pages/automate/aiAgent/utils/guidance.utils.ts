@@ -6,6 +6,7 @@ import {
 } from 'models/helpCenter/types'
 import {slugify} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {
     AIGuidance,
     CreateGuidanceArticle,

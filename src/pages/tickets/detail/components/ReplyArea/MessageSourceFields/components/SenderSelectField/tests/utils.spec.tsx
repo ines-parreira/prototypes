@@ -1,4 +1,5 @@
 import {TicketMessageSourceType} from 'business/types/ticket'
+
 import {getReconnectUrl} from '../utils'
 
 describe('getReconnectUrl', () => {

@@ -1,25 +1,26 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {QueryClientProvider} from '@tanstack/react-query'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
+import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
 import Wizard from 'pages/common/components/wizard/Wizard'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import useHelpCenterOfShop from '../../../../hooks/useHelpCenterOfShop'
 import GorgiasChatCreationWizardStepAutomate from '../GorgiasChatCreationWizardStepAutomate'
 

@@ -1,3 +1,4 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -5,13 +6,13 @@ import {useParams} from 'react-router-dom'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
+
+import {OBJECT_TYPES} from 'custom-fields/constants'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     ticketInputFieldDefinition,
     managedTicketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {OBJECT_TYPES} from 'custom-fields/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import EditTicketField from '../../EditCustomField'

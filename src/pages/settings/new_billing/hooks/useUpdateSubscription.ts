@@ -1,8 +1,8 @@
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 
 export type HandleSubscriptionUpdate = {
     isLoading: boolean

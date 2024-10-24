@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useMemo} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'

@@ -1,13 +1,13 @@
+import {Meta, Story} from '@storybook/react'
 import _noop from 'lodash/noop'
 import React, {ComponentProps, useRef, useState} from 'react'
-import {Meta, Story} from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
-import DropdownItemLabel from './DropdownItemLabel'
 import Dropdown from './Dropdown'
 import DropdownBody from './DropdownBody'
 import DropdownItem from './DropdownItem'
+import DropdownItemLabel from './DropdownItemLabel'
 
 const storyConfig: Meta = {
     title: 'General/Dropdown/DropdownItemLabel',

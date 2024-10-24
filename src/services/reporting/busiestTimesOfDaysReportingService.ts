@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+
 import {Period} from 'models/stat/types'
 import {
     DayOfWeek,
@@ -9,8 +10,8 @@ import {
     get24Hours,
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {createCsv, saveZippedFiles} from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {createCsv, saveZippedFiles} from 'utils/file'
 
 const turnIntoArray = (data: BTODData): unknown[][] => {
     const daysOfWeek: DayOfWeek[] = Object.values(DayOfWeek)

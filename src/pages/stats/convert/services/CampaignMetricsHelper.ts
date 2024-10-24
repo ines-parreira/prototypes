@@ -1,16 +1,39 @@
+import _bind from 'lodash/bind'
+import _divide from 'lodash/divide'
 import _get from 'lodash/get'
-import _reduce from 'lodash/reduce'
 import _mapValues from 'lodash/mapValues'
+import _pickBy from 'lodash/pickBy'
+import _reduce from 'lodash/reduce'
 import _unzip from 'lodash/unzip'
 import _values from 'lodash/values'
 import _zip from 'lodash/zip'
-import _pickBy from 'lodash/pickBy'
-import _bind from 'lodash/bind'
-import _divide from 'lodash/divide'
 import moment from 'moment'
+
 import {getMomentGranularityFromReportingGranularity} from 'hooks/reporting/useTimeSeries'
 
+import {ReportingGranularity} from 'models/reporting/types'
+import {AggregationWindow, Stat} from 'models/stat/types'
 import {ensureNumberValue, formatPercentage} from 'pages/common/utils/numbers'
+import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
+import {
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    Cube,
+    EventsMeasure,
+    OrderConversionDimension,
+    OrderConversionMeasure,
+} from 'pages/stats/convert/clients/constants'
+import {
+    CubeData,
+    CubeMetric,
+    GroupDimension,
+} from 'pages/stats/convert/clients/types'
+import {
+    AbTestMetricNames,
+    CampaignsTotalsMetricNames,
+    COMPARISON_DATA_FORMAT,
+    GRAPH_LABEL_DATE_FORMAT,
+} from 'pages/stats/convert/services/constants'
 import {
     CalculatedTotals,
     CampaignGraphData,
@@ -23,28 +46,6 @@ import {
     StatData,
     StoreTotal,
 } from 'pages/stats/convert/services/types'
-import {AggregationWindow, Stat} from 'models/stat/types'
-import {
-    CubeData,
-    CubeMetric,
-    GroupDimension,
-} from 'pages/stats/convert/clients/types'
-import {
-    CampaignOrderEventsDimension,
-    CampaignOrderEventsMeasure,
-    Cube,
-    EventsMeasure,
-    OrderConversionDimension,
-    OrderConversionMeasure,
-} from 'pages/stats/convert/clients/constants'
-import {
-    AbTestMetricNames,
-    CampaignsTotalsMetricNames,
-    COMPARISON_DATA_FORMAT,
-    GRAPH_LABEL_DATE_FORMAT,
-} from 'pages/stats/convert/services/constants'
-import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
-import {ReportingGranularity} from 'models/reporting/types'
 import {getMetricValue} from 'pages/stats/convert/services/utils'
 
 export const getDataFromStatResult = (result: Stat): StatData => {

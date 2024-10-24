@@ -1,7 +1,9 @@
-import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
 import {useGetVoiceCallRecordingTranscription} from '@gorgias/api-queries'
+import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
+
 import {VoiceCallRecordingType} from 'models/voiceCall/types'
+
 import TranscriptionData from '../TranscriptionData'
 
 jest.mock('@gorgias/api-queries')

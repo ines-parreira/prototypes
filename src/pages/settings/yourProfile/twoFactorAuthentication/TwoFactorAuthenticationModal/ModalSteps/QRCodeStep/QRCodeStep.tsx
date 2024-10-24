@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import QRCode from 'qrcode'
 import React, {
     Dispatch,
     SetStateAction,
@@ -5,18 +7,17 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import QRCode from 'qrcode'
 
-import classnames from 'classnames'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
+
 import modalStepsCss from '../ModalSteps.less'
-import css from './QRCodeStep.less'
 import CantScanQRCode from './CantScanQRCode'
+import css from './QRCodeStep.less'
 
 type OwnProps = {
     authenticatorData: AuthenticatorData

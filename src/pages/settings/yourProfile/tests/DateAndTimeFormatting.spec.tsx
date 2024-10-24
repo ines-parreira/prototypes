@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'

@@ -1,21 +1,20 @@
+import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
 import axios from 'axios'
 
 import MockAdapter from 'axios-mock-adapter'
 
-import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
+import {customer} from 'fixtures/customer'
 import client from 'models/api/resources'
 
-import {customer} from 'fixtures/customer'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {Customer} from 'models/customer/types'
-import {CustomerWithHighlightsResponse} from 'models/search/types'
-import {assumeMock} from 'utils/testing'
-
 import {
     getCustomer,
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
+import {Customer} from 'models/customer/types'
+import {CustomerWithHighlightsResponse} from 'models/search/types'
+import {assumeMock} from 'utils/testing'
 
 const mockedServer = new MockAdapter(client)
 

@@ -1,8 +1,10 @@
 import React, {ReactNode} from 'react'
 import {GroupOptions} from 'sortablejs'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {stopWidgetEdition, drag, cancelDrag, drop} from 'state/widgets/actions'
+
 import ReactSortable, {isSortableEvent} from './ReactSortable'
 
 type Props = {

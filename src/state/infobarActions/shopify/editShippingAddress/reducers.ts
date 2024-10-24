@@ -2,8 +2,8 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../../../types'
 
-import {EditShippingAddressState} from './types'
 import {SET_LOADING, SET_ADDRESSES, SET_INITIAL_STATE} from './constants'
+import {EditShippingAddressState} from './types'
 
 export const initialState: EditShippingAddressState = fromJS({
     loading: false,

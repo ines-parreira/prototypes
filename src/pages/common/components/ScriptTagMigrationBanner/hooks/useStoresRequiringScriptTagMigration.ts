@@ -5,9 +5,8 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
 
-import {IntegrationType} from 'models/integration/constants'
-
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
 
 import {
     GorgiasChatInstallationMethod,

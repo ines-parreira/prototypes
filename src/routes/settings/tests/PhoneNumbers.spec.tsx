@@ -1,12 +1,12 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
+import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
 import {assumeMock} from 'utils/testing'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'

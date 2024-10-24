@@ -3,6 +3,7 @@ import {
     HelpCenterStatsFiltersMembers,
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
+
 import {HelpCenterTrackingEventMeasures} from '../../cubes/HelpCenterTrackingEventCube'
 
 export const helpCenterTrendQueryFactory = (

@@ -1,7 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {PhoneCountry, PhoneType} from 'models/phoneNumber/types'
+import React from 'react'
+
 import * as capabilitiesHook from 'hooks/integrations/phone/usePhoneNumberCapabilities'
+import {PhoneCountry, PhoneType} from 'models/phoneNumber/types'
+
 import PhoneNumberCapabilitiesAlert from '../PhoneNumberCapabilitiesAlert'
 
 describe('<PhoneNumberCapabilitiesAlert/>', () => {

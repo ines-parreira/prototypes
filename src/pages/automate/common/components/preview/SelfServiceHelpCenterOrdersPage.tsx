@@ -1,18 +1,17 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {HelpCenter} from 'models/helpCenter/types'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
+import {HelpCenter} from 'models/helpCenter/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import MousePointer from './components/MousePointer'
+import {LINE_ITEMS} from './constants'
 import useOrderDates from './hooks/useOrderDates'
 import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-import {LINE_ITEMS} from './constants'
-
 import css from './SelfServiceHelpCenterOrdersPage.less'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter

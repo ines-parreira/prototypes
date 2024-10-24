@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {view as viewFixture} from 'fixtures/views'
@@ -13,7 +14,9 @@ import {JobType} from 'models/job/types'
 
 import {EntityType, View, ViewCategory} from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
 import history from 'pages/history'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {viewCreated, viewUpdated} from 'state/entities/views/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
@@ -32,9 +35,6 @@ import {
 } from 'state/views/constants'
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
-import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {useFlag} from 'common/flags'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 

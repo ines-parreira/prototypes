@@ -1,6 +1,7 @@
-import * as dateUtils from 'utils/date'
-import {NotificationStatus} from 'state/notifications/types'
 import {EmailMigrationStatus} from 'models/integration/types'
+import {NotificationStatus} from 'state/notifications/types'
+import * as dateUtils from 'utils/date'
+
 import {computeEmailMigrationStatusBanner} from '../helpers'
 
 describe('migration banner helpers', () => {

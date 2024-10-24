@@ -1,8 +1,8 @@
 import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import Alert from 'pages/common/components/Alert/Alert'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {AutoCloseSpamSettings, ManagedRuleSettings} from 'state/rules/types'

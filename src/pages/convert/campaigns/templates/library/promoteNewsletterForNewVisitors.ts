@@ -1,21 +1,22 @@
 // Promote newsletter or SMS sign-up page for new visitors about to leave
 
 import {ulid} from 'ulidx'
-import {assetsUrl} from 'utils'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+
 import {
     WizardConfiguration,
     BannerType,
     TooltipActionType,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
+import {assetsUrl} from 'utils'
 
-import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
+import {CampaignConfiguration, CampaignTemplate} from '../types'
 
 export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
     slug: 'promote-newsletter-for-new-visitors',

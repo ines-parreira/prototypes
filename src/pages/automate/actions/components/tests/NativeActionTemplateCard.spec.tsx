@@ -1,12 +1,14 @@
-import React from 'react'
-import {render, screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import thunk from 'redux-thunk'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {RootState} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import NativeActionTemplateCard from '../NativeActionTemplateCard'
 
 const queryClient = mockQueryClient()

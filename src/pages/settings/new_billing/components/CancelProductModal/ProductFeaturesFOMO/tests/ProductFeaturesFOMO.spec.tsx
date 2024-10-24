@@ -1,9 +1,11 @@
 import {render} from '@testing-library/react'
 import React from 'react'
+
 import {assumeMock} from 'utils/testing'
-import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
+
 import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
 import Feature from '../../UI/Feature'
+import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 
 jest.mock('../../UI/Feature', () =>
     jest.fn(() => <div data-testid="feature"></div>)

@@ -1,15 +1,15 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {NavLink} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 
-import Button from 'pages/common/components/button/Button'
-import {Banner} from 'pages/common/components/Banner'
-
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {ArticleTemplate, HelpCenter} from 'models/helpCenter/types'
-import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import {Banner} from 'pages/common/components/Banner'
+import Button from 'pages/common/components/button/Button'
+
 import {
     CategoriesTable,
     CategoriesTableProps,
@@ -19,15 +19,14 @@ import {CATEGORIES_PER_PAGE} from 'pages/settings/helpCenter/constants'
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
-import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
-import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
-import {useSearchContext} from '../../providers/SearchContext'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
 import {getRootCategory} from '../../../../../state/entities/helpCenter/categories'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import {useSearchContext} from '../../providers/SearchContext'
+import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
+import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 
 import css from './CategoriesView.less'
 import ArticleLandingPage from './components/ArticleLandingPage'

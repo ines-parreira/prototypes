@@ -1,7 +1,7 @@
-import React from 'react'
-import {Col, Row} from 'reactstrap'
 import classnames from 'classnames'
 import {fromJS, List} from 'immutable'
+import React from 'react'
+import {Col, Row} from 'reactstrap'
 
 import {GenericAttachment} from 'common/types'
 import {Actor, Meta, Source} from 'models/ticket/types'

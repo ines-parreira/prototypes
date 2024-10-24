@@ -1,19 +1,20 @@
-import {WorkflowStatsFilters} from 'models/stat/types'
-
-import {
-    workflowDatasetCountQueryFactory,
-    workflowDatasetStepCountQueryFactory,
-    workflowDatasetStepQueryFactory,
-} from 'models/reporting/queryFactories/workflows/metrics'
-import {getPreviousPeriod} from 'utils/reporting'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     WorkflowStats,
     WorkflowStepMetricsMap,
     computeWorkflowMetrics,
     computeWorkflowStepsMetrics,
 } from 'hooks/reporting/automate/utils'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {
+    workflowDatasetCountQueryFactory,
+    workflowDatasetStepCountQueryFactory,
+    workflowDatasetStepQueryFactory,
+} from 'models/reporting/queryFactories/workflows/metrics'
+import {WorkflowStatsFilters} from 'models/stat/types'
+
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {getPreviousPeriod} from 'utils/reporting'
+
 import {
     calculateSumOfAutomatedInteractions,
     calculateSumOfDropoff,

@@ -1,7 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {ArticleTemplatesListFixture} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+
 import {ArticleTemplateModal} from '../ArticleTemplateModal'
 
 const template = ArticleTemplatesListFixture[0]

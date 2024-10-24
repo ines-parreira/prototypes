@@ -1,9 +1,9 @@
-import React from 'react'
 import {fromJS} from 'immutable'
-import {channels as mockChannels} from 'fixtures/channels'
-import {renderWithStore} from 'utils/testing'
+import React from 'react'
 
+import {channels as mockChannels} from 'fixtures/channels'
 import SelectTargetTicket from 'pages/common/components/MergeTickets/SelectTargetTicket'
+import {renderWithStore} from 'utils/testing'
 
 jest.mock('services/channels', () => ({
     getChannels: () => mockChannels,

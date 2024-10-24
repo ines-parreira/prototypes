@@ -1,10 +1,11 @@
-import {StatsFilters} from 'models/stat/types'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {usePostReporting} from 'models/reporting/queries'
 import {
     VoiceCallMeasure,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
+import {usePostReporting} from 'models/reporting/queries'
+import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {StatsFilters} from 'models/stat/types'
+
 import {CALL_LIST_PAGE_SIZE} from '../constants/voiceOverview'
 
 export const useVoiceCallCount = (

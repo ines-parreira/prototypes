@@ -1,6 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import UncontrolledPeopleSearchInput from '../UncontrolledPeopleSearchInput'
 

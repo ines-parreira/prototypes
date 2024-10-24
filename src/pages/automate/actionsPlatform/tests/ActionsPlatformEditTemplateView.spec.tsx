@@ -1,19 +1,18 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import {produce} from 'immer'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ulid} from 'ulidx'
-import {produce} from 'immer'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
-
-import useEditActionTemplate from '../hooks/useEditActionTemplate'
-import {ActionTemplate} from '../types'
+import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import {RootState, StoreDispatch} from 'state/types'
 
 import ActionsPlatformEditTemplateView from '../ActionsPlatformEditTemplateView'
+import useEditActionTemplate from '../hooks/useEditActionTemplate'
+import {ActionTemplate} from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')

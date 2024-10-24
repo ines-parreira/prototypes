@@ -1,9 +1,7 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
+
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
@@ -15,6 +13,9 @@ import {
     FilterLabels,
     tagsFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {DropdownOption} from 'pages/stats/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'

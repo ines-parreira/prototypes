@@ -1,4 +1,5 @@
 import {ProductType} from 'models/billing/types'
+
 import {ProductFeature} from './ProductFeaturesFOMO/types'
 
 export type Reason = {

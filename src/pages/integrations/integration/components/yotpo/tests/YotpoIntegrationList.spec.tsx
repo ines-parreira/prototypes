@@ -1,19 +1,19 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+
+import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
     YOTPO_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {RootState, StoreDispatch} from 'state/types'
-
 import YotpoIntegrationList from 'pages/integrations/integration/components/yotpo/YotpoIntegrationList'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

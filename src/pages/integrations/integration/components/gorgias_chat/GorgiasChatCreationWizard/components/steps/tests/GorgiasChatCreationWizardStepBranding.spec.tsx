@@ -1,18 +1,16 @@
+import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
-import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
 
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-
-import * as actions from 'state/integrations/actions'
+import thunk from 'redux-thunk'
 
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
-
 import Wizard from 'pages/common/components/wizard/Wizard'
+import * as actions from 'state/integrations/actions'
 
 import GorgiasChatCreationWizardStepBranding from '../GorgiasChatCreationWizardStepBranding'
 

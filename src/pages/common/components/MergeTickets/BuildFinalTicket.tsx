@@ -1,8 +1,8 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
-import BinaryChoiceField from '../BinaryChoiceField'
 import Avatar from '../Avatar/Avatar'
+import BinaryChoiceField from '../BinaryChoiceField'
 
 type Props = {
     sourceTicket: Map<any, any>

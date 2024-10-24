@@ -1,17 +1,17 @@
-import React, {ComponentType, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useLocation} from 'react-router-dom'
 import {Map} from 'immutable'
 import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
 import {stringify} from 'qs'
-import {EntityType} from 'models/view/types'
+import React, {ComponentType, useMemo} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {useLocation} from 'react-router-dom'
 
 import {getConfigByName} from 'config/views'
 import useSearch from 'hooks/useSearch'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import {EntityType} from 'models/view/types'
 import history from 'pages/history'
 import {RootState} from 'state/types'
 import {updateView} from 'state/views/actions'

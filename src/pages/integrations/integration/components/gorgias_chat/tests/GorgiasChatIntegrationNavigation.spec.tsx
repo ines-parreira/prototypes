@@ -1,17 +1,19 @@
 import {render, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import React from 'react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {getHasAutomate} from 'state/billing/selectors'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {entitiesInitialState} from 'fixtures/entities'
+import {getHasAutomate} from 'state/billing/selectors'
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {

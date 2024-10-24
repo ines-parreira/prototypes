@@ -1,31 +1,30 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import _get from 'lodash/get'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
-import {getIntegrationByIdAndType} from 'state/integrations/selectors'
-import {ConvertMetric} from 'state/ui/stats/types'
-import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
+
+import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats'
+import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
+
+import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
 
-import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats'
-
-import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
-
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {getTimezone} from 'state/currentUser/selectors'
+import {getIntegrationByIdAndType} from 'state/integrations/selectors'
+import {ConvertMetric} from 'state/ui/stats/types'
 
 export const CampaignPerformanceTable = () => {
     const {

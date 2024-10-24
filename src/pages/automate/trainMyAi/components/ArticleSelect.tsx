@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import get from 'lodash/get'
 import classNames from 'classnames'
+import get from 'lodash/get'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
 import {
     Components,
     Paths,
@@ -16,6 +16,7 @@ import DropdownSection from '../../../common/components/dropdown/DropdownSection
 import SelectInputBox, {
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
+import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
 import css from './ArticleSelect.less'
 
 type Props = {

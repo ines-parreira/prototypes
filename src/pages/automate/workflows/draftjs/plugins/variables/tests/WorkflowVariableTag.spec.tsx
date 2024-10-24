@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
 import {screen, act, fireEvent, render, waitFor} from '@testing-library/react'
+import React, {useState} from 'react'
 
 import WorkflowVariableTag from '../WorkflowVariableTag'
 

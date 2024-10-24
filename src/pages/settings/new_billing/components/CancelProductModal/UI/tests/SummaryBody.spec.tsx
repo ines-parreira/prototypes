@@ -1,7 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import SummaryBody from '../SummaryBody'
+import React from 'react'
+
 import {assumeMock} from '../../../../../../../utils/testing'
+import SummaryBody from '../SummaryBody'
 import SummaryLineItem from '../SummaryLineItem'
 import SummaryTotal from '../SummaryTotal'
 

@@ -1,16 +1,14 @@
-import React from 'react'
-
 import {List, Map} from 'immutable'
-
-import {
-    GorgiasChatAvatarSettings,
-    GorgiasChatAvatarImageType,
-} from 'models/integration/types'
+import React from 'react'
 
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 import AvatarGroup from 'gorgias-design-system/Avatar/AvatarGroup'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    GorgiasChatAvatarSettings,
+    GorgiasChatAvatarImageType,
+} from 'models/integration/types'
 
 import {getHumanAgents} from 'state/agents/selectors'
 

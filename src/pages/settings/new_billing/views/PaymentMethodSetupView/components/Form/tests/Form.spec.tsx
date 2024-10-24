@@ -1,24 +1,26 @@
-import {fireEvent, waitFor, screen, act} from '@testing-library/react'
-import React from 'react'
-import {fromJS} from 'immutable'
+import {confirmBillingPaymentMethodSetup} from '@gorgias/api-client'
 import {useElements} from '@stripe/react-stripe-js'
 import {
     SetupIntentResult,
     StripeAddressElementChangeEvent,
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js'
+import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {confirmBillingPaymentMethodSetup} from '@gorgias/api-client'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
+import {fromJS} from 'immutable'
+import React from 'react'
+
 import {account} from 'fixtures/account'
 import {products} from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import {EmailInputField} from 'pages/settings/new_billing/components/EmailInputField/EmailInputField'
 import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
-import {EmailInputField} from 'pages/settings/new_billing/components/EmailInputField/EmailInputField'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import {assumeMock} from 'utils/testing'
+
 import {Form} from '../Form'
 
 jest.mock('@stripe/react-stripe-js', () => ({

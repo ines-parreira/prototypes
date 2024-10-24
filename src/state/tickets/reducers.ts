@@ -1,12 +1,13 @@
 import {fromJS, Map, List} from 'immutable'
+
 import {ViewType} from 'models/view/types'
 
 import * as ticketTypes from 'state/ticket/constants'
-import * as viewsTypes from 'state/views/constants'
-import {GorgiasAction} from 'state/types'
 
 import * as types from 'state/tickets/constants'
 import {TicketsState} from 'state/tickets/types'
+import {GorgiasAction} from 'state/types'
+import * as viewsTypes from 'state/views/constants'
 
 export const initialState: TicketsState = fromJS({
     // The cursor contains the value of an attribute of a ticket used to sort tickets in a view.

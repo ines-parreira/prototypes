@@ -3,12 +3,13 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
+
 import {
     useMessagesSentMetric,
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
+import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'

@@ -1,6 +1,8 @@
 import {useMemo} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrations} from 'state/integrations/selectors'
+
 import {ActionAppConfiguration} from '../types'
 
 type Props = {

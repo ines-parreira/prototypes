@@ -1,9 +1,9 @@
 import {act, fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
-import {Virtuoso} from 'react-virtuoso'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
+import {Provider} from 'react-redux'
+import {Virtuoso} from 'react-virtuoso'
+import configureMockStore from 'redux-mock-store'
 
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

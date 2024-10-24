@@ -1,5 +1,6 @@
 import {Action, Guidance, Knowledge} from 'models/aiAgentFeedback/types'
 import {TicketMessage} from 'models/ticket/types'
+
 import {TRIAL_MESSAGE_TAG} from './constants'
 
 export const getKnowledgeUrl = (knowledge: Knowledge) => {

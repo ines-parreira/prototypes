@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useEffect, useState} from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
 import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './CampaignsSearch.less'
 

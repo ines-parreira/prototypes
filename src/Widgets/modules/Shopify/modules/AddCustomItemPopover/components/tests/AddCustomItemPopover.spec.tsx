@@ -1,7 +1,7 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 

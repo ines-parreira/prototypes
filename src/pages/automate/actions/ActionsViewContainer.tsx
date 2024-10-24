@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+
 import ActionsView from './ActionsView'
 
 const ActionsViewContainer = () => (

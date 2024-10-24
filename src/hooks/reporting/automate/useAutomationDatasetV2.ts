@@ -1,27 +1,34 @@
-import {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FilterKey, StatsFilters} from 'models/stat/types'
-import {ReportingGranularity} from 'models/reporting/types'
+import {useMemo} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    useAutomationDatasetByEventTypeTimeSeries,
+    useAutomationDatasetTimeSeries,
+    useBillableTicketDatasetTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {getPreviousPeriod} from 'utils/reporting'
+import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     automationDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
     billableTicketDatasetExcludingAIAgentQueryFactory,
     billableTicketDatasetQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/metrics'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 import {AUTOMATION_RATE_LABEL} from 'pages/automate/automate-metrics/constants'
+import {getPreviousPeriod} from 'utils/reporting'
 
 import {
-    useAutomationDatasetByEventTypeTimeSeries,
-    useAutomationDatasetTimeSeries,
-    useBillableTicketDatasetTimeSeries,
-} from 'hooks/reporting/timeSeries'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {FeatureFlagKey} from 'config/featureFlags'
+    getAutomationRateTrend,
+    getAutomationRateUnfilteredDenominatorTrend,
+    getDecreaseInFirstResponseTimeTrend,
+    getDecreaseInResolutionTimeTrend,
+} from './automateStatsCalculatedTrends'
 import {
     automationRate,
     automationRateUnfilteredDenominator,
@@ -30,17 +37,11 @@ import {
     AutomateTimeseries as CalculatedTimeseries,
     AutomateTrendMetrics,
 } from './types'
+import {useAIAgentUserId} from './useAIAgentUserId'
 import {
     getAutomateStatsByMeasure,
     automateInteractionsByEventTypeToTimeSeries,
 } from './utils'
-import {
-    getAutomationRateTrend,
-    getAutomationRateUnfilteredDenominatorTrend,
-    getDecreaseInFirstResponseTimeTrend,
-    getDecreaseInResolutionTimeTrend,
-} from './automateStatsCalculatedTrends'
-import {useAIAgentUserId} from './useAIAgentUserId'
 
 export const useAutomateMetricsTimeseriesV2 = (
     filters: StatsFilters,

@@ -1,9 +1,11 @@
-import LD from 'launchdarkly-react-client-sdk'
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {useContactFormManualEmbedInstructionsCardState} from '../useContactFormManualEmbedTabs'
+
 import {FeatureFlagKey} from '../../../../../../config/featureFlags'
+import {useContactFormManualEmbedInstructionsCardState} from '../useContactFormManualEmbedTabs'
 
 jest.mock('hooks/useAppSelector')
 

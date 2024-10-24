@@ -1,17 +1,16 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
+import {INTEGRATION_TYPE_CONFIG} from 'config'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {INTEGRATION_TYPE_CONFIG} from 'config'
 
 import {ActionAppConfiguration} from '../types'
-import TemplateActionBanner from './TemplateActionBanner'
-
 import css from './AppConfirmationModal.less'
+import TemplateActionBanner from './TemplateActionBanner'
 
 type Props = {
     templateName: string

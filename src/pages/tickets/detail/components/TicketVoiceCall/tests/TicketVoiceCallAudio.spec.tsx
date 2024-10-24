@@ -1,5 +1,6 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
+
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import {
     VoiceCall,
@@ -7,8 +8,8 @@ import {
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 
-import VoiceCallAudio from '../VoiceCallAudio'
 import TicketVoiceCallAudios from '../TicketVoiceCallAudios'
+import VoiceCallAudio from '../VoiceCallAudio'
 
 jest.mock('../VoiceCallAudio', () => jest.fn(() => null))
 

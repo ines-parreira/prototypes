@@ -1,13 +1,14 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {Router} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {NotificationStatus} from 'state/notifications/types'
 import * as actions from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import useQueryNotify from '../useQueryNotify'
 
 const mockStore = configureMockStore([thunk])

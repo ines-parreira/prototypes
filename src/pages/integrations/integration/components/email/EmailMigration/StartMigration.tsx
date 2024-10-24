@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from 'react'
 import {AxiosError} from 'axios'
+import React, {useEffect, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {startEmailMigration} from 'models/integration/resources/email'
+
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {startEmailMigration} from 'models/integration/resources/email'
+import {EmailIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import useAppSelector from 'hooks/useAppSelector'
+import Loader from 'pages/common/components/Loader/Loader'
+import {UPDATE_FORWARDING_EMAIL_ADDRESS} from 'state/integrations/constants'
 import {
     getAreIntegrationsLoading,
     getEmailMigrationStatus,
     getIntegrationsByTypes,
 } from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {getMoment, stringToDatetime} from 'utils/date'
-import Loader from 'pages/common/components/Loader/Loader'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {EmailIntegration} from 'models/integration/types'
-import {UPDATE_FORWARDING_EMAIL_ADDRESS} from 'state/integrations/constants'
-import {isBaseEmailIntegration} from '../helpers'
-import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
 
+import {isBaseEmailIntegration} from '../helpers'
 import css from './StartMigration.less'
+import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
 
 export default function StartMigration() {
     const [emailMigrationStarted, setEmailMigrationStarted] = useState(false)

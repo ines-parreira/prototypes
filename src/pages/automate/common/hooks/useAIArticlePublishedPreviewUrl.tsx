@@ -1,18 +1,19 @@
 import {useMemo} from 'react'
-import {
-    getArticleUrl,
-    getHelpCenterDomain,
-    getHomePageItemHashUrl,
-} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {
-    HELP_CENTER_DEFAULT_LAYOUT,
-    HELP_CENTER_MAX_ARTICLES,
-} from 'pages/settings/helpCenter/constants'
+
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
 } from 'models/helpCenter/types'
+import {
+    HELP_CENTER_DEFAULT_LAYOUT,
+    HELP_CENTER_MAX_ARTICLES,
+} from 'pages/settings/helpCenter/constants'
+import {
+    getArticleUrl,
+    getHelpCenterDomain,
+    getHomePageItemHashUrl,
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 type AIArticlePublishedPreviewResult = {
     article: ArticleWithLocalTranslationAndRating | undefined

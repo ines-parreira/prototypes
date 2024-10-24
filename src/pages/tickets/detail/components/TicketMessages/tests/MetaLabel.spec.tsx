@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import MetaLabel from 'pages/tickets/detail/components/TicketMessages/MetaLabel'
 

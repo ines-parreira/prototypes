@@ -1,11 +1,12 @@
 import React from 'react'
+
+import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {IntegrationType} from 'models/integration/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
 
-import cssNavbar from 'assets/css/navbar.less'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {Category} from './types'
 
 export const NavbarConfig: Category[] = [

@@ -1,20 +1,19 @@
 import React from 'react'
 
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import {
     ReportIssueCaseReason,
     ReportIssueCaseReasonAction,
 } from 'models/selfServiceConfiguration/types'
-import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
-import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'
-
 import css from './ReportOrderIssueScenarioReason.less'
+import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'
 
 type Props = {
     value: ReportIssueCaseReason

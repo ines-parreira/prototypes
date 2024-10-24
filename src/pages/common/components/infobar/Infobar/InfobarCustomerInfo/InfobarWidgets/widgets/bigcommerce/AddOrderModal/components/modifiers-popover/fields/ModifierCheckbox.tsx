@@ -1,11 +1,11 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {BigCommerceProductCheckboxModifier} from 'models/integration/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import {FieldProps} from './types'
 import sharedCss from './Shared.less'
+import {FieldProps} from './types'
 
 export const ModifierCheckbox = ({
     modifier,

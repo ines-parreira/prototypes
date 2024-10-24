@@ -1,20 +1,21 @@
+import classNames from 'classnames'
 import React, {useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import classNames from 'classnames'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import Loader from 'pages/common/components/Loader/Loader'
+import {creditCard} from 'state/billing/selectors'
 import {
     getShopifyBillingStatus,
     isTrialing,
     paymentMethod,
 } from 'state/currentAccount/selectors'
-import {creditCard} from 'state/billing/selectors'
 import {ShopifyBillingStatus} from 'state/currentAccount/types'
-import useAppSelector from 'hooks/useAppSelector'
 
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import Loader from 'pages/common/components/Loader/Loader'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,

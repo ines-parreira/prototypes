@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {mount} from 'enzyme'
-
-import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
+import {mount} from 'enzyme'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
 import {convertToHTML} from 'utils/editor'
 

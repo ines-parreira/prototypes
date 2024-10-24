@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react'
 import {render} from '@testing-library/react'
+import React, {ReactNode} from 'react'
 
 import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 

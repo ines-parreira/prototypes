@@ -1,15 +1,16 @@
+import {waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
-import moment from 'moment'
-import {waitFor} from '@testing-library/react'
-import {RootState} from 'state/types'
+
 import {UserRole} from 'config/types/user'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {mockStore, renderWithRouter} from 'utils/testing'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
+import {RootState} from 'state/types'
+import {mockStore, renderWithRouter} from 'utils/testing'
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 

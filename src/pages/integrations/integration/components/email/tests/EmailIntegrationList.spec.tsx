@@ -1,18 +1,18 @@
-import React from 'react'
-
-import {List, fromJS} from 'immutable'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, waitFor, screen} from '@testing-library/react'
+import {List, fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import LD from 'launchdarkly-react-client-sdk'
-import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType, EmailProvider} from 'models/integration/constants'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
+
 import EmailIntegrationList from '../EmailIntegrationList'
 import {fetchEmailDomains} from '../resources'
 

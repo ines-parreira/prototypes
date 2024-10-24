@@ -1,11 +1,11 @@
-import React, {useCallback} from 'react'
-import {Map, List} from 'immutable'
-import {DropdownItem} from 'reactstrap'
 import {CancelToken} from 'axios'
+import {Map, List} from 'immutable'
+import React, {useCallback} from 'react'
+import {DropdownItem} from 'reactstrap'
 
-import Search from 'pages/common/components/Search'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
+import Search from 'pages/common/components/Search'
 import {fieldEnumSearch} from 'state/views/actions'
 
 type Props = {

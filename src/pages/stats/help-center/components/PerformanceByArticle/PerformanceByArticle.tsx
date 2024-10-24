@@ -1,11 +1,13 @@
 import React from 'react'
-import ChartCard from 'pages/stats/ChartCard'
+
 import {StatsFilters} from 'models/stat/types'
+import ChartCard from 'pages/stats/ChartCard'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+
+import {usePerformanceByArticleMetrics} from '../../hooks/usePerformanceByArticleMetrics'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
-import {usePerformanceByArticleMetrics} from '../../hooks/usePerformanceByArticleMetrics'
 
 const columns = [
     {

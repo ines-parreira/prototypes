@@ -1,5 +1,6 @@
 import {cleanup, render, screen, within} from '@testing-library/react'
 import React from 'react'
+
 import SteppedNavBar from '../SteppedNavBar'
 
 describe('SteppedNavBar', () => {

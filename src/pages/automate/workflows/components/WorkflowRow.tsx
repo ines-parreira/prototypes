@@ -1,18 +1,19 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
-import IconButton from 'pages/common/components/button/IconButton'
 
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {StoreIntegration} from 'models/integration/types'
+
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {formatDatetime} from 'utils'
 
 import {
@@ -22,8 +23,8 @@ import {
 } from '../models/workflowConfiguration.types'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 
-import css from './WorkflowsRow.less'
 import {DraftBadge} from './DraftBadge'
+import css from './WorkflowsRow.less'
 
 type Props = {
     storeIntegrationId: number

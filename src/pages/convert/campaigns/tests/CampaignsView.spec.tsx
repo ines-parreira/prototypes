@@ -1,22 +1,21 @@
-import React from 'react'
-import {screen, fireEvent, waitFor, act} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-import routerDom from 'react-router-dom'
-import _omit from 'lodash/omit'
+import {screen, fireEvent, waitFor, act} from '@testing-library/react'
 
 import {createBrowserHistory} from 'history'
-import {RootState, StoreDispatch} from 'state/types'
-import {entitiesInitialState} from 'fixtures/entities'
-import {billingState} from 'fixtures/billing'
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import useSearch from 'hooks/useSearch'
+import {fromJS} from 'immutable'
+import _omit from 'lodash/omit'
+import React from 'react'
+import {Provider} from 'react-redux'
+import routerDom from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {billingState} from 'fixtures/billing'
+
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {entitiesInitialState} from 'fixtures/entities'
+import useSearch from 'hooks/useSearch'
 import {
     useCreateCampaign,
     useDeleteCampaign,
@@ -24,17 +23,18 @@ import {
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {Campaign} from '../types/Campaign'
-import {CampaignsView} from '../CampaignsView'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {CONVERT_ROUTE_PARAM_NAME} from '../../common/constants'
-import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
 import {useGetOrCreateChannelConnection} from '../../common/hooks/useGetOrCreateChannelConnection'
+import {CampaignsView} from '../CampaignsView'
+import {Campaign} from '../types/Campaign'
+import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
 
 jest.mock('utils/launchDarkly')
 

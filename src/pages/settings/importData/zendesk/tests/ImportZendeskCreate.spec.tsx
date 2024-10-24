@@ -1,14 +1,14 @@
-import React from 'react'
 import {fireEvent, render, RenderResult, screen} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
-import {ImportZendeskCreate} from '../ImportZendeskCreate'
-import {StoreDispatch} from '../../../../../state/types'
 import {
     IntegrationType,
     ZendeskIntegration,
 } from '../../../../../models/integration/types'
+import {StoreDispatch} from '../../../../../state/types'
+import {ImportZendeskCreate} from '../ImportZendeskCreate'
 import {ZENDESK_CONNECTION_TYPE} from '../types'
 import {failedImport, pendingImport, successImport} from './fixtures'
 

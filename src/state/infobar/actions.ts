@@ -1,19 +1,19 @@
 import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
 import _noop from 'lodash/noop'
+
+import client from 'models/api/resources'
 import {searchCustomers} from 'models/customer/resources'
 
-import {notify} from 'state/notifications/actions'
-import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
-import {ActionExecutedEvent} from 'services/socketManager/types'
-import client from 'models/api/resources'
-import history from 'pages/history'
 import {Customer} from 'models/customer/types'
+import history from 'pages/history'
+import {ActionExecutedEvent} from 'services/socketManager/types'
+import * as constants from 'state/infobar/constants'
+import * as utils from 'state/infobar/utils'
+import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch, RootState} from 'state/types'
 import {onApiError} from 'state/utils'
-
-import * as utils from 'state/infobar/utils'
-import * as constants from 'state/infobar/constants'
+import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
 
 export const searchWithHighlights =
     (query: string, cancelToken?: CancelToken) =>

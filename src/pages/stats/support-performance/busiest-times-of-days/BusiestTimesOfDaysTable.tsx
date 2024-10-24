@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
-import useAppSelector from 'hooks/useAppSelector'
-import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+
 import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -18,6 +18,7 @@ import {
     columnsOrder,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {
     get24Hours,
     getWorkingHoursInTimeZone,

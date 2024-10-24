@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 
 import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
+
 import {ContactCaptureStep} from './ContactCaptureStep'
 import {Wrapper} from './styled'
 

@@ -1,14 +1,16 @@
 import 'tests/__mocks__/editionManagerContextMock'
 
-import {renderHook, act} from '@testing-library/react-hooks/dom'
 import {waitFor} from '@testing-library/react'
+import {renderHook, act} from '@testing-library/react-hooks/dom'
+
 import {
     ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
+import {AIArticlesGroupedFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {ArticleTemplatesGroupedByCategoryFixture} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {HelpCenterApiArticlesFixture} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {AIArticlesGroupedFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+
 import {useHelpCenterArticlesForm} from '../useHelpCenterArticlesForm'
 
 const mockedCreateArticleMutateAsync = jest.fn()

@@ -1,5 +1,6 @@
 import client from 'models/api/resources'
 import {SearchType} from 'models/search/types'
+
 import {
     SearchCustomerRequest,
     CustomerSearchResponse,

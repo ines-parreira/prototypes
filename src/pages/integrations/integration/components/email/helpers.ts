@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {isEmpty} from 'lodash'
+
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {
     EmailIntegrationDefaultProviderSetting,

@@ -1,5 +1,5 @@
-import React, {ComponentProps, useRef, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

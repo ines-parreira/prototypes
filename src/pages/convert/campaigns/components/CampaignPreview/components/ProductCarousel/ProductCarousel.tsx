@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import {DEFAULT_CAROUSEL_CONFIGURATION} from '../../../../constants/visuals'
 

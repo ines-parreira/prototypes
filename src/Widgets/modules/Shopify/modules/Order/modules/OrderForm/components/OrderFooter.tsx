@@ -1,7 +1,7 @@
+import {Label} from '@gorgias/ui-kit'
+import {Map} from 'immutable'
 import React, {ChangeEvent} from 'react'
 import {Col, Container, FormGroup, FormText, Input, Row} from 'reactstrap'
-import {Map} from 'immutable'
-import {Label} from '@gorgias/ui-kit'
 
 import {
     getRefundAmount,
@@ -14,8 +14,8 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
-import OrderTotals from './OrderTotals'
 import css from './OrderFooter.less'
+import OrderTotals from './OrderTotals'
 
 type Props = {
     editable: boolean

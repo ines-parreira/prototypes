@@ -1,19 +1,20 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {ChangeEvent, useEffect, useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import {HelpCenterArticleItem, LocaleCode} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-import {HelpCenterArticleItem, LocaleCode} from 'models/helpCenter/types'
-import {logEvent, SegmentEvent} from 'common/segment'
+
+import {CloseModal} from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
-import {CloseModal} from '../../../articles/CloseModal'
 import css from './HelpCenterWizardArticleEditor.less'
 
 type Props = {

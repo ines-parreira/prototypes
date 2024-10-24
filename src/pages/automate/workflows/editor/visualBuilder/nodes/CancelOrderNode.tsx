@@ -1,7 +1,7 @@
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
-import {Label} from '@gorgias/ui-kit'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
@@ -10,8 +10,8 @@ import {
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {CancelOrderNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import EdgeBlock from '../components/EdgeBlock'
+import NodeDeleteIcon from '../components/NodeDeleteIcon'
 
 import css from './Node.less'
 

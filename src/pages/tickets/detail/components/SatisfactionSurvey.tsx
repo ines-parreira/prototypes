@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import pluralize from 'pluralize'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import pluralize from 'pluralize'
+import React, {Component} from 'react'
 
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 

@@ -2,13 +2,13 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
+import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/metrics')

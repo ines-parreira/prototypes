@@ -1,16 +1,18 @@
-import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act} from '@testing-library/react'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {channelConnection} from 'fixtures/channelConnection'
-import {IntegrationType} from 'models/integration/constants'
 import {
     useCreateChannelConnection,
     useListChannelConnections,
 } from 'models/convert/channelConnection/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {IntegrationType} from 'models/integration/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {useGetOrCreateChannelConnection} from '../useGetOrCreateChannelConnection'
 
 jest.mock('models/convert/channelConnection/queries')

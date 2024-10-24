@@ -1,12 +1,10 @@
+import {render} from '@testing-library/react'
+import _noop from 'lodash/noop'
 import React from 'react'
 
 import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
-
-import _noop from 'lodash/noop'
-
-import {render} from '@testing-library/react'
 
 import {RootState, StoreDispatch} from 'state/types'
 

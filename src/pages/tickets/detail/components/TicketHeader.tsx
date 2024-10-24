@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
-import moment, {Moment} from 'moment-timezone'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import moment, {Moment} from 'moment-timezone'
+import React, {useState} from 'react'
 
 import {useAppNode} from 'appNode'
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
@@ -43,8 +43,8 @@ import TicketSpam from './TicketDetails/TicketSpam'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketTags from './TicketDetails/TicketTags'
 import TicketTrash from './TicketDetails/TicketTrash'
-import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
 import css from './TicketHeader.less'
+import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
 
 type Props = {
     ticket: Map<any, any>

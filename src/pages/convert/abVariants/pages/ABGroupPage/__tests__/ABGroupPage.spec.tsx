@@ -1,9 +1,9 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import React from 'react'
 
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
 import {campaign} from 'fixtures/campaign'
 
@@ -12,9 +12,8 @@ import {
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import ABGroupPage from '../ABGroupPage'
 

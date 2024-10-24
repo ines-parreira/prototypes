@@ -7,6 +7,7 @@ import {
     capabilities as capabilitiesFixtures,
 } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
+
 import {
     fetchPhoneNumbers,
     createPhoneNumber,

@@ -1,14 +1,16 @@
-import React from 'react'
-import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {fromJS} from 'immutable'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+
+import {ReportIssueOption} from '../constants'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
@@ -20,7 +22,6 @@ import {
     submitAIAgentTicketMessagesFeedback,
 } from '../resources'
 import {DeleteMessageFeedback, SubmitMessageFeedback} from '../types'
-import {ReportIssueOption} from '../constants'
 
 jest.mock('../resources', () => ({
     getAIAgentTicketMessagesFeedback: jest.fn(),

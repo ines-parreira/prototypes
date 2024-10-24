@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {AGENT_ROLE} from 'config/user'

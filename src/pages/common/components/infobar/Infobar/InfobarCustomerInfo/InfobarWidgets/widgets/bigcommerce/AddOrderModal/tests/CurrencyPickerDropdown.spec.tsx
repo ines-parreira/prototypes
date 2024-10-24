@@ -1,12 +1,14 @@
 import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {bigCommerceAvailableCurrenciesFixture} from 'fixtures/bigcommerce'
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {bigCommerceAvailableCurrenciesFixture} from 'fixtures/bigcommerce'
+
 import {CurrencyPickerDropdown} from '../CurrencyPickerDropdown'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}

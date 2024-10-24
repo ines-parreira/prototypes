@@ -1,17 +1,19 @@
 import React, {useMemo} from 'react'
 
 import {Link} from 'react-router-dom'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationType} from 'models/integration/constants'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getIconFromType} from 'state/integrations/helpers'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {logEvent, SegmentEvent} from 'common/segment'
-import css from './TopQuestionsSection.less'
+
 import {
     TopQuestionCard,
     TopQuestionCardGhost,
     TopQuestionCardLoading,
 } from './TopQuestionCard'
+import css from './TopQuestionsSection.less'
 
 const VIEW_ALL_LINK = '/app/automation/ai-recommendations'
 

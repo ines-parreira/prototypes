@@ -1,8 +1,8 @@
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
 import {
     Product as ShopifyProduct,
     InventoryPolicy as ShopifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
 
 export function isProductAvailable(product: ShopifyProduct): boolean {
     const isTracked = product.variants.every(

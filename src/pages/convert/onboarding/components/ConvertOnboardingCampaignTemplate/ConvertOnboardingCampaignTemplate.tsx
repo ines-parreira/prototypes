@@ -1,17 +1,17 @@
-import React, {useMemo, useState} from 'react'
 import {Map} from 'immutable'
+import React, {useMemo, useState} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
 import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
-import useAppSelector from 'hooks/useAppSelector'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+
+import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
-import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
 

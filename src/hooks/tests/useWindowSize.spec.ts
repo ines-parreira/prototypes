@@ -1,5 +1,7 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+
 import {mockRequestAnimationFrame} from 'utils/testing'
+
 import useWindowSize from '../useWindowSize'
 
 const rafControl = mockRequestAnimationFrame()

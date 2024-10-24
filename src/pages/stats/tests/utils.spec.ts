@@ -1,16 +1,10 @@
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {
-    MONTH_AND_YEAR_SHORT,
-    SHORT_DATE_FORMAT_US,
-    SHORT_DATE_FORMAT_WORLD,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
-    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
-} from 'utils/date'
+import {DisplayEventType} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {getAutomateColorsForEventType} from 'hooks/reporting/automate/utils'
 import {ReportingGranularity} from 'models/reporting/types'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {
     getGradient,
     renderTickLabelAsNumber,
@@ -21,8 +15,14 @@ import {
     getIconNameBySign,
     highlightString,
 } from 'pages/stats/utils'
-import {DisplayEventType} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
-import {getAutomateColorsForEventType} from 'hooks/reporting/automate/utils'
+import {
+    MONTH_AND_YEAR_SHORT,
+    SHORT_DATE_FORMAT_US,
+    SHORT_DATE_FORMAT_WORLD,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
+    SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
+} from 'utils/date'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 describe('getGradient', () => {
     it('should return color if canvasArea or canvasContext is not defined', () => {

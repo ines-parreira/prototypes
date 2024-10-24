@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import _upperFirst from 'lodash/upperFirst'
 import React, {useState} from 'react'
 
 import {
@@ -6,12 +8,10 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import classnames from 'classnames'
-import _upperFirst from 'lodash/upperFirst'
 
+import {VisibilityStatus} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import {objKeys} from 'utils'
-import {VisibilityStatus} from 'models/helpCenter/types'
 
 import css from './SelectVisibilityStatus.less'
 

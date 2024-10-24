@@ -1,20 +1,20 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import useSearch from 'hooks/useSearch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
+import useSearch from 'hooks/useSearch'
 import {Category} from 'models/integration/types/app'
+import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
+import css from './CategoryFilter.less'
 import {
     CATEGORY_DATA,
     CATEGORY_URL_PARAM,
     ORDERED_CATEGORIES,
 } from './constants'
-import css from './CategoryFilter.less'
 
 export default function CategoryFilter() {
     const domain = useAppSelector(getCurrentAccountState).get('domain')

@@ -1,18 +1,19 @@
 import React, {useMemo} from 'react'
 import {useLocation} from 'react-router-dom'
-import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {ConvertPlan, ProductType} from 'models/billing/types'
+import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
+import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
+import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
+import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import {
     getCheapestConvertPrice,
     getAvailableConvertPlans,
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import {ConvertPlan, ProductType} from 'models/billing/types'
-import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import {isTrialing} from 'state/currentAccount/selectors'
-import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
-import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
 
 type Props = {
     canduId: string

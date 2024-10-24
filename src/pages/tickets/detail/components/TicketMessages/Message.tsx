@@ -9,8 +9,8 @@ import Attachments from './Attachments'
 import Body from './Body'
 import Errors from './Errors'
 import css from './Message.less'
-import SourceDetailsHeader from './SourceDetailsHeader'
 import ReplyDetailsCard from './ReplyDetailsCard'
+import SourceDetailsHeader from './SourceDetailsHeader'
 
 type Props = {
     message: TicketMessage

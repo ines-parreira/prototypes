@@ -1,14 +1,26 @@
-import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
-import {Modal, ModalFooter} from 'reactstrap'
-import classnames from 'classnames'
-import {useHistory} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {Modal, ModalFooter} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
-import {hasRole} from 'utils'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {Plan} from 'models/billing/types'
+import Button from 'pages/common/components/button/Button'
+import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
+import {
+    BILLING_BASE_PATH,
+    BILLING_SUPPORT_EMAIL,
+    ENTERPRISE_PRICE_ID,
+    ZAPIER_BILLING_HOOK,
+} from 'pages/settings/new_billing/constants'
+import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {
     getAvailableAutomatePlans,
     getCurrentHelpdeskInterval,
@@ -17,30 +29,19 @@ import {
     getAvailableHelpdeskPlans,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import Button from 'pages/common/components/button/Button'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-
-import {
-    BILLING_BASE_PATH,
-    BILLING_SUPPORT_EMAIL,
-    ENTERPRISE_PRICE_ID,
-    ZAPIER_BILLING_HOOK,
-} from 'pages/settings/new_billing/constants'
-import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {
     getCurrentAccountState,
     isTrialing,
 } from 'state/currentAccount/selectors'
-import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {Plan} from 'models/billing/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
+import {hasRole} from 'utils'
+
+import AutomateModalStep from './AutomateModalStep'
 import css from './AutomateSubscriptionModal.less'
 import ROICalculatorModalStep from './ROICalculatorModalStep'
-import AutomateModalStep from './AutomateModalStep'
 
 type Props = {
     confirmLabel: string

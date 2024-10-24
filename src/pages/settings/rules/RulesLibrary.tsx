@@ -1,44 +1,40 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
-import {Container, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _debounce from 'lodash/debounce'
-import {Link, useLocation, useHistory} from 'react-router-dom'
 import {parse} from 'qs'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Link, useLocation, useHistory} from 'react-router-dom'
+import {Container, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
-import Search from 'pages/common/components/Search'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {RuleLimitStatus} from 'state/rules/types'
-import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {fetchRules} from 'models/rule/resources'
+import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import Search from 'pages/common/components/Search'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
+import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
+import {rulesFetched} from 'state/entities/rules/actions'
 import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import {fetchRules} from 'models/rule/resources'
-import {rulesFetched} from 'state/entities/rules/actions'
-
-import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
-import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
-import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
-
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RuleLimitStatus} from 'state/rules/types'
 
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-
-import RuleLibrary from './ruleLibrary/RuleLibrary'
 import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
+import RuleLibrary from './ruleLibrary/RuleLibrary'
 
 import css from './RulesView.less'
 

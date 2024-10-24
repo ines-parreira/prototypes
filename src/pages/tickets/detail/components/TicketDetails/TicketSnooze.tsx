@@ -1,10 +1,10 @@
-import React, {useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef} from 'react'
 
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {formatDatetime} from 'utils'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
 
 import css from './TicketSnooze.less'
 

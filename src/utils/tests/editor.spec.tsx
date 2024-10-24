@@ -10,6 +10,7 @@ import {
 import {fromJS} from 'immutable'
 import React, {ReactNode} from 'react'
 
+import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
     insertNewBlockAtTheEnd,
     convertToHTML,
@@ -33,7 +34,6 @@ import {
     ContentStateCounter,
     EditorBlockType,
 } from '../editor'
-import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 
 const imageContentState = ContentState.createFromBlockArray(
     AtomicBlockUtils.insertAtomicBlock(

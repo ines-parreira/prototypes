@@ -1,14 +1,9 @@
 import React, {useCallback, useMemo, useState} from 'react'
 
-import {Source} from 'models/widget/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {Source} from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {
-    removeEditedWidget,
-    startWidgetEdition,
-    updateCustomActions,
-} from 'state/widgets/actions'
 import {
     Button as ButtonType,
     OnOpenForm,
@@ -17,9 +12,15 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import Modal from 'pages/common/components/modal/Modal'
-import Form from './Form'
+import {
+    removeEditedWidget,
+    startWidgetEdition,
+    updateCustomActions,
+} from 'state/widgets/actions'
+
 import EditableButton from './Button'
 import css from './Editor.less'
+import Form from './Form'
 
 type Props = {
     templatePath: string

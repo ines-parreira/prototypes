@@ -1,6 +1,6 @@
+import {CommonReasonLabel} from '../constants'
 import {cancellationReasonsReducer, DEFAULT_STATE} from '../reducers'
 import {CancellationReasonsActionType} from '../types'
-import {CommonReasonLabel} from '../constants'
 
 describe('cancellationReasonsReducer', () => {
     it('should update the primary reason and keep the state uncompleted', () => {

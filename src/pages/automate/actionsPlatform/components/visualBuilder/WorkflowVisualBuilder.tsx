@@ -1,5 +1,6 @@
 import 'reactflow/dist/style.css'
 
+import classnames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, FC} from 'react'
 import {
     Controls,
@@ -9,30 +10,28 @@ import {
     ReactFlowProvider,
     useNodesInitialized,
 } from 'reactflow'
-import classnames from 'classnames'
 
-import Loader from 'pages/common/components/Loader/Loader'
-
-import {withVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {VisualBuilderBackground} from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
 
-import LLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
-import EndNode from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode'
-import HttpRequestNode from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
-import ConditionsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ConditionsNode'
-import CancelOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
-import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
-import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
-import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
-import CancelSubscriptionNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelSubscriptionNode'
-import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
+import CancelOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
+import CancelSubscriptionNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelSubscriptionNode'
+import ConditionsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ConditionsNode'
 import CreateDiscountCodeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CreateDiscountCodeNode'
+import EndNode from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode'
+import HttpRequestNode from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
+import LLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
+import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
+import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
+import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
+import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
+import {withVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Loader from 'pages/common/components/Loader/Loader'
 
 const nodeTypes = {
     llm_prompt_trigger: LLMPromptTriggerNode,

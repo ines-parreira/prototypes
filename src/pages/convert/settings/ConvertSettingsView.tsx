@@ -1,8 +1,10 @@
 import React, {useCallback, useState} from 'react'
+
 import PageHeader from 'pages/common/components/PageHeader'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import {GeneralSettingsView} from 'pages/convert/settings/components/GeneralSettingsView'
 import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
+import {GeneralSettingsView} from 'pages/convert/settings/components/GeneralSettingsView'
+
 import css from './GeneralSettingsView.less'
 
 const enum Tabs {

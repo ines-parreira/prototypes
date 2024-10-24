@@ -1,14 +1,14 @@
 import React, {useContext, useState} from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
-import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
 
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Group from 'pages/common/components/layout/Group'
+import {EditionContext} from 'providers/infobar/EditionContext'
 
 type Props = {
     actions: InfobarAction[]

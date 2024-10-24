@@ -3,17 +3,16 @@ import React, {useContext, useEffect} from 'react'
 import {EmailIntegration} from 'models/integration/types'
 
 import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
 
+import css from './EmailIntegrationOnboardingButtons.less'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
 } from './hooks/useEmailOnboarding'
-
-import css from './EmailIntegrationOnboardingButtons.less'
 
 type Props = {
     integration?: EmailIntegration | undefined

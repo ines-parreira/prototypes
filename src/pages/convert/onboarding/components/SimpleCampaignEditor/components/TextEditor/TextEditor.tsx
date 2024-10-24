@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
 import {EditorState} from 'draft-js'
 import {produce} from 'immer'
+import React, {useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {deleteAttachment} from 'state/newMessage/actions'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import RichField from 'pages/common/forms/RichField/RichField'
-import {convertToHTML} from 'utils/editor'
 import {CampaignMessage} from 'pages/convert/campaigns/components/CampaignMessage'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {deleteAttachment} from 'state/newMessage/actions'
+import {convertToHTML} from 'utils/editor'
 
 type Props = {
     campaign: Campaign

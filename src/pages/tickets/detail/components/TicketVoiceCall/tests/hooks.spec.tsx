@@ -1,13 +1,15 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+import {Provider} from 'react-redux'
+
+import {User} from 'config/types/user'
 import * as agentsQueries from 'models/agents/queries'
 import * as customersQueries from 'models/customer/queries'
-import {User} from 'config/types/user'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {mockStore} from 'utils/testing'
+
 import {useAgentDetails, useCustomerDetails} from '../hooks'
 
 const useGetAgentSpy = jest.spyOn(agentsQueries, 'useGetAgent')

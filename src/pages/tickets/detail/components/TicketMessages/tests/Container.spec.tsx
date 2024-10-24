@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
-import moment from 'moment'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import moment from 'moment'
+import React, {ComponentProps} from 'react'
 
 import {IntegrationType} from 'models/integration/constants'
 import {

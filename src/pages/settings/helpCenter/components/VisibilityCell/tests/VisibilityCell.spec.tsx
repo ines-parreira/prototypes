@@ -1,7 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {VisibilityStatus} from 'models/helpCenter/types'
+
 import VisibilityCell from '../VisibilityCell'
 
 describe('<VisibilityCell />', () => {

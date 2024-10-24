@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 

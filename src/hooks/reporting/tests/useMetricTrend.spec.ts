@@ -1,15 +1,16 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 
 import useMetricTrend, {selectMeasure} from '../useMetricTrend'
 

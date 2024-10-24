@@ -1,40 +1,41 @@
+import classnames from 'classnames'
+import {Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState, useRef} from 'react'
 
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import classnames from 'classnames'
 import {Link, useParams} from 'react-router-dom'
-import {Map} from 'immutable'
-import PageHeader from 'pages/common/components/PageHeader'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {
-    CONVERT_ROUTE_PARAM_NAME,
-    CONVERT_ROUTE_TEMPLATE_PARAM_NAME,
-} from 'pages/convert/common/constants'
-import {ConvertRouteTemplateParams} from 'pages/convert/common/types'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {toJS} from 'utils'
+import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {CAMPAIGN_TEMPLATES} from 'pages/convert/campaigns/templates'
-import history from 'pages/history'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
-import {CampaignDetailsForm} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-import {getHumanAgentsJS} from 'state/agents/selectors'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import {useListCampaigns} from 'models/convert/campaign/queries'
 import {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import {GorgiasChatIntegration} from 'models/integration/types'
+import PageHeader from 'pages/common/components/PageHeader'
+
+import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import {CampaignDetailsForm} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import {CAMPAIGN_TEMPLATES} from 'pages/convert/campaigns/templates'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
+import {
+    CONVERT_ROUTE_PARAM_NAME,
+    CONVERT_ROUTE_TEMPLATE_PARAM_NAME,
+} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {ConvertRouteTemplateParams} from 'pages/convert/common/types'
+import history from 'pages/history'
+import {getHumanAgentsJS} from 'state/agents/selectors'
+import {getIntegrationById} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import {toJS} from 'utils'
 
 type OwnProps = {
     backUrl: string

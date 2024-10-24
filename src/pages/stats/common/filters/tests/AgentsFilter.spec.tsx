@@ -1,19 +1,13 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
-
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import isEqual from 'lodash/isEqual'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {Team} from 'models/team/types'
-import {statFiltersClean} from 'state/ui/stats/actions'
+import React from 'react'
 
-import {renderWithStore} from 'utils/testing'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
+import {Team} from 'models/team/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -24,11 +18,17 @@ import {
 import AgentsFilter, {
     AgentsFiltersWithState,
 } from 'pages/stats/common/filters/AgentsFilter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
 import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
-import {FilterKey} from 'models/stat/types'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {statFiltersClean} from 'state/ui/stats/actions'
+
+import {renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

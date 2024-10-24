@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {
     render,
     fireEvent,
@@ -7,25 +7,25 @@ import {
     screen,
 } from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-
-import {QueryClientProvider} from '@tanstack/react-query'
-import {integrationsState} from 'fixtures/integrations'
-
-import {IntegrationType} from 'models/integration/constants'
 
 import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {isBoolean} from 'pages/common/components/infobar/utils'
+import {integrationsState} from 'fixtures/integrations'
+
+import {IntegrationType} from 'models/integration/constants'
+
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
+import {isBoolean} from 'pages/common/components/infobar/utils'
 
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'

@@ -1,11 +1,12 @@
 import _takeWhile from 'lodash/takeWhile'
 import {useMemo} from 'react'
-import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+
 import {User} from 'config/types/user'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {formatMetricValue, isMetricForAgent} from 'pages/stats/common/utils'
+import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {getFilteredAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {notUndefined} from 'utils/types'
 

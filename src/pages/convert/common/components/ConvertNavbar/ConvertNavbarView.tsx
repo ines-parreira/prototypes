@@ -1,22 +1,22 @@
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
+import navbarCss from 'assets/css/navbar.less'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {
     CONVERT_NAVBAR_COLLAPSED_SECTIONS_KEY,
     CONVERT_ROUTING_PARAM,
     MAX_EXPANDED_SECTIONS_BY_DEFAULT,
 } from 'pages/convert/common/constants'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useLocalStorage from 'hooks/useLocalStorage'
-import navbarCss from 'assets/css/navbar.less'
 import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
-import css from './ConvertNavbarView.less'
 
 import ConvertNavbarSectionBlock from './ConvertNavbarSectionBlock'
+import css from './ConvertNavbarView.less'
 
 type SectionKey = `${IntegrationType.GorgiasChat}:${string}`
 

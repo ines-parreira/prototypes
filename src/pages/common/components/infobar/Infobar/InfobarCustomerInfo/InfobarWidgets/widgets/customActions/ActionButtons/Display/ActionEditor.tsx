@@ -1,24 +1,24 @@
-import React, {FormEvent, useCallback} from 'react'
-import {get as _get} from 'lodash'
 import {Label} from '@gorgias/ui-kit'
+import {get as _get} from 'lodash'
+import React, {FormEvent, useCallback} from 'react'
 
-import InputField from 'pages/common/forms/input/InputField'
+import {SegmentEvent, logEvent} from 'common/segment'
+import Button from 'pages/common/components/button/Button'
 import {
     Action,
     Parameter,
     ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {SegmentEvent, logEvent} from 'common/segment'
-
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
-import {useImmerState} from '../hooks/useImmerState'
-import {getDropdownOptions, prepareDropdownValue} from '../helpers/dropdown'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+
 import {ACTION_PARAMETER_PATHS} from '../../constants'
+import {getDropdownOptions, prepareDropdownValue} from '../helpers/dropdown'
+import {useImmerState} from '../hooks/useImmerState'
 
 import css from './ActionsEditor.less'
 

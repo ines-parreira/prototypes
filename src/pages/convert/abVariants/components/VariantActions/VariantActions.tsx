@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo} from 'react'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
 

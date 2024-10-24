@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
+import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 

@@ -1,12 +1,12 @@
 import React, {FC, useRef, useState} from 'react'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 type EmailItem = {email: string; id: number}
 

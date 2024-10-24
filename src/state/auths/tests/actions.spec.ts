@@ -1,12 +1,12 @@
+import MockAdapter from 'axios-mock-adapter'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {initialState} from '../reducers'
 import * as actions from '../actions'
+import {initialState} from '../reducers'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

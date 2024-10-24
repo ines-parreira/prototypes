@@ -1,21 +1,21 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {campaign} from 'fixtures/campaign'
 import {shopifyIntegration} from 'fixtures/integrations'
 
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {flushPromises, assumeMock} from 'utils/testing'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {saveZippedFiles} from 'utils/file'
+import {flushPromises, assumeMock} from 'utils/testing'
 
 import DownloadOverviewData from '../DownloadOverviewData'
 

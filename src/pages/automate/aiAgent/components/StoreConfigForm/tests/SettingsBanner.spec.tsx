@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {SettingsBanner} from '../FormComponents/SettingsBanner'
+import React from 'react'
+
 import {BannerText, SettingsBannerType} from '../constants'
+import {SettingsBanner} from '../FormComponents/SettingsBanner'
 
 // Mock localStorage
 const localStorageMock = (() => {

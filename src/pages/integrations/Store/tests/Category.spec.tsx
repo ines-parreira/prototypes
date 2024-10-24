@@ -1,11 +1,11 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
 import {Category as CategoryType} from 'models/integration/types/app'
+import {renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

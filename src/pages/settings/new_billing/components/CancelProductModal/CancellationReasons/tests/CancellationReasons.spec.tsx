@@ -1,5 +1,5 @@
-import React from 'react'
 import {fireEvent, render, within, screen} from '@testing-library/react'
+import React from 'react'
 
 import {
     CommonReasonLabel,

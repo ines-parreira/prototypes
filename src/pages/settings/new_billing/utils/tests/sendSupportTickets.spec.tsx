@@ -1,4 +1,5 @@
 import client from 'models/api/resources'
+
 import {sendSupportTicket, Props} from '../sendSupportTicket'
 
 jest.mock('models/api/resources', () => ({

@@ -1,13 +1,12 @@
 import React, {useMemo} from 'react'
 
-import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-
-import {CampaignPreferences} from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
 import {CampaignDeviceType} from 'pages/convert/campaigns/components/CampaignDeviceType'
+import {CampaignPreferences} from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
 import {WithRevenuePaywall} from 'pages/convert/campaigns/components/WithRevenuePaywall'
+import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
 import css from './CampaignDisplaySettings.less'
 

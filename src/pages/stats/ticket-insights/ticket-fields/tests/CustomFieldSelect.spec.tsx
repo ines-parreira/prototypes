@@ -5,11 +5,12 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ticketFieldDefinitions} from 'fixtures/customField'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'custom-fields/types'
+import {ticketFieldDefinitions} from 'fixtures/customField'
+
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     CustomFieldSelect,
     SELECT_FIELD_LABEL,

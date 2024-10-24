@@ -1,9 +1,10 @@
 import {render, screen} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import configureMockStore from 'redux-mock-store'
-import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {
     shopifyBoolean,
     shopifyCollectionReference,

@@ -1,10 +1,7 @@
 import {useMemo} from 'react'
-import {
-    CampaignCubeFilterParams,
-    CubeData,
-    CubeMetric,
-    GroupDimension,
-} from 'pages/stats/convert/clients/types'
+
+import {usePostReporting} from 'models/reporting/queries'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
@@ -12,13 +9,17 @@ import {
     getStoreRevenueTotalData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
+    CampaignCubeFilterParams,
+    CubeData,
+    CubeMetric,
+    GroupDimension,
+} from 'pages/stats/convert/clients/types'
+import {
     getDataFromResult,
     getMetricFromCubeData,
     transformToCampaignsPerformanceTable,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignsPerformanceDataset} from 'pages/stats/convert/services/types'
-import {usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const OVERRIDES = {
     select: getDataFromResult,

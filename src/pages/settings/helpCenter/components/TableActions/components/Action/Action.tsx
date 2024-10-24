@@ -1,5 +1,5 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 

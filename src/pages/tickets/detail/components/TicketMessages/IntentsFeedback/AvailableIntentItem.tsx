@@ -1,12 +1,12 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import _noop from 'lodash/noop'
 import React from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
 
 import {Messages} from './constants'
-import {DropdownOptionItem} from './DropdownOptionItem'
 import {DropdownOptionButton} from './DropdownOptionButton'
+import {DropdownOptionItem} from './DropdownOptionItem'
 
 type Props = {
     messageId: number

@@ -1,5 +1,6 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
+
 import NoRelevantArticlePreview from '../NoRelevantArticlePreview'
 
 describe('<NoRelevantArticlePreview />', () => {

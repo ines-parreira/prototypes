@@ -1,7 +1,7 @@
-import React from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 import {Emoji} from 'emoji-mart'
+import {Map} from 'immutable'
+import React from 'react'
 
 import {isImmutable} from 'common/utils'
 import {UserRole} from 'config/types/user'
@@ -20,6 +20,7 @@ import {getTeams} from 'state/teams/selectors'
 import {parseTimeDelta} from 'tickets/common/utils'
 
 import {sanitizeHtmlDefault} from 'utils/html'
+
 import DatetimeLabel from './DatetimeLabel'
 import css from './labels.less'
 

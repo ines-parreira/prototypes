@@ -1,10 +1,10 @@
-import {fromJS} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
+import {fromJS} from 'immutable'
 
 import {GorgiasAction} from 'state/types'
 
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('tags reducers', () => {
     // Simulates current tags in state

@@ -2,8 +2,8 @@ import {fromJS} from 'immutable'
 
 import {Ticket} from 'models/ticket/types'
 import browserNotification from 'services/browserNotification'
-import {getLDClient} from 'utils/launchDarkly'
 import * as utils from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
 
 import notifyOnNewMessage from '../notifyOnNewMessage'
 

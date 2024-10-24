@@ -1,13 +1,14 @@
 import {useCallback} from 'react'
 
 import {PhoneCallDirection, TwilioSocketEventType} from 'business/twilio'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {connectCall} from 'hooks/integrations/phone/api'
 import {
     sendTwilioSocketEvent,
     gatherCallContext,
     handleCallEvents,
 } from 'hooks/integrations/phone/utils'
-import {connectCall} from 'hooks/integrations/phone/api'
+import useAppDispatch from 'hooks/useAppDispatch'
+
 import useVoiceDevice from './useVoiceDevice'
 
 type Options = {

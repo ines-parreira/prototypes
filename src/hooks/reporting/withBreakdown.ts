@@ -1,6 +1,7 @@
 import _groupBy from 'lodash/groupBy'
 import _orderBy from 'lodash/orderBy'
 import _zip from 'lodash/zip'
+
 import {
     TimeSeriesDataItem,
     TimeSeriesDataItemWithPercentageAndDecile,

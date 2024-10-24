@@ -1,9 +1,9 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAutomatePlan} from 'state/billing/selectors'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'
+import {getCurrentAutomatePlan} from 'state/billing/selectors'
 
 type Props = {
     contactFormId: number

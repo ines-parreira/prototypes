@@ -1,4 +1,5 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+
 import {fetchChatsApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
 
 export const automationKeys = {

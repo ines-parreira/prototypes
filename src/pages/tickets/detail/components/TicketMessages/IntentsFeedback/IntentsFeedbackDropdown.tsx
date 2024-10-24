@@ -1,7 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {ReactNode, useState} from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {Messages} from './constants'
 

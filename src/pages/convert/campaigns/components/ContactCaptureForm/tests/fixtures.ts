@@ -1,4 +1,5 @@
 import {fromJS, Map} from 'immutable'
+
 import {AttachmentEnum} from 'common/types'
 
 export const sampleContactFormAttachment: Map<any, any> = fromJS({

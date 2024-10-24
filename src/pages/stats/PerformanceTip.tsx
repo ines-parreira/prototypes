@@ -1,8 +1,9 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import React, {PropsWithChildren} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
-import {sanitizeHtmlDefault} from 'utils/html'
+
 import css from 'pages/stats/PerformanceTip.less'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 type SuccessLevel = 'neutral' | 'light-error' | 'light-success' | 'success'
 

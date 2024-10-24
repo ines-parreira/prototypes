@@ -1,14 +1,16 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
 import {ShopifyIntegration} from 'models/integration/types'
-import {HelpCenter} from 'models/helpCenter/types'
+import {assumeMock} from 'utils/testing'
+
 import {AutomateLandingPageTopQuestions} from '../AutomateLandingPageTopQuestions'
-import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
 import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
 import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
+import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
 import {useTopQuestionsViewedOnPage} from '../useTopQuestionsViewedOnPage'
 
 jest.mock('common/segment')

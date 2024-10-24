@@ -1,28 +1,29 @@
-import React, {FC, useRef} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {FC, useRef} from 'react'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {Article, HelpCenter} from 'models/helpCenter/types'
 
 import Button from 'pages/common/components/button/Button'
+import DropdownButton from 'pages/common/components/button/DropdownButton'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
 import {
     getCategories,
     getRootCategory,
 } from 'state/entities/helpCenter/categories'
-import useAppSelector from 'hooks/useAppSelector'
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+
+import {ArticleRowActionTypes} from '../../constants'
 import {useSearchContext} from '../../providers/SearchContext'
 
-import {SearchBar} from '../SearchBar'
-import {SearchResults} from '../SearchResults'
-import {ArticleRowActionTypes} from '../../constants'
 import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 import {ImportSection} from '../Imports/components/ImportSection'
+import {SearchBar} from '../SearchBar'
+import {SearchResults} from '../SearchResults'
 import {NoResult} from './NoResult'
 
 import css from './SearchView.less'

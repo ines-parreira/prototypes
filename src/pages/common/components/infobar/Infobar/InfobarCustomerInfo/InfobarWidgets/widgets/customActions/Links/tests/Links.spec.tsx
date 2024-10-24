@@ -1,12 +1,13 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import userEvent from '@testing-library/user-event'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as actions from 'state/widgets/actions'
+
 import {Link} from '../../types'
 import {Links} from '../Links'
 

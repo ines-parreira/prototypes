@@ -1,9 +1,9 @@
-import {useCallback} from 'react'
 import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
 } from '@gorgias/api-queries'
+import {useCallback} from 'react'
 
 import {UISLAPolicy} from '../types'
 

@@ -1,6 +1,7 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
 
 import {TicketMessage} from 'models/ticket/types'
+
 import {TicketAIAgentFeedbackTab} from './constants'
 
 export enum UIActions {

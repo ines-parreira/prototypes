@@ -1,9 +1,7 @@
-import React, {useState} from 'react'
-import {Map, fromJS} from 'immutable'
 import classnames from 'classnames'
+import {Map, fromJS} from 'immutable'
+import React, {useState} from 'react'
 
-import history from 'pages/history'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -13,25 +11,27 @@ import {
     GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import {Tab} from 'pages/integrations/integration/types'
 import Button from 'pages/common/components/button/Button'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import history from 'pages/history'
+import {Tab} from 'pages/integrations/integration/types'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
+import useShopifyThemeAppExtension from '../../../hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
-import useShopifyThemeAppExtension from '../../../hooks/useShopifyThemeAppExtension'
+import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
 

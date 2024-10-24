@@ -1,7 +1,8 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {
     getHeatmapMode,
     toggleHeatmapMode,

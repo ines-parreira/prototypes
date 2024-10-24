@@ -1,9 +1,10 @@
-import React, {Ref, RefObject} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import React, {Ref, RefObject} from 'react'
 
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import {
     OnDropPolicyFn,
     OnMovePolicyFn,
@@ -12,7 +13,6 @@ import {
     TableColumn,
     UISLAPolicy,
 } from 'pages/settings/SLAs/features/SLAList/types'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import CellLinkWrapper from './CellLinkWrapper'
 import {columnOrder, getTableCell} from './config'

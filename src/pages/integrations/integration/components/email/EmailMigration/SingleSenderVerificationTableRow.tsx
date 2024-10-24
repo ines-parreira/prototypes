@@ -1,23 +1,25 @@
-import React, {useState} from 'react'
-import {isEmpty} from 'lodash'
 import classNames from 'classnames'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import {isEmpty} from 'lodash'
+import React, {useState} from 'react'
+
 import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import {SenderInformation} from 'models/singleSenderVerification/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import IconButton from 'pages/common/components/button/IconButton'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+
+import DeleteVerificationModal from '../DeleteVerificationModal'
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
-import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 import useCreateSingleSenderVerification from '../hooks/useCreateSingleSenderVerification'
-import DeleteVerificationModal from '../DeleteVerificationModal'
-import {computeSingleSenderVerificationStatus} from './utils'
+import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 import EmailVerificationButton from './EmailVerificationButton'
 import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
 
 import css from './SingleSenderVerificationTable.less'
+import {computeSingleSenderVerificationStatus} from './utils'
 
 export type Props = {
     integration: EmailMigrationSenderVerificationIntegration

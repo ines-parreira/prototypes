@@ -1,28 +1,30 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {Container} from 'reactstrap'
-import {useParams} from 'react-router-dom'
 import {List} from 'immutable'
-import PageHeader from 'pages/common/components/PageHeader'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
+import React, {useEffect, useMemo, useState} from 'react'
+import {useParams} from 'react-router-dom'
+import {Container} from 'reactstrap'
+
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
-import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import ConvertBundleDetail from 'pages/convert/bundles/components/ConvertBundleDetail'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import {ConvertRouteParams} from 'pages/convert/common/types'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import {getIntegrationById} from 'state/integrations/selectors'
+
 import css from './ConvertBundleView.less'
 
 type Props = {

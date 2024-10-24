@@ -1,3 +1,4 @@
+import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     ContactFormFixture,
     ContactFormGeneric500ErrorFixture,
@@ -11,7 +12,6 @@ import {
     ShopifyPagesListFixture,
     ShopifyPagesGeneric500ErrorFixture,
 } from '../fixtures/shopifyPage'
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import * as contactFormResourceMethods from '../resources'
 import {mockResourceServerReplies} from './resource-mocks'
 

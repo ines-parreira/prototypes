@@ -1,12 +1,13 @@
-import React from 'react'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
+import React from 'react'
 import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
 import {defined} from 'utils'
-import Errors from './Errors'
+
 import InputField, {InputFieldProps} from './DEPRECATED_InputField'
 import css from './DEPRECATED_InputField.less'
+import Errors from './Errors'
 
 type Props = InputFieldProps<boolean>
 

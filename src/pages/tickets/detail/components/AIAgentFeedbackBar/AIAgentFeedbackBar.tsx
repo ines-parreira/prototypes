@@ -1,17 +1,17 @@
 import React from 'react'
 
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import Button from 'pages/common/components/button/Button'
+import {getAIAgentMessages} from 'state/ticket/selectors'
 import {
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import Button from 'pages/common/components/button/Button'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getAIAgentMessages} from 'state/ticket/selectors'
 import css from './AIAgentFeedbackBar.less'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'

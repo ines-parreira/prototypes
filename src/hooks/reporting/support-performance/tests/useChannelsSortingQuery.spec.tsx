@@ -1,19 +1,23 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {TagFilterInstanceId} from 'models/stat/types'
+import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     initialState,
@@ -22,12 +26,9 @@ import {
     sortingSet,
     channelsSlice,
 } from 'state/ui/stats/channelsSlice'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {notEmpty} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

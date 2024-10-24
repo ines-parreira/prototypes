@@ -1,6 +1,8 @@
 import {useMemo} from 'react'
-import {LocaleCode} from 'models/helpCenter/types'
+
 import {doNotRetry40XErrorsHandler} from 'api/utils'
+import {LocaleCode} from 'models/helpCenter/types'
+
 import {useGetAIArticlesByHelpCenterAndStore} from '../queries'
 import {getAIGeneratedArticlesByHelpCenterAndStore} from '../resources'
 

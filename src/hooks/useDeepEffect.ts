@@ -1,5 +1,5 @@
-import {useEffect, useRef} from 'react'
 import {isEqual} from 'lodash'
+import {useEffect, useRef} from 'react'
 
 /**
  * A custom hook that runs a side effect only when the deep comparison of dependencies changes.

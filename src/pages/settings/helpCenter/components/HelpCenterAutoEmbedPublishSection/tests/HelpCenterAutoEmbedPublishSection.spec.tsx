@@ -1,24 +1,25 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import LD from 'launchdarkly-react-client-sdk'
-
-import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {screen} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {RootState, StoreDispatch} from 'state/types'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {PageEmbedmentFixture} from 'pages/settings/helpCenter/fixtures/pageEmbedment'
+import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
-import {PageEmbedmentFixture} from 'pages/settings/helpCenter/fixtures/pageEmbedment'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+
 import {useGetShopifyPages} from '../../../queries'
+import {HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../HelpCenterAutoEmbedCard'
 import HelpCenterAutoEmbedPublishSection, {
     HelpCenterAutoEmbedPublishSectionProps,
 } from '../HelpCenterAutoEmbedPublishSection'
-import {HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../HelpCenterAutoEmbedCard'
 
 jest.mock('../../../queries', () => {
     const originalModule: Record<string, unknown> =

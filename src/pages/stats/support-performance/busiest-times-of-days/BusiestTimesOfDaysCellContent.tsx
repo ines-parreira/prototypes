@@ -1,21 +1,22 @@
 import classnames from 'classnames'
 import React from 'react'
-import heatmapCss from 'pages/stats/heatmap.less'
-import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import heatmapCss from 'pages/stats/heatmap.less'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 import {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
     HOUR_COLUMN,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
+import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 
 export const BusiestTimesOfDaysCellContent = ({
     isLoading,

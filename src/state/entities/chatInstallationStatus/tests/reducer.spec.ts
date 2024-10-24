@@ -1,12 +1,12 @@
 import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
 
-import reducer, {
-    initialState as chatInstallationStatusInitialState,
-} from '../reducer'
 import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
 } from '../actions'
+import reducer, {
+    initialState as chatInstallationStatusInitialState,
+} from '../reducer'
 
 describe('chatInstallationStatus reducer', () => {
     it.each([

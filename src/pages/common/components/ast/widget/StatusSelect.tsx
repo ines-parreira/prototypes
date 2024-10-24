@@ -1,10 +1,10 @@
-import React from 'react'
 import {List} from 'immutable'
+import React from 'react'
 
 import {connect, ConnectedProps} from 'react-redux'
 
-import {RootState} from '../../../../../state/types'
 import {TicketStatus} from '../../../../../business/types/ticket'
+import {RootState} from '../../../../../state/types'
 
 import Select from './ReactSelect'
 

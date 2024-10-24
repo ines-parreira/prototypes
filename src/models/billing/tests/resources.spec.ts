@@ -1,6 +1,8 @@
 // Import the functions to test
 import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
+
 import {getCreditCard, trackBillingEvent} from '../resources'
 import {ProductType} from '../types' // Update this path based on your project structure
 

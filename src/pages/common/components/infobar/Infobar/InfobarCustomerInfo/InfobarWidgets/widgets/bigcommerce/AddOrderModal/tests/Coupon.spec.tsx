@@ -1,10 +1,10 @@
-import React from 'react'
-import {produce} from 'immer'
-
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {produce} from 'immer'
+import React from 'react'
 
 import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
+
 import {Coupon} from '../Coupon'
 
 describe('<Coupon />', () => {

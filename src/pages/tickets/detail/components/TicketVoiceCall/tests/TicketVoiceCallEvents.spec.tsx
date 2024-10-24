@@ -1,7 +1,8 @@
-import React from 'react'
 import {cleanup, render, screen} from '@testing-library/react'
+import React from 'react'
 
 import * as queries from 'models/voiceCall/queries'
+
 import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')

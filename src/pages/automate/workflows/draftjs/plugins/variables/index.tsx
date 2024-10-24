@@ -1,18 +1,18 @@
-import React from 'react'
 import {ContentBlock, ContentState, EditorState} from 'draft-js'
 import findWithRegex from 'find-with-regex'
+import React from 'react'
 
+import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 
+import {addEntityToVariable} from './utils'
 import WorkflowVariableTag, {
     WorkflowVariableTagProps,
 } from './WorkflowVariableTag'
-import {addEntityToVariable} from './utils'
 
 type Options = {
     size?: WorkflowVariableTagProps['size']

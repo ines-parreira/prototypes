@@ -1,5 +1,5 @@
-import {List, Map} from 'immutable'
 import {ContentState, SelectionState} from 'draft-js'
+import {List, Map} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {GenericAttachment} from 'common/types'

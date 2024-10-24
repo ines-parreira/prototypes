@@ -1,12 +1,13 @@
-import React, {Fragment} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import {formatDuration} from 'pages/stats/common/utils'
+import React, {Fragment} from 'react'
+
 import useId from 'hooks/useId'
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {formatDuration} from 'pages/stats/common/utils'
 import {SlaStatusLabel} from 'services/reporting/constants'
 
 export type SLAPolicyStatus = {

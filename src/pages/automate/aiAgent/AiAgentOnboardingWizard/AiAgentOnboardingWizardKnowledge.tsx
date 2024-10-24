@@ -1,20 +1,23 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import WizardFooter, {
-    FOOTER_BUTTONS,
-} from 'pages/common/components/wizard/WizardFooter'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import {FeatureFlagKey} from 'config/featureFlags'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {logEvent, SegmentEvent} from 'common/segment'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
+import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+
+import {CreatePublicSourcesSection} from '../components/StoreConfigForm/StoreConfigForm'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -22,10 +25,9 @@ import {
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../constants'
-import {CreatePublicSourcesSection} from '../components/StoreConfigForm/StoreConfigForm'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 import css from './AiAgentOnboardingWizardKnowledge.less'
+import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 
 type Props = AiAgentOnboardingWizardProps
 

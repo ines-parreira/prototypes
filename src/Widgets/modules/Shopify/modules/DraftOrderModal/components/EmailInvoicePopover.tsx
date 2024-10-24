@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {
     ReactNode,
     Component,
@@ -16,8 +18,6 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, Map} from 'immutable'
-import classnames from 'classnames'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DraftOrderInvoice} from 'constants/integrations/types/shopify'

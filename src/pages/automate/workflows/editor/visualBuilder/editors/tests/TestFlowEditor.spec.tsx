@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
 import {screen} from '@testing-library/react'
-import {Router} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {Router} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {billingState} from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
 import {TestFlowEditor} from 'pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor'
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {RootState} from 'state/types'
-import {billingState} from 'fixtures/billing'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {IntegrationType} from 'models/integration/constants'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore([thunk])
 

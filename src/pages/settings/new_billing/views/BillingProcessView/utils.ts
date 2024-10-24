@@ -4,6 +4,7 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
+
 import {PRODUCT_INFO} from '../../constants'
 
 export type setNotificationProps = {

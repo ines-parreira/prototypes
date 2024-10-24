@@ -8,11 +8,12 @@ import {
 } from 'config/integrations/gorgias_chat'
 import {account} from 'fixtures/account'
 import {GorgiasChatStatusEnum} from 'models/integration/types'
+import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+
 import * as helpers from '../helpers'
 
 const neutralInstallationStatus: InstallationStatus = {

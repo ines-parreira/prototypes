@@ -1,9 +1,9 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {reportError} from 'utils/errors'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {reportError} from 'utils/errors'
 
 import GroupAddon from '../GroupAddon'
 

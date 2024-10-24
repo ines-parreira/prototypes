@@ -1,11 +1,12 @@
 import {fromJS} from 'immutable'
+
 import {ViewType} from 'models/view/types'
 
-import {GorgiasAction} from 'state/types'
-import * as viewTypes from 'state/views/constants'
 import * as ticketTypes from 'state/ticket/constants'
 import * as types from 'state/tickets/constants'
 import reducer, {initialState} from 'state/tickets/reducers'
+import {GorgiasAction} from 'state/types'
+import * as viewTypes from 'state/views/constants'
 
 describe('tickets reducers', () => {
     it('initial state', () => {

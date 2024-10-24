@@ -1,18 +1,19 @@
-import React, {useMemo} from 'react'
 import classnames from 'classnames'
-import useAsyncFn from 'hooks/useAsyncFn'
-import client from 'models/api/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
+import React, {useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
+import useAsyncFn from 'hooks/useAsyncFn'
+import client from 'models/api/resources'
 import {
     Bundle,
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
+import Button from 'pages/common/components/button/Button'
+import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import css from './ConvertBundle1ClickInstallCard.less'
 
 type Props = {

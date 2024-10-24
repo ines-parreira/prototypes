@@ -1,15 +1,16 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
+
 import {
     TableBodyRowExpandable,
     WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
 
-import HeaderCellProperty from './cells/HeaderCellProperty'
 import BodyCell from './cells/BodyCell'
-import TableWrapper from './TableWrapper'
-import TableHead from './TableHead'
+import HeaderCellProperty from './cells/HeaderCellProperty'
 import TableBody from './TableBody'
+import TableHead from './TableHead'
+import TableWrapper from './TableWrapper'
 
 const tableColumns = [
     {

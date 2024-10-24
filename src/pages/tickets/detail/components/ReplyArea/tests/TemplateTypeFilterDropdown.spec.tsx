@@ -1,12 +1,14 @@
 import {cleanup, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React, {ComponentProps} from 'react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {fromJS} from 'immutable'
-import {mockStore} from 'utils/testing'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+
 import {TicketChannel} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import {mockStore} from 'utils/testing'
+
 import TemplateTypeFilterDropdown from '../TemplateTypeFilterDropdown'
 import {TemplateTypeFilterOption} from '../types'
 

@@ -1,19 +1,21 @@
-import React, {useMemo, useState} from 'react'
 import classNames from 'classnames'
+import React, {useMemo, useState} from 'react'
 
 import {Link, useHistory} from 'react-router-dom'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useSessionStorage from 'hooks/useSessionStorage'
 import Button from 'pages/common/components/button/Button'
 
-import {reportError} from 'utils/errors'
 import {ShopifyBillingStatus} from 'state/currentAccount/types'
-import useSessionStorage from 'hooks/useSessionStorage'
 import {notify} from 'state/notifications/actions'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {reportError} from 'utils/errors'
+
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_BASE_PATH,

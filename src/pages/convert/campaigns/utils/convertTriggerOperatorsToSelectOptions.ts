@@ -1,4 +1,5 @@
 import {Option} from 'pages/common/forms/SelectField/types'
+
 import {TRIGGERS_CONFIG} from '../constants/triggers'
 import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
 

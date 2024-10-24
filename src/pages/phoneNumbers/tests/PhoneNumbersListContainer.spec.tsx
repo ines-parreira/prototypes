@@ -1,14 +1,15 @@
-import React from 'react'
 import {act, render} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import MockAdapter from 'axios-mock-adapter'
 import {phoneNumbers} from 'fixtures/phoneNumber'
+import client from 'models/api/resources'
 import {RootState, StoreDispatch} from 'state/types'
 
-import client from 'models/api/resources'
 import {flushPromises} from 'utils/testing'
+
 import PhoneNumberListContainer from '../PhoneNumbersListContainer'
 
 const mockServer = new MockAdapter(client)

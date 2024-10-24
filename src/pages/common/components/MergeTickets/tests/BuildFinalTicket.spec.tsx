@@ -1,8 +1,8 @@
-import React from 'react'
+import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
+import React from 'react'
 
-import {render} from '@testing-library/react'
 import BuildFinalTicket from '../BuildFinalTicket'
 
 describe('BuildFinalTicket component', () => {

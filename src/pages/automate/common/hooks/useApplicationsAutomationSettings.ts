@@ -1,16 +1,16 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
 import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
 } from 'state/entities/chatsApplicationAutomationSettings/actions'
+import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
-import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
 
 const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
     const dispatch = useAppDispatch()

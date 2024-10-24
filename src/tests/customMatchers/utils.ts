@@ -1,10 +1,10 @@
+import {MatcherContext, MatcherFunction} from '@jest/expect'
 import {
     matcherHint,
     printReceived,
     printWithType,
     RECEIVED_COLOR,
 } from 'jest-matcher-utils'
-import {MatcherContext, MatcherFunction} from '@jest/expect'
 
 // Utils taken from https://github.com/testing-library/jest-dom/blob/main/src/utils.js#L4
 // and simplified to our needs

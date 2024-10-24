@@ -1,26 +1,26 @@
+import {createMemoryHistory} from 'history'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
-import {createMemoryHistory} from 'history'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {IntegrationType} from 'models/integration/constants'
 import {
     PolicyKey,
     ReturnActionType,
 } from 'models/selfServiceConfiguration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
-import useEffectOnce from 'hooks/useEffectOnce'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import {ORDER_MANAGEMENT} from '../common/components/constants'
 import {

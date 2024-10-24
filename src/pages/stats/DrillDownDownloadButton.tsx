@@ -1,25 +1,25 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
-import {useRunningJobs} from 'jobs'
-import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import {UserRole} from 'config/types/user'
+import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useRunningJobs} from 'jobs'
+import {JobContext, JobType} from 'models/job/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+import css from 'pages/stats/DrillDownDownloadButton.less'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     createExportDrillDownJob,
     DrillDownMetric,
     getDrillDownExport,
 } from 'state/ui/stats/drillDownSlice'
-import {hasRole} from 'utils'
 
-import css from 'pages/stats/DrillDownDownloadButton.less'
-import {JobContext, JobType} from 'models/job/types'
 import {ConvertMetric} from 'state/ui/stats/types'
+import {hasRole} from 'utils'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
 export const TOTAL_OBJECTS_COUNT_PLACEHOLDER = 'All'

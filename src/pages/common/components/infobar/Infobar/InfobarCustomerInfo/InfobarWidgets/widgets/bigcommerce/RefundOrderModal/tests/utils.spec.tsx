@@ -1,5 +1,11 @@
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map as ImmutableMap} from 'immutable'
+
+import {
+    bigCommerceAvailablePaymentOptionsDataResponseFixture,
+    bigCommerceCalculateOrderRefundDataResponseApiFixture,
+    bigCommerceOrderFixture,
+} from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
 import {
     BigCommerceGeneralErrorMessage,
@@ -10,12 +16,9 @@ import {
     BigCommerceOrderProduct,
     BigCommerceAvailablePaymentOptionsData,
 } from 'models/integration/types'
-import {
-    bigCommerceAvailablePaymentOptionsDataResponseFixture,
-    bigCommerceCalculateOrderRefundDataResponseApiFixture,
-    bigCommerceOrderFixture,
-} from 'fixtures/bigcommerce'
 import * as integrationHelpers from 'state/integrations/helpers'
+
+import {BigCommerceRefundActionType} from '../types'
 import {
     buildPaymentOptionLabel,
     calculateAvailablePaymentOptionsData,
@@ -29,7 +32,6 @@ import {
     calculateOrderSubtotal,
     calculateOrderTotal,
 } from '../utils'
-import {BigCommerceRefundActionType} from '../types'
 
 const refundItemsPayload = {
     items: [

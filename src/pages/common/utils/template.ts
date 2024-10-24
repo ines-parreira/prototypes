@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
+import _unescape from 'lodash/unescape'
 import moment from 'moment'
 
 export const filterRegex = /([\w_]+)\(([^(]*)\)/

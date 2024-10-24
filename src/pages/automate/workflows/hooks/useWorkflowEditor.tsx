@@ -1,3 +1,5 @@
+import {useQueryClient} from '@tanstack/react-query'
+import {produce} from 'immer'
 import React, {
     useCallback,
     useEffect,
@@ -7,20 +9,32 @@ import React, {
     useRef,
     useMemo,
 } from 'react'
-import {useQueryClient} from '@tanstack/react-query'
-import {produce} from 'immer'
 
-import {validateHttpHeaderName, validateWebhookURL} from 'utils'
-import useThrottledValue from 'hooks/useThrottledValue'
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
+import useThrottledValue from 'hooks/useThrottledValue'
+import {IntegrationType} from 'models/integration/constants'
 import {
     useUpsertWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
     useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {IntegrationType} from 'models/integration/constants'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
+import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
+import {ConditionSchema} from '../models/conditions.types'
+import {
+    getWorkflowVariableListForNode,
+    checkGraphVariablesValidity,
+    validateJSONWithVariables,
+} from '../models/variables.model'
+import {WorkflowVariableList} from '../models/variables.types'
+import {
+    areGraphsEqual,
+    transformVisualBuilderGraphIntoWfConfiguration,
+} from '../models/visualBuilderGraph.model'
+import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -28,26 +42,11 @@ import {
     WorkflowStepHttpRequest,
     WorkflowTransition,
 } from '../models/workflowConfiguration.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
-import {
-    areGraphsEqual,
-    transformVisualBuilderGraphIntoWfConfiguration,
-} from '../models/visualBuilderGraph.model'
-import {
-    getWorkflowVariableListForNode,
-    checkGraphVariablesValidity,
-    validateJSONWithVariables,
-} from '../models/variables.model'
+import {WorkflowConfigurationUpsertDto} from '../types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
-import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
-import {ConditionSchema} from '../models/conditions.types'
-import {WorkflowVariableList} from '../models/variables.types'
-import {WorkflowConfigurationUpsertDto} from '../types'
-import {workflowConfigurationFactory} from './utils'
 import {
     VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
@@ -56,6 +55,7 @@ import {computeNodesPositions} from './useVisualBuilderGraphReducer/utils'
 import useWorkflowTranslations, {
     emptyTranslatedTexts,
 } from './useWorkflowTranslations'
+import {workflowConfigurationFactory} from './utils'
 
 export type WorkflowEditorContext = {
     configuration: WorkflowConfiguration

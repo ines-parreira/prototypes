@@ -1,4 +1,5 @@
 import _isEmpty from 'lodash/isEmpty'
+
 import {
     FilterComponentKey,
     FilterKey,

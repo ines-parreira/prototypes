@@ -1,9 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit'
+
 import {
     contactFormAutomationSettingsFetched,
     contactFormAutomationSettingsUpdated,
     contactFormsAutomationSettingsFetched,
 } from 'state/entities/contactForm/contactFormsAutomationSettings/actions'
+
 import {ContactFormsAutomationSettingsState} from './types'
 
 export const initialState: ContactFormsAutomationSettingsState = {

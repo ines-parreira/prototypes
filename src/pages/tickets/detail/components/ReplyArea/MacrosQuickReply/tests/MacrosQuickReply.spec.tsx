@@ -1,14 +1,12 @@
-import {Provider} from 'react-redux'
 import {render, fireEvent, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {fromJS} from 'immutable'
-
 import {logEvent} from 'common/segment'
-import {RootState, StoreDispatch} from 'state/types'
-
+import {account} from 'fixtures/account'
 import {
     setTextAction,
     shopifyAction,
@@ -16,10 +14,9 @@ import {
     httpAction,
     macroFixture,
 } from 'fixtures/macro'
-
 import {ticket} from 'fixtures/ticket'
-import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {RootState, StoreDispatch} from 'state/types'
 
 import MacrosQuickReply from '../MacrosQuickReply'
 

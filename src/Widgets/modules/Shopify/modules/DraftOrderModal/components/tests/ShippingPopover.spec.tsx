@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {

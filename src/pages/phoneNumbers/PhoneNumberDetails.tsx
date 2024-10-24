@@ -1,4 +1,7 @@
+import classnames from 'classnames'
+import Clipboard from 'clipboard'
 import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 import {
     Col,
     Row,
@@ -9,27 +12,22 @@ import {
     Label,
     FormGroup,
 } from 'reactstrap'
-import {Link} from 'react-router-dom'
-import Clipboard from 'clipboard'
-import classnames from 'classnames'
 
-import {PhoneCountry, NewPhoneNumber} from 'models/phoneNumber/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {GorgiasApiError} from 'models/api/types'
+import {IntegrationType} from 'models/integration/types'
 import {
     updateNewPhoneNumber,
     deleteNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import {GorgiasApiError} from 'models/api/types'
-import {
-    newPhoneNumberUpdated,
-    newPhoneNumberDeleted,
-} from 'state/entities/phoneNumbers/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {IntegrationType} from 'models/integration/types'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {PhoneCountry, NewPhoneNumber} from 'models/phoneNumber/types'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import history from 'pages/history'
 import {
     countryCode,
     getAvailableStates,
@@ -37,15 +35,16 @@ import {
     isNewPhoneNumber,
     isTwilioConnection,
 } from 'pages/phoneNumbers/utils'
-import history from 'pages/history'
+import {
+    newPhoneNumberUpdated,
+    newPhoneNumberDeleted,
+} from 'state/entities/phoneNumbers/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {errorToChildren} from 'utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-import SourceIcon from 'pages/common/components/SourceIcon'
-
-import css from './PhoneNumberDetails.less'
 
 import rawCountries from './options/countries.json'
+import css from './PhoneNumberDetails.less'
 
 type Props = {
     phoneNumber: NewPhoneNumber

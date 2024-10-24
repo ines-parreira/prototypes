@@ -1,10 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
 
 import Triggers from '../Triggers'
 

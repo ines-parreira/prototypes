@@ -1,30 +1,27 @@
-import React, {FC, useEffect, useMemo} from 'react'
 import classNames from 'classnames'
-
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
-
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableBody from 'pages/common/components/table/TableBody'
+import React, {FC, useEffect, useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getCategoriesById} from 'state/entities/helpCenter/categories'
-import {getArticlesById} from 'state/entities/helpCenter/articles'
-import {getViewLanguage} from 'state/ui/helpCenter'
 import {Article, HelpCenter} from 'models/helpCenter/types'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {FlatAlgoliaSearchResults} from 'pages/settings/helpCenter/providers/SearchContext'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-
-import {getMissingEntities, searchResultsTreeFromAlgolia} from './utils'
+import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import {FlatAlgoliaSearchResults} from 'pages/settings/helpCenter/providers/SearchContext'
+import {getArticlesById} from 'state/entities/helpCenter/articles'
+import {getCategoriesById} from 'state/entities/helpCenter/categories'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
 import css from './SearchResults.less'
 import {SearchResultsArticleRow} from './SearchResultsArticleRow'
 import {SearchResultsCategoryRow} from './SearchResultsCategoryRow'
+import {getMissingEntities, searchResultsTreeFromAlgolia} from './utils'
 
 const UncategorizedArticlesHeaderRow: FC = () => (
     <TableBodyRow className={css.row}>

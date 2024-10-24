@@ -1,24 +1,21 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {fromJS} from 'immutable'
 import React from 'react'
 import routerDom, {useParams} from 'react-router-dom'
-import {QueryClientProvider} from '@tanstack/react-query'
-
-import {fromJS} from 'immutable'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock, renderWithStore} from 'utils/testing'
-
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
+import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
 
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 import {RevenueStatsContent} from '../RevenueStatsContent'
 

@@ -1,4 +1,5 @@
 import {ShopifyIntegration, StoreIntegration} from 'models/integration/types'
+
 import {getSingleCustomDomainResponseFixture} from '../../fixtures/getCustomDomainsResponse.fixture'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {

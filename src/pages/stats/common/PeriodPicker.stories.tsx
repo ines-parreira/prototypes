@@ -1,13 +1,14 @@
+import {Meta, StoryFn, StoryObj} from '@storybook/react'
 import {within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import moment from 'moment'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import {Meta, StoryFn, StoryObj} from '@storybook/react'
-import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
-import {ThemeProvider} from 'theme'
+
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import {getNewSetOfRanges} from 'pages/stats/constants'
+import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

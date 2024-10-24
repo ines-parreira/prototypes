@@ -1,6 +1,7 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import FilterName, {
     getWarningTooltip,
 } from 'pages/stats/common/components/Filter/components/FilterName/FilterName'

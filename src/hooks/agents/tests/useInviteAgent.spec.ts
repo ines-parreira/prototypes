@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {useInviteAgent as usePureInviteAgent} from 'models/agents/queries'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {useInviteAgent as usePureInviteAgent} from 'models/agents/queries'
 import {assumeMock} from 'utils/testing'
 
 import {handleError} from '../errorHandler'

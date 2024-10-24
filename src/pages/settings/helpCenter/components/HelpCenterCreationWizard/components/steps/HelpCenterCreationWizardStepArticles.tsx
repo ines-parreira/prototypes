@@ -1,12 +1,16 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ArticleTemplateType,
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -14,19 +18,16 @@ import {
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import WizardFooter, {
-    FOOTER_BUTTONS,
-} from 'pages/common/components/wizard/WizardFooter'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+
+import {getEnabledArticlesCount} from '../../HelpCenterCreationWizardUtils'
 import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
 
-import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
-import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
-import {getEnabledArticlesCount} from '../../HelpCenterCreationWizardUtils'
+import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import HelpCenterWizardArticlePreview from '../HelpCenterWizardArticlePreview/HelpCenterWizardArticlePreview'
+import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
 
 type Props = {
     helpCenter: HelpCenter

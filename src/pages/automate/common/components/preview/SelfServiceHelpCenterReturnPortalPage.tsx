@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
+import {HelpCenter} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 

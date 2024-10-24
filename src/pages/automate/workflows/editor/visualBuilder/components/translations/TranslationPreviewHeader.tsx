@@ -1,10 +1,10 @@
+import {Label} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
-import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
-import {supportedLanguages} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import {supportedLanguages} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

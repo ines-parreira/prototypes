@@ -1,26 +1,26 @@
 import React, {useRef, useState} from 'react'
 
-import {
-    JsonLogicOperator,
-    JsonLogicRuleOverVariable,
-    ReportIssueVariable,
-} from 'models/selfServiceConfiguration/types'
+import shopify from 'assets/img/integrations/shopify.png'
 import {
     FINANCIAL_STATUSES_OPTIONS,
     FULFILLMENT_STATUSES_OPTIONS,
     ORDER_STATUSES_OPTIONS,
     SHIPMENT_STATUSES_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
+import {
+    JsonLogicOperator,
+    JsonLogicRuleOverVariable,
+    ReportIssueVariable,
+} from 'models/selfServiceConfiguration/types'
 import Button from 'pages/common/components/button/Button'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
+import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import IconButton from 'pages/common/components/button/IconButton'
-import shopify from 'assets/img/integrations/shopify.png'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import css from './ReportOrderIssueScenarioConditionRule.less'

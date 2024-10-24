@@ -1,22 +1,21 @@
+import classnames from 'classnames'
 import React, {useState, useMemo, useCallback} from 'react'
 import {useParams} from 'react-router-dom'
-import classnames from 'classnames'
-
-import {toJS} from 'utils'
-import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListABTests} from 'models/convert/abTest/queries'
 import {
     ABTest,
     ABTestListOptions as ABTestListOptionsParams,
 } from 'models/convert/abTest/types'
+import Button from 'pages/common/components/button/Button'
+import UpdateReportLinkModal from 'pages/convert/abTests/components/UpdateReportLinkModal'
 import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import UpdateReportLinkModal from 'pages/convert/abTests/components/UpdateReportLinkModal'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {toJS} from 'utils'
 
 import css from './UpdateABTestView.less'
 

@@ -1,8 +1,8 @@
+import classnames from 'classnames'
+import {Map} from 'immutable'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Map} from 'immutable'
-import classnames from 'classnames'
 
 import {Team} from 'models/team/types'
 import IconInput from 'pages/common/forms/input/IconInput'

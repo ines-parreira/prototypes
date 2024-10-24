@@ -1,9 +1,9 @@
-import React from 'react'
 import {screen, render, waitFor, fireEvent} from '@testing-library/react'
-import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import thunk from 'redux-thunk'
 
 import {RootState} from 'state/types'
 

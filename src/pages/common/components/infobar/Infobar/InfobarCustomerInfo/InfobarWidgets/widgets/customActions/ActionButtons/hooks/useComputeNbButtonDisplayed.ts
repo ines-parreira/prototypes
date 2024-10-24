@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react'
 
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import {Source} from 'models/widget/types'
+import {computeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/computeNbButtonDisplayed'
+import {NB_MIN_BUTTON_DISPLAYED} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
 import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
 import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {NB_MIN_BUTTON_DISPLAYED} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
-import {computeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/computeNbButtonDisplayed'
-import {Source} from 'models/widget/types'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 export function useComputeNbButtonDisplayed(
     buttons: ButtonType[],

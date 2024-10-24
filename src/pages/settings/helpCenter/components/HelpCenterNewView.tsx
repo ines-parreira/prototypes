@@ -1,38 +1,41 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 import axios from 'axios'
 import classnames from 'classnames'
 import {produce} from 'immer'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {Label, Tooltip} from '@gorgias/ui-kit'
-
-import * as integrationsSelectors from 'state/integrations/selectors'
 
 import shopify from 'assets/img/integrations/shopify.png'
-
-import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
-import {
-    helpCenterCreated,
-    helpCenterUpdated,
-} from 'state/entities/helpCenter/helpCenters/actions'
-import {getHasAutomate} from 'state/billing/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import Button from 'pages/common/components/button/Button'
+
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/input/InputField'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
+import {getHasAutomate} from 'state/billing/selectors'
+import {
+    helpCenterCreated,
+    helpCenterUpdated,
+} from 'state/entities/helpCenter/helpCenters/actions'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+
+import {EMAIL_INTEGRATION_TYPES} from '../../../../constants/integration'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import settingsCss from '../../settings.less'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,
@@ -40,7 +43,9 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
+import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
 import {useAbilityChecker, useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStoreWithChatConnectionsOptions'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HelpCenterTheme} from '../types'
 import {getNewHelpCenterTranslation, slugify} from '../utils/helpCenter.utils'
@@ -51,14 +56,6 @@ import {
     isValidSubdomain,
 } from '../utils/validations'
 
-import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStoreWithChatConnectionsOptions'
-
-import settingsCss from '../../settings.less'
-
-import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../constants/integration'
-
-import useAppDispatch from '../../../../hooks/useAppDispatch'
 import css from './HelpCenterNewView.less'
 import {LanguageBadgeTags} from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
 

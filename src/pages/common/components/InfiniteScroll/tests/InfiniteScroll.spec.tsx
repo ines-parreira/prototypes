@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import Spinner from 'pages/common/components/Spinner'
 

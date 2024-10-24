@@ -1,9 +1,10 @@
-import React, {useMemo} from 'react'
 import classNames from 'classnames'
-import {TicketMessage} from 'models/ticket/types'
+import React, {useMemo} from 'react'
+
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import Body from 'pages/tickets/detail/components/TicketMessages/Body'
+import {TicketMessage} from 'models/ticket/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 
 import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
 import css from './AIAgentBanner.less'

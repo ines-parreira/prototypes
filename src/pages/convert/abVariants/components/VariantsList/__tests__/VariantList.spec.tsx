@@ -1,14 +1,14 @@
-import React from 'react'
+import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {screen} from '@testing-library/react'
+import React from 'react'
 
 import {campaignWithABGroup} from 'fixtures/abGroup'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {assumeMock, renderWithStore} from 'utils/testing'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 import VariantsList from '../VariantList'
 

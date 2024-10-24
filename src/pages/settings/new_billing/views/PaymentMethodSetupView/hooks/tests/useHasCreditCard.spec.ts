@@ -1,6 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+
 import {useHasCreditCard} from '../useHasCreditCard'
 
 const mockedServer = new MockAdapter(client)

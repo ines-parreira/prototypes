@@ -1,10 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
-import {BrowserRouter} from 'react-router-dom'
+import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
+import {BrowserRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {AccountFeature} from '../../../../../../state/currentAccount/types'

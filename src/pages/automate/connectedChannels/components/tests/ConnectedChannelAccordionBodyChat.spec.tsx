@@ -1,19 +1,21 @@
-import React from 'react'
+import {TicketChannel} from '@gorgias/api-queries'
 import {render} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {TicketChannel} from '@gorgias/api-queries'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useAppSelector from 'hooks/useAppSelector'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import ConnectedChannelAccordionBodyChat from '../ConnectedChannelAccordionBodyChat'
-import {useConnectedChannelsViewContext} from '../../ConnectedChannelsViewContext'
-import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
+import useAppSelector from 'hooks/useAppSelector'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../../common/components/constants'
+import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
+import {useConnectedChannelsViewContext} from '../../ConnectedChannelsViewContext'
+import ConnectedChannelAccordionBodyChat from '../ConnectedChannelAccordionBodyChat'
+
 import ConnectedChannelFeatureToggle from '../ConnectedChannelFeatureToggle'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({

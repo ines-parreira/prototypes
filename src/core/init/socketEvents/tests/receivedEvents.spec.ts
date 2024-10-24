@@ -1,28 +1,34 @@
+import {EnhancedStore} from '@reduxjs/toolkit'
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
-import {EnhancedStore} from '@reduxjs/toolkit'
 
-import browserNotification from 'services/browserNotification'
+// eslint-disable-next-line import/order
 import {
     advancedMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import * as currentUserActions from 'state/currentUser/actions'
-import {HelpdeskPlan, PriceId} from 'models/billing/types'
-import {TicketStatuses} from 'business/ticket'
+import {appQueryClient} from 'api/queryClient'
 import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
-
-import * as chatActions from 'state/chats/actions'
-import * as currentAccountConstants from 'state/currentAccount/constants'
-import * as currentAccountSelectors from 'state/currentAccount/selectors'
-import * as billingSelectors from 'state/billing/selectors'
-import {viewsCountFetched} from 'state/entities/viewsCount/actions'
-import * as integrationActions from 'state/integrations/actions'
-import * as notificationActions from 'state/notifications/actions'
-import {handleViewsCount} from 'state/views/actions'
+import {TicketStatuses} from 'business/ticket'
+import {store as reduxStore} from 'common/store'
+import {section} from 'fixtures/section'
+import {view} from 'fixtures/views'
+import {HelpdeskPlan, PriceId} from 'models/billing/types'
+import {
+    ecommerceStoreFixture,
+    shopperAddressFixture,
+    shopperFixture,
+    shopperOrderFixture,
+} from 'models/customerEcommerceData/fixtures'
+import {voiceCallsKeys} from 'models/voiceCall/queries'
+import * as voiceCallTypes from 'models/voiceCall/types'
+import history from 'pages/history'
+import * as activityTracker from 'services/activityTracker'
+import {ActivityEvents} from 'services/activityTracker'
+import browserNotification from 'services/browserNotification'
 import {
     CustomerExternalDataUpdatedEvent,
     OrderEvent,
@@ -32,43 +38,38 @@ import {
     ShopperEvent,
     SocketEventType,
 } from 'services/socketManager/types'
-import {view} from 'fixtures/views'
-import {
-    viewCreated,
-    viewUpdated,
-    viewDeleted,
-} from 'state/entities/views/actions'
-import {isViewSharedWithUser} from 'state/views/utils'
+import * as billingSelectors from 'state/billing/selectors'
+import * as chatActions from 'state/chats/actions'
 
-import {isCurrentlyOnTicket} from 'utils'
-import {store as reduxStore} from 'common/store'
-import {section} from 'fixtures/section'
+import * as currentAccountConstants from 'state/currentAccount/constants'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import * as currentUserActions from 'state/currentUser/actions'
 import {
     sectionCreated,
     sectionDeleted,
     sectionUpdated,
 } from 'state/entities/sections/actions'
+import {
+    viewCreated,
+    viewUpdated,
+    viewDeleted,
+} from 'state/entities/views/actions'
+import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import * as integrationActions from 'state/integrations/actions'
+import * as notificationActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
-import history from 'pages/history'
 import {
     mergeCustomerEcommerceDataOrder,
     mergeCustomerEcommerceDataShopper,
     mergeCustomerEcommerceDataShopperAddress,
     mergeCustomerExternalData,
 } from 'state/ticket/actions'
-import * as voiceCallTypes from 'models/voiceCall/types'
-import {appQueryClient} from 'api/queryClient'
-import {voiceCallsKeys} from 'models/voiceCall/queries'
-import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
+import {handleViewsCount} from 'state/views/actions'
+import {isViewSharedWithUser} from 'state/views/utils'
+
+import {isCurrentlyOnTicket} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
-import {
-    ecommerceStoreFixture,
-    shopperAddressFixture,
-    shopperFixture,
-    shopperOrderFixture,
-} from 'models/customerEcommerceData/fixtures'
 import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated

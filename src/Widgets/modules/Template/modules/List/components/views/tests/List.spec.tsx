@@ -1,5 +1,5 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 
 import {compare} from 'utils'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'

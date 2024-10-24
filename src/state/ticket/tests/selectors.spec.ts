@@ -1,17 +1,18 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {TicketVia} from 'business/types/ticket'
-import {RootState} from 'state/types'
-import {MacroActionName} from 'models/macroAction/types'
 import {ACTION_TEMPLATES} from 'config'
+import {MacroActionName} from 'models/macroAction/types'
 import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
+
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {RootState} from 'state/types'
+import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
 import {assumeMock} from 'utils/testing'
 
-import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 jest.mock('models/ticket/predicates', () => {
     const originalModule = jest.requireActual('models/ticket/predicates')

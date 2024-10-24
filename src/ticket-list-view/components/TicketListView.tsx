@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import cn from 'classnames'
 import {fromJS} from 'immutable'
 import React, {
     Children,
@@ -13,8 +15,6 @@ import React, {
 } from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
-import cn from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,20 +26,20 @@ import {getViewCount, getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT} from '../constants'
+import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import useSelection from '../hooks/useSelection'
 import useSortOrder, {SortOrder} from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
-import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import {TicketSummary} from '../types'
 
 import BulkActions from './bulk-actions/BulkActions'
 import {Action} from './bulk-actions/types'
+import InvalidFiltersAction from './InvalidFiltersAction'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
-import InvalidFiltersAction from './InvalidFiltersAction'
-import ViewDecoration from './ViewDecoration'
 import css from './TicketListView.less'
+import ViewDecoration from './ViewDecoration'
 
 export const listInfoProps = {
     DEFAULT: {text: 'No tickets', subText: 'There are no tickets in this view'},

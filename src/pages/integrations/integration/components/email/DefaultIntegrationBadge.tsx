@@ -1,5 +1,6 @@
-import React, {useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef} from 'react'
+
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 function DefaultIntegrationBadge() {

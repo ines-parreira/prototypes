@@ -1,15 +1,15 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import uniq from 'lodash/uniq'
+import React, {useEffect, useMemo, useState} from 'react'
 
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from '../../../common/forms/SelectField/SelectFieldDropdownAction'
 import {Value, Option} from '../../../common/forms/SelectField/types'
-import css from './FontSelectField.less'
 import {
     FontCatalogueModal,
     getMultipleFontLink,
 } from './components/FontCatalogueModal/FontCatalogueModal'
 import {AGENT_ADDED_FONTS} from './constants'
+import css from './FontSelectField.less'
 
 type Props = {
     value: Value

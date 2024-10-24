@@ -1,25 +1,24 @@
 import {createSelector, Selector} from 'reselect'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
+import {Integration, IntegrationType} from 'models/integration/types'
 import {
     FilterKey,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+
+import {getHasAutomate} from 'state/billing/selectors'
 import {
     DEPRECATED_getIntegrationsByTypes,
     getIntegrationsByTypes,
     getMessagingAndAppIntegrations,
 } from 'state/integrations/selectors'
-import {Integration, IntegrationType} from 'models/integration/types'
-import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
-import {makeGetPlainJS} from 'utils'
-
-import {RootState} from 'state/types'
-
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
 import {statsSlice} from 'state/stats/statsSlice'
-import {getHasAutomate} from 'state/billing/selectors'
+import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
+import {RootState} from 'state/types'
+import {makeGetPlainJS} from 'utils'
 
 export const getStats = (state: RootState) => state[statsSlice.name]
 

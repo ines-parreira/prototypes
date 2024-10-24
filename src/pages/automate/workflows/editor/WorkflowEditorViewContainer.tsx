@@ -1,18 +1,18 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useMemo} from 'react'
 import {Redirect, useHistory, useLocation, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {getHasAutomate} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {SegmentEvent, logEvent} from 'common/segment'
 import WorkflowEditorView from './WorkflowEditorView'
 
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'

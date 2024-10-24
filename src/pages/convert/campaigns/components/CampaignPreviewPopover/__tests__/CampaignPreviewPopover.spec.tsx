@@ -1,11 +1,11 @@
-import React from 'react'
 import {screen, fireEvent, render, waitFor} from '@testing-library/react'
+import React from 'react'
 
-import {createTrigger} from '../../../utils/createTrigger'
+import {CampaignTriggerOperator} from '../../../types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
+import {createTrigger} from '../../../utils/createTrigger'
 
 import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
-import {CampaignTriggerOperator} from '../../../types/enums/CampaignTriggerOperator.enum'
 
 const message =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc in arcu nisl. Donec ligula lacus, mattis nec purus vel, imperdiet varius ex. Praesent in malesuada purus. Morbi sollicitudin risus urna, non scelerisque eros maximus at. Proin accumsan, velit sit amet pellentesque bibendum, est tortor dictum odio, vitae pulvinar quam dolor at tortor.'

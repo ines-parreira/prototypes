@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
+import {ReportingGranularity} from 'models/reporting/types'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />

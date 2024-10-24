@@ -1,7 +1,6 @@
-import React from 'react'
-
 import {render, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {DAYS_OPTIONS} from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 

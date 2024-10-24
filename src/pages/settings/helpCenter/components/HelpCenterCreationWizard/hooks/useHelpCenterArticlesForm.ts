@@ -1,24 +1,26 @@
-import {useCallback, useEffect, useState} from 'react'
 import {filter, flatMap, map, mapValues} from 'lodash'
+import {useCallback, useEffect, useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ArticleTemplateType,
     HelpCenter,
     HelpCenterArticleItem,
     LocalArticleTranslation,
 } from 'models/helpCenter/types'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
-import {useCreateArticleUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
 import {useCreateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
+import {useCreateArticleUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
 import {useUpdateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useUpdateArticleTranslationUsingTemplate'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+
+import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 import {
     findArticleByKey,
     handleOnError,
     handleOnSuccess,
 } from '../HelpCenterCreationWizardUtils'
-import {logEvent, SegmentEvent} from '../../../../../../common/segment'
 
 type HelpCenterArticlesFormOutput = {
     articles: Record<string, HelpCenterArticleItem[]>

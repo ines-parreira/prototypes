@@ -1,8 +1,9 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import authenticatorImage from 'assets/img/auth/2fa-code.svg'
 import settingsCss from 'pages/settings/settings.less'
+
 import css from '../ModalSteps.less'
 
 export default function AppSetupStep() {

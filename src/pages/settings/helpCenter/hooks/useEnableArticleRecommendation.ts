@@ -1,15 +1,15 @@
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {HelpCenter} from 'models/helpCenter/types'
 
 import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
 
-import useAppSelector from 'hooks/useAppSelector'
+import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
 import {getStoreIntegrations} from 'state/integrations/selectors'
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(

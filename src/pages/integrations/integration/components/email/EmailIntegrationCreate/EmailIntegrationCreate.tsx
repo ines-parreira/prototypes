@@ -1,18 +1,17 @@
+import classnames from 'classnames'
 import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import googleLogo from 'assets/img/integrations/google-icon.svg'
 import officeLogo from 'assets/img/integrations/office-transparent.png'
-import PageHeader from 'pages/common/components/PageHeader'
 import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from 'config'
-import {getRedirectUri} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
-
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
+import {getRedirectUri} from 'state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
 

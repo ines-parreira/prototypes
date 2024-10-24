@@ -1,13 +1,13 @@
-import React, {useCallback} from 'react'
 import classNames from 'classnames'
+import React, {useCallback} from 'react'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useBeforeUnload from 'hooks/useBeforeUnload'
+import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import {useTheme} from 'theme'
 
-import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
+import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 
 import css from './PhoneIntegrationBar.less'

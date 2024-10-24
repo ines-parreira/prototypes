@@ -3,18 +3,19 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+
 import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {opposite, OrderDirection} from 'models/api/types'
+import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     AutoQAAgentsTableColumn,
     getQuery,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {opposite, OrderDirection} from 'models/api/types'
+import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {DEFAULT_SORTING_DIRECTION} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {
     initialState as autoQAInitialState,
     sortingLoaded,

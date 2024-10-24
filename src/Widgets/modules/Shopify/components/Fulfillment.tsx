@@ -1,11 +1,11 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
-import {humanizeString} from 'utils'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {humanizeString} from 'utils'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 export const fulfillmentCustomization: CardCustomization = {
     BeforeContent,

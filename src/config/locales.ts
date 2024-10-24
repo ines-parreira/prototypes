@@ -1,4 +1,5 @@
 import {LocaleCode} from 'models/helpCenter/types'
+
 import {LanguageTimeFormat} from '../constants/languages'
 
 export const localeTimeFormatConfigs: Record<LocaleCode, LanguageTimeFormat> = {

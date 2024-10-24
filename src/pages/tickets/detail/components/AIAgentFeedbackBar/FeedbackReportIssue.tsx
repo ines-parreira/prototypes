@@ -1,21 +1,20 @@
-import React, {useCallback, useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useCallback, useRef, useState} from 'react'
 
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {
+    ReportIssueLabels,
+    ReportIssueOption,
+} from 'models/aiAgentFeedback/constants'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import BadgeIcon from 'pages/common/components/Badge/BadgeIcon'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {
-    ReportIssueLabels,
-    ReportIssueOption,
-} from 'models/aiAgentFeedback/constants'
-
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import BadgeIcon from 'pages/common/components/Badge/BadgeIcon'
 import css from './FeedbackReportIssue.less'
 
 const closeIcon = <i className="material-icons">close</i>

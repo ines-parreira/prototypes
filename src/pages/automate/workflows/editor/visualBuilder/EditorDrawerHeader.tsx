@@ -1,10 +1,11 @@
-import React, {ReactNode} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import classNames from 'classnames'
-import {Drawer} from 'pages/common/components/Drawer'
-import IconButton from 'pages/common/components/button/IconButton'
+import React, {ReactNode} from 'react'
+
 import useId from 'hooks/useId'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Drawer} from 'pages/common/components/Drawer'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 
 import css from './NodeEditorDrawer.less'

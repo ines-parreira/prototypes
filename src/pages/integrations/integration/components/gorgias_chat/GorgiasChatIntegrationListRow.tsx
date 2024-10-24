@@ -1,42 +1,42 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {List, Map, fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {memo} from 'react'
 import {NavLink, Link} from 'react-router-dom'
-import {List, Map, fromJS} from 'immutable'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import warningIcon from 'assets/img/icons/warning.svg'
+import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
+import dotNeutral from 'assets/img/icons/dot-neutral.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import dotWarning from 'assets/img/icons/dot-warning.svg'
-import dotNeutral from 'assets/img/icons/dot-neutral.svg'
-import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
-import {getIconFromType} from 'state/integrations/helpers'
+import warningIcon from 'assets/img/icons/warning.svg'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageUI,
     getSecondaryLanguages,
     getSecondaryLanguagesAsTooltipContent,
 } from 'config/integrations/gorgias_chat'
-import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
-import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
 import {Language} from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
+import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
+import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
+import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
+import {getIconFromType} from 'state/integrations/helpers'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
-import history from '../../../../history'
+
 import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../models/integration/types'
 
-import {Tab} from '../../types'
-
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'
+import history from '../../../../history'
 import ForwardIcon from '../../../common/components/ForwardIcon'
+import {Tab} from '../../types'
 import css from './GorgiasChatIntegrationListRow.less'
 
 export const GorgiasChatIntegrationStatusFeedbackMapping = {

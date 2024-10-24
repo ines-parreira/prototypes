@@ -1,10 +1,12 @@
 import {Label} from '@gorgias/ui-kit'
-import React, {useState} from 'react'
 import classNames from 'classnames'
+import React, {useState} from 'react'
+
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
 import {Value} from 'pages/common/forms/SelectField/types'
+import TextArea from 'pages/common/forms/TextArea'
+
 import {
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     INITIAL_FORM_VALUES,

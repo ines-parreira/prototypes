@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
 import {render, screen} from '@testing-library/react'
+import React, {ReactNode} from 'react'
+
 import InfoIconWithTooltip from '../InfoIconWithTooltip'
 
 // Mocking the StatsHelpIcon component

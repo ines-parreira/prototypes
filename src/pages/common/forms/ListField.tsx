@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {List} from 'immutable'
-import {Row, Col, Button} from 'reactstrap'
 import classNames from 'classnames'
+import {List} from 'immutable'
+import React, {Component} from 'react'
+import {Row, Col, Button} from 'reactstrap'
 
 import TextInput from './input/TextInput'
 import css from './ListField.less'

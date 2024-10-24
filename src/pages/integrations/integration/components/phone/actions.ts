@@ -1,18 +1,18 @@
 import {AxiosError} from 'axios'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {fetchIntegration} from '../../../../../state/integrations/actions'
-import * as constants from '../../../../../state/integrations/constants'
+import client from '../../../../../models/api/resources'
 import {
     IntegrationType,
     VoiceMessage,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
 } from '../../../../../models/integration/types'
-import client from '../../../../../models/api/resources'
+import {fetchIntegration} from '../../../../../state/integrations/actions'
+import * as constants from '../../../../../state/integrations/constants'
+import * as integrationSelectors from '../../../../../state/integrations/selectors'
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 
 export const updatePhoneVoicemailConfiguration =
     (

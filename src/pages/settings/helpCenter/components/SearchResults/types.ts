@@ -1,4 +1,5 @@
 import {Article, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
+
 import {
     AlgoliaHit,
     EntitiesArticleRecord,

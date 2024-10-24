@@ -1,7 +1,9 @@
-import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import React from 'react'
+
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
+
 import {ContactFormFixture} from '../../fixtures/contacForm'
 import {
     selfServiceConfigurationFixture,

@@ -1,6 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {ShopifyTags} from 'models/integration/types'
+
 import client from '../../../api/resources'
 import {fetchShopTags} from '../shopify'
 

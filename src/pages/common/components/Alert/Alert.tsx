@@ -1,17 +1,17 @@
+import classnames from 'classnames'
 import React, {
     ReactNode,
     MouseEvent,
     isValidElement,
     HTMLAttributes,
 } from 'react'
-import classnames from 'classnames'
 
 import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
+import closeIcon from 'assets/img/icons/close.svg'
+import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
-import errorIcon from 'assets/img/icons/error.svg'
-import closeIcon from 'assets/img/icons/close.svg'
 
 import Spinner from 'pages/common/components/Spinner'
 

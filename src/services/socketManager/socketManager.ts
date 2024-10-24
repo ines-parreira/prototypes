@@ -1,15 +1,15 @@
-import _noop from 'lodash/noop'
 import _find from 'lodash/find'
+import _noop from 'lodash/noop'
 import _throttle from 'lodash/throttle'
 import {dismissNotification} from 'reapop'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
 
 import {store} from 'common/store'
-import {devLog} from 'utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
+import {devLog} from 'utils'
 
 import {
     RELOAD_TAB_DELAY,

@@ -1,13 +1,13 @@
 // g/integrations/outlook/schemas.py
 import {IntegrationType} from '../constants'
+import type {Integration} from './'
 import type {IntegrationBase} from './base'
 import type {EmailSignature} from './email'
-import type {OAuth2} from './misc'
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from './email'
-import type {Integration} from './'
+import type {OAuth2} from './misc'
 
 export type OutlookIntegration = IntegrationBase & {
     type: IntegrationType.Outlook

@@ -1,9 +1,10 @@
-import React from 'react'
 import {fromJS, List} from 'immutable'
+import React from 'react'
 
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
 import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
+
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
 import {notify} from '../../../../../state/notifications/actions'

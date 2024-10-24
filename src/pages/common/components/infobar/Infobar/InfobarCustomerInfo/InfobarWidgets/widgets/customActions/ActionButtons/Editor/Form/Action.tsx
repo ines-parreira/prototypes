@@ -1,20 +1,19 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {AVAILABLE_HTTP_METHODS} from 'config'
-import InputField from 'pages/common/forms/input/InputField'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
-
+import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import {
     Action as ActionType,
     OnChangeAction,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import css from './Actions.less'
-import Parameters from './Parameters'
 import Body from './Body'
+import Parameters from './Parameters'
 
 type Props = {
     action: ActionType

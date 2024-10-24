@@ -1,8 +1,8 @@
-import React, {Fragment, useMemo, useState} from 'react'
 import cn from 'classnames'
+import React, {Fragment, useMemo, useState} from 'react'
 
-import Collapse from 'pages/common/components/Collapse/Collapse'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Collapse from 'pages/common/components/Collapse/Collapse'
 
 import css from './MigrationFailuresDetails.less'
 

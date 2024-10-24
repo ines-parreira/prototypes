@@ -1,9 +1,11 @@
-import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+
 import {shopifyIntegration} from 'fixtures/integrations'
-import client from 'models/api/resources'
 import {integrationDataItemProductFixture} from 'fixtures/shopify'
+import client from 'models/api/resources'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+
 import {CampaignConfigurationBuilder} from '../constructor'
 import {CART_ABANDONMENT} from '../onboarding/cartAbandonment'
 

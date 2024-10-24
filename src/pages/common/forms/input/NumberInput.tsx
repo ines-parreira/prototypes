@@ -12,13 +12,13 @@ import React, {
     useEffect,
 } from 'react'
 
+import useEffectOnce from 'hooks/useEffectOnce'
+import useEvent from 'hooks/useEvent'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group, {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useEvent from 'hooks/useEvent'
 
 import {InputGroupContext} from './InputGroup'
 

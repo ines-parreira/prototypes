@@ -1,4 +1,8 @@
-import React from 'react'
+import {
+    TicketChannel,
+    useGetCustomer,
+    useUpdateCustomer,
+} from '@gorgias/api-queries'
 import {
     render,
     screen,
@@ -7,16 +11,14 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-    TicketChannel,
-    useGetCustomer,
-    useUpdateCustomer,
-} from '@gorgias/api-queries'
-import {Provider} from 'react-redux'
 import {isValidPhoneNumber} from 'libphonenumber-js'
-import {assumeMock, mockStore} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {assumeMock, mockStore} from 'utils/testing'
+
 import NewPhoneNumber from '../NewPhoneNumber'
 
 jest.mock('@gorgias/api-queries')

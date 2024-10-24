@@ -1,18 +1,19 @@
-import React, {useState} from 'react'
-
 import classNames from 'classnames'
+import React, {useState} from 'react'
 import {Redirect} from 'react-router-dom'
-import PageHeader from 'pages/common/components/PageHeader'
-import LinkButton from 'pages/common/components/button/LinkButton'
+
 import convertIcon from 'assets/img/convert/convert-logo.svg'
 import Button from 'pages/common/components/button/Button'
+import LinkButton from 'pages/common/components/button/LinkButton'
 
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import PageHeader from 'pages/common/components/PageHeader'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
-import css from './ConvertPaywallView.less'
+
 import {ConvertFeatures, PaywallConfig} from './constants'
+import css from './ConvertPaywallView.less'
 
 type Props = {
     convertFeature: ConvertFeatures

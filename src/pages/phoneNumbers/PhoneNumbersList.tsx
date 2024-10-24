@@ -1,11 +1,11 @@
-import React, {useEffect, useState, useCallback} from 'react'
 import {sortBy, reverse} from 'lodash'
+import React, {useEffect, useState, useCallback} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
-import {NewPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import history from 'pages/history'
+import {NewPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -13,12 +13,12 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import useAppSelector from 'hooks/useAppSelector'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 
-import PhoneNumberTitle from './PhoneNumberTitle'
 import css from './PhoneNumbersList.less'
+import PhoneNumberTitle from './PhoneNumberTitle'
 
 export function PhoneNumbersList(): JSX.Element | null {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)

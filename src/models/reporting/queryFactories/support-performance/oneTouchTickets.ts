@@ -13,6 +13,7 @@ import {
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -22,7 +23,6 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-import {subtractDaysFromDate} from 'utils/date'
 
 export const ONE_TOUCH_TICKETS_MAX_DAYS_INTO_THE_PAST = 180
 

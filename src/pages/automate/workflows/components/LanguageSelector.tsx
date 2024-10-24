@@ -1,13 +1,13 @@
-import React, {useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo, useRef, useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     LanguageCode,
     supportedLanguages,

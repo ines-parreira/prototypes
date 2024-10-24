@@ -1,11 +1,13 @@
 import axios, {AxiosError} from 'axios'
-import moment from 'moment'
 import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
+import moment from 'moment'
+
 import {isChannel} from 'config'
 import client from 'models/api/resources'
 import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
+import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
 import {
     GorgiasChatIntegration,
     GorgiasChatStatusEnum,
@@ -14,18 +16,18 @@ import {
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
 import history from 'pages/history'
+import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_protected_api/types'
+import GorgiasApi from 'services/gorgiasApi'
+import {fetchAccountSettings} from 'state/currentAccount/actions'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import {AccountSettingType} from 'state/currentAccount/types'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
-import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch, RootState} from 'state/types'
-import GorgiasApi from 'services/gorgiasApi'
-import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
-import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_protected_api/types'
-import {fetchAccountSettings} from 'state/currentAccount/actions'
-import {AccountSettingType} from 'state/currentAccount/types'
+
 import * as helpers from '../helpers'
 import {
     getTranslations as getTranslationsAction,

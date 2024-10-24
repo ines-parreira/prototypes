@@ -1,24 +1,25 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useRef, useState} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AccountConfigurationWithHttpIntegration,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
-import PlaygroundMessageComponent, {
-    AI_AGENT_SENDER,
-} from '../PlaygroundMessage/PlaygroundMessage'
+
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
 import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
-
 import {
     mapPlaygroundPromptToMessage,
     mapPlaygroundFormValuesToMessage,
 } from '../../utils/playground-messages.utils'
+import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
+import PlaygroundMessageComponent, {
+    AI_AGENT_SENDER,
+} from '../PlaygroundMessage/PlaygroundMessage'
+
 import css from './PlaygroundChat.less'
 import {PlaygroundChannels} from './PlaygroundChat.types'
 

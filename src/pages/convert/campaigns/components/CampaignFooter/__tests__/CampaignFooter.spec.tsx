@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
 import {render, waitFor, act, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import * as useDismissFlag from 'hooks/useDismissFlag'
 import * as useLocalStorage from 'hooks/useLocalStorage'

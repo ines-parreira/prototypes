@@ -2,6 +2,7 @@ import {
     WhatsAppMigrationProgress,
     WhatsAppCodeVerificationMethod,
 } from 'models/integration/types'
+
 import client from '../../api/resources'
 
 export const getMigrationProgress = async ({

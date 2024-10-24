@@ -1,4 +1,8 @@
 // External Libraries
+import {useId} from '@floating-ui/react'
+import {Label} from '@gorgias/ui-kit'
+import {List} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ComponentProps,
     useCallback,
@@ -7,52 +11,38 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {useId} from '@floating-ui/react'
 import {Link} from 'react-router-dom'
-import {List} from 'immutable'
-import {Label} from '@gorgias/ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 // Absolute Imports
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {reportError} from 'utils/errors'
-import {Tag} from 'models/aiAgent/types'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import {getHasAutomate} from 'state/billing/selectors'
-
-// Relative Imports
+import useAppSelector from 'hooks/useAppSelector'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {Tag} from 'models/aiAgent/types'
+import {HelpCenter} from 'models/helpCenter/types'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import Button from 'pages/common/components/button/Button'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {getHasAutomate} from 'state/billing/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {reportError} from 'utils/errors'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {SegmentEvent, logEvent} from 'common/segment'
+// Relative Imports
 
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {HelpCenter} from 'models/helpCenter/types'
-
-import {useSearchParam} from 'hooks/useSearchParam'
-import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
-import {usePublicResources} from '../../hooks/usePublicResources'
-import {FormValues} from '../../types'
-import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
-import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
-import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
-import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
-import TagList from '../TicketTag/TagList'
-
-import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
@@ -60,19 +50,26 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-
 import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
-import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
-import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
-import css from './StoreConfigForm.less'
-import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
-import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
-import {EmailFormComponent} from './FormComponents/EmailFormComponent'
-import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
-import {SettingsBanner} from './FormComponents/SettingsBanner'
+import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import {usePublicResources} from '../../hooks/usePublicResources'
+import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
+import {FormValues} from '../../types'
+import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
+import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
+import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
+import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
+import TagList from '../TicketTag/TagList'
+
 import {SettingsBannerType} from './constants'
 import {ChannelToggleInput} from './FormComponents/ChannelToggleInput'
+import {ChatSettingsFormComponent} from './FormComponents/ChatSettingsFormComponent'
+import {EmailFormComponent} from './FormComponents/EmailFormComponent'
+import {SettingsBanner} from './FormComponents/SettingsBanner'
+import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
+import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
+import css from './StoreConfigForm.less'
+import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
 
 type Props = {
     shopName: string

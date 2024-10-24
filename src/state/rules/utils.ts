@@ -1,14 +1,14 @@
 import {fromJS, Map, List} from 'immutable'
 import drop from 'lodash/drop'
-import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
-import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
-import {getAST, getFirstExpressionOfAST} from '../../utils'
-import {Schemas} from '../../types'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
+import {Schemas} from '../../types'
+import {getAST, getFirstExpressionOfAST} from '../../utils'
 import {isTimedelta} from '../../utils/ast'
 
 import {OBJECT_DEFINITIONS} from './constants'

@@ -1,18 +1,18 @@
-import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {fromJS} from 'immutable'
+import {dismissNotification} from 'reapop'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {store as reduxStore} from 'common/store'
+import history from 'pages/history'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
+import {NewMessage, ReplyAreaState} from 'state/newMessage/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {applyMacro, messageDeleted} from 'state/ticket/actions'
-import history from 'pages/history'
-import {NewMessage, ReplyAreaState} from 'state/newMessage/types'
-import {store as reduxStore} from 'common/store'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore

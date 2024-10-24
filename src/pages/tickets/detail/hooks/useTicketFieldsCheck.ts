@@ -4,6 +4,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {Macro} from 'models/macro/types'
 import {
     setHasAttemptedToCloseTicket,
     triggerTicketFieldsErrors,
@@ -13,7 +14,6 @@ import {
     getInvalidTicketFieldIds,
     mergeFieldsStateWithMacroValues,
 } from 'utils/customFields'
-import {Macro} from 'models/macro/types'
 
 export function useTicketFieldsCheck(ticketId: number) {
     const dispatch = useAppDispatch()

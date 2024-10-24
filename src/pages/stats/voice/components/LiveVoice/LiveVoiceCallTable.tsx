@@ -1,22 +1,23 @@
-import React, {useMemo, useState} from 'react'
 import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
-import * as ToggleButton from 'pages/common/components/ToggleButton'
-import DashboardSection from 'pages/stats/DashboardSection'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import ChartCard from 'pages/stats/ChartCard'
+import React, {useMemo, useState} from 'react'
+
 import useOrderBy from 'hooks/useOrderBy'
 import {OrderDirection} from 'models/api/types'
-import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
+import ChartCard from 'pages/stats/ChartCard'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
 
 import {LIVE_VOICE_CALLS_TITLE} from '../../constants/liveVoice'
 import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
+import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
+import {LiveVoiceStatusFilterOption} from './types'
 import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
     liveVoiceCallTableColumns,
     orderLiveVoiceCallsByOngoingTime,
 } from './utils'
-import {LiveVoiceStatusFilterOption} from './types'
 
 type Props = {
     voiceCalls: LiveCallQueueVoiceCall[]

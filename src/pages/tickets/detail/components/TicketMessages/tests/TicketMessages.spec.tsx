@@ -1,28 +1,29 @@
+import {render, screen, waitFor} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, screen, waitFor} from '@testing-library/react'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
 import thunk from 'redux-thunk'
-import {assumeMock} from 'utils/testing'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState} from 'state/types'
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
-import TicketMessages from '../TicketMessages'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import {assumeMock} from 'utils/testing'
+
+import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
     BANNER_TYPE,
     DRAFT_MESSAGE_TAG,
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
-import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
+import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
+import TicketMessages from '../TicketMessages'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/currentAccount/selectors')

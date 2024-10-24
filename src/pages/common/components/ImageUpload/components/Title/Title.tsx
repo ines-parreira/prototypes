@@ -1,6 +1,6 @@
-import React, {ReactChild, FunctionComponent, createRef} from 'react'
-import classNames from 'classnames'
 import {Tooltip as TooltipComponent} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {ReactChild, FunctionComponent, createRef} from 'react'
 
 import {UncontrolledTooltipProps} from 'reactstrap'
 

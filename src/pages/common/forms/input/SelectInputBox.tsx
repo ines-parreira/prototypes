@@ -15,12 +15,12 @@ import React, {
     useState,
 } from 'react'
 
+import useEffectOnce from 'hooks/useEffectOnce'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import {InputGroupContext} from './InputGroup'
 import css from './SelectInputBox.less'

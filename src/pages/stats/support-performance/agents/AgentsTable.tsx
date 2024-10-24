@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
+
 import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'

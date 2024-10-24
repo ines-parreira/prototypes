@@ -1,13 +1,14 @@
 import {useCallback} from 'react'
-import {useHistory} from 'react-router-dom'
 import {useStore} from 'react-redux'
-import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
+import {useHistory} from 'react-router-dom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
 import {isGorgiasApiError} from 'models/api/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {setCurrentSubscription} from 'state/currentAccount/actions'
+import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const useStartSubscription = () => {
     const dispatch = useAppDispatch()

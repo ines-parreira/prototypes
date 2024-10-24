@@ -1,5 +1,5 @@
-import React, {useState, ReactNode, useMemo} from 'react'
 import cs from 'classnames'
+import React, {useState, ReactNode, useMemo} from 'react'
 
 import {compare} from 'utils'
 import {isRecord} from 'utils/types'

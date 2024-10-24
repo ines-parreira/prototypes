@@ -1,8 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
+
 import {
     message,
     duplicatedHiddenFacebookMessage,
@@ -10,6 +11,7 @@ import {
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
+
 import Header from '../Header'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

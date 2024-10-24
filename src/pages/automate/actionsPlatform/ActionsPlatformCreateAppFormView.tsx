@@ -1,13 +1,13 @@
-import React, {useMemo} from 'react'
 import _keyBy from 'lodash/keyBy'
+import React, {useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 import {IntegrationType} from 'models/integration/constants'
+import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 
 import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
-import useCreateActionsApp from './hooks/useCreateActionsApp'
 import useApps from './hooks/useApps'
+import useCreateActionsApp from './hooks/useCreateActionsApp'
 
 const ActionsPlatformCreateAppFormView = () => {
     const history = useHistory()

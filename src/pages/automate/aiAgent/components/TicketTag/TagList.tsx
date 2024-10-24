@@ -1,12 +1,14 @@
 import React from 'react'
+
 import {Tag} from 'models/aiAgent/types'
-import InputField from 'pages/common/forms/input/InputField'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import TagSearchSelect from './TagSearchSelect'
+import IconButton from 'pages/common/components/button/IconButton'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import InputField from 'pages/common/forms/input/InputField'
+
 import css from './TagList.less'
+import TagSearchSelect from './TagSearchSelect'
 
 type Props = {
     tags: Tag[]

@@ -1,42 +1,41 @@
+import classnames from 'classnames'
+import {fromJS, Map, List} from 'immutable'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {Component, ComponentClass, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
-import classnames from 'classnames'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
 import {ACTION_TEMPLATES, ActionTemplateExecution} from 'config'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Attachment} from 'models/ticket/types'
+import InputField from 'pages/common/forms/input/InputField'
+import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
+import * as integrationsSelectors from 'state/integrations/selectors'
 import {generateDefaultAction} from 'state/macro/utils'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
-import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
-import * as integrationsSelectors from 'state/integrations/selectors'
 
-import InputField from 'pages/common/forms/input/InputField'
-import SetStatusAction from './actions/SetStatusAction'
-import SetSubjectAction from './actions/SetSubjectAction'
+import AddAttachmentsAction from './actions/AddAttachmentsAction'
+import AddInternalNoteAction from './actions/AddInternalNoteAction'
+import AddTagsAction from './actions/AddTagsAction'
+import HttpAction from './actions/HttpAction'
+import IntegrationAction from './actions/IntegrationAction'
 import ResponseAction from './actions/ResponseAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
 import SetCustomFieldValueAction from './actions/SetCustomFieldValueAction'
-import AddTagsAction from './actions/AddTagsAction'
-import HttpAction from './actions/HttpAction'
-import AddAttachmentsAction from './actions/AddAttachmentsAction'
-import IntegrationAction from './actions/IntegrationAction'
-import AddInternalNoteAction from './actions/AddInternalNoteAction'
+import SetStatusAction from './actions/SetStatusAction'
+import SetSubjectAction from './actions/SetSubjectAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
-import MacroEditLanguage from './MacroEditLanguage'
-
 import css from './MacroEdit.less'
+import MacroEditLanguage from './MacroEditLanguage'
 
 type Props = {
     actions: List<any> | null

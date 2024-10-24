@@ -1,9 +1,8 @@
-import React, {ReactNode} from 'react'
 import classnames from 'classnames'
-
-import {useAccordionItemContext} from './AccordionItemContext'
+import React, {ReactNode} from 'react'
 
 import css from './AccordionHeader.less'
+import {useAccordionItemContext} from './AccordionItemContext'
 
 export type AccordionHeaderProps = {
     action?: ReactNode

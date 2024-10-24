@@ -1,16 +1,16 @@
-import React, {ComponentProps} from 'react'
-import {render, screen, fireEvent} from '@testing-library/react'
 import {Tooltip} from '@gorgias/ui-kit'
+import {render, screen, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import * as ticketActions from 'state/ticket/actions'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useAppSelector from 'hooks/useAppSelector'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
+import * as ticketActions from 'state/ticket/actions'
 
-import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 import useGoToNextTicket from '../hooks/useGoToNextTicket'
 import useGoToPreviousTicket from '../hooks/useGoToPreviousTicket'
+import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())

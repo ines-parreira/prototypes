@@ -1,7 +1,9 @@
 import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
+
 import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 import {MutationOverrides} from 'types/query'
+
 import {getSettingsList, updateSettings} from './resources'
 import {SettingsParams, Setting} from './types'
 

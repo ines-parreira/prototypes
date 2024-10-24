@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import _trim from 'lodash/trim'
 import _clone from 'lodash/clone'
+import _trim from 'lodash/trim'
+import React, {Component} from 'react'
 import {Row, Col} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'

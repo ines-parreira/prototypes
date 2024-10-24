@@ -1,14 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
-import client from 'models/api/resources'
-import {
-    getBigCommerceAvailablePaymentOptionsData,
-    getBigCommerceOrderRefundData,
-} from 'models/integration/resources/bigcommerce'
+
 import {
     bigCommerceAvailablePaymentOptionsDataResponseFixture,
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceCustomerFixture,
 } from 'fixtures/bigcommerce'
+import client from 'models/api/resources'
+import {
+    getBigCommerceAvailablePaymentOptionsData,
+    getBigCommerceOrderRefundData,
+} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,

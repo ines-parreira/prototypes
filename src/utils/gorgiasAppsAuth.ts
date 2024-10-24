@@ -1,4 +1,5 @@
 import {AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
+
 import gorgiasApiClient from 'models/api/resources'
 
 function isValidAccessToken(token: string | null): boolean {

@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import useWorkflowDropoffMetricTiers from '../useWorkflowDropoffMetricTiers'
+
 import {
     HIGH_TIERS_DROPOFF_BACKGROUND,
     HIGH_TIERS_DROPOFF_COLOR,
@@ -8,6 +8,7 @@ import {
     MID_TIERS_DROPOFF_BACKGROUND,
     MID_TIERS_DROPOFF_COLOR,
 } from '../../common/constants'
+import useWorkflowDropoffMetricTiers from '../useWorkflowDropoffMetricTiers'
 
 describe('useWorkflowDropoffMetricTiers', () => {
     it('should return LOW TIER range when dropOffRates is empty', () => {

@@ -1,6 +1,6 @@
-import React from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React from 'react'
 
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import useId from 'hooks/useId'

@@ -1,13 +1,15 @@
 import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import {Col, Container} from 'reactstrap'
-import settingsCss from 'pages/settings/settings.less'
+
 import {EmailIntegration} from 'models/integration/types'
 import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
+
 import EmailDomainVerification from '../EmailDomainVerification/EmailDomainVerification'
+import BackButton from './BackButton'
 import EmailVerification from './EmailVerification'
 import SingleSenderVerification from './SingleSenderVerification/SingleSenderVerification'
-import BackButton from './BackButton'
 
 type Props = {
     integration: EmailIntegration

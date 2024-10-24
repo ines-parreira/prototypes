@@ -1,13 +1,14 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
 import {render, fireEvent, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
 import {UserSettingType} from 'config/types/user'
+import {DateFormatType, TimeFormatType} from 'constants/datetime'
+
 import TicketSnooze from '../TicketSnooze'
 
 const mockStore = configureMockStore([thunk])

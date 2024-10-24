@@ -3,13 +3,12 @@ import React, {ReactNode, Ref, RefObject} from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import css from 'pages/common/components/table/TableBodyRowDraggable.less'
 import {
     Callbacks,
     DragItemRequired,
     useReorderDnD,
 } from 'pages/common/hooks/useReorderDnD'
-
-import css from 'pages/common/components/table/TableBodyRowDraggable.less'
 
 type RowEventListeners = {
     onMoveEntity: Callbacks['onHover']

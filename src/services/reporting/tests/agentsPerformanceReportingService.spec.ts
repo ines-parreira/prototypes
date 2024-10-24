@@ -1,15 +1,16 @@
 import moment from 'moment'
+
+import {UserRole, UserSettingType, User} from 'config/types/user'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {Period} from 'models/stat/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import * as files from 'utils/file'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
     saveReport,
     SUMMARY_ROW_AGENT_COLUMN_LABEL,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {UserRole, UserSettingType, User} from 'config/types/user'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import * as files from 'utils/file'
 
 jest.mock('utils/file')
 

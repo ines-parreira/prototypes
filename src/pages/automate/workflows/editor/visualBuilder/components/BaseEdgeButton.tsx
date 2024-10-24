@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -5,8 +7,6 @@ import React, {
     ReactNode,
     useCallback,
 } from 'react'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 

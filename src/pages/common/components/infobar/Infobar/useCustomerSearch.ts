@@ -1,7 +1,8 @@
 import {AxiosError, AxiosResponse, CancelToken} from 'axios'
 import {fromJS} from 'immutable'
 import {useState} from 'react'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
@@ -13,8 +14,8 @@ import {
     PickedCustomerWithHighlights,
     SearchEngine,
 } from 'models/search/types'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 import {searchWithHighlights} from 'state/infobar/actions'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 export const useCustomerSearch = () => {
     const dispatch = useAppDispatch()

@@ -1,6 +1,5 @@
-import _ceil from 'lodash/ceil'
-
 import {fromJS, Map, List} from 'immutable'
+import _ceil from 'lodash/ceil'
 
 import {
     DiscountType,

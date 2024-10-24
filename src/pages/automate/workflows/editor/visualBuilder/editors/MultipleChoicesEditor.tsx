@@ -1,18 +1,18 @@
-import React, {useCallback, useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useCallback, useMemo} from 'react'
 
+import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {Drawer} from 'pages/common/components/Drawer'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 
-import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
-import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 import MessageContentFormField from '../components/MessageContentFormField'
-import ReplyButtonList from '../nodes/MultipleChoicesNode/ReplyButtonList'
+import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
+import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
+import ReplyButtonList from '../nodes/MultipleChoicesNode/ReplyButtonList'
 
 import css from './NodeEditor.less'
 

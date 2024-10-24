@@ -1,11 +1,12 @@
-import React from 'react'
 import {pick} from 'lodash'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
+import React from 'react'
 
 import {EmailIntegration} from 'models/integration/types'
+import FormRow from 'pages/common/forms/FormRow'
+import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
+
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
-import FormRow from 'pages/common/forms/FormRow'
 import {isEmail} from 'utils'
 
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'

@@ -6,12 +6,11 @@
  * Though, some browsers (like Safari) do not support `SharedWorkers` and/or `BroadcastChannels`, so we've had to
  * create this adapter that behaves like the `SharedWorker` would, except it runs in the tab directly.
  */
-import io, {Socket} from 'socket.io-client'
 import _noop from 'lodash/noop'
+import io, {Socket} from 'socket.io-client'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 
-import {WSMessage, BroadcastChannelEvent} from './types'
 import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -19,6 +18,7 @@ import {
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
 } from './constants'
 import IncrementalBackoff from './incrementalBackoff'
+import {WSMessage, BroadcastChannelEvent} from './types'
 
 export class FallbackWorker {
     socket: Socket | null = null

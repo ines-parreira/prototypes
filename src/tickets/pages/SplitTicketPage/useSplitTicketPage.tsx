@@ -2,8 +2,8 @@ import React, {useCallback, useMemo, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {PanelLayoutConfig} from 'pages/PanelLayout'
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
+import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import DefaultViewFallback from 'split-ticket-view/components/DefaultViewFallback'
 import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
 import {

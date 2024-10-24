@@ -1,14 +1,14 @@
 import {fromJS} from 'immutable'
+
 import {
     campaign as campaignFixture,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
 
-import {getLDClient} from 'utils/launchDarkly'
-
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {createCampaignPayload} from '../createCampaignPayload'
 

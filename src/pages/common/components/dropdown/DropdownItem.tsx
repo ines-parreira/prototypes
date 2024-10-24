@@ -1,3 +1,6 @@
+import classnames from 'classnames'
+import _isFunction from 'lodash/isFunction'
+import _isString from 'lodash/isString'
 import React, {
     useContext,
     useMemo,
@@ -12,12 +15,9 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import _isString from 'lodash/isString'
-import _isFunction from 'lodash/isFunction'
 
-import CheckBox from 'pages/common/forms/CheckBox'
 import useEffectOnce from 'hooks/useEffectOnce'
+import CheckBox from 'pages/common/forms/CheckBox'
 
 import {DropdownContext} from './Dropdown'
 

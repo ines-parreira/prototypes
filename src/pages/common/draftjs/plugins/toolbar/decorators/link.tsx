@@ -1,13 +1,13 @@
-import React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
+import React from 'react'
 
-import LinkPopover from '../components/LinkPopover'
-import {removeLink} from '../../utils'
 import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,
     Decorator,
 } from '../../types'
+import {removeLink} from '../../utils'
+import LinkPopover from '../components/LinkPopover'
 
 type Config = {
     isActive: () => boolean

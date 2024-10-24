@@ -1,8 +1,10 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+
 import {assetsUrl} from 'utils'
-import {PaywallFeature, usePaywallConfig} from '../usePaywallConfig'
+
 import {AutomateFeatures} from '../../types'
+import {PaywallFeature, usePaywallConfig} from '../usePaywallConfig'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('utils')

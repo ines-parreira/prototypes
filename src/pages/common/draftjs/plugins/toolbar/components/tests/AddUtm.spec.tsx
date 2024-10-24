@@ -1,10 +1,12 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import _noop from 'lodash/noop'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
+
+import {utmConfiguration} from 'fixtures/utmConfiguration'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {CampaignFormConfigurationType} from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
+import {assumeMock} from 'utils/testing'
+
 import AddUtm from '../AddUtm'
 
 jest.mock('pages/convert/campaigns/hooks/useCampaignFormContext')

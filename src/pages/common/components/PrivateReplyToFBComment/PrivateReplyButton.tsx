@@ -1,8 +1,8 @@
-import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
-import moment from 'moment'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import moment from 'moment'
+import React from 'react'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'

@@ -1,8 +1,9 @@
+import * as api from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import * as api from '@gorgias/api-queries'
-import {CONTENT_HEADER_TEXT} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
+
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
+import {CONTENT_HEADER_TEXT} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
 
 jest.mock('@gorgias/api-queries')
 

@@ -1,11 +1,11 @@
-import React, {HTMLAttributes, ReactElement, ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {HTMLAttributes, ReactElement, ReactNode} from 'react'
 
+import closeIcon from 'assets/img/icons/close.svg'
+import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
-import errorIcon from 'assets/img/icons/error.svg'
-import closeIcon from 'assets/img/icons/close.svg'
 
 import {NotificationStatus, Notification} from 'state/notifications/types'
 

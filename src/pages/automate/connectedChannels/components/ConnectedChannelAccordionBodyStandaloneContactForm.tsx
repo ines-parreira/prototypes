@@ -1,21 +1,22 @@
 import React, {useMemo} from 'react'
 
-import {ContactFormAutomationSettings} from 'models/contactForm/types'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {TicketChannel} from 'business/types/ticket'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+
+import useAppSelector from '../../../../hooks/useAppSelector'
+import {getHasAutomate} from '../../../../state/billing/selectors'
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
-import useAppSelector from '../../../../hooks/useAppSelector'
-import {getHasAutomate} from '../../../../state/billing/selectors'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
+import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
+import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
 type Props = {
     channel: SelfServiceStandaloneContactFormChannel

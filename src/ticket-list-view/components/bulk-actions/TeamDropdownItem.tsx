@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import {Emoji} from 'emoji-mart'
+import React, {useMemo} from 'react'
 
 import {Item} from 'components/Dropdown'
 import {Team} from 'models/team/types'

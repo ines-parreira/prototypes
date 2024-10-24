@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useState} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {IntegrationType} from 'models/integration/types'
@@ -12,13 +13,13 @@ import {
     GorgiasChatCreationWizardSteps,
 } from 'models/integration/types/gorgiasChat'
 
+import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import PageHeader from 'pages/common/components/PageHeader'
 
+import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
 import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
 import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
-import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
 import GorgiasChatCreationWizardStepInstallation from './components/steps/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'

@@ -1,15 +1,15 @@
-import React, {ComponentProps} from 'react'
-import {Map, List} from 'immutable'
-
 import classnames from 'classnames'
+import {Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
 import Expression from 'pages/common/components/ast/expression/Expression'
 
 import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
-import TestExpression from './TestExpression'
-import {ConsequentStatement} from './ConsequentStatement'
+import {RuleItemActions} from 'pages/settings/rules/types'
+
 import AlternateStatement from './AlternateStatement'
+import {ConsequentStatement} from './ConsequentStatement'
+import TestExpression from './TestExpression'
 
 /**
  * IF Statement Component

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
-import {ShopifyIntegration, ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
+import {ShopifyIntegration, ShopifyTags} from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'

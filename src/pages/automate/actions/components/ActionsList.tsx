@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react'
 
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import useOrderBy from 'hooks/useOrderBy'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import useOrderBy from 'hooks/useOrderBy'
 import {StoresWorkflowConfiguration} from '../types'
 import css from './ActionsList.less'
 import ActionsRow from './ActionsRow'

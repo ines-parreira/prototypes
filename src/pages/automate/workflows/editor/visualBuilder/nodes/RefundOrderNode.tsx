@@ -1,17 +1,17 @@
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
-import {Label} from '@gorgias/ui-kit'
 
-import {RefundOrderNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {RefundOrderNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import EdgeBlock from '../components/EdgeBlock'
+import NodeDeleteIcon from '../components/NodeDeleteIcon'
 
 import css from './Node.less'
 

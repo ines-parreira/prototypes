@@ -1,10 +1,12 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+
 import {useGetHelpCenterCategoryTree} from 'models/helpCenter/queries'
 import {Category} from 'models/helpCenter/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import useHelpCenterArticleTree from '../useHelpCenterArticleTree'
 
 jest.mock('models/helpCenter/queries')

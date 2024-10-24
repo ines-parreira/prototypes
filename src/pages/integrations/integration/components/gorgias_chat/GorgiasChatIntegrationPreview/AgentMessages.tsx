@@ -1,8 +1,6 @@
-import React from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
-
-import {GorgiasChatAvatarSettings} from 'models/integration/types'
+import {Map} from 'immutable'
+import React from 'react'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -10,13 +8,15 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
-import {AgentDisplayName} from './AgentDisplayName'
-import ChatAvatar from './ChatAvatar'
-import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
+import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
-import css from './ChatIntegrationPreview.less'
+import {AgentDisplayName} from './AgentDisplayName'
+
 import {ArticleAttachmentSchema, isArticleAttachment} from './ArticleAttachment'
+import ChatAvatar from './ChatAvatar'
+import css from './ChatIntegrationPreview.less'
 import {FileIcon} from './icon-utils'
+import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 export type AgentMessage = {
     content: string

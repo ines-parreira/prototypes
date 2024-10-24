@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
+import React, {ComponentProps} from 'react'
 import {FormGroup, FormText, Label} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {HTTPForm} from 'models/integration/types'
 import Select from 'pages/common/components/ast/widget/ReactSelect'

@@ -1,13 +1,11 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _cloneDeep from 'lodash/cloneDeep'
 
-import {IntegrationType} from 'models/integration/types'
-import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
@@ -15,6 +13,9 @@ import {
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import {IntegrationType} from 'models/integration/types'
+import {renderWithRouter} from 'utils/testing'
+
 import Magento2 from '../Magento2'
 
 const mockStore = configureMockStore([thunk])

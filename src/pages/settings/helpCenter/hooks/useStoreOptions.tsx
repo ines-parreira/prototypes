@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {Integration, IntegrationType} from 'models/integration/types'
 import {Option} from 'pages/common/forms/SelectField/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
 type CssClasses = {
     option: string

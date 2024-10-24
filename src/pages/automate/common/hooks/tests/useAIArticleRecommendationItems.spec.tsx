@@ -1,18 +1,19 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {renderHook} from '@testing-library/react-hooks'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {assumeMock} from 'utils/testing'
-import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 import {AIArticlesRecommendationFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
+import {useTopQuestionsArticles} from '../../components/TopQuestions/useTopQuestionsArticles'
 import {
     useAIArticleRecommendationItems,
     AllRecommendationsStatus,
     isAllRecommendationStatus,
 } from '../useAIArticleRecommendationItems'
-import {useTopQuestionsArticles} from '../../components/TopQuestions/useTopQuestionsArticles'
 
 const queryClient = mockQueryClient()
 

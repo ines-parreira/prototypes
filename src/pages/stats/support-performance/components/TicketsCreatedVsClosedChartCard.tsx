@@ -1,9 +1,10 @@
 import React from 'react'
-import ChartCard from 'pages/stats/ChartCard'
+
 import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
-import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
-import {TICKETS_CREATED_VS_CLOSED_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
+import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
+import {TICKETS_CREATED_VS_CLOSED_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
 
 export const TicketsCreatedVsClosedChartCard = ({
     isAnalyticsNewFilters = false,

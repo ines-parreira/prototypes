@@ -1,10 +1,10 @@
-import moment from 'moment'
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import * as reapop from 'reapop'
 
-import * as actions from 'state/notifications/actions'
 import {IntegrationType} from 'models/integration/constants'
-import statusPageManager from '../statusPageManager'
+import * as actions from 'state/notifications/actions'
+
 import {
     HELPDESK_GROUP_IDS,
     MAINTENANCE_STATUSES,
@@ -15,6 +15,7 @@ import {
     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
     HELPCENTER_GROUP_ID,
 } from '../constants'
+import statusPageManager from '../statusPageManager'
 import {
     ComponentStatus,
     IncidentImpact,

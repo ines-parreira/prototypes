@@ -1,22 +1,24 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import Wizard from 'pages/common/components/wizard/Wizard'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import Wizard from 'pages/common/components/wizard/Wizard'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {
     HelpCenterApiBrandingFixture,
     HelpCenterUiBrandingFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {FeatureFlagKey} from 'config/featureFlags'
-import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
+
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
 
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),

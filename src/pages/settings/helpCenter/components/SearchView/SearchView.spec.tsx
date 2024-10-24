@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -7,11 +7,11 @@ import thunk from 'redux-thunk'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {getSingleHelpCenterResponseFixture as helpCenter} from '../../fixtures/getHelpCentersResponse.fixture'
-import {useSearchContext} from '../../providers/SearchContext'
+import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
+import {useSearchContext} from '../../providers/SearchContext'
 
 import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
 import {SearchView} from './SearchView'
 

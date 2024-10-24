@@ -1,9 +1,9 @@
 import {ContentBlock, ContentState, DraftBlockType} from 'draft-js'
 
-import {createQuotesPlugin, WRAPPABLE_BLOCK_TYPES} from '../quotesPlugin'
-import {setQuoteDepth} from '../quotesEditorUtils'
 import {selectWholeContentState} from '../../../../../../utils/editor'
 import styles from '../quotesBlockStyle.less'
+import {setQuoteDepth} from '../quotesEditorUtils'
+import {createQuotesPlugin, WRAPPABLE_BLOCK_TYPES} from '../quotesPlugin'
 import {QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX} from '../QuotesWrapper'
 
 describe('quotesPlugin', () => {

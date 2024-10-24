@@ -14,8 +14,8 @@ import {isTicketMessageSourceType} from 'models/ticket/predicates'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {humanizeChannel} from 'state/ticket/utils'
 
-import ConvertToForwardPopover from './ConvertToForwardPopover'
 import css from './ChannelSelect.less'
+import ConvertToForwardPopover from './ConvertToForwardPopover'
 
 export default function ChannelSelect() {
     const {channels, selectedChannel, selectChannel} = useOutboundChannels()

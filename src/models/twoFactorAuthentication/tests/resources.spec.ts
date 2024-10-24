@@ -1,6 +1,6 @@
+import {AxiosError} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {AxiosError} from 'axios'
 import {authenticatorData as authenticatorDataFixture} from '../../../fixtures/authenticatorData'
 import {recoveryCodes as recoveryCodesFixture} from '../../../fixtures/recoveryCodes'
 import client from '../../api/resources'

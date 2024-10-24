@@ -1,6 +1,7 @@
-import {useEffect, useMemo} from 'react'
 import _isEqual from 'lodash/isEqual'
+import {useEffect, useMemo} from 'react'
 import {useDispatch} from 'react-redux'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {statFiltersWithLogicalOperatorsCleanWithPayload} from 'state/ui/stats/actions'

@@ -1,5 +1,6 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import css from './SummaryLineItem.less'
 import {SummaryItemData} from './types'
 

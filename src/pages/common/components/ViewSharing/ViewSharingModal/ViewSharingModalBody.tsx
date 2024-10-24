@@ -1,19 +1,19 @@
+import {List, Map} from 'immutable'
 import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map} from 'immutable'
 
-import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
 import {ViewVisibility} from 'models/view/types'
+import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
 import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 
-import Loader from '../../Loader/Loader'
 import Alert, {AlertType} from '../../Alert/Alert'
+import Loader from '../../Loader/Loader'
 
-import SharedBody from './SharedBody'
-import PublicBody from './PublicBody'
 import PrivateBody from './PrivateBody'
+import PublicBody from './PublicBody'
+import SharedBody from './SharedBody'
 import ViewSharingModalWarning from './ViewSharingModalWarning'
 
 type OwnProps = {

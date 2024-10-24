@@ -1,5 +1,5 @@
-import {useMemo} from 'react'
 import {SLAPolicyMetricName, SLAPolicyMetricUnit} from '@gorgias/api-types'
+import {useMemo} from 'react'
 
 import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
 

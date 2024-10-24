@@ -1,14 +1,16 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {Provider} from 'react-redux'
+import {MemoryRouter, Route} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import LD from 'launchdarkly-react-client-sdk'
-import {MemoryRouter, Route} from 'react-router-dom'
-import {RootState, StoreDispatch} from 'state/types'
+
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {RootState, StoreDispatch} from 'state/types'
 import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
+
 import ClickTrackingPaywallView from '../../ClickTrackingPaywallView'
 import ClickTrackingSettingsView from '../ClickTrackingSettingsView'
 

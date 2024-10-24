@@ -1,10 +1,11 @@
 import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
-import {TableValueModeSwitch} from 'pages/stats/common/components/Table/TableValueModeSwitch'
 import css from 'pages/stats/BreakdownTable.less'
 import ChartCard from 'pages/stats/ChartCard'
+import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+import {TableValueModeSwitch} from 'pages/stats/common/components/Table/TableValueModeSwitch'
 import {AllUsedTagsTable} from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
 import {
     getHeatmapMode,

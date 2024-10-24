@@ -1,32 +1,33 @@
-import React, {useCallback, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-import settingsCss from 'pages/settings/settings.less'
+import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useCallback, useState} from 'react'
 
-import * as integrationsSelectors from 'state/integrations/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
+
 import {EmailContactInfoDto} from 'models/helpCenter/types'
-import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     isBaseEmailAddress,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import ContactCard from '../ContactCard'
-import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import settingsCss from 'pages/settings/settings.less'
+import * as integrationsSelectors from 'state/integrations/selectors'
 
-import {MAX_DESCRIPTION_LENGTH} from '../../constants'
-import SubjectLines from '../../../SubjectLines/SubjectLines'
 import ToggleInput from '../../../../../../common/forms/ToggleInput'
+import SubjectLines from '../../../SubjectLines/SubjectLines'
+import {MAX_DESCRIPTION_LENGTH} from '../../constants'
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import ContactCard from '../ContactCard'
+
 import css from './ContactFormInfoSection.less'
 
 const ContactFormInfoSection = () => {

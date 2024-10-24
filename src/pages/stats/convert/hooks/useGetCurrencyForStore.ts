@@ -1,8 +1,8 @@
-import {useMemo} from 'react'
 import _head from 'lodash/head'
+import {useMemo} from 'react'
 
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import {ShopifyIntegration} from 'models/integration/types'
+import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 
 export function useGetCurrencyForStore(selectedIntegrations: number[]) {
     const shopifyIntegrations = useShopifyIntegrations() as ShopifyIntegration[]

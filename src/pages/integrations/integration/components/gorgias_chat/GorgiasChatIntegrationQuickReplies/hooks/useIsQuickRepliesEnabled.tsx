@@ -1,8 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import useAppSelector from 'hooks/useAppSelector'
-
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {getCurrentAccountCreatedDatetime} from 'state/currentAccount/selectors'
 

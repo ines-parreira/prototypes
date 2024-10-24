@@ -1,10 +1,12 @@
-import React from 'react'
 import {render, cleanup} from '@testing-library/react'
+import React from 'react'
+
+import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import * as statsSelectors from 'state/stats/selectors'
 
 import {assumeMock} from 'utils/testing'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
+
 import LiveVoiceFilters from './LiveVoiceFilters'
 
 jest.mock('pages/stats/common/filters/FiltersPanel')

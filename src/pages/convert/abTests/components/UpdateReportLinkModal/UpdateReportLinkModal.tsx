@@ -2,12 +2,12 @@ import React, {useState, FormEvent} from 'react'
 
 import isUrl from 'validator/lib/isURL'
 
-import InputField from 'pages/common/forms/input/InputField'
+import {ABTest} from 'models/convert/abTest/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-import {ABTest} from 'models/convert/abTest/types'
+import InputField from 'pages/common/forms/input/InputField'
 
 type Props = {
     abTest?: ABTest

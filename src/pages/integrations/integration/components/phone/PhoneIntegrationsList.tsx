@@ -1,7 +1,8 @@
-import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
+import React, {useState, useCallback, useMemo} from 'react'
 import {Container} from 'reactstrap'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -10,9 +11,6 @@ import {
     WhatsAppIntegration,
 } from 'models/integration/types'
 import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -20,11 +18,13 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import useAppSelector from 'hooks/useAppSelector'
-import history from 'pages/history'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getIntegrationConfig} from 'state/integrations/helpers'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import css from './PhoneIntegrationsList.less'
 

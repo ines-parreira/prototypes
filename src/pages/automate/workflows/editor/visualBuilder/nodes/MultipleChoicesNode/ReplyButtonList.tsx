@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import ReplyButtonItem from './ReplyButtonItem'

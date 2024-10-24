@@ -1,7 +1,7 @@
-import React, {ReactElement} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
+import React, {ReactElement} from 'react'
 import {FormGroup} from 'reactstrap'
 
 type Option = {

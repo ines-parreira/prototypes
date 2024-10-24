@@ -1,9 +1,9 @@
+import {render, waitFor} from '@testing-library/react'
 import React, {
     KeyboardEvent as KeyboardEventType,
     MutableRefObject,
     useRef,
 } from 'react'
-import {render, waitFor} from '@testing-library/react'
 
 import focusOnNextItem from '../focusOnNextItem'
 

@@ -1,5 +1,5 @@
-import React, {ComponentProps, ReactChild, MouseEvent} from 'react'
 import classNames from 'classnames'
+import React, {ComponentProps, ReactChild, MouseEvent} from 'react'
 
 import RadioButton from '../RadioButton'
 

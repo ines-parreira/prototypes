@@ -1,9 +1,9 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {formatDatetime} from 'utils'
 
 import css from './SeenIndicator.style.less'

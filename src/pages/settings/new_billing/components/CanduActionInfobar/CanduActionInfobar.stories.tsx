@@ -1,5 +1,6 @@
 import {Meta, StoryObj} from '@storybook/react'
 import {ComponentProps} from 'react'
+
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
 
 const storyConfig: Meta<typeof CanduActionInfobar> = {

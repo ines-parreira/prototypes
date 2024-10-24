@@ -1,6 +1,7 @@
 import {Category} from 'models/helpCenter/types'
-import {getMissingEntities, searchResultsTreeFromAlgolia} from '../utils'
+
 import {searchResultsResponseFixture} from '../SearchResults.response.fixture'
+import {getMissingEntities, searchResultsTreeFromAlgolia} from '../utils'
 
 const categoriesById: Record<string, Category> = {
     '0': {

@@ -1,11 +1,10 @@
+import {Map, List} from 'immutable'
 import React, {useState} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Map, List} from 'immutable'
-
-import css from './UncontrolledPeopleSearchInput.less'
 
 import PeopleSearchInput from './PeopleSearchInput'
 import PeopleSearchResults from './PeopleSearchResults'
+import css from './UncontrolledPeopleSearchInput.less'
 
 type Props = {
     className?: string

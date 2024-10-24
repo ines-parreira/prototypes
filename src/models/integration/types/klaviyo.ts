@@ -1,7 +1,7 @@
 // g/integrations/klaviyo/schemas.py
 import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type KlaviyoIntegration = IntegrationBase & {
     type: IntegrationType.Klaviyo

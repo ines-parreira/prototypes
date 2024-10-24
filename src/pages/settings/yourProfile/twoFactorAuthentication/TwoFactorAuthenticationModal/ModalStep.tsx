@@ -1,12 +1,13 @@
 import React, {Dispatch, SetStateAction} from 'react'
+
 import {
     AuthenticatorData,
     RecoveryCode,
 } from '../../../../../models/twoFactorAuthentication/types'
 import AppSetupStep from './ModalSteps/AppSetupStep/AppSetupStep'
 import QRCodeStep from './ModalSteps/QRCodeStep/QRCodeStep'
-import ValidateVerificationCodeStep from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
 import RecoveryCodesStep from './ModalSteps/RecoveryCodesStep/RecoveryCodesStep'
+import ValidateVerificationCodeStep from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
 
 type OwnProps = {
     currentStep: number

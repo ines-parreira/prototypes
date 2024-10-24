@@ -1,16 +1,16 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
+import React from 'react'
 
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
-
-import {RootState} from 'state/types'
-import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {
     TopUsedTagsChart,
     TAGS_CARD_TITLE,
 } from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
+
+import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/useTagsDistribution')
 const useTagsDistributionMock = assumeMock(useTagsDistribution)

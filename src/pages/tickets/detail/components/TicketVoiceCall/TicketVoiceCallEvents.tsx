@@ -1,16 +1,18 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {useListVoiceCallEvents} from 'models/voiceCall/queries'
+import {processEvents} from 'models/voiceCall/utils'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import {processEvents} from 'models/voiceCall/utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {DateAndTimeFormatting} from 'constants/datetime'
+
+import css from './TicketVoiceCallContainer.less'
 import Timeline from './Timeline'
 
 import TimelineItem from './TimelineItem'
-import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallEventsProps = {
     callId: number

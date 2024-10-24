@@ -2,13 +2,14 @@
 import {useTheme} from '@emotion/react'
 import styled from '@emotion/styled'
 import React from 'react'
+
 import IconButton from 'gorgias-design-system/Buttons/IconButton'
 import {getContrastColor} from 'gorgias-design-system/utils'
 
 import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
-import TextField, {TextFieldProps} from './TextField'
 import ArrowIcon from './icons/ArrowIcon'
+import TextField, {TextFieldProps} from './TextField'
 
 const IconButtonContainer = styled.div`
     height: 44px;

@@ -1,10 +1,10 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import {QueryClientProvider} from '@tanstack/react-query'
 
 import {
     ticketDropdownFieldDefinition,

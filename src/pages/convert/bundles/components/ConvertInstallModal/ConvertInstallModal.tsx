@@ -1,20 +1,21 @@
+import {Map} from 'immutable'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import {Map} from 'immutable'
-import {IntegrationType} from 'models/integration/constants'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import Button from 'pages/common/components/button/Button'
-import {useAppNode} from 'appNode'
-import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 
+import {useAppNode} from 'appNode'
 import {
     BundleActionResponse,
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
+import {IntegrationType} from 'models/integration/constants'
+import Button from 'pages/common/components/button/Button'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 

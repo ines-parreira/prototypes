@@ -1,108 +1,100 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {fromJS, List, Map} from 'immutable'
-
-import {Container} from 'reactstrap'
 import classNames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import React, {useEffect, useMemo, useState} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {Container} from 'reactstrap'
+import {bindActionCreators} from 'redux'
 
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import * as IntegrationsActions from 'state/integrations/actions'
-import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import {EmailProvider} from 'models/integration/constants'
 import {IntegrationType} from 'models/integration/types'
-import {RootState} from 'state/types'
-
-import {
-    getEligibleShopifyIntegrationsFor,
-    makeGetRedirectUri,
-} from 'state/integrations/selectors'
 import {
     fetchNewPhoneNumbers,
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
-import {
-    newPhoneNumbersFetched,
-    phoneNumbersFetched,
-} from 'state/entities/phoneNumbers/actions'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
-import {compare} from 'utils'
-import {reportError} from 'utils/errors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-
-import {EmailProvider} from 'models/integration/constants'
-
 import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
 } from 'state/entities/chatInstallationStatus/actions'
-import useAppSelector from 'hooks/useAppSelector'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {
+    newPhoneNumbersFetched,
+    phoneNumbersFetched,
+} from 'state/entities/phoneNumbers/actions'
+import * as IntegrationsActions from 'state/integrations/actions'
+import {
+    getEligibleShopifyIntegrationsFor,
+    makeGetRedirectUri,
+} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+
+import {compare} from 'utils'
+import {reportError} from 'utils/errors'
+
 import history from '../../history'
 
-import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
+import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 
+import BigCommerce from './components/bigcommerce/BigCommerce'
+import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
+import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
+import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
+import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
+import EmailIntegrationList from './components/email/EmailIntegrationList'
+import EmailIntegrationOnboarding from './components/email/EmailIntegrationOnboarding'
+import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
+import EmailMigration from './components/email/EmailMigration/EmailMigration'
+import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
+import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
-import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 
+import {GorgiasAutomateChatIntegration} from './components/gorgias_chat/GorgiasAutomateChatIntegration'
 import GorgiasChatCreationWizard from './components/gorgias_chat/GorgiasChatCreationWizard'
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
+import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
-import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationLanguages from './components/gorgias_chat/GorgiasChatIntegrationLanguages'
+import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 
+import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
+import HTTP from './components/http/HTTP'
+import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
+import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
 import Magento2 from './components/magento2/Magento2'
 
+import Recharge from './components/recharge/Recharge'
 import Shopify from './components/shopify/Shopify'
 
-import BigCommerce from './components/bigcommerce/BigCommerce'
-
-import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
-import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
-
-import Recharge from './components/recharge/Recharge'
-
-import SmileIntegrationList from './components/smile/SmileIntegrationList'
 import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
+import SmileIntegrationList from './components/smile/SmileIntegrationList'
 
-import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
-import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
-
-import EmailIntegrationList from './components/email/EmailIntegrationList'
-import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
-import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
-import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
-import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
-import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
-import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
-import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
-
-import HTTP from './components/http/HTTP'
-
-import VoiceIntegration from './components/voice/VoiceIntegration'
 import SmsIntegration from './components/sms/SmsIntegration'
-import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
-
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
-import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import EmailMigration from './components/email/EmailMigration/EmailMigration'
-import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import VoiceIntegration from './components/voice/VoiceIntegration'
+import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
+import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
+import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
+
 import {Tab} from './types'
-import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
-import {GorgiasAutomateChatIntegration} from './components/gorgias_chat/GorgiasAutomateChatIntegration'
-import EmailIntegrationOnboarding from './components/email/EmailIntegrationOnboarding'
 
 export const IntegrationDetail = ({
     actions,

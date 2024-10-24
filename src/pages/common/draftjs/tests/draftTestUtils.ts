@@ -13,8 +13,8 @@ import {Map} from 'immutable'
 import _isArray from 'lodash/isArray'
 import _noop from 'lodash/noop'
 
-import {PluginMethods} from '../plugins/types'
 import {convertFromHTML} from '../../../../utils/editor'
+import {PluginMethods} from '../plugins/types'
 
 export const mockPluginMethods = (
     initialState?: EditorState

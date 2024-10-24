@@ -1,8 +1,8 @@
-import React, {createRef} from 'react'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import React, {createRef} from 'react'
 
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {AIArticle} from 'models/helpCenter/types'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import AIArticleArchiveModal, {
     AIArticleArchiveModalHandle,

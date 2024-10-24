@@ -1,13 +1,13 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {Col, Container, Row} from 'reactstrap'
 
-import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import settingsCss from 'pages/settings/settings.less'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import Loader from 'pages/common/components/Loader/Loader'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import settingsCss from 'pages/settings/settings.less'
 
 import ManualIntegrationForm from './ManualIntegrationForm'
 import OneClickIntegrationForm from './OneClickIntegrationForm'

@@ -2,14 +2,16 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {CustomField} from 'custom-fields/types'
+import {ticketFieldDefinitions} from 'fixtures/customField'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
-import {ticketFieldDefinitions} from 'fixtures/customField'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {CustomField} from 'custom-fields/types'
 import {
     CUSTOM_FIELD_FILTER_NAME,
     CustomFieldFilter,
@@ -21,7 +23,6 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

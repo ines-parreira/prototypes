@@ -1,12 +1,13 @@
 import {flatMap, uniq} from 'lodash'
 import moment from 'moment-timezone'
+
 import {
     WorkflowStepMetrics,
     WorkflowStepMetricsMap,
 } from 'hooks/reporting/automate/utils'
-import {last7DaysStatsFilters} from 'pages/automate/common/utils/last7DaysStatsFilters'
 import {Period} from 'models/stat/types'
 import {toPercentage} from 'pages/automate/automate-metrics/utils'
+import {last7DaysStatsFilters} from 'pages/automate/common/utils/last7DaysStatsFilters'
 
 interface WorkflowAnalyticsDateRangeProps {
     startDatetime: string | null

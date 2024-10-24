@@ -1,13 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {fromJS, Map, List} from 'immutable'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 
 import * as viewsConfig from '../../../../../../config/views'
-import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import * as agentsFixtures from '../../../../../../fixtures/agents'
+import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import {RowContainer} from '../Row'
 
 jest.mock(

@@ -1,13 +1,14 @@
 import React, {useMemo} from 'react'
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
-import {DownloadSLAsDataButton} from 'pages/stats/sla/components/DownloadSLAsDataButton'
-import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {
     useBreachedSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
+import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import useAppSelector from 'hooks/useAppSelector'
+import {DownloadSLAsDataButton} from 'pages/stats/sla/components/DownloadSLAsDataButton'
 import {saveReport} from 'services/reporting/SLAsReportingService'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,

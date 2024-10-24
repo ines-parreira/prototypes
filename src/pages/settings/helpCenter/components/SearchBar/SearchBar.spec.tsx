@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, fireEvent, waitFor} from '@testing-library/react'
+import React from 'react'
 
 import {getSingleHelpCenterResponseFixture as helpCenter} from '../../fixtures/getHelpCentersResponse.fixture'
 import {SearchContextProvider} from '../../providers/SearchContext'

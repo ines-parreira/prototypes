@@ -1,9 +1,9 @@
 import React from 'react'
 
+import {DateTimeResultFormatType} from 'constants/datetime'
+import {ZendeskIntegration} from 'models/integration/types'
 import {formatDatetime} from 'utils'
 
-import {ZendeskIntegration} from 'models/integration/types'
-import {DateTimeResultFormatType} from 'constants/datetime'
 import {ImportStatus} from './types'
 
 export const getImportCompletionDate = (

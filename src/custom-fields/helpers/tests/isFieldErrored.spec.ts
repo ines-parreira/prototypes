@@ -1,4 +1,5 @@
 import {ticketInputFieldDefinition} from 'fixtures/customField'
+
 import {isFieldErrored} from '../isFieldErrored'
 
 describe('isFieldErrored', () => {

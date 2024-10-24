@@ -1,14 +1,7 @@
 import React, {useEffect, useMemo} from 'react'
 import {useParams} from 'react-router-dom'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {toJS} from 'utils'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import history from 'pages/history'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import {
     BundleInstallationMethod,
     BundleStatus,
@@ -17,8 +10,17 @@ import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {OnboardingWizardSteps} from './constants'
+import Wizard from 'pages/common/components/wizard/Wizard'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {ConvertRouteParams} from 'pages/convert/common/types'
+import history from 'pages/history'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {toJS} from 'utils'
+
 import WizardLayout from './components/WizardLayout'
+import {OnboardingWizardSteps} from './constants'
 
 const ConvertOnboardingWizardView = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =

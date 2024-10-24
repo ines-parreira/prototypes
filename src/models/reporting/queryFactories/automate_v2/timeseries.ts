@@ -1,4 +1,14 @@
 import {
+    AutomationDatasetMeasure,
+    AutomationDatasetCube,
+    AutomationDatasetDimension,
+} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {
+    BillableTicketDatasetCube,
+    BillableTicketDatasetDimension,
+    BillableTicketDatasetMeasure,
+} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {
     automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
@@ -9,16 +19,6 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {
-    AutomationDatasetMeasure,
-    AutomationDatasetCube,
-    AutomationDatasetDimension,
-} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {
-    BillableTicketDatasetCube,
-    BillableTicketDatasetDimension,
-    BillableTicketDatasetMeasure,
-} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {getFilterDateRange} from 'utils/reporting'
 
 export const interactionsTimeSeriesQueryFactory = (

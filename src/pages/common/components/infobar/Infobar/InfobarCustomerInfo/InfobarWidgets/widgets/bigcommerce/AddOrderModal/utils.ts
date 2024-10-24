@@ -1,5 +1,5 @@
-import _debounce from 'lodash/debounce'
 import {Map as ImmutableMap} from 'immutable'
+import _debounce from 'lodash/debounce'
 import _omit from 'lodash/omit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -43,10 +43,10 @@ import {
     OrderStatusIDType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
-import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
 import {ActionDataPayload} from 'state/infobar/utils'
 import {fetchIntegrationProducts} from 'state/integrations/helpers'
+import {StoreDispatch} from 'state/types'
 import {toJS} from 'utils'
 
 export const isBigCommerceCartLineItem = (

@@ -1,14 +1,15 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
+
+import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
+import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
+import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AutoQAMetric} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
-import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 
 jest.mock(
     'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'

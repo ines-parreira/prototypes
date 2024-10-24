@@ -1,5 +1,5 @@
-import {createContext, Dispatch, SetStateAction} from 'react'
 import _noop from 'lodash/noop'
+import {createContext, Dispatch, SetStateAction} from 'react'
 
 export type SpotlightContextType = {
     isOpen: boolean

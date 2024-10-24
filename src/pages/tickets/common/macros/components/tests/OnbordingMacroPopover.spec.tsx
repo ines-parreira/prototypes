@@ -1,14 +1,15 @@
-import React, {useRef} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {user} from 'fixtures/users'
-import {RootState} from 'state/types'
+import React, {useRef} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {logEvent} from 'common/segment'
 import {UserSettingType, UserSetting} from 'config/types/user'
 import {ticket} from 'fixtures/ticket'
-import {logEvent} from 'common/segment'
+import {user} from 'fixtures/users'
+import {RootState} from 'state/types'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 

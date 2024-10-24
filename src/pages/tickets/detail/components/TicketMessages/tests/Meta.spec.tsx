@@ -1,18 +1,18 @@
-import React from 'react'
-
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {RootState, StoreDispatch} from 'state/types'
-import {fetchRule} from 'models/rule/resources'
-import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
-import {ManagedRuleDisplayName} from 'state/rules/constants'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {TicketVias} from 'business/ticket'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {fetchRule} from 'models/rule/resources'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
+import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import Meta from '../Meta'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

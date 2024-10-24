@@ -1,5 +1,5 @@
-import React, {HTMLAttributes, ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {HTMLAttributes, ReactNode} from 'react'
 
 import css from './BadgeIcon.less'
 

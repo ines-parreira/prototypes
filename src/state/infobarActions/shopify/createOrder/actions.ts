@@ -1,23 +1,21 @@
-import type {Map} from 'immutable'
-import {fromJS, List} from 'immutable'
-import _debounce from 'lodash/debounce'
 import axios, {AxiosResponse} from 'axios'
+import {fromJS, List} from 'immutable'
+import type {Map} from 'immutable'
+import _debounce from 'lodash/debounce'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {
-    addCustomLineItem,
-    addVariant,
-    initDraftOrderPayload,
-} from 'business/shopify/draftOrder'
 import {getCalculateDraftOrderPayload} from 'business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
     refreshAppliedDiscounts,
 } from 'business/shopify/discount'
+import {
+    addCustomLineItem,
+    addVariant,
+    initDraftOrderPayload,
+} from 'business/shopify/draftOrder'
 import {getDraftOrderTotalLineItemsPrice} from 'business/shopify/lineItem'
 import {formatPercentage, formatPrice} from 'business/shopify/number'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
@@ -25,13 +23,14 @@ import {
     Variant,
 } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
-import {RootState, StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {onApiError} from 'state/utils'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
-import {getCreateOrderState} from './selectors'
 import {
     SET_CALCULATED_DRAFT_ORDER,
     SET_INITIAL_STATE,
@@ -39,6 +38,7 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
+import {getCreateOrderState} from './selectors'
 
 let _apiInstances: {[key: string]: GorgiasApi} = {}
 

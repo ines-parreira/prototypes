@@ -1,11 +1,11 @@
 import moment from 'moment'
 import React from 'react'
 
+import {getPlanUnitsPerCadence, getProductName} from 'models/billing/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {getPlanUnitsPerCadence, getProductName} from 'models/billing/utils'
-import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 import css from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades.less'
+import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 
 export default function BillingScheduledDowngrades() {
     const {

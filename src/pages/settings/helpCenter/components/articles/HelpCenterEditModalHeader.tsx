@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {
     ChangeEvent,
     ReactChild,
@@ -6,37 +7,37 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {Article, LocaleCode, VisibilityStatus} from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import useAppSelector from 'hooks/useAppSelector'
 import {getCategories} from 'state/entities/helpCenter/categories'
-import EditingState from '../EditingState/EditingState'
 
-import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EditingStateEnum,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../constants'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {useEditionManager} from '../../providers/EditionManagerContext'
+
 import {useSupportedLocales} from '../../providers/SupportedLocales'
+import {ArticleMode} from '../../types/articleMode'
 import {
     getHomePageItemHashUrl,
     getArticleUrl,
     isExistingArticle,
 } from '../../utils/helpCenter.utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
-import {ArticleMode} from '../../types/articleMode'
+import EditingState from '../EditingState/EditingState'
 import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import ArticleCategorySelect from './ArticleCategorySelect'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
 } from './ArticleLanguageSelect'
-import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditModalHeader.less'
 

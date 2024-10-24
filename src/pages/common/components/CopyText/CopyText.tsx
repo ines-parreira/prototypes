@@ -1,6 +1,6 @@
-import React from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import classNames from 'classnames'
+import _uniqueId from 'lodash/uniqueId'
+import React from 'react'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 

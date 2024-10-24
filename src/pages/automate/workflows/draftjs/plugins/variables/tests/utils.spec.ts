@@ -1,6 +1,8 @@
 import {ContentState} from 'draft-js'
 import findWithRegex from 'find-with-regex'
+
 import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+
 import {addEntityToVariable} from '../utils'
 
 describe('addEntityToVariable', () => {

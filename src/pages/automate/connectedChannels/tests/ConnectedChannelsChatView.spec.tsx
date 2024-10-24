@@ -1,36 +1,37 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {act} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 import {keyBy} from 'lodash'
-import thunk from 'redux-thunk'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
-import {act} from '@testing-library/react-hooks'
-import {
-    mockQueryClient,
-    renderWithQueryClientProvider,
-} from 'tests/reactQueryTestingUtils'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {billingState} from 'fixtures/billing'
-import {RootState} from 'state/types'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
-import history from 'pages/history'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import {useGetHelpCenter} from 'models/helpCenter/queries'
 import {
     applicationAutomationSettingsFixture,
     applicationsAutomationSettingsStateFixture,
 } from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
 import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import history from 'pages/history'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {RootState} from 'state/types'
+import {
+    mockQueryClient,
+    renderWithQueryClientProvider,
+} from 'tests/reactQueryTestingUtils'
 
-import {ConnectedChannelsChatView} from '../components/ConnectedChannelsChatView'
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
+import {ConnectedChannelsChatView} from '../components/ConnectedChannelsChatView'
 
 const queryClient = mockQueryClient()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

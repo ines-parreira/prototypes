@@ -1,20 +1,20 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
 import {Moment} from 'moment'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-import {getTimezone} from 'state/currentUser/selectors'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import {getTimezone} from 'state/currentUser/selectors'
 
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import css from './Snooze.less'
+import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 
 type Props = {
     until?: string

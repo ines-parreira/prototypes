@@ -1,11 +1,11 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {totalMessagesSent} from 'fixtures/stats'
 
-import MultiResourceKeyMetricStat from '../KeyMetricStat/MultiResourceKeyMetricStat'
 import KeyMetricStat from '../KeyMetricStat/KeyMetricStat'
+import MultiResourceKeyMetricStat from '../KeyMetricStat/MultiResourceKeyMetricStat'
 
 jest.mock(
     '../KeyMetricStat/KeyMetricStat',

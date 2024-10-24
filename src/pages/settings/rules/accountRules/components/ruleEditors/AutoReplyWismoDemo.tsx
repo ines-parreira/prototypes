@@ -1,6 +1,6 @@
-import React from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import React from 'react'
 
 import RichField from 'pages/common/forms/RichField/RichField'
 import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'

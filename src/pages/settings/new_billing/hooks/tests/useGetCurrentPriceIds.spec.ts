@@ -1,5 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useAppSelector from 'hooks/useAppSelector'
+
 import {useCurrentPriceIds} from '../useGetCurrentPriceIds'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

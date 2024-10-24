@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
-import WorkflowTemplatesView from '../WorkflowTemplatesView'
+
 import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
+import WorkflowTemplatesView from '../WorkflowTemplatesView'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock(

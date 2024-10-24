@@ -1,8 +1,9 @@
 import {fromJS, List, Map} from 'immutable'
-import _values from 'lodash/values'
 import _cloneDeep from 'lodash/cloneDeep'
+import _values from 'lodash/values'
 
 import {DEFAULT_SOURCE_PATHS} from 'config'
+
 import {STANDALONE_WIDGET_TYPE} from './constants'
 import {WidgetEnvironment} from './types'
 

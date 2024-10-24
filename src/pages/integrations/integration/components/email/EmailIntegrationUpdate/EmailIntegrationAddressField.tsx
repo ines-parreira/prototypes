@@ -1,19 +1,21 @@
-import React, {useCallback, useRef} from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import React, {useCallback, useRef} from 'react'
+
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {submitSetting} from 'state/currentAccount/actions'
 import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {submitSetting} from 'state/currentAccount/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+
 import DefaultIntegrationBadge from '../DefaultIntegrationBadge'
 
 import css from './EmailIntegrationAddressField.less'

@@ -10,17 +10,17 @@ import React, {
 import useMouseRelease from 'hooks/useMouseRelease'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
+import Spinner from 'pages/common/components/Spinner'
 import settingsCss from 'pages/settings/settings.less'
 import {notificationSounds} from 'services'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
-import Spinner from 'pages/common/components/Spinner'
 
 import useSettings from '../hooks/useSettings'
 import {LegacyNotificationType, NotificationType} from '../types'
 
 import EventSettings from './EventSettings'
-import VolumeControl from './VolumeControl'
 import css from './Settings.less'
+import VolumeControl from './VolumeControl'
 
 export default function Settings() {
     const {

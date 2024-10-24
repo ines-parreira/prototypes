@@ -2,9 +2,9 @@ import React from 'react'
 
 import {openChat} from '../../../utils'
 
-import css from './LegacyPlanBanner.less'
-import LinkAlert from './Alert/LinkAlert'
 import {AlertType} from './Alert/Alert'
+import LinkAlert from './Alert/LinkAlert'
+import css from './LegacyPlanBanner.less'
 
 type Props = {
     isCustomPrice?: boolean

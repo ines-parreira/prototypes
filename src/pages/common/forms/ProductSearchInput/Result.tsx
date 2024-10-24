@@ -1,6 +1,6 @@
-import React from 'react'
-import classnames from 'classnames'
 import {getSizedImageUrl} from '@shopify/theme-images'
+import classnames from 'classnames'
+import React from 'react'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {IntegrationType} from 'models/integration/constants'

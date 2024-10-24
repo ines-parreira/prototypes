@@ -1,10 +1,11 @@
 import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
+
 import {CustomField} from 'custom-fields/types'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import Row from 'pages/settings/customFields/components/Row'
 
 import css from './List.less'

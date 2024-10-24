@@ -6,8 +6,14 @@ import {
     GorgiasChatMinimumSnippetVersion,
 } from 'models/integration/types'
 
+import client from '../../../models/api/resources'
 import {getGorgiasChatProtectedApiClient} from '../../../rest_api/gorgias_chat_protected_api/client'
 import {Client} from '../../../rest_api/gorgias_chat_protected_api/client.generated'
+import {
+    InstallationStatus,
+    Texts,
+    Translations,
+} from '../../../rest_api/gorgias_chat_protected_api/types'
 import {
     getTranslations,
     getApplicationTexts,
@@ -16,12 +22,6 @@ import {
     getInstallationSnippet,
     getApplications,
 } from '../actions/gorgias-chat.actions'
-import client from '../../../models/api/resources'
-import {
-    InstallationStatus,
-    Texts,
-    Translations,
-} from '../../../rest_api/gorgias_chat_protected_api/types'
 
 describe('gorgias-chat.actions', () => {
     let chatClient: Client

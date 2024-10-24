@@ -1,5 +1,5 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 import {Row, Col, FormGroup, Label} from 'reactstrap'
 
 import {
@@ -8,12 +8,12 @@ import {
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
 } from 'config'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import InputField from 'pages/common/forms/input/InputField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import JsonField from 'pages/common/forms/JsonField'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import ParametersEditor from '../ParametersEditor'
 

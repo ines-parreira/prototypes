@@ -1,15 +1,14 @@
-import React from 'react'
 import {Map, List} from 'immutable'
+import React from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
 import {
     getSyntaxTreeLeaves,
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
-
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
-import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 type LogicalExpressionProps = {
     rule: Map<any, any>

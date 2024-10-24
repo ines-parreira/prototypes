@@ -1,21 +1,23 @@
+import {fireEvent, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React, {FC} from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {DndProvider} from 'react-dnd'
-import {fireEvent, screen} from '@testing-library/react'
-import {RootState, StoreDispatch} from 'state/types'
 
-import {renderWithRouter} from 'utils/testing'
+import {UpdateSubjectLinesProps} from 'models/contactForm/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {UpdateSubjectLinesProps} from 'models/contactForm/types'
+import {renderWithRouter} from 'utils/testing'
+
 import SubjectLines from '../SubjectLines'
 
 jest.mock('lodash/uniqueId', () => {

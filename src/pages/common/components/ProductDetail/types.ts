@@ -1,7 +1,7 @@
 import {ReactNode} from 'react'
 
-import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 import {ColorType} from 'pages/common/components/Badge/Badge'
+import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 
 export type Infocard = {
     isHidden?: boolean

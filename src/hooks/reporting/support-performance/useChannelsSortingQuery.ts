@@ -1,10 +1,12 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     sortingLoaded,
     sortingLoading,
@@ -17,7 +19,6 @@ import {
 } from 'state/ui/stats/selectors'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {notEmpty} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useChannelsSortingQuery = (
     column: ChannelsTableColumns,

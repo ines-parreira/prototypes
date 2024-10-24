@@ -1,7 +1,8 @@
-import React from 'react'
 import classnames from 'classnames'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import React from 'react'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './HelpCenterWizardArticleRec.less'
 

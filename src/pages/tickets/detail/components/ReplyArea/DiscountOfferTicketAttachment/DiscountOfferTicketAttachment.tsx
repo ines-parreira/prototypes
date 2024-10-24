@@ -1,18 +1,19 @@
-import React, {MouseEvent, useCallback} from 'react'
 import classNames from 'classnames'
 import {Map} from 'immutable'
+import React, {MouseEvent, useCallback} from 'react'
 
-import {useGetDiscountOffer} from 'models/convert/discountOffer/queries'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {computeDiscountOfferSummary} from 'pages/common/components/UniqueDiscountOfferResults/utils'
 
-import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
 import {useModalManager} from 'hooks/useModalManager'
+import {useGetDiscountOffer} from 'models/convert/discountOffer/queries'
+import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
+import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+import {computeDiscountOfferSummary} from 'pages/common/components/UniqueDiscountOfferResults/utils'
 import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
+import {getIntegrationById} from 'state/integrations/selectors'
+
 import css from './DiscountOfferTicketAttachment.less'
 
 export type DiscountOfferTicketAttachmentType = {

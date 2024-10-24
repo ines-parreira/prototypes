@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {Link, useLocation} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
+import PropTypes from 'prop-types'
+import React, {useCallback, useEffect, useState} from 'react'
+import {Link, useLocation} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -14,8 +14,8 @@ import {activeViewIdSet} from 'state/ui/views/actions'
 import {setViewActive} from 'state/views/actions'
 import {isCurrentlyOnTicket} from 'utils'
 
-import SourceIcon from './SourceIcon'
 import css from './RecentChats.less'
+import SourceIcon from './SourceIcon'
 
 type ItemProps = {
     recentTicket: Map<any, any>

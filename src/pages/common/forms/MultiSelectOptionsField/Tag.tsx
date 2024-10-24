@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React, {MouseEvent} from 'react'
 import {Badge} from 'reactstrap'
-import classnames from 'classnames'
 
 import css from './Tag.less'
 import {Option} from './types'

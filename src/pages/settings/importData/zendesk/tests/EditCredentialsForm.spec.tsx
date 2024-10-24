@@ -1,12 +1,14 @@
-import React from 'react'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
 import {mockStore} from 'utils/testing'
+
 import EditCredentialsForm from '../EditCredentialsForm'
 import {ImportStatus} from '../types'
 

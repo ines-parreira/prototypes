@@ -1,13 +1,16 @@
-import {KeyboardEvent} from 'react'
 import {EditorState} from 'draft-js'
 import {Map} from 'immutable'
 import {debounce} from 'lodash'
+import {KeyboardEvent} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {Plugin, PluginMethods} from '../types'
 
+import client from './client'
+import decorators from './decorators'
+import {cachedSelection, predictionKey} from './state'
 import {
     createPrediction,
     getPlainTextFromStateWithPrediction,
@@ -17,9 +20,6 @@ import {
     removePrediction,
     usePrediction,
 } from './utils'
-import decorators from './decorators'
-import {cachedSelection, predictionKey} from './state'
-import client from './client'
 
 let predictionCache: string[] = []
 export const clearCache = () => (predictionCache = [])

@@ -1,16 +1,18 @@
-import React from 'react'
 import {render, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {act, renderHook} from '@testing-library/react-hooks'
 import {Device} from '@twilio/voice-sdk'
-import {connectDevice, disconnectDevice} from 'hooks/integrations/phone/utils'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import useHasPhone from 'core/app/hooks/useHasPhone'
-import {assumeMock} from 'utils/testing'
-import {isDesktopDevice} from 'utils/device'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import VoiceDeviceProvider from '../VoiceDeviceProvider'
+import {connectDevice, disconnectDevice} from 'hooks/integrations/phone/utils'
+import {isDesktopDevice} from 'utils/device'
+import {assumeMock} from 'utils/testing'
+
 import {VoiceDeviceContextState} from '../VoiceDeviceContext'
+import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
 jest.mock('core/app/hooks/useHasPhone')

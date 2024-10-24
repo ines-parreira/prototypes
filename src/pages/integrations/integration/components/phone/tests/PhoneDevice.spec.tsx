@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+
 import {assumeMock} from 'utils/testing'
+
 import PhoneDevice from '../PhoneDevice'
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 

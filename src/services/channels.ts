@@ -1,6 +1,8 @@
 import {isObject} from 'lodash'
+
 import {appQueryClient} from 'api/queryClient'
 
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
 import {listChannels} from 'models/channel/resources'
@@ -9,7 +11,6 @@ import {
     isTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 
 export type {

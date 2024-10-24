@@ -1,22 +1,22 @@
 import React, {useRef, useState} from 'react'
 
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
-import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
-import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import {
     DEFAULT_REASON_ACTIONS,
     REASONS_DROPDOWN_SECTIONS_WITH_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
+import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 
-import ReportOrderIssueScenarioReason from './ReportOrderIssueScenarioReason'
 import {useReportOrderIssueScenarioFormContext} from './ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueScenarioReason from './ReportOrderIssueScenarioReason'
 
 import css from './ReportOrderIssueScenarioReasons.less'
 

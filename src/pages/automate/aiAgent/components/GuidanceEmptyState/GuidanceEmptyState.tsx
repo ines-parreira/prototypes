@@ -1,17 +1,19 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 import {Link} from 'react-router-dom'
+
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
+import {SegmentEvent, logEvent} from 'common/segment'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import history from 'pages/history'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
-import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
+import history from 'pages/history'
+
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
+import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import {GuidanceTemplate} from '../../types'
+import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
+import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import css from './GuidanceEmptyState.less'
 
 const SHOW_TEMPLATES_COUNT = 7

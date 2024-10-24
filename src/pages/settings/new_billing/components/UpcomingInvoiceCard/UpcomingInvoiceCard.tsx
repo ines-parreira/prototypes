@@ -1,18 +1,20 @@
-import React, {useState} from 'react'
 import moment from 'moment/moment'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import Button from 'pages/common/components/button/Button'
+import React, {useState} from 'react'
+
 import {
     CouponSummary,
     SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
+import Button from 'pages/common/components/button/Button'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 
 import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import {formatAmount} from 'pages/settings/new_billing/utils/formatAmount'
-import AddSalesCouponModal from '../AddSalesCouponModal'
+
 import {DATE_FORMAT} from '../../constants'
+import AddSalesCouponModal from '../AddSalesCouponModal'
 import css from './UpcomingInvoiceCard.less'
 
 interface UpcomingInvoiceCardProps {

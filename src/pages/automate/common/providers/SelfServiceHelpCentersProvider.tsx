@@ -2,11 +2,11 @@ import React, {ReactNode, useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 
 type Props = {
     children?: ReactNode

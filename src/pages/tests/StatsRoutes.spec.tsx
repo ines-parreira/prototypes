@@ -1,19 +1,19 @@
-import React, {ReactNode} from 'react'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {Route, Switch} from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 import {act} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ReactNode} from 'react'
+import {Provider} from 'react-redux'
+import {Route, Switch} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {user} from 'fixtures/users'
-import {RootState} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
 import {StatsRoutes} from 'routes/Routes'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {RootState} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>

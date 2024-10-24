@@ -1,6 +1,8 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+
 import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
+
 import {useGetOrCreateSnippetHelpCenter} from '../useGetOrCreateSnippetHelpCenter'
 
 jest.mock('models/aiAgent/queries')

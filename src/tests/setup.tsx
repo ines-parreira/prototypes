@@ -1,21 +1,24 @@
 import '@testing-library/jest-dom'
 import './mockAudioContext'
-import {TextEncoder, TextDecoder} from 'util'
 import {setImmediate} from 'timers'
-import React from 'react'
+import {TextEncoder, TextDecoder} from 'util'
+
 import MutationObserver from '@sheerun/mutationobserver-shim'
-import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import {MomentTimezone} from 'moment-timezone'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import mockMoment from 'moment'
+import {MomentTimezone} from 'moment-timezone'
+import React from 'react'
 import {NavLinkProps} from 'react-router-dom'
+
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
-import {envVars} from 'utils/environment'
 
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {envVars} from 'utils/environment'
+
 import history from '../pages/history'
 import {mockQueryClient} from './reactQueryTestingUtils'
 

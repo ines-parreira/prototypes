@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/types'
 import {Customer} from 'models/customer/types'
+import {IntegrationType} from 'models/integration/types'
+
 import {
     FinancialStatus,
     OrderLineItem,

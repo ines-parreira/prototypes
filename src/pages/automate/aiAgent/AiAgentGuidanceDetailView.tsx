@@ -1,13 +1,15 @@
 import React, {useMemo} from 'react'
+
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {useGuidanceArticle} from './hooks/useGuidanceArticle'
-import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
+import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
+import {useGuidanceArticle} from './hooks/useGuidanceArticle'
+import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {GuidanceFormFields} from './types'
+import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
 
 type Props = {
     guidanceHelpCenterId: number

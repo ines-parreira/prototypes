@@ -1,15 +1,17 @@
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {assumeMock} from 'utils/testing'
-import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreState} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
+import {getAIGuidanceFixture} from '../../fixtures/aiGuidance.fixture'
+import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
 import {useGuidanceAiSuggestions} from '../useGuidanceAiSuggestions'
 import {useGuidanceArticles} from '../useGuidanceArticles'
-import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
-import {getAIGuidanceFixture} from '../../fixtures/aiGuidance.fixture'
 
 jest.mock('../useGuidanceArticles')
 jest.mock('models/aiAgent/queries')

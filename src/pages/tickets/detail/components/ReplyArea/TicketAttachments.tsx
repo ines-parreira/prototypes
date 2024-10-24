@@ -1,17 +1,17 @@
-import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
-import Lightbox from 'react-images'
 import type {List, Map} from 'immutable'
+import React, {Component, MouseEvent} from 'react'
+import Lightbox from 'react-images'
 
+import {AttachmentEnum} from 'common/types'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
-import shortcutManager from 'services/shortcutManager/index'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
+import {fileIconFromContentType} from 'pages/tickets/common/utils'
+import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
+import shortcutManager from 'services/shortcutManager/index'
 import {proxifyURL, replaceAttachmentURL} from 'utils'
 
-import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
-import {AttachmentEnum} from 'common/types'
-import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
 import css from './TicketAttachments.less'
 
 type Attachment = Map<any, any>

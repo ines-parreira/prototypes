@@ -1,12 +1,12 @@
 import {useQueryClient} from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {
     useDeleteWorkflowsConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {StoresWorkflowConfiguration} from '../types'
 import {handleError} from './errorHandler'

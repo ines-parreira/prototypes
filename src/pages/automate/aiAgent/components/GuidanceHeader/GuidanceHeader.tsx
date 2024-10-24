@@ -1,7 +1,9 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import Button from 'pages/common/components/button/Button'
+import React from 'react'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+
 import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,

@@ -1,4 +1,5 @@
 import {createSelector} from '@reduxjs/toolkit'
+
 import {FilterKey} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getTimezone} from 'state/currentUser/selectors'

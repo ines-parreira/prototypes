@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     act,
     fireEvent,
@@ -7,18 +6,18 @@ import {
     within,
     waitFor,
 } from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useListActionsApps} from 'models/workflows/queries'
 import {IntegrationType} from 'models/integration/constants'
+import {useListActionsApps} from 'models/workflows/queries'
 import {RootState, StoreDispatch} from 'state/types'
 
+import ActionsPlatformCreateTemplateView from '../ActionsPlatformCreateTemplateView'
 import useApps from '../hooks/useApps'
 import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
-
-import ActionsPlatformCreateTemplateView from '../ActionsPlatformCreateTemplateView'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')

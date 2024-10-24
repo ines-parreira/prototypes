@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {fromJS, Map, List} from 'immutable'
 import React, {
     Component,
     ComponentProps,
@@ -8,18 +10,16 @@ import React, {
     RefObject,
 } from 'react'
 import {Button, Form, Input, Popover, PopoverBody} from 'reactstrap'
-import {fromJS, Map, List} from 'immutable'
-import classnames from 'classnames'
 
 import {formatPrice} from 'business/shopify/number'
 import {logEvent, SegmentEvent} from 'common/segment'
-import RadioButton from 'pages/common/components/RadioButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import RadioButton from 'pages/common/components/RadioButton'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {focusElement} from 'utils/html'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import popoverCss from './Popover.less'
 import css from './ShippingPopover.less'

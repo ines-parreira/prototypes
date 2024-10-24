@@ -1,12 +1,12 @@
-import React, {useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef} from 'react'
 
-import {ChannelIdentifier} from 'services/channels'
-import history from 'pages/history'
 import IconButton from 'pages/common/components/button/IconButton'
+import history from 'pages/history'
+import {ChannelIdentifier} from 'services/channels'
 
-import {getReconnectUrl} from './utils'
 import css from './ReconnectButton.less'
+import {getReconnectUrl} from './utils'
 
 export default function ReconnectButton({
     channel,

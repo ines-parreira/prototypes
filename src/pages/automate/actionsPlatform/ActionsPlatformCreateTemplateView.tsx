@@ -1,36 +1,35 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Container} from 'reactstrap'
-import {useHistory} from 'react-router-dom'
-import {ulid} from 'ulidx'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
+import React, {useCallback, useMemo, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {Container} from 'reactstrap'
+import {ulid} from 'ulidx'
 
-import InputField from 'pages/common/forms/input/InputField'
-import Button from 'pages/common/components/button/Button'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import PageHeader from 'pages/common/components/PageHeader'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import useAppDispatch from 'hooks/useAppDispatch'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import PageHeader from 'pages/common/components/PageHeader'
+import InputField from 'pages/common/forms/input/InputField'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import css from './ActionsPlatformEditTemplateView.less'
+import ActionsPlatformTemplateAppsSelectBox from './components/ActionsPlatformTemplateAppsSelectBox'
+import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useApps from './hooks/useApps'
 import useCreateActionTemplate from './hooks/useCreateActionTemplate'
-import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
-import {ActionTemplate, ActionTemplateApp} from './types'
-import ActionsPlatformTemplateAppsSelectBox from './components/ActionsPlatformTemplateAppsSelectBox'
 import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
-
-import css from './ActionsPlatformEditTemplateView.less'
+import {ActionTemplate, ActionTemplateApp} from './types'
 
 const getInitialTemplate = () => {
     const httpStepId = ulid()

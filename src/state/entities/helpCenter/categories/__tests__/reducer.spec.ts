@@ -1,17 +1,16 @@
-import _keyBy from 'lodash/keyBy'
 import {produce} from 'immer'
-
-import {getSingleCategoryEnglish as categoryResponse} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import _keyBy from 'lodash/keyBy'
 
 import {Category} from 'models/helpCenter/types'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
+import {getSingleCategoryEnglish as categoryResponse} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+
 import {
     getRootCategory,
     getSingleCategory,
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 
-import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
-import reducer, {initialState} from '../reducer'
 import {
     saveCategories,
     savePositions,
@@ -21,6 +20,7 @@ import {
     pushCategorySupportedLocales,
     updateCategoriesArticleCount,
 } from '../actions'
+import reducer, {initialState} from '../reducer'
 
 import {CategoriesAction} from '../types'
 

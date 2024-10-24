@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+
 import {emailError as validateEmail} from 'pages/settings/new_billing/utils/validations'
 
 export const useEmailInputField = (form: HTMLFormElement | null) => {

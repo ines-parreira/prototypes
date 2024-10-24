@@ -1,7 +1,8 @@
 import moment from 'moment/moment'
-import {Period} from 'models/stat/types'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {Period} from 'models/stat/types'
 import {MaybeData, OneDimensionalDataItem} from 'pages/stats/types'
 import {
     CURRENT_PERIOD_LABEL,

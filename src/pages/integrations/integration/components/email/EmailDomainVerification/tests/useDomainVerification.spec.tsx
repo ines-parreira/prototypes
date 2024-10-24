@@ -1,10 +1,3 @@
-import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-
 import {
     HttpResponse,
     EmailDomain,
@@ -12,12 +5,18 @@ import {
     deleteEmailIntegrationDomain,
     verifyEmailIntegrationDomain,
 } from '@gorgias/api-client'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import {populateCurrentValuesForDNSRecords} from '../../helpers'
 import {

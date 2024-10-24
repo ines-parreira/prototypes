@@ -1,14 +1,14 @@
 import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import Accordion from './Accordion'
-import AccordionItem from './AccordionItem'
-import AccordionHeader from './AccordionHeader'
 import AccordionBody from './AccordionBody'
+import AccordionHeader from './AccordionHeader'
+import AccordionItem from './AccordionItem'
 
 const storyConfig: Meta = {
     title: 'General/Accordion/Accordion',

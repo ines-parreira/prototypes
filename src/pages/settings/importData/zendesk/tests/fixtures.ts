@@ -1,4 +1,5 @@
 import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
+
 import {ImportStatus} from '../types'
 
 export const successImport = {

@@ -1,8 +1,9 @@
 import React from 'react'
-import {TooltipData} from 'pages/stats/types'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
 import {OrderDirection} from 'models/api/types'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {TooltipData} from 'pages/stats/types'
 
 type AgentsHeaderCellContentProps = {
     width?: number | string

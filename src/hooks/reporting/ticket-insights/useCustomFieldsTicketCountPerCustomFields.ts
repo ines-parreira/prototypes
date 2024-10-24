@@ -1,10 +1,7 @@
-import {useMemo} from 'react'
 import _zip from 'lodash/zip'
+import {useMemo} from 'react'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {
-    TicketCustomFieldsDimension,
-    TicketCustomFieldsMeasure,
-} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
@@ -18,6 +15,10 @@ import {
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 
 import {

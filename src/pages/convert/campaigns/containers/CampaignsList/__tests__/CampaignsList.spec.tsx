@@ -1,38 +1,36 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {fromJS} from 'immutable'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {entitiesInitialState} from 'fixtures/entities'
-import useSearch from 'hooks/useSearch'
-
-import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-
-import {assumeMock} from 'utils/testing'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {billingState} from 'fixtures/billing'
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
 import {
     convertStatusLimitReached,
     convertStatusNotInstalled,
 } from 'fixtures/convert'
+import {entitiesInitialState} from 'fixtures/entities'
 import {user} from 'fixtures/users'
+import useSearch from 'hooks/useSearch'
+
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
+
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {channelConnection} from 'fixtures/channelConnection'
-import {campaign} from 'fixtures/campaign'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
-import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
-
-import {createTrigger} from '../../../utils/createTrigger'
-
 import {CampaignListOptions} from '../../../providers/CampaignListOptions'
+import {Campaign} from '../../../types/Campaign'
+import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
 
 import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
-import {Campaign} from '../../../types/Campaign'
+import {createTrigger} from '../../../utils/createTrigger'
+
 import CampaignsList from '../CampaignsList'
 
 jest.mock('hooks/useSearch')

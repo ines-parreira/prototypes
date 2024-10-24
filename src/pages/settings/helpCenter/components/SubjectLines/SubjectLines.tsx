@@ -1,8 +1,10 @@
-import React, {useCallback, useEffect, useState, useRef} from 'react'
 import _uniqueId from 'lodash/uniqueId'
+import React, {useCallback, useEffect, useState, useRef} from 'react'
+
+import {UpdateSubjectLinesProps} from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {UpdateSubjectLinesProps} from 'models/contactForm/types'
+
 import SubjectLine, {SubjectLineProps} from '../SubjectLine/SubjectLine'
 
 import {

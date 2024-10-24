@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
+import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react'
 import {
     FormGroup,
     FormText,
@@ -12,8 +12,8 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import {
     Category,
     CreateCategoryDto,
@@ -24,8 +24,8 @@ import {
     VisibilityStatus,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
 import {Drawer} from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -53,21 +53,20 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 
+import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
+import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
-import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
+import {CloseModal} from '../articles/CloseModal'
 import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
-import {CloseModal} from '../articles/CloseModal'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
-import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
-
-import css from './HelpCenterCategoryEdit.less'
 import {CategoryImageEdit} from './components/CategoryImageEdit/CategoryImageEdit'
+import css from './HelpCenterCategoryEdit.less'
+import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 type Props = {
     isOpen: boolean

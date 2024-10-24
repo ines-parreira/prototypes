@@ -1,21 +1,23 @@
-import React from 'react'
-
 import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
-import {agents} from 'fixtures/agents'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import React from 'react'
+
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import * as useLocalStorageImports from 'hooks/useLocalStorage'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import {agents} from 'fixtures/agents'
+import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {AccountSettingType} from 'state/currentAccount/types'
+
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
 
 const mockStore = configureMockStore([thunk])

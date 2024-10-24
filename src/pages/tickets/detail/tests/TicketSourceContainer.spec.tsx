@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {renderWithRouter} from '../../../../utils/testing'
 import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'

@@ -1,6 +1,7 @@
-import React from 'react'
-import classNames from 'classnames'
 import {VoiceCallDirection} from '@gorgias/api-queries'
+import classNames from 'classnames'
+import React from 'react'
+
 import {
     getDisplayInboundVoiceCallStatus,
     getDisplayOutboundVoiceCallStatus,

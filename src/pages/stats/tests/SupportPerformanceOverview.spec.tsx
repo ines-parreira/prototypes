@@ -1,25 +1,25 @@
+import {fireEvent, render} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render} from '@testing-library/react'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
-import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
+import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
+import SupportPerformanceOverview, {
+    STATS_TIPS_VISIBILITY_KEY,
+} from 'pages/stats/SupportPerformanceOverview'
+import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-
-import SupportPerformanceOverview, {
-    STATS_TIPS_VISIBILITY_KEY,
-} from 'pages/stats/SupportPerformanceOverview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

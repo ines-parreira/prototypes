@@ -1,12 +1,12 @@
-import {useCallback, useEffect, useState} from 'react'
-import {AxiosResponse} from 'axios'
 import {UseQueryOptions, UseQueryResult} from '@tanstack/react-query'
+import {AxiosResponse} from 'axios'
+import {useCallback, useEffect, useState} from 'react'
 
+import {useSearchParam} from 'hooks/useSearchParam'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'
-import {useSearchParam} from 'hooks/useSearchParam'
 
 import {useResponseCursor} from './useResponseCursor'
 

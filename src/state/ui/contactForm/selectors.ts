@@ -1,5 +1,7 @@
 import {createSelector} from 'reselect'
+
 import {StoreState} from 'state/types'
+
 import {ContactFormState} from './types'
 
 const getContactFormStore = (state: StoreState): ContactFormState =>

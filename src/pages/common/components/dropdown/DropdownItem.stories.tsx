@@ -1,9 +1,9 @@
-import React, {ComponentProps, ContextType} from 'react'
 import {Meta, Story} from '@storybook/react'
 import _noop from 'lodash/noop'
+import React, {ComponentProps, ContextType} from 'react'
 
-import DropdownItem from './DropdownItem'
 import {DropdownContext} from './Dropdown'
+import DropdownItem from './DropdownItem'
 
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,

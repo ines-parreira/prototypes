@@ -1,28 +1,18 @@
+import {produce} from 'immer'
+import {Map} from 'immutable'
 import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {Route, Switch, useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
-import {produce} from 'immer'
-import {Map} from 'immutable'
-import {toJS} from 'utils'
 
-import {CampaignUpdatePayload} from 'models/convert/campaign/types'
 import {useGetCampaign} from 'models/convert/campaign/queries'
+import {CampaignUpdatePayload} from 'models/convert/campaign/types'
 
-import history from 'pages/history'
-
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
-import {
-    CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
-    CONVERT_ROUTE_PARAM_NAME,
-} from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-
+import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
+import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
+import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
 import {
     abVariantsControlVersionPath,
     abVariantAddPath,
@@ -30,15 +20,22 @@ import {
     abVariantsPath,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
-import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
-import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
-import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
 import {createVariant} from 'pages/convert/abVariants/utils/createVariant'
+import {deleteVariant} from 'pages/convert/abVariants/utils/deleteVariant'
 import {duplicateVariant} from 'pages/convert/abVariants/utils/duplicateVariant'
 import {updateVariant} from 'pages/convert/abVariants/utils/updateVariant'
-import {deleteVariant} from 'pages/convert/abVariants/utils/deleteVariant'
+import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import {
+    CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
+    CONVERT_ROUTE_PARAM_NAME,
+} from 'pages/convert/common/constants'
+import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import history from 'pages/history'
+import {toJS} from 'utils'
 
 import css from './ABGroupPage.less'
 

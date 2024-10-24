@@ -6,14 +6,14 @@ import Template, {
     TemplateCustomization,
     CustomizationContext,
 } from 'Widgets/modules/Template'
-import {WidgetProps} from 'Widgets/modules/Widget'
 import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
+import {WidgetProps} from 'Widgets/modules/Widget'
 
 import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
-import {customerCustomization} from './Customer'
 import {chargeCustomization} from './Charge'
-import {subscriptionCustomization} from './Subscription'
+import {customerCustomization} from './Customer'
 import {orderCustomization} from './Order'
+import {subscriptionCustomization} from './Subscription'
 
 export const customization: TemplateCustomization = {
     card: [

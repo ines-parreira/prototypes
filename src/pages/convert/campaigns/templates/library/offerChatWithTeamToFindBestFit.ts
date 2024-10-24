@@ -1,16 +1,17 @@
 //Offer a chat with your team to find the best fit
 
 import {ulid} from 'ulidx'
-import {assetsUrl} from 'utils'
+
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {assetsUrl} from 'utils'
 
-import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
+import {CampaignConfiguration, CampaignTemplate} from '../types'
 
 export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
     slug: 'offer-chat-with-team-to-find-best-fit',

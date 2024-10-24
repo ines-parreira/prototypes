@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 import chainBracelet from 'assets/img/self-service/chain-bracelet.png'
+import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 
 export const SELF_SERVICE_PREVIEW_ROUTES = {
     HOME: '/',

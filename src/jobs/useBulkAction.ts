@@ -1,8 +1,8 @@
-import {useCallback, useMemo} from 'react'
 import {JobType, useCreateJob} from '@gorgias/api-queries'
+import {AxiosError} from 'axios'
+import {useCallback, useMemo} from 'react'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import {AxiosError} from 'axios'
 
 import {getConfigByType} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'

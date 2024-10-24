@@ -1,15 +1,17 @@
 import {Label} from '@gorgias/ui-kit'
 import classnames from 'classnames'
-import React, {useEffect, useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useAppSelector from 'hooks/useAppSelector'
+import React, {useEffect, useMemo} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {EmailIntegrationListSelection} from '../../EmailIntegrationListSelection/EmailIntegrationListSelection'
-import {INITIAL_FORM_VALUES} from '../../../constants'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+
 import {StoreConfiguration} from '../../../../../../models/aiAgent/types'
+import {INITIAL_FORM_VALUES} from '../../../constants'
 import {FormValues, UpdateValue} from '../../../types'
+import {EmailIntegrationListSelection} from '../../EmailIntegrationListSelection/EmailIntegrationListSelection'
 import css from './EmailFormComponent.less'
 
 type EmailFormComponentProps = {

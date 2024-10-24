@@ -1,6 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
+
 import {getToken} from '../api'
 
 jest.mock('utils/errors')

@@ -1,13 +1,11 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
-import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
+
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
@@ -15,9 +13,13 @@ import {
 } from 'pages/settings/contactForm/constants'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
+import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
 import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
 import {mockResourceServerReplies} from '../../../tests/resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')

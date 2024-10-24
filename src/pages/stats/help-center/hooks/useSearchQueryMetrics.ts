@@ -1,11 +1,13 @@
 import {useMemo} from 'react'
+
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {StatsFilters} from 'models/stat/types'
 import {searchQueryClicksQueryFactory} from 'models/reporting/queryFactories/help-center/searchResult'
+import {StatsFilters} from 'models/stat/types'
+
 import {
     HelpCenterTableCell,
     TableCellType,

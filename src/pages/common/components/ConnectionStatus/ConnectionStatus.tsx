@@ -1,7 +1,7 @@
-import React, {createRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {createRef} from 'react'
 
 import css from './ConnectionStatus.less'
 

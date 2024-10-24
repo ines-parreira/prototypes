@@ -1,16 +1,16 @@
+import {act, fireEvent, render, screen} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS, Map} from 'immutable'
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {tags as tagsFixtures} from 'fixtures/tag'
 import {fetchTags} from 'models/tag/resources'
 import * as tagActions from 'state/tags/actions'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import ManageTags from '../ManageTags'
 
 const mockedDispatch = jest.fn()

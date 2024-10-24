@@ -1,17 +1,18 @@
-import React from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState} from 'state/types'
 import {IvrMenuActionType, VoiceMessageType} from 'models/integration/constants'
 import {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
 } from 'models/integration/types'
-import useVoiceMessageValidation from '../useVoiceMessageValidation'
+import {RootState} from 'state/types'
+
 import * as utils from '../../utils'
+import useVoiceMessageValidation from '../useVoiceMessageValidation'
 
 const mockStore = configureMockStore<RootState>([thunk])({} as RootState)
 const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')

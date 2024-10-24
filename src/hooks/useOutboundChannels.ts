@@ -1,26 +1,14 @@
-import {useCallback} from 'react'
 import {uniq} from 'lodash'
+import {useCallback} from 'react'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {prepare, setSender} from 'state/newMessage/actions'
-import {getTicket} from 'state/ticket/selectors'
-import {
-    getIntegrations,
-    getSendersForChannel,
-} from 'state/integrations/selectors'
-import {
-    getNewMessageSource,
-    getNewMessageSourceProperty,
-} from 'state/newMessage/selectors'
-
-import {Application, getApplications} from 'services/applications'
-import {Source, SourceAddress, Ticket} from 'models/ticket/types'
-import {isSource, isTicketMessageSourceType} from 'models/ticket/predicates'
 import {Integration, IntegrationType} from 'models/integration/types'
-import {TicketMessageSourceType} from 'business/types/ticket'
-
+import {isSource, isTicketMessageSourceType} from 'models/ticket/predicates'
+import {Source, SourceAddress, Ticket} from 'models/ticket/types'
+import {Application, getApplications} from 'services/applications'
 import {
     Channel,
     ChannelIdentifier,
@@ -30,8 +18,19 @@ import {
     isNewChannel,
     toChannel,
 } from 'services/channels'
-import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+import {
+    getIntegrations,
+    getSendersForChannel,
+} from 'state/integrations/selectors'
+import {prepare, setSender} from 'state/newMessage/actions'
+import {
+    getNewMessageSource,
+    getNewMessageSourceProperty,
+} from 'state/newMessage/selectors'
+import {getTicket} from 'state/ticket/selectors'
+
 import {humanizeAddress} from 'state/ticket/utils'
+import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
 
 export type Sender = SourceAddress & {
     displayName: string

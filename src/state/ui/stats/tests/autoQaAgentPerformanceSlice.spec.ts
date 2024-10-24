@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+
 import {personNames} from 'fixtures/personNames'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
@@ -8,7 +9,6 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {RootState} from 'state/types'
 
 import {
@@ -29,6 +29,7 @@ import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {getSortByName} from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {

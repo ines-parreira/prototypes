@@ -1,12 +1,14 @@
 import {render, screen} from '@testing-library/react'
 import {Map, fromJS} from 'immutable'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {billingState} from 'fixtures/billing'
-import {RootState} from 'state/types'
 import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
+import {RootState} from 'state/types'
+
 import {GorgiasAutomateChatIntegration} from '../GorgiasAutomateChatIntegration'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {

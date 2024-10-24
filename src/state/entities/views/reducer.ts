@@ -2,8 +2,8 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {View} from '../../../models/view/types'
 
-import {ViewsState} from './types'
 import {viewsFetched, viewCreated, viewDeleted, viewUpdated} from './actions'
+import {ViewsState} from './types'
 
 const initialState: ViewsState = {}
 

@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useFlag} from 'common/flags'
 import {assumeMock} from 'utils/testing'
+
 import {useIsOverviewPageEnabled} from '../useIsOverviewPageEnabled'
 
 jest.mock('common/flags')

@@ -1,11 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {
     bigCommerceCartFixture,
     bigCommerceCheckoutFixture,
     bigCommerceConsignmentFixture,
 } from 'fixtures/bigcommerce'
 import {BigCommerceActionType} from 'models/integration/types'
+
 import OrderTotals from '../OrderTotals'
 
 jest.mock('../utils', () => ({

@@ -1,21 +1,22 @@
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {CustomField, ListParams} from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {CustomField, ListParams} from 'custom-fields/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
     getSelectedCustomField,
     setSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
-import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 
 export const SELECT_FIELD_LABEL = 'Select field'
 export const TOOLTIP_CONTENT =

@@ -1,11 +1,13 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {RootState} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import AddSalesCouponModal from '../AddSalesCouponModal'
 
 const availableCoupons = ['sales-hd-year-05%-once', 'sales-hd-year-10%-once']

@@ -1,12 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {
     customFieldInputDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import client from 'models/api/resources'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
 import {
     createCustomField,
     getCustomField,

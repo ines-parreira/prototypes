@@ -1,5 +1,5 @@
-import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
+import {createSelector} from 'reselect'
 
 import {getCurrentAccountState} from '../currentAccount/selectors'
 import {getCurrentUser} from '../currentUser/selectors'

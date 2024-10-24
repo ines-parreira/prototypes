@@ -1,16 +1,16 @@
 import React, {ReactNode, useEffect, useRef, useState} from 'react'
 
-import {AiAgentStatsEmptyState} from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {FilterKey} from 'models/stat/types'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {getHasAutomate} from 'state/billing/selectors'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
 import {AutomateFeatures} from 'pages/automate/common/types'
+import {AiAgentStatsEmptyState} from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {getHasAutomate} from 'state/billing/selectors'
+import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
 
 type Props = {
     children?: ReactNode

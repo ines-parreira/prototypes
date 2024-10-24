@@ -1,7 +1,9 @@
 import React from 'react'
+
 import TextArea from 'pages/common/forms/TextArea'
-import css from './OtherReason.less'
+
 import Instruction from './Instruction'
+import css from './OtherReason.less'
 
 type OtherReasonProps = {
     isRequired: boolean

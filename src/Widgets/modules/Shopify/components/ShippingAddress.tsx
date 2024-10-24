@@ -1,13 +1,13 @@
-import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {useContext, useMemo} from 'react'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 import {EditOrderShippingAddressModal} from 'Widgets/modules/Shopify/modules/Order'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 import {ShopifyContext} from '../contexts/ShopifyContext'
 

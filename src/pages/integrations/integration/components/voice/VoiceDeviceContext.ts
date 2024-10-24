@@ -1,6 +1,8 @@
-import {createContext} from 'react'
 import {noop} from 'lodash'
+import {createContext} from 'react'
+
 import {State, initialState} from 'state/twilio/voiceDevice'
+
 import {VoiceDeviceActions} from './types'
 
 export type VoiceDeviceContextState = State & {actions: VoiceDeviceActions}

@@ -1,9 +1,11 @@
 import React from 'react'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -12,7 +14,6 @@ import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/Tag
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 
 export const TAGS_TITLE = 'Tags'
 

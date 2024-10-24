@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {ColorType} from 'pages/common/components/Badge/Badge'
+
 import {Infocard, ProductDetail} from '../types'
 
 export const infoCardBannerText = 'I am a banner, trust me.'

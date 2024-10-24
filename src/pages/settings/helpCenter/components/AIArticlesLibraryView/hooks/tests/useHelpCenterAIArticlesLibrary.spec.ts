@@ -1,16 +1,18 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {assumeMock} from 'utils/testing'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/constants'
+import {useListStoreMappings} from 'models/storeMapping/queries'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
 import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {useListStoreMappings} from 'models/storeMapping/queries'
-import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
 import {StoreState} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')

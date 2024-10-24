@@ -1,8 +1,10 @@
+import moment from 'moment-timezone'
 import React from 'react'
 import {useLocation} from 'react-router-dom'
-import moment from 'moment-timezone'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import {useSearchParam} from 'hooks/useSearchParam'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import useWorkflowAnalyticsDisplayBanner from '../hooks/useWorkflowAnalyticsDisplayBanner'
 import css from './WorkflowAnalytics.less'
 

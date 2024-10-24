@@ -1,5 +1,5 @@
-import {CustomFieldValue} from 'custom-fields/types'
 import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import {CustomFieldValue} from 'custom-fields/types'
 
 export default function isMultiValueEmpty(
     values: unknown

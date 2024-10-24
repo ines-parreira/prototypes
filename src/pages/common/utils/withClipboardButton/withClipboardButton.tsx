@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef, ComponentType} from 'react'
 import Clipboard from 'clipboard'
+import React, {useState, useEffect, useRef, ComponentType} from 'react'
 
 import useId from 'hooks/useId'
 

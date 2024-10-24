@@ -1,6 +1,3 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import {useHistory, useRouteMatch} from 'react-router-dom'
-import {isObject, kebabCase} from 'lodash'
 import {
     CreateIntegrationBody,
     HttpResponse,
@@ -10,23 +7,26 @@ import {
     useSendVerificationEmail,
     useUpdateIntegration,
 } from '@gorgias/api-queries'
+import {isObject, kebabCase} from 'lodash'
+import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useHistory, useRouteMatch} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useInterval from 'hooks/useInterval'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {isGorgiasApiError} from 'models/api/types'
 import {
     EmailIntegration,
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
-import {isGorgiasApiError} from 'models/api/types'
 import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
-import useLocalStorage from 'hooks/useLocalStorage'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import useInterval from 'hooks/useInterval'
 import socketManager from 'services/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
+import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
 import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',

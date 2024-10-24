@@ -2,9 +2,10 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {PropsWithChildren} from 'react'
-import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
+import {fromJS} from 'immutable'
+import React, {PropsWithChildren} from 'react'
+
 import {MentionPluginTheme, MentionData} from '../types'
 
 type Props = {

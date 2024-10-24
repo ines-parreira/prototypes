@@ -1,10 +1,11 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {IntegrationSelectContainer} from 'pages/common/components/ast/widget/IntegrationSelect'
 
 const mockStore = configureMockStore([thunk])

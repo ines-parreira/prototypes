@@ -1,12 +1,12 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Label, Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import classNames from 'classnames'
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Link} from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import {SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -25,6 +25,9 @@ import {
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,
 } from 'config/integrations/gorgias_chat'
+import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarImageType,
@@ -33,37 +36,34 @@ import {
     GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
-import {SegmentEvent} from 'common/segment'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import history from 'pages/history'
-import {
-    DEPRECATED_getIntegrationsByTypes,
-    makeGetRedirectUri,
-} from 'state/integrations/selectors'
 import Button from 'pages/common/components/button/Button'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
 import {
     LanguagePicker,
     Language,
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import history from 'pages/history'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {
+    DEPRECATED_getIntegrationsByTypes,
+    makeGetRedirectUri,
+} from 'state/integrations/selectors'
 
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
+import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
 

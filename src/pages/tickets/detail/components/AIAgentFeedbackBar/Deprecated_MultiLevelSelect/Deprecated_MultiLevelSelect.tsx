@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -7,11 +7,11 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
-import {getLabel} from './helpers/getLabel'
-import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
 import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
 import css from './Deprecated_MultiLevelSelect.less'
+import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
+import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
+import {getLabel} from './helpers/getLabel'
 
 export type MultiLevelSelectProps = {
     id: number

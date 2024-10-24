@@ -1,17 +1,18 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, screen} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
 
+import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import {TicketMessage} from 'models/ticket/types'
+import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import {RootState, StoreDispatch} from 'state/types'
+import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
-import {RootState, StoreDispatch} from 'state/types'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import {TicketMessage} from 'models/ticket/types'
+
 import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,

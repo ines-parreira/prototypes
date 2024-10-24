@@ -1,9 +1,10 @@
-import React from 'react'
 import {Meta, Story} from '@storybook/react'
+import React from 'react'
 import {BrowserRouter} from 'react-router-dom'
 
 import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {Language} from 'constants/languages'
+
 import {
     GorgiasChatIntegrationLanguagesTable,
     GorgiasChatIntegrationLanguagesTableProps,

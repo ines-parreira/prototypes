@@ -1,14 +1,15 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {SAVE_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
 import {
     emptyFiltersMock,
     filterKeysMock,
     filtersMock,
 } from 'pages/stats/common/filters/SavedFiltersActions/tests/helpers.spec'
-import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
-import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {isAdmin} from 'utils'
 
 jest.mock('state/currentUser/selectors', () => ({

@@ -5,9 +5,9 @@ import {useFlag} from 'common/flags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useCustomFieldValues} from 'custom-fields/hooks/queries/useCustomFieldValues'
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {customerInputFieldDefinition} from 'fixtures/customField'
 import {assumeMock} from 'utils/testing'
 
-import {customerInputFieldDefinition} from 'fixtures/customField'
 import CustomerField from '../CustomerField'
 import CustomerFields from '../CustomerFields'
 

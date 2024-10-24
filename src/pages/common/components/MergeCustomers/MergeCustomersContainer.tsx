@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
 import {fromJS, List, Map, Set} from 'immutable'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {mergeCustomers} from '../../../../state/customers/actions'
 import {makeIsLoading} from '../../../../state/customers/selectors'
 import {getMessages} from '../../../../state/ticket/selectors'
-import {mergeCustomers} from '../../../../state/customers/actions'
 import {RootState} from '../../../../state/types'
 
 import MergeCustomersModal from './MergeCustomersModal'

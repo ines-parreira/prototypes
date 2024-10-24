@@ -1,7 +1,13 @@
 import moment from 'moment/moment'
+
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {
+    getPeriodDateTimes,
+    TimeSeriesDataItem,
+} from 'hooks/reporting/useTimeSeries'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {Period} from 'models/stat/types'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {
     CURRENT_PERIOD_LABEL,
     DATE_TIME_FORMAT,
@@ -15,11 +21,6 @@ import {
     NOT_AVAILABLE_LABEL,
 } from 'services/reporting/constants'
 import {createCsv, saveZippedFiles} from 'utils/file'
-import {
-    getPeriodDateTimes,
-    TimeSeriesDataItem,
-} from 'hooks/reporting/useTimeSeries'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 
 export interface SLAsReportData {
     slaAchievementRateTrend: MetricTrend

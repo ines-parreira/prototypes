@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, {HTMLAttributes} from 'react'
 
 import {useTheme, Theme} from '@emotion/react'
 
 import styled from '@emotion/styled'
-
-import {relativeLighten, relativeDarken} from 'gorgias-design-system/utils'
+import React, {HTMLAttributes} from 'react'
 
 import {gorgiasColors} from 'gorgias-design-system/styles'
+import {relativeLighten, relativeDarken} from 'gorgias-design-system/utils'
 
 import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 

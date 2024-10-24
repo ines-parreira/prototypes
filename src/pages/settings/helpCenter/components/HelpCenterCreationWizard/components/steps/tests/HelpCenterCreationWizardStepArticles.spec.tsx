@@ -1,32 +1,34 @@
 import 'tests/__mocks__/intersectionObserverMock'
 import 'tests/__mocks__/editionManagerContextMock'
 
-import React from 'react'
 import {screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import userEvent from '@testing-library/user-event'
-import Wizard from 'pages/common/components/wizard/Wizard'
+
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import {
-    HelpCenterApiArticlesFixture,
-    HelpCenterUiBasicsFixture,
-} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {renderWithRouter} from 'utils/testing'
+import Wizard from 'pages/common/components/wizard/Wizard'
 import {
     ArticleTemplatesGroupedByCategoryFixture,
     HelpCenterArticleItemFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+import {
+    HelpCenterApiArticlesFixture,
+    HelpCenterUiBasicsFixture,
+} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {renderWithRouter} from 'utils/testing'
+
 import {useGetHelpCenterArticles} from '../../../hooks/useGetHelpCenterArticles'
-import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
-import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 import {useHelpCenterArticlesForm} from '../../../hooks/useHelpCenterArticlesForm'
+import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(

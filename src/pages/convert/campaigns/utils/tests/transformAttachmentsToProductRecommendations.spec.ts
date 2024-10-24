@@ -1,6 +1,8 @@
 import {List} from 'immutable'
+
 import {AttachmentEnum} from 'common/types'
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+
 import {transformAttachmentsToProductRecommendations} from '../transformAttachmentsToProductRecommendations'
 
 describe('transformAttachmentsToProductRecommendations', () => {

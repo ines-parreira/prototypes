@@ -1,5 +1,6 @@
-import {RootState} from 'state/types'
 import * as queryClient from 'api/queryClient'
+import {RootState} from 'state/types'
+
 import {getQueriesState, getQueryData, getQueryTimestamp} from '../selectors'
 
 describe('queries selectors', () => {

@@ -1,15 +1,14 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {TemplateCard} from 'pages/common/components/TemplateCard'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
+import {TemplateCard} from 'pages/common/components/TemplateCard'
 
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
-import {ActionAppConfiguration} from '../types'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
-
+import {ActionAppConfiguration} from '../types'
 import css from './ActionsTemplatesCards.less'
+import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
 
 type Props = {
     app: Extract<ActionAppConfiguration, {type: 'shopify' | 'recharge'}>

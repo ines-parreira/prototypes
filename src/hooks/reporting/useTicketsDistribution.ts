@@ -1,15 +1,16 @@
 import {useMemo} from 'react'
+
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import {OrderDirection} from 'models/api/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {OrderDirection} from 'models/api/types'
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 export const useTicketsDistribution = (topAmount = 10) => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()

@@ -1,37 +1,39 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Col, Container, Row} from 'reactstrap'
-import classnames from 'classnames'
-import {useLocation, useParams} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import PageHeader from 'pages/common/components/PageHeader'
-import Button from 'pages/common/components/button/Button'
-import {assetsUrl, toJS} from 'utils'
-import useAppSelector from 'hooks/useAppSelector'
-import {
-    getIntegrationById,
-    getIntegrationsByType,
-} from 'state/integrations/selectors'
+import classnames from 'classnames'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {useLocation, useParams} from 'react-router-dom'
+import {Col, Container, Row} from 'reactstrap'
+
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {bundleKeys} from 'models/convert/bundle/queries'
-import history from 'pages/history'
-import {IntegrationType} from 'models/integration/constants'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import {BundleStatus} from 'models/convert/bundle/types'
+import {IntegrationType} from 'models/integration/constants'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
 import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {ConvertRouteParams} from 'pages/convert/common/types'
 import {useBackToConvert} from 'pages/convert/onboarding/hooks/useBackToConvert'
+import history from 'pages/history'
+import {
+    getIntegrationById,
+    getIntegrationsByType,
+} from 'state/integrations/selectors'
+import {assetsUrl, toJS} from 'utils'
+
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import css from './ConvertOnboardingView.less'
 

@@ -1,5 +1,6 @@
 import {convertAvailablePlans} from 'fixtures/productPrices'
 import {PlanInterval} from 'models/billing/types'
+
 import {getDefaultConvertPlanIndex} from '../getDefaultConvertPlanIndex'
 
 describe('getDefaultConvertPlanIndex', () => {

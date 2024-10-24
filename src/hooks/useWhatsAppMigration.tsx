@@ -1,18 +1,9 @@
-import React, {createContext, useContext, useMemo, useState} from 'react'
-import {get, isEmpty, isString, noop} from 'lodash'
 import {isValidPhoneNumber} from 'libphonenumber-js'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import useSearch from 'hooks/useSearch'
-import useAppDispatch from 'hooks/useAppDispatch'
-import history from 'pages/history'
+import {get, isEmpty, isString, noop} from 'lodash'
+import React, {createContext, useContext, useMemo, useState} from 'react'
 
-import {
-    WhatsAppCodeVerificationMethod,
-    WhatsAppPhoneNumberVerificationStatus,
-    WhatsAppMigrationProgress,
-    WhatsAppPhoneNumberStatus,
-} from 'models/integration/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useSearch from 'hooks/useSearch'
 import {
     startMigration,
     requestVerificationCode,
@@ -20,6 +11,16 @@ import {
     getMigrationProgress,
     registerNumber,
 } from 'models/integration/resources/whatsapp'
+import {
+    WhatsAppCodeVerificationMethod,
+    WhatsAppPhoneNumberVerificationStatus,
+    WhatsAppMigrationProgress,
+    WhatsAppPhoneNumberStatus,
+} from 'models/integration/types'
+import history from 'pages/history'
+
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import useDebouncedEffect from './useDebouncedEffect'
 import useLocalStorage from './useLocalStorage'

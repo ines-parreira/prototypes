@@ -1,14 +1,15 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {RuleOperation} from 'state/rules/types'
-import {RuleItemActions} from 'pages/settings/rules/types'
+
 import useHoverable from 'pages/common/hooks/useHoverable'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {RuleOperation} from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>

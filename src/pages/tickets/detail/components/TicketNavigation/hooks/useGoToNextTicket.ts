@@ -1,12 +1,12 @@
 import {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import history from 'pages/history'
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getActiveView} from 'state/views/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import history from 'pages/history'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {isTicketNavigationAvailable} from 'state/ticket/actions'
+import {getActiveView} from 'state/views/selectors'
 
 import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
 

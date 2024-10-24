@@ -1,7 +1,7 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {List, Map} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
 import cn from 'classnames'
+import {List, Map} from 'immutable'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 
 import {Item} from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'

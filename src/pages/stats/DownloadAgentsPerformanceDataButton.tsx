@@ -1,13 +1,14 @@
 import React from 'react'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Agents Performance Data'
 

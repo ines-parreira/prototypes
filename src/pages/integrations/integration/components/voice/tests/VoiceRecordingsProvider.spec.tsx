@@ -1,6 +1,8 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
+
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+
 import VoiceRecordingsProvider from '../VoiceRecordingsProvider'
 
 describe('VoiceRecordingsProvider', () => {

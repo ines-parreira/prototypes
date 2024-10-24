@@ -1,8 +1,9 @@
 import React from 'react'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,

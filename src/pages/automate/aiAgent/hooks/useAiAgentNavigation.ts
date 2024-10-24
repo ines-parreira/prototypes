@@ -1,8 +1,9 @@
-import {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ACTIONS} from 'pages/automate/common/components/constants'
-import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
+import {useMemo} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
+import {ACTIONS} from 'pages/automate/common/components/constants'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showAutomateActions = useShowAutomateActions()

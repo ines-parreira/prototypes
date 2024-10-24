@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import {WhatsAppCodeVerificationMethod} from 'models/integration/types'
-import SettingsContent from 'pages/settings/SettingsContent'
+import Button from 'pages/common/components/button/Button'
 import FormRow from 'pages/common/forms/FormRow'
+import InputField from 'pages/common/forms/input/InputField'
 import {formatAsNationalNumber} from 'pages/phoneNumbers/utils'
+import SettingsContent from 'pages/settings/SettingsContent'
 
 import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
 

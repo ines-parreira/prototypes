@@ -1,5 +1,5 @@
-import {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 

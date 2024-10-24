@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useEffectOnce from '../useEffectOnce'
 
 const mockEffectCleanup = jest.fn()

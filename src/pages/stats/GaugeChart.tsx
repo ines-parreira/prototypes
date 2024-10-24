@@ -1,11 +1,11 @@
-import React, {useMemo, useRef} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
-
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import css from './GaugeChart.less'
-import {OneDimensionalDataItem} from './types'
-import Legend from './Legend'
+import {Tooltip} from '@gorgias/ui-kit'
+import React, {useMemo, useRef} from 'react'
+
 import {DEFAULT_LOCALE, formatNumber} from './common/utils'
+import css from './GaugeChart.less'
+import Legend from './Legend'
+import {OneDimensionalDataItem} from './types'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Variations.Primary_3.value,

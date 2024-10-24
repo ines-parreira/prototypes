@@ -1,9 +1,9 @@
+import {fromJS, List} from 'immutable'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List} from 'immutable'
 
-import {RootState} from '../../../../../state/types'
 import * as selectors from '../../../../../state/teams/selectors'
+import {RootState} from '../../../../../state/types'
 
 import Select from './ReactSelect'
 

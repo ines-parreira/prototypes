@@ -1,15 +1,16 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getInTicketSuggestionSettings} from 'state/currentAccount/selectors'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {getCurrentHelpdeskPlan, getHasAutomate} from 'state/billing/selectors'
-import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {submitSetting} from 'state/currentAccount/actions'
+import {getInTicketSuggestionSettings} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {getTopRankMacroState} from 'state/ticket/selectors'
+import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
 const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
 

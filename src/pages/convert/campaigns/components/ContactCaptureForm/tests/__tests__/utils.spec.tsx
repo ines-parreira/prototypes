@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {AttachmentEnum} from 'common/types'
 import {
     handleContactFormSubmitted,

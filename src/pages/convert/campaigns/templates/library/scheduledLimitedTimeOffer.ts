@@ -1,22 +1,23 @@
 // Schedule limited time offer for items that require liquidation
 
-import {ulid} from 'ulidx'
 import {Map} from 'immutable'
-import {assetsUrl} from 'utils'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {ulid} from 'ulidx'
+
 import {
     WizardConfiguration,
     BannerType,
     TooltipActionType,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
+import {assetsUrl} from 'utils'
 
-import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
+import {CampaignConfiguration, CampaignTemplate} from '../types'
 
 export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
     slug: 'schedule-limited-time-offer',

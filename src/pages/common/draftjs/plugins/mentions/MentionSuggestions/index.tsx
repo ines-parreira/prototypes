@@ -1,24 +1,24 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import React, {Component, KeyboardEvent} from 'react'
-import {List, Map, fromJS} from 'immutable'
 import {genKey, EditorState, SelectionState, DraftHandleValue} from 'draft-js'
+import {List, Map, fromJS} from 'immutable'
+import React, {Component, KeyboardEvent} from 'react'
 
-import {EditorHandledNotHandled} from 'utils/editor'
+import Entry from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
+import DefaultEntryComponent from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
-import {
-    decodeOffsetKey,
-    getSearchText,
-} from 'pages/common/draftjs/plugins/mentions/utils'
 import {
     MentionPluginTheme,
     MentionPluginStore,
     MentionSuggestionCallbacks,
 } from 'pages/common/draftjs/plugins/mentions/types'
+import {
+    decodeOffsetKey,
+    getSearchText,
+} from 'pages/common/draftjs/plugins/mentions/utils'
 
-import Entry from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
-import DefaultEntryComponent from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
+import {EditorHandledNotHandled} from 'utils/editor'
 
 type Props = {
     callbacks: MentionSuggestionCallbacks

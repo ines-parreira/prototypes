@@ -1,5 +1,6 @@
 import {produce} from 'immer'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {get, set} from 'lodash'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect} from 'react-redux'
@@ -15,12 +16,11 @@ import {
     Spinner,
 } from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {LanguageChat} from 'constants/languages'
+import useEffectOnce from 'hooks/useEffectOnce'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -29,7 +29,6 @@ import {getHasAutomate} from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import {
     getLanguagesFromChatConfig,

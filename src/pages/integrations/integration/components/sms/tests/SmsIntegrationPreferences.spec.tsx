@@ -1,13 +1,13 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {SmsIntegration, IntegrationType} from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
+import {SmsIntegration, IntegrationType} from 'models/integration/types'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
 
 import SmsIntegrationPreferences from '../SmsIntegrationPreferences'
 

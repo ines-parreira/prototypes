@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import {WidgetType} from 'state/widgets/types'
 

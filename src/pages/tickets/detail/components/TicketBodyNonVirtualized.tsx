@@ -1,21 +1,22 @@
 // TODO: remove component entirely after Virtualization is tested out
 
 import cn from 'classnames'
-import React from 'react'
-import moment, {Moment} from 'moment'
-import {connect, ConnectedProps} from 'react-redux'
-import _debounce from 'lodash/debounce'
 import {List, Map} from 'immutable'
+import _debounce from 'lodash/debounce'
 
 import _xor from 'lodash/xor'
-import * as ticketSelectors from 'state/ticket/selectors'
-import shortcutManager from 'services/shortcutManager/index'
+import moment, {Moment} from 'moment'
+import React from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import shortcutManager from 'services/shortcutManager/index'
+import * as ticketSelectors from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 
-import css from './TicketBody.less'
 import MessageQuoteContext from './MessageQuoteContext'
+import css from './TicketBody.less'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {

@@ -1,4 +1,3 @@
-import React, {useState} from 'react'
 import {
     FloatingFocusManager,
     FloatingOverlay,
@@ -6,15 +5,16 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react'
+import React, {useState} from 'react'
+
 import {
     BigCommerceCartLineItem,
     BigCommerceProduct,
 } from 'models/integration/types'
 
 import {ModifiersPopover} from './ModifiersPopover'
-import {ModifierValues} from './types'
-
 import css from './ModifiersPopover.less'
+import {ModifierValues} from './types'
 
 type EditModifiersPopoverState = {
     product: BigCommerceProduct

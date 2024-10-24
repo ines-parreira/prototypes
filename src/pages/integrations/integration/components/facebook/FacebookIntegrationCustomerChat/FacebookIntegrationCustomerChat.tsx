@@ -1,18 +1,18 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {assetsUrl} from 'utils'
+import PageHeader from 'pages/common/components/PageHeader'
 import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
-import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import {NotificationStatus} from 'state/notifications/types'
+import {assetsUrl} from 'utils'
 
-import {renderFacebookCodeSnippet} from './utils'
 import css from './FacebookIntegrationCustomerChat.less'
+import {renderFacebookCodeSnippet} from './utils'
 
 const deprecationBanner = (
     <p>

@@ -1,17 +1,18 @@
 import React, {Dispatch} from 'react'
+
+import {CommonReasonLabel} from '../constants'
 import {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReason,
     CancellationReasonsActionType,
     CancellationReasonsState,
 } from '../types'
-import {CommonReasonLabel} from '../constants'
 import Instruction from '../UI/Instruction'
-import SecondaryReasons from '../UI/SecondaryReasons'
 import OtherReason from '../UI/OtherReason'
 import PrimaryReasons from '../UI/PrimaryReasons'
-import {findSecondaryReasonsByPrimaryReason} from './helpers'
+import SecondaryReasons from '../UI/SecondaryReasons'
 import css from './CancellationReasons.less'
+import {findSecondaryReasonsByPrimaryReason} from './helpers'
 
 export type Props = {
     reasons: CancellationReason[]

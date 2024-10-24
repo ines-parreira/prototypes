@@ -1,6 +1,6 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen, render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {User, UserRole} from 'config/types/user'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'

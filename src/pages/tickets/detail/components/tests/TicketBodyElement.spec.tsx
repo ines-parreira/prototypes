@@ -5,8 +5,10 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {PHONE_CALL_CONVERSATION_STARTED} from 'constants/event'
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
 import {TicketElement} from 'models/ticket/types'
+import * as voiceCallTypes from 'models/voiceCall/types'
 import {
     FACEBOOK_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
@@ -14,8 +16,6 @@ import {
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import {RootState} from 'state/types'
 import {reportError} from 'utils/errors'
-import * as voiceCallTypes from 'models/voiceCall/types'
-import {PHONE_CALL_CONVERSATION_STARTED} from 'constants/event'
 
 jest.mock('utils/errors')
 

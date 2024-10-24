@@ -2,8 +2,8 @@ import {fromJS} from 'immutable'
 
 import {RootState} from 'state/types'
 
-import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 describe('tags selectors', () => {
     let state: RootState

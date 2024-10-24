@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
+
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import {sanitizeHtmlDefault} from 'utils/html'
-import {useAppNode} from 'appNode'
 
 import css from './PlaygroundActionsItem.less'
 import {PlaygroundAction} from './types'

@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
@@ -8,8 +8,8 @@ import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConve
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
 import {assumeMock} from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Billing} from '../Billing'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),

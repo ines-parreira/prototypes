@@ -1,9 +1,10 @@
-import {getDateAndTimeFormat} from 'utils/datetime'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     TimeFormatType,
 } from 'constants/datetime'
+import {getDateAndTimeFormat} from 'utils/datetime'
+
 import {getImportCompletionDate} from '../utils'
 
 import {

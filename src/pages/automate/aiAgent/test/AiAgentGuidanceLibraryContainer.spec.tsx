@@ -1,16 +1,18 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {renderWithRouter} from 'utils/testing'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import history from 'pages/history'
+import React from 'react'
+
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
+import history from 'pages/history'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {renderWithRouter} from 'utils/testing'
+
 import {AiAgentGuidanceLibraryContainer} from '../AiAgentGuidanceLibraryContainer'
-import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
 import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
+import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
+import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
+import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),

@@ -1,9 +1,9 @@
-import useAppSelector from 'hooks/useAppSelector'
-import {useGetCustomer} from 'models/customer/queries'
-import {getTicketCustomer} from 'state/ticket/selectors'
-import {useGetAgent} from 'models/agents/queries'
-import {Customer} from 'models/customer/types'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import useAppSelector from 'hooks/useAppSelector'
+import {useGetAgent} from 'models/agents/queries'
+import {useGetCustomer} from 'models/customer/queries'
+import {Customer} from 'models/customer/types'
+import {getTicketCustomer} from 'state/ticket/selectors'
 
 export function useCustomerDetails({
     customerId,

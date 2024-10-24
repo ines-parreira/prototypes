@@ -1,12 +1,12 @@
 import {fromJS} from 'immutable'
 import {dismissNotification} from 'reapop'
 
+import history from 'pages/history'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
 import {applyMacro, messageDeleted} from 'state/ticket/actions'
-import history from 'pages/history'
 
 import pendingMessageManager, {
     PendingMessageManager,

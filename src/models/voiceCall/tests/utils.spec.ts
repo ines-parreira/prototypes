@@ -1,5 +1,7 @@
-import * as momentUtils from 'utils/date'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import * as momentUtils from 'utils/date'
+
+import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
@@ -8,7 +10,6 @@ import {
     isMissedInboundVoiceCall,
     processEvents,
 } from '../utils'
-import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
 
 const getMomentSpy = jest.spyOn(momentUtils, 'getMoment')
 

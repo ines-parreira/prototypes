@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import LD from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+
 import {useIsAICopyAssistantEnabled} from '../useIsAICopyAssistantEnabled'
 
 describe('isAICopyAssistantEnabled', () => {

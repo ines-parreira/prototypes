@@ -1,10 +1,11 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
-import React, {ComponentProps} from 'react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {
     bigCommerceCartFixture,
     bigCommerceConsignmentWithSelectedShippingMethodFixture,
@@ -13,19 +14,20 @@ import {
     bigCommerceOrderFixture,
     bigCommerceShippingAddressesFixture,
 } from 'fixtures/bigcommerce'
-import OrderModalRenderWrapper, {
-    OrderModal,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import {integrationsState} from 'fixtures/integrations'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
 import {
     BigCommerceActionType,
     BigCommerceCheckout,
 } from 'models/integration/types'
+import OrderModalRenderWrapper, {
+    OrderModal,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import {useCheckout} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
+
 import {
     addCheckoutBillingAddress,
     upsertCheckoutConsignment,

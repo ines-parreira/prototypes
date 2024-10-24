@@ -1,12 +1,8 @@
-import React, {memo} from 'react'
-import classnames from 'classnames'
 import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {memo} from 'react'
 
 import {MAX_HEADER_LENGTH} from 'config'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
-import CheckBox from 'pages/common/forms/CheckBox'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
@@ -14,6 +10,10 @@ import {
     OnChangeAction,
     ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import TextArea from 'pages/common/forms/TextArea'
 
 import css from './Parameter.less'
 import {validateDropdownValues, validateHeaderName} from './validators'

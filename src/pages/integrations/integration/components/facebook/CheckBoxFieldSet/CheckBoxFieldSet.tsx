@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {ReactNode} from 'react'
+
 import CheckBox, {Props as CheckBoxProps} from 'pages/common/forms/CheckBox'
 
 type CheckBoxItem = CheckBoxProps & {

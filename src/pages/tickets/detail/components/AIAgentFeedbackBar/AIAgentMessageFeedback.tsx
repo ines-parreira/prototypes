@@ -1,6 +1,10 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useMemo, useState} from 'react'
 
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
 import {
     DeleteMessageFeedback,
@@ -13,35 +17,28 @@ import {
     NoteFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
 
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import useAppSelector from 'hooks/useAppSelector'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getAgentMessageFeedbackStatus} from 'state/agents/selectors'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+
 import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
 
-import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
-
-import FeedbackOrders from './FeedbackOrders'
-import FeedbackEvents from './FeedbackEvents'
-import FeedbackReportIssue from './FeedbackReportIssue'
-import FeedbackCreateResource from './FeedbackCreateResource'
-import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
-
 import css from './AIAgentFeedbackBar.less'
-import InfoIconWithTooltip from './InfoIconWithTooltip'
+import FeedbackCreateResource from './FeedbackCreateResource'
+import FeedbackEvents from './FeedbackEvents'
 import FeedbackNote from './FeedbackNote'
-import FeedbackStatusBadge from './FeedbackStatusBadge'
-import {FeedbackStatus, ResourceSection} from './types'
+import FeedbackOrders from './FeedbackOrders'
+import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
+import FeedbackReportIssue from './FeedbackReportIssue'
+
 import {FeedbackResourceSection} from './FeedbackResourceSection'
+import FeedbackStatusBadge from './FeedbackStatusBadge'
+import InfoIconWithTooltip from './InfoIconWithTooltip'
+import {FeedbackStatus, ResourceSection} from './types'
+import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
 
 export const FEEDBACK_MESSAGE_ACTIONS_TEST_ID = 'feedback-message-actions'
 export const FEEDBACK_MESSAGE_GUIDANCE_TEST_ID = 'feedback-message-guidance'

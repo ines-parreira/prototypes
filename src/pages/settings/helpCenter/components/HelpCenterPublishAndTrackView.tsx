@@ -1,68 +1,68 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {IntegrationType} from '@gorgias/api-queries'
 import axios from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {get} from 'lodash'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Route, Switch, useHistory, useLocation} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {IntegrationType} from '@gorgias/api-queries'
-import {SegmentEvent, logEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
-
-import {Paths} from 'rest_api/help_center_api/client.generated'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
-
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import Accordion from 'pages/common/components/accordion/Accordion'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import BackLink from 'pages/common/components/BackLink'
+import Button from 'pages/common/components/button/Button'
+
+import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import CopyText from 'pages/common/components/CopyText'
+import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import InputField from 'pages/common/forms/input/InputField'
+import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
+import settingsCss from 'pages/settings/settings.less'
+import {Paths} from 'rest_api/help_center_api/client.generated'
+
 import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
-import InputField from 'pages/common/forms/input/InputField'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {reportError} from 'utils/errors'
-import CopyText from 'pages/common/components/CopyText'
-import settingsCss from 'pages/settings/settings.less'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
-import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
-import BackLink from 'pages/common/components/BackLink'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {
-    getSubdomainValidationError,
-    isValidSubdomain,
-} from '../utils/validations'
 
-import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
-import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
-import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {
     HELP_CENTER_BASE_PATH,
     MANUALLY_EMBED_STEPS,
     MANUALLY_EMBED_TABS,
     ManuallyEmbedOptions,
 } from '../constants'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useStoreIntegrationByShopName} from '../hooks/useStoreIntegrationByShopName'
+import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
+import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
+import {
+    getSubdomainValidationError,
+    isValidSubdomain,
+} from '../utils/validations'
+
+import {ConnectToShopSection} from './ConnectToShopSection'
 import {CustomDomain} from './CustomDomain'
+import GoogleAnalyticsSection from './GoogleAnalyticSection'
+import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
+import css from './HelpCenterPublishAndTrackView.less'
+import ManageEmbedments from './ManageEmbedments'
 import {SubdomainSection} from './SubdomainSection'
 
-import css from './HelpCenterPublishAndTrackView.less'
-import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import {UpdateToggle} from './UpdateToggle'
-import {ConnectToShopSection} from './ConnectToShopSection'
-import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
-import ManageEmbedments from './ManageEmbedments'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()

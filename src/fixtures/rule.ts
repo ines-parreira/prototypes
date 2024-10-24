@@ -1,4 +1,5 @@
 import esprima from 'esprima'
+
 import {
     ManagedRule,
     ManagedRulesSlugs,

@@ -1,26 +1,25 @@
 import {fromJS, Map, List} from 'immutable'
+import _initial from 'lodash/initial'
 import _isObject from 'lodash/isObject'
 import _last from 'lodash/last'
-import _initial from 'lodash/initial'
 
+import {IntegrationType} from 'models/integration/constants'
 import {
     isRootSource,
     stripLastListsFromPath,
     jsonToTemplate,
     makeWrapper,
 } from 'pages/common/components/infobar/utils'
-import {IntegrationType} from 'models/integration/constants'
 
 import {GorgiasAction} from '../types'
 
+import * as types from './constants'
+import {WidgetsState, WidgetEnvironment} from './types'
 import {
     itemsWithContext,
     itemsWithUpdatedWidgets,
     reorderWidgets,
 } from './utils'
-
-import * as types from './constants'
-import {WidgetsState, WidgetEnvironment} from './types'
 
 export const initialState: WidgetsState = fromJS({
     items: [],

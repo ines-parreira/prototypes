@@ -1,11 +1,12 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {renderWithRouter} from 'utils/testing'
+
 import Integration from '../Integration'
 
 const mockStore = configureMockStore([thunk])

@@ -1,5 +1,5 @@
-import React, {useContext, useMemo} from 'react'
 import classNames from 'classnames'
+import React, {useContext, useMemo} from 'react'
 import ReactPlayer from 'react-player'
 
 import {TicketMessage} from 'models/ticket/types'

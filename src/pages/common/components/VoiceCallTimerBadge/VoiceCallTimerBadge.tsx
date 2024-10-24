@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
 
 import useInterval from 'hooks/useInterval'
+import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import css from './VoiceCallTimerBadge.less'
 
 type Props = {

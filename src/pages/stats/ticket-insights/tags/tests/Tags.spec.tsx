@@ -1,17 +1,18 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
-import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
+import React from 'react'
+
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {Tags, TAGS_TITLE} from 'pages/stats/ticket-insights/tags/Tags'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {RootState} from 'state/types'
-import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import {defaultStatsFilters} from 'state/stats/statsSlice'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {RootState} from 'state/types'
+import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/common/filters/FiltersPanel')
 const filtersPanelMock = assumeMock(FiltersPanel)

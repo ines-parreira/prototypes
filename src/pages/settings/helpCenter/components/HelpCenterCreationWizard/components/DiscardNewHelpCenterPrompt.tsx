@@ -1,12 +1,12 @@
 import React from 'react'
 
+import Button from 'pages/common/components/button/Button'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PromptModal, {
     PromptModalContext,
 } from 'pages/common/components/PromptModal'
-import Button from 'pages/common/components/button/Button'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
 import css from './DiscardNewHelpCenterPrompt.less'
 

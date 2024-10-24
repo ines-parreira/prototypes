@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,8 +10,8 @@ import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCente
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {searchResultsResponseFixture as results} from '../SearchResults.response.fixture'
 import {SearchResults} from '../SearchResults'
+import {searchResultsResponseFixture as results} from '../SearchResults.response.fixture'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

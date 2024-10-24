@@ -1,13 +1,12 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import React, {HTMLProps, ReactNode, useRef} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
-
-import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
 import {OrderDirection} from 'models/api/types'
 
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
+import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode

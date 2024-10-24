@@ -1,6 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {TicketChannel} from 'business/types/ticket'
+
 import ChannelBlock from '../ChannelBlock'
 import {ChannelConfig} from '../utils'
 

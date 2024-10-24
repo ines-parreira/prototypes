@@ -1,26 +1,26 @@
-import React from 'react'
-import {Store} from 'redux'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {Store} from 'redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {channels as mockChannels} from 'fixtures/channels'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {applications as mockApplications} from 'fixtures/applications'
+import {channels as mockChannels} from 'fixtures/channels'
+import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {Integration} from 'models/integration/types'
 import {SourceAddress} from 'models/ticket/types'
-
-import {ChannelIdentifier, getChannelBySlug} from 'services/channels'
 import {
     getApplications,
     Application,
     getApplicationsByChannel,
 } from 'services/applications'
-import {Integration} from 'models/integration/types'
+import {ChannelIdentifier, getChannelBySlug} from 'services/channels'
 
 import useOutboundChannels, {
     privateFunctions,

@@ -1,6 +1,6 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'

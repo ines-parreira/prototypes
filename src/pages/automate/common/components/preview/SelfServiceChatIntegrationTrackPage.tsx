@@ -1,13 +1,13 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
+import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
+import uspsLogo from 'assets/img/self-service/usps.png'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import uspsLogo from 'assets/img/self-service/usps.png'
-import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 
 import useOrderDates from './hooks/useOrderDates'
 import useTrackPagePreview from './hooks/useTrackPagePreview'

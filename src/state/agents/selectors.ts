@@ -2,12 +2,12 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {User, UserRole} from 'config/types/user'
-import {getDisplayName} from 'state/customers/helpers'
-import {createImmutableSelector, makeGetPlainJS} from 'utils'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {CurrentUser, RootState} from 'state/types'
-
 import {Agent, Agents, AgentsState} from 'state/agents/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getDisplayName} from 'state/customers/helpers'
+import {CurrentUser, RootState} from 'state/types'
+import {createImmutableSelector, makeGetPlainJS} from 'utils'
+
 import {
     FeedbackStatus,
     ResourceSection,

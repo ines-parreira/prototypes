@@ -1,8 +1,10 @@
 import React from 'react'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {getHasAutomate} from 'state/billing/selectors'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {AutomateFeatures} from 'pages/automate/common/types'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getHasAutomate} from 'state/billing/selectors'
+
 import AutomatePaywallView from '../automate/common/components/AutomatePaywallView'
 import {AutomateOverview} from './AutomateOverview'
 

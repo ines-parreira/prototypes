@@ -1,9 +1,10 @@
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
 import styled from '@emotion/styled'
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
+
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
-import Label from './Label'
 import Caption from './Caption'
+import Label from './Label'
 
 export interface TextFieldProps
     extends React.InputHTMLAttributes<HTMLInputElement> {

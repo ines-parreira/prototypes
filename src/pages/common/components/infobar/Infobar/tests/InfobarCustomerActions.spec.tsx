@@ -1,8 +1,9 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+
 import InfobarCustomerActions from '../InfobarCustomerActions'
 
 jest.mock('utils', () => ({

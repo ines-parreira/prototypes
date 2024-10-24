@@ -1,7 +1,9 @@
 import {QueryKey} from '@tanstack/react-query'
 import {createSelector} from 'reselect'
+
 import {appQueryClient} from 'api/queryClient'
 import {RootState} from 'state/types'
+
 import {QueriesState} from './types'
 
 export const getQueriesState = (state: {queries: QueriesState}): QueriesState =>

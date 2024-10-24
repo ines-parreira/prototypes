@@ -1,17 +1,19 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
+
 import {emptyManagedRule} from 'fixtures/rule'
-import {RootState, StoreDispatch} from 'state/types'
-import {IntegrationType} from 'models/integration/constants'
 import {HelpCenter} from 'models/helpCenter/types'
-import {AutoReplyFAQModal} from '../AutoReplyFAQModal'
+import {IntegrationType} from 'models/integration/constants'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {InstallationError} from '../../../constants'
+import {AutoReplyFAQModal} from '../AutoReplyFAQModal'
 
 describe('<AutoReplyFAQModal/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQModal> = {

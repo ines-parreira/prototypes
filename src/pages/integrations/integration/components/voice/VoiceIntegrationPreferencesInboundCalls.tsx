@@ -1,22 +1,21 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegrationPreferences,
     PhoneRingingBehaviour,
 } from 'models/integration/types'
 import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import settingsCss from 'pages/settings/settings.less'
-import InputField from 'pages/common/forms/input/InputField'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
-import css from './VoiceIntegrationPreferences.less'
+import settingsCss from 'pages/settings/settings.less'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+
 import {
     RING_TIME_DEFAULT_VALUE,
     RING_TIME_MAX_VALUE,
@@ -27,6 +26,8 @@ import {
     WAIT_TIME_MIN_VALUE,
 } from './constants'
 import {isValueInRange} from './utils'
+import css from './VoiceIntegrationPreferences.less'
+import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 
 type Props = {
     isIvr: boolean

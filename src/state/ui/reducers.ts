@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux'
+
 import contactForm from 'state/ui/contactForm/reducer'
 import {ContactFormState} from 'state/ui/contactForm/types'
 

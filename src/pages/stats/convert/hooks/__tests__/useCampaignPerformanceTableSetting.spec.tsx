@@ -1,27 +1,28 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks/dom'
 import {fromJS} from 'immutable'
-import routerDom, {useParams} from 'react-router-dom'
-import {QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
 import {Provider} from 'react-redux'
+import routerDom, {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {account} from 'fixtures/account'
+import {channelConnection} from 'fixtures/channelConnection'
+import {entitiesInitialState} from 'fixtures/entities'
+import {integrationsState} from 'fixtures/integrations'
 import {
     useGetSettingsList,
     useUpdateSetting,
 } from 'models/convert/settings/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {account} from 'fixtures/account'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-import {channelConnection} from 'fixtures/channelConnection'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {
     CampaignTableColumnDefaultSelect,
     CampaignPerformanceTableDefaultConfigurationViews,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import {useCampaignPerformanceTableSetting} from '../useCampaignPerformanceTableSetting'
 

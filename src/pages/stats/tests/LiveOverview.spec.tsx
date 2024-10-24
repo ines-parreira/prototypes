@@ -1,30 +1,30 @@
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
-import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
-import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
+import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
+import {account} from 'fixtures/account'
+import {agents} from 'fixtures/agents'
 import {
     openTicketsAssignmentStatuses,
     supportVolumePerHour,
     usersStatuses,
 } from 'fixtures/stats'
+import {teams} from 'fixtures/teams'
+import useStatResource from 'hooks/reporting/useStatResource'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import LiveOverview from 'pages/stats/LiveOverview'
+import {AccountFeature} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {renderWithRouter} from 'utils/testing'
-import {agents} from 'fixtures/agents'
-import {teams} from 'fixtures/teams'
-import {account} from 'fixtures/account'
-import {AccountFeature} from 'state/currentAccount/types'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import LiveOverview from 'pages/stats/LiveOverview'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))

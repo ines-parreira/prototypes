@@ -1,16 +1,17 @@
-import React from 'react'
+import {EmailDNSRecord} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 
-import {EmailDNSRecord} from '@gorgias/api-queries'
+import React from 'react'
+
 import useId from 'hooks/useId'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import RecordStatus from './RecordStatus'
 import CopyButton from './CopyButton'
 
 import css from './RecordItem.less'
+import RecordStatus from './RecordStatus'
 
 type Props = {
     record: EmailDNSRecord

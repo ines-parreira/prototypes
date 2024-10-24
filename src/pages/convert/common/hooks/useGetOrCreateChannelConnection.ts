@@ -1,17 +1,18 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {useEffect, useMemo, useState} from 'react'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+
+import {
+    channelConnectionKeys,
+    useCreateChannelConnection,
+    useListChannelConnections,
+} from 'models/convert/channelConnection/queries'
 import {
     ChannelConnection,
     ChannelConnectionChannel,
     ChannelConnectionCreatePayload,
     ChannelConnectionListOptions,
 } from 'models/convert/channelConnection/types'
-import {
-    channelConnectionKeys,
-    useCreateChannelConnection,
-    useListChannelConnections,
-} from 'models/convert/channelConnection/queries'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 
 const READ_RETRIES = 3

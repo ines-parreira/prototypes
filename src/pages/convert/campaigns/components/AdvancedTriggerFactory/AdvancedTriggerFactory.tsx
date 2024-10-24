@@ -3,31 +3,30 @@ import React, {useMemo} from 'react'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {OutOfStockProductPagesTrigger} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/OutOfStockProductPagesTrigger'
-import {useTriggers} from '../../containers/TriggersProvider'
 
-import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
+import {useTriggers} from '../../containers/TriggersProvider'
 
 import {CampaignTrigger} from '../../types/CampaignTrigger'
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
 
+import {AmountSpentTrigger} from './AmountSpentTrigger'
 import {BaseTriggerRow} from './BaseTriggerRow'
 
 import {BusinessHoursTrigger} from './BusinessHoursTrigger'
 import {CartValueTrigger} from './CartValueTrigger'
+import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
 import {CurrentUrlTrigger} from './CurrentUrlTrigger'
+import {CustomerCountryTrigger} from './CustomerCountryTrigger'
 import {ExitIntentTrigger} from './ExitIntentTrigger'
+import {OrderedProductsTriggers} from './OrderedProductsTriggers'
+import {OrdersCountTrigger} from './OrdersCountTrigger'
 import {ProductTagsTrigger} from './ProductTagsTrigger'
 import {SessionTimeTrigger} from './SessionTimeTrigger'
+import {ShopifyTagsTrigger} from './ShopifyTagsTrigger'
+import css from './style.less'
 import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
 import {VisitCountTrigger} from './VisitCountTrigger'
-import {ShopifyTagsTrigger} from './ShopifyTagsTrigger'
-import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
-import {OrdersCountTrigger} from './OrdersCountTrigger'
-import {CustomerCountryTrigger} from './CustomerCountryTrigger'
-import {OrderedProductsTriggers} from './OrderedProductsTriggers'
-
-import css from './style.less'
-import {AmountSpentTrigger} from './AmountSpentTrigger'
 
 type Props = {
     trigger: CampaignTrigger

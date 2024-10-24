@@ -1,34 +1,34 @@
 import React, {PropsWithChildren} from 'react'
 import {ReactFlow, ReactFlowProvider, Controls} from 'reactflow'
 
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
-    WorkflowEditorContext,
-    createWorkflowEditorContextForPreview,
-} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+    createVisualBuilderContextForPreview,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     WorkflowChannelSupportContext,
     createWorkflowChannelSupportContextForPreview,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import {
-    createVisualBuilderContextForPreview,
-    VisualBuilderContext,
-} from 'pages/automate/workflows/hooks/useVisualBuilder'
+    WorkflowEditorContext,
+    createWorkflowEditorContextForPreview,
+} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
-import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
-import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
-import EndNode from '../nodes/EndNode'
-import TextReplyNode from '../nodes/TextReplyNode'
-import FileUploadNode from '../nodes/FileUploadNode'
-import CustomEdge from '../CustomEdge'
 import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from '../../../../common/hooks/useSelfServiceStoreIntegration'
-import OrderSelectionNode from '../nodes/OrderSelectionNode'
+import CustomEdge from '../CustomEdge'
+import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
+import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
+import EndNode from '../nodes/EndNode'
+import FileUploadNode from '../nodes/FileUploadNode'
 import HttpRequestNode from '../nodes/HttpRequestNode'
+import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
+import OrderSelectionNode from '../nodes/OrderSelectionNode'
 import ShopperAuthenticationNode from '../nodes/ShopperAuthenticationNode'
+import TextReplyNode from '../nodes/TextReplyNode'
 import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {

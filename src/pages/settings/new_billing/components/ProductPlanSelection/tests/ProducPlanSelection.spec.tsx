@@ -1,25 +1,27 @@
-import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
 import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
-import {PlanInterval, ProductType} from 'models/billing/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {billingState} from 'fixtures/billing'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     convertPlan1,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {billingState} from 'fixtures/billing'
+import {PlanInterval, ProductType} from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+
+import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
+import CancelProductModal from '../../CancelProductModal/CancelProductModal'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
 } from '../ProductPlanSelection'
-import CancelProductModal from '../../CancelProductModal/CancelProductModal'
-import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 
 const mockStore = configureMockStore()
 const store = mockStore({

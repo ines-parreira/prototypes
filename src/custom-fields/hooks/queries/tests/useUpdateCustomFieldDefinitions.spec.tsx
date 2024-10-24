@@ -1,23 +1,23 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
 
-import {waitFor} from '@testing-library/react'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {
-    apiListCursorPaginationResponse,
-    axiosSuccessResponse,
-} from 'fixtures/axiosResponse'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {NotificationStatus} from 'state/notifications/types'
 import {
     useUpdateCustomFields,
     customFieldDefinitionKeys,
     UseGetCustomFieldDefinitions,
 } from 'custom-fields/hooks/queries/queries'
+import {
+    apiListCursorPaginationResponse,
+    axiosSuccessResponse,
+} from 'fixtures/axiosResponse'
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import {NotificationStatus} from 'state/notifications/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
 import {useUpdateCustomFieldDefinitions} from '../useUpdateCustomFieldDefinitions'

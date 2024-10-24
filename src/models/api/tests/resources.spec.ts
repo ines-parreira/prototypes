@@ -1,9 +1,10 @@
+import {AxiosHeaders} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 jest.unmock('../resources')
 
-import {AxiosHeaders} from 'axios'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+
 import {notify} from '../../../state/notifications/actions'
 import client, {handleNewRelease, createClient, timeoutTime} from '../resources'
 

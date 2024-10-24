@@ -1,29 +1,28 @@
-import React, {useCallback, useState} from 'react'
 import {fromJS, Map} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {IntegrationType} from 'models/integration/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIconFromType} from 'state/integrations/helpers'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import React, {useCallback, useState} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {getIconFromType} from 'state/integrations/helpers'
+import {getStoreIntegrations} from 'state/integrations/selectors'
+
+import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 import {
     useCreateStoreMapping,
     useDeleteStoreMapping,
     useListStoreMappings,
     useUpdateStoreMapping,
 } from '../../../../../../models/storeMapping/queries'
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 import {StoreMapping} from '../../../../../../models/storeMapping/types'
-import {StoreNameDropdown} from './StoreNameDropdown'
-
 import css from './EmailIntegrationConnectStore.less'
+import {StoreNameDropdown} from './StoreNameDropdown'
 
 type Props = {
     integration: Map<any, any>

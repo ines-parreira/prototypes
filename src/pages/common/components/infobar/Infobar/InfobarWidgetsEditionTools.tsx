@@ -1,11 +1,11 @@
-import React from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {startEditionMode, submitWidgets} from 'state/widgets/actions'
-import {StoreDispatch} from 'state/types'
-import {WidgetEnvironment} from 'state/widgets/types'
 import Button from 'pages/common/components/button/Button'
+import {StoreDispatch} from 'state/types'
+import {startEditionMode, submitWidgets} from 'state/widgets/actions'
+import {WidgetEnvironment} from 'state/widgets/types'
 
 import css from '../Infobar.less'
 

@@ -1,15 +1,15 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
 
+import {agents} from 'fixtures/agents'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {CREATE_AGENT_SUCCESS} from 'state/agents/constants'
 import {
     agentsKeys,
     useCreateAgent as usePureCreateAgent,
 } from 'models/agents/queries'
-import {agents} from 'fixtures/agents'
+import {CREATE_AGENT_SUCCESS} from 'state/agents/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
 import {handleError} from '../errorHandler'

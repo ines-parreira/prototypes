@@ -1,5 +1,5 @@
-import React, {useCallback} from 'react'
 import {produce} from 'immer'
+import React, {useCallback} from 'react'
 
 import {
     BooleanSchema,
@@ -12,31 +12,30 @@ import {
     StringSchema,
     VarSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
-import Button from 'pages/common/components/button/Button'
+import {findVariable} from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import {Condition} from 'pages/common/components/Condition/Condition'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {Condition} from 'pages/common/components/Condition/Condition'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
-import {findVariable} from 'pages/automate/workflows/models/variables.model'
+import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 
-import {getOperatorListByVariable} from './constants'
 import {BooleanConditionType} from './conditions/BooleanConditionType'
-import {StringConditionType} from './conditions/StringConditionType'
-import {NumberConditionType} from './conditions/NumberConditionType'
 import {DateConditionType} from './conditions/DateConditionType'
+import {NumberConditionType} from './conditions/NumberConditionType'
+import {StringConditionType} from './conditions/StringConditionType'
+import css from './ConditionsNodeEditor.less'
+import {getOperatorListByVariable} from './constants'
 import {
     isIntervalOperator,
     isExistenceOperator,
     isStringOrNumberOperator,
 } from './utils'
-
-import css from './ConditionsNodeEditor.less'
 
 interface Props {
     type: 'and' | 'or' | null

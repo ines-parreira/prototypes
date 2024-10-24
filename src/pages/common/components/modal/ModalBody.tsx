@@ -1,5 +1,5 @@
-import React, {ForwardedRef, forwardRef, ReactNode, useContext} from 'react'
 import classnames from 'classnames'
+import React, {ForwardedRef, forwardRef, ReactNode, useContext} from 'react'
 
 import {ModalContext} from './Modal'
 

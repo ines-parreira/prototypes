@@ -1,58 +1,58 @@
-import React, {Component, ComponentProps} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import {EditorState} from 'draft-js'
 import {fromJS, List, Map} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
-import {EditorState} from 'draft-js'
+import React, {Component, ComponentProps} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Input} from 'reactstrap'
 import {InputType} from 'reactstrap/lib/Input'
 
 import {UploadType} from 'common/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {humanizeChannel} from 'state/ticket/utils'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
 import {
     DateAndTimeFormatting,
     DateTimeResultFormatType,
 } from 'constants/datetime'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {humanizeChannel} from 'state/ticket/utils'
 import {formatDatetime, humanizeString} from 'utils'
-import DatePicker from '../../../common/forms/DatePicker'
 
-import {stringToDatetime} from '../../../../utils/date'
-import {convertToHTML, getPlainText} from '../../../../utils/editor'
-import MultiSelectField from '../../forms/MultiSelectField'
+import {BASIC_OPERATORS} from '../../../../config'
 import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
     timedeltaOperators,
 } from '../../../../config/rules'
-import {removeSuffix} from '../../../../utils/string'
-import TimedeltaPicker from '../../forms/TimedeltaPicker'
-import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
+
+import {IntegrationType} from '../../../../models/integration/types'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 import {RuleOperation} from '../../../../state/rules/types'
-import {RuleItemActions} from '../../../settings/rules/types'
-import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
-import {BASIC_OPERATORS} from '../../../../config'
+import {stringToDatetime} from '../../../../utils/date'
+import {convertToHTML, getPlainText} from '../../../../utils/editor'
+import {removeSuffix} from '../../../../utils/string'
+import DatePicker from '../../../common/forms/DatePicker'
+import {RuleItemActions} from '../../../settings/rules/types'
+import MultiSelectField from '../../forms/MultiSelectField'
+import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
+import TimedeltaPicker from '../../forms/TimedeltaPicker'
 
-import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
-import TagsSelect from './widget/TagsSelect'
-import IntegrationSelect from './widget/IntegrationSelect'
+import css from './Widget.less'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import CustomFieldIdInput from './widget/CustomFieldIdInput'
 import CustomFieldSelect from './widget/CustomFieldSelect'
+import IntegrationSelect from './widget/IntegrationSelect'
+import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
 import MacroSelect from './widget/MacroSelect'
-import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
 import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
-
-import css from './Widget.less'
+import StatusSelect from './widget/StatusSelect'
+import TagsSelect from './widget/TagsSelect'
 
 type Property = {
     key: {

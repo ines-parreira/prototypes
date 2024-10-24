@@ -1,13 +1,14 @@
 import moment from 'moment'
+
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {Period} from 'models/stat/types'
-import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
     SLAsReportData,
     saveReport,
 } from 'services/reporting/SLAsReportingService'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import * as files from 'utils/file'
 
 jest.mock('utils/file')
 

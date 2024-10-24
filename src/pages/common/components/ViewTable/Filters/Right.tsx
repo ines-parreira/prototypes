@@ -1,41 +1,39 @@
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {Expression, Identifier, Literal} from 'estree'
 import {List, Map, Seq} from 'immutable'
-import moment from 'moment-timezone'
-import {Input} from 'reactstrap'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-
-import {humanizeChannel} from 'state/ticket/utils'
-import {formatDatetime, getLanguageDisplayName} from 'utils'
-import {DateAndTimeFormatting, TimeFormatType} from 'constants/datetime'
-import {
-    getDateAndTimeFormatter,
-    getTimeFormatPreferenceSetting,
-} from 'state/currentUser/selectors'
-import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
-import {stringToDatetime} from 'utils/date'
-
-import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
-import * as viewsSelectors from 'state/views/selectors'
-import {getTags} from 'state/tags/selectors'
-import {updateFieldFilter} from 'state/views/actions'
-import {RootState} from 'state/types'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import {FieldSearchResult} from 'state/views/types'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import moment from 'moment-timezone'
+import React, {Component, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Input} from 'reactstrap'
 
 import {timedeltaOperators} from 'config/rules'
+import {DateAndTimeFormatting, TimeFormatType} from 'constants/datetime'
 
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
-import DatePicker from 'pages/common/forms/DatePicker'
-import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
 
 import css from 'pages/common/components/ViewTable/Filters/Right.less'
+import DatePicker from 'pages/common/forms/DatePicker'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
+import {
+    getDateAndTimeFormatter,
+    getTimeFormatPreferenceSetting,
+} from 'state/currentUser/selectors'
+import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
+import {getTags} from 'state/tags/selectors'
+import {humanizeChannel} from 'state/ticket/utils'
+import {RootState} from 'state/types'
+import {updateFieldFilter} from 'state/views/actions'
+import * as viewsSelectors from 'state/views/selectors'
+import {FieldSearchResult} from 'state/views/types'
+import {formatDatetime, getLanguageDisplayName} from 'utils'
+import {stringToDatetime} from 'utils/date'
 
 type OwnProps = {
     operator: Identifier

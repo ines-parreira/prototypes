@@ -1,17 +1,17 @@
+import classnames from 'classnames'
 import React, {useState} from 'react'
 
-import classnames from 'classnames'
 import {TicketChannel} from 'business/types/ticket'
-import useWorkflowChannelSupport, {
-    WorkflowChannelSupportContext,
-} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import WorkflowsFeatureList, {
     Entrypoint,
 } from 'pages/automate/common/components/WorkflowsFeatureList'
+import {ChannelLanguage} from 'pages/automate/common/types'
+import useWorkflowChannelSupport, {
+    WorkflowChannelSupportContext,
+} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {ChannelLanguage} from 'pages/automate/common/types'
 
 import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
 import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'

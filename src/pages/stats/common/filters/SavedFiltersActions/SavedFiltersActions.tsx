@@ -1,14 +1,14 @@
 import React, {useMemo} from 'react'
 
-import css from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions.less'
 import useAppSelector from 'hooks/useAppSelector'
+import {FiltersPanelProps} from 'pages/stats/common/filters/FiltersPanel'
+import ApplySavedFilters from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import {areFiltersFilled} from 'pages/stats/common/filters/SavedFiltersActions/helpers'
+import css from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions.less'
+import {SaveFilters} from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {isAdmin} from 'utils'
-import {FiltersPanelProps} from 'pages/stats/common/filters/FiltersPanel'
-import {areFiltersFilled} from 'pages/stats/common/filters/SavedFiltersActions/helpers'
-import {SaveFilters} from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
-import ApplySavedFilters from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 
 type Props = FiltersPanelProps & {
     savedFilters: Array<{id: number; name: string}>

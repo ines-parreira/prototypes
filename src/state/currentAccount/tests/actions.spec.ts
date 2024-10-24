@@ -1,7 +1,7 @@
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 
 import {billingState} from 'fixtures/billing'
 import {
@@ -15,15 +15,15 @@ import {
     submitAgentTableConfigView,
     submitChannelsTableConfigView,
 } from 'state/currentAccount/actions'
-import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
 import * as actions from 'state/currentAccount/actions'
 import * as constants from 'state/currentAccount/constants'
 import {initialState} from 'state/currentAccount/reducers'
-import {StoreDispatch} from 'state/types'
 import {AccountSettingType, AccountSetting} from 'state/currentAccount/types'
 import {notify} from 'state/notifications/actions'
-import {assumeMock} from 'utils/testing'
 import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
+import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
 type MockedRootState = {
     currentAccount: Map<any, any>

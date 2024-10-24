@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Redirect, Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
 import {assumeMock} from 'utils/testing'

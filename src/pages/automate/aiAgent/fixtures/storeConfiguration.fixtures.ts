@@ -1,4 +1,5 @@
 import {StoreConfiguration} from 'models/aiAgent/types'
+
 import {ToneOfVoice} from '../constants'
 
 export const getStoreConfigurationFixture = (

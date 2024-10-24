@@ -1,9 +1,9 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
 import navbarCss from 'assets/css/navbar.less'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import CreateTicketButton from './CreateTicketButton'
 

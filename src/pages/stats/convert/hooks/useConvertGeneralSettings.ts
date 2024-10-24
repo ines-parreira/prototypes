@@ -1,13 +1,14 @@
 import {useMemo} from 'react'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+
 import {useGetSettingsList} from 'models/convert/settings/queries'
 
-import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {GorgiasChatIntegration} from 'models/integration/types'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {
     CaptureFormDisclaimerSettings,
     CampaignFrequencySettings,
 } from 'pages/convert/settings/types'
+import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
 
 export const useConvertGeneralSettings = (
     integration?: GorgiasChatIntegration

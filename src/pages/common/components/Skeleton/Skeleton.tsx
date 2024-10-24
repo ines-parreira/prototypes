@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import classnames from 'classnames'
+import React, {ComponentProps} from 'react'
 import ReactLoadingSkeleton from 'react-loading-skeleton'
 
 import css from './Skeleton.less'

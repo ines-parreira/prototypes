@@ -1,5 +1,7 @@
-import React, {useCallback} from 'react'
 import classNames from 'classnames'
+import {List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useCallback} from 'react'
 import {
     UncontrolledTooltip,
     UncontrolledButtonDropdown,
@@ -7,8 +9,6 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {

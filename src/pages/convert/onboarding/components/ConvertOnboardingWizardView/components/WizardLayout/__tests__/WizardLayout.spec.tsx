@@ -1,23 +1,25 @@
-import React from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {Router} from 'react-router-dom'
-import {createMemoryHistory} from 'history'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Router} from 'react-router-dom'
+
 import {Language} from 'constants/languages'
 import {channelConnection} from 'fixtures/channelConnection'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {OnboardingWizardSteps} from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
-import {assumeMock, flushPromises} from 'utils/testing'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import {installBundleMockImplementation} from 'fixtures/convertBundle'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
 import Wizard from 'pages/common/components/wizard/Wizard'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import {OnboardingWizardSteps} from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, flushPromises} from 'utils/testing'
+
 import WizardLayout from '../WizardLayout'
 
 const queryClient = mockQueryClient()

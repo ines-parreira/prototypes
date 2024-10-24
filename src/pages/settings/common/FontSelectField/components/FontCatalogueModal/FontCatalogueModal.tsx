@@ -1,17 +1,17 @@
+import classNames from 'classnames'
+import _capitalize from 'lodash/capitalize'
+import _isEqual from 'lodash/isEqual'
+import uniq from 'lodash/uniq'
 import React, {useEffect, useMemo, useState} from 'react'
 import ReactList from 'react-list'
-import classNames from 'classnames'
-import uniq from 'lodash/uniq'
-import _isEqual from 'lodash/isEqual'
-import _capitalize from 'lodash/capitalize'
 
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
-import SelectFilter from 'pages/stats/common/SelectFilter'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Search from 'pages/common/components/Search'
+import SelectFilter from 'pages/stats/common/SelectFilter'
 
-import {useGoogleFonts} from '../../hooks'
 import {AGENT_ADDED_FONTS} from '../../constants'
+import {useGoogleFonts} from '../../hooks'
 import css from './FontCatalogueModal.less'
 
 type Props = {

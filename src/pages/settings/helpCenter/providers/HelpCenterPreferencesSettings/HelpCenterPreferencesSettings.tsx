@@ -1,3 +1,4 @@
+import {produce, Draft} from 'immer'
 import React, {
     createContext,
     useCallback,
@@ -6,20 +7,14 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {produce, Draft} from 'immer'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -27,7 +22,13 @@ import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {changeViewLanguage} from 'state/ui/helpCenter/actions'
 import {reportError} from 'utils/errors'
+
 import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterPreferencesState = {

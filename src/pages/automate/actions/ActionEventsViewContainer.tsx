@@ -1,10 +1,11 @@
 import React from 'react'
 
 import {Redirect} from 'react-router-dom'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {getHasAutomate} from 'state/billing/selectors'
 
-import {ErrorBoundary} from 'pages/ErrorBoundary'
 import ActionsExecutionsView from './ActionEventsView'
 
 export default function ActionEventsViewContainer() {

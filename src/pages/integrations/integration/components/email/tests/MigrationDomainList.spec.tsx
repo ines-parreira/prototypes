@@ -5,22 +5,23 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 
-import {mockStore} from 'utils/testing'
 import {
     migrationOutboundVerificationNotStarted,
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
+import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {
     EmailMigrationOutboundVerification,
     OutboundVerificationType,
 } from 'models/integration/types'
-import * as useLocalStorageImports from 'hooks/useLocalStorage'
-import MigrationDomainList from '../EmailMigration/MigrationDomainList'
+import {mockStore} from 'utils/testing'
+
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
+import MigrationDomainList from '../EmailMigration/MigrationDomainList'
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 const useLocalStorageSpy = jest.spyOn(

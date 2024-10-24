@@ -1,9 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {RootState, StoreDispatch} from 'state/types'
 
 import FacebookIntegrationLoginButton from '../FacebookIntegrationLoginButton'

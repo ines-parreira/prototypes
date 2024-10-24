@@ -1,10 +1,10 @@
-import React, {ReactElement, ReactNode} from 'react'
 import {screen, render} from '@testing-library/react'
-import moment from 'moment'
 import {fromJS} from 'immutable'
+import moment from 'moment'
+import React, {ReactElement, ReactNode} from 'react'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'

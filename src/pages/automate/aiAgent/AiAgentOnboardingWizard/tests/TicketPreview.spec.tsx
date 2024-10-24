@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import '@testing-library/jest-dom'
-import {TicketPreview} from '../TicketPreview'
 import {ToneOfVoice} from '../../constants'
+import {TicketPreview} from '../TicketPreview'
 
 describe('TicketPreview', () => {
     const signature = 'Best regards, AI Agent'

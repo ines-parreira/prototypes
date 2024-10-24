@@ -1,12 +1,13 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
 import * as actions from 'state/integrations/actions'
+import {renderWithRouter} from 'utils/testing'
+
 import Integration from '../Integration'
 import {getConnectUrl} from '../Utils'
 

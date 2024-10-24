@@ -1,19 +1,20 @@
 import React, {useState, useEffect, useCallback} from 'react'
 
+import {TEXT_TO_SPEECH_MAX_LENGTH} from 'models/integration/constants'
 import {
     VoiceMessage,
     VoiceMessageRecording,
     VoiceMessageTextToSpeech,
     VoiceMessageType,
 } from 'models/integration/types'
-import {TEXT_TO_SPEECH_MAX_LENGTH} from 'models/integration/constants'
 import RadioButton from 'pages/common/components/RadioButton'
 import Textarea from 'pages/common/forms/TextArea'
 import {countLines} from 'utils/string'
+
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
-import VoiceRecordingInput from './VoiceRecordingInput'
 import css from './VoiceMessageField.less'
+import VoiceRecordingInput from './VoiceRecordingInput'
 
 type Props = {
     value: VoiceMessage

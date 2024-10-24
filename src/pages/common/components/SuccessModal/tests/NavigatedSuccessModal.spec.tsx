@@ -1,10 +1,10 @@
+import {render, fireEvent} from '@testing-library/react'
 import React, {ComponentProps, ReactNode} from 'react'
 import {Router} from 'react-router-dom'
-import {render, fireEvent} from '@testing-library/react'
-
-import history from 'pages/history'
 
 import Modal from 'pages/common/components/modal/Modal'
+import history from 'pages/history'
+
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from '../NavigatedSuccessModal'

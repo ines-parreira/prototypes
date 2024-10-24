@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo} from 'react'
 import {useKnockFeed} from '@knocklabs/react'
+import React, {useCallback, useMemo} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 

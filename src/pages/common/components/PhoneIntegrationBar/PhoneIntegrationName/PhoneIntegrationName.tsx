@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 
 import {getIntegrationById} from 'state/integrations/selectors'
 import {RootState} from 'state/types'

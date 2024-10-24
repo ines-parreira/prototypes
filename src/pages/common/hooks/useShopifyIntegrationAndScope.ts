@@ -1,9 +1,9 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 import {
     isShopifyIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
+import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 
 /**
  * Search for a Shopify integration by shop name

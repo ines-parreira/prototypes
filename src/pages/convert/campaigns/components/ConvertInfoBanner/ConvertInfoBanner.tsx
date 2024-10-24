@@ -1,8 +1,8 @@
 import React, {ComponentProps} from 'react'
-import {sanitizeHtmlDefault} from 'utils/html'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {BannerType} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 type OwnProps = {
     type: string

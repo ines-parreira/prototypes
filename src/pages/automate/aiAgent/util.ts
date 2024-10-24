@@ -1,5 +1,6 @@
-import {CustomField} from 'custom-fields/types'
 import {AI_MANAGED_TYPES} from 'custom-fields/constants'
+import {CustomField} from 'custom-fields/types'
+
 import {NonNullProperties} from './types'
 
 export const filterNonNull = <T extends object>(

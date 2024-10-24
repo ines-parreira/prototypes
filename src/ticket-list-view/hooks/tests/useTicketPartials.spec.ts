@@ -2,8 +2,8 @@ import {act, renderHook} from '@testing-library/react-hooks'
 
 import {CursorMeta} from 'models/api/types'
 
-import {TicketPartial} from '../../types'
 import TicketUpdatesManager from '../../TicketUpdatesManager'
+import {TicketPartial} from '../../types'
 import useTicketPartials from '../useTicketPartials'
 
 jest.mock('../../TicketUpdatesManager', () => jest.fn())

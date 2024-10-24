@@ -1,5 +1,6 @@
-import React, {useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef} from 'react'
+
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 import {ValueMode} from 'state/ui/stats/types'

@@ -1,12 +1,14 @@
-import {act} from '@testing-library/react-hooks'
-import MockAdapter from 'axios-mock-adapter'
 import {confirmBillingPaymentMethodSetup} from '@gorgias/api-client'
 import {useStripe} from '@stripe/react-stripe-js'
-import {assumeMock} from 'utils/testing'
-import {reportError} from 'utils/errors'
+import {act} from '@testing-library/react-hooks'
+import MockAdapter from 'axios-mock-adapter'
+
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import client from 'models/api/resources'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+import {reportError} from 'utils/errors'
+import {assumeMock} from 'utils/testing'
+
 import {useSubmitPaymentMethodWithBillingContact} from '../useSubmitPaymentMethodWithBillingContact'
 
 jest.mock('@stripe/react-stripe-js', () => ({

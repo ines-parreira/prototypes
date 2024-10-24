@@ -1,22 +1,23 @@
-import React from 'react'
-import {DeepPartial} from 'redux'
 import {fireEvent, render} from '@testing-library/react'
-import thunk from 'redux-thunk'
+import React from 'react'
 import {Provider} from 'react-redux'
+import {DeepPartial} from 'redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from '../../../providers/SupportedLocales'
 import {getArticleUrl} from '../../../utils/helpCenter.utils'
+import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
 } from '../HelpCenterEditModalHeader'
-import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
 
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),

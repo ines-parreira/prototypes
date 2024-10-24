@@ -1,19 +1,19 @@
-import React from 'react'
-
 import {fromJS} from 'immutable'
+import React from 'react'
 import routerDom, {useParams} from 'react-router-dom'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+
 import {campaign} from 'fixtures/campaign'
-import {assumeMock, renderWithStore} from 'utils/testing'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {TableView} from 'state/ui/stats/types'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
 import {CampaignPerformanceTable} from 'pages/stats/convert/containers/CampaignPerformanceTable/CampaignPerformanceTable'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {TableView} from 'state/ui/stats/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)

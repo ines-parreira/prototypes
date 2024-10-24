@@ -1,12 +1,3 @@
-import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
-import {renderHook} from '@testing-library/react-hooks'
-import {waitFor} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import createMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-
 import {
     createIntegration,
     updateIntegration,
@@ -14,8 +5,18 @@ import {
     sendVerificationEmail,
 } from '@gorgias/api-client'
 import {HttpResponse, Integration} from '@gorgias/api-queries'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
+import createMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import * as localStorage from 'hooks/useLocalStorage'
+import {EmailIntegration} from 'models/integration/types'
 import socketManager from 'services/socketManager'
 import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
 import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
@@ -23,8 +24,6 @@ import {notify} from 'state/notifications/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
-import {EmailIntegration} from 'models/integration/types'
-import * as localStorage from 'hooks/useLocalStorage'
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()

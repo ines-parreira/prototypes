@@ -1,5 +1,6 @@
 import {act, render} from '@testing-library/react'
 import React from 'react'
+
 import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
 import {sampleContactFormAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
 

@@ -1,17 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import {FetchMacrosOptions, Macro} from 'models/macro/types'
-import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
+import TextInput from 'pages/common/forms/input/TextInput'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {isMacroDisabled} from 'pages/tickets/common/macros/utils'
 
-import css from './MacroModalList.less'
-
 import MacroList from './MacroList'
+import css from './MacroModalList.less'
 
 type Props = {
     currentMacro: Map<any, any>

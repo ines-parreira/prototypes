@@ -1,5 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {View, ViewCategory} from 'models/view/types'
 import {systemViewIcons} from 'utils/views'

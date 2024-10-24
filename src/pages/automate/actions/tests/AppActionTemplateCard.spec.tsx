@@ -1,13 +1,13 @@
-import React from 'react'
 import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
 import {useGetActionsApp} from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {renderWithRouter} from 'utils/testing'
 
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import AppActionTemplateCard from '../components/AppActionTemplateCard'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')

@@ -1,13 +1,13 @@
-import {AnyAction} from 'redux'
 import {createAction, ThunkAction} from '@reduxjs/toolkit'
+import {AnyAction} from 'redux'
 
 import {Article, LocaleCode} from 'models/helpCenter/types'
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {getHelpCenterClient} from 'rest_api/help_center_api'
 import {StoreDispatch, StoreState} from 'state/types'
 
-import {ArticleActions} from './types'
 import * as articleSelectors from './selectors'
+import {ArticleActions} from './types'
 
 /**
  * Articles actions

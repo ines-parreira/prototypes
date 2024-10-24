@@ -1,22 +1,22 @@
+import {VoiceCallRecording} from '@gorgias/api-types'
 import {Map} from 'immutable'
 
-import {VoiceCallRecording} from '@gorgias/api-types'
 import {RecentChatTicket} from 'business/types/recentChats'
 import {TicketChannel} from 'business/types/ticket'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {MacrosProperties} from 'models/macro/types'
-import {Section} from 'models/section/types'
-import {Ticket} from 'models/ticket/types'
-import {View} from 'models/view/types'
-import {Account} from 'state/currentAccount/types'
-import {ActionData} from 'state/infobar/utils'
-import {VoiceCall} from 'models/voiceCall/types'
 import {
     EcommerceStore,
     Shopper,
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
+import {MacrosProperties} from 'models/macro/types'
+import {Section} from 'models/section/types'
+import {Ticket} from 'models/ticket/types'
+import {View} from 'models/view/types'
+import {VoiceCall} from 'models/voiceCall/types'
+import {Account} from 'state/currentAccount/types'
+import {ActionData} from 'state/infobar/utils'
 
 export type SendData = {
     clientId?: string

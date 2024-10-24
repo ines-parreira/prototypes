@@ -1,14 +1,15 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import MockAdapter from 'axios-mock-adapter'
-import {dummyAppDetail} from 'fixtures/apps'
 import {dummyErrorLogList} from 'fixtures/appErrors'
+import {dummyAppDetail} from 'fixtures/apps'
 import AppAdvanced from 'pages/integrations/Advanced/AppAdvanced'
+
 import client from '../../../../models/api/resources'
 
 const mockStore = configureMockStore([thunk])

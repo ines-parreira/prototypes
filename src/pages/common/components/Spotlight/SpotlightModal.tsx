@@ -8,6 +8,7 @@ import React, {
     useRef,
 } from 'react'
 import {useLocation} from 'react-router-dom'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
@@ -24,6 +25,7 @@ import {
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
 
+import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 import {SpotlightModalContent} from 'pages/common/components/Spotlight/SpotlightModalContent'
 import {Tabs, useSearch} from 'pages/common/components/Spotlight/useSearch'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
@@ -31,7 +33,6 @@ import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isMacOs} from 'utils/platform'
-import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 
 type Props = {
     isOpen: boolean

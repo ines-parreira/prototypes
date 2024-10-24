@@ -1,13 +1,15 @@
 import {Map} from 'immutable'
 import moment from 'moment-timezone'
+
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
-import {IntegrationDataItem} from 'models/integration/types'
 import {Product} from 'constants/integrations/types/shopify'
-import GorgiasApi from 'services/gorgiasApi'
-import {transformProductToCampaignAttachment} from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
-import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import {DiscountCode} from 'models/discountCodes/types'
 import client from 'models/api/resources'
+import {DiscountCode} from 'models/discountCodes/types'
+import {IntegrationDataItem} from 'models/integration/types'
+import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
+import {transformProductToCampaignAttachment} from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
+import GorgiasApi from 'services/gorgiasApi'
+
 import {CampaignConfiguration, CampaignTemplate} from './types'
 
 export class CampaignConfigurationBuilder {

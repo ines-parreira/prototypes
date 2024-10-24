@@ -1,4 +1,3 @@
-import React, {useState} from 'react'
 import {
     FloatingFocusManager,
     FloatingOverlay,
@@ -6,6 +5,8 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react'
+import React, {useState} from 'react'
+
 import {
     BigCommerceProduct,
     BigCommerceProductVariant,

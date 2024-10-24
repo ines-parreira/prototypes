@@ -1,16 +1,17 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
 import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import moment from 'moment'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {
-    getCurrentSubscription,
-    hasCreditCard as getHasCreditCard,
-    isTrialing,
-    shouldPayWithShopify as getShouldPayWithShopify,
-} from 'state/currentAccount/selectors'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {ProductType} from 'models/billing/types'
+import {isLegacyAutomate} from 'models/billing/utils'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskInterval,
@@ -19,19 +20,21 @@ import {
     getCurrentSmsPlan,
     getCurrentVoicePlan,
 } from 'state/billing/selectors'
-import {ProductType} from 'models/billing/types'
 import {
     BillingBanner,
     CurrentProductsUsages,
     TicketPurpose,
 } from 'state/billing/types'
-import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    getCurrentSubscription,
+    hasCreditCard as getHasCreditCard,
+    isTrialing,
+    shouldPayWithShopify as getShouldPayWithShopify,
+} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {isLegacyAutomate} from 'models/billing/utils'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {FeatureFlagKey} from 'config/featureFlags'
+
+import ProductCard from '../../components/ProductCard'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -42,7 +45,6 @@ import {
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     PRODUCT_INFO,
 } from '../../constants'
-import ProductCard from '../../components/ProductCard'
 
 import css from './UsageAndPlansView.less'
 

@@ -1,21 +1,23 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, {ComponentProps} from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
-import userEvent from '@testing-library/user-event'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
+import {WIZARD_BUTTON_ACTIONS} from '../../constants'
+import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
 import AiAgentOnboardingWizardStepEducation from '../AiAgentOnboardingWizardEducation'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
-import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
-import {WIZARD_BUTTON_ACTIONS} from '../../constants'
 
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)

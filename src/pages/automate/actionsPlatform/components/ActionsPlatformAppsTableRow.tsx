@@ -1,11 +1,11 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import {ActionsApp, App} from '../types'
 import {AUTH_TYPE_LABEL_BY_TYPE} from '../constants'
+import {ActionsApp, App} from '../types'
 
 import css from './ActionsPlatformAppsTableRow.less'
 

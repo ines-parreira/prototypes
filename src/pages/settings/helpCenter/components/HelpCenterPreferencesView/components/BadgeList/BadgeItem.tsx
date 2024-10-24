@@ -1,7 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React from 'react'
 import {Badge} from 'reactstrap'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {LocaleCode} from '../../../../../../../models/helpCenter/types'
 

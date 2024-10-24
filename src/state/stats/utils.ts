@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {

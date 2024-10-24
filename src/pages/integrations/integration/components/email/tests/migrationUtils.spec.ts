@@ -10,6 +10,7 @@ import {
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
 import {VerificationStatus} from 'models/singleSenderVerification/types'
+
 import {
     computeMigrationInboundVerificationStatus,
     computeDomainSingleSenderVerificationStatus,

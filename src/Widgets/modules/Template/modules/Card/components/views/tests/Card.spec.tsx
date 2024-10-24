@@ -1,10 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {act, render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import CardHeader from '../CardHeader'
 
 import Card from '../Card'
+import CardHeader from '../CardHeader'
 
 const CARD_HEADER_TEST_ID = 'card-header'
 jest.mock('../CardHeader', () =>

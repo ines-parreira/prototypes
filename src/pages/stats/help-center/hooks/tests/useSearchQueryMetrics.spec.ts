@@ -6,6 +6,7 @@ import {
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+
 import {useSearchQueryMetrics} from '../useSearchQueryMetrics'
 
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({

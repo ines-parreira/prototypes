@@ -10,12 +10,12 @@ import {
     useDeleteCustomFieldValue,
     useUpdateCustomFieldValue,
 } from 'custom-fields/hooks/queries/queries'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useUpdateOrDeleteTicketFieldValue} from '../useUpdateOrDeleteTicketFieldValue'
 
 const queryClient = mockQueryClient()

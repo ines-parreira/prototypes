@@ -1,26 +1,26 @@
+import _isEqual from 'lodash/isEqual'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ReturnAction,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import useReturnOrderFlow from './hooks/useReturnOrderFlow'
-import ReturnOrderEligibility from './components/ReturnOrderEligibility'
+import {getHasAutomate} from 'state/billing/selectors'
+
 import ReturnOrderAction from './components/ReturnOrderAction'
+import ReturnOrderEligibility from './components/ReturnOrderEligibility'
+import {DEFAULT_RETURN_ACTION} from './constants'
+import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
 import ReturnOrderFlowViewContext, {
     ReturnOrderFlowViewContextType,
 } from './ReturnOrderFlowViewContext'
-import {DEFAULT_RETURN_ACTION} from './constants'
 
 const ReturnOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()

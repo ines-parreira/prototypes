@@ -1,5 +1,5 @@
-import React, {ComponentProps, useRef} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps, useRef} from 'react'
 
 import UncontrolledDropdown from '../UncontrolledDropdown'
 

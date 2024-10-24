@@ -1,17 +1,17 @@
 import {Map, List} from 'immutable'
 
-import {formatDatetime} from 'utils'
-import {StoreState} from 'state/types'
-import {getTrackingUrl} from 'utils/delivery'
-import {IntegrationType} from 'models/integration/types'
+import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
 import {
     DateTimeFormatType,
     DateTimeFormatMapper,
     DateAndTimeFormatting,
 } from 'constants/datetime'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
+import {IntegrationType} from 'models/integration/types'
 import {momentToLDMLFormat} from 'pages/common/utils/template'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {StoreState} from 'state/types'
+import {formatDatetime} from 'utils'
+import {getTrackingUrl} from 'utils/delivery'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.Magento2,

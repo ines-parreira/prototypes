@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, {FunctionComponent, useState} from 'react'
 import Draggable from 'react-draggable'
 
+import {replaceUploadUrls} from '../../../../utils/helpCenter.utils'
 import {
     MAX_ABSOLUTE_OFFSET,
     PIXEL_TO_OFFSET_RATIO,
@@ -9,7 +10,6 @@ import {
 
 import imageRepositioningModalCss from '../../../ImageRepositioningModal/ImageRepositioningModal.less'
 import css from '../../RepositionableImageUpload.less'
-import {replaceUploadUrls} from '../../../../utils/helpCenter.utils'
 
 export type DraggablePreviewImageProps = {
     defaultPreview?: string

@@ -1,6 +1,8 @@
-import React from 'react'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
+import React from 'react'
+
 import {PhoneRingingBehaviour} from 'models/integration/types'
+
 import VoiceIntegrationPreferencesTranscription from '../VoiceIntegrationPreferencesTranscription'
 
 describe('<VoiceIntegrationPreferencesTranscription />', () => {

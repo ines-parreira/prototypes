@@ -1,15 +1,15 @@
-import React, {useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useRef, useState} from 'react'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
-import {ActionsApp} from '../types'
 import {AUTH_TYPE_LABEL_BY_TYPE} from '../constants'
+import {ActionsApp} from '../types'
 
 import css from './ActionsPlatformAuthTypeSelectBox.less'
 

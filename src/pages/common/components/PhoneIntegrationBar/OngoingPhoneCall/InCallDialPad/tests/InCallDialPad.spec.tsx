@@ -1,7 +1,7 @@
-import React from 'react'
 import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import {Call} from '@twilio/voice-sdk'
 import {act} from '@testing-library/react-hooks'
+import {Call} from '@twilio/voice-sdk'
+import React from 'react'
 
 import {mockIncomingCall} from 'tests/twilioMocks'
 

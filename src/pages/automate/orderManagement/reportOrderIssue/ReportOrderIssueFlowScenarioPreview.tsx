@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
+import React, {useMemo} from 'react'
 
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
 import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
 

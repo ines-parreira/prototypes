@@ -1,10 +1,10 @@
 import {act, fireEvent, render, waitFor, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import userEvent from '@testing-library/user-event'
 import {
     Category,
     CreateCategoryDto,
@@ -13,17 +13,18 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
 import {getSingleCustomDomainResponseFixture as customDomain} from 'pages/settings/helpCenter/fixtures/getCustomDomainsResponse.fixture'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
-import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import CurrentHelpCenterContext from '../../../contexts/CurrentHelpCenterContext'
+import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
+import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

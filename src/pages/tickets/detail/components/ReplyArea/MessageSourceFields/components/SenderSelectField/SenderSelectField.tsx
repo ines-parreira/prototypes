@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react'
+
 import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
 
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
 import SenderDropDownItem from './SenderDropDownItem'
 import css from './SenderSelectField.less'

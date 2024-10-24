@@ -1,9 +1,8 @@
 import {useEffect, useState} from 'react'
 
-import {Paths} from 'rest_api/help_center_api/client.generated'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'
+import {Paths} from 'rest_api/help_center_api/client.generated'
 import {getCategories} from 'state/entities/helpCenter/categories'
 
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'

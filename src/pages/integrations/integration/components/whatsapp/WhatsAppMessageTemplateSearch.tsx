@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
 import classNames from 'classnames'
+import React, {useState} from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
+import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
 import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
-import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import useWhatsAppEditor from './useWhatsAppEditor'
 

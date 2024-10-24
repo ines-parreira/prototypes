@@ -1,5 +1,5 @@
-import React, {ComponentProps, ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
+import React, {ComponentProps, ForwardedRef, forwardRef} from 'react'
 
 import Button from './Button'
 import css from './IconButton.less'

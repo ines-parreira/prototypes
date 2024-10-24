@@ -1,4 +1,5 @@
 import {createAction} from '@reduxjs/toolkit'
+
 import {
     CHAT_INSTALLATION_STATUS_FETCHED,
     RESET_CHAT_INSTALLATION_STATUS,

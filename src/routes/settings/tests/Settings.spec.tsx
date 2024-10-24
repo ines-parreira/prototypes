@@ -1,31 +1,30 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
-import {ADMIN_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
-import {assumeMock} from 'utils/testing'
+import {ADMIN_ROLE} from 'config/user'
 
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
-
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {SettingRoutes} from '../Settings'
+import {assumeMock} from 'utils/testing'
 
 import {Billing} from '../Billing'
 import {Channels} from '../Channels'
 import {ContactForm} from '../ContactForm'
 import {Convert} from '../Convert'
 import {CustomFields} from '../CustomFields'
+import {HelpCenter} from '../HelpCenter'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Import} from '../Import'
 import {Integrations} from '../Integrations'
 import {Macros} from '../Macros'
 import {PhoneNumbers} from '../PhoneNumbers'
 import {Rules} from '../Rules'
+import {SettingRoutes} from '../Settings'
 import {SLA} from '../SLA'
 import {Teams} from '../Teams'
 import {Users} from '../Users'
-import {HelpCenter} from '../HelpCenter'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),

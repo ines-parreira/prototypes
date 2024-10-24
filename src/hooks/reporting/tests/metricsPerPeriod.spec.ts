@@ -1,13 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+
 import {TicketChannel} from 'business/types/ticket'
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {OrderDirection} from 'models/api/types'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {assumeMock} from 'utils/testing'
+import {OrderDirection} from 'models/api/types'
 import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')

@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
 import {TicketChannel} from 'business/types/ticket'
+import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
 
 import ChannelListCell from '../ChannelListCell'
 

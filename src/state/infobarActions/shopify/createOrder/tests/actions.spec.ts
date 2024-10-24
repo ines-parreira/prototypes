@@ -1,9 +1,9 @@
 import {AxiosResponse} from 'axios'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {fromJS, Map} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS, Map} from 'immutable'
 import {AnyAction} from 'redux'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     shopifyCalculatedDraftOrderFixture,
@@ -20,12 +20,12 @@ import {
     IntegrationDataItemType,
     IntegrationType,
 } from 'models/integration/types'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {executeAction} from 'state/infobar/actions'
 import {RootState, StoreDispatch} from 'state/types'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
-import {initialState} from '../reducers'
 import * as actions from '../actions'
+import {initialState} from '../reducers'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()

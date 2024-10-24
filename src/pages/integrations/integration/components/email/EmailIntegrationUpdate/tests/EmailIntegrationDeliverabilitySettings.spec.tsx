@@ -1,6 +1,7 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {capitalize} from 'lodash'
+import React from 'react'
+
 import {integrationBase} from 'fixtures/integrations'
 
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
@@ -11,6 +12,7 @@ import {
     OutlookIntegration,
 } from 'models/integration/types'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
 const onChange = jest.fn()

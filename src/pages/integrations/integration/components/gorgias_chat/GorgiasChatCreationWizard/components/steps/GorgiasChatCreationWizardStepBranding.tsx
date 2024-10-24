@@ -1,13 +1,7 @@
-import React, {useState, useRef, useMemo} from 'react'
 import {Map, fromJS} from 'immutable'
-
-import history from 'pages/history'
-
-import useAppDispatch from 'hooks/useAppDispatch'
+import React, {useState, useRef, useMemo} from 'react'
 
 import {SegmentEvent} from 'common/segment'
-
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 
 import {
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -15,28 +9,29 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-
+import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
 
+import Button from 'pages/common/components/button/Button'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import ColorField from 'pages/common/forms/ColorField'
 import InputField from 'pages/common/forms/input/InputField'
 
-import Button from 'pages/common/components/button/Button'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import history from 'pages/history'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepBranding.less'
 

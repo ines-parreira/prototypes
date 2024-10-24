@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react'
 
-import ColorField from 'pages/common/forms/ColorField'
 import Button from 'pages/common/components/button/Button'
+import ColorField from 'pages/common/forms/ColorField'
 
 export const SUBMIT_TEXT = 'Submit'
 export const CANCEL_TEXT = 'Cancel'

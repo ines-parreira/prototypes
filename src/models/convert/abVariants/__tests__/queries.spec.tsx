@@ -1,17 +1,15 @@
-import React from 'react'
-
 import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook, act} from '@testing-library/react-hooks'
+import React from 'react'
 
+import {abGroup, campaignId} from 'fixtures/abGroup'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {abGroup, campaignId} from 'fixtures/abGroup'
-
-import {ABVariantParams} from '../types'
-import * as resources from '../resources'
 import * as queries from '../queries'
+import * as resources from '../resources'
+import {ABVariantParams} from '../types'
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(() => ({

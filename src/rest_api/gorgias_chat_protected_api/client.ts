@@ -1,8 +1,10 @@
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
 import memoize from 'memoize-one'
+import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+
 import {isProduction, isStaging} from 'utils/environment'
 
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
+
 import {Client} from './client.generated'
 import OpenAPIDoc from './gorgias-chat-protected-api.openapi.json'
 

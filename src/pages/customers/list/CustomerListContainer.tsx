@@ -1,26 +1,26 @@
-import React, {useState} from 'react'
 import {fromJS} from 'immutable'
+import React, {useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
-import {EntityType} from 'models/view/types'
 
-import {compactInteger} from 'utils'
-import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useTitle from 'hooks/useTitle'
+import {EntityType} from 'models/view/types'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
+
+import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import CustomerListActions from 'pages/customers/list/CustomerListActions'
 import {getCustomers} from 'state/customers/selectors'
+import {fetchViewItems} from 'state/views/actions'
 import {
     getActiveView,
     hasActiveView as hasActiveViewSelector,
 } from 'state/views/selectors'
-import {fetchViewItems} from 'state/views/actions'
-import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
-import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import CustomerListActions from 'pages/customers/list/CustomerListActions'
+import {compactInteger} from 'utils'
 
 export default function CustomerListContainer() {
     const dispatch = useAppDispatch()

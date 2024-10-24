@@ -1,8 +1,9 @@
 import React from 'react'
-import SummaryLineItem from './SummaryLineItem'
-import {SummaryItemData} from './types'
+
 import css from './SummaryBody.less'
+import SummaryLineItem from './SummaryLineItem'
 import SummaryTotal from './SummaryTotal'
+import {SummaryItemData} from './types'
 
 export type SummaryBodyProps = {
     items: SummaryItemData[]

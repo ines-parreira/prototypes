@@ -1,19 +1,19 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
-import {QueryClientProvider} from '@tanstack/react-query'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-
-import {TicketMessage} from 'models/ticket/types'
-import {assumeMock} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
+import {TicketMessage} from 'models/ticket/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import AIAgentBanner from '../AIAgentBanner'
 

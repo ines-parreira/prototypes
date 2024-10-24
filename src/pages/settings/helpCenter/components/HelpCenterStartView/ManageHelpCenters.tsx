@@ -1,27 +1,27 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {keyBy as _keyBy} from 'lodash'
 import moment from 'moment'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import settingsCss from 'pages/settings/settings.less'
 
-import {HelpCenter, Locale} from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
-import {notify} from 'state/notifications/actions'
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
-import {NotificationStatus} from 'state/notifications/types'
+import {HelpCenter, Locale} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import settingsCss from 'pages/settings/settings.less'
 import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters'
-import {StandaloneBanner} from '../StandaloneBanner'
-import HelpCenterTable from '../HelpCenterTable'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
 
-import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {HELP_CENTER_BASE_PATH} from '../../constants'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
+import HelpCenterTable from '../HelpCenterTable'
+import {StandaloneBanner} from '../StandaloneBanner'
 
 import css from './HelpCenterStartView.less'
 

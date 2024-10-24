@@ -1,5 +1,6 @@
-import {useCallback, useState} from 'react'
 import writeText from 'copy-to-clipboard'
+import {useCallback, useState} from 'react'
+
 import useIsMounted from './useIsMounted'
 
 export interface CopyToClipboardState {

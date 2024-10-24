@@ -1,7 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {MemoryRouter, Route, useRouteMatch} from 'react-router-dom'
+
 import {AutomateFeatures} from 'pages/automate/common/types'
+
 import {ConnectedChannelsEmptyView} from '../components/ConnectedChannelsEmptyView'
 
 jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({

@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useIsAICopyAssistantEnabled = (): boolean => {

@@ -1,7 +1,7 @@
-import React from 'react'
 import classnames from 'classnames'
-import _rangeRight from 'lodash/rangeRight'
 import {Map} from 'immutable'
+import _rangeRight from 'lodash/rangeRight'
+import React from 'react'
 
 import DistributionVariantStat, {
     DistributionStatVariant,

@@ -1,11 +1,13 @@
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+
 import {AttachmentEnum} from 'common/types'
-import {assumeMock} from 'utils/testing'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {assumeMock} from 'utils/testing'
+
 import ProductRecommendationScenarioPicker from '../ProductRecommendationScenarioPicker'
 
 jest.mock('pages/convert/campaigns/hooks/useCampaignDetailsContext')

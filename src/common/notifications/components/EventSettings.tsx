@@ -1,17 +1,17 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
 import React from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CheckBox from 'pages/common/forms/CheckBox'
-import SourceIcon from 'pages/common/components/SourceIcon'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {SoundValue} from 'services/NotificationSounds'
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     channels,
@@ -21,9 +21,9 @@ import {
 } from '../data'
 import {LegacyNotificationType, NotificationType, Settings} from '../types'
 
+import css from './EventSettings.less'
 import EventSettingsTableHead from './EventSettingsTableHead'
 import SoundSelect from './SoundSelect'
-import css from './EventSettings.less'
 
 type Props = {
     settings: Settings

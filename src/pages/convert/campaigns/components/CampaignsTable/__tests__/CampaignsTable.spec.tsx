@@ -1,24 +1,22 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {screen, fireEvent, render, waitFor, act} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import useSearch from 'hooks/useSearch'
-
-import {campaign} from 'fixtures/campaign'
 import {campaignWithABGroup} from 'fixtures/abGroup'
+import {campaign} from 'fixtures/campaign'
 
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
+import useSearch from 'hooks/useSearch'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import {createTrigger} from '../../../utils/createTrigger'
-
 import {Campaign} from '../../../types/Campaign'
 import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
+import {createTrigger} from '../../../utils/createTrigger'
 
 import {CampaignsTable} from '../CampaignsTable'
 

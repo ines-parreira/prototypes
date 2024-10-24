@@ -1,26 +1,28 @@
 import {isAxiosError} from 'axios'
-import _get from 'lodash/get'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import _get from 'lodash/get'
 import _isEqual from 'lodash/isEqual'
+import {useCallback, useEffect, useMemo, useState} from 'react'
+
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {FormValues, ValidFormValues} from '../types'
-import {DEFAULT_FORM_VALUES} from '../constants'
+
+import {logEvent, SegmentEvent} from '../../../../common/segment'
+import {FeatureFlagKey} from '../../../../config/featureFlags'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppSelector from '../../../../hooks/useAppSelector'
+import {AiAgentOnboardingWizardStep} from '../../../../models/aiAgent/types'
+import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     getFormValuesFromStoreConfiguration,
     getStoreConfigurationFromFormValues,
 } from '../components/StoreConfigForm/StoreConfigForm.utils'
-import {logEvent, SegmentEvent} from '../../../../common/segment'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {FeatureFlagKey} from '../../../../config/featureFlags'
-import {AiAgentOnboardingWizardStep} from '../../../../models/aiAgent/types'
-import useAppSelector from '../../../../hooks/useAppSelector'
-import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
+import {DEFAULT_FORM_VALUES} from '../constants'
+import {FormValues, ValidFormValues} from '../types'
 import {getValidStoreConfigurationFormValues} from '../utils/store-configuration-validation.utils'
-import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
+import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
 
 export const useConfigurationForm = ({
     initValues,

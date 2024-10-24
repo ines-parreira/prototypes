@@ -1,5 +1,3 @@
-import React, {ComponentProps, useState} from 'react'
-import {get} from 'lodash'
 import {
     ListUsersRelationshipsItem,
     VoiceCallTransferReceiverType,
@@ -8,20 +6,24 @@ import {
     useTransferCall,
 } from '@gorgias/api-queries'
 import {Call} from '@twilio/voice-sdk'
+import {get} from 'lodash'
+import React, {ComponentProps, useState} from 'react'
+
+import {getCallSid} from 'hooks/integrations/phone/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Button from 'pages/common/components/button/Button'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import {AgentLabel} from 'pages/common/utils/labels'
 import {getHumanAgentsJS} from 'state/agents/selectors'
-import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUserId} from 'state/currentUser/selectors'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getCallSid} from 'hooks/integrations/phone/utils'
+
 import DropdownSection from '../../dropdown/DropdownSection'
 import css from './CallTransferDropdown.less'
 import {getAvailabilityBadgeColor, mergeAgentData} from './utils'

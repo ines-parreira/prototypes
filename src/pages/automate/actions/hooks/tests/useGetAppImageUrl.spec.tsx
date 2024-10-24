@@ -1,10 +1,12 @@
-import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+
 import {dummyAppListData} from 'fixtures/apps'
 import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useListActionsApps} from 'models/workflows/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import useGetAppImageUrl from '../useGetAppImageUrl'
 
 jest.mock('models/integration/queries')

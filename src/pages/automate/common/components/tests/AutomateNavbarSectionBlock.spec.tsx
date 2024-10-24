@@ -1,20 +1,21 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {getHasAutomate} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/constants'
 
 import {account} from 'fixtures/account'
-import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
 import {StoreConfiguration} from 'models/aiAgent/types'
+import {IntegrationType} from 'models/integration/constants'
 import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
+import {getHasAutomate} from 'state/billing/selectors'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import AutomateNavbarSectionBlock from '../AutomateNavbarSectionBlock'
 
 jest.mock('state/billing/selectors', () => ({

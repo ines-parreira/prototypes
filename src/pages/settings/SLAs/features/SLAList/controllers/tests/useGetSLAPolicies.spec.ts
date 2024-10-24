@@ -1,14 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
 } from '@gorgias/api-queries'
+import {renderHook} from '@testing-library/react-hooks'
 
 import {slaPolicy1, UISLAPolicy1} from 'pages/settings/SLAs/fixtures/fixtures'
 
-import useGetSLAPolicies from '../useGetSLAPolicies'
 import makeUISLAPolicy from '../makeUISLAPolicy'
+import useGetSLAPolicies from '../useGetSLAPolicies'
 
 jest.mock('@gorgias/api-queries')
 const mockUseListSlaPolicies = useListSlaPolicies as jest.Mock

@@ -7,6 +7,7 @@ import {
     VirtuosoHandle,
     VirtuosoProps,
 } from 'react-virtuoso'
+
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,

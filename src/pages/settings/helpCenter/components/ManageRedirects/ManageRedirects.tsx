@@ -1,10 +1,12 @@
-import React, {Fragment} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
-import InputField from 'pages/common/forms/input/InputField'
+import React, {Fragment} from 'react'
+
 import Button from 'pages/common/components/button/Button'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import Loader from '../../../../common/components/Loader/Loader'
+import InputField from 'pages/common/forms/input/InputField'
+
 import {isProduction, isStaging} from '../../../../../utils/environment'
+import Loader from '../../../../common/components/Loader/Loader'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {
     helpCenterRedirectsKey,
     useCreateHelpCenterRedirect,

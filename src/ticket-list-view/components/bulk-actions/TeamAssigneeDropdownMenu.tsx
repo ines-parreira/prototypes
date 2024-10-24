@@ -1,3 +1,4 @@
+import {ListTeamsOrderBy} from '@gorgias/api-queries'
 import React, {
     KeyboardEvent,
     useCallback,
@@ -5,18 +6,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {ListTeamsOrderBy} from '@gorgias/api-queries'
 
-import Button from 'pages/common/components/button/Button'
 import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {Team} from 'models/team/types'
+import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import useListTeams from 'teams/useListTeams'
 
-import TeamDropdownItem from './TeamDropdownItem'
 import css from './style.less'
+import TeamDropdownItem from './TeamDropdownItem'
 
 type Props = {
     onClick: (item: Item | null) => void

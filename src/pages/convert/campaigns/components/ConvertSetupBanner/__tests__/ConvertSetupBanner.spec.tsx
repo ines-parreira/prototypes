@@ -1,17 +1,19 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
-import {fromJS} from 'immutable'
-import {RootState} from 'state/types'
-import {user} from 'fixtures/users'
+
 import {AGENT_ROLE} from 'config/user'
-import {assumeMock} from 'utils/testing'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {convertStatusNotInstalled, convertStatusOk} from 'fixtures/convert'
 import {channelConnection} from 'fixtures/channelConnection'
+import {convertStatusNotInstalled, convertStatusOk} from 'fixtures/convert'
+import {user} from 'fixtures/users'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {RootState} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {ConvertSetupBanner} from '../ConvertSetupBanner'
 
 const defaultState = {

@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, {
     useReducer,
     useCallback,
@@ -6,9 +7,8 @@ import React, {
     useState,
 } from 'react'
 import {useParams, useLocation, useHistory} from 'react-router-dom'
-import moment from 'moment'
+
 import useKey from 'hooks/useKey'
-import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
@@ -16,13 +16,15 @@ import {
     useGetConfigurationExecution,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
+
+import css from './ActionEventsView.less'
 import ActionEventsHeader from './components/ActionEventsHeader'
+import ActionEventSidePanel from './components/ActionEventSidePanel'
 import ActionEventsList from './components/ActionEventsList'
 import ActionEventsNumberedPagination from './components/ActionEventsNumberedPagination'
-import ActionEventSidePanel from './components/ActionEventSidePanel'
 
 import {LlmTriggeredExecution} from './types'
-import css from './ActionEventsView.less'
 
 export type Filter = Omit<
     Parameters<typeof useGetConfigurationExecutions>[0],

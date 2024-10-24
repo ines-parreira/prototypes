@@ -1,7 +1,7 @@
+import classNames from 'classnames'
+import _omit from 'lodash/omit'
 import React, {Component} from 'react'
 import ReactPaginate from 'react-paginate'
-import _omit from 'lodash/omit'
-import classNames from 'classnames'
 
 import css from './Pagination.less'
 

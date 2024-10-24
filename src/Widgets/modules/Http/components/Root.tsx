@@ -1,12 +1,12 @@
-import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
 import logo from 'assets/img/integrations/http.png'
 import {renderTemplate} from 'pages/common/utils/template'
 
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 
 import css from './Root.less'
 

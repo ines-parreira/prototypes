@@ -1,20 +1,20 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    getIntegrationsByType,
-    getIntegrationsLoading,
-} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {HttpIntegration} from 'models/integration/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
     activateIntegration,
     deactivateIntegration,
 } from 'state/integrations/actions'
-import Loader from 'pages/common/components/Loader/Loader'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import {HttpIntegration} from 'models/integration/types'
-import {IntegrationType} from 'models/integration/constants'
+import {
+    getIntegrationsByType,
+    getIntegrationsLoading,
+} from 'state/integrations/selectors'
 
 import NoIntegration from '../../NoIntegration'
 import {BASE_PATH} from '../constants'

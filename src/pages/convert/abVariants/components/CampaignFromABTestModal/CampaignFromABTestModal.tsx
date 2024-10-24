@@ -1,28 +1,25 @@
 import React, {useCallback, useMemo, useState} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {CampaignCreatePayload} from 'models/convert/campaign/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import RadioButton from 'pages/common/components/RadioButton'
+import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
-import Button from 'pages/common/components/button/Button'
-
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import RadioButton from 'pages/common/components/RadioButton'
-
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-
 import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {toJS} from 'utils'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {CampaignCreatePayload} from 'models/convert/campaign/types'
-
-import history from 'pages/history'
 import {createCampaignFromVariant} from 'pages/convert/campaigns/utils/createCampaignFromVariant'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import history from 'pages/history'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {toJS} from 'utils'
+
 import css from './CampaignFromABTestModal.less'
 
 type Props = {

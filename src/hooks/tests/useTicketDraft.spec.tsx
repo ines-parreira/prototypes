@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
-import React, {ComponentType} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {ComponentType} from 'react'
+import {act} from 'react-dom/test-utils'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {act} from 'react-dom/test-utils'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {RootState, StoreDispatch} from 'state/types'

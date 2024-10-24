@@ -1,17 +1,18 @@
+import {Meta, StoryFn} from '@storybook/react'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import {Meta, StoryFn} from '@storybook/react'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {ThemeProvider} from 'theme'
-import StoreFilter from 'pages/stats/common/filters/StoreFilter'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {IntegrationType} from 'models/integration/constants'
-import {RootState} from 'state/types'
-import {initialState as billingInitialState} from 'state/billing/reducers'
+
 import * as billingFixtures from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import StoreFilter from 'pages/stats/common/filters/StoreFilter'
+import {initialState as billingInitialState} from 'state/billing/reducers'
 import {getStoreIntegrations} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {ThemeProvider} from 'theme'
 
 const storyConfig: Meta = {
     title: 'Common/Filters/StoreFilter',

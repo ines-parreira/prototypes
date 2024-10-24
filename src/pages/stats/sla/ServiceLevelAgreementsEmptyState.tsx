@@ -1,10 +1,11 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+
 import icon from 'assets/img/stats/no-slas-icon.png'
 import Button from 'pages/common/components/button/Button'
-import css from 'pages/stats/sla/ServiceLevelAgreementsEmptyState.less'
-import PageHeader from 'pages/common/components/PageHeader'
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/stats/sla/ServiceLevelAgreementsEmptyState.less'
 
 export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/sla'
 export const NO_BANNER_ALT_TEXT = 'No SLAs banner'

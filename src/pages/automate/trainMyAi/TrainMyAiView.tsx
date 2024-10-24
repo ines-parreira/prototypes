@@ -1,48 +1,49 @@
+import {useQueryClient} from '@tanstack/react-query'
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import classNames from 'classnames'
 
-import {useQueryClient} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import Button from 'pages/common/components/button/Button'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import Loader from 'pages/common/components/Loader/Loader'
-import AutomateView from 'pages/automate/common/components/AutomateView'
+import {SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,
     useArticleRecommendationPredictions,
 } from 'models/articleRecommendationPrediction/queries'
-import {SegmentEvent} from 'common/segment'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 import {useGetHelpCenter} from 'models/helpCenter/queries'
-import Badge from 'pages/common/components/Badge/Badge'
-import Paywall from 'pages/common/components/Paywall/Paywall'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {FeatureFlagKey} from 'config/featureFlags'
+import Badge from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import Paywall from 'pages/common/components/Paywall/Paywall'
+import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
+
+import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
+import {assetsUrl} from '../../../utils'
 import {
     ARTICLE_RECOMMENDATION,
     TRAIN_MY_AI,
 } from '../common/components/constants'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
 import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenterPublishedArticlesCount'
-import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
-import {assetsUrl} from '../../../utils'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
 import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
+import Header from './components/Header'
+import {StatefulMessageCard as MessageCard} from './components/MessageCard'
+import PreviewSection from './components/PreviewSection'
 import RecommendationDivisor from './components/RecommendationDivisor'
+import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
 import RecommendationFilters, {
     FeedbackOptions,
     DEFAULT_FEEDBACK_OPTIONS,
 } from './components/RecommendationFilters'
-import {StatefulMessageCard as MessageCard} from './components/MessageCard'
-import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
-import Header from './components/Header'
 import RecommendationPagination from './components/RecommendationPagination'
-import PreviewSection from './components/PreviewSection'
-import css from './TrainMyAiView.less'
 import {RecommendationDisabled} from './components/TrainMyAiAlerts'
+import css from './TrainMyAiView.less'
 
 const TrainMyAiView = () => {
     const leftColRef = useRef<HTMLDivElement>(null)

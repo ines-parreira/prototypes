@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+import _toArray from 'lodash/toArray'
 import React, {
     FunctionComponent,
     ReactChild,
@@ -8,8 +10,6 @@ import React, {
     ChangeEvent,
     RefObject,
 } from 'react'
-import _toArray from 'lodash/toArray'
-import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 

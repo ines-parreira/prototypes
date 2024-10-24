@@ -1,14 +1,13 @@
-import React from 'react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
 
-import {assumeMock, renderWithStore} from 'utils/testing'
-
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 import CampaignRevenueChart from '../CampaignRevenueChart'
 

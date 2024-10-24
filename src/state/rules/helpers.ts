@@ -1,6 +1,6 @@
-import _trim from 'lodash/trim'
-import _compact from 'lodash/compact'
 import {Map} from 'immutable'
+import _compact from 'lodash/compact'
+import _trim from 'lodash/trim'
 
 import {isImmutable, toImmutable} from 'common/utils'
 

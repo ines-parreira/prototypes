@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
-import * as phoneNumbersSelectors from 'state/entities/phoneNumbers/selectors'
+
 import {phoneNumbers} from 'fixtures/newPhoneNumber'
+import * as phoneNumbersSelectors from 'state/entities/phoneNumbers/selectors'
+
 import usePhoneNumbers from '../usePhoneNumbers'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())

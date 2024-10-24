@@ -1,3 +1,6 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {Map, List} from 'immutable'
 import React, {
     Children,
     cloneElement,
@@ -5,19 +8,16 @@ import React, {
     ReactElement,
     useMemo,
 } from 'react'
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import {Card, CardBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Card, CardBody} from 'reactstrap'
 
 import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
 import {RuleItemActions} from 'pages/settings/rules/types'
 
+import css from './Action.less'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
-import css from './Action.less'
 import {actionsConfig, isValidActionKey} from './config'
 
 type Props = {

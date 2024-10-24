@@ -5,10 +5,10 @@ import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type {TicketPartial} from '../../types'
-import useTickets from '../useTickets'
+import useScrollOffset from '../useScrollOffset'
 import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
-import useScrollOffset from '../useScrollOffset'
+import useTickets from '../useTickets'
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock

@@ -1,8 +1,10 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
+
 import {useBackToConvert} from 'pages/convert/onboarding/hooks/useBackToConvert'
 import {assumeMock} from 'utils/testing'
+
 import BackToConvertButton from '../BackToConvertButton'
 
 jest.mock('pages/convert/onboarding/hooks/useBackToConvert')

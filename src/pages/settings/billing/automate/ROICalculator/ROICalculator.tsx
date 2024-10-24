@@ -1,26 +1,26 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import moment from 'moment'
-import classNames from 'classnames'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import moment from 'moment'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import {
     useClosedTicketsTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-
-import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
+import useAppSelector from 'hooks/useAppSelector'
 import {PlanInterval} from 'models/billing/types'
-import {getAvailableAutomatePlans} from 'state/billing/selectors'
+import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
+import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
+import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
+import {getAvailableAutomatePlans} from 'state/billing/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
+
 import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
 import css from './ROICalculator.less'
 import {

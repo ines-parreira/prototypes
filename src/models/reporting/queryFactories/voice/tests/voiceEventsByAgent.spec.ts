@@ -1,14 +1,15 @@
 import moment from 'moment'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {StatsFilters} from 'models/stat/types'
-import {ReportingFilterOperator} from 'models/reporting/types'
+
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentMember,
     VoiceEventsByAgentSegment,
     VoiceEventsByAgentDimension,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {ReportingFilterOperator} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,

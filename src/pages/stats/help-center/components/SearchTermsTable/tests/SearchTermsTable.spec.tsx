@@ -1,15 +1,17 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+
 import {useMetric} from 'hooks/reporting/useMetric'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+
 import SearchTermsTable from '../SearchTermsTable'
 
 jest.mock('hooks/reporting/useMetric', () => ({

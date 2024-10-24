@@ -1,21 +1,23 @@
-import {useRef} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
+import {useRef} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AIArticle,
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
     HelpCenter,
 } from 'models/helpCenter/types'
+import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+
 import {AIArticleArchiveModalHandle} from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
 
 export type onEditorSaveProps = {

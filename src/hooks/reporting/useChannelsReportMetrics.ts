@@ -1,5 +1,7 @@
-import {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useMemo} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
@@ -17,7 +19,6 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useChannelsReportMetrics = () => {
     const isAnalyticsNewFilters =

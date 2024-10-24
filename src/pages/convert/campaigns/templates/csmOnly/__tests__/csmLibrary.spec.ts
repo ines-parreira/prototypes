@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {CSM_CAMPAIGN_TEMPLATES} from '..'
 
 describe('csmLibrary items', () => {

@@ -1,7 +1,7 @@
-import React from 'react'
-import {useLocation, useParams} from 'react-router-dom'
 import {useGetSlaPolicy} from '@gorgias/api-queries'
 import {validateCreateSlaPolicyBody} from '@gorgias/api-validators'
+import React from 'react'
+import {useLocation, useParams} from 'react-router-dom'
 
 import {SLATemplate} from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
@@ -9,10 +9,10 @@ import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 import SLAFormView from '../views/SLAFormView'
 import {toFormErrors} from '../views/validation'
 
+import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
 import useFormValues, {SLAFormValues} from './useFormValues'
 import useSubmitPolicy from './useSubmitPolicy'
-import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 
 export default function SLAFormController() {
     const {policyId} = useParams<{policyId?: string}>()

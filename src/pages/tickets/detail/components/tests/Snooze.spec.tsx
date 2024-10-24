@@ -4,9 +4,9 @@ import _noop from 'lodash/noop'
 import {Moment} from 'moment'
 import React from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-import {logEvent, SegmentEvent} from 'common/segment'
 
 import Snooze from '../Snooze'
 

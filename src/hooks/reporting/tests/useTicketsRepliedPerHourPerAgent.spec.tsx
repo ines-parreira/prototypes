@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {User} from 'config/types/user'
 import {
     useOnlineTimePerAgent,

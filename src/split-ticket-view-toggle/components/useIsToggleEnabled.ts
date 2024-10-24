@@ -1,5 +1,5 @@
-import {useLocation} from 'react-router-dom'
 import {useMemo} from 'react'
+import {useLocation} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewType} from 'models/view/types'

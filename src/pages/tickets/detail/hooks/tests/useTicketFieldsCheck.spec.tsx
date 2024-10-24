@@ -1,14 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {Map as mockMap} from 'immutable'
 
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
+import {setCustomFieldValueAction as mockSetCustomFieldValueAction} from 'fixtures/macro'
 import {
     setHasAttemptedToCloseTicket,
     triggerTicketFieldsErrors,
 } from 'state/ticket/actions'
 import {getAppliedMacro, getTicketFieldState} from 'state/ticket/selectors'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
-import {setCustomFieldValueAction as mockSetCustomFieldValueAction} from 'fixtures/macro'
 import {assumeMock} from 'utils/testing'
 
 import {useTicketFieldsCheck} from '../useTicketFieldsCheck'

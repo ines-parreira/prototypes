@@ -1,20 +1,22 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React from 'react'
 import {screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
+import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),

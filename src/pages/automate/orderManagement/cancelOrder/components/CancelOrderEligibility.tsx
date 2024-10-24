@@ -1,19 +1,19 @@
-import React, {useRef, useState} from 'react'
 import _isEqual from 'lodash/isEqual'
+import React, {useRef, useState} from 'react'
 
+import {CancellationsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import {CancellationsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
+import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import IconButton from 'pages/common/components/button/IconButton'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 import css from './CancelOrderEligibility.less'
 

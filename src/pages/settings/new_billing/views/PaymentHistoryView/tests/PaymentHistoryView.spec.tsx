@@ -1,14 +1,15 @@
-import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
 import {invoices} from 'fixtures/invoices'
-import {RootState, StoreDispatch} from 'state/types'
-import {Invoice, PaymentIntentStatus, PaymentType} from 'state/billing/types'
 import client from 'models/api/resources'
+import {Invoice, PaymentIntentStatus, PaymentType} from 'state/billing/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import PaymentsHistoryView from '../PaymentsHistoryView'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()

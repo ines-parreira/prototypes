@@ -2,8 +2,8 @@ import {renderHook, act} from '@testing-library/react-hooks'
 
 import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
 
-import useContactFormsAutomationSettings from '../useContactFormsAutomationSettings'
 import useContactFormAutomationSettings from '../useContactFormAutomationSettings'
+import useContactFormsAutomationSettings from '../useContactFormsAutomationSettings'
 
 jest.mock('../useContactFormsAutomationSettings')
 

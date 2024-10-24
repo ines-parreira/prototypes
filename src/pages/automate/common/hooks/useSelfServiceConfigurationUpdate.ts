@@ -1,15 +1,16 @@
+import {useQueryClient} from '@tanstack/react-query'
 import {produce, Draft} from 'immer'
 
-import {useQueryClient} from '@tanstack/react-query'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {Notification, NotificationStatus} from 'state/notifications/types'
 import {
     selfServiceConfigurationKeys,
     useUpdateSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
+import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+
 import useStoreIntegrations from './useStoreIntegrations'
 
 export type UseSelfServiceConfigurationUpdateProps = {

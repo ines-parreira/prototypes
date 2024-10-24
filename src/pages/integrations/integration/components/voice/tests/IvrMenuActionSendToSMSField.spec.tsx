@@ -1,15 +1,17 @@
 import {render} from '@testing-library/react'
-import React from 'react'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
-import {RootState, StoreDispatch} from 'state/types'
-import {IvrSmsDeflection, VoiceMessageType} from 'models/integration/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
 } from 'models/integration/constants'
+import {IvrSmsDeflection, VoiceMessageType} from 'models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

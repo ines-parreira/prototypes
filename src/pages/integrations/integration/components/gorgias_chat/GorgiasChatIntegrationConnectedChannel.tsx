@@ -1,18 +1,20 @@
-import React, {useState} from 'react'
 import {Map} from 'immutable'
-import {useHistory} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import React, {useState} from 'react'
+import {useHistory} from 'react-router-dom'
+
 import {TicketChannel} from 'business/types/ticket'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import {getHasAutomate} from 'state/billing/selectors'
+
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 
 type Props = {

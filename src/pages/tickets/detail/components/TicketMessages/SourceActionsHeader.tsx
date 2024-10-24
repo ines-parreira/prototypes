@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
 import classNamesBind from 'classnames/bind'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {TicketMessageSourceType} from 'business/types/ticket'

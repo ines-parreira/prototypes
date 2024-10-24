@@ -1,30 +1,28 @@
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import React from 'react'
 
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
+import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import ChartCard from 'pages/stats/ChartCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import GaugeAddon from 'pages/stats/GaugeAddon'
-
+import ChartCard from 'pages/stats/ChartCard'
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
 } from 'pages/stats/common/utils'
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {TicketFieldsMetric} from 'state/ui/stats/types'
-
-import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import {
     DistributionCategoryCell,
     formatCategory,
 } from 'pages/stats/DistributionCategoryCell'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import GaugeAddon from 'pages/stats/GaugeAddon'
 
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
+import {TicketFieldsMetric} from 'state/ui/stats/types'
 
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',

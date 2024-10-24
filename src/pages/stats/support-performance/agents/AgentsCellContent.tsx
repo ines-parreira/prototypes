@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
+
 import {User} from 'config/types/user'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -7,16 +8,16 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import {
-    METRIC_COLUMN_WIDTH,
-    MetricQueryPerAgentQuery,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {
     formatMetricValue,
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import css from 'pages/stats/heatmap.less'
+import {
+    METRIC_COLUMN_WIDTH,
+    MetricQueryPerAgentQuery,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
 export type AgentsCellContentProps = {

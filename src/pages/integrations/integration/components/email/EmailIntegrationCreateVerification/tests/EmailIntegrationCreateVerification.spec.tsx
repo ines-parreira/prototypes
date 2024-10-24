@@ -1,8 +1,9 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import * as helpers from 'pages/integrations/integration/components/email/helpers'
+
 import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification'
 
 const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')

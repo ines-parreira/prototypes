@@ -1,12 +1,14 @@
 import React, {ComponentProps} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {EmailMigrationStatus} from 'models/integration/types'
+
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {EmailMigrationStatus} from 'models/integration/types'
 import {getEmailMigrationStatus} from 'state/integrations/selectors'
+
 import BannerNotification from '../BannerNotifications/BannerNotification'
-import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
 import {computeEmailMigrationStatusBanner} from './helpers'
+import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
 
 export default function EmailMigrationBanner() {
     const fetchMigrationStatus = useMigrationBannerStatus()

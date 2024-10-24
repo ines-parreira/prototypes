@@ -8,34 +8,40 @@ import React, {
 } from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     BigCommerceActionType,
     BigCommerceIntegration,
     BigCommerceRefundType,
     IntegrationType,
 } from 'models/integration/types'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import Button from 'pages/common/components/button/Button'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {ManualAmountRefundOrderModal} from './components/ManualAmountRefundOrderModal'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+
 import {EntireOrderRefundOrderModal} from './components/EntireOrderRefundOrderModal'
+import {ManualAmountRefundOrderModal} from './components/ManualAmountRefundOrderModal'
 import {RefundMethodPickerSection} from './components/RefundMethodPickerSection'
 import {RefundOrderFooter} from './components/RefundOrderFooter'
+import {
+    initialBigCommerceRefundOrderState,
+    bigcommerceRefundOrderReducer,
+} from './reducer'
 import css from './RefundOrderModal.less'
+import {BigCommerceRefundActionType} from './types'
 import {
     bigcommerceRefundOrder,
     calculateAvailablePaymentOptionsData,
@@ -43,11 +49,6 @@ import {
     formatAmount,
     onReset,
 } from './utils'
-import {
-    initialBigCommerceRefundOrderState,
-    bigcommerceRefundOrderReducer,
-} from './reducer'
-import {BigCommerceRefundActionType} from './types'
 
 type Props = {
     integration: BigCommerceIntegration

@@ -1,22 +1,23 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {TagsState} from 'state/entities/tags/types'
-import {assumeMock} from 'utils/testing'
-import {ReportingGranularity} from 'models/reporting/types'
-import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
-import {RootState} from 'state/types'
-import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
+import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {TagsState} from 'state/entities/tags/types'
+import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

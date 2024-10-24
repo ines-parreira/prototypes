@@ -7,6 +7,7 @@ import {
 
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 import {assumeMock} from 'utils/testing'
+
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 
 import {useAvailableTriggerList} from '../useAvailableTriggerList'

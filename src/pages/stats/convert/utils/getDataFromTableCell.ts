@@ -1,5 +1,5 @@
-import {CampaignTableKeys} from '../types/enums/CampaignTableKeys.enum'
 import {CampaignTableContentCell} from '../types/CampaignTableContentCell'
+import {CampaignTableKeys} from '../types/enums/CampaignTableKeys.enum'
 
 export function getDataFromTableCell(
     cell: CampaignTableContentCell,

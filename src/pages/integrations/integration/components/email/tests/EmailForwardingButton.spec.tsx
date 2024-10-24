@@ -5,13 +5,15 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 import {Provider} from 'react-redux'
-import MockAdapter from 'axios-mock-adapter'
-import {mockStore} from 'utils/testing'
+
 import client from 'models/api/resources'
 import {EmailMigrationInboundVerificationStatus} from 'models/integration/types'
 import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
+import {mockStore} from 'utils/testing'
+
 import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'

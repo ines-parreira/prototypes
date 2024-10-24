@@ -1,6 +1,6 @@
 import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {StoreDispatch} from 'state/types'
 import {WidgetEnvironment} from 'state/widgets/types'

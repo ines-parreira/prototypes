@@ -1,18 +1,16 @@
-import React from 'react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
-import TicketTag from 'pages/common/components/TicketTag'
-import {TicketMessage} from 'models/ticket/types'
-
-import {logEventWithSampling} from 'common/segment/segment'
 import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {TicketMessage} from 'models/ticket/types'
+import TicketTag from 'pages/common/components/TicketTag'
+
 import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
 
-import {TicketEventEnum} from './types'
-
-import TicketEvent from './TicketEvent'
-
 import css from './AIAgentFeedbackBar.less'
+import TicketEvent from './TicketEvent'
+import {TicketEventEnum} from './types'
 
 type Props = {
     messages: TicketMessage[]

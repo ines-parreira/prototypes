@@ -1,4 +1,5 @@
 import {useMemo, useRef} from 'react'
+
 import useUnmount from './useUnmount'
 
 export type DebouncedFunction<Fn extends (...args: any[]) => any> = (

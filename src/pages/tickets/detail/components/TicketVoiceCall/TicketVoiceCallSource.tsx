@@ -1,9 +1,11 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
+
 import {TicketChannel} from 'business/types/ticket'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DateAndTimeFormatting} from 'constants/datetime'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+
 import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallSourceProps = {

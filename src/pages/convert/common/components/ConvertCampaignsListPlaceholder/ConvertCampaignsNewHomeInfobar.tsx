@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
+
 import closeIcon from 'assets/img/icons/close.svg'
+import useLocalStorage from 'hooks/useLocalStorage'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import useLocalStorage from 'hooks/useLocalStorage'
 import css from './ConvertCampaignsNewHomeInfobar.less'
 
 type Props = {

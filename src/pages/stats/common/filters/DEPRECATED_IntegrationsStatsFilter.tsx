@@ -4,21 +4,21 @@ import aircallIcon from 'assets/img/integrations/aircall.png'
 import gmailIcon from 'assets/img/integrations/gmail.png'
 import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
-import zendeskIcon from 'assets/img/integrations/zendesk.png'
 import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
+import zendeskIcon from 'assets/img/integrations/zendesk.png'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
     IntegrationType,
 } from 'models/integration/constants'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {AppIntegration, Integration} from 'models/integration/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 
+import css from 'pages/stats/common/filters/IntegrationsStatsFilter.less'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
-import css from 'pages/stats/common/filters/IntegrationsStatsFilter.less'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export const IMAGE_ICONS = {
     [IntegrationType.Aircall]: aircallIcon,

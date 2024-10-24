@@ -1,23 +1,24 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
-import React from 'react'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {assumeMock} from 'utils/testing'
-import {
-    getCleanStatsFiltersWithTimezone,
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-} from 'state/ui/stats/selectors'
-import {ReportingGranularity} from 'models/reporting/types'
-import {RootState, StoreDispatch} from 'state/types'
 import {
     useBreachedSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {
+    getCleanStatsFiltersWithTimezone,
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+} from 'state/ui/stats/selectors'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

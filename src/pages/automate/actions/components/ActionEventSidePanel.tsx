@@ -1,10 +1,12 @@
-import React from 'react'
 import classnames from 'classnames'
-import IconButton from 'pages/common/components/button/IconButton'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {Drawer} from 'pages/common/components/Drawer'
+import React from 'react'
+
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Drawer} from 'pages/common/components/Drawer'
 import {Components} from 'rest_api/workflows_api/client.generated'
+
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import {
     LlmTriggeredExecution,

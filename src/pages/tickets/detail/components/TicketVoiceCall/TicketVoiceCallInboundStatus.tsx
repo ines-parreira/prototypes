@@ -1,5 +1,5 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import {
     getDisplayInboundVoiceCallStatus,
@@ -9,8 +9,8 @@ import {
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import CollapsibleDetails from './CollapsibleDetails'
-import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 import css from './TicketVoiceCallContainer.less'
+import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 type Props = {
     voiceCall: VoiceCall

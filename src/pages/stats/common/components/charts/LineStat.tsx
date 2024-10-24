@@ -1,21 +1,21 @@
-import React, {Component, ComponentProps} from 'react'
 import {ChartOptions, ChartDataset} from 'chart.js'
 
-import moment from 'moment'
 import {Map, List} from 'immutable'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
-import {connect, ConnectedProps} from 'react-redux'
+import moment from 'moment'
+import React, {Component, ComponentProps} from 'react'
 import {Line} from 'react-chartjs-2'
+import {connect, ConnectedProps} from 'react-redux'
 
-import Legend from '../Legend/Legend'
 import {
     colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
 } from '../../../../../config/stats'
-import {RootState} from '../../../../../state/types'
 import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
+import {RootState} from '../../../../../state/types'
+import Legend from '../Legend/Legend'
 
 import {highlightTimeRanges} from './plugins'
 

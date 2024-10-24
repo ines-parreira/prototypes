@@ -1,7 +1,8 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import SecondaryReasons from '../SecondaryReasons'
+import React from 'react'
+
 import {CommonReasonLabel} from '../../constants'
+import SecondaryReasons from '../SecondaryReasons'
 
 describe('SecondaryReasons', () => {
     const secondaryReasons = [

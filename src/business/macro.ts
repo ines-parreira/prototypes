@@ -3,8 +3,8 @@ import {fromJS, Map, List} from 'immutable'
 import {MacroActionName} from 'models/macroAction/types'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {TicketMessageSourceType} from './types/ticket'
 import {Notification} from './types/notification'
+import {TicketMessageSourceType} from './types/ticket'
 
 export type MacroClearingResult = {
     macro: Map<any, any>

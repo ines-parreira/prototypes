@@ -1,16 +1,16 @@
-import React, {useCallback} from 'react'
-import {DropdownItem} from 'reactstrap'
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
+import React, {useCallback} from 'react'
+import {DropdownItem} from 'reactstrap'
 
-import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {PhoneIntegration} from 'models/integration/types'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import useAppSelector from 'hooks/useAppSelector'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import useAppSelector from 'hooks/useAppSelector'
+import {PhoneIntegration} from 'models/integration/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 
 type Props = {
     address: string

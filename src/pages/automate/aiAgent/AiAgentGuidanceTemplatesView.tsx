@@ -1,8 +1,10 @@
 import React from 'react'
+
 import BackLink from 'pages/common/components/BackLink'
-import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
+
 import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
 
 type Props = {
     shopName: string

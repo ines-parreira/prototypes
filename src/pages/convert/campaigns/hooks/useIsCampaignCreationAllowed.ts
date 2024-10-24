@@ -1,5 +1,6 @@
-import {useMemo} from 'react'
 import {Map} from 'immutable'
+import {useMemo} from 'react'
+
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 

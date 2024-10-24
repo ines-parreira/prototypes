@@ -1,12 +1,12 @@
 import React, {useMemo, useRef, useState} from 'react'
 
-import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
+import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import Button from 'pages/common/components/button/Button'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
 
 type Props = {
     savedFilters: Array<{id: number; name: string}>

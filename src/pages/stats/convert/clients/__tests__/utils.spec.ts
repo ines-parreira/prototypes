@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import {getDateRange} from 'pages/stats/convert/clients/utils'
 
 describe('getDateRange', () => {

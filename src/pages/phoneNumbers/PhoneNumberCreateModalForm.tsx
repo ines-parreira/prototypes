@@ -1,7 +1,12 @@
 import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {
+    createPhoneNumber,
+    fetchNewPhoneNumber,
+} from 'models/phoneNumber/resources'
 import {
     PhoneNumberMeta,
     AddressInformation,
@@ -9,27 +14,22 @@ import {
     PhoneType,
     NewPhoneNumber,
 } from 'models/phoneNumber/types'
-import {
-    createPhoneNumber,
-    fetchNewPhoneNumber,
-} from 'models/phoneNumber/resources'
-import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
+import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
+import InputField from 'pages/common/forms/input/InputField'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
-import Alert from 'pages/common/components/Alert/Alert'
-import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
+import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
 import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
-import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 
 type Props = {
     isOpen: boolean

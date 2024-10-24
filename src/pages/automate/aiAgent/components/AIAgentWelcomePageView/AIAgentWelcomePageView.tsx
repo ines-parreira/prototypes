@@ -1,18 +1,20 @@
+import classNames from 'classnames'
 import React, {useCallback, useEffect} from 'react'
 
-import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 import {useHistory} from 'react-router-dom'
-import PageHeader from 'pages/common/components/PageHeader'
-import {assetsUrl} from 'utils'
-import Button from 'pages/common/components/button/Button'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
+
 import {SegmentEvent, logEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {StoreConfiguration} from 'models/aiAgent/types'
-import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {assetsUrl} from 'utils'
+
 import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
+import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
 import css from './AIAgentWelcomePageView.less'
 
 export type DynamicItem = {

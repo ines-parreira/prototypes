@@ -1,13 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-
-import {StoreDispatch, RootState} from '../../../../../../../state/types'
-import {MacroButton} from '../MacroButton'
 
 import {setTextAction, macroFixture} from '../../../../../../../fixtures/macro'
+import {StoreDispatch, RootState} from '../../../../../../../state/types'
+import {MacroButton} from '../MacroButton'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 

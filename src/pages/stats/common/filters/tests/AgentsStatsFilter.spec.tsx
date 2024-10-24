@@ -1,15 +1,16 @@
+import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
+
+import {agents} from 'fixtures/agents'
+import {teams} from 'fixtures/teams'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
-import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import {agents} from 'fixtures/agents'
-import {teams} from 'fixtures/teams'
 
 const mockStore = configureMockStore([thunk])
 

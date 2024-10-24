@@ -1,14 +1,13 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {Locale} from '../../../../models/helpCenter/types'
 
 import {FlagLanguageItem} from './FlagLanguageItem'
 import {LanguageBullet} from './LanguageBullet'
 
-import {moveLocaleToBack, moveLocaleToFront} from './utils'
-
 import css from './LanguageList.less'
+import {moveLocaleToBack, moveLocaleToFront} from './utils'
 
 type Props = {
     id: number | string

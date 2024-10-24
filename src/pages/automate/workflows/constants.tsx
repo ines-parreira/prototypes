@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 
-import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
+import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
 import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 

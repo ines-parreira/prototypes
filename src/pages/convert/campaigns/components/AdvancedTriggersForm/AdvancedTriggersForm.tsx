@@ -1,9 +1,9 @@
 import React, {useMemo, useEffect} from 'react'
 
+import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory'
+import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
 import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory'
 
 type Props = {
     triggers: CampaignTriggerMap

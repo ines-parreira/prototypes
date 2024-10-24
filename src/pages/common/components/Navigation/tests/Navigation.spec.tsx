@@ -1,7 +1,7 @@
+import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 
-import {render} from '@testing-library/react'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
 const commonProps: ComponentProps<typeof Navigation> = {

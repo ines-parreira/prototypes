@@ -1,6 +1,5 @@
 import _omit from 'lodash/omit'
 
-import {MessageContext} from '../responseUtils'
 import {
     convertToHTML,
     BlockSnapshot,
@@ -8,6 +7,7 @@ import {
     getContentStateSelectionSnapshot,
     ContentStateSelectionSnapshot,
 } from '../../../utils/editor'
+import {MessageContext} from '../responseUtils'
 import {ReplyAreaState} from '../types'
 
 export type MessageContextSnapshot = Omit<

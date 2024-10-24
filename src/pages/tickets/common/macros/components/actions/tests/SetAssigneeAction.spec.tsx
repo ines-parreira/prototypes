@@ -1,8 +1,9 @@
 import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
 import {RootState, StoreDispatch} from 'state/types'
 
 import SetAssigneeAction from '../SetAssigneeAction'

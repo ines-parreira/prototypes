@@ -1,10 +1,7 @@
-import React from 'react'
-import {noop} from 'lodash'
-
 import {fireEvent, render, screen} from '@testing-library/react'
+import {noop} from 'lodash'
+import React from 'react'
 
-import {MigrationStatus} from '../../types'
-import {parseSessionStats} from '../../utils'
 import {migrationProviders} from '../../fixtures/migration-providers'
 import {
     emptyMigrationStats,
@@ -14,6 +11,8 @@ import {
     partiallySucceededMigrationStats,
     succeededMigrationStats,
 } from '../../fixtures/migration-sessions'
+import {MigrationStatus} from '../../types'
+import {parseSessionStats} from '../../utils'
 
 import MigrationStateModal from './MigrationStateModal'
 

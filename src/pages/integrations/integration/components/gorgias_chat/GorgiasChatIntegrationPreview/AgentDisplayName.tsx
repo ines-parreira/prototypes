@@ -1,8 +1,9 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GorgiasChatAvatarNameType} from 'models/integration/types'
+
 import ChatTitle from './ChatTitle'
 
 export const AgentDisplayName = ({

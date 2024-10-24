@@ -4,9 +4,9 @@ import draftJS, {
     SelectionState,
     EditorState,
 } from 'draft-js'
-import {fromJS, Map} from 'immutable'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
+import {fromJS, Map} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'

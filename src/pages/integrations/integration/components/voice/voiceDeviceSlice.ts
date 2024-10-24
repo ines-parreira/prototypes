@@ -1,5 +1,6 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {Call, Device} from '@twilio/voice-sdk'
+
 import {initialState} from 'state/twilio/voiceDevice'
 
 const slice = createSlice({

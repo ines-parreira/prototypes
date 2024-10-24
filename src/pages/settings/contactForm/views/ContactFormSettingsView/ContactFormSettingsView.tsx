@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
 import {
     Link,
@@ -8,13 +9,20 @@ import {
     useHistory,
 } from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import dotError from 'assets/img/icons/dot-error.svg'
+import {TicketChannel} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
@@ -25,29 +33,22 @@ import {
     CONTACT_FORM_AUTOMATE_PATH,
 } from 'pages/settings/contactForm/constants'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
+import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import ContactFormCustomization from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization'
 import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
+import settingsCss from 'pages/settings/settings.less'
+import {getHasAutomate} from 'state/billing/selectors'
+import {getCurrentContactForm} from 'state/entities/contactForm/contactForms'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getCurrentContactForm} from 'state/entities/contactForm/contactForms'
-import settingsCss from 'pages/settings/settings.less'
-import Loader from 'pages/common/components/Loader/Loader'
-import useAppSelector from 'hooks/useAppSelector'
 import {changeContactFormId} from 'state/ui/contactForm'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
-import {getHasAutomate} from 'state/billing/selectors'
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import dotError from 'assets/img/icons/dot-error.svg'
-import css from './ContactFormSettingsView.less'
+
 import {ContactFormAutomateView} from './ContactFormAutomateView'
+import css from './ContactFormSettingsView.less'
 
 const navLinks = {
     Preferences: CONTACT_FORM_PREFERENCES_PATH,

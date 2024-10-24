@@ -1,6 +1,6 @@
-import React from 'react'
-import {LogicalOperator} from 'estree'
 import classNames from 'classnames'
+import {LogicalOperator} from 'estree'
+import React from 'react'
 
 import Button from '../../button/Button'
 

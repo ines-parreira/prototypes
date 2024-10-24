@@ -1,18 +1,19 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import LanguageSelect from '../LanguageSelect'
-import useCurrentHelpCenter from '../../../hooks/useCurrentHelpCenter'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
+import useCurrentHelpCenter from '../../../hooks/useCurrentHelpCenter'
+import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import LanguageSelect from '../LanguageSelect'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

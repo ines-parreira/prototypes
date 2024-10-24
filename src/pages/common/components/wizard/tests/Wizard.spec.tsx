@@ -1,5 +1,5 @@
-import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
+import React, {useContext} from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 

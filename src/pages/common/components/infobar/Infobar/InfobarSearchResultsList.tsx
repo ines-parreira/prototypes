@@ -1,14 +1,15 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import {Card, CardBody, CardTitle} from 'reactstrap'
-import {sanitizeHtmlDefault} from 'utils/html'
+
 import {Customer} from 'models/customer/types'
-import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
 import {PickedCustomerWithHighlights} from 'models/search/types'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from 'pages/common/components/infobar/Infobar.less'
+import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 export const NO_CUSTOMER_FOUND_PLACEHOLDER = 'No customer found.'
 

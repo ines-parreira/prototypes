@@ -13,6 +13,7 @@ import {
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -21,7 +22,6 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-import {subtractDaysFromDate} from 'utils/date'
 
 export const MESSAGES_MAX_DAYS_INTO_THE_PAST = 180
 

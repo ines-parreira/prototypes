@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
+import {ISO639English} from 'constants/languages'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {detectLanguage} from 'models/language/resources'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {ISO639English} from 'constants/languages'
 import {Value} from 'pages/common/forms/SelectField/types'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import css from './MacroEdit.less'
 

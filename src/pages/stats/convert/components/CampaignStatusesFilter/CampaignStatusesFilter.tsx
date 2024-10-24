@@ -1,24 +1,24 @@
-import React, {useCallback, useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useCallback, useMemo} from 'react'
 
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import Filter from 'pages/stats/common/components/Filter'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import Filter from 'pages/stats/common/components/Filter'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {DropdownOption} from 'pages/stats/types'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 const filterOptions = [
     {

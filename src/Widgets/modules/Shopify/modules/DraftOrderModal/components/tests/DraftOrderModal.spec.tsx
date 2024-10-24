@@ -1,6 +1,6 @@
-import React, {ReactNode, ComponentProps} from 'react'
-import {fromJS, Map, List} from 'immutable'
 import {render, fireEvent, waitFor, screen} from '@testing-library/react'
+import {fromJS, Map, List} from 'immutable'
+import React, {ReactNode, ComponentProps} from 'react'
 
 import {initDraftOrderPayload} from 'business/shopify/draftOrder'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
@@ -13,13 +13,12 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {getDuplicateOrderPayload} from 'state/infobarActions/shopify/createOrder/actions'
-
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import {DraftOrderModalContainer} from '../DraftOrderModal'
 import EmailInvoicePopover from '../EmailInvoicePopover'

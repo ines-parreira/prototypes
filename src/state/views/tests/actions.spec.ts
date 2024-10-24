@@ -1,23 +1,29 @@
-import moment from 'moment'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {JobType} from '@gorgias/api-queries'
+import {waitFor} from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
 import _range from 'lodash/range'
-import {waitFor} from '@testing-library/react'
-import {JobType} from '@gorgias/api-queries'
+import moment from 'moment'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {baseView, getExpirationTimeForCount} from 'config/views'
 import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {ticket} from 'fixtures/ticket'
 import client from 'models/api/resources'
+import {OrderDirection} from 'models/api/types'
 import {
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
+import {
+    CUSTOMER_SEARCH_ORDERING,
+    TicketSearchSortableProperties,
+} from 'models/search/types'
 import {
     searchTickets,
     searchTicketsWithHighlights,
@@ -27,25 +33,18 @@ import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import socketManager from 'services/socketManager/socketManager'
 import {SocketEventType} from 'services/socketManager/types'
 import {RootState, StoreDispatch} from 'state/types'
+import * as actions from 'state/views/actions'
 import {
     FETCH_LIST_VIEW_SUCCESS,
     FETCH_LIST_VIEW_START,
 } from 'state/views/constants'
 import * as types from 'state/views/constants'
-import {getAST} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
-import {OrderDirection} from 'models/api/types'
-import {
-    CUSTOMER_SEARCH_ORDERING,
-    TicketSearchSortableProperties,
-} from 'models/search/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {assumeMock} from 'utils/testing'
-
-import * as actions from 'state/views/actions'
 import {initialState} from 'state/views/reducers'
 import * as viewsSelectors from 'state/views/selectors'
 import {ViewNavDirection} from 'state/views/types'
+import {getAST} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

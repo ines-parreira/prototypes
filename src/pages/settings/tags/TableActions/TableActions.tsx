@@ -1,13 +1,14 @@
-import React, {useMemo} from 'react'
-import {List} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
+import {List} from 'immutable'
+import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getTags} from 'state/tags/selectors'
 
 import {humanizeArray} from 'utils/string'
-import MergeButton from './MergeButton'
+
 import BulkDeleteButton from './BulkDeleteButton'
+import MergeButton from './MergeButton'
 import css from './TableActions.less'
 
 type Props = {

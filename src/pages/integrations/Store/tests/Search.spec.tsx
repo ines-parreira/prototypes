@@ -1,14 +1,15 @@
-import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
 import history from 'pages/history'
-import Search from '../Search'
+import {renderWithRouter} from 'utils/testing'
+
 import {SEARCH_URL_PARAM} from '../constants'
+import Search from '../Search'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

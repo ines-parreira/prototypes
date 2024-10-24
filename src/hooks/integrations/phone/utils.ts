@@ -1,10 +1,9 @@
 import crypto from 'crypto'
+
 import {Call, Device, TwilioError} from '@twilio/voice-sdk'
 import {pick} from 'lodash'
 
-import {reportError} from 'utils/errors'
-import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType} from 'services/socketManager/types'
+import {appQueryClient} from 'api/queryClient'
 import {
     MAX_DEVICE_RECONNECT_ATTEMPTS,
     DEFAULT_ERROR_MESSAGE,
@@ -14,8 +13,6 @@ import {
     VoiceAppErrorCode,
     VoiceAppError,
 } from 'business/twilio'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
 import {
     acceptCall,
     cancelCall,
@@ -23,14 +20,19 @@ import {
     disconnectCall,
     getToken,
 } from 'hooks/integrations/phone/api'
-import {appQueryClient} from 'api/queryClient'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {ListVoiceCallsParams} from 'models/voiceCall/types'
+import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import socketManager from 'services/socketManager/socketManager'
+import {SocketEventType} from 'services/socketManager/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 
 import {isProduction} from 'utils/environment'
-import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
+import {reportError} from 'utils/errors'
+
 import * as utils from './utils'
 
 export async function refreshToken(device: Device) {

@@ -1,7 +1,7 @@
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from 'models/api/types'
+import {ReportingGranularity} from 'models/reporting/types'
+import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export enum FilterKey {
     Agents = 'agents',

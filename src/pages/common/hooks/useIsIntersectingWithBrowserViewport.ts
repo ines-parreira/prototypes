@@ -1,4 +1,5 @@
 import {RefObject} from 'react'
+
 import useIsIntersectingWithElement from './useIsIntersectingWithElement'
 
 const useIsIntersectingWithBrowserViewport = (ref: RefObject<Element>) =>

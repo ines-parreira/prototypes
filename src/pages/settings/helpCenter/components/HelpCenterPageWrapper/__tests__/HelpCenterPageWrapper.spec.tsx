@@ -1,23 +1,24 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 
-import {RootState, StoreDispatch} from 'state/types'
+import {billingState} from 'fixtures/billing'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
-import {billingState} from 'fixtures/billing'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+
 import {useHasAccessToAILibrary} from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)

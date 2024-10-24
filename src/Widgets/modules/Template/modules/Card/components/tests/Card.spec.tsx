@@ -1,12 +1,17 @@
+import {act, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {Action} from 'redux'
-import {fromJS} from 'immutable'
-import {act, render, screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
 import {cardTemplate, listTemplate, shopifyWidget} from 'fixtures/widgets'
+import {CardTemplate, ListTemplate} from 'models/widget/types'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {renderInfobarTemplate} from 'pages/common/utils/infobar'
+import {renderTemplate} from 'pages/common/utils/template'
 import {RootState} from 'state/types'
 import {
     removeEditedWidget,
@@ -14,20 +19,15 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import {renderTemplate} from 'pages/common/utils/template'
-import {renderInfobarTemplate} from 'pages/common/utils/infobar'
-import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
-import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {CardTemplate, ListTemplate} from 'models/widget/types'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
 
-import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
-import {canDrop} from '../../helpers/canDrop'
 import Card, {listMetaFields, NO_DATA_TEXT} from '../../components/Card'
 import UICard from '../../components/views'
+import {canDrop} from '../../helpers/canDrop'
+import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
 import {CardEditFormState} from '../../types'
 
 const CHILDREN_TEST_ID = 'childrennnn'

@@ -1,13 +1,13 @@
-import {useContext} from 'react'
 import {Map} from 'immutable'
+import {useContext} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {Customer} from 'models/customer/types'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import {EcommerceIntegrationMeta} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCustomersState} from 'state/customers/selectors'
 import {getTicketState} from 'state/ticket/selectors'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {Customer} from 'models/customer/types'
-import {EcommerceIntegrationMeta} from 'models/integration/types'
 
 export function useStore() {
     const {integration} = useContext(IntegrationContext)

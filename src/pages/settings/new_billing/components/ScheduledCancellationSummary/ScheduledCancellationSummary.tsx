@@ -1,6 +1,7 @@
-import React, {useMemo} from 'react'
-import moment from 'moment/moment'
 import classNames from 'classnames'
+import moment from 'moment/moment'
+import React, {useMemo} from 'react'
+
 import {DATE_FORMAT} from '../../constants'
 import css from './ScheduledCancellationSummary.less'
 

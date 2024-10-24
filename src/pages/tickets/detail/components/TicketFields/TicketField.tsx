@@ -9,8 +9,8 @@ import NumberField, {
     Props as NumberFieldProps,
 } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
 
-import TextField from './components/fields/TextField'
 import DropdownField from './components/fields/DropdownField'
+import TextField from './components/fields/TextField'
 
 type Props = {
     fieldDefinition: CustomField

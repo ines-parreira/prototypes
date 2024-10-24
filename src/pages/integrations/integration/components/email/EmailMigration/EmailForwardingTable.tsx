@@ -1,23 +1,25 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import {EmailMigrationInboundVerification} from 'models/integration/types'
-import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
+import Pagination from 'pages/common/components/Pagination'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import Pagination from 'pages/common/components/Pagination'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
+
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
-import {computeMigrationInboundVerificationStatus} from './utils'
 import EmailForwardingButton from './EmailForwardingButton'
-import EmptyMigrationTableRow from './EmptyMigrationTableRow'
 
 import css from './EmailForwardingTable.less'
+import EmptyMigrationTableRow from './EmptyMigrationTableRow'
+import {computeMigrationInboundVerificationStatus} from './utils'
 
 type Props = {
     migrations: EmailMigrationInboundVerification[]

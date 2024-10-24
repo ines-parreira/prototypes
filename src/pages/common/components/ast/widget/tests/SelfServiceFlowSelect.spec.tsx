@@ -1,18 +1,18 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 
-import SelfServiceFlowSelect from '../SelfServiceFlowSelect'
-import {SelfServiceConfigurationsState} from '../../../../../../state/entities/selfServiceConfigurations/types'
 import {
     SelfServiceConfiguration,
     ShopType,
 } from '../../../../../../models/selfServiceConfiguration/types'
 import {initialState as helpCenterInitialState} from '../../../../../../state/entities/helpCenter/reducer'
+import {SelfServiceConfigurationsState} from '../../../../../../state/entities/selfServiceConfigurations/types'
+import SelfServiceFlowSelect from '../SelfServiceFlowSelect'
 
 const mockStore = configureMockStore([thunk])
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+
 import css from './ArticleTemplateCard.less'
 
 const ArticleTemplateCardSkeleton = () => {

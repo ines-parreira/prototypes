@@ -1,12 +1,12 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import MessageSourceFields from '../MessageSourceFields'
 

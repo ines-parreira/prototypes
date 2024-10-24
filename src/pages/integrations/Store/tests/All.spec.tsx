@@ -1,31 +1,31 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-import {renderWithRouter} from 'utils/testing'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {dummyAppListData} from 'fixtures/apps'
+import client from 'models/api/resources'
+import {HelpdeskPlan, PlanInterval, ProductType} from 'models/billing/types'
+import {IntegrationType} from 'models/integration/constants'
+import {Integration} from 'models/integration/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 import {IntegrationListItem} from 'state/integrations/types'
-import {Integration} from 'models/integration/types'
-import client from 'models/api/resources'
-import {IntegrationType} from 'models/integration/constants'
-import {HelpdeskPlan, PlanInterval, ProductType} from 'models/billing/types'
+import {renderWithRouter} from 'utils/testing'
 
+import All, {addRequiredPlanToIntegrations} from '../All'
+import {CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 import {
     CATEGORY_URL_PARAM,
     MAX_CARDS_DISPLAYED,
     SEARCH_URL_PARAM,
 } from '../constants'
-import All, {addRequiredPlanToIntegrations} from '../All'
-import {CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 const mockStore = configureMockStore([thunk])
 

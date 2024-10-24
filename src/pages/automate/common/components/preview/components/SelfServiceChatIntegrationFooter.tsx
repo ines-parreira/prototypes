@@ -1,12 +1,13 @@
 import React from 'react'
 
-import Button from 'pages/common/components/button/Button'
 import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
+import Button from 'pages/common/components/button/Button'
 
 import {
     CONSTRAST_COLORS,
     getTextColorBasedOnBackground,
 } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/color-utils'
+
 import css from './SelfServiceChatIntegrationFooter.less'
 
 type Props = {

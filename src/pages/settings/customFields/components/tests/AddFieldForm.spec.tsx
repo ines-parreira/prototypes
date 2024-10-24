@@ -1,20 +1,20 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import MockAdapter from 'axios-mock-adapter'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
 
-import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {OBJECT_TYPES} from 'custom-fields/constants'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import client from 'models/api/resources'
 import history from 'pages/history'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import AddFieldForm from '../AddFieldForm'
 
 const mockStore = configureMockStore([thunk])()

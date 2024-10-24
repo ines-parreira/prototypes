@@ -1,10 +1,5 @@
-import React, {useReducer, useRef, useState} from 'react'
-
 import classnames from 'classnames'
-import Button from 'pages/common/components/button/Button'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import InputField from 'pages/common/forms/input/InputField'
-import Spinner from 'pages/common/components/Spinner'
+import React, {useReducer, useRef, useState} from 'react'
 
 import {
     BigCommerceCart,
@@ -13,6 +8,10 @@ import {
     BigCommerceGeneralErrorMessage,
     BigCommerceGeneralError,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import Spinner from 'pages/common/components/Spinner'
+import InputField from 'pages/common/forms/input/InputField'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 

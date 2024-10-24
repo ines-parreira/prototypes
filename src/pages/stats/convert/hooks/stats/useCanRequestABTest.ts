@@ -1,13 +1,14 @@
-import {useMemo} from 'react'
 import moment from 'moment'
-import {CubeFilterParams, CubeMetric} from 'pages/stats/convert/clients/types'
-import {getCampaignABTestEvents} from 'pages/stats/convert/clients/CampaignCubeQueries'
+import {useMemo} from 'react'
+
 import {usePostReporting} from 'models/reporting/queries'
-import {getPreviousMonthRange} from 'pages/stats/convert/utils/getPreviousMonthRange'
+import {getCampaignABTestEvents} from 'pages/stats/convert/clients/CampaignCubeQueries'
+import {CubeFilterParams, CubeMetric} from 'pages/stats/convert/clients/types'
 import {
     getMetricFromCubeData,
     transformToCampaignAbTestEvent,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import {getPreviousMonthRange} from 'pages/stats/convert/utils/getPreviousMonthRange'
 
 const MIN_NUMBER_OF_ORDERS = 2000
 const MIN_SUBSCRIPTION_DAYS = 30

@@ -1,9 +1,9 @@
-import React, {useState, PropsWithChildren} from 'react'
 import classNames from 'classnames'
+import React, {useState, PropsWithChildren} from 'react'
 import {Popover, PopoverProps} from 'reactstrap'
 
-import {TooltipStyle} from './useCustomTooltip'
 import css from './ChartTooltip.less'
+import {TooltipStyle} from './useCustomTooltip'
 
 type Props = {
     title?: string | string[]

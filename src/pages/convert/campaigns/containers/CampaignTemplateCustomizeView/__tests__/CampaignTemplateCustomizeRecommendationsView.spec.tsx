@@ -1,22 +1,24 @@
-import React from 'react'
 import {render, waitFor} from '@testing-library/react'
 
-import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import {assumeMock} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {channelConnection} from 'fixtures/channelConnection'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+
 import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
+import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import {assumeMock} from 'utils/testing'
+
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 
 const mockStore = configureMockStore()

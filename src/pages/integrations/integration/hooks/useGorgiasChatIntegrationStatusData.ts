@@ -1,5 +1,6 @@
-import {useEffect} from 'react'
 import {Map} from 'immutable'
+import {useEffect} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {GorgiasChatStatusEnum} from 'models/integration/types'

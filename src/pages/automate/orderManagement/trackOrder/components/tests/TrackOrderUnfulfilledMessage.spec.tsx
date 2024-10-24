@@ -1,9 +1,11 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {ShopifyIntegration} from 'models/integration/types'
+
 import TrackOrderFlowViewContext from '../../TrackOrderFlowViewContext'
 import TrackOrderUnfulfilledMessage from '../TrackOrderUnfulfilledMessage'
 

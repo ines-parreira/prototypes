@@ -1,9 +1,11 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import Button from 'pages/common/components/button/Button'
-import PrivateReplyButton from '../PrivateReplyButton'
+
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import * as infobarActions from '../../../../../state/infobar/actions'
+import PrivateReplyButton from '../PrivateReplyButton'
 
 const defaultProps = {
     integrationId: 1,

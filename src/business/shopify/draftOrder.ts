@@ -2,8 +2,8 @@ import {fromJS, List, Map} from 'immutable'
 
 import {Product, Variant} from '../../constants/integrations/types/shopify'
 
-import {initLineItemAppliedDiscount} from './lineItem'
 import {refreshAppliedDiscounts} from './discount'
+import {initLineItemAppliedDiscount} from './lineItem'
 
 export function initDraftOrderPayload(
     customer: Map<any, any>,

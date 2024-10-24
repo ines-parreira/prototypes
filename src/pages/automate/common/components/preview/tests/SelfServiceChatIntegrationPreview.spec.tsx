@@ -1,16 +1,18 @@
-import React from 'react'
-import {render, screen} from '@testing-library/react'
-import {MemoryRouter, Route} from 'react-router-dom'
-import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {MemoryRouter, Route} from 'react-router-dom'
+
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import {mockStore} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import SelfServiceChatIntegrationPreview from '../SelfServiceChatIntegrationPreview'
+import {mockStore} from 'utils/testing'
+
 import {SELF_SERVICE_PREVIEW_ROUTES} from '../constants'
+import SelfServiceChatIntegrationPreview from '../SelfServiceChatIntegrationPreview'
 import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 
 jest.mock('../SelfServicePreviewContext', () => ({

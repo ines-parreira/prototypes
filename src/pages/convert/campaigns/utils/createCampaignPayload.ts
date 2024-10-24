@@ -1,22 +1,22 @@
 import {produce} from 'immer'
-import _trim from 'lodash/trim'
 import {Map} from 'immutable'
+import _trim from 'lodash/trim'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
-import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
 import {
     CampaignContactFormAttachment,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
+import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
+
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+
+import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
+import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
+import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
 
 type CreateCampaignPayloadType = {
     campaignData: Campaign

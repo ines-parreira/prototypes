@@ -1,21 +1,21 @@
-import {useEffect, useMemo, useState} from 'react'
 import {List, Map, fromJS} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {Language} from 'constants/languages'
+import {useEffect, useMemo, useState} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     mapLanguageOptionsToLanguageDropdown,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     LanguageItem,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import {Language} from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {IntegrationType} from 'models/integration/constants'
+import {GorgiasChatLauncherType} from 'models/integration/types/gorgiasChat'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {GorgiasChatLauncherType} from 'models/integration/types/gorgiasChat'
 import {LanguageItemRow} from './types'
 
 const getLanguageLabel = (languageItem: LanguageItem) => {

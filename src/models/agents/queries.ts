@@ -1,7 +1,7 @@
 import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
 
 import {MutationOverrides} from 'types/query'
-import {FetchAgentsOptions} from './types'
+
 import {
     fetchAgent,
     fetchAgents,
@@ -10,6 +10,7 @@ import {
     deleteAgent,
     inviteAgent,
 } from './resources'
+import {FetchAgentsOptions} from './types'
 
 export const agentsKeys = {
     all: () => ['agents'] as const,

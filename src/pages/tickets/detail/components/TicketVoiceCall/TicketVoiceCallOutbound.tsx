@@ -1,11 +1,13 @@
 import React from 'react'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+
 import {OutboundVoiceCall} from 'models/voiceCall/types'
 import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-import TicketVoiceCallContainer from './TicketVoiceCallContainer'
+
 import {useAgentDetails, useCustomerDetails} from './hooks'
+import TicketVoiceCallContainer from './TicketVoiceCallContainer'
 import TicketVoiceCallOutboundStatus from './TicketVoiceCallOutboundStatus'
 
 type Props = {

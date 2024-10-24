@@ -1,7 +1,7 @@
-import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import isNil from 'lodash/isNil'
 import classNames from 'classnames'
+import isNil from 'lodash/isNil'
+import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
 
 import Avatar from '../Avatar/Avatar'
 

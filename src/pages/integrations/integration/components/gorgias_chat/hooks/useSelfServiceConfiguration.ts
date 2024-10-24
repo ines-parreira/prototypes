@@ -1,8 +1,9 @@
-import {useMemo} from 'react'
-import _isEmpty from 'lodash/isEmpty'
 import {Map} from 'immutable'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import _isEmpty from 'lodash/isEmpty'
+import {useMemo} from 'react'
+
 import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {toJS} from 'utils'
 

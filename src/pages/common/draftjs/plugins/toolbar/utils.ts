@@ -1,9 +1,11 @@
 import {Map, fromJS} from 'immutable'
-import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
-import {Product} from 'constants/integrations/types/shopify'
-import {getIconFromUrl} from 'utils'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+
 import {AttachmentEnum} from 'common/types'
+import {Product} from 'constants/integrations/types/shopify'
+import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {getIconFromUrl} from 'utils'
+
 import {TooltipTourConfigurationType} from './types'
 
 export const getTooltipTourConfiguration = (

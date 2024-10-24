@@ -1,27 +1,26 @@
+import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import classNames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
-
-import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getAgentCostsSettings} from 'state/currentAccount/selectors'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import DashboardSection from 'pages/stats/DashboardSection'
-import TipsToggle from 'pages/stats/TipsToggle'
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-import {StatsFilters} from 'models/stat/types'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
+import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters} from 'models/stat/types'
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
 } from 'pages/automate/automate-metrics'
 import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
 import css from 'pages/automate/common/components/AutomateLandingPage.less'
+import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import TipsToggle from 'pages/stats/TipsToggle'
+import {getAgentCostsSettings} from 'state/currentAccount/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
 
 const DEFAULT_TIMEZONE = 'UTC'
 

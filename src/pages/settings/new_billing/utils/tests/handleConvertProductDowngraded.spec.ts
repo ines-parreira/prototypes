@@ -1,6 +1,7 @@
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
 import {convertPlan1, convertPlan2} from 'fixtures/productPrices'
+import {assumeMock} from 'utils/testing'
+
 import {handleConvertProductDowngraded} from '../handleConvertProductDowngraded'
 
 jest.mock('common/segment')

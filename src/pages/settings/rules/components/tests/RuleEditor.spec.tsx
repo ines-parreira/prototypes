@@ -1,14 +1,15 @@
-import React from 'react'
-import _getIn from 'lodash/get'
-import _noop from 'lodash/noop'
 import {render} from '@testing-library/react'
 import {Map, List} from 'immutable'
+import _getIn from 'lodash/get'
+import _noop from 'lodash/noop'
+import React from 'react'
 
 import {fromAST} from 'common/utils'
-import {RuleDraft} from '../../../../../models/rule/types'
+
 import {emptyRule as rule} from '../../../../../fixtures/rule'
-import RuleEditor from '../RuleEditor'
+import {RuleDraft} from '../../../../../models/rule/types'
 import {CodeASTType} from '../../types'
+import RuleEditor from '../RuleEditor'
 
 const getCondition = (path: List<any>) =>
     fromAST(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>

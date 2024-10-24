@@ -1,4 +1,5 @@
 import {CustomFieldValue} from 'custom-fields/types'
+
 import {isCustomFieldValueEmpty} from './isCustomFieldValueEmpty'
 
 export function getNumberOrUndefined(

@@ -1,7 +1,7 @@
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import {ValidationError} from '../validationError'
 import {countryCodeValidator} from '../countryCodeValidator'
+import {ValidationError} from '../validationError'
 
 describe('countryCodeValidator', () => {
     it('should raise an exception', () => {

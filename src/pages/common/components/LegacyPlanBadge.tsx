@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useCallback, useState} from 'react'
 
 import Badge, {ColorType} from './Badge/Badge'
 import css from './LegacyPlanBadge.less'

@@ -1,15 +1,16 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {OrderDirection} from 'models/api/types'
+
 import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
-import {saveReport} from 'services/reporting/automateAiAgentReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import {OrderDirection} from 'models/api/types'
 import {getData as getPerformanceData} from 'services/reporting/agentsPerformanceReportingService'
-import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
+import {saveReport} from 'services/reporting/automateAiAgentReportingService'
 import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
-import {assumeMock} from 'utils/testing'
-import {saveZippedFiles} from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import {saveZippedFiles} from 'utils/file'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('utils/file', () => ({
     createCsv: (value: string) => `${value}-csv`,

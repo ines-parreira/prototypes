@@ -1,14 +1,16 @@
-import React, {useEffect, CSSProperties, useMemo} from 'react'
 import {fromJS} from 'immutable'
+import React, {useEffect, CSSProperties, useMemo} from 'react'
 import {Collapse} from 'reactstrap'
-import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
-import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
+
+import useMeasure from 'hooks/useMeasure'
 import {MacroAction} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
-import useMeasure from 'hooks/useMeasure'
+import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
+import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
+
 import AIAgentBanner from '../TicketMessages/AIAgentBanner'
-import css from './SuggestionBody.less'
 import {SuggestionStates} from './InTicketSuggestion'
+import css from './SuggestionBody.less'
 
 type Props = {
     text?: string | React.ReactNode

@@ -1,10 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RootState, StoreDispatch} from 'state/types'
+
 import logo from 'assets/img/icons/logo.png'
+import {RootState, StoreDispatch} from 'state/types'
+
 import FacebookIntegrationDetailSummary from '../FacebookIntegrationDetailSummary'
 
 describe('<FacebookIntegrationDetailSummary/>', () => {

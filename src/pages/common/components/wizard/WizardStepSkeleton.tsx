@@ -1,11 +1,11 @@
+import {isObject} from 'lodash'
 import React from 'react'
 
-import {isObject} from 'lodash'
+import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-
 import {AnimatedFadeInOut} from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
+
 import Skeleton from '../Skeleton/Skeleton'
 import css from './WizardStepSkeleton.less'
 

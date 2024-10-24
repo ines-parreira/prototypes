@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import css from './BigNumberMetric.less'

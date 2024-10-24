@@ -1,11 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import AccordionHeader, {AccordionHeaderProps} from './AccordionHeader'
 import {useSortableAccordionContext} from './SortableAccordionContext'
-import {useSortableAccordionItemContext} from './SortableAccordionItemContext'
-
 import css from './SortableAccordionHeader.less'
+import {useSortableAccordionItemContext} from './SortableAccordionItemContext'
 
 type Props = Omit<AccordionHeaderProps, 'action'>
 

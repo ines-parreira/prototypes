@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useEffect, useRef, useState} from 'react'
+
+import css from 'pages/stats/common/components/Filter/components/FilterName/FilterName.less'
 import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 
 import {FILTER_NAME_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
-
-import css from 'pages/stats/common/components/Filter/components/FilterName/FilterName.less'
 
 type Props = {
     name: string

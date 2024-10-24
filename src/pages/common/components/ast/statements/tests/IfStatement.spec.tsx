@@ -1,13 +1,15 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {Map, fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {rule} from 'fixtures/rule'
 
 import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
-import IfStatement from '../IfStatement'
+
 import Expression from '../../expression/Expression'
+import IfStatement from '../IfStatement'
 import Statement from '../Statement'
 
 const mockStore = configureMockStore()

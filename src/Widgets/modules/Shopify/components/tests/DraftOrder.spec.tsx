@@ -1,13 +1,13 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationType} from 'models/integration/constants'
+import {EditionContext} from 'providers/infobar/EditionContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {draftOrderCustomization} from '../DraftOrder'
 

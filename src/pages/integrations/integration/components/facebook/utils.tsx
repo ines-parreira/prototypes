@@ -1,6 +1,6 @@
-import React from 'react'
-import {Map} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
+import {Map} from 'immutable'
+import React from 'react'
 
 import {SegmentEvent} from 'common/segment'
 import {HelpdeskPlan} from 'models/billing/types'

@@ -1,5 +1,5 @@
-import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useState} from 'react'
 
 import DashboardSection from './DashboardSection'
 import TipsToggle from './TipsToggle'

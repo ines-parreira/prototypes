@@ -1,24 +1,25 @@
+import classNames from 'classnames'
 import React, {useState} from 'react'
 import {Row, Col} from 'reactstrap'
-import classNames from 'classnames'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {
     VoiceMessage,
     IvrMenuAction,
     IvrMenuActionType,
 } from 'models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
-import {Drawer} from 'pages/common/components/Drawer'
-import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Drawer} from 'pages/common/components/Drawer'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import useAppSelector from 'hooks/useAppSelector'
 import {getSmsIntegrations} from 'state/integrations/selectors'
-import VoiceMessageField from './VoiceMessageField'
-import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
-import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
-import IvrMenuActionSelect from './IvrMenuActionSelect'
 
 import css from './IvrMenuActionField.less'
+import IvrMenuActionSelect from './IvrMenuActionSelect'
+import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
+import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
+import VoiceMessageField from './VoiceMessageField'
 
 type Props = {
     value: IvrMenuAction

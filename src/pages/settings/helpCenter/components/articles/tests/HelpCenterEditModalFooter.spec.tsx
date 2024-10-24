@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {render, fireEvent, waitFor, within} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import HelpCenterEditModalFooter from '../HelpCenterEditModalFooter'
 

@@ -1,7 +1,8 @@
-import React, {MouseEvent, useMemo, useRef, useState} from 'react'
+import {JobType} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
+import React, {MouseEvent, useMemo, useRef, useState} from 'react'
 import {
     ButtonDropdown,
     DropdownItem,
@@ -12,7 +13,6 @@ import {
     PopoverHeader,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import {JobType} from '@gorgias/api-queries'
 
 import {useAppNode} from 'appNode'
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -24,16 +24,20 @@ import useShortcuts from 'hooks/useShortcuts'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import Group from 'pages/common/components/layout/Group'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 
+import css from 'pages/tickets/list/components/TicketListActions.less'
+import {getHumanAgents} from 'state/agents/selectors'
+import {getTeams} from 'state/teams/selectors'
+import {createJob as createJobTicket} from 'state/tickets/actions'
+import {getTickets} from 'state/tickets/selectors'
 import {
     createJob as createJobView,
     updateSelectedItemsIds,
 } from 'state/views/actions'
-import {createJob as createJobTicket} from 'state/tickets/actions'
-import {getTickets} from 'state/tickets/selectors'
 import {
     areAllActiveViewItemsSelected,
     areFiltersValid as getAreFiltersValid,
@@ -41,13 +45,8 @@ import {
     isActiveViewTrashView as getIsActiveViewTrashView,
     getViewCount,
 } from 'state/views/selectors'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getTeams} from 'state/teams/selectors'
 import {TagDropdownMenu} from 'tags'
 import {hasRole} from 'utils'
-
-import css from 'pages/tickets/list/components/TicketListActions.less'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
 export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 

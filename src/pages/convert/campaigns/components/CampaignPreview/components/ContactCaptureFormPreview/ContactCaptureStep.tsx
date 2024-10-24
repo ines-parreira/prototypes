@@ -1,13 +1,14 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
+import {getContrastColor} from 'gorgias-design-system/utils'
 import {
     ContactFormField,
     ContactFormFieldType,
     ContactFormStep,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {getContrastColor} from 'gorgias-design-system/utils'
-import {SubmitButton, Disclaimer} from './styled'
+
 import {EmailCaptureField} from './EmailCaptureField'
+import {SubmitButton, Disclaimer} from './styled'
 
 const DEFAULT_COLOR = '#0097ff'
 

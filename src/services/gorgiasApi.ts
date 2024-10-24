@@ -6,21 +6,21 @@ import axios, {
 } from 'axios'
 import {fromJS, List, Map} from 'immutable'
 
-import {IntegrationDataItemType} from 'models/integration/types'
-import {
-    ApiListResponseCursorPagination,
-    ApiListResponsePagination,
-    ApiPaginationParams,
-} from 'models/api/types'
 import {EditOrderAction} from 'constants/integrations/types/shopify'
-import {createClient} from 'models/api/resources'
-import {Event, EventObjectType, FetchEventsOptions} from 'models/event/types'
 import type {
     PollingConfig,
     Refund,
     Edit_to_perform,
 } from 'constants/integrations/types/shopify'
+import {createClient} from 'models/api/resources'
+import {
+    ApiListResponseCursorPagination,
+    ApiListResponsePagination,
+    ApiPaginationParams,
+} from 'models/api/types'
 import {fetchEvents} from 'models/event/resources'
+import {Event, EventObjectType, FetchEventsOptions} from 'models/event/types'
+import {IntegrationDataItemType} from 'models/integration/types'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean

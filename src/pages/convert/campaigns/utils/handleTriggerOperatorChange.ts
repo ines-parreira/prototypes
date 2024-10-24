@@ -1,5 +1,6 @@
 import {Value} from 'pages/common/forms/SelectField/types'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+
 import {UpdateTriggerFn} from '../types/AdvancedTriggerBaseProps'
 import {CampaignTrigger} from '../types/CampaignTrigger'
 import {isTriggerOperatorAllowed} from './isTriggerOperatorAllowed'

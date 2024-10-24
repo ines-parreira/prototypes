@@ -1,8 +1,9 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {ViewVisibility} from 'models/view/types'
+
 import {ViewSharingModalBodyContainer} from '../ViewSharingModalBody'
 
 describe('<ViewSharingModalBody/>', () => {

@@ -1,6 +1,6 @@
+import {Meta, Story} from '@storybook/react'
 import _noop from 'lodash/noop'
 import React, {ComponentProps, ContextType} from 'react'
-import {Meta, Story} from '@storybook/react'
 
 import {DropdownContext} from './Dropdown'
 import DropdownQuickSelect from './DropdownQuickSelect'

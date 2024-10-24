@@ -1,4 +1,5 @@
 import React, {Ref} from 'react'
+
 import {SuggestionStates} from './InTicketSuggestion'
 import css from './SuggestionHeader.less'
 

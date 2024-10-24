@@ -1,5 +1,5 @@
-import AxiosMock from 'axios-mock-adapter'
 import {AxiosError} from 'axios'
+import AxiosMock from 'axios-mock-adapter'
 
 import axiosClient from 'models/api/resources'
 import {reportError} from 'utils/errors'

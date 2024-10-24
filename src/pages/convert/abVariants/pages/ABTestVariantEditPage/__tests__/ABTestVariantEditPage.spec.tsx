@@ -1,28 +1,27 @@
-import React from 'react'
-import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
-import userEvent from '@testing-library/user-event'
 import {render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {integrationsState} from 'fixtures/integrations'
-
-import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {integrationsState} from 'fixtures/integrations'
 import {useGetCampaign} from 'models/convert/campaign/queries'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {getLDClient} from 'utils/launchDarkly'
 import {assumeMock} from 'utils/testing'
 
 import ABTestVariantEditPage from '../ABTestVariantEditPage'

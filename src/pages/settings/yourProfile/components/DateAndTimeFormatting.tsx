@@ -1,7 +1,8 @@
 import React from 'react'
 
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+
 import css from './DateAndTimeFormatting.less'
 
 type Props = {

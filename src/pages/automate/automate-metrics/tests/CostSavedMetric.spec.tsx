@@ -1,9 +1,10 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {CostSavedMetric} from 'pages/automate/automate-metrics/CostSavedMetric'
 import {COST_SAVED} from 'pages/automate/automate-metrics/constants'
+import {CostSavedMetric} from 'pages/automate/automate-metrics/CostSavedMetric'
 
 const trend: MetricTrend = {
     isFetching: false,

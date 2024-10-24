@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
+
+import useInterval from 'hooks/useInterval'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
-import useInterval from 'hooks/useInterval'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 interface TicketVoiceCallDurationProps {

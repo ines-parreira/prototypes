@@ -1,4 +1,5 @@
 import {Integration} from 'models/integration/types'
+
 import * as helpers from '../helpers'
 
 describe('Integrations helper', () => {

@@ -1,10 +1,10 @@
-import React, {useEffect, useMemo} from 'react'
 import {fromJS} from 'immutable'
+import React, {useEffect, useMemo} from 'react'
 
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchIntegrations} from 'state/integrations/actions'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {RenderLabel} from 'pages/common/utils/labels'
+import {fetchIntegrations} from 'state/integrations/actions'
 
 import Select from './ReactSelect'
 

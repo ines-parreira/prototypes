@@ -1,12 +1,12 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React from 'react'
 import {fromJS, Map, List} from 'immutable'
 import _omit from 'lodash/omit'
+import React from 'react'
 
+import {views} from 'config/views'
 import {ticket} from 'fixtures/ticket'
 import Cell from 'pages/common/components/ViewTable/Table/Cell'
-import {views} from 'config/views'
 
 describe('ViewTable::Table::Cell', () => {
     const viewConfig = views.first() as Map<any, any>

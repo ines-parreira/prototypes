@@ -1,10 +1,11 @@
 import {createContext} from 'react'
+
+import {CampaignPreview} from 'models/convert/campaign/types'
+import {Integration} from 'models/integration/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
-import {Integration} from 'models/integration/types'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {CampaignPreview} from 'models/convert/campaign/types'
 import {AggregationWindow, WithLogicalOperator} from 'models/stat/types'
+import {Value} from 'pages/common/forms/SelectField/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 interface FilterContextSchema {

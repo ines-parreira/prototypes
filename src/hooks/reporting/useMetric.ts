@@ -1,8 +1,8 @@
+import {Metric} from 'hooks/reporting/metrics'
 import {QueryReturnType, selectMeasure} from 'hooks/reporting/useMetricTrend'
 import {Cubes} from 'models/reporting/cubes'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
-import {Metric} from 'hooks/reporting/metrics'
 
 export function useMetric<TCube extends Cubes = Cubes>(
     query: ReportingQuery<TCube>

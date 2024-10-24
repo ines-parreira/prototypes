@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from 'react'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useState} from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
 import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import {SEARCH_INPUT_DEBOUNCE_TIME} from '../constants'
 import css from './search.less'

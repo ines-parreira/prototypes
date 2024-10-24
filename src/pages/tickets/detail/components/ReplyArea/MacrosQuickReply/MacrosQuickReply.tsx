@@ -1,20 +1,17 @@
-import React, {useCallback, useMemo} from 'react'
-
-import {UncontrolledTooltip} from 'reactstrap'
-
-import {Map} from 'immutable'
-
 import classnames from 'classnames'
+import {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useMemo} from 'react'
+import {UncontrolledTooltip} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
-import {TicketState} from 'state/ticket/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {CurrentUserState} from 'state/currentUser/types'
+import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import {TicketState} from 'state/ticket/types'
 
 import {MacroButton} from './MacroButton'
 

@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+
 import {ColorType} from 'pages/common/components/Badge/Badge'
 import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {

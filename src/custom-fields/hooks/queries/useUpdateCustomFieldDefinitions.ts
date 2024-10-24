@@ -1,16 +1,16 @@
 import {useQueryClient} from '@tanstack/react-query'
 
-import {errorToChildren} from 'utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {isGorgiasApiError} from 'models/api/types'
-import {ListParams} from 'custom-fields/types'
 import {
     customFieldDefinitionKeys,
     UseGetCustomFieldDefinitions,
     useUpdateCustomFields,
 } from 'custom-fields/hooks/queries/queries'
+import {ListParams} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {isGorgiasApiError} from 'models/api/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {errorToChildren} from 'utils'
 
 export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
     const dispatch = useAppDispatch()

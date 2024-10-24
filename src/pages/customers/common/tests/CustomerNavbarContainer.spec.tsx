@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {createMemoryHistory} from 'history'
+import React, {ComponentProps} from 'react'
 
 import {renderWithRouter} from '../../../../utils/testing'
 import Navbar from '../../../common/components/Navbar'

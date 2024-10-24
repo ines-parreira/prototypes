@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
-import {Col, Container, Row} from 'reactstrap'
 import classnames from 'classnames'
 import {EditorState} from 'draft-js'
+import React, {useState} from 'react'
+import {Col, Container, Row} from 'reactstrap'
+
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {convertToHTML} from 'utils/editor'
 import {sanitizeHtmlDefault} from 'utils/html'
+
 import TextArea from '../../../../../../common/forms/TextArea'
 import css from './GorgiasTranslateText.less'
 

@@ -1,98 +1,90 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Map, fromJS} from 'immutable'
-import {produce} from 'immer'
-import {EditorState} from 'draft-js'
 import cn from 'classnames'
-
-import _trim from 'lodash/trim'
-import _isEmpty from 'lodash/isEmpty'
+import {EditorState} from 'draft-js'
+import {produce} from 'immer'
+import {Map, fromJS} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import history from 'pages/history'
-import {convertToHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import _isEmpty from 'lodash/isEmpty'
+import _trim from 'lodash/trim'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {User} from 'config/types/user'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {User} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
-
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {
-    deleteAttachment,
-    setNewMessageForChatCampaign,
-} from 'state/newMessage/actions'
-
 import Accordion from 'pages/common/components/accordion/Accordion'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {
-    CampaignScheduleModeEnum,
-    CampaignScheduleRuleValueEnum,
-} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
-
-import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {
+    CampaignScheduleModeEnum,
+    CampaignScheduleRuleValueEnum,
+} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import history from 'pages/history'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
-
-import {usePristineSteps} from '../../hooks/usePristineSteps'
-import {useManageTriggers} from '../../hooks/useManageTriggers'
-import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
-
-import {IntegrationProvider} from '../../containers/IntegrationProvider'
-import {CampaignBasicStep} from '../../containers/CampaignBasicStep'
-import {CampaignAudienceStep} from '../../containers/CampaignAudienceStep'
-import {CampaignMessageStep} from '../../containers/CampaignMessageStep'
-import CampaignPublishScheduleStep from '../../containers/CampaignPublishScheduleStep'
+import {
+    deleteAttachment,
+    setNewMessageForChatCampaign,
+} from 'state/newMessage/actions'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {convertToHTML} from 'utils/editor'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 import {HeaderReturnButton} from '../../../common/components/HeaderReturnButton'
-import CampaignPreview from '../../components/CampaignPreview'
 import {CampaignFooter} from '../../components/CampaignFooter'
+import CampaignPreview from '../../components/CampaignPreview'
+import {CampaignAudienceStep} from '../../containers/CampaignAudienceStep'
+import {CampaignBasicStep} from '../../containers/CampaignBasicStep'
+import {CampaignMessageStep} from '../../containers/CampaignMessageStep'
+import CampaignPublishScheduleStep from '../../containers/CampaignPublishScheduleStep'
+import {IntegrationProvider} from '../../containers/IntegrationProvider'
+import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
+import {useManageTriggers} from '../../hooks/useManageTriggers'
+import {usePristineSteps} from '../../hooks/usePristineSteps'
 
+import {useUtm} from '../../hooks/useUtm'
 import {Campaign} from '../../types/Campaign'
 import {CampaignAuthor} from '../../types/CampaignAgent'
-import {CampaignStepsKeys} from '../../types/CampaignSteps'
-import {CampaignProduct} from '../../types/CampaignProduct'
-
-import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-
-import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
 import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
+import {CampaignProduct} from '../../types/CampaignProduct'
+import {CampaignStepsKeys} from '../../types/CampaignSteps'
+import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
 import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
-import {useUtm} from '../../hooks/useUtm'
-import {CampaignDetailsFormApi, CampaignDetailsFormProvider} from './context'
+import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
+import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
 
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
 } from './configurationContext'
+import {CampaignDetailsFormApi, CampaignDetailsFormProvider} from './context'
 
 import css from './style.less'
 

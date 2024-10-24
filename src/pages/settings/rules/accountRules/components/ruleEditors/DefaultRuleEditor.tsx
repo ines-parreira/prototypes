@@ -1,3 +1,8 @@
+import classnames from 'classnames'
+import esprima from 'esprima'
+import {Map, List} from 'immutable'
+import _getIn from 'lodash/get'
+import moment from 'moment'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -9,41 +14,37 @@ import React, {
     useState,
 } from 'react'
 import {FormGroup, Label} from 'reactstrap'
-import moment from 'moment'
-import {Map, List} from 'immutable'
-import classnames from 'classnames'
-import _getIn from 'lodash/get'
-import esprima from 'esprima'
 
 import {fromAST} from 'common/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {createRule} from 'models/rule/resources'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {ErrorsContext} from 'pages/common/components/ast/Errors'
+import {updateCodeAst} from 'pages/common/components/ast/utils'
+import TextInput from 'pages/common/forms/input/TextInput'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import history from 'pages/history'
 import {ruleCreated} from 'state/entities/rules/actions'
+import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {eventTypes as getEventTypes} from 'state/rules/helpers'
 import {
     Rule,
     RuleDraft,
     RuleLimitStatus,
     RuleOperation,
 } from 'state/rules/types'
-import {eventTypes as getEventTypes} from 'state/rules/helpers'
 import {getEmptyRule} from 'state/rules/utils'
-import history from 'pages/history'
 
-import {ErrorsContext} from 'pages/common/components/ast/Errors'
-import {updateCodeAst} from 'pages/common/components/ast/utils'
 import {getSchemas} from 'state/schemas/selectors'
-import TextInput from 'pages/common/forms/input/TextInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import useAsyncFn from 'hooks/useAsyncFn'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {CodeASTType} from '../../../types'
-import RuleItemButtons from '../../../components/RuleItemButtons'
+
 import RuleEditor from '../../../components/RuleEditor'
+import RuleItemButtons from '../../../components/RuleItemButtons'
+import {CodeASTType} from '../../../types'
 
 import {RuleEditorProps, EditorHandle} from '../RuleFormEditor'
 

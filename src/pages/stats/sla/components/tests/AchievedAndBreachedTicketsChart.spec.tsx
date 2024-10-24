@@ -4,20 +4,21 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+
+import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import {ReportingGranularity} from 'models/reporting/types'
+import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
+import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
 import {
     AchievedAndBreachedTicketsChart,
     CHART_FIELDS,
     CHART_TITLE,
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
-import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 const mockStore = configureMockStore([thunk])
 

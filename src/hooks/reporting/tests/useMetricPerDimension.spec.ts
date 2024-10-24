@@ -1,6 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
     QueryReturnType,
@@ -8,6 +9,12 @@ import {
     useMetricPerDimensionWithBreakdown,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
+import {
+    BREAKDOWN_FIELD,
+    TAG_SEPARATOR,
+    VALUE_FIELD,
+    withBreakdown,
+} from 'hooks/reporting/withBreakdown'
 import {withEnrichment} from 'hooks/reporting/withEnrichment'
 import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
@@ -26,12 +33,6 @@ import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactori
 import {postEnrichedReporting} from 'models/reporting/resources'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import {
-    BREAKDOWN_FIELD,
-    TAG_SEPARATOR,
-    VALUE_FIELD,
-    withBreakdown,
-} from 'hooks/reporting/withBreakdown'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

@@ -1,10 +1,12 @@
+import {useQueryClient} from '@tanstack/react-query'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {useQueryClient} from '@tanstack/react-query'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+
 import {isGorgiasApiError} from 'models/api/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {useEmailIntegrations} from '../../hooks/useEmailIntegrations'
 import {
     contactFormMailtoReplacementConfigKeys,

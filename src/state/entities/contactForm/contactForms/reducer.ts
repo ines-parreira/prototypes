@@ -1,10 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit'
-import {ContactFormsState} from 'state/entities/contactForm/contactForms/types'
+
 import {
     contactFormsFetched,
     contactFormDeleted,
     contactFormUpdated,
 } from 'state/entities/contactForm/contactForms/actions'
+import {ContactFormsState} from 'state/entities/contactForm/contactForms/types'
 
 export const initialState: ContactFormsState = {
     contactFormById: {},

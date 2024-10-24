@@ -1,13 +1,13 @@
+import {createEvent, fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {createEvent, fireEvent, render} from '@testing-library/react'
 
 import {FORM_CONTENT_TYPE} from 'config'
-import {MacroActionName} from 'models/macroAction/types'
 import {integrationsState} from 'fixtures/integrations'
+import {MacroActionName} from 'models/macroAction/types'
 
 import {TicketReplyActionContainer} from '../TicketReplyAction'
 

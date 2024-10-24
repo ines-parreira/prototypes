@@ -1,13 +1,13 @@
-import React from 'react'
-import {produce} from 'immer'
 import classnames from 'classnames'
+import {produce} from 'immer'
+import React from 'react'
 
-import Button from 'pages/common/components/button/Button'
 import {
     IvrMenuAction,
     IvrMenuActionType,
     IvrForwardCallMenuAction,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
 
 import IvrMenuActionField from './IvrMenuActionField'
 import css from './VoiceIntegrationIvr.less'

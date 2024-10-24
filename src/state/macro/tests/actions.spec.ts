@@ -1,11 +1,12 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
-import axios from 'axios'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {StoreDispatch} from 'state/types'
 import client from 'models/api/resources'
+import {StoreDispatch} from 'state/types'
+
 import * as actions from '../actions'
 import * as constants from '../constants'
 

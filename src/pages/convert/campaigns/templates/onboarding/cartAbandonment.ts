@@ -1,17 +1,19 @@
 import {ulid} from 'ulidx'
-import {assetsUrl} from 'utils'
+
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {assetsUrl} from 'utils'
 import {PlanName} from 'utils/paywalls'
+
+import {CampaignConfigurationBuilder} from '../constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from '../types'
-import {CampaignConfigurationBuilder} from '../constructor'
 
 export const CART_ABANDONMENT: CampaignTemplate = {
     slug: 'offer-help-on-cart-abandonment',

@@ -1,18 +1,18 @@
 import React from 'react'
 import {Table} from 'reactstrap'
 
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceProductsListType,
 } from 'models/integration/types'
 
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {computeLineItemErrorKey} from '../../utils'
 
 import OrderLineItemRow from './OrderLineItemRow'
-import {getOrderLineItemInfo} from './utils'
 import css from './OrderTable.less'
+import {getOrderLineItemInfo} from './utils'
 
 type Props = {
     storeHash: string

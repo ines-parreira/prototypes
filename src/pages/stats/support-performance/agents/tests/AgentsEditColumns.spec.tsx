@@ -1,17 +1,17 @@
+import {act, fireEvent, render, screen} from '@testing-library/react'
 import {createDragDropManager} from 'dnd-core'
 import React from 'react'
 import {DndProvider} from 'react-dnd'
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
 import {
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
 } from 'pages/stats/common/components/Table/EditTableColumns'
+import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
 import {
     agentPerformanceTableActiveView,
     TableLabels,

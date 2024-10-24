@@ -1,6 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -9,13 +10,12 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
+import {useTotalCallsMetric} from 'pages/stats/voice/hooks/agentMetrics'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {useTotalCallsMetric} from 'pages/stats/voice/hooks/agentMetrics'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import css from './VoiceAgentsTable.less'
 
 type TeamAverageCallsCountCellProps = {

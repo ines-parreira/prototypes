@@ -1,15 +1,16 @@
 import {act, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
-import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
-import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
+
 import {channels as mockChannels} from 'fixtures/channels'
-import {assumeMock, renderWithStore, triggerWidthResize} from 'utils/testing'
+import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
+import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
+import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
 import {
     columnsOrder,
     MOBILE_CHANNEL_COLUMN_WIDTH,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
-import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
+import {assumeMock, renderWithStore, triggerWidthResize} from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannelsWithData')
 const useSortedChannelsWithDataMock = assumeMock(useSortedChannelsWithData)

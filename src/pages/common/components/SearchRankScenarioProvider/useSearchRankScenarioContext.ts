@@ -1,4 +1,5 @@
 import {useContext} from 'react'
+
 import SearchRankScenarioContext from './SearchRankScenarioContext'
 
 export default function useSearchRankScenarioContext() {

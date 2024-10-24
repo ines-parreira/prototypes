@@ -1,9 +1,9 @@
-import React from 'react'
 import classNames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
+import React from 'react'
 
-import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 import emptyStar from 'assets/img/satisfaction-survey/empty-star.svg'
+import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 
 import css from './DistributionVariantStat.less'
 

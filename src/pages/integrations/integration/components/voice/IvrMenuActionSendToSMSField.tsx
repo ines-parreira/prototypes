@@ -1,9 +1,7 @@
 import React, {useState} from 'react'
-import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
-import Button from 'pages/common/components/button/Button'
-import {Drawer} from 'pages/common/components/Drawer'
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
@@ -14,10 +12,14 @@ import {
     SmsIntegration,
     VoiceMessage,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Drawer} from 'pages/common/components/Drawer'
 import TextArea from 'pages/common/forms/TextArea'
+import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+
 import css from './IvrMenuActionField.less'
 import VoiceMessageField from './VoiceMessageField'
 

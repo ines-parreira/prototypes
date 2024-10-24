@@ -1,5 +1,6 @@
-import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {useMemo} from 'react'
+
 import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -12,6 +13,7 @@ import {
     getStatsFilters,
 } from 'state/stats/selectors'
 import {getTags} from 'state/tags/selectors'
+
 import TableStat from './common/components/charts/TableStat/TableStat'
 import StatsFiltersContext from './StatsFiltersContext'
 import StatsPage from './StatsPage'

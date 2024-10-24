@@ -1,10 +1,10 @@
-import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
 import {act} from '@testing-library/react-hooks'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {Paths} from 'rest_api/workflows_api/client.generated'
 import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
+import {Paths} from 'rest_api/workflows_api/client.generated'
+import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {
     useGetActionsApp,

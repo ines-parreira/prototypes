@@ -1,8 +1,12 @@
-import React from 'react'
-import classNames from 'classnames'
-import {useCookies} from 'react-cookie'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React from 'react'
+import {useCookies} from 'react-cookie'
+
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+
+import {SegmentEvent} from '../../../../../common/segment'
+import {logEventWithSampling} from '../../../../../common/segment/segment'
 import {
     Action,
     Feedback,
@@ -10,8 +14,6 @@ import {
     Guidance,
     Knowledge,
 } from '../../../../../models/aiAgentFeedback/types'
-import {logEventWithSampling} from '../../../../../common/segment/segment'
-import {SegmentEvent} from '../../../../../common/segment'
 import IconButton from '../../../../common/components/button/IconButton'
 import css from './AIAgentFeedbackBar.less'
 import {ResourceSection} from './types'

@@ -1,15 +1,15 @@
 import React, {FunctionComponent} from 'react'
 
+import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import css from 'pages/stats/DrillDownTable.less'
-import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
+import css from 'pages/stats/DrillDownTable.less'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
 export const DrillDownTable = ({
     metricData,

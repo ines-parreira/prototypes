@@ -1,18 +1,18 @@
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
+import {Metric} from 'hooks/reporting/metrics'
+import {useMetric} from 'hooks/reporting/useMetric'
 import {
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {StatsFilters} from 'models/stat/types'
-import {Metric} from 'hooks/reporting/metrics'
-import {useMetric} from 'hooks/reporting/useMetric'
-import {withFilter} from 'utils/reporting'
+import {VoiceEventsByAgentMember} from 'models/reporting/cubes/VoiceEventsByAgent'
 import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallCountQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {declinedVoiceCallsCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
-import {VoiceEventsByAgentMember} from 'models/reporting/cubes/VoiceEventsByAgent'
+import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {withFilter} from 'utils/reporting'
 
 export const ignoreCallsWithNoAgentsFilter: ReportingFilter = {
     member: VoiceCallMember.AgentId,

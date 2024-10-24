@@ -1,15 +1,17 @@
-import React from 'react'
-import {List, Map, fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {List, Map, fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {agents} from 'fixtures/agents'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-import {assumeMock} from 'utils/testing'
+import {IntegrationType} from 'models/integration/constants'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
@@ -19,8 +21,7 @@ import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
 } from 'state/widgets/constants'
 import {WidgetEnvironment} from 'state/widgets/types'
-import {IntegrationType} from 'models/integration/constants'
-import {EditionContext} from 'providers/infobar/EditionContext'
+import {assumeMock} from 'utils/testing'
 import Widget from 'Widgets/modules/Widget'
 
 import InfobarWidgets from '../InfobarWidgets'

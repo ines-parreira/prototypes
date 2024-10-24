@@ -1,21 +1,22 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {UseQueryResult} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
 import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {formatTimeSeriesData} from 'pages/stats/common/utils'
-import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
+
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
 } from 'hooks/reporting/timeSeries'
+import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 jest.mock('hooks/reporting/timeSeries')
 const mockedUseTicketsClosedTimeSeries = assumeMock(useTicketsClosedTimeSeries)

@@ -1,11 +1,4 @@
 import {
-    useMessagesSentTimeSeries,
-    useTicketsClosedTimeSeries,
-    useTicketsCreatedTimeSeries,
-    useTicketsRepliedTimeSeries,
-} from 'hooks/reporting/timeSeries'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
@@ -17,7 +10,15 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
+import {
+    useMessagesSentTimeSeries,
+    useTicketsClosedTimeSeries,
+    useTicketsCreatedTimeSeries,
+    useTicketsRepliedTimeSeries,
+} from 'hooks/reporting/timeSeries'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {
     CUSTOMER_SATISFACTION_LABEL,
@@ -33,7 +34,7 @@ import {
     TICKET_HANDLE_TIME_LABEL,
 } from 'services/reporting/constants'
 import {OverviewMetric} from 'state/ui/stats/types'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+
 import {TooltipData} from './types'
 
 export const OverviewMetricConfig: Record<

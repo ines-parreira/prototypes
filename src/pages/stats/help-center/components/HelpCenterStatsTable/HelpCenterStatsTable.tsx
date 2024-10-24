@@ -1,23 +1,25 @@
-import React, {UIEventHandler, useState} from 'react'
 import classNames from 'classnames'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import {formatPercentage} from 'pages/common/utils/numbers'
-import {formatDatetime} from 'utils'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {TooltipData} from 'pages/stats/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import React, {UIEventHandler, useState} from 'react'
+
 import {
     DateTimeResultFormatType,
     DateAndTimeFormatting,
 } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import {formatPercentage} from 'pages/common/utils/numbers'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {formatMetricValue} from 'pages/stats/common/utils'
+import {TooltipData} from 'pages/stats/types'
+import {formatDatetime} from 'utils'
+
 import css from './HelpCenterStatsTable.less'
 
 export enum TableCellType {

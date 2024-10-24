@@ -6,9 +6,12 @@ import {
     VoiceCallStatus,
 } from '@gorgias/api-queries'
 import moment from 'moment'
+
 import {OrderDirection} from 'models/api/types'
 import {getMoment} from 'utils/date'
 import {assumeMock} from 'utils/testing'
+
+import {LiveVoiceStatusFilterOption} from './types'
 import {
     groupAgentsByStatus,
     AgentStatusCategory,
@@ -22,7 +25,6 @@ import {
     isLiveCallRinging,
     getLiveVoicePeriodFilter,
 } from './utils'
-import {LiveVoiceStatusFilterOption} from './types'
 
 jest.mock('utils/date')
 

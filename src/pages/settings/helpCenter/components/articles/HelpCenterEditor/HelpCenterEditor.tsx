@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
+import bytes from 'bytes'
+import classnames from 'classnames'
+import {zip} from 'lodash'
 import React, {useCallback, useEffect, useRef} from 'react'
 import FroalaEditorComponentType from 'react-froala-wysiwyg'
-import bytes from 'bytes'
-import {zip} from 'lodash'
 
-import classnames from 'classnames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LocaleCode} from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -16,15 +16,15 @@ import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {FroalaEditor, config} from './froala-config'
-import {Editor} from './types'
+import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {
     generateEditorAttachmentHTML,
     HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
     createOnCloseEventHandler,
     validateFileAttachments,
 } from './HelpCenterEditor.utils'
+import {Editor} from './types'
 
 type Props = {
     articleId?: number

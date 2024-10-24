@@ -1,8 +1,7 @@
 import moment from 'moment/moment'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {Channel} from 'models/channel/types'
-import {Period} from 'models/stat/types'
+
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {Channel} from 'models/channel/types'
 import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {
     HandleTimeCube,
@@ -15,6 +14,8 @@ import {
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {Period} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -26,6 +27,7 @@ import {
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
+
 import {DATE_TIME_FORMAT} from './constants'
 
 export type ChannelsReportMetrics =

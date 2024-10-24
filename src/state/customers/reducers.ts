@@ -3,13 +3,12 @@ import _sortBy from 'lodash/sortBy'
 
 import {Ticket, TicketMessage} from 'models/ticket/types'
 import {ViewType} from 'models/view/types'
+import * as constants from 'state/customers/constants'
+import {CustomersState} from 'state/customers/types'
 import * as newMessageConstants from 'state/newMessage/constants'
 import * as ticketConstants from 'state/ticket/constants'
 import {GorgiasAction} from 'state/types'
 import * as viewsConstants from 'state/views/constants'
-
-import * as constants from 'state/customers/constants'
-import {CustomersState} from 'state/customers/types'
 
 export const initialState: CustomersState = fromJS({
     active: {},

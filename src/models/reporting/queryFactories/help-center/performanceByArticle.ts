@@ -1,9 +1,10 @@
 import {OrderDirection} from 'models/api/types'
+import {StatsFilters} from 'models/stat/types'
 import {
     HelpCenterStatsFiltersMembers,
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
-import {StatsFilters} from 'models/stat/types'
+
 import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,

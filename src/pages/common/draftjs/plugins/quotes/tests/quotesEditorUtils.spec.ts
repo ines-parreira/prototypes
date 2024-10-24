@@ -1,10 +1,10 @@
 import {ContentState} from 'draft-js'
 
-import {getQuoteDepth, setQuoteDepth} from '../quotesEditorUtils'
 import {
     getContentStateBlocksSnapshot,
     selectWholeContentState,
 } from '../../../../../../utils/editor'
+import {getQuoteDepth, setQuoteDepth} from '../quotesEditorUtils'
 
 describe('quotesEditorUtils', () => {
     describe('setQuoteDepth', () => {

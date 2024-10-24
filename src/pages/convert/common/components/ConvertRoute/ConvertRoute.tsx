@@ -1,9 +1,10 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {isEmpty} from 'lodash'
 import React, {useMemo} from 'react'
 import {Redirect} from 'react-router-dom'
-import {isEmpty} from 'lodash'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
+
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
 
 const ConvertRoute = () => {
     const sortedIntegrations = useGetSortedIntegrations()

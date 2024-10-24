@@ -1,4 +1,5 @@
 import {useMemo, useRef} from 'react'
+
 import useUnmount from './useUnmount'
 
 type ThrottledFunction<Fn extends (...args: any[]) => any> = (

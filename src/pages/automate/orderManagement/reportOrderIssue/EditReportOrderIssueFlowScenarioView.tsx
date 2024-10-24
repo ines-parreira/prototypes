@@ -1,23 +1,24 @@
+import _isEqual from 'lodash/isEqual'
 import React, {useMemo, useRef, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
     ReportOrderIssueScenarioFormContextType,
 } from './components/ReportOrderIssueScenarioFormContext'
-import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 
 import css from './EditReportOrderIssueFlowScenarioView.less'
+import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
+import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 
 const EditReportOrderIssueFlowScenarioView = () => {
     const {shopName, scenarioIndex} = useParams<{

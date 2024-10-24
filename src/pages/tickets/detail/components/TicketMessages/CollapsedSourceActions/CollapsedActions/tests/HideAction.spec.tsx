@@ -1,10 +1,8 @@
+import {render} from '@testing-library/react'
+import _noop from 'lodash/noop'
 import React from 'react'
 
-import _noop from 'lodash/noop'
-
 import {Dropdown} from 'reactstrap'
-
-import {render} from '@testing-library/react'
 
 import HideAction from '../HideAction'
 

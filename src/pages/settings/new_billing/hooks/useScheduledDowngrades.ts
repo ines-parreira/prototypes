@@ -1,6 +1,6 @@
 import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchSubscription} from 'models/billing/resources'
 import {Plan} from 'models/billing/types'
 import {getAvailablePlansMap} from 'state/billing/selectors'

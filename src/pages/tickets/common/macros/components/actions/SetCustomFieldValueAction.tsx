@@ -1,8 +1,8 @@
-import React, {useCallback, useMemo} from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React, {useCallback, useMemo} from 'react'
 
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
+import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 
 import css from './SetCustomFieldValueAction.less'
 

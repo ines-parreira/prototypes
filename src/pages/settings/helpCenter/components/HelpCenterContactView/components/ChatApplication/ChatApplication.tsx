@@ -1,35 +1,34 @@
-import React, {useMemo, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Label} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
-
-import settingsCss from 'pages/settings/settings.less'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     LanguageItem,
 } from 'config/integrations/gorgias_chat'
-import {ChatContactInfoDto} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/types'
-import {useApplications} from 'models/integration/queries'
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
-
+import {ChatContactInfoDto} from 'models/helpCenter/types'
+import {useApplications} from 'models/integration/queries'
+import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import TextArea from 'pages/common/forms/TextArea'
+import settingsCss from 'pages/settings/settings.less'
 
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getViewLanguage} from 'state/ui/helpCenter'
+
+import {MAX_DESCRIPTION_LENGTH} from '../../constants'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import ContactCard from '../ContactCard'
-import {MAX_DESCRIPTION_LENGTH} from '../../constants'
+import css from './ChatApplication.less'
 import ChatCardAvatars from './ChatCardAvatars'
 
-import css from './ChatApplication.less'
 import {
     convertDaysToName,
     formatBusinessHoursByLocale,

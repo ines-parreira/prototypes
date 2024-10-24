@@ -1,5 +1,6 @@
 import {AddressElement, AddressElementProps} from '@stripe/react-stripe-js'
 import React from 'react'
+
 import {useBillingContact} from 'models/billing/queries'
 
 export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({

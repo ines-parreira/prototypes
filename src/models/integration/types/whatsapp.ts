@@ -1,7 +1,7 @@
 // g/integrations/sms/schemas.py
 import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type WhatsAppIntegration = IntegrationBase & {
     type: IntegrationType.WhatsApp

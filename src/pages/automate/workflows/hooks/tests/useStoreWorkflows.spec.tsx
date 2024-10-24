@@ -1,15 +1,18 @@
-import React, {ComponentType, ReactChildren} from 'react'
-import {renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {IntegrationType} from 'models/integration/constants'
-import {RootState} from 'state/types'
-import {billingState} from 'fixtures/billing'
+import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React, {ComponentType, ReactChildren} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {billingState} from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
 import {selfServiceConfigurationKeys} from 'models/selfServiceConfiguration/queries'
 import {selfServiceConfigurationFixture} from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
+import {RootState} from 'state/types'
+
 import useStoreWorkflows from '../useStoreWorkflows'
 import {getIntegration} from './fixtures/utils'
 

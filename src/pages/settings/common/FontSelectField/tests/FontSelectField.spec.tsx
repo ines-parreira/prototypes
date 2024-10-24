@@ -1,8 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
-import {FontSelectField} from '../FontSelectField'
+import React from 'react'
+
 import {AGENT_ADDED_FONTS} from '../constants'
+import {FontSelectField} from '../FontSelectField'
 
 describe('<FontSelectField />', () => {
     const defaultFonts = [

@@ -1,12 +1,44 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import classnames from 'classnames'
 import {List, Map} from 'immutable'
 import _getIn from 'lodash/get'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Badge} from 'reactstrap'
-import classnames from 'classnames'
 
+import successIcon from 'assets/img/icons/success.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {fromAST} from 'common/utils'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+
+import {IntegrationType} from 'models/integration/constants'
+import {StoreIntegration} from 'models/integration/types'
+import {createRule} from 'models/rule/resources'
+import {RuleDraft} from 'models/rule/types'
+import {RuleRecipe} from 'models/ruleRecipe/types'
+import {createSection} from 'models/section/resources'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {createTag, fetchTags} from 'models/tag/resources'
+import {TagDraft} from 'models/tag/types'
+import {createView, deleteView} from 'models/view/resources'
+import {View, ViewDraft} from 'models/view/types'
 import history from 'pages/history'
+import {getHasAutomate} from 'state/billing/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {ruleCreated} from 'state/entities/rules/actions'
+import {
+    getRulesLimitStatus,
+    getSortedRules,
+} from 'state/entities/rules/selectors'
+import {sectionCreated} from 'state/entities/sections/actions'
+import {getSectionIdByName} from 'state/entities/sections/selectors'
+import {tagCreated} from 'state/entities/tags/actions'
+import {viewCreated, viewDeleted} from 'state/entities/views/actions'
+import {getTicketViews} from 'state/entities/views/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     AnyManagedRuleSettings,
     ManagedRule,
@@ -14,53 +46,15 @@ import {
     RuleOperation,
     RuleType,
 } from 'state/rules/types'
-import {createRule} from 'models/rule/resources'
-import {ruleCreated} from 'state/entities/rules/actions'
-import {
-    getRulesLimitStatus,
-    getSortedRules,
-} from 'state/entities/rules/selectors'
-
-import {createTag, fetchTags} from 'models/tag/resources'
-import {tagCreated} from 'state/entities/tags/actions'
-import {TagDraft} from 'models/tag/types'
-
-import {getTicketViews} from 'state/entities/views/selectors'
-import {viewCreated, viewDeleted} from 'state/entities/views/actions'
-import {createView, deleteView} from 'models/view/resources'
-import {View, ViewDraft} from 'models/view/types'
-
-import {getSectionIdByName} from 'state/entities/sections/selectors'
-import {sectionCreated} from 'state/entities/sections/actions'
-import {createSection} from 'models/section/resources'
-
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getHasAutomate} from 'state/billing/selectors'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {RuleRecipe} from 'models/ruleRecipe/types'
-
-import successIcon from 'assets/img/icons/success.svg'
-
-import {RuleDraft} from 'models/rule/types'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import {StoreIntegration} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {compare} from 'utils'
+
 import {CodeASTType} from '../../types'
 
 import {RuleTemplateRecipeSlugs, tagColors} from '../constants'
 
-import {RuleRecipeModal} from './RuleRecipeModal'
-
-import css from './RuleRecipeCard.less'
 import {AiAgentRequirements} from './installationModals/components/AiAgentRequirement'
+import css from './RuleRecipeCard.less'
+import {RuleRecipeModal} from './RuleRecipeModal'
 
 type Props = {
     recipe: RuleRecipe

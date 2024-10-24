@@ -1,13 +1,15 @@
 import React, {useState} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
-import {useAppNode} from 'appNode'
 
+import {useAppNode} from 'appNode'
+import Button from 'pages/common/components/button/Button'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+
+import CheckBox from 'pages/common/forms/CheckBox'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 
 import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
-import CheckBox from 'pages/common/forms/CheckBox'
+
 import css from './LightCampaignModal.less'
 
 type Props = {

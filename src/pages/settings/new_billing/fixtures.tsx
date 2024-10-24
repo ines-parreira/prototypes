@@ -1,6 +1,7 @@
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
+import configureMockStore from 'redux-mock-store'
+
+import {account} from 'fixtures/account'
 import {
     CONVERT_PRODUCT_ID,
     convertPlan1,
@@ -12,7 +13,7 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {account} from 'fixtures/account'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 

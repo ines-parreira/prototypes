@@ -1,15 +1,16 @@
-import React, {useRef, useState} from 'react'
+import classNames from 'classnames'
 import {Emoji} from 'emoji-mart'
 import pluralize from 'pluralize'
-import classNames from 'classnames'
+import React, {useRef, useState} from 'react'
+
 import {useListTeams} from 'models/team/queries'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './VoiceIntegrationPreferencesTeamSelect.less'
 

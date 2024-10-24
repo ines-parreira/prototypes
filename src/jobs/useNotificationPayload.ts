@@ -1,7 +1,7 @@
-import {useCallback, useRef} from 'react'
 import {JobType} from '@gorgias/api-queries'
-import {POSITIONS} from 'reapop'
 import _uniqueId from 'lodash/uniqueId'
+import {useCallback, useRef} from 'react'
+import {POSITIONS} from 'reapop'
 
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {buildJobMessage} from 'utils/notificationUtils'

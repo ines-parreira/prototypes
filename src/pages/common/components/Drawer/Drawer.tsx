@@ -1,6 +1,6 @@
+import classNames from 'classnames'
 import React, {HTMLAttributes, useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
-import classNames from 'classnames'
 import {Container} from 'reactstrap'
 
 import Loader from '../Loader/Loader'

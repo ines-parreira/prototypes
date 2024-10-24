@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {assetsUrl} from 'utils'
 
 import Button from 'pages/common/components/button/Button'
+import {assetsUrl} from 'utils'
 
 import css from './ConvertLibraryBanner.less'
 

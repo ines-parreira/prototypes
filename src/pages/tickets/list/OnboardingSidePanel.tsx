@@ -1,7 +1,7 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

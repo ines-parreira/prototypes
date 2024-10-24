@@ -3,6 +3,7 @@ import {JobStatus} from '@gorgias/api-types'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {assumeMock} from 'utils/testing'
+
 import {useRunningJobs} from '../useRunningJobs'
 
 jest.mock('@gorgias/api-queries')

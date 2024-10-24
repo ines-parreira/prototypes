@@ -1,13 +1,13 @@
-import React from 'react'
 import {Map, List} from 'immutable'
+import React from 'react'
 import {DropdownItem} from 'reactstrap'
 
 import {isImmutable} from 'common/utils'
 import {RenderLabel} from 'pages/common/utils/labels'
 import {getDisplayName} from 'state/customers/helpers'
+import {humanizeChannel} from 'state/ticket/utils'
 import {getLanguageDisplayName} from 'utils'
 
-import {humanizeChannel} from 'state/ticket/utils'
 import css from './FilterDropdownItems.less'
 
 type Props = {

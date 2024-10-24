@@ -1,14 +1,11 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {campaignsList} from 'fixtures/campaign'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
-
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-
-import {assumeMock, renderWithStore} from 'utils/testing'
+import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -17,10 +14,14 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import CampaignsFilter from 'pages/stats/common/filters/CampaignsFilter'
-import {campaignsList} from 'fixtures/campaign'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FilterKey} from 'models/stat/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
+
+import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 const mockedCampaignsList = campaignsList

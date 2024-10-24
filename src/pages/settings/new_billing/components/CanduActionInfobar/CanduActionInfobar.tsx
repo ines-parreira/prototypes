@@ -1,6 +1,8 @@
 import React from 'react'
-import Button from 'pages/common/components/button/Button'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+
 import css from './CanduActionInfobar.less'
 
 type Props = {

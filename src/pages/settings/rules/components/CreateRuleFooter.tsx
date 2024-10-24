@@ -1,13 +1,11 @@
-import React from 'react'
 import classnames from 'classnames'
-
-import Button from 'pages/common/components/button/Button'
+import React from 'react'
 
 import ruleTemplates from 'assets/img/presentationals/rule-templates.png'
-
-import TrackedRuleLibraryLink, {Source} from './TrackedRuleLibraryLink'
+import Button from 'pages/common/components/button/Button'
 
 import css from './CreateRuleFooter.less'
+import TrackedRuleLibraryLink, {Source} from './TrackedRuleLibraryLink'
 
 const CreateRuleFooter: React.FC = () => {
     return (

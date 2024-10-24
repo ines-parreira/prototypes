@@ -1,12 +1,12 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
 import {Source, Template as TemplateType} from 'models/widget/types'
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
 import {WidgetType} from 'state/widgets/types'
 
-import Template from 'Widgets/modules/Template'
 import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
+import Template from 'Widgets/modules/Template'
 
 import {getWidgetByType} from '../helpers/getWidgetByType'
 

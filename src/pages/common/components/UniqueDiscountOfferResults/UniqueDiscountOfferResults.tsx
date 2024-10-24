@@ -1,3 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {List, Map} from 'immutable'
+import pluralize from 'pluralize'
 import React, {
     ChangeEvent,
     useState,
@@ -6,32 +10,29 @@ import React, {
     MouseEvent,
     useRef,
 } from 'react'
-import {Input, ListGroup, ListGroupItem} from 'reactstrap'
-import {List, Map} from 'immutable'
-import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 
-import pluralize from 'pluralize'
+import {useModalManager} from 'hooks/useModalManager'
+import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import {useModalManager} from 'hooks/useModalManager'
-import Loader from 'pages/common/components/Loader/Loader'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
-import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
 import IconButton from 'pages/common/components/button/IconButton'
+import Loader from 'pages/common/components/Loader/Loader'
+
 import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
+import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
 
 import {toJS} from 'utils'
+
 import css from './UniqueDiscountOfferResults.less'
 import {computeDiscountOfferSummary} from './utils'
 

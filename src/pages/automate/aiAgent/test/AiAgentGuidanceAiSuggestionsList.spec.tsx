@@ -1,8 +1,10 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {renderWithRouter} from 'utils/testing'
+import React from 'react'
+
 import history from 'pages/history'
+import {renderWithRouter} from 'utils/testing'
+
 import {GuidanceAiSuggestionsList} from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
 

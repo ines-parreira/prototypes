@@ -2,16 +2,18 @@ import {useListSlaPolicies} from '@gorgias/api-queries'
 import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+
 import useAppDispatch from 'hooks/useAppDispatch'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {DropdownOption} from 'pages/stats/types'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+
 import {LogicalOperatorLabel} from '../components/Filter/constants'
 
 type Props = {

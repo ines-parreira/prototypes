@@ -2,7 +2,6 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../../../types'
 
-import {EditOrderState} from './types'
 import {
     SET_INITIAL_STATE,
     SET_LINE_ITEMS,
@@ -16,6 +15,7 @@ import {
     SET_CALCULATED_EDIT_ORDER,
     SET_CALCULATED_ORDER_ID,
 } from './constants'
+import {EditOrderState} from './types'
 
 export const initialState: EditOrderState = fromJS({
     loading: false,

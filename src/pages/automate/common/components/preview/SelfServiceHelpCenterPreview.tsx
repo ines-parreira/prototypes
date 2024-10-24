@@ -4,15 +4,15 @@ import {Route, useLocation} from 'react-router-dom'
 import {HelpCenter} from 'models/helpCenter/types'
 import HelpCenterPreview from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreview'
 
+import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 import SelfServiceHelpCenterHomePage from './SelfServiceHelpCenterHomePage'
 import SelfServiceHelpCenterOrdersPage from './SelfServiceHelpCenterOrdersPage'
-import SelfServiceHelpCenterTrackPage from './SelfServiceHelpCenterTrackPage'
-import SelfServiceHelpCenterTrackUnfulfillResponsePage from './SelfServiceHelpCenterTrackUnfulfillResponsePage'
+import SelfServiceHelpCenterReportIssuePage from './SelfServiceHelpCenterReportIssuePage'
+import SelfServiceHelpCenterReportIssueReasonsPage from './SelfServiceHelpCenterReportIssueReasonsPage'
 import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
 import SelfServiceHelpCenterReturnPortalPage from './SelfServiceHelpCenterReturnPortalPage'
-import SelfServiceHelpCenterReportIssueReasonsPage from './SelfServiceHelpCenterReportIssueReasonsPage'
-import SelfServiceHelpCenterReportIssuePage from './SelfServiceHelpCenterReportIssuePage'
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import SelfServiceHelpCenterTrackPage from './SelfServiceHelpCenterTrackPage'
+import SelfServiceHelpCenterTrackUnfulfillResponsePage from './SelfServiceHelpCenterTrackUnfulfillResponsePage'
 
 type Props = {
     helpCenter: HelpCenter

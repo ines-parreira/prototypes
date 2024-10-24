@@ -1,15 +1,17 @@
 import {fromJS, Map, List} from 'immutable'
-import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
+import moment from 'moment'
 
 import {tryLocalStorage} from 'services/common/utils'
 
-import {getCode} from '../../utils'
-import {GorgiasAction, RootState} from '../types'
 import {MAX_RECENT_VIEWS} from '../../config/views'
 import {View} from '../../models/view/types'
+import {getCode} from '../../utils'
+import {GorgiasAction, RootState} from '../types'
 
 import * as constants from './constants'
+import * as selectors from './selectors'
+import {ViewsState} from './types'
 import {
     addFilterAST,
     addViewIfMissing,
@@ -19,8 +21,6 @@ import {
     updateFilterValue,
     updateCustomFieldFilter,
 } from './utils'
-import * as selectors from './selectors'
-import {ViewsState} from './types'
 
 export const initialState: ViewsState = fromJS({
     items: [],

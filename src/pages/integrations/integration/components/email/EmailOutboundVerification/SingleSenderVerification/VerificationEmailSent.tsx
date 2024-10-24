@@ -1,19 +1,21 @@
-import React, {useEffect, useRef} from 'react'
-import classNames from 'classnames'
 import {AxiosError} from 'axios'
+import classNames from 'classnames'
+import React, {useEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {EmailProvider} from 'models/integration/constants'
+import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
 import {
     SenderVerification,
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
-import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
+import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import {EmailProvider} from 'models/integration/constants'
+
 import DeleteVerificationButton from '../DeleteVerificationButton'
 
 import css from './VerificationEmailSent.less'

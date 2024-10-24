@@ -1,14 +1,14 @@
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 
+import * as fixtures from '../../../fixtures/views'
 import {ViewType} from '../../../models/view/types'
 import {RootState} from '../../types'
-import reducers, {initialState} from '../reducers'
-import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
-import * as utils from '../utils'
-import * as selectors from '../selectors'
 import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from '../constants'
+import reducers, {initialState} from '../reducers'
+import * as selectors from '../selectors'
+import * as utils from '../utils'
 
 describe('reducers', () => {
     describe('views', () => {

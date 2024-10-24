@@ -1,22 +1,22 @@
-import React, {FormEvent, useState, useCallback, memo} from 'react'
 import {produce} from 'immer'
 import {set as _set} from 'lodash'
+import React, {FormEvent, useState, useCallback, memo} from 'react'
 
 import {ContentType, HttpMethod} from 'models/api/types'
-import InputField from 'pages/common/forms/input/InputField'
+import Button from 'pages/common/components/button/Button'
+import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import {
     Button as ButtonType,
     OnSubmitButton,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import InputField from 'pages/common/forms/input/InputField'
 
-import css from './Form.less'
 import Action from './Action'
+import css from './Form.less'
 
 type Props = {
     button?: ButtonType

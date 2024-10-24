@@ -1,10 +1,12 @@
 import {Label} from '@gorgias/ui-kit'
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 import {Link} from 'react-router-dom'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import css from './FeatureSettings.less'
 
 interface BaseProps {

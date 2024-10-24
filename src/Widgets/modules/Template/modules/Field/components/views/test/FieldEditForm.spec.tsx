@@ -1,9 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import {LeafType} from 'models/widget/types'
 import {LEAF_TYPES} from 'models/widget/constants'
+import {LeafType} from 'models/widget/types'
 
+import {FieldEditFormData, HiddenFields} from '../../../types'
 import FieldEditForm, {
     CANCEL_BUTTON_TEXT,
     SUBMIT_BUTTON_TEXT,
@@ -11,7 +12,6 @@ import FieldEditForm, {
     TYPE_FIELD_LABEL,
     TypeOption,
 } from '../FieldEditForm'
-import {FieldEditFormData, HiddenFields} from '../../../types'
 
 describe('FieldEditForm', () => {
     const defaultAvailableTypes: TypeOption<LeafType>[] = [

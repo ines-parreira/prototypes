@@ -1,5 +1,5 @@
-import React, {ComponentProps, useContext} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps, useContext} from 'react'
 
 import {assumeMock} from 'utils/testing'
 

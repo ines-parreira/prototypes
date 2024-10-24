@@ -1,6 +1,6 @@
-import React, {useCallback, useMemo} from 'react'
-import {List} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
+import {List} from 'immutable'
+import React, {useCallback, useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

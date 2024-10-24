@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {ChangeEvent, useEffect, useMemo, useState} from 'react'
 import {
     DropdownItem,
@@ -5,30 +6,30 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {AILibraryArticleItem, LocaleCode} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import Group from 'pages/common/components/layout/Group'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
-import Group from 'pages/common/components/layout/Group'
-import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-import {AILibraryArticleItem, LocaleCode} from 'models/helpCenter/types'
 import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCategories} from 'state/entities/helpCenter/categories'
-import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import {getCategories} from 'state/entities/helpCenter/categories'
+
 import ArticleCategorySelect from '../../../articles/ArticleCategorySelect'
+import {ArticleLanguageSelect} from '../../../articles/ArticleLanguageSelect'
+import {CloseModal} from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
-import {CloseModal} from '../../../articles/CloseModal'
-import SelectVisibilityStatus from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
 import {isOneOfParentsUnlisted} from '../../../HelpCenterCategoryEdit/utils'
-import {ArticleLanguageSelect} from '../../../articles/ArticleLanguageSelect'
+import SelectVisibilityStatus from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
 
 import {onEditorSaveProps} from '../../hooks/useAILibraryActions'
 import css from './AIArticlesLibraryArticleEditor.less'

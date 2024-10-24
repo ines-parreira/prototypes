@@ -2,23 +2,24 @@ import {render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {assumeMock} from 'utils/testing'
+import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {assumeMock} from 'utils/testing'
 
 jest.unmock('react-router-dom')
 

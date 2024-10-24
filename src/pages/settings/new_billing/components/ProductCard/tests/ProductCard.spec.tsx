@@ -1,17 +1,18 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
 
-import {ProductType} from 'models/billing/types'
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
     products,
 } from 'fixtures/productPrices'
+import {ProductType} from 'models/billing/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import ProductCard from '../ProductCard'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()

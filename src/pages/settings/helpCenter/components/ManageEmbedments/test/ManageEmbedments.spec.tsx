@@ -1,27 +1,28 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {RootState, StoreDispatch} from 'state/types'
-import {integrationsState} from 'fixtures/integrations'
 import {account as accountFixture} from 'fixtures/account'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {integrationsState} from 'fixtures/integrations'
+import {user as userFixture} from 'fixtures/users'
 import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {user as userFixture} from 'fixtures/users'
 import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
 } from 'pages/settings/helpCenter/queries'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import ManageEmbedments from '../ManageEmbedments'
 
 jest.mock('common/segment')

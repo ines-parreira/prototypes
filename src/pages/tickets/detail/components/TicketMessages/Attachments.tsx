@@ -1,9 +1,9 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import classNamesBind from 'classnames/bind'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import TicketAttachments from '../ReplyArea/TicketAttachments'
 import {TicketMessage} from '../../../../../models/ticket/types'
+import TicketAttachments from '../ReplyArea/TicketAttachments'
 
 import css from './Attachments.less'
 

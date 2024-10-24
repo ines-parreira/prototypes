@@ -1,23 +1,25 @@
 import {
+    VoiceCallTransferReceiverType,
+    VoiceCallTransferType,
+    useTransferCall,
+    useListUsers,
+} from '@gorgias/api-queries'
+import {
     cleanup,
     fireEvent,
     render,
     screen,
     within,
 } from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React, {ComponentProps, createRef} from 'react'
-import {fromJS} from 'immutable'
-import {
-    VoiceCallTransferReceiverType,
-    VoiceCallTransferType,
-    useTransferCall,
-    useListUsers,
-} from '@gorgias/api-queries'
 import {Call} from '@twilio/voice-sdk'
-import {mockStore} from 'utils/testing'
+import {fromJS} from 'immutable'
+import React, {ComponentProps, createRef} from 'react'
+import {Provider} from 'react-redux'
+
 import * as notificationActions from 'state/notifications/actions'
 import {mockIncomingCall} from 'tests/twilioMocks'
+import {mockStore} from 'utils/testing'
+
 import CallTransferDropdown from '../CallTransferDropdown'
 import {getAvailabilityBadgeColor, mergeAgentData} from '../utils'
 

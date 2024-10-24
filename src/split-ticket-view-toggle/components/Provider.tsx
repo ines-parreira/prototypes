@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 
-import useSplitTicketViewContext from '../hooks/useSplitTicketViewContext'
 import Context from '../Context'
+import useSplitTicketViewContext from '../hooks/useSplitTicketViewContext'
 
 type Props = {
     children: ReactNode

@@ -1,13 +1,15 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+
+import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 import {PhoneIntegration} from 'models/integration/types'
 
 import {mockStore} from 'utils/testing'
-import {integrationsState} from 'fixtures/integrations'
+
 import VoiceIntegrationSecondaryNavigation from '../VoiceIntegrationSecondaryNavigation'
 
 const defaultState = {

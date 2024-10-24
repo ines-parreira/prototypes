@@ -1,13 +1,13 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {AlertType} from 'pages/common/components/Alert/Alert'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {
     getCurrentHelpdeskMaxIntegrations,
     getCurrentHelpdeskPlanName,
 } from 'state/billing/selectors'
 import {getActiveIntegrations} from 'state/integrations/selectors'
-import {AlertType} from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 
 export default function LimitWarning({className}: {className?: string}) {
     const helpdeskName = useAppSelector(getCurrentHelpdeskPlanName)

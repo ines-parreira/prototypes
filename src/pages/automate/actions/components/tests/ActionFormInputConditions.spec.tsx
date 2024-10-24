@@ -1,10 +1,10 @@
-import React from 'react'
 import {act, fireEvent, render, screen} from '@testing-library/react'
-import {FormProvider, useForm} from 'react-hook-form'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+import {FormProvider, useForm} from 'react-hook-form'
 
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import {ActionFormInputValues} from '../../types'
 

@@ -1,6 +1,6 @@
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {render, screen} from '@testing-library/react'
 import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 
 import {AICopyAssistant} from '../AICopyAssistant'

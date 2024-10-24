@@ -1,8 +1,8 @@
-import React, {ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
+import React, {ForwardedRef, forwardRef} from 'react'
 
-import {IntegrationType} from 'models/integration/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {IntegrationType} from 'models/integration/types'
 import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
 
 import css from './SourceIcon.less'

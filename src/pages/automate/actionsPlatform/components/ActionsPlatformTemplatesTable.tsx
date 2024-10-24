@@ -1,11 +1,11 @@
 import React, {ReactNode} from 'react'
 
-import TableHead from 'pages/common/components/table/TableHead'
+import {OrderDirection} from 'models/api/types'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import {OrderDirection} from 'models/api/types'
 
 type Props = {
     orderDirection: OrderDirection

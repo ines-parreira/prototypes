@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
 import {assumeMock} from 'utils/testing'
-import {getAvatarFromCache, getAvatar, getInitials} from '../utils'
 
 import Avatar from '../Avatar'
+import {getAvatarFromCache, getAvatar, getInitials} from '../utils'
 
 jest.mock('../utils')
 const getAvatarMock = assumeMock(getAvatar)

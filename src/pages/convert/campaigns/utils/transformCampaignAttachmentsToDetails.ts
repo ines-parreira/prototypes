@@ -1,4 +1,5 @@
 import {SCENARIO_CONFIG} from 'pages/convert/campaigns/constants/productRecommendationScenarios'
+
 import {
     AttachmentType,
     CampaignAttachment,

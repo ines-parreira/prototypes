@@ -1,15 +1,15 @@
-import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {
     getSyntaxTreeLeaves,
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
-import {RuleItemActions} from 'pages/settings/rules/types'
 import Widget from 'pages/common/components/ast/Widget'
 
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 type Props = {
     operator: string

@@ -1,5 +1,3 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
 import {
     render,
     fireEvent,
@@ -8,20 +6,23 @@ import {
     screen,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/twilio/voiceDevice'
-import {mockDevice} from 'tests/twilioMocks'
 import {phoneNumbers as phoneNumberFixtures} from 'fixtures/newPhoneNumber'
-import history from 'pages/history'
-
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import {assumeMock} from 'utils/testing'
+import {IntegrationType} from 'models/integration/types'
+import history from 'pages/history'
 import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import {initialState} from 'state/twilio/voiceDevice'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockDevice} from 'tests/twilioMocks'
+
+import {assumeMock} from 'utils/testing'
+
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 
 jest.mock('hooks/integrations/phone/useVoiceDevice')

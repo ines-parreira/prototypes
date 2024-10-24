@@ -1,13 +1,15 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 
+import {UserRole} from 'config/types/user'
+import {agents} from 'fixtures/agents'
+import {user} from 'fixtures/users'
 import {useRunningJobs} from 'jobs'
 import {ReportingGranularity} from 'models/reporting/types'
-import {user} from 'fixtures/users'
 
 import {
     DrillDownDownloadButton,
@@ -16,8 +18,6 @@ import {
     TOTAL_OBJECTS_COUNT_PLACEHOLDER,
 } from 'pages/stats/DrillDownDownloadButton'
 import {RootState} from 'state/types'
-import {agents} from 'fixtures/agents'
-import {UserRole} from 'config/types/user'
 import {
     AgentsMetrics,
     drillDownSlice,

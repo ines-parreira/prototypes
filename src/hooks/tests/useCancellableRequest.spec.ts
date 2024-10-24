@@ -1,9 +1,9 @@
+import {renderHook} from '@testing-library/react-hooks'
 import type {CancelToken, AxiosResponse} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {renderHook} from '@testing-library/react-hooks'
 
-import useCancellableRequest from '../useCancellableRequest'
 import client from '../../models/api/resources'
+import useCancellableRequest from '../useCancellableRequest'
 
 describe('useCancellableRequest', () => {
     const mockApi = new MockAdapter(client)

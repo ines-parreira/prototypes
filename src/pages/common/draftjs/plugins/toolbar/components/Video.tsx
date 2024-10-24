@@ -1,7 +1,3 @@
-import React, {ImgHTMLAttributes} from 'react'
-
-import ReactPlayer from 'react-player'
-
 import classnames from 'classnames'
 import {
     ContentBlock,
@@ -11,6 +7,8 @@ import {
     SelectionState,
 } from 'draft-js'
 import _omit from 'lodash/omit'
+import React, {ImgHTMLAttributes} from 'react'
+import ReactPlayer from 'react-player'
 
 type Props = {
     alt: string

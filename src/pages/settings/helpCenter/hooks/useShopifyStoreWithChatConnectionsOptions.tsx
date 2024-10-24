@@ -1,12 +1,12 @@
-import React, {useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {useMemo} from 'react'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
-import {IntegrationType} from 'models/integration/types'
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
-import {Option} from 'pages/common/forms/SelectField/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import {Option} from 'pages/common/forms/SelectField/types'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 
 type CssClasses = {
     option: string

@@ -1,6 +1,7 @@
 import React from 'react'
-import {ActionAppConfiguration} from '../types'
+
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import {ActionAppConfiguration} from '../types'
 import css from './TemplateActionBanner.less'
 
 type Props = {

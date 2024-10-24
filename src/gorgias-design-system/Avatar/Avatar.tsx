@@ -1,12 +1,10 @@
-import React, {HTMLAttributes} from 'react'
-
 import styled from '@emotion/styled'
+import React, {HTMLAttributes} from 'react'
 
 import {gorgiasColors} from '../styles'
 
-import {getInitials} from './utils'
-
 import BotIcon from './icons/BotIcon'
+import {getInitials} from './utils'
 
 export const StyledAvatarName = styled.span`
     color: ${gorgiasColors.dark};

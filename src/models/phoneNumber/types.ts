@@ -1,5 +1,5 @@
-import {Integration} from 'models/integration/types'
 import {PhoneType, PhoneCountry, PhoneFunction} from 'business/twilio'
+import {Integration} from 'models/integration/types'
 
 export type PhoneNumber = OldPhoneNumber | NewPhoneNumber
 

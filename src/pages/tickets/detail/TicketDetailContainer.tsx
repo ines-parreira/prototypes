@@ -1,29 +1,37 @@
+import {fromJS, List, Map} from 'immutable'
+import _pick from 'lodash/pick'
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
-import {fromJS, List, Map} from 'immutable'
-import _pick from 'lodash/pick'
-import {PickedTicket, pickedTicketFields} from 'models/search/types'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {MacroActionName} from 'models/macroAction/types'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import useSearch from 'hooks/useSearch'
-import useTitle from 'hooks/useTitle'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+
+import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useKey from 'hooks/useKey'
+import usePrevious from 'hooks/usePrevious'
+import {RecentItems} from 'hooks/useRecentItems/constants'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import useSearch from 'hooks/useSearch'
 import useDraftMessages, {DRAFT_TICKET_STORE} from 'hooks/useTicketDraft'
-import {RootState} from 'state/types'
-import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
+import useTitle from 'hooks/useTitle'
+import {MacroActionName} from 'models/macroAction/types'
+import {PickedTicket, pickedTicketFields} from 'models/search/types'
+import {Ticket} from 'models/ticket/types'
+import {useListVoiceCalls} from 'models/voiceCall/queries'
+import Loader from 'pages/common/components/Loader/Loader'
+import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
+import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -41,6 +49,8 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import {canSend, getNewMessageSource} from 'state/newMessage/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     clearTicket,
     fetchTicket,
@@ -49,30 +59,20 @@ import {
     setCustomer,
     setStatus,
 } from 'state/ticket/actions'
-import {updateCursor} from 'state/tickets/actions'
-import {getActiveView} from 'state/views/selectors'
-import {isMacOs} from 'utils/platform'
-import LocalForageManager from 'services/localForageManager/localForageManager'
-
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import {RecentItems} from 'hooks/useRecentItems/constants'
-import useEffectOnce from 'hooks/useEffectOnce'
-import usePrevious from 'hooks/usePrevious'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {Ticket} from 'models/ticket/types'
-import useKey from 'hooks/useKey'
-import Loader from 'pages/common/components/Loader/Loader'
-import {useListVoiceCalls} from 'models/voiceCall/queries'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
+import {updateCursor} from 'state/tickets/actions'
+import {RootState} from 'state/types'
+import {getActiveView} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import {isMacOs} from 'utils/platform'
 
-import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
-import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
-import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
-import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
-import useTicketActivityTracking from './hooks/useTicketActivityTracking'
+import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
+import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
+import TicketView from './components/TicketView'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
+import useTicketActivityTracking from './hooks/useTicketActivityTracking'
+import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
 import css from './TicketDetail.less'
 
 export type SubmitArgs = {

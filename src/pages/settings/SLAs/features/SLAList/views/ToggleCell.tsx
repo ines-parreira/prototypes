@@ -1,5 +1,5 @@
-import React, {PropsWithRef, useCallback} from 'react'
 import cn from 'classnames'
+import React, {PropsWithRef, useCallback} from 'react'
 
 import BodyCell, {
     Props as BodyCellProps,

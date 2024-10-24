@@ -1,8 +1,10 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
+import React from 'react'
+
 import {renderWithRouter} from 'utils/testing'
-import ActionEventsList from '../ActionEventsList'
+
 import {LlmTriggeredExecution} from '../../types'
+import ActionEventsList from '../ActionEventsList'
 
 describe('<ActionEventsList />', () => {
     it('should render component', () => {

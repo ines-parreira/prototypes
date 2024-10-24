@@ -2,17 +2,17 @@ import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import useTitle from 'hooks/useTitle'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import css from 'pages/settings/settings.less'
 import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     CustomFieldObjectTypes,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
+import useTitle from 'hooks/useTitle'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/settings/settings.less'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
 
 import EditFieldForm from './components/EditFieldForm'

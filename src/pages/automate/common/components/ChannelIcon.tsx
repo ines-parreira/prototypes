@@ -1,8 +1,8 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from 'business/types/ticket'
+import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import css from './ChannelIcon.less'
 

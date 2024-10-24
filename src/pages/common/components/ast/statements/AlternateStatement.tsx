@@ -1,13 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {Map, List} from 'immutable'
-
-import {RuleItemActions} from 'pages/settings/rules/types'
-import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
+import React, {ComponentProps} from 'react'
 
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
+import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import {RuleItemActions} from 'pages/settings/rules/types'
+
 import BlockStatement from './BlockStatement'
 
 type AlternateStatementProps = {

@@ -1,13 +1,13 @@
-import React, {ReactNode, useMemo} from 'react'
 import {List, Map} from 'immutable'
+import React, {ReactNode, useMemo} from 'react'
 
 import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import useAppSelector from 'hooks/useAppSelector'
 import {ViewField} from 'models/view/types'
 import {getHumanAgents} from 'state/agents/selectors'
-import {ViewFilter} from 'state/views/types'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import {ViewFilter} from 'state/views/types'
 
 import {useStatsViewFilters} from './utils'
 import ViewLink from './ViewLink'

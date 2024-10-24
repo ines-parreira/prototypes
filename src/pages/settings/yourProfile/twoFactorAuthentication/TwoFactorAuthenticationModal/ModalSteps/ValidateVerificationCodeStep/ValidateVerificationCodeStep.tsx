@@ -1,10 +1,11 @@
-import React, {Dispatch, SetStateAction} from 'react'
 import classnames from 'classnames'
+import React, {Dispatch, SetStateAction} from 'react'
 
-import settingsCss from 'pages/settings/settings.less'
-import InputField from 'pages/common/forms/input/InputField'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import InputField from 'pages/common/forms/input/InputField'
+import settingsCss from 'pages/settings/settings.less'
+
 import css from '../ModalSteps.less'
 
 type OwnProps = {

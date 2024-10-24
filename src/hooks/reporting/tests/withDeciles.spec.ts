@@ -1,4 +1,5 @@
 import {forEach} from 'lodash'
+
 import {
     DataResponse,
     getDecilesIndex,

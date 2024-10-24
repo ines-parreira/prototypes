@@ -1,10 +1,11 @@
 import {VoiceCallDirection} from '@gorgias/api-queries'
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import {VoiceCallSummary} from 'pages/stats/voice/models/types'
-import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'
 
 import css from './LiveVoiceCallStatusLabel.less'
+import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'
 
 type Props = {
     direction: VoiceCallDirection

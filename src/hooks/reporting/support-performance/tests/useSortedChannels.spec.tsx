@@ -1,16 +1,19 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+// eslint-disable-next-line import/order
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+// eslint-disable-next-line import/order
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {channels as mockChannels} from 'fixtures/channels'
-import {RootState} from 'state/types'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {OrderDirection} from 'models/api/types'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
+import {OrderDirection} from 'models/api/types'
+import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
+import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

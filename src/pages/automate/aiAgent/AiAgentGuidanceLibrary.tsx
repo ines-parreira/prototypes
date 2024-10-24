@@ -1,15 +1,16 @@
 import React from 'react'
+
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
-import history from 'pages/history'
 import Loader from 'pages/common/components/Loader/Loader'
-import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
-import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import history from 'pages/history'
 
 import css from './AiAgentGuidanceLibrary.less'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
 import {GuidanceAiSuggestionsList} from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
+import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
 
 type Props = {
     helpCenterId: number

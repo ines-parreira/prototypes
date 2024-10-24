@@ -1,12 +1,13 @@
-import React from 'react'
 import {fireEvent, screen, render, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import * as client from 'models/integration/resources'
 import {notify} from 'state/notifications/actions'
 
 import {NotificationStatus} from 'state/notifications/types'
+
 import RequestApp from '../RequestApp'
 
 jest.mock('state/notifications/actions')

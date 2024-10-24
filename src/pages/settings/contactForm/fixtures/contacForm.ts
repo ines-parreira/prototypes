@@ -1,5 +1,6 @@
 import {ContactForm} from 'models/contactForm/types'
 import {CONTACT_FORM_DEFAULT_LOCALE} from 'pages/settings/contactForm/constants'
+
 import {Components} from '../../../../rest_api/help_center_api/client.generated'
 import {ContactFormDisplayMode} from '../types/formDisplayMode.enum'
 

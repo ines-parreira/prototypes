@@ -1,14 +1,15 @@
 import {ulid} from 'ulidx'
-import {assetsUrl} from 'utils'
+
+import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
 } from 'pages/convert/campaigns/templates/types'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
+import {assetsUrl} from 'utils'
 
 export const CSM_DRIVE_LOYALTY_PROGRAM_SIGNUPS: CampaignTemplate = {
     slug: 'csm-drive-loyalty-program-signups',

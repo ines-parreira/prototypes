@@ -1,46 +1,48 @@
-import React, {useState} from 'react'
-import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
+import _pick from 'lodash/pick'
+import React, {useState} from 'react'
 import {Spinner, Tooltip} from 'reactstrap'
+
+import {
+    TicketMessageSourceType,
+    TicketChannel,
+    TicketVia,
+} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {UserRole} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
-import {ActionStatus, Ticket} from 'models/ticket/types'
-import {actionsConfig} from 'pages/common/components/ast/actions/config'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     MacroAction,
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
 import {RuleAction, RuleType} from 'models/rule/types'
+import {ActionStatus, Ticket} from 'models/ticket/types'
+import {actionsConfig} from 'pages/common/components/ast/actions/config'
+import Button from 'pages/common/components/button/Button'
 
+import {getHasAutomate} from 'state/billing/selectors'
+import {getAccountOwnerId} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
+import {useRules} from 'state/entities/rules/hooks'
 import {getEmailChannels} from 'state/integrations/selectors'
-import {getPreferredChannel, guessReceiversFromTicket} from 'state/ticket/utils'
-import {
-    TicketMessageSourceType,
-    TicketChannel,
-    TicketVia,
-} from 'business/types/ticket'
 import {sendTicketMessage} from 'state/newMessage/actions'
 import {NewMessage} from 'state/newMessage/types'
 import {transformToInternalNote} from 'state/newMessage/utils'
-import {getMomentNow} from 'utils/date'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {useRules} from 'state/entities/rules/hooks'
-import {UserRole} from 'config/types/user'
-import {ManagedRule} from 'state/rules/types'
-import {hasRole} from 'utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getHasAutomate} from 'state/billing/selectors'
 
-import {SegmentEvent, logEvent} from 'common/segment'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {getAccountOwnerId} from 'state/currentAccount/selectors'
+import {ManagedRule} from 'state/rules/types'
+import {getPreferredChannel, guessReceiversFromTicket} from 'state/ticket/utils'
+import {hasRole} from 'utils'
+import {getMomentNow} from 'utils/date'
+
 import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
-import css from './RuleSuggestion.less'
 import InTicketSuggestion from './InTicketSuggestion'
+import css from './RuleSuggestion.less'
 
 type TicketWithRuleSuggestionData = Ticket & {
     meta: Record<'rule_suggestion', RuleSuggestionData>

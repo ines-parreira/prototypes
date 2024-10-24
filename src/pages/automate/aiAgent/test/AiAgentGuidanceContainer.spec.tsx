@@ -1,26 +1,28 @@
-import React from 'react'
 import {fireEvent, screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import history from 'pages/history'
-import {reportError} from 'utils/errors'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
+
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import history from 'pages/history'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {reportError} from 'utils/errors'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
-import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
-import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
+import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
+import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
+import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('pages/history')

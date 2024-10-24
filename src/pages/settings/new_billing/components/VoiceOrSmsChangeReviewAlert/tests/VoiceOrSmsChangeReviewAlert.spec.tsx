@@ -1,11 +1,13 @@
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -17,9 +19,9 @@ import {
     voicePlan0,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {account} from 'fixtures/account'
+import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import VoiceOrSmsChangeReviewAlert from '../VoiceOrSmsChangeReviewAlert'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([

@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
+import React, {useEffect, useState} from 'react'
+
 import settingsCss from 'pages/settings/settings.less'
+
 import InputField from '../../../../common/forms/input/InputField'
 
 import css from './GoogleAnalyticsSection.less'

@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     forwardRef,
     ForwardedRef,
@@ -5,18 +6,17 @@ import React, {
     useMemo,
     useRef,
 } from 'react'
-import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
 
-import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import navbarCss from 'assets/css/navbar.less'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import useViewId from 'hooks/useViewId'
 import {View} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {activeViewIdSet} from 'state/ui/views/actions'
 import {isTicketPath} from 'utils'
 
 type Props = {

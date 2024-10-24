@@ -1,7 +1,7 @@
 import {render} from '@testing-library/react'
-import React from 'react'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import React from 'react'
 
 import ListField from '../ListField'
 

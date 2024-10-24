@@ -1,22 +1,24 @@
-import React, {useCallback} from 'react'
-import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import {noop} from 'lodash'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import Spinner from 'pages/common/components/Spinner'
+import React, {useCallback} from 'react'
+import {useParams} from 'react-router-dom'
+
 import {SegmentEvent, logEvent} from 'common/segment'
 
-import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {ContactForm} from 'models/contactForm/types'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import {AutomateFeatures} from 'pages/automate/common/types'
+import Spinner from 'pages/common/components/Spinner'
+
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
-import {FlowsSettings} from './FlowsSettings'
 import css from './ConnectedChannelsChatView.less'
+import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
 import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
 import {FeatureSettings} from './FeatureSettings'
-import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
+import {FlowsSettings} from './FlowsSettings'
 
 interface Props {
     contactForm?: ContactForm

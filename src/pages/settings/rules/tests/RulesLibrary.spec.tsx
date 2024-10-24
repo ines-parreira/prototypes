@@ -1,22 +1,22 @@
-import React from 'react'
-import * as ReactRouterDom from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {screen, render, waitFor} from '@testing-library/react'
 import {createMemoryHistory, Location} from 'history'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import * as ReactRouterDom from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {billingState} from 'fixtures/billing'
 
-import {RulesState} from '../../../../state/entities/rules/types'
-import {fetchRules} from '../../../../models/rule/resources'
-import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
 import {
     emptyRule as ruleFixture,
     emptyManagedRule,
 } from '../../../../fixtures/rule'
 import {user} from '../../../../fixtures/users'
+import {fetchRules} from '../../../../models/rule/resources'
+import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
+import {RulesState} from '../../../../state/entities/rules/types'
 import {RootState, StoreDispatch} from '../../../../state/types'
 
 import {RulesLibraryContainer} from '../RulesLibrary'

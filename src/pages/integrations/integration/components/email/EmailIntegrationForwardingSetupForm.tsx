@@ -1,18 +1,17 @@
-import React, {useCallback} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useCallback} from 'react'
 
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import {EmailIntegration} from 'models/integration/types'
+import CheckBoxField from 'pages/common/forms/CheckBoxField'
+import FormRow from 'pages/common/forms/FormRow'
+import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
-import FormRow from 'pages/common/forms/FormRow'
-import CheckBoxField from 'pages/common/forms/CheckBoxField'
 
 import BaseEmailIntegrationInputField from './BaseEmailIntegrationInputField'
+import css from './EmailIntegrationForwardingSetupForm.less'
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
 import {useEmailOnboarding} from './hooks/useEmailOnboarding'
-
-import css from './EmailIntegrationForwardingSetupForm.less'
 
 type Values = Partial<{checked: boolean}>
 

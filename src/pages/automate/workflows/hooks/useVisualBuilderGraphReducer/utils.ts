@@ -1,9 +1,7 @@
-import {ulid} from 'ulidx'
-import {produce} from 'immer'
 import {flextree} from 'd3-flextree'
+import {produce} from 'immer'
 import _keyBy from 'lodash/keyBy'
-
-import {WorkflowTransition} from '../../models/workflowConfiguration.types'
+import {ulid} from 'ulidx'
 
 import {
     buildNodeCommonProperties,
@@ -32,6 +30,7 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
+import {WorkflowTransition} from '../../models/workflowConfiguration.types'
 
 export function greyOutBranch(
     graph: VisualBuilderGraph,

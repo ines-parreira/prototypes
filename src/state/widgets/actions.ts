@@ -1,11 +1,12 @@
 import {AxiosError} from 'axios'
+import {Map} from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
+import _last from 'lodash/last'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
-import _last from 'lodash/last'
-import _isUndefined from 'lodash/isUndefined'
-import {Map} from 'immutable'
 
 import client from 'models/api/resources'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
 import {
     FetchWidgetsOptions,
@@ -24,14 +25,13 @@ import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch, RootState} from 'state/types'
 import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import * as types from './constants'
-import {Widget, WidgetEnvironment} from './types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from './constants'
+import {Widget, WidgetEnvironment} from './types'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {

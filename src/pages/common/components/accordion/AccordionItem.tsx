@@ -1,14 +1,13 @@
-import React, {ReactNode, useMemo} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode, useMemo} from 'react'
 
 import useId from 'hooks/useId'
 
 import {useAccordionContext} from './AccordionContext'
+import css from './AccordionItem.less'
 import AccordionItemContext, {
     AccordionItemContextType,
 } from './AccordionItemContext'
-
-import css from './AccordionItem.less'
 
 export type AccordionItemProps = {
     id?: string

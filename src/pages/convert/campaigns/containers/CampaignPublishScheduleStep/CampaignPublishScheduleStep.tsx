@@ -1,41 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-import React, {useState, useMemo} from 'react'
-import moment, {Moment} from 'moment-timezone'
-import {produce} from 'immer'
-
 import {Label} from '@gorgias/ui-kit'
+import {produce} from 'immer'
+import moment, {Moment} from 'moment-timezone'
 
-import useUpdateEffect from 'hooks/useUpdateEffect'
+import React, {useState, useMemo} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {useModalManager} from 'hooks/useModalManager'
-
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'
+import CampaignScheduleSummary from 'pages/convert/campaigns/components/CampaignScheduleSummary'
+import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
 import {DURATION_VALUES} from 'pages/convert/campaigns/constants/scheduleValueLabels'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
 import {
     ScheduleSchema,
     CustomScheduleSchema,
 } from 'pages/convert/campaigns/types/CampaignSchedule'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
-import CampaignScheduleSummary from 'pages/convert/campaigns/components/CampaignScheduleSummary'
-import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
-import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-
-import CampaignSchedulePicker from './CampaignSchedulePicker'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import css from './CampaignPublishScheduleStep.less'
+import CampaignSchedulePicker from './CampaignSchedulePicker'
 
 const DEFAULT_TIMEZONE = 'UTC'
 // Note: In convert we store all dates in UTC format (without timezone info)

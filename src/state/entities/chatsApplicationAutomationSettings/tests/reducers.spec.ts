@@ -1,11 +1,10 @@
+import {ChatApplicationAutomationSettings} from '../../../../models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
     chatApplicationAutomationSettingsFetched,
 } from '../actions'
 import reducer from '../reducer'
-
-import {ChatApplicationAutomationSettings} from '../../../../models/chatApplicationAutomationSettings/types'
 
 const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
     id: 1,

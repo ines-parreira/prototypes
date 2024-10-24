@@ -1,9 +1,10 @@
 import React from 'react'
 import {Col, Row} from 'reactstrap'
 
-import SettingsContent from 'pages/settings/SettingsContent'
-import Button from 'pages/common/components/button/Button'
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
+import Button from 'pages/common/components/button/Button'
+import SettingsContent from 'pages/settings/SettingsContent'
+
 import NumberedList from '../email/EmailMigration/NumberedList'
 import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
 import WhatsAppMigrationSteppedNavBar from './WhatsAppMigrationSteppedNavBar'

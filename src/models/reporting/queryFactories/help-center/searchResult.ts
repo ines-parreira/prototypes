@@ -1,8 +1,3 @@
-import {StatsFilters} from 'models/stat/types'
-import {
-    HelpCenterStatsFiltersMembers,
-    statsFiltersToReportingFilters,
-} from 'utils/reporting'
 import {OrderDirection} from 'models/api/types'
 import {
     HelpCenterTrackingEventCube,
@@ -12,6 +7,11 @@ import {
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {
+    HelpCenterStatsFiltersMembers,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
 
 export const searchResultTermsQueryFactory = (
     statsFilters: StatsFilters,

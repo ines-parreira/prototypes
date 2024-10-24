@@ -1,4 +1,5 @@
 import React, {memo} from 'react'
+
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import css from './ProductCardAttachment.less'

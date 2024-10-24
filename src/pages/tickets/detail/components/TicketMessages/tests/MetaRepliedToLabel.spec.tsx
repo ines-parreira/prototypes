@@ -1,5 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import MetaRepliedToLabel from 'pages/tickets/detail/components/TicketMessages/MetaRepliedToLabel'
 
 describe('MetaRepliedToLabel', () => {

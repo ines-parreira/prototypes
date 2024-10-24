@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {helpCenterAPI} from './help_center_api/client'
 import {getAccessToken, isValidAccessToken} from './auth'
+import {helpCenterAPI} from './help_center_api/client'
 
 const generateTokenFromExpiry = (exp: number) =>
     `header.${btoa(

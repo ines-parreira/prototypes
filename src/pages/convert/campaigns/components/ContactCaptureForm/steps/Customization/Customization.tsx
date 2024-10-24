@@ -1,21 +1,23 @@
-import React, {useState, useEffect, useMemo} from 'react'
-import {Label} from 'reactstrap'
 import {fromJS} from 'immutable'
+import React, {useState, useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {Label} from 'reactstrap'
+
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {sanitizeHtmlDefault} from 'utils/html'
-import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
-import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import InputField from 'pages/common/forms/input/InputField'
+import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import {sanitizeHtmlDefault} from 'utils/html'
+
 import css from './Customization.less'
 
 export const Customization = (props: StepProps) => {

@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React, {useMemo} from 'react'
 
 import {OneDimensionalChart, Stat} from '../../../../../../models/stat/types'
 

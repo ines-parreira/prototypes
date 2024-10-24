@@ -1,4 +1,5 @@
 import client from 'models/api/resources'
+
 import {CHURN_MITIGATION_OFFER_ZAPIER_URL} from './constants'
 
 type Payload = {

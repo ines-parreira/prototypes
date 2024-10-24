@@ -8,8 +8,8 @@ import {WidgetProps} from 'Widgets/modules/Widget'
 
 import {customerCustomization} from './Customer'
 import {loyaltyCustomization} from './Loyalty'
-import {reviewStatisticsCustomization} from './ReviewStatistics'
 import {reviewsCustomization} from './Reviews'
+import {reviewStatisticsCustomization} from './ReviewStatistics'
 
 export const customization: TemplateCustomization = {
     card: [

@@ -1,13 +1,13 @@
 import {Meta, Story} from '@storybook/react'
+import {createDragDropManager} from 'dnd-core'
 import React, {ComponentProps, useState} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {createDragDropManager} from 'dnd-core'
 
-import SortableAccordion from './SortableAccordion'
-import SortableAccordionItem from './SortableAccordionItem'
-import SortableAccordionHeader from './SortableAccordionHeader'
 import AccordionBody from './AccordionBody'
+import SortableAccordion from './SortableAccordion'
+import SortableAccordionHeader from './SortableAccordionHeader'
+import SortableAccordionItem from './SortableAccordionItem'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 

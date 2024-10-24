@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {
     DropdownItem,
@@ -5,19 +7,18 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import classNames from 'classnames'
+
+import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {
     getNewMessageChannel,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
-import {TicketChannel} from 'business/types/ticket'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 
-import {TemplateTypeFilterOption} from './types'
 import css from './TemplateTypeFilterDropdown.less'
+import {TemplateTypeFilterOption} from './types'
 
 type Props = {
     value: TemplateTypeFilterOption

@@ -1,9 +1,11 @@
 import React, {useMemo, useState} from 'react'
+
+import {getContrastColor} from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
 
-import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {getContrastColor} from 'gorgias-design-system/utils'
+import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
+
 import css from './DiscountOfferPreview.less'
 
 const DEFAULT_COLOR = '#0097ff'

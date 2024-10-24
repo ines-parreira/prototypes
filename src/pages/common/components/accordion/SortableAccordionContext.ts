@@ -1,5 +1,5 @@
-import {createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
+import {createContext, useContext} from 'react'
 
 export type SortableAccordionContextType = {
     type: string

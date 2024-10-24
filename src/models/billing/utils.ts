@@ -1,7 +1,6 @@
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
-import {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     AutomatePlan,
     ConvertPlan,
@@ -11,6 +10,8 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import {ColorType} from 'pages/common/components/Badge/Badge'
+
 import {
     formatAmount,
     formatNumTickets,

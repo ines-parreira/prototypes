@@ -1,7 +1,7 @@
 import React from 'react'
 
-import EmailCaptureMessage from './EmailCaptureMessage'
 import BotMessages from './BotMessages'
+import EmailCaptureMessage from './EmailCaptureMessage'
 
 type Props = {
     mainColor: string

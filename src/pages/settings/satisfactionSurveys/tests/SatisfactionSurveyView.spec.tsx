@@ -1,8 +1,9 @@
-import React from 'react'
-import {Map, fromJS} from 'immutable'
 import {render, screen} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
+import {Map, fromJS} from 'immutable'
+import React from 'react'
+
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import {submitSetting} from 'state/currentAccount/actions'
 import {getSurveysSettings} from 'state/currentAccount/selectors'

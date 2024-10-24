@@ -1,14 +1,14 @@
-import React, {ComponentType} from 'react'
 import _memoize from 'lodash/memoize'
+import React, {ComponentType} from 'react'
 import {RouteComponentProps} from 'react-router-dom'
 
-import {getCurrentUserState} from 'state/currentUser/selectors'
+import {PageSection} from 'config/pages'
+import {UserRole} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 import RestrictedPage from 'pages/common/components/RestrictedPage'
 import history from 'pages/history'
-import {UserRole} from 'config/types/user'
-import {PageSection} from 'config/pages'
+import {getCurrentUserState} from 'state/currentUser/selectors'
 import {hasRole} from 'utils'
-import useAppSelector from 'hooks/useAppSelector'
 
 // check user role before rendering the desired component
 // You can discard RouteComponentProps if we ever change react-router

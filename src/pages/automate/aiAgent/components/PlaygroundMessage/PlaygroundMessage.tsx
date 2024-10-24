@@ -1,20 +1,22 @@
-import React, {ReactNode, useEffect, useState} from 'react'
 import classnames from 'classnames'
-import {sanitizeHtmlDefault} from 'utils/html'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import React, {ReactNode, useEffect, useState} from 'react'
+
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import error from 'assets/img/icons/error.svg'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     MessageType,
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Loader from 'pages/common/components/Loader/Loader'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {assertUnreachable} from 'utils'
-import TicketEvent from '../TicketEvent/TicketEvent'
+import {sanitizeHtmlDefault} from 'utils/html'
+
 import {PlaygroundChannels} from '../PlaygroundChat/PlaygroundChat.types'
+import TicketEvent from '../TicketEvent/TicketEvent'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'

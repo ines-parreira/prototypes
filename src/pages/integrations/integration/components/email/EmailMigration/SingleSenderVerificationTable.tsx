@@ -1,16 +1,17 @@
 import React from 'react'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
+import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
+import Pagination from 'pages/common/components/Pagination'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
-import Pagination from 'pages/common/components/Pagination'
-import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow'
 
 import css from './SingleSenderVerificationTable.less'
+import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow'
 
 export type Props = {
     integrations: EmailMigrationSenderVerificationIntegration[]

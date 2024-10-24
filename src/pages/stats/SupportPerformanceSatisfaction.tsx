@@ -1,5 +1,6 @@
 import {fromJS, Map} from 'immutable'
 import React, {useMemo} from 'react'
+
 import {
     LATEST_SATISFACTION_SURVEYS,
     SATISFACTION_SURVEYS,
@@ -19,6 +20,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 
 import {getMessagingAndAppIntegrationsStatsFilter} from 'state/stats/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'

@@ -1,18 +1,19 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect, ConnectedProps} from 'react-redux'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {bindActionCreators} from 'redux'
 
 import Button from 'pages/common/components/button/Button'
+
 import {Action} from '../../../../../models/ticket/types'
-import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
-import * as TicketActions from '../../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
-import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
+import * as TicketActions from '../../../../../state/ticket/actions'
 import {RootState} from '../../../../../state/types'
+import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
 import {sanitizeHtmlDefault} from '../../../../../utils/html'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 
 import css from './Error.less'
 

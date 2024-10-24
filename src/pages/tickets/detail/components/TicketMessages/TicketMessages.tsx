@@ -1,8 +1,12 @@
-import React, {useEffect} from 'react'
-import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment, {Moment} from 'moment'
+import React, {useEffect} from 'react'
 
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
@@ -10,15 +14,12 @@ import {
 import {TicketMessage} from 'models/ticket/types'
 import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
 
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
 import {buildFirstTicketMessage} from 'state/ticket/utils'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {SegmentEvent} from 'common/segment'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {logEventWithSampling} from 'common/segment/segment'
+
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
     BANNER_TYPE,

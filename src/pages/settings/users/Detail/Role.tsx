@@ -1,5 +1,5 @@
-import React from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {UserRole} from 'config/types/user'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'

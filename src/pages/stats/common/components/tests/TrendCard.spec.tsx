@@ -3,7 +3,10 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+
+import {TicketChannel} from 'business/types/ticket'
+import {agents} from 'fixtures/agents'
+import {integrationsState} from 'fixtures/integrations'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -16,17 +19,19 @@ import {
     useTicketsRepliedTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge'
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 
+import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
@@ -36,10 +41,6 @@ import {
 } from 'state/ui/stats/selectors'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
-import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,

@@ -1,4 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import {
     bigCommerceCartFixture,
     bigCommerceCustomerFixture,
@@ -16,6 +17,7 @@ import {
     BigCommerceProduct,
     ProductModifiersChangedError,
 } from 'models/integration/types'
+
 import {
     addLineItem,
     exportedForTesting,

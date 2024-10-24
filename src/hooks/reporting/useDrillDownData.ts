@@ -1,6 +1,5 @@
 import {useMemo} from 'react'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {OrderDirection} from 'models/api/types'
+
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
@@ -8,6 +7,7 @@ import {
 import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
@@ -16,6 +16,7 @@ import {
     DrillDownFormatterProps,
 } from 'pages/stats/DrillDownFormatters'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {
     DrillDownMetric,

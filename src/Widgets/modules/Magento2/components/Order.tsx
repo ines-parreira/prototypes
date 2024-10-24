@@ -1,19 +1,19 @@
-import React, {Component, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React, {Component, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {getTrackingUrl} from 'utils/delivery'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {getValueFromData} from 'Widgets/modules/Template/helpers/fieldDataMappers'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import css from './Order.less'
 

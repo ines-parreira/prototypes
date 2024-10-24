@@ -1,15 +1,15 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {screen, fireEvent, render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {ShopifyTags} from 'models/integration/types'
-import {fetchShopTags} from 'models/integration/resources/shopify'
 import {shopifyDraftOrderPayloadFixture} from 'fixtures/shopify'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {fetchShopTags} from 'models/integration/resources/shopify'
+import {ShopifyTags} from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 

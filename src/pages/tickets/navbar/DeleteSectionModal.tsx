@@ -3,10 +3,11 @@ import React from 'react'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+
 import {Section} from '../../../models/section/types'
 
 import css from './DeleteSectionModal.less'

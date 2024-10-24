@@ -1,7 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {PlanInterval} from 'models/billing/types'
+
 import BillingFrequency, {BillingFrequencyProps} from '../BillingFrequency'
 
 describe('BillingFrequency', () => {

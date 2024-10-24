@@ -1,5 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {useGetHTTPEvent} from 'models/integration/queries/http'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -7,9 +7,9 @@ import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusL
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import HTTPParams from './Params'
-import HTTPItem from './Item'
 import css from './Event.less'
+import HTTPItem from './Item'
+import HTTPParams from './Params'
 
 const DEFAULT_ERROR_MESSAGE =
     'There was an error while making this request. This can happen for multiple reasons:\n' +

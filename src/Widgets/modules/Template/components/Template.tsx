@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 
+import {LEAF_TYPES} from 'models/widget/constants'
 import {
     Template as TemplateType,
     isSourceRecord,
@@ -11,19 +12,18 @@ import {
     isListTemplate,
 } from 'models/widget/types'
 import {EditionContext} from 'providers/infobar/EditionContext'
+import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
+
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {
     getStringFromData,
     getValueFromData,
 } from 'Widgets/modules/Template/helpers/fieldDataMappers'
-import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
-
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import Card from 'Widgets/modules/Template/modules/Card'
 import Field from 'Widgets/modules/Template/modules/Field'
-import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import List from 'Widgets/modules/Template/modules/List'
+import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 
-import {LEAF_TYPES} from 'models/widget/constants'
 import {CustomizationContext} from '../contexts/CustomizationContext'
 import {
     seekCardCustomization,

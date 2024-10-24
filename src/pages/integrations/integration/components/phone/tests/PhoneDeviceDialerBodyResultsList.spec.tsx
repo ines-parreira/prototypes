@@ -1,6 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen, within} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+
 import {UserSearchResult} from 'models/search/types'
+
 import PhoneDeviceDialerBodyResultsList from '../PhoneDeviceDialerBodyResultsList'
 
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (

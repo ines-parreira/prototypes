@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
+
+import {StatsFilters} from 'models/stat/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ChartCard from 'pages/stats/ChartCard'
-import {StatsFilters} from 'models/stat/types'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+
+import {useSearchTermsMetrics} from '../../hooks/useSearchTermsMetrics'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
-import {useSearchTermsMetrics} from '../../hooks/useSearchTermsMetrics'
 import SearchQueryModal from '../SearchQueryModal/SearchQueryModal'
 
 const ITEMS_PER_PAGE = 20

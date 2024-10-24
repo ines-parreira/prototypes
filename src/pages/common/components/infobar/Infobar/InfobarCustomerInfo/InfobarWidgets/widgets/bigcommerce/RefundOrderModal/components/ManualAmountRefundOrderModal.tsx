@@ -1,20 +1,21 @@
-import React, {Dispatch, useEffect, useState} from 'react'
 import classnames from 'classnames'
+import React, {Dispatch, useEffect, useState} from 'react'
 
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     BigCommerceRefundableItemType,
     CalculateOrderRefundDataResponse,
     BigCommerceRefundItemsPayload,
 } from 'models/integration/types'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
+
+import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
 import {formatAmount} from '../utils'
-import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './ManualAmountRefundOrderModal.less'
 
 type Props = {

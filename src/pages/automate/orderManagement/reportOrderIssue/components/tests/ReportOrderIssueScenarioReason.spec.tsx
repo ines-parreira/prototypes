@@ -1,12 +1,14 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {assumeMock} from 'utils/testing'
-import {RootState, StoreDispatch} from 'state/types'
+import configureMockStore from 'redux-mock-store'
+
 import {ShopifyIntegration} from 'models/integration/types'
-import ReportOrderIssueScenarioReason from '../ReportOrderIssueScenarioReason'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {useReportOrderIssueScenarioFormContext} from '../ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueScenarioReason from '../ReportOrderIssueScenarioReason'
 
 jest.mock('../ReportOrderIssueScenarioFormContext')
 

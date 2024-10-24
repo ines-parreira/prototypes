@@ -1,6 +1,7 @@
 import {ComponentProps} from 'react'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+
 import {LeafTemplate, LeafType, Source} from 'models/widget/types'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import Field from 'Widgets/modules/Template/modules/Field'
 
 export type FieldCustomization = {

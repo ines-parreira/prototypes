@@ -1,24 +1,25 @@
-import {useEffect, useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
+import {useEffect, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {AnyAction} from 'redux'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import GorgiasApi from 'services/gorgiasApi'
+import {
+    fetchContact,
+    fetchCreditCard,
+    updateContact,
+} from 'state/billing/actions'
+import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
+import {creditCard, getContact} from 'state/billing/selectors'
 import {
     BillingContact,
     CreditCard,
     ErrorResponse,
     TicketPurpose,
 } from 'state/billing/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {creditCard, getContact} from 'state/billing/selectors'
-import {
-    fetchContact,
-    fetchCreditCard,
-    updateContact,
-} from 'state/billing/actions'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
@@ -27,12 +28,12 @@ import {
     isTrialing,
     shouldPayWithShopify,
 } from 'state/currentAccount/selectors'
-import GorgiasApi from 'services/gorgiasApi'
-import {createStripeCardToken} from 'utils/stripe'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {loadScript} from 'utils'
-import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
+import {createStripeCardToken} from 'utils/stripe'
+
 import {BILLING_BASE_PATH} from '../constants'
 import {useBillingPlans} from './useBillingPlan'
 

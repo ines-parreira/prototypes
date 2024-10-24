@@ -2,8 +2,8 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {ReactNode, Component} from 'react'
 import {EditorState} from 'draft-js'
+import React, {ReactNode, Component} from 'react'
 
 import {MentionPluginStore} from '../types'
 

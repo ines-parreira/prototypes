@@ -1,15 +1,16 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import {IntegrationType} from 'models/integration/constants'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {IntegrationType} from 'models/integration/constants'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
 import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
 import ManageHelpCenters, {ManageHelpCentersProps} from '../ManageHelpCenters'
 

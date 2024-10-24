@@ -1,12 +1,13 @@
-import React, {useState} from 'react'
-import classNames from 'classnames'
 import {Label} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useState} from 'react'
 
-import {Drawer} from 'pages/common/components/Drawer'
-import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import InputField from 'gorgias-design-system/Input/TextField'
+import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {Drawer} from 'pages/common/components/Drawer'
 import RadioButton from 'pages/common/components/RadioButton'
 import {Theme} from 'theme'
+
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 
 import css from '../NodeEditor.less'

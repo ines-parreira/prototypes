@@ -1,9 +1,9 @@
 import React from 'react'
 
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {
     OnPolicyPriorityChangeFn,
     OnTogglePolicyFn,
@@ -14,9 +14,9 @@ import PageHeader from '../../PageHeader/PageHeader'
 
 import {columnConfig} from './config'
 import Header from './Header'
+import css from './SLAListView.less'
 import TableRow from './TableRow'
 import useSortablePolicies from './useSortablePolicies'
-import css from './SLAListView.less'
 
 type SLAListViewProps = {
     data: UISLAPolicy[]

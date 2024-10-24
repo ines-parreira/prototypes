@@ -1,17 +1,17 @@
-import React, {ComponentProps} from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
 
-import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
-import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-
-import {usePublicResourcesPooling} from 'pages/automate/aiAgent/hooks/usePublicResourcesPooling'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
     WIZARD_POST_COMPLETION_STATE,
 } from 'pages/automate/aiAgent/constants'
+import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
+import {usePublicResourcesPooling} from 'pages/automate/aiAgent/hooks/usePublicResourcesPooling'
+import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {PublicSourcesSection} from '../PublicSourcesSection'
 import {SourceItem} from '../types'
 

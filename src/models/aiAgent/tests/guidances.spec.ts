@@ -1,5 +1,6 @@
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
+
 import {getAIGeneratedGuidances} from '../resources/guidances'
 
 const help_center_id = 1

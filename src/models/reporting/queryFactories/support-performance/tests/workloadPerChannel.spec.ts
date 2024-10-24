@@ -1,5 +1,5 @@
 import moment from 'moment/moment'
-import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
+
 import {OrderDirection} from 'models/api/types'
 import {
     TicketDimension,
@@ -7,13 +7,14 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
+import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
 } from 'utils/reporting'
-import {subtractDaysFromDate} from 'utils/date'
 
 describe('workloadPerChannelDistributionQueryFactory', () => {
     const now = moment()

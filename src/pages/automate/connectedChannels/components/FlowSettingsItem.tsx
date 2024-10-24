@@ -1,9 +1,11 @@
-import React from 'react'
-import classNames from 'classnames'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React from 'react'
 import {Link} from 'react-router-dom'
+
 import IconButton from 'pages/common/components/button/IconButton'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+
 import css from './FlowSettingsItem.less'
 
 interface Props {

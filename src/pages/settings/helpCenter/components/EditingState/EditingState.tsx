@@ -1,6 +1,7 @@
-import React from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React from 'react'
+
 import {EditingStateEnum} from '../../constants'
 
 import css from './EditingState.less'

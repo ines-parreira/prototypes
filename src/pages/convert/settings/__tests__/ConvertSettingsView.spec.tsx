@@ -1,17 +1,18 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {act, render} from '@testing-library/react'
 import React from 'react'
-import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
+import thunk from 'redux-thunk'
+
 import {
     convertBundle as mockConvertBundle,
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
-import {assumeMock} from 'utils/testing'
 import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/convert/bundles/hooks/useInstallBundle')
 const useInstallBundleMock = assumeMock(useInstallBundle)

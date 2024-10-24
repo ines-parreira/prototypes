@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {
@@ -26,11 +27,13 @@ import {
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {
     EnrichmentFields,
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
@@ -51,8 +54,6 @@ import {
 } from 'state/ui/stats/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const initialState = {
     ui: {

@@ -1,15 +1,16 @@
-import React, {ComponentProps} from 'react'
-
-import _noop from 'lodash/noop'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {ContentState, EditorState} from 'draft-js'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 
-import {fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {convertFromHTML} from 'utils/editor'
 
 import {RichFieldEditor} from 'pages/common/forms/RichField/RichFieldEditor'
+import {convertFromHTML} from 'utils/editor'
+
 import {mockStore} from 'utils/testing'
+
 import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
 import ToolbarProvider from '../ToolbarProvider'

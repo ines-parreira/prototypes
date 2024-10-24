@@ -1,6 +1,3 @@
-import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {
     fireEvent,
     render,
@@ -9,7 +6,12 @@ import {
     within,
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {AGENT_ADDED_FONTS} from '../../../constants'
 import * as hooks from '../../../hooks'
 
 import {
@@ -17,7 +19,6 @@ import {
     getFontsAfterSearch,
     getMultipleFontLink,
 } from '../FontCatalogueModal'
-import {AGENT_ADDED_FONTS} from '../../../constants'
 
 const mockStore = configureMockStore([thunk])
 

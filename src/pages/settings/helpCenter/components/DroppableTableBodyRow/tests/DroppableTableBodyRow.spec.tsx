@@ -1,7 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+
 import {DroppableTableBodyRow} from '../DroppableTableBodyRow'
 
 jest.mock('pages/common/hooks/useReorderDnD', () => {

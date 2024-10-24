@@ -1,5 +1,7 @@
 import {fromJS, List} from 'immutable'
+
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+
 import {eventMaker} from './types'
 
 const shopifyEvent = ({

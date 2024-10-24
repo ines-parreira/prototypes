@@ -1,19 +1,19 @@
-import React, {useRef, useState} from 'react'
-import classnames from 'classnames'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useRef, useState} from 'react'
 
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import {BigCommerceCustomerAddress} from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import {BigCommerceCustomerAddress} from 'models/integration/types'
-import {buildAddressComponent, getOneLineAddress} from './utils'
 
 import css from './AddressesDropdown.less'
-import cssOrderModal from './OrderModal.less'
 import {CustomAddressModal} from './CustomAddressModal'
+import cssOrderModal from './OrderModal.less'
+import {buildAddressComponent, getOneLineAddress} from './utils'
 
 const BILLING_ADDRESS_DROPDOWN_ID = 'billing-address-dropdown'
 const SHIPPING_ADDRESS_DROPDOWN_ID = 'shipping-address-dropdown'

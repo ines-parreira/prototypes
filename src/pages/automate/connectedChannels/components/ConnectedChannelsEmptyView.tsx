@@ -1,9 +1,11 @@
 import React from 'react'
 
 import {Link, useRouteMatch} from 'react-router-dom'
+
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
 import {AutomateFeatures} from 'pages/automate/common/types'
 import Button from 'pages/common/components/button/Button'
+
 import css from './EmptyView.less'
 
 type ConnectedChannelViewKind =

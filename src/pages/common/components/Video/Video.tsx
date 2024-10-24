@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
 
+import arrow from 'assets/img/icons/arrow.svg'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
-import arrow from 'assets/img/icons/arrow.svg'
 
 import css from './Video.less'
 

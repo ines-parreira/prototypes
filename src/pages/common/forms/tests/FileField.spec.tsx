@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
+import {fireEvent, render} from '@testing-library/react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 import {Input} from 'reactstrap'
-import {fireEvent, render} from '@testing-library/react'
 
 import {uploadFiles} from 'common/utils'
 

@@ -1,3 +1,4 @@
+import {Label, Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import {produce} from 'immer'
 import {fromJS, List, Map} from 'immutable'
@@ -21,7 +22,6 @@ import {
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
-import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -67,10 +67,10 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
+import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
-import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -92,13 +92,14 @@ import {
 import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {RootState} from 'state/types'
+
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
+import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
-import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import useSelfServiceConfiguration from '../hooks/useSelfServiceConfiguration'
-import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField, {ImageFieldVariant} from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'

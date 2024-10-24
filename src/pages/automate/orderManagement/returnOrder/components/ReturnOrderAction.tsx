@@ -1,25 +1,25 @@
-import React, {useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
+import React, {useMemo, useRef, useState} from 'react'
 
+import loopReturns from 'assets/img/integrations/loop-returns.png'
 import {
     ReturnAction,
     ReturnActionType,
 } from 'models/selfServiceConfiguration/types'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
+import Alert from 'pages/common/components/Alert/Alert'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import loopReturns from 'assets/img/integrations/loop-returns.png'
-import Alert from 'pages/common/components/Alert/Alert'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
-import useLoopReturnsIntegrations from '../hooks/useLoopReturnsIntegrations'
 import {DEFAULT_RETURN_ACTION} from '../constants'
-import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
+import useLoopReturnsIntegrations from '../hooks/useLoopReturnsIntegrations'
 import LoopReturnsIntegrationCreateModal from './LoopReturnsIntegrationCreateModal'
 
 import css from './ReturnOrderAction.less'
+import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
 
 type Props = {
     action: ReturnAction

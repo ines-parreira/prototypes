@@ -1,12 +1,14 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
-import {StoreIntegration} from 'models/integration/types'
+
 import {HelpCenter} from 'models/helpCenter/types'
+import {StoreIntegration} from 'models/integration/types'
+
+import {useFirstStoreAndHelpCenterWithTopQuestions} from './useFirstStoreAndHelpCenterWithTopQuestions'
 import {
     StoreWithHelpCenters,
     useTopQuestionsStoresWithHelpCenters,
 } from './useTopQuestionsStoresWithHelpCenters'
 import {makeHelpCenterFilter, makeStoreFilter} from './utils'
-import {useFirstStoreAndHelpCenterWithTopQuestions} from './useFirstStoreAndHelpCenterWithTopQuestions'
 
 type Props = {
     initialStoreId?: number

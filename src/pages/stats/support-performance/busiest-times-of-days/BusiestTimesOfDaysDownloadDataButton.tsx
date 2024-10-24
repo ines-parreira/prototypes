@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import Button from 'pages/common/components/button/Button'

@@ -3,12 +3,12 @@ import {
     TicketTagsEnrichedMeasure,
     TicketTagsEnrichedDimension,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 
 const periodStart = '2021-05-29T00:00:00.000'
 const periodEnd = '2021-06-04T23:59:59.000'

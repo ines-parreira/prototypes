@@ -1,9 +1,9 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen, render, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
 
-import {DeleteModal} from '../DeleteModal'
 import {navigateBackToUserList} from '../constants'
+import {DeleteModal} from '../DeleteModal'
 
 const mockedDeleteAgent = jest.fn(() => Promise.resolve(true))
 jest.mock('hooks/agents/useDeleteAgent', () => ({

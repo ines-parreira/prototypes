@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
-import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
+import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
+
+import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type Props = {
     productAutomationClicked: (

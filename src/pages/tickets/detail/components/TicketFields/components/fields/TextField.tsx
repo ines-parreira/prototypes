@@ -1,19 +1,18 @@
-import React, {useCallback, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useCallback, useState} from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import {logEvent, SegmentEvent} from 'common/segment'
+import Label from 'custom-fields/components/Label'
+import StealthInput from 'custom-fields/components/StealthInput'
+import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import {CustomFieldState} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import Label from 'custom-fields/components/Label'
-import StealthInput from 'custom-fields/components/StealthInput'
-import useAppSelector from 'hooks/useAppSelector'
-import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import {getTicket} from 'state/ticket/selectors'
 
 import css from './Field.less'

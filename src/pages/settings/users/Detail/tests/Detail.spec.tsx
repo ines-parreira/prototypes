@@ -1,24 +1,24 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {act} from 'react-dom/test-utils'
 import {useParams} from 'react-router-dom'
 
-import {act} from 'react-dom/test-utils'
-import {assumeMock, getLastMockCall} from 'utils/testing'
 import {User, UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
 import {getCurrentUserId} from 'state/currentUser/selectors'
 import {StoreState} from 'state/types'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import {useGetAgentWithEffects} from '../hooks/useGetAgentWithEffect'
 import {navigateBackToUserList} from '../constants'
 import {Detail} from '../Detail'
+import {Footer} from '../Footer'
 import {Header} from '../Header'
-import {Statuses} from '../Statuses'
+import {useGetAgentWithEffects} from '../hooks/useGetAgentWithEffect'
 import {Info} from '../Info'
 import {Role} from '../Role'
-import {Footer} from '../Footer'
+import {Statuses} from '../Statuses'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

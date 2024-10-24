@@ -1,6 +1,7 @@
 import {useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {act, renderHook} from '@testing-library/react-hooks'
+
 import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
 import {assumeMock} from 'utils/testing'
 

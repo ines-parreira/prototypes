@@ -4,6 +4,7 @@ import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
+import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -13,7 +14,6 @@ import {
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'utils/reporting'
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 
 export const useOneTouchTicketsPercentageMetricPerAgent = (
     statsFilters: StatsFilters,

@@ -1,7 +1,9 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
 import {TicketChannel} from 'business/types/ticket'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
 import {CurrentlyViewingDropdown} from '../components/CurrentlyViewingDropdown'
 
 const renderOption = (channel: SelfServiceChatChannel) => ({

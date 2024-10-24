@@ -1,27 +1,27 @@
 import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
-import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
-import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
-import VoiceIntegrationGreetingMessage from 'pages/integrations/integration/components/voice/VoiceIntegrationGreetingMessage'
-import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
-import VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/VoiceIntegrationCreate'
-import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import Button from 'pages/common/components/button/Button'
-
-import {IntegrationType, isPhoneIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+import {IntegrationType, isPhoneIntegration} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
+import VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/VoiceIntegrationCreate'
+import VoiceIntegrationGreetingMessage from 'pages/integrations/integration/components/voice/VoiceIntegrationGreetingMessage'
+import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
+import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
+import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
+import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import {
     getIntegrationById,
     getPhoneIntegrations,
 } from 'state/integrations/selectors'
+
 import {getDefaultRoutes} from '../../utils/defaultRoutes'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
 

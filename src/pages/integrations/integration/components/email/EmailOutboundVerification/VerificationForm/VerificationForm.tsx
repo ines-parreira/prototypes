@@ -1,12 +1,13 @@
+import classNames from 'classnames'
 import React, {useState} from 'react'
 import {Form, FormGroup, Label} from 'reactstrap'
-import classNames from 'classnames'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Button from 'pages/common/components/button/Button'
+
+import {states} from 'config/states'
 import {states as countries} from 'fixtures/states'
 import {SenderInformation} from 'models/singleSenderVerification/types'
-import {states} from 'config/states'
+import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import css from './VerificationForm.less'
 

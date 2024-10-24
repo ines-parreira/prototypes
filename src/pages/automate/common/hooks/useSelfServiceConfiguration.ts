@@ -1,17 +1,16 @@
-import {useCallback, useEffect} from 'react'
-
 import {Draft} from 'immer'
+import {useCallback, useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
-import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
+import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
 const useSelfServiceConfiguration = (
     shopType: string,

@@ -1,32 +1,30 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useId from 'hooks/useId'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {
     DROPDOWN_CSV_TEMPLATE,
     DROPDOWN_NESTING_DELIMITER,
     OBJECT_TYPE_SETTINGS,
 } from 'custom-fields/constants'
+import {CustomFieldObjectTypes} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useId from 'hooks/useId'
+import Button from 'pages/common/components/button/Button'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getText, saveFileAsDownloaded} from 'utils/file'
 
-import {CustomFieldObjectTypes} from 'custom-fields/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import Button from 'pages/common/components/button/Button'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
-
-import {DropdownCSVImportDropZone} from './DropdownCSVImportDropZone'
-
 import css from './DropdownCSVImport.less'
+import {DropdownCSVImportDropZone} from './DropdownCSVImportDropZone'
 
 type Props = {
     isOpen: boolean

@@ -5,6 +5,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 
 import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+
 import DropdownInputRow from '../DropdownInputRow'
 
 const commonProps = {

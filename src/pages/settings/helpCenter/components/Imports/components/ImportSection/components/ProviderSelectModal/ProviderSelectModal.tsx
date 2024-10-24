@@ -2,8 +2,8 @@ import React from 'react'
 
 import {MigrationProvider} from '../../types'
 
-import ProviderInfo from '../ProviderInfo'
 import MigrationBaseModal from '../MigrationBaseModal'
+import ProviderInfo from '../ProviderInfo'
 
 import css from './ProviderSelectModal.less'
 

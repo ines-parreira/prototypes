@@ -1,3 +1,4 @@
+import {fromJS, Map} from 'immutable'
 import React, {
     Component,
     ContextType,
@@ -6,34 +7,34 @@ import React, {
     useMemo,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
-import {RootState} from 'state/types'
-import useAppSelector from 'hooks/useAppSelector'
-import * as integrationsSelectors from 'state/integrations/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {
     CardHeaderTitle,
     CardHeaderIcon,
     ExpandAllButton,
     CardHeaderSubtitle,
 } from 'Widgets/modules/Template/modules/Card'
-import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+
 import {ShopifyContext} from '../contexts/ShopifyContext'
+import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
 
 function Wrapper({
     source,

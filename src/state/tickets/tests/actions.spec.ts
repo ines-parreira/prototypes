@@ -1,7 +1,7 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import client from '../../../models/api/resources'
 import {JobType} from '../../../models/job/types'

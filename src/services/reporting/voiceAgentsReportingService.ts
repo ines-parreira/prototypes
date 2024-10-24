@@ -1,14 +1,8 @@
 import moment from 'moment/moment'
-import {Period} from 'models/stat/types'
 
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {User} from 'config/types/user'
-import {createCsv, saveZippedFiles} from 'utils/file'
-import {
-    formatMetricValue,
-    NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {Metric} from 'hooks/reporting/metrics'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -19,7 +13,14 @@ import {
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {Metric} from 'hooks/reporting/metrics'
+import {Period} from 'models/stat/types'
+
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {createCsv, saveZippedFiles} from 'utils/file'
 
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {
     agents: User[]

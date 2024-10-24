@@ -2,14 +2,15 @@ import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
 import {render, screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {TagFilterInstanceId} from 'models/stat/types'
 
 import {
     DESELECT_ALL_LABEL,

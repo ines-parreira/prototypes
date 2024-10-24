@@ -1,21 +1,20 @@
-import React, {Component} from 'react'
 import classnames from 'classnames'
-import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+
 import {EntityType} from 'models/view/types'
 
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
+import css from 'pages/common/components/ViewTable/Table.less'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'
 
-import css from 'pages/common/components/ViewTable/Table.less'
-
 import * as agentSelectors from 'state/agents/selectors'
+import {RootState} from 'state/types'
 import * as viewsActions from 'state/views/actions'
 
 import * as viewsUtils from 'state/views/utils'
-
-import {RootState} from 'state/types'
 
 import Cell from './Cell'
 

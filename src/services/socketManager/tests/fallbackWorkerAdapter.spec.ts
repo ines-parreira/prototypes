@@ -1,6 +1,5 @@
 import io, {Socket} from 'socket.io-client'
 
-import {BroadcastChannelEvent, WSMessage} from '../types'
 import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -9,6 +8,7 @@ import {
 } from '../constants'
 import {FallbackWorker, fallbackWorkerAdapter} from '../fallbackWorkerAdapter'
 import IncrementalBackoff from '../incrementalBackoff'
+import {BroadcastChannelEvent, WSMessage} from '../types'
 
 jest.mock('socket.io-client', () => {
     return jest.fn(() => {

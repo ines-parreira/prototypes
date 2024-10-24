@@ -1,37 +1,39 @@
-import React from 'react'
 import {fromJS, List, Map} from 'immutable'
+
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {deleteIntegration} from 'state/integrations/actions'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import warningIcon from 'assets/img/icons/warning.svg'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
-import {getStoreIntegrations} from 'state/integrations/selectors'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {Tab} from 'pages/integrations/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import warningIcon from 'assets/img/icons/warning.svg'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {Tab} from 'pages/integrations/integration/types'
+import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {deleteIntegration} from 'state/integrations/actions'
+import {getStoreIntegrations} from 'state/integrations/selectors'
+
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
-import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
-import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
 import css from './GorgiasChatIntegrationInstall.less'
+import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import InstallationStep from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import InstallationTab from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationTab'
+import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 
 type Props = {
     integration: Map<any, any>

@@ -1,12 +1,12 @@
 import React, {ReactNode} from 'react'
 
 import {IntegrationType} from 'models/integration/types'
-import {WidgetType} from 'state/widgets/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {WidgetType} from 'state/widgets/types'
 
 import ColorPanel from './views/ColorPanel'
 

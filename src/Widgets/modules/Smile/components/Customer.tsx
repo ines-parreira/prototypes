@@ -1,14 +1,14 @@
-import React, {Component, ReactNode} from 'react'
 import {Map} from 'immutable'
+import React, {Component, ReactNode} from 'react'
 
 import logo from 'assets/img/infobar/smile.svg'
 
 import {renderTemplate} from 'pages/common/utils/template'
 
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 
 type Props = {
     children: ReactNode

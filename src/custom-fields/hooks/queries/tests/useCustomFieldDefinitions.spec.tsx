@@ -1,16 +1,16 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
+import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
-import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
 import {assumeMock} from 'utils/testing'
 
 import {

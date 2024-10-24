@@ -2,7 +2,6 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {Macro} from '../../../models/macro/types'
 
-import {MacrosState} from './types'
 import {
     macroCreated,
     macroDeleted,
@@ -10,6 +9,7 @@ import {
     macroUpdated,
     macrosFetched,
 } from './actions'
+import {MacrosState} from './types'
 
 const initialState: MacrosState = {}
 

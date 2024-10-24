@@ -1,12 +1,13 @@
-import moment from 'moment'
 import {fromJS} from 'immutable'
-import {ViewType} from 'models/view/types'
+import moment from 'moment'
 
 import {fromAST} from 'common/utils'
+import {ViewType} from 'models/view/types'
+
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
-import {getAST} from 'utils'
 import * as utils from 'state/views/utils'
 import {updateCustomFieldFilter} from 'state/views/utils'
+import {getAST} from 'utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {

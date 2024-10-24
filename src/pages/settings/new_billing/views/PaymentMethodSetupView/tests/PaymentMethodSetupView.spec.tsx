@@ -1,13 +1,15 @@
-import React from 'react'
+import {createBillingPaymentMethodSetup} from '@gorgias/api-client'
 import {screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {createBillingPaymentMethodSetup} from '@gorgias/api-client'
 import {fromJS} from 'immutable'
-import {assumeMock} from 'utils/testing'
-import client from 'models/api/resources'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import React from 'react'
+
 import {account} from 'fixtures/account'
 import {products} from 'fixtures/productPrices'
+import client from 'models/api/resources'
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import {assumeMock} from 'utils/testing'
+
 import {PaymentMethodSetupView} from '../PaymentMethodSetupView'
 
 jest.mock('@stripe/react-stripe-js', () => ({

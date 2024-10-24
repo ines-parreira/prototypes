@@ -1,8 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import React from 'react'
+
 import useSearch from 'hooks/useSearch'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+
 import ConvertCampaignsTablePlaceholder from '../ConvertCampaignsTablePlaceholder'
 
 jest.mock('hooks/useSearch')

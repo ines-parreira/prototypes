@@ -1,8 +1,8 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {List, Map} from 'immutable'
 import React, {memo, useCallback} from 'react'
 import {Table} from 'reactstrap'
-import {List, Map} from 'immutable'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {FulfillmentStatus} from 'constants/integrations/types/shopify'
 

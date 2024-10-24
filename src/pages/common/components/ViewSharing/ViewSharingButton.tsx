@@ -1,7 +1,7 @@
+import {Map} from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import _capitalize from 'lodash/capitalize'
-import {Map} from 'immutable'
 
 import {AGENT_ROLE} from 'config/user'
 import {ViewCategory} from 'models/view/types'
@@ -10,9 +10,9 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from 'state/types'
 import {hasRole} from 'utils'
 
+import css from './ViewSharingButton.less'
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
-import css from './ViewSharingButton.less'
 
 type OwnProps = {
     view: Map<any, any>

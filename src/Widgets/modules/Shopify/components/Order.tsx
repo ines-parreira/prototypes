@@ -1,3 +1,4 @@
+import {fromJS, Map} from 'immutable'
 import React, {
     Component,
     ContextType,
@@ -7,27 +8,22 @@ import React, {
     useContext,
     useMemo,
 } from 'react'
-import {fromJS, Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import {
     FulfillmentStatus,
     FinancialStatus,
 } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
-
-import {CopyButton, StaticField} from 'Widgets/modules/Template/modules/Field'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import {
@@ -35,9 +31,11 @@ import {
     OrderMetafields,
 } from 'Widgets/modules/Shopify/modules/Order'
 import CancelOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
-import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
+import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import {CopyButton, StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import {ShopifyContext} from '../contexts/ShopifyContext'
 import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'

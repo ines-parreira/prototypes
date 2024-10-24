@@ -1,6 +1,7 @@
 import axios from 'axios'
-import {cloneDeep} from 'lodash'
 import MockAdapter from 'axios-mock-adapter'
+import {cloneDeep} from 'lodash'
+
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 import {
     DomainDNSRecord,
@@ -8,6 +9,7 @@ import {
     GmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
+
 import {
     canEnableEmailingViaInternalProvider,
     getDNSRecord,

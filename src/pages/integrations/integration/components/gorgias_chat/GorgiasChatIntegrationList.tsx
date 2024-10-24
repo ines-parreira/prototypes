@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react'
-import {List, Map} from 'immutable'
 import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo} from 'react'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -10,21 +10,21 @@ import Button from 'pages/common/components/button/Button'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
-import history from '../../../../history'
 import {IntegrationType} from '../../../../../models/integration/types'
 
+import PageHeader from '../../../../common/components/PageHeader'
 import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
 import HeaderCellProperty from '../../../../common/components/table/cells/HeaderCellProperty'
 import TableBody from '../../../../common/components/table/TableBody'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
-import PageHeader from '../../../../common/components/PageHeader'
+import history from '../../../../history'
 import settingsCss from '../../../../settings/settings.less'
 
 import NoIntegration from '../NoIntegration'
 
-import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
 import css from './GorgiasChatIntegrationList.less'
+import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
 
 type Props = {
     integrations: List<Map<any, any>>

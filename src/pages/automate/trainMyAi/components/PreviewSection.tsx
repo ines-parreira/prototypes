@@ -1,16 +1,18 @@
-import React, {useEffect, useState, useMemo} from 'react'
 import classNames from 'classnames'
+import React, {useEffect, useState, useMemo} from 'react'
+
 import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
-import Loader from 'pages/common/components/Loader/Loader'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {HelpCenter} from 'models/helpCenter/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+
 import {Components} from '../../../../rest_api/ssp_api/client.generated'
 import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
-import PreviewHeader from './PreviewHeader'
-import PreviewArticle from './PreviewArticle'
 import DeletedArticlePreview from './DeletedArticlePreview'
 import NoRelevantArticlePreview from './NoRelevantArticlePreview'
+import PreviewArticle from './PreviewArticle'
+import PreviewHeader from './PreviewHeader'
 
 import css from './PreviewSection.less'
 

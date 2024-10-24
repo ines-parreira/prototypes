@@ -1,4 +1,5 @@
 import {DROPDOWN_VALUES_LIMIT} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
+
 import {
     validateHeaderName,
     checkDuplicates,

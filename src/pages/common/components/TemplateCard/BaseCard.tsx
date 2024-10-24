@@ -1,10 +1,10 @@
+import classNames from 'classnames'
 import React, {
     CSSProperties,
     MouseEventHandler,
     ReactNode,
     useContext,
 } from 'react'
-import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {Theme, ThemeContext} from 'theme'

@@ -1,9 +1,10 @@
 import {Map} from 'immutable'
-import {IntegrationDataItem} from 'models/integration/types'
-import {Product} from 'constants/integrations/types/shopify'
-import {getIconFromUrl} from 'utils'
-import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+
 import {AttachmentEnum} from 'common/types'
+import {Product} from 'constants/integrations/types/shopify'
+import {IntegrationDataItem} from 'models/integration/types'
+import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {getIconFromUrl} from 'utils'
 
 export const transformProductToCampaignAttachment = (
     result: IntegrationDataItem<Product>,

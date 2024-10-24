@@ -1,4 +1,5 @@
 import React from 'react'
+
 import css from './ChurnMitigationOffer.less'
 
 type ChurnMitigationOfferProps = {

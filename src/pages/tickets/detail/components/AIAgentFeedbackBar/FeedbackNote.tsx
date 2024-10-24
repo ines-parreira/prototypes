@@ -1,5 +1,6 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
+
 import TextArea from '../../../../../gorgias-design-system/Input/TextArea'
 import css from './FeedbackNote.less'
 import InfoIconWithTooltip from './InfoIconWithTooltip'

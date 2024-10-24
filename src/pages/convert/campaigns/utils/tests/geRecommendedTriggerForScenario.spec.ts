@@ -1,6 +1,7 @@
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+
 import {getRecommendedTriggerForScenario} from '../geRecommendedTriggerForScenario'
 
 describe('getRecommendedTriggerForScenario', () => {

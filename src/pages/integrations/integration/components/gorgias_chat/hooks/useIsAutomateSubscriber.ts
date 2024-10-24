@@ -1,6 +1,6 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import {GorgiasChatIntegration} from 'models/integration/types/gorgiasChat'
+import {getHasAutomate} from 'state/billing/selectors'
 
 const useIsAutomateSubscriber = (
     integration: GorgiasChatIntegration

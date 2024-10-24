@@ -1,20 +1,21 @@
+import {Card} from '@gorgias/analytics-ui-kit'
+import {Label} from '@gorgias/ui-kit'
 import React, {useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
-import {Label} from '@gorgias/ui-kit'
-import {Card} from '@gorgias/analytics-ui-kit'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Drawer} from 'pages/common/components/Drawer'
 
 import {getLanguageDisplayName} from 'utils'
-import css from './WhatsAppMessageTemplateDetailsDrawer.less'
+
 import {templateAlertContent, whatsAppFlagCodes} from './constants'
-import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
-import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {normalizeLocale} from './utils'
+import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
+import css from './WhatsAppMessageTemplateDetailsDrawer.less'
 import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
+import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
 
 type Props = {
     isOpen: boolean

@@ -1,10 +1,12 @@
 import React, {KeyboardEvent, useCallback, useState} from 'react'
 import {Button} from 'reactstrap'
+
+import CheckBox from 'pages/common/forms/CheckBox'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+
 import css from './AddUtm.less'
 
 export type AddUtmProps = {

@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,6 +10,7 @@ import {FilterKey} from 'models/stat/types'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -32,7 +34,6 @@ import {
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {OverviewMetric} from 'state/ui/stats/types'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'

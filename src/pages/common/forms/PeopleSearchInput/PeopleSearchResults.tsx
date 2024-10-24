@@ -1,6 +1,6 @@
+import {Map, List, Seq} from 'immutable'
 import React, {ReactNode} from 'react'
 import {DropdownItem} from 'reactstrap'
-import {Map, List, Seq} from 'immutable'
 
 import {AgentLabel, TeamLabel} from '../../utils/labels'
 

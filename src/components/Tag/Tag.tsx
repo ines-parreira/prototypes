@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, {
     CSSProperties,
     FC,
@@ -7,10 +8,10 @@ import React, {
     useImperativeHandle,
     useRef,
 } from 'react'
-import classNames from 'classnames'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+
 import css from './Tag.less'
 
 export type TagColor =

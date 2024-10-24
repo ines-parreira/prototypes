@@ -1,6 +1,7 @@
 import {render, screen} from '@testing-library/react'
-import React from 'react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {useShopifyStoreWithChatConnectionsOptions} from '../../../helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
 import {ConnectContactFormToShopSection} from './ConnectContactFormToShopSection'
 

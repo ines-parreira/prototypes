@@ -1,4 +1,5 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+
 import {
     AiAgentChannel,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,

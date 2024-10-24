@@ -1,15 +1,16 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {assumeMock} from 'utils/testing'
-import {WorkflowStatsFilters} from 'models/stat/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+
 import {
     useWorkflowDataset,
     useWorkflowStepDatasetTrend,
 } from 'hooks/reporting/automate/useWorkflowDataset'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {WorkflowStatsFilters} from 'models/stat/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'

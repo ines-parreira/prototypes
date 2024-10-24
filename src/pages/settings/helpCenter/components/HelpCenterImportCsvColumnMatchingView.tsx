@@ -1,31 +1,31 @@
+import {AxiosError} from 'axios'
+import {parse as parseQueryString} from 'qs'
 import React, {useEffect, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {parse as parseQueryString} from 'qs'
-import {AxiosError} from 'axios'
 
 import {getAccessToken} from 'rest_api/auth'
 
-import {CsvColumnPreview} from '../../../../models/helpCenter/types'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useSupportedLocales} from '../providers/SupportedLocales'
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import Loader from '../../../common/components/Loader/Loader'
+import PageHeader from '../../../common/components/PageHeader'
 import {HELP_CENTER_BASE_PATH} from '../constants'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useMigrationApi} from '../hooks/useMigrationApi'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 
-import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
+import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
 import {mapCSVLocalValuesToAPIPayload} from './Imports/components/CsvColumnMatching/utils'
+import {AutoOpenSessionLocationState} from './Imports/components/ImportSection/types'
 import {
     getErrorMessage,
     responseIsSession,
 } from './Imports/components/ImportSection/utils'
-import {AutoOpenSessionLocationState} from './Imports/components/ImportSection/types'
 
 const urlToArticles = (
     helpCenterId: number,

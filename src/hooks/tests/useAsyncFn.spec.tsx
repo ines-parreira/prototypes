@@ -1,4 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+
 import useAsyncFn from '../useAsyncFn'
 
 type AdderFn = (a?: number, b?: number) => Promise<number>

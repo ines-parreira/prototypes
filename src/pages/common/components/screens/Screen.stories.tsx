@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
-import Screens from './Screens'
 import Screen from './Screen'
+import Screens from './Screens'
 
 const storyConfig: Meta = {
     title: 'General/screens/Screen',

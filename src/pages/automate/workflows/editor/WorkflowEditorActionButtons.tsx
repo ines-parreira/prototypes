@@ -1,10 +1,12 @@
-import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {FeatureFlagKey} from 'config/featureFlags'
 import IconButton from 'pages/common/components/button/IconButton'
+
 import {ConfirmationButton} from './ConfirmationButton'
 
 interface Props {

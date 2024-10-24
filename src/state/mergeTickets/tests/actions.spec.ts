@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
-import thunk from 'redux-thunk'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {BASE_VIEW_ID} from 'constants/view'
 import client from 'models/api/resources'

@@ -1,14 +1,14 @@
+import {ListTagsParams, Tag} from '@gorgias/api-queries'
 import axios, {AxiosError, AxiosRequestConfig} from 'axios'
 import {List} from 'immutable'
-import {ListTagsParams, Tag} from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import type {StoreDispatch} from 'state/types'
 import {fetchTags as fetchTagsResources} from 'models/tag/resources'
 import {OrderByOrderDir, TagDraft} from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import type {StoreDispatch} from 'state/types'
 import {createErrorNotification} from 'state/utils'
 
 import * as constants from './constants'

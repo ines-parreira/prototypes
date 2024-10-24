@@ -1,6 +1,6 @@
+import classNamesBind from 'classnames/bind'
 import React from 'react'
 import {Col, Container, Row} from 'reactstrap'
-import classNamesBind from 'classnames/bind'
 
 import {TicketMessage} from 'models/ticket/types'
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
@@ -8,8 +8,8 @@ import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbe
 import {mapQuotedTweetTicketMessageToEmbeddedCard} from 'pages/common/components/TicketMessageEmbeddedCard/utils'
 import FacebookCarousel from 'pages/tickets/detail/components/FacebookCarousel'
 
-import Content from './Content'
 import css from './Body.less'
+import Content from './Content'
 
 const classNames = classNamesBind.bind(css)
 

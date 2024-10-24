@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
-import userEvent from '@testing-library/user-event'
-import {within} from '@testing-library/react'
 import {Meta, StoryFn} from '@storybook/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+import {within} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {Identifier} from 'estree'
-import {ThemeProvider} from 'theme'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
+import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

@@ -1,12 +1,13 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
+import React, {useEffect, useMemo, useState} from 'react'
 import isURL from 'validator/lib/isURL'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import InputField from 'pages/common/forms/input/InputField'
-import {AutoReplyReturnSettings} from 'state/rules/types'
-import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
+
 import {MacroActionName} from 'models/macroAction/types'
+import InputField from 'pages/common/forms/input/InputField'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
+import {AutoReplyReturnSettings} from 'state/rules/types'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 

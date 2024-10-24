@@ -1,6 +1,7 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import LogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator'
 import {
     LogicalOperatorEnum,

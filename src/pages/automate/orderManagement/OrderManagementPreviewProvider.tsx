@@ -1,12 +1,12 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
+import {SegmentEvent} from 'common/segment'
+import {IntegrationType} from 'models/integration/constants'
 import useSelfServiceChannels, {
     SelfServiceChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {IntegrationType} from 'models/integration/constants'
 
-import {SegmentEvent} from 'common/segment'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import OrderManagementPreviewContext, {
     OrderManagementPreviewContextType,

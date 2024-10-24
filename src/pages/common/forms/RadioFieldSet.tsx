@@ -1,7 +1,8 @@
+import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import classnames from 'classnames'
 import useId from 'hooks/useId'
+
 import RadioButton from '../components/RadioButton'
 
 import css from './RadioFieldSet.less'

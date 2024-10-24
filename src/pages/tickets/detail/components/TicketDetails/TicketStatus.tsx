@@ -1,5 +1,5 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'

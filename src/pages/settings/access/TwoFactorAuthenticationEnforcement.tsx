@@ -1,22 +1,23 @@
-import React, {useCallback, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import moment, {Moment} from 'moment'
-import {Label} from '@gorgias/ui-kit'
+import React, {useCallback, useState} from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getTimezone,
-    has2FaEnabled as has2FaEnabledSelector,
-} from 'state/currentUser/selectors'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {DatePicker} from 'pages/common/forms/DatePicker'
+import TextInput from 'pages/common/forms/input/TextInput'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import {
     TWO_FA_REQUIRED_AFTER_DAYS,
     TWO_FA_WARN_LESS_THAN_DAYS,
 } from 'state/currentUser/constants'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {DatePicker} from 'pages/common/forms/DatePicker'
-import TextInput from 'pages/common/forms/input/TextInput'
+import {
+    getTimezone,
+    has2FaEnabled as has2FaEnabledSelector,
+} from 'state/currentUser/selectors'
+
 import css from './TwoFactorAuthenticationEnforcement.less'
 
 /**

@@ -1,38 +1,39 @@
+import {isEqual} from 'lodash'
+import moment from 'moment'
 import React, {useEffect, useMemo, useRef} from 'react'
 import {Container} from 'reactstrap'
 
-import {isEqual} from 'lodash'
-import moment from 'moment'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {useWorkflowDataset} from 'hooks/reporting/automate/useWorkflowDataset'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {WorkflowStatsFilters} from 'models/stat/types'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import PageHeader from 'pages/common/components/PageHeader'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {getTimezone} from 'state/currentUser/selectors'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
-import {formatDatetime} from 'utils'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import * as ToggleButton from 'pages/common/components/ToggleButton'
-import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {useWorkflowDataset} from 'hooks/reporting/automate/useWorkflowDataset'
-import {WorkflowStatsFilters} from 'models/stat/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
-import {useWorkflowEditorContext} from '../hooks/useWorkflowEditor'
+import {formatDatetime} from 'utils'
+
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
+import {useWorkflowEditorContext} from '../hooks/useWorkflowEditor'
 
 import {WorkflowToggle} from '../models/workflowConfiguration.types'
+import {getWorkflowAnalyticsDateRange} from './visualBuilder/utils'
+import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 import css from './WorkflowAnalytics.less'
 import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
-import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
-import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
 import WorkflowAnalyticsBanner from './WorkflowAnalyticsBanner'
-import {getWorkflowAnalyticsDateRange} from './visualBuilder/utils'
+import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
 
 type WorkflowAnalyticsProps = {
     shopType: string

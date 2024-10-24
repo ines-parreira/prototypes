@@ -1,8 +1,10 @@
-import React from 'react'
 import {Chart} from 'chart.js'
 import classNames from 'classnames'
+import React from 'react'
+
 import Legend from 'pages/stats/Legend'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
+
 import css from './ChartLegend.less'
 
 type LinesVisibility = Record<number, boolean | undefined> | null

@@ -1,22 +1,22 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {fromJS, Map} from 'immutable'
-import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {Customer} from 'models/customer/types'
-import {searchCustomers} from 'models/customer/resources'
+import {fromJS, Map} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
+import {searchCustomers} from 'models/customer/resources'
+import {Customer} from 'models/customer/types'
+
+import * as actions from 'state/infobar/actions'
 import {
     SEARCH_CUSTOMERS_ERROR,
     SEARCH_CUSTOMERS_START,
     SEARCH_CUSTOMERS_SUCCESS,
 } from 'state/infobar/constants'
-import {assumeMock} from 'utils/testing'
-
-import {StoreDispatch} from 'state/types'
-import * as actions from 'state/infobar/actions'
 import {initialState} from 'state/infobar/reducers'
+import {StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 type MockedRootState = {
     infobar: Map<any, any>

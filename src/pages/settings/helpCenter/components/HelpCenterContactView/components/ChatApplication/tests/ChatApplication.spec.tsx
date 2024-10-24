@@ -1,18 +1,19 @@
-import React from 'react'
-import {fireEvent, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useApplications} from 'models/integration/queries'
 import {contactInfoFixture} from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import {useApplications} from 'models/integration/queries'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
+
 import ChatApplication from '../ChatApplication'
 
 const queryClient = mockQueryClient()

@@ -2,11 +2,13 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {assumeMock} from 'utils/testing'
-import {RootState, StoreDispatch} from 'state/types'
+
 import {ShopifyIntegration} from 'models/integration/types'
-import ReportOrderIssueScenarioReasons from '../ReportOrderIssueScenarioReasons'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {useReportOrderIssueScenarioFormContext} from '../ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueScenarioReasons from '../ReportOrderIssueScenarioReasons'
 
 jest.mock('../ReportOrderIssueScenarioFormContext')
 jest.mock('pages/common/hooks/useReorderDnD', () => {

@@ -1,11 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {render, RenderResult, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import * as ReactRouterDom from 'react-router-dom'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import * as ReactRouterDom from 'react-router-dom'
 
-import {mockStore} from 'utils/testing'
 import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
+import {mockStore} from 'utils/testing'
 
 import {ImportZendeskDetail} from '../ImportZendeskDetail'
 import {failedImport, pendingImport, successImport} from './fixtures'

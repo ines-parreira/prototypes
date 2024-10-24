@@ -1,12 +1,14 @@
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {integrationsState} from 'fixtures/integrations'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+
 import {
     DiscountCodeResultsWrapper,
     DiscountCodeResultsWrapperProps,

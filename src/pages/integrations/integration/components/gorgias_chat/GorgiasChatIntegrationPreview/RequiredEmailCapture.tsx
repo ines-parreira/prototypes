@@ -1,13 +1,14 @@
 import React from 'react'
 
 import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
+
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
 
-import css from './ChatIntegrationPreview.less'
 import BotMessages from './BotMessages'
+import css from './ChatIntegrationPreview.less'
 
 type Props = {
     name: Maybe<string>

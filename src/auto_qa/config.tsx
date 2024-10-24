@@ -2,8 +2,8 @@ import {TicketQAScoreDimensionName} from '@gorgias/api-queries'
 import cn from 'classnames'
 import React from 'react'
 
-import type {DimensionConfig} from './types'
 import css from './config.less'
+import type {DimensionConfig} from './types'
 
 export const dimensionOrder: TicketQAScoreDimensionName[] = [
     TicketQAScoreDimensionName.ResolutionCompleteness,

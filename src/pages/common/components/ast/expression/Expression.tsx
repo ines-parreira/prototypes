@@ -1,15 +1,16 @@
 import React, {ComponentType} from 'react'
-import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
-import Literal from 'pages/common/components/ast/Literal'
+
+import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
+import BinaryExpression from 'pages/common/components/ast/expression/BinaryExpression'
+import CallExpression from 'pages/common/components/ast/expression/CallExpression'
+import LogicalExpression from 'pages/common/components/ast/expression/LogicalExpression'
+import MemberExpression from 'pages/common/components/ast/expression/MemberExpression'
+import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
 import Identifier from 'pages/common/components/ast/Identifier'
+import Literal from 'pages/common/components/ast/Literal'
 
 import UnknownSyntax from 'pages/common/components/ast/UnknownSyntax'
-import LogicalExpression from 'pages/common/components/ast/expression/LogicalExpression'
-import BinaryExpression from 'pages/common/components/ast/expression/BinaryExpression'
-import MemberExpression from 'pages/common/components/ast/expression/MemberExpression'
-import CallExpression from 'pages/common/components/ast/expression/CallExpression'
-import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
-import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
+import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
 
 const types = {
     BinaryExpression,

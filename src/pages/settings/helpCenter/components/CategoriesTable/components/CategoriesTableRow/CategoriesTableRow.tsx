@@ -1,3 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
 import React, {
     MouseEvent,
     ReactElement,
@@ -6,50 +10,46 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classNames from 'classnames'
-import _keyBy from 'lodash/keyBy'
 import {Badge, Spinner} from 'reactstrap'
-import _noop from 'lodash/noop'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import {useModalManager} from 'hooks/useModalManager'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {useModalManager} from 'hooks/useModalManager'
 import {Article, NonRootCategory} from 'models/helpCenter/types'
-import {
-    getArticlesInCategory,
-    getUncategorizedArticles,
-} from 'state/entities/helpCenter/articles'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import {
+    DroppableTableBodyRow,
+    RowEventListeners,
+} from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
+import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
 import {
     ARTICLES_PER_PAGE,
     CategoryRowActionTypes,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
 import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
 import {
-    DroppableTableBodyRow,
-    RowEventListeners,
-} from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
-import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
-import useAppSelector from 'hooks/useAppSelector'
-import {unreachable} from 'utils'
-
+    getArticlesInCategory,
+    getUncategorizedArticles,
+} from 'state/entities/helpCenter/articles'
 import {
     getCategoriesById,
     getNonRootCategoriesById,
 } from 'state/entities/helpCenter/categories'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBody from 'pages/common/components/table/TableBody'
-import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
-import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
+import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
+import {unreachable} from 'utils'
 
 import {useCategoryRowActions} from '../../../../hooks/useCategoryRowActions'
+import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
+
 import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
 import css from './CategoriesTableRow.less'
 

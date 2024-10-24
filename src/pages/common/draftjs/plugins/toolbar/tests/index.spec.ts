@@ -1,8 +1,8 @@
 import {KeyboardEvent} from 'react'
 
+import {PluginMethods} from '../../types'
 import createPlugin from '../index'
 import {ActionName} from '../types'
-import {PluginMethods} from '../../types'
 
 describe('toolbar plugin', () => {
     const mockedPluginMethods: PluginMethods = {

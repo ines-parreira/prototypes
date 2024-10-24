@@ -1,10 +1,11 @@
+import {fireEvent, render, RenderResult} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fireEvent, render, RenderResult} from '@testing-library/react'
+import thunk from 'redux-thunk'
 
-import {fromJS} from 'immutable'
+import {UserSettingType} from 'config/types/user'
 import {
     DateFormatType,
     TimeFormatType,
@@ -12,11 +13,11 @@ import {
     DateTimeFormatMapper,
     DateTimeResultFormatType,
 } from 'constants/datetime'
-import {UserSettingType} from 'config/types/user'
+
+import {ZendeskIntegration} from '../../../../../models/integration/types'
 import history from '../../../../history'
 import {ImportZendeskDataList} from '../ImportZendeskDataList'
 
-import {ZendeskIntegration} from '../../../../../models/integration/types'
 import {failedImport, pendingImport, successImport} from './fixtures'
 
 interface DefaultProps {

@@ -12,6 +12,7 @@ import {
     CustomFieldPrediction,
     CustomFieldValue,
 } from 'custom-fields/types'
+
 import StealthInput from './StealthInput'
 
 type Props = {

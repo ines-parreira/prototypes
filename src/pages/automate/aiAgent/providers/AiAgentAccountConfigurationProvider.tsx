@@ -1,14 +1,15 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import Loader from 'pages/common/components/Loader/Loader'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import Loader from 'pages/common/components/Loader/Loader'
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     children?: React.ReactNode

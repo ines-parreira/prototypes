@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+import flatMap from 'lodash/flatMap'
 import React, {
     PropsWithChildren,
     useCallback,
@@ -5,16 +7,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classNames from 'classnames'
-import flatMap from 'lodash/flatMap'
+
 import useEffectOnce from 'hooks/useEffectOnce'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
 import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
 import LogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator'
@@ -23,10 +26,8 @@ import {
     FILTER_SELECT_ALL_LABEL,
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
-import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import css from 'pages/stats/common/components/Filter/Filter.less'
+import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
 
 type Props = {
     className?: string

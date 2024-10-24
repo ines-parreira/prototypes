@@ -1,13 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
 
 import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import PhoneNumberDetails from '../PhoneNumberDetails'
 

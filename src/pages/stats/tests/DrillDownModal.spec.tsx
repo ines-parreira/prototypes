@@ -1,22 +1,24 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {DrillDownTable} from 'pages/stats/DrillDownTable'
-import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 
+import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
+import {DrillDownTable} from 'pages/stats/DrillDownTable'
+
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {RootState, StoreDispatch} from 'state/types'
 import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
-import {assumeMock} from 'utils/testing'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {
     ConvertMetric,
     TicketFieldsMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import {assumeMock} from 'utils/testing'
+
 import {DrillDownModal} from '../DrillDownModal'
 import VoiceCallDrillDownTableContent from '../voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 

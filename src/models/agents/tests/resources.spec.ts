@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import client from 'models/api/resources'
 import {agents} from 'fixtures/agents'
+import client from 'models/api/resources'
 
 import * as resources from '../resources'
 

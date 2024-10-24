@@ -1,24 +1,26 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import React from 'react'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {renderHook} from '@testing-library/react-hooks'
 import * as reactQuery from '@tanstack/react-query'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {renderHook} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {
     getWelcomePageAcknowledgedKey,
     useGetAIGeneratedGuidances,
     useGetWelcomePageAcknowledged,
     useCreateWelcomePageAcknowledged,
 } from '../queries'
-import * as guidanceResources from '../resources/guidances'
 import {
     createWelcomePageAcknowledged,
     getWelcomePageAcknowledged,
 } from '../resources/account-configuration'
+import * as guidanceResources from '../resources/guidances'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),

@@ -1,5 +1,5 @@
-import React, {ComponentProps, ContextType} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps, ContextType} from 'react'
 
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 

@@ -1,8 +1,8 @@
 import {useMemo} from 'react'
 
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {compare} from 'utils'
 
 export function useGetSortedIntegrations() {

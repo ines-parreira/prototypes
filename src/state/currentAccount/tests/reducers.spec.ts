@@ -11,8 +11,8 @@ import {AccountSetting, AccountSettingType} from 'state/currentAccount/types'
 
 import {GorgiasAction} from 'state/types'
 
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('current account reducers', () => {
     it('initial state', () => {

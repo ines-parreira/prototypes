@@ -1,4 +1,5 @@
 import {automationProduct, helpdeskProduct} from 'fixtures/productPrices'
+
 import {AccountFeature} from '../../state/currentAccount/types'
 import {
     getCheapestPriceNameForFeature,

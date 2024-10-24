@@ -1,4 +1,5 @@
 import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,

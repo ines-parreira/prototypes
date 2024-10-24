@@ -1,11 +1,11 @@
-import React from 'react'
-
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
+import React from 'react'
 
 import {
     ContactFormFieldName,
     ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+
 import {ContactCaptureStep} from '../ContactCaptureStep'
 
 describe('ContactCaptureStep', () => {

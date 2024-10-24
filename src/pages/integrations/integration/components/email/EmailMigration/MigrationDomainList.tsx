@@ -1,15 +1,17 @@
-import React, {useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import Accordion from 'pages/common/components/accordion/Accordion'
+import React, {useState} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
     OutboundVerificationType,
 } from 'models/integration/types'
-import useLocalStorage from 'hooks/useLocalStorage'
 import {SenderInformation} from 'models/singleSenderVerification/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+import Accordion from 'pages/common/components/accordion/Accordion'
+
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
 import DomainVerificationAccordionItem from './DomainVerificationAccordionItem'
 import SingleSenderVerificationAccordionItem from './SingleSenderVerificationAccordionItem'

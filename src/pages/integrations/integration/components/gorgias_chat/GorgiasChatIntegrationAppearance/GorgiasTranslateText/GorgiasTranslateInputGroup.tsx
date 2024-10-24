@@ -1,6 +1,7 @@
 import {get} from 'lodash'
 import React from 'react'
 import {Col, Container, Row} from 'reactstrap'
+
 import {
     TextsPerLanguage,
     Translations,

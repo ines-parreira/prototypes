@@ -1,7 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+
 import LightCampaignBadge from '../LightCampaignBadge'
 
 describe('LightCampaignBadge', () => {

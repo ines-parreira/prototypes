@@ -1,14 +1,15 @@
 import React, {useMemo} from 'react'
 
 import {Link} from 'react-router-dom'
-import {assetsUrl} from 'utils'
-import Button from 'pages/common/components/button/Button'
-import css from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState.less'
-import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
-import PageHeader from 'pages/common/components/PageHeader'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+
 import {IntegrationType} from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState.less'
+import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
+import {assetsUrl} from 'utils'
 
 export const AiAgentStatsEmptyState = () => {
     const storeIntegrations = useStoreIntegrations()

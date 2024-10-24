@@ -1,7 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import * as ReactRouterDom from 'react-router-dom'
+
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+
 import ReportOrderIssueScenarioList from '../ReportOrderIssueScenarioList'
 
 const mockHistoryPush = jest.fn()

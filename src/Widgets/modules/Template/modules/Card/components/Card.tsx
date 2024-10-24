@@ -1,9 +1,8 @@
-import React, {ComponentProps, ElementType, useContext, useMemo} from 'react'
 import {Map, fromJS} from 'immutable'
+import React, {ComponentProps, ElementType, useContext, useMemo} from 'react'
 
-import {updateRecord} from 'utils/types'
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {
     CardMeta,
@@ -15,6 +14,15 @@ import {
     Source,
     isSourceRecord,
 } from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import {
+    hasCustomAction,
+    isSimpleTemplateWidget,
+} from 'pages/common/components/infobar/utils'
+import {renderInfobarTemplate} from 'pages/common/utils/infobar'
+import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
     removeEditedWidget,
@@ -23,24 +31,16 @@ import {
     stopWidgetEdition,
 } from 'state/widgets/actions'
 import {getWidgetsState} from 'state/widgets/selectors'
-import {renderTemplate} from 'pages/common/utils/template'
-import {renderInfobarTemplate} from 'pages/common/utils/infobar'
-import {
-    hasCustomAction,
-    isSimpleTemplateWidget,
-} from 'pages/common/components/infobar/utils'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import {updateRecord} from 'utils/types'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
 import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
-import {CardEditFormState, HiddenField} from '../types'
-import {isDefaultOpen} from '../helpers/isDefaultOpen'
-import {canDrop} from '../helpers/canDrop'
 import UICard from '../components/views'
+import {canDrop} from '../helpers/canDrop'
+import {isDefaultOpen} from '../helpers/isDefaultOpen'
+import {CardEditFormState, HiddenField} from '../types'
 
 export const NO_DATA_TEXT = 'No data'
 

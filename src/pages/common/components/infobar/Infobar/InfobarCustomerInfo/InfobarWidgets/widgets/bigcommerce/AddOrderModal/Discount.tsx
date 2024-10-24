@@ -1,10 +1,6 @@
-import React, {useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import classnames from 'classnames'
-
-import Button from 'pages/common/components/button/Button'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import React, {useRef, useState} from 'react'
 
 import {
     BigCommerceActionType,
@@ -12,13 +8,17 @@ import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Spinner from 'pages/common/components/Spinner'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
-import commonCss from './OrderTotals.less'
 import css from './Discount.less'
+import commonCss from './OrderTotals.less'
 
 type Props = {
     cart: Maybe<BigCommerceCart>

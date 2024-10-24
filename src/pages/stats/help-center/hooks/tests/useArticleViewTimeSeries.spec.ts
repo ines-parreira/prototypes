@@ -1,10 +1,11 @@
 import moment from 'moment/moment'
-import {LegacyStatsFilters} from 'models/stat/types'
+
 import * as useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {ReportingGranularity} from 'models/reporting/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const mockUseTimeSeries = jest.spyOn(useTimeSeries, 'useTimeSeries')

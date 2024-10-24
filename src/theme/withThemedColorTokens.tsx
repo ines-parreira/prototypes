@@ -1,4 +1,5 @@
 import React, {ComponentType, useContext} from 'react'
+
 import ThemeContext from 'theme/ThemeContext'
 import {ThemeColors} from 'theme/types'
 

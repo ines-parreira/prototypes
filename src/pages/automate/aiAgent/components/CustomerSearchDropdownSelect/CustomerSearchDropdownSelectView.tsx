@@ -1,8 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react'
+
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useSearchCustomer} from 'models/aiAgent/queries'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {reportError} from 'utils/errors'
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+
 import {PlaygroundCustomer} from '../../types'
 import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSelectComponent'
 

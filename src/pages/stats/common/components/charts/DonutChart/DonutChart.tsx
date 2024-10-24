@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo} from 'react'
-import {Doughnut} from 'react-chartjs-2'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
 import {
     Plugin,
     ChartData,
@@ -7,15 +7,17 @@ import {
     ChartOptions,
     TooltipModel,
 } from 'chart.js'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
-import {OneDimensionalDataItem} from 'pages/stats/types'
-import Legend from 'pages/stats/Legend'
-import {renderTickLabelAsNumber} from 'pages/stats/utils'
+import React, {useCallback, useMemo} from 'react'
+import {Doughnut} from 'react-chartjs-2'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import css from 'pages/stats/common/components/charts/Chart.less'
-import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
 import {ChartTooltip} from 'pages/stats/ChartTooltip'
+import css from 'pages/stats/common/components/charts/Chart.less'
+import Legend from 'pages/stats/Legend'
+import {OneDimensionalDataItem} from 'pages/stats/types'
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {renderTickLabelAsNumber} from 'pages/stats/utils'
+
 import {DonutChartTooltip} from './DonutChartTooltip'
 
 const STAT_COLORS = [

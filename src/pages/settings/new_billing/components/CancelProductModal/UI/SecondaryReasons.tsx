@@ -1,7 +1,9 @@
 import React from 'react'
+
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import css from './SecondaryReasons.less'
+
 import Instruction from './Instruction'
+import css from './SecondaryReasons.less'
 
 type SecondaryReasonsProps = {
     secondaryReasons: string[]

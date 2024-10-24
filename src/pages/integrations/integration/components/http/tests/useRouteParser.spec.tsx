@@ -1,7 +1,7 @@
+import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {renderHook} from '@testing-library/react-hooks'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -9,12 +9,12 @@ import thunk from 'redux-thunk'
 import {integrationBase} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 
-import {useRouteParser} from '../useRouteParser'
 import {
     EVENTS_PATH,
     INTEGRATIONS_LIST_PATH,
     NEW_INTEGRATION_PATH,
 } from '../constants'
+import {useRouteParser} from '../useRouteParser'
 
 jest.mock('react-router', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router'),

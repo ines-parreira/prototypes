@@ -1,33 +1,34 @@
 import React from 'react'
-import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
 
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
+import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import ChartCard from 'pages/stats/ChartCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import ChartCard from 'pages/stats/ChartCard'
+import {
+    DEFAULT_BADGE_TEXT,
+    TREND_BADGE_FORMAT,
+} from 'pages/stats/common/components/TrendBadge'
+import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
+
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricTrend,
     formatMetricValue,
 } from 'pages/stats/common/utils'
 
-import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
-import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
-import {TagsMetric} from 'state/ui/stats/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
-import {
-    DEFAULT_BADGE_TEXT,
-    TREND_BADGE_FORMAT,
-} from 'pages/stats/common/components/TrendBadge'
+import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {TagsMetric} from 'state/ui/stats/types'
 
 export const TAGS_CARD_TITLE = 'Top used tags'
 const TAGS_CARD_HINT =

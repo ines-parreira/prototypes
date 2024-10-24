@@ -1,9 +1,10 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 import {FormProvider, useForm} from 'react-hook-form'
 
-import {assumeMock} from 'utils/testing'
 import {EmailIntegration} from 'models/integration/types/email'
+import {assumeMock} from 'utils/testing'
+
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
 import {
     EmailIntegrationOnboardingStep,

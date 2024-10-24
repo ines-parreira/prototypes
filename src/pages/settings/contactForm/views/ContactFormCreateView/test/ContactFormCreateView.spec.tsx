@@ -1,20 +1,22 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, screen, act, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
+
 import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
 import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
 import {mockResourceServerReplies} from '../../../tests/resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')

@@ -1,12 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
+
+import {TicketChannel} from 'business/types/ticket'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HelpCenter} from 'models/helpCenter/types'
-import {TicketChannel} from 'business/types/ticket'
 import {assumeMock} from 'utils/testing'
-import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
+
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,
 } from '../useSelfServiceHelpCenterChannels'
+import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
 
 const mockHelpCenter = {
     created_datetime: '2023-12-21T13:01:16.097Z',

@@ -4,23 +4,25 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
+
+import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
+import {OrderDirection} from 'models/api/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-
-import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
-import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
-import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
     CustomFieldsTicketCountBreakdownTable,
     TOTAL_COLUMN_LABEL,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {formatDates} from 'pages/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {
@@ -34,7 +36,6 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {formatDates} from 'pages/stats/utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

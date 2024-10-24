@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+
 import {BASIC_OPERATORS} from 'config'
 
 import getCustomFieldOperators from '../getCustomFieldOperators'

@@ -6,6 +6,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
+
 import css from './ChatIntegrationPreview.less'
 
 type Props = {

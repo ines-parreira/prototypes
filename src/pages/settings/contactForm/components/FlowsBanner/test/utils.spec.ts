@@ -1,4 +1,5 @@
 import {SegmentEvent} from 'common/segment'
+
 import {getBannerDetails} from '../utils'
 
 describe('getBannerDetails', () => {

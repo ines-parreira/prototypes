@@ -1,22 +1,22 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
+import {Cubes} from 'models/reporting/cubes'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {assumeMock} from 'utils/testing'
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
-import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {Cubes} from 'models/reporting/cubes'
+import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

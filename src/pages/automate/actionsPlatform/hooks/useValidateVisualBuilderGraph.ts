@@ -1,14 +1,14 @@
 import {useCallback} from 'react'
 
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {validateConfiguration} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {
     checkGraphVariablesValidity,
     getWorkflowVariableListForNode,
 } from 'pages/automate/workflows/models/variables.model'
-import {validateConfiguration} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 const useValidateVisualBuilderGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {

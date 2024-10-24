@@ -1,30 +1,32 @@
+import {fireEvent, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
 import React from 'react'
-import 'tests/__mocks__/intersectionObserverMock'
 
+import 'tests/__mocks__/intersectionObserverMock'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
-import userEvent from '@testing-library/user-event'
+
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import {StoreState} from 'state/types'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {shopifyIntegration} from 'fixtures/integrations'
-import Wizard from 'pages/common/components/wizard/Wizard'
 import {Integration} from 'models/integration/types'
+import Wizard from 'pages/common/components/wizard/Wizard'
+import {NEXT_ACTION} from 'pages/settings/helpCenter/constants'
 import {
     HelpCenterApiBasicsFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {StoreState} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
-import {NEXT_ACTION} from 'pages/settings/helpCenter/constants'
-import HelpCenterCreationWizardStepBasics from '../HelpCenterCreationWizardStepBasics'
+
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import HelpCenterCreationWizardStepBasics from '../HelpCenterCreationWizardStepBasics'
 
 const defaultHelpCenter = HelpCenterUiBasicsFixture
 

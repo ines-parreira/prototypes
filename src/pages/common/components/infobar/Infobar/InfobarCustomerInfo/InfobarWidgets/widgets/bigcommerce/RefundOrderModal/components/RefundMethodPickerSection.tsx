@@ -1,19 +1,20 @@
-import React, {Dispatch} from 'react'
 import classnames from 'classnames'
+import React, {Dispatch} from 'react'
 
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import Spinner from 'pages/common/components/Spinner'
 import {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundMethod,
     BigCommerceRefundType,
 } from 'models/integration/types'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import Spinner from 'pages/common/components/Spinner'
+
 import css from '../RefundOrderModal.less'
-import {buildPaymentOptionLabel} from '../utils'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
+import {buildPaymentOptionLabel} from '../utils'
 
 type Props = {
     availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>

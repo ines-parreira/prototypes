@@ -1,8 +1,9 @@
+import classNames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import classNames from 'classnames'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Spinner from 'pages/common/components/Spinner'
+
 import css from './TopQuestionCard.less'
 
 type Props = {

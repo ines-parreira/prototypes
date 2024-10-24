@@ -1,5 +1,6 @@
-import React, {ReactNode, useState} from 'react'
 import _sample from 'lodash/sample'
+import React, {ReactNode, useState} from 'react'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 
 import css from './BlankState.less'

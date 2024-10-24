@@ -1,10 +1,11 @@
+import {appQueryClient} from 'api/queryClient'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {TicketMessage} from 'models/ticket/types'
-import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
-import {appQueryClient} from 'api/queryClient'
 
 import {voiceCallsKeys} from 'models/voiceCall/queries'
 import * as voiceCallUtils from 'models/voiceCall/types'
+import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+
 import responseSourceType from '../responseSourceType'
 
 const isVoiceCallSpy = jest.spyOn(voiceCallUtils, 'isVoiceCall')

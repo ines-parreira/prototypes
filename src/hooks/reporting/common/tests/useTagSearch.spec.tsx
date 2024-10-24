@@ -1,17 +1,17 @@
-import {act as actHooks, renderHook} from '@testing-library/react-hooks'
+import {Tag} from '@gorgias/api-queries'
 import {act, waitFor} from '@testing-library/react'
+import {act as actHooks, renderHook} from '@testing-library/react-hooks'
 import {AxiosRequestConfig, AxiosResponse} from 'axios'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Tag} from '@gorgias/api-queries'
 
-import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     TAGS_FETCH_ERROR_MESSAGE,
     useTagSearch,
 } from 'hooks/reporting/common/useTagSearch'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'

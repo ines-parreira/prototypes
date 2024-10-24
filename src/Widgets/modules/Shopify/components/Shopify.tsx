@@ -8,12 +8,12 @@ import {WidgetProps} from 'Widgets/modules/Widget'
 
 import {customerCustomization} from './Customer'
 import {draftOrderCustomization} from './DraftOrder'
-import {orderCustomization} from './Order'
-import {itemCustomization} from './Item'
-import {fulfillmentCustomization} from './Fulfillment'
-import {shippingAddressCustomization} from './ShippingAddress'
 import {editableListCustomization} from './EditableListField'
+import {fulfillmentCustomization} from './Fulfillment'
+import {itemCustomization} from './Item'
+import {orderCustomization} from './Order'
 import {orderNotesCustomization} from './OrderNotesField'
+import {shippingAddressCustomization} from './ShippingAddress'
 
 export const customization: TemplateCustomization = {
     card: [

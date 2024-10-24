@@ -1,8 +1,8 @@
-import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
 import {useGetCustomFieldDefinition} from 'custom-fields/hooks/queries/queries'
 import {CustomField} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 

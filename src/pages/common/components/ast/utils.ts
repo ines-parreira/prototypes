@@ -1,11 +1,11 @@
-import {fromJS, Map, List, Iterable} from 'immutable'
 import {Expression, Literal, Super} from 'estree'
+import {fromJS, Map, List, Iterable} from 'immutable'
 
 import {toImmutable} from 'common/utils'
 import {CodeASTType} from 'pages/settings/rules/types'
 import {ACTION_DEFAULT_STATE} from 'state/rules/constants'
-import {updateCallExpression, getObjectExpression} from 'state/rules/utils'
 import {RuleOperation} from 'state/rules/types'
+import {updateCallExpression, getObjectExpression} from 'state/rules/utils'
 import {SchemasState} from 'state/schemas/types'
 import {getCode, getAST, toJS} from 'utils'
 

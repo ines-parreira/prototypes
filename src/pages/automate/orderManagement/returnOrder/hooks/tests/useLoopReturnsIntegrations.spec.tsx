@@ -1,9 +1,11 @@
-import React, {ReactChild} from 'react'
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import React, {ReactChild} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {RootState, StoreDispatch} from 'state/types'
+
 import useLoopReturnsIntegrations from '../useLoopReturnsIntegrations'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

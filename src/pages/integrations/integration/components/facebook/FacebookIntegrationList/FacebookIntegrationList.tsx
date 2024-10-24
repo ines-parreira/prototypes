@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'

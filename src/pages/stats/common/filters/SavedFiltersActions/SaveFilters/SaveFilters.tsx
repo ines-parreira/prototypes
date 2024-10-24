@@ -1,5 +1,6 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters.less'
 

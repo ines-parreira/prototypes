@@ -2,23 +2,23 @@ import classNames from 'classnames'
 import React, {memo, useMemo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
-    EndNodeType,
-    isTriggerNodeType,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+    endNodeActionIconByAction,
+    endNodeActionLabelByAction,
+} from 'pages/automate/workflows/constants'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import {
-    endNodeActionIconByAction,
-    endNodeActionLabelByAction,
-} from 'pages/automate/workflows/constants'
-
-import EdgeBlock from '../components/EdgeBlock'
+    EndNodeType,
+    isTriggerNodeType,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {useVisualBuilderContext} from '../../../hooks/useVisualBuilder'
+import EdgeBlock from '../components/EdgeBlock'
+
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {

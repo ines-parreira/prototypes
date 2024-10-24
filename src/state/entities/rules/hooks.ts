@@ -1,11 +1,13 @@
 import {useEffect} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {fetchRules} from 'models/rule/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {fetchRules} from 'models/rule/resources'
-import {rulesSelector} from './selectors'
+
 import {rulesFetched} from './actions'
+import {rulesSelector} from './selectors'
 import {RulesState} from './types'
 
 let loading = false

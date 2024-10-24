@@ -1,3 +1,4 @@
+import _debounce from 'lodash/debounce'
 import React, {
     createContext,
     useContext,
@@ -6,13 +7,13 @@ import React, {
     SetStateAction,
     useEffect,
 } from 'react'
-import _debounce from 'lodash/debounce'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import {
     AlgoliaSearchClient,
     initSearchClient,
 } from 'pages/settings/helpCenter/utils/algolia'
+
 import {
     AlgoliaHit,
     AlgoliaRecordTags,

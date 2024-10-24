@@ -1,5 +1,3 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, List, Map} from 'immutable'
 import {
     fireEvent,
     render,
@@ -8,23 +6,25 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
+import {fromJS, List, Map} from 'immutable'
 import _noop from 'lodash/noop'
-import configureMockStore from 'redux-mock-store'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
-import {Update} from 'jobs'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
+import {Update} from 'jobs'
 import {JobType} from 'models/job/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {createJob as createJobTicket} from 'state/tickets/actions'
+import {RootState, StoreState} from 'state/types'
 import {
     createJob as createJobView,
     updateSelectedItemsIds,
 } from 'state/views/actions'
-import {RootState, StoreState} from 'state/types'
 import {TagDropdownMenu} from 'tags'
 import {assumeMock, makeExecuteKeyboardAction} from 'utils/testing'
 

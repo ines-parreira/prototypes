@@ -1,8 +1,9 @@
 import React from 'react'
-import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {SetUp} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/SetUp'
+
 import {Customization} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
+import {SetUp} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/SetUp'
+import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 
 export const STEPS: {
     label: string

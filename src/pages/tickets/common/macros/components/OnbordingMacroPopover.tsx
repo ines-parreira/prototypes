@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     ReactElement,
     useState,
@@ -8,16 +9,16 @@ import React, {
 } from 'react'
 import {Link} from 'react-router-dom'
 import {Popover, PopoverBody} from 'reactstrap'
-import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
+import {submitSetting} from 'state/currentUser/actions'
 import {getPreferences, getCurrentUser} from 'state/currentUser/selectors'
 import {getTicket} from 'state/ticket/selectors'
-import {submitSetting} from 'state/currentUser/actions'
+
 import css from './OnbordingMacroPopover.less'
 
 type Stages = 'info' | 'prompt'

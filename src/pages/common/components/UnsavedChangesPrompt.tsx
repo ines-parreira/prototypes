@@ -1,16 +1,15 @@
-import React, {useState, useRef, useCallback, useEffect} from 'react'
-import {Location} from 'history'
-import {Prompt} from 'react-router-dom'
 import classNames from 'classnames'
+import {Location} from 'history'
 import _noop from 'lodash/noop'
-
-import history from 'pages/history'
+import React, {useState, useRef, useCallback, useEffect} from 'react'
+import {Prompt} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import history from 'pages/history'
 
 import css from './UnsavedChangesPrompt.less'
 

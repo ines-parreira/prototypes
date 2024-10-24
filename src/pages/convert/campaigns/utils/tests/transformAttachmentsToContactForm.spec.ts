@@ -1,4 +1,5 @@
 import {List} from 'immutable'
+
 import {AttachmentEnum} from 'common/types'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 

@@ -1,5 +1,6 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+
 import {
     ABTestCreatePayload,
     ABTestListOptions,

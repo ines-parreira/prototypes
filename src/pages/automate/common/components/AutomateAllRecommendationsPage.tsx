@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
+
 import {useSearchParam} from 'hooks/useSearchParam'
 
 import {
@@ -7,8 +8,8 @@ import {
     isAllRecommendationStatus,
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
-import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
 import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
+import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
 
 const AutomateAllRecommendationsPage = () => {
     const location = useLocation()

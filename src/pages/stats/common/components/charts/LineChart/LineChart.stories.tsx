@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
+import React, {ComponentProps} from 'react'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 import {ThemeProvider} from 'theme'

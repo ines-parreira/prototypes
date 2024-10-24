@@ -1,13 +1,13 @@
-import React, {ReactElement} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ReactElement} from 'react'
 
-import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
-import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FiltersPanel,
     FiltersPanelProps,
 } from 'pages/stats/common/filters/FiltersPanel'
+import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
+import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 
 export const FiltersPanelWrapper = ({
     optionalFilters,

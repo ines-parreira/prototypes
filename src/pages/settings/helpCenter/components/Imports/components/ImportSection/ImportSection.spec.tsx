@@ -1,38 +1,36 @@
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
+import {createMemoryHistory} from 'history'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React, {ReactNode} from 'react'
 import {Provider as ReduxProvider} from 'react-redux'
 import {Router} from 'react-router-dom'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import MockAdapter from 'axios-mock-adapter'
-import {createMemoryHistory} from 'history'
+import thunk from 'redux-thunk'
 
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-
-import userEvent from '@testing-library/user-event'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 
-import {RootState, StoreDispatch} from 'state/types'
+import {getAccessToken} from 'rest_api/auth'
+import {getMigrationClient} from 'rest_api/migration_api'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
-import {getMigrationClient} from 'rest_api/migration_api'
-import {getAccessToken} from 'rest_api/auth'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    helpCenterMigrationConfig,
+    migrationProviders,
+} from './fixtures/migration-providers'
 import {
     failedMigrationStats,
     migrationSessions,
     partiallySucceededMigrationStats,
     succeededMigrationStats,
 } from './fixtures/migration-sessions'
-import {
-    helpCenterMigrationConfig,
-    migrationProviders,
-} from './fixtures/migration-providers'
 import ImportSection, {ACTIVE_MIGRATION_UPDATE_TIMEOUT} from './ImportSection'
 import {sessionHasProgressStatus} from './utils'
 

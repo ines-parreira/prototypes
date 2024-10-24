@@ -1,19 +1,18 @@
+import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
 
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 import {Integration} from 'models/integration/types'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-
 import DEPRECATED_IntegrationsStatsFilter, {
     FONT_ICONS,
     IMAGE_ICONS,
 } from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

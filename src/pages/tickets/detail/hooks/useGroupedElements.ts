@@ -12,6 +12,7 @@ import {
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import {getTicketBodyElements, getTicketState} from 'state/ticket/selectors'
+
 import useRuleSuggestionForDemos from './useRuleSuggestionForDemos'
 
 type FakeVirtuosoItems = 'header'

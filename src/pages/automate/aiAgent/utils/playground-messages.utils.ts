@@ -11,18 +11,19 @@ import {
     AiAgentMessageType,
     PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
+
 import {
     PlaygroundFormValues,
     PlaygroundChannels,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
-    CustomerHttpIntegrationDataMock,
-    PLAYGROUND_PROMPT_CONTENT,
-} from '../constants'
-import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
+import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_PROMPT_CONTENT,
+} from '../constants'
 
 export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
     if (message.type === MessageType.PROMPT) {

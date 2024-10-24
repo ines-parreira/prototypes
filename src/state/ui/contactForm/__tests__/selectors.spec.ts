@@ -1,7 +1,8 @@
+import {initialState as contactformState} from 'state/entities/contactForm/reducer'
 import {StoreState} from 'state/types'
 
-import {initialState as contactformState} from 'state/entities/contactForm/reducer'
 import {getCurrentContactFormId} from 'state/ui/contactForm/selectors'
+
 import {initialState as uiState} from '../reducer'
 
 const store: Partial<StoreState> = {

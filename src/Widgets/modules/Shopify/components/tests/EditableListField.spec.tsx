@@ -1,16 +1,16 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ShopifyTags} from 'models/integration/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {ShopifyTags} from 'models/integration/types'
 import {LeafTemplate} from 'models/widget/types'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'

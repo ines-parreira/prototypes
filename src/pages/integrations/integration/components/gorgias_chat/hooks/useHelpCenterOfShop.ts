@@ -3,9 +3,8 @@ import {useState, useEffect} from 'react'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {HelpCenter} from 'models/helpCenter/types'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 const useHelpCenterOfShop = (shopName?: string, shopType?: string) => {
     const {client} = useHelpCenterApi()

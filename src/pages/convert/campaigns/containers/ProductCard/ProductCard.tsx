@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react'
 import {getLuminance, lighten, darken} from 'color2k'
+import React, {useEffect, useState} from 'react'
 
-import {updateCampaignProductPosition} from 'state/newMessage/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import useMeasure from 'hooks/useMeasure'
+import {updateCampaignProductPosition} from 'state/newMessage/actions'
+
 import {AttachmentPosition} from '../../types/CampaignAttachment'
 
-import {ProductCardView} from './components/ProductCardView'
 import {ProductCardEdit} from './components/ProductCardEdit'
+import {ProductCardView} from './components/ProductCardView'
 
 import css from './ProductCard.less'
 

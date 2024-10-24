@@ -1,27 +1,25 @@
 import React, {useState, useMemo, useCallback} from 'react'
 import {useParams} from 'react-router-dom'
 
-import {toJS} from 'utils'
-
-import Button from 'pages/common/components/button/Button'
-
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListABTests} from 'models/convert/abTest/queries'
 import {ABTestListOptions as ABTestListOptionsParams} from 'models/convert/abTest/types'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
 import {useCreateABTest} from 'pages/convert/abTests/hooks/useCreateABTest'
 import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import RequestABTestModal from 'pages/stats/convert/components/RequestABTestModal'
 import ViewABTestModal from 'pages/stats/convert/components/ViewABTestModal'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
 import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {toJS} from 'utils'
 
 import css from './RequestABTest.less'
 

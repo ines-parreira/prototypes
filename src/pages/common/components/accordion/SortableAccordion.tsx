@@ -1,3 +1,4 @@
+import _isEqual from 'lodash/isEqual'
 import React, {
     Children,
     cloneElement,
@@ -7,13 +8,12 @@ import React, {
     useState,
     useRef,
 } from 'react'
-import _isEqual from 'lodash/isEqual'
 
 import Accordion, {AccordionProps} from './Accordion'
-import SortableAccordionItem from './SortableAccordionItem'
 import SortableAccordionContext, {
     SortableAccordionContextType,
 } from './SortableAccordionContext'
+import SortableAccordionItem from './SortableAccordionItem'
 
 type Props<T extends string | string[] | null> = {
     type?: string

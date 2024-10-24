@@ -1,6 +1,7 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
-import {FetchTeamsOptions} from './types'
+
 import {fetchTeams} from './resources'
+import {FetchTeamsOptions} from './types'
 
 const teamQueryKeys = {
     all: () => ['teams'] as const,

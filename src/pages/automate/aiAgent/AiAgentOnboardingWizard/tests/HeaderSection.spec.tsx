@@ -1,5 +1,6 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
+
 import {AiAgentChannel, DEFAULT_WIZARD_FORM_VALUES} from '../../constants'
 import {WizardFormValues} from '../../types'
 import {HeaderSection} from '../HeaderSection'

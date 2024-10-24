@@ -1,9 +1,11 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
+
 import {useSearchParam} from 'hooks/useSearchParam'
 import {assumeMock} from 'utils/testing'
-import PostCompletionWizardModal from '../PostCompletionWizardModal'
+
 import {WIZARD_POST_COMPLETION_STATE} from '../../constants'
+import PostCompletionWizardModal from '../PostCompletionWizardModal'
 
 jest.mock('hooks/useSearchParam')
 const mockUseSearchParam = assumeMock(useSearchParam)

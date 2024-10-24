@@ -1,15 +1,17 @@
-import React, {useMemo} from 'react'
-import {fromJS, List, Map} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
+import {fromJS, List, Map} from 'immutable'
 
 import pluralize from 'pluralize'
-import useAppSelector from 'hooks/useAppSelector'
+import React, {useMemo} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {toggleHistory} from 'state/ticket/actions'
-import {getDisplayHistory} from 'state/ticket/selectors'
-import {getCustomersState, makeIsLoading} from 'state/customers/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getCustomersState, makeIsLoading} from 'state/customers/selectors'
+import {toggleHistory} from 'state/ticket/actions'
+import {getDisplayHistory} from 'state/ticket/selectors'
+
 import css from './CustomerTimelineButton.less'
 
 type Props = {

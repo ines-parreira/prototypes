@@ -1,3 +1,4 @@
+import {AxiosError} from 'axios'
 import {
     AtomicBlockUtils,
     EditorState,
@@ -8,7 +9,6 @@ import {
 } from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
 import _get from 'lodash/get'
-import {AxiosError} from 'axios'
 
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {UploadType} from 'common/types'

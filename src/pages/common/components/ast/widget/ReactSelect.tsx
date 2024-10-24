@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
 import {List} from 'immutable'
-import sortBy from 'lodash/sortBy'
 import _noop from 'lodash/noop'
+import sortBy from 'lodash/sortBy'
+import React, {Component} from 'react'
 
 import 'react-select/dist/react-select.css'
 import SelectField from '../../../forms/SelectField/SelectField'

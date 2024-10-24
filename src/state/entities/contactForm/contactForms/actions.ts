@@ -1,4 +1,5 @@
 import {createAction} from '@reduxjs/toolkit'
+
 import {ContactForm} from 'models/contactForm/types'
 import {ContactFormsActions} from 'state/entities/contactForm/contactForms/types'
 

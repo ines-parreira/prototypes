@@ -1,5 +1,5 @@
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('auths reducers', () => {
     it('fetch auths pagination', () => {

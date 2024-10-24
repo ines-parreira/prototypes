@@ -1,11 +1,15 @@
 import {fromJS} from 'immutable'
+
+import {TicketChannel} from 'business/types/ticket'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
+import * as billingFixtures from 'fixtures/billing'
+import {IntegrationType} from 'models/integration/constants'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
-import {RootState} from 'state/types'
-import {TicketChannel} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/constants'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
+import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import {initialState as billingInitialState} from 'state/billing/reducers'
 import {
     getStatsFilters,
     getStatsStoreIntegrations,
@@ -19,11 +23,8 @@ import {
     getStoreIntegrations,
 } from 'state/stats/selectors'
 import {initialState} from 'state/stats/statsSlice'
-import {initialState as billingInitialState} from 'state/billing/reducers'
 
-import * as billingFixtures from 'fixtures/billing'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {RootState} from 'state/types'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

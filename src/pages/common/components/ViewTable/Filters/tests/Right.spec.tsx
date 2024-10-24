@@ -1,14 +1,14 @@
+import {render} from '@testing-library/react'
+import {Identifier} from 'estree'
+import {fromJS} from 'immutable'
 import React, {ComponentProps, ReactNode} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {Identifier} from 'estree'
-
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import {CHANNELS} from 'tickets/common/config'
 import {RightContainer} from 'pages/common/components/ViewTable/Filters/Right'
+import {CHANNELS} from 'tickets/common/config'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

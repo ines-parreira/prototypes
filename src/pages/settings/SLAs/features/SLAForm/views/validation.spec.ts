@@ -1,5 +1,7 @@
 import {validateCreateCustomerBody} from '@gorgias/api-validators'
+
 import {GorgiasApiResponseDataError} from 'models/api/types'
+
 import {
     FormValidator,
     createFormValidator,

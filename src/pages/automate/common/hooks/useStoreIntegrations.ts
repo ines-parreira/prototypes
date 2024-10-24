@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
 
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import {getHasAutomate} from 'state/billing/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
 const useStoreIntegrations = () => {
     const hasAutomate = useAppSelector(getHasAutomate)

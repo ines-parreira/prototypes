@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {ReplyMetaTicketMessage} from 'models/ticket/types'
 
 import MetaLabel from './MetaLabel'

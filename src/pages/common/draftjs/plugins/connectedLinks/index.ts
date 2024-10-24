@@ -1,4 +1,5 @@
 import {EditorState} from 'draft-js'
+
 import {setConnectedLinks} from './utils'
 
 const connectedLinksPlugin = () => {

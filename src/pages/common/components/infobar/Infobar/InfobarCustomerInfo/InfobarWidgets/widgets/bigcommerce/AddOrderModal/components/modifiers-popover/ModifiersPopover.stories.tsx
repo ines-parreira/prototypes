@@ -1,10 +1,12 @@
+import {action} from '@storybook/addon-actions'
 import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
-import {action} from '@storybook/addon-actions'
+
 import {
     bigCommerceProductFixture,
     bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
+
 import {ModifiersPopoverBody, ModifiersPopover} from './ModifiersPopover'
 
 const storyConfig: Meta = {

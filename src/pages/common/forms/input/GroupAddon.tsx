@@ -1,12 +1,12 @@
-import React, {HTMLProps, useContext} from 'react'
 import classnames from 'classnames'
+import React, {HTMLProps, useContext} from 'react'
 
-import {reportError} from 'utils/errors'
 import {
     GroupPositionContext,
     GroupContext,
 } from 'pages/common/components/layout/Group'
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
+import {reportError} from 'utils/errors'
 
 import css from './GroupAddon.less'
 

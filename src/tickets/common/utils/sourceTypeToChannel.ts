@@ -3,9 +3,9 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
+import {isTicketChannel} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
 import {DEFAULT_CHANNEL} from 'tickets/common/config'
-import {isTicketChannel} from 'models/ticket/predicates'
 
 import isSystemType from './isSystemType'
 import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'

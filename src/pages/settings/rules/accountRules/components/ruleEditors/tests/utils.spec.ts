@@ -1,4 +1,5 @@
 import {RuleDraft} from 'state/rules/types'
+
 import {getRuleActions} from '../utils'
 
 describe('getActionTypeFromAST', () => {

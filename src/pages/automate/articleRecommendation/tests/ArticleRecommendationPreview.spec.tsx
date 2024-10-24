@@ -1,18 +1,20 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {screen, render} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, render} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RootState, StoreDispatch} from 'state/types'
+
 import {TicketChannel} from 'business/types/ticket'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {IntegrationType} from 'models/integration/constants'
 import {
     GorgiasChatIntegration,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
-import {IntegrationType} from 'models/integration/constants'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import ArticleRecommendationPreview from '../ArticleRecommendationPreview'
 
 const queryClient = mockQueryClient()

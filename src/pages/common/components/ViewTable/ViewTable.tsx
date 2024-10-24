@@ -1,12 +1,12 @@
-import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
+import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import _isArray from 'lodash/isArray'
+import {parse, stringify} from 'qs'
+import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {RouteComponentProps} from 'react-router-dom'
-import classnames from 'classnames'
-import {parse, stringify} from 'qs'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import _isArray from 'lodash/isArray'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -14,14 +14,26 @@ import {getConfigByName} from 'config/views'
 import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
+import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
+import Header from 'pages/common/components/ViewTable/Header'
+import Table from 'pages/common/components/ViewTable/Table'
+import MissingBillingInformationRow from 'pages/common/components/ViewTable/Table/MissingBillingInformationRow'
+import css from 'pages/common/components/ViewTable/ViewTable.less'
+import withViewSearchUrlSync, {
+    ViewSearchUrlSyncInjectedProps,
+} from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 import {isCreationUrl} from 'pages/common/utils/url'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
+import withRouter from 'pages/common/utils/withRouter'
 import history from 'pages/history'
+import {tryLocalStorage} from 'services/common/utils'
 import {RootState} from 'state/types'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import {fetchViewItems, setViewActive, updateView} from 'state/views/actions'
+import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from 'state/views/constants'
 import {
     getActiveView,
     getNavigation,
@@ -32,19 +44,6 @@ import {
     makeGetView,
     makeIsLoading,
 } from 'state/views/selectors'
-import withRouter from 'pages/common/utils/withRouter'
-import {tryLocalStorage} from 'services/common/utils'
-import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from 'state/views/constants'
-
-import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
-import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
-import Header from 'pages/common/components/ViewTable/Header'
-import Table from 'pages/common/components/ViewTable/Table'
-import MissingBillingInformationRow from 'pages/common/components/ViewTable/Table/MissingBillingInformationRow'
-import css from 'pages/common/components/ViewTable/ViewTable.less'
-import withViewSearchUrlSync, {
-    ViewSearchUrlSyncInjectedProps,
-} from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 
 type OwnProps = {
     className?: string

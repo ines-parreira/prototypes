@@ -1,3 +1,5 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -7,8 +9,6 @@ import React, {
     useImperativeHandle,
     useRef,
 } from 'react'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 

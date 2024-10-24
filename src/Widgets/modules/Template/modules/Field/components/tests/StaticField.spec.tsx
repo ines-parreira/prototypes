@@ -1,9 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import UIStaticField from '../views/StaticField'
 import StaticField from '../StaticField'
+import UIStaticField from '../views/StaticField'
 
 jest.mock('../views/StaticField', () => jest.fn(() => <div>field</div>))
 

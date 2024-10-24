@@ -1,16 +1,21 @@
-import {fromJS, List, Map} from 'immutable'
-import {ContentState, convertFromHTML} from 'draft-js'
 import {createAction} from '@reduxjs/toolkit'
-import _isNull from 'lodash/isNull'
-import _assign from 'lodash/assign'
-import _pick from 'lodash/pick'
-import _throttle from 'lodash/throttle'
-import _omit from 'lodash/omit'
-import _split from 'lodash/split'
-import axios, {AxiosError, CancelToken} from 'axios'
 import * as Sentry from '@sentry/react'
+import axios, {AxiosError, CancelToken} from 'axios'
+import {ContentState, convertFromHTML} from 'draft-js'
+import {fromJS, List, Map} from 'immutable'
+import _assign from 'lodash/assign'
+import _isNull from 'lodash/isNull'
+import _omit from 'lodash/omit'
+import _pick from 'lodash/pick'
+import _split from 'lodash/split'
+import _throttle from 'lodash/throttle'
 
-import {reportError} from 'utils/errors'
+import {
+    TicketChannel,
+    TicketVia,
+    TicketMessageSourceType,
+    TicketStatus,
+} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     fetchTicketReplyMacro,
@@ -18,17 +23,52 @@ import {
 } from 'common/state'
 import {AttachmentEnum, GenericAttachment} from 'common/types'
 import {isImmutable, uploadFiles} from 'common/utils'
-import * as ticketConstants from 'state/ticket/constants'
-import {notify} from 'state/notifications/actions'
+import {ActionTemplateExecution} from 'config'
+import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import client from 'models/api/resources'
+import {Customer} from 'models/customer/types'
+import {CustomerChannel} from 'models/customerChannel/types'
+import {DiscountCode} from 'models/discountCodes/types'
+import {Macro} from 'models/macro/types'
+import {
+    MacroAction,
+    MacroActionName,
+    MacroActionType,
+} from 'models/macroAction/types'
+import {search} from 'models/search/resources'
+import {SearchType, UserSearchResult} from 'models/search/types'
+import {mapNormalizedToArray} from 'models/ticket/mappers'
+import {
+    Ticket as TicketResponse,
+    TicketAssignee,
+    Attachment,
+} from 'models/ticket/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {
-    castGorgiasVideosForUnsupportedSources,
-    getActionTemplate,
-    toJS,
-} from 'utils'
-import {ActionTemplateExecution} from 'config'
-import {Macro} from 'models/macro/types'
-
+    AttachmentPosition,
+    AttachmentType,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
+import history from 'pages/history'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import {isNewChannel} from 'services/channels'
+import socketManager from 'services/socketManager/socketManager'
+import {SocketEventType} from 'services/socketManager/types'
+import * as agentSelectors from 'state/agents/selectors'
+import {
+    getCurrentAccountState,
+    getDefaultIntegrationSettings,
+} from 'state/currentAccount/selectors'
+import * as integrationSelectors from 'state/integrations/selectors'
+import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import * as ticketConstants from 'state/ticket/constants'
+import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
+import * as ticketSelectors from 'state/ticket/selectors'
+import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -38,67 +78,19 @@ import {
     getSourceTypeOfResponse,
     persistLastSenderChannel,
 } from 'state/ticket/utils'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
-import * as integrationSelectors from 'state/integrations/selectors'
-import * as ticketSelectors from 'state/ticket/selectors'
-import * as agentSelectors from 'state/agents/selectors'
-import socketManager from 'services/socketManager/socketManager'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
+import {
+    castGorgiasVideosForUnsupportedSources,
+    getActionTemplate,
+    toJS,
+} from 'utils'
+
 import {getMomentNow} from 'utils/date'
 import {convertToHTML} from 'utils/editor'
-import {
-    TicketChannel,
-    TicketVia,
-    TicketMessageSourceType,
-    TicketStatus,
-} from 'business/types/ticket'
-import client from 'models/api/resources'
-import {
-    Ticket as TicketResponse,
-    TicketAssignee,
-    Attachment,
-} from 'models/ticket/types'
-import {Customer} from 'models/customer/types'
-import {NotificationStatus} from 'state/notifications/types'
-import {SocketEventType} from 'services/socketManager/types'
-import history from 'pages/history'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {SearchType, UserSearchResult} from 'models/search/types'
-import {search} from 'models/search/resources'
-import {CustomerChannel} from 'models/customerChannel/types'
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from 'models/macroAction/types'
-import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
-import {DiscountCode} from 'models/discountCodes/types'
-import {
-    getCurrentAccountState,
-    getDefaultIntegrationSettings,
-} from 'state/currentAccount/selectors'
-import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
-import {mapNormalizedToArray} from 'models/ticket/mappers'
-import {isNewChannel} from 'services/channels'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 
-import {
-    AttachmentPosition,
-    AttachmentType,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {
-    MessageContext,
-    selectionAfter,
-    setSourceTypeCache,
-    toReplyAreaState,
-    updateNewMessageWithContentState,
-} from './responseUtils'
-import * as selectors from './selectors'
+import {reportError} from 'utils/errors'
+
 import * as constants from './constants'
-import {MacroActions, Message, NewMessage, ReplyAreaState} from './types'
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
@@ -110,6 +102,15 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from './errors'
+import {
+    MessageContext,
+    selectionAfter,
+    setSourceTypeCache,
+    toReplyAreaState,
+    updateNewMessageWithContentState,
+} from './responseUtils'
+import * as selectors from './selectors'
+import {MacroActions, Message, NewMessage, ReplyAreaState} from './types'
 import {
     applyExternalTemplateAction,
     getProductCardAttachmentsDeletionOrder,

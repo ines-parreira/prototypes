@@ -1,9 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
@@ -20,7 +22,6 @@ import {
 } from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

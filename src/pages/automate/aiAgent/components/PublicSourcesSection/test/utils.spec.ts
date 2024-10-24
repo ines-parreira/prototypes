@@ -1,10 +1,11 @@
 import {Components} from 'rest_api/help_center_api/client.generated'
+
+import {SourceItem} from '../types'
 import {
     mapArticleIngestionLogsToSourceItem,
     updateArticleIngestionLogs,
     mergeSources,
 } from '../utils'
-import {SourceItem} from '../types'
 
 describe('PublicSourcesSection utils', () => {
     describe('mapArticleIngestionLogsToSourceItem', () => {

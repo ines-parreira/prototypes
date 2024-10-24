@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
 import {Tooltip} from '@gorgias/ui-kit'
+import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import SubscriptionAmount from '../SubscriptionAmount'
 import {PlanInterval} from '../../../../models/billing/types'
+import SubscriptionAmount from '../SubscriptionAmount'
 
 jest.mock('@gorgias/ui-kit', () => {
     return {

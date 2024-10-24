@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from '../constants'
+import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 
 export enum PreviewStep {
     INITIAL,

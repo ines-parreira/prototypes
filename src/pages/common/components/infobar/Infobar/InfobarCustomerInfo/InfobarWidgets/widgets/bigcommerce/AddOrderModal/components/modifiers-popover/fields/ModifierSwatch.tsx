@@ -1,20 +1,19 @@
-import React, {PropsWithChildren, useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import classnames from 'classnames'
+import React, {PropsWithChildren, useRef, useState} from 'react'
 
 import {BigCommerceProductSwatchModifier} from 'models/integration/types'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
-import {FieldProps} from './types'
-
-import sharedCss from './Shared.less'
 import css from './ModifierSwatch.less'
+import sharedCss from './Shared.less'
+import {FieldProps} from './types'
 
 const ColorLabelContainer = ({children}: PropsWithChildren<unknown>) => (
     <div className={css.colorLabelContainer}>{children}</div>

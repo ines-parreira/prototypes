@@ -1,6 +1,7 @@
-import React, {useContext} from 'react'
 import {Elements} from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js'
+import React, {useContext} from 'react'
+
 import {ThemeContext} from 'theme'
 
 const stripePromise = loadStripe(window.STRIPE_PUBLIC_KEY!, {locale: 'en'})

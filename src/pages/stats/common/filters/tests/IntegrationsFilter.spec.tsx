@@ -1,12 +1,28 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import React from 'react'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {integrationsState} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
+import {
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
+    FILTER_VALUE_PLACEHOLDER,
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
+
+import {
+    IntegrationsFilter,
+    IntegrationsFilterWithState,
+    PhoneIntegrationsFilterWithState,
+} from 'pages/stats/common/filters/IntegrationsFilter'
 import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
@@ -15,21 +31,6 @@ import {RootState} from 'state/types'
 import {statFiltersClean} from 'state/ui/stats/actions'
 
 import {renderWithStore} from 'utils/testing'
-import {
-    FILTER_DESELECT_ALL_LABEL,
-    FILTER_SELECT_ALL_LABEL,
-    FILTER_VALUE_PLACEHOLDER,
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'pages/stats/common/components/Filter/constants'
-import {
-    IntegrationsFilter,
-    IntegrationsFilterWithState,
-    PhoneIntegrationsFilterWithState,
-} from 'pages/stats/common/filters/IntegrationsFilter'
-import {FilterKey} from 'models/stat/types'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

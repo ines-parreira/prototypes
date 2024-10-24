@@ -3,16 +3,16 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 import {initApp, notifyAccountNotVerified, notifyUserImpersonated} from 'init'
 import {RootState} from 'state/types'
-import {user} from 'fixtures/users'
-import {assumeMock} from 'utils/testing'
 import {GorgiasInitialState, InitialReactQueryState} from 'types'
-import {account} from 'fixtures/account'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import * as envUtils from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {identifyUser} from 'utils/hotjar'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 

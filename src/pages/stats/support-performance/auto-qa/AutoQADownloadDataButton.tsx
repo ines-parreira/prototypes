@@ -1,10 +1,11 @@
 import React from 'react'
-import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
-import {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {saveReport} from 'services/reporting/autoQAReportingService'
 
 const DOWNLOAD_BUTTON_TITLE = 'Channels Report Data'

@@ -1,11 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {
     IvrMenuAction,
     IvrMenuActionType,
     VoiceMessageType,
 } from 'models/integration/types'
+
 import IvrMenuActionSelect from '../IvrMenuActionSelect'
 
 describe('<IvrMenuActionSelect />', () => {

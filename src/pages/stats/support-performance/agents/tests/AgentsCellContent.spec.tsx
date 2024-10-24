@@ -1,19 +1,20 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
+
+import {User} from 'config/types/user'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {User} from 'config/types/user'
 
 jest.mock('@gorgias/ui-kit', () => ({
     Tooltip: () => <div />,

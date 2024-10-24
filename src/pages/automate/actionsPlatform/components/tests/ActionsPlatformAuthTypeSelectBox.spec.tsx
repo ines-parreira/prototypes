@@ -1,5 +1,5 @@
-import React from 'react'
 import {act, render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import ActionsPlatformAuthTypeSelectBox from '../ActionsPlatformAuthTypeSelectBox'
 

@@ -1,5 +1,6 @@
 import {LocalSocialNavigationLink} from 'models/helpCenter/types'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
+
 import {saveSocialLinks} from '../navigationLinks'
 
 const mockedHelpCenterClient = {

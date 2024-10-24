@@ -1,6 +1,6 @@
 import localForage from 'localforage'
-import {extendPrototype as extendObservablePrototype} from 'localforage-observable'
 import {extendPrototype as extendGetItemsPrototype} from 'localforage-getitems'
+import {extendPrototype as extendObservablePrototype} from 'localforage-observable'
 import {extendPrototype as extendRemoveItemsPrototype} from 'localforage-removeitems'
 import Observable from 'zen-observable'
 

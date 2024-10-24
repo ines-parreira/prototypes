@@ -1,12 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types'
 
-import {RootState} from 'state/types'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
@@ -15,6 +13,9 @@ import {
     convertPlan0,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types'
+import {RootState} from 'state/types'
+
 import CampaignPreview from '../CampaignPreview'
 
 const CAMPAIGN_POSITION = {

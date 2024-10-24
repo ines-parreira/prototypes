@@ -6,6 +6,7 @@ import {
     useRef,
     useLayoutEffect,
 } from 'react'
+
 import useEvent from './useEvent'
 
 type CustomLocalStorageEventPayload = {key: string}

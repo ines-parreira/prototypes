@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React, {ChangeEvent, useEffect, useState} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,9 +1,11 @@
-import React from 'react'
 import _pick from 'lodash/pick'
+import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getBase64} from 'utils/file'
+import {
+    MAX_VOICE_RECORDING_FILE_SIZE,
+    MAX_VOICE_RECORDING_FILE_SIZE_MB,
+} from 'models/integration/constants'
 import {
     IvrMenuAction,
     IvrMenuActionType,
@@ -13,10 +15,10 @@ import {
     VoiceMessage,
     VoiceMessageType,
 } from 'models/integration/types'
-import {
-    MAX_VOICE_RECORDING_FILE_SIZE,
-    MAX_VOICE_RECORDING_FILE_SIZE_MB,
-} from 'models/integration/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getBase64} from 'utils/file'
+
 import {getAudioFileDuration} from '../utils'
 
 export default function useVoiceMessageValidation() {

@@ -1,8 +1,8 @@
-import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useState} from 'react'
 
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 
 const storyConfig: Meta = {
     title: 'General/TabNavigator',

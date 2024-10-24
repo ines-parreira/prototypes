@@ -1,20 +1,20 @@
 import React, {RefObject, useEffect, useMemo, useState} from 'react'
 
+import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import {
+    filterManyVariables,
+    findManyVariables,
+} from 'pages/automate/workflows/models/variables.model'
+import {
+    WorkflowVariable,
+    WorkflowVariableGroup,
+} from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {
-    WorkflowVariable,
-    WorkflowVariableGroup,
-} from 'pages/automate/workflows/models/variables.types'
-import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
-import {
-    filterManyVariables,
-    findManyVariables,
-} from 'pages/automate/workflows/models/variables.model'
 import Search from 'pages/common/components/Search'
 
 import {useToolbarContext} from '../ToolbarContext'

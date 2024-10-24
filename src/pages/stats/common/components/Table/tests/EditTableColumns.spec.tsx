@@ -1,12 +1,13 @@
+import {act, fireEvent, render, screen} from '@testing-library/react'
 import {createDragDropManager} from 'dnd-core'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {DndProvider} from 'react-dnd'
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {useAgentTableSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 
 import {

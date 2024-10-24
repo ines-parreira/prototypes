@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
-import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
+import React, {useState} from 'react'
 import {Card, CardBody} from 'reactstrap'
 
 import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
@@ -8,20 +8,21 @@ import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-da
 import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue-filled.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
 
-import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-import IconButton from 'pages/common/components/button/IconButton'
 import {Actor, Meta, Source} from 'models/ticket/types'
-import {AgentLabel} from 'pages/common/utils/labels'
+import IconButton from 'pages/common/components/button/IconButton'
+import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {AgentLabel} from 'pages/common/utils/labels'
 
 import {renderDetails} from 'pages/tickets/detail/components/Event'
-import css from './PrivateReplyEvent.less'
+
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
     FACEBOOK_PRIVATE_REPLY_ACTION,
     INSTAGRAM_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from './constants'
+import css from './PrivateReplyEvent.less'
 
 type Props = {
     event: Map<string, any>

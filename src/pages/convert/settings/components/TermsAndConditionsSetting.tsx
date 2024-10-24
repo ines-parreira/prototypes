@@ -1,17 +1,19 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
 import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
-import {convertToHTML, convertFromHTML} from 'utils/editor'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import RichField from 'pages/common/forms/RichField/RichField'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {ErrorMessage} from 'pages/convert/settings/components/styled'
-import CheckBox from 'pages/common/forms/CheckBox'
-import {DisclaimerSettings} from 'pages/convert/settings/types'
+import React, {useCallback, useEffect, useMemo} from 'react'
+
 import {mapIntegrationLanguagesToLanguagePicker} from 'config/integrations/gorgias_chat'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import CheckBox from 'pages/common/forms/CheckBox'
+import RichField from 'pages/common/forms/RichField/RichField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {ErrorMessage} from 'pages/convert/settings/components/styled'
+import {DisclaimerSettings} from 'pages/convert/settings/types'
+import {convertToHTML, convertFromHTML} from 'utils/editor'
 import {sanitizeHtmlDefault} from 'utils/html'
+
 import css from './TermsAndConditionsSetting.less'
 
 type TermsAndConditionsSettingProps = {

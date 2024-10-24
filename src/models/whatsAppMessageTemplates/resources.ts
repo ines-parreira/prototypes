@@ -1,5 +1,6 @@
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
+
 import {
     WhatsAppMessageTemplate,
     ListWhatsAppMessageTemplatesParams,

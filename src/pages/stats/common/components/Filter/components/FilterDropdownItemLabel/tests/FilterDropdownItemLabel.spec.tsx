@@ -1,6 +1,7 @@
-import React, {ContextType} from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ContextType} from 'react'
+
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import {LABEL_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'

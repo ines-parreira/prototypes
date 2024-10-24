@@ -4,10 +4,10 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
 
 import IntegrationDetail from 'pages/integrations/integration/Integration'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 

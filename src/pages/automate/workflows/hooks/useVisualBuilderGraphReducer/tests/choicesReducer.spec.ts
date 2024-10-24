@@ -1,6 +1,6 @@
-import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {walkVisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
 import {choicesReducer} from '../choicesReducer'
 

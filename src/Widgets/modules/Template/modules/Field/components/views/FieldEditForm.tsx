@@ -1,8 +1,9 @@
 import React, {useState, SyntheticEvent} from 'react'
 
+import {LeafType} from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {LeafType} from 'models/widget/types'
+
 import {FieldEditFormData, HiddenFields} from '../../types'
 
 export const TITLE_FIELD_LABEL = 'Title'

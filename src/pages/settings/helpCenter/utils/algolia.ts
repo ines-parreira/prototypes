@@ -1,6 +1,7 @@
 import {createNullCache} from '@algolia/cache-common'
 import {SearchOptions} from '@algolia/client-search'
 import algoliasearch from 'algoliasearch'
+
 import {HelpCenter} from 'models/helpCenter/types'
 import {AlgoliaSearchResult} from 'pages/settings/helpCenter/types/algolia'
 

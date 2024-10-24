@@ -1,6 +1,8 @@
-import React from 'react'
 import styled from '@emotion/styled'
+import React from 'react'
+
 import CloseIcon from 'gorgias-design-system/Launcher/icons/CloseIcon'
+
 import {getTextColorBasedOnBackground} from '../color-utils'
 
 type Variant = 'collapsed' | 'expanded'

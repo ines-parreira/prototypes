@@ -3,14 +3,15 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
+import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
-import {CustomFieldsTicketCountBreakdownTable} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

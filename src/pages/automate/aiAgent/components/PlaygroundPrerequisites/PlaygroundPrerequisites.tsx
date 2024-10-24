@@ -2,6 +2,7 @@ import React, {ReactNode} from 'react'
 
 import {StoreConfiguration} from 'models/aiAgent/types'
 import Loader from 'pages/common/components/Loader/Loader'
+
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {MissingKnowledgeSourceAlert} from './PlaygroundPrerequisitesAlerts'
 

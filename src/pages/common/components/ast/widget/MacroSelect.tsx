@@ -1,17 +1,16 @@
+import {CancelToken} from 'axios'
+import {fromJS, List, Map} from 'immutable'
 import React, {useMemo, useState, useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List, Map} from 'immutable'
-import {CancelToken} from 'axios'
-
-import {getActionTemplate} from 'utils'
-import {RootState} from 'state/types'
-import {fetchAllMacros, getMacro} from 'state/macro/actions'
-import useCancellableRequest from 'hooks/useCancellableRequest'
-import {Macro} from 'state/macro/types'
 
 import {ActionTemplateExecution} from 'config'
-import Select from 'pages/common/components/ast/widget/ReactSelect'
+import useCancellableRequest from 'hooks/useCancellableRequest'
 import {useOptions} from 'pages/common/components/ast/widget/hooks'
+import Select from 'pages/common/components/ast/widget/ReactSelect'
+import {fetchAllMacros, getMacro} from 'state/macro/actions'
+import {Macro} from 'state/macro/types'
+import {RootState} from 'state/types'
+import {getActionTemplate} from 'utils'
 
 type OwnProps = {
     onChange: (value: any) => void

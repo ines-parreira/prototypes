@@ -1,19 +1,21 @@
-import React from 'react'
+import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
+
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {integrationsState} from 'fixtures/integrations'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {initialState} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 
-import {integrationsState} from 'fixtures/integrations'
-import {channelConnection} from 'fixtures/channelConnection'
 import {assumeMock} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {campaign} from 'fixtures/campaign'
+
 import CampaignsStatsFilter from '../CampaignsStatsFilter'
 
 const mockStore = configureMockStore([thunk])

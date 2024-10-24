@@ -1,4 +1,5 @@
 import {TemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+
 import {
     applyCustomActionTemplate,
     applyCustomActionVariables,

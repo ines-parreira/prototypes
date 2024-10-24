@@ -1,10 +1,10 @@
-import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
-import {trimWithEllipsisBeforeTheHighlight} from 'pages/common/components/Spotlight/helpers'
+import React from 'react'
 
 import {fromAST} from 'common/utils'
-import {getChannels} from 'services/channels'
+import {FeatureFlagKey} from 'config/featureFlags'
+import ticketLanguages from 'config/ticketLanguages'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
@@ -14,15 +14,15 @@ import {
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
+import {trimWithEllipsisBeforeTheHighlight} from 'pages/common/components/Spotlight/helpers'
+
+import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import {getChannels} from 'services/channels'
 import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 import {sanitizeHtmlDefault} from 'utils/html'
-import ticketLanguages from 'config/ticketLanguages'
 import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.

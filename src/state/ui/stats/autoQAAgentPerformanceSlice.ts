@@ -1,11 +1,12 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+
 import {User} from 'config/types/user'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
-import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {isMetricForAgent} from 'pages/stats/common/utils'
+import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 

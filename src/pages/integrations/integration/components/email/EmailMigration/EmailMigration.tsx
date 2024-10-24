@@ -1,15 +1,17 @@
-import React from 'react'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {Link, Redirect} from 'react-router-dom'
 import {isEmpty} from 'lodash'
-import PageHeader from 'pages/common/components/PageHeader'
+import React from 'react'
+import {Link, Redirect} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {getEmailMigrationStatus} from 'state/integrations/selectors'
 import {EmailMigrationStatus} from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import StartMigration from './StartMigration'
-import MigrationInProgress from './MigrationInProgress'
+import PageHeader from 'pages/common/components/PageHeader'
+import {getEmailMigrationStatus} from 'state/integrations/selectors'
+
 import MigrationComplete from './MigrationComplete'
+import MigrationInProgress from './MigrationInProgress'
+import StartMigration from './StartMigration'
 
 export default function EmailMigration() {
     const migrationStatus = useAppSelector(getEmailMigrationStatus)

@@ -7,13 +7,14 @@ import {
     RuleType,
     AnyManagedRuleSettings,
 } from 'state/rules/types'
+
 import {RuleItemActions} from '../../types'
 import {InstallationError} from '../constants'
-import {DefaultModal} from './installationModals/DefaultModal'
 import {AutoCloseSpamModal} from './installationModals/AutoCloseSpamModal'
-import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
 import {AutoReplyFAQModal} from './installationModals/AutoReplyFAQModal'
 import {AutoReplyReturnModal} from './installationModals/AutoReplyReturnModal'
+import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
+import {DefaultModal} from './installationModals/DefaultModal'
 
 type Props = {
     handleRule: RuleItemActions

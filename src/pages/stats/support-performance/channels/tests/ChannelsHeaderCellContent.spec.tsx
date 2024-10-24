@@ -1,5 +1,6 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
+
 import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'

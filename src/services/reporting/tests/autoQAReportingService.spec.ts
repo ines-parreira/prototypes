@@ -1,7 +1,8 @@
 import moment from 'moment'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+
 import {agents} from 'fixtures/agents'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

@@ -5,15 +5,15 @@ import {
     GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
+import List from 'gorgias-design-system/List/List'
+import ListItem from 'gorgias-design-system/List/ListItem'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
-import ListItem from 'gorgias-design-system/List/ListItem'
 import {ChevronRightIcon} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
-import List from 'gorgias-design-system/List/List'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
+import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 import css from './SelfServiceChatIntegrationReportIssueReasonsPage.less'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration

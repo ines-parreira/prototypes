@@ -1,11 +1,10 @@
+import moment from 'moment'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import moment from 'moment'
-import {StoreIntegration} from 'models/integration/types'
-import {HelpCenter} from 'models/helpCenter/types'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {HelpCenter} from 'models/helpCenter/types'
+import {StoreIntegration} from 'models/integration/types'
 import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {useTopQuestionsFilters} from './useTopQuestionsFilters'
 
 import css from './AutomateLandingPageTopQuestions.less'
 import {
@@ -16,10 +15,11 @@ import {
     TopQuestionsSectionNoRecommendations,
     TopQuestionsSectionProps,
 } from './TopQuestionsSection'
-import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
 import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
 import {useTopQuestionsArticles} from './useTopQuestionsArticles'
+import {useTopQuestionsFilters} from './useTopQuestionsFilters'
 import {useTopQuestionsViewedOnPage} from './useTopQuestionsViewedOnPage'
+import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
 
 type TopQuestionsSectionWithFiltersProps = {
     selectedStore: StoreIntegration

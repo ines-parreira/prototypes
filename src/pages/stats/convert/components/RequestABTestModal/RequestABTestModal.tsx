@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
 import moment from 'moment'
+import React, {useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
 import css from './RequestABTestModal.less'
 

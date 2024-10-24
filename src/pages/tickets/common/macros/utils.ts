@@ -1,8 +1,8 @@
 import {fromJS, Map, List} from 'immutable'
 
 import {ActionTemplateExecution} from 'config'
-import {getActionTemplate} from 'utils'
 import {getDefaultMacro} from 'state/macro/utils'
+import {getActionTemplate} from 'utils'
 
 export const isMacroDisabled = (
     macro: Map<any, any>,

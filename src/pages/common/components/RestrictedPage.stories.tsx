@@ -1,8 +1,8 @@
 import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
-import {UserRole} from '../../../config/types/user'
 import {PageSection} from '../../../config/pages'
+import {UserRole} from '../../../config/types/user'
 import RestrictedPage from './RestrictedPage'
 
 const storyConfig: Meta = {

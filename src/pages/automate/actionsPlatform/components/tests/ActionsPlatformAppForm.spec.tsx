@@ -1,9 +1,9 @@
-import React from 'react'
 import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import React from 'react'
 
-import {flushPromises, renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
+import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import {App} from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'

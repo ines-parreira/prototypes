@@ -1,13 +1,15 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import {startCase} from 'lodash'
+import React from 'react'
 import {Link} from 'react-router-dom'
+
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import css from './CurrentlyViewingDropdown.less'
 
 type ChannelType = 'help-center' | 'chat' | 'contact-form'

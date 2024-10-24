@@ -1,8 +1,8 @@
 import React from 'react'
 
 import css from './PlaygroundActions.less'
-import {PlaygroundAction} from './types'
 import {PlaygroundActionsItem} from './PlaygroundActionsItem'
+import {PlaygroundAction} from './types'
 
 type Props = {
     actions: PlaygroundAction[]

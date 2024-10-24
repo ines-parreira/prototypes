@@ -1,28 +1,27 @@
+import axios from 'axios'
 import type {Map} from 'immutable'
 import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios from 'axios'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import {calculateEditDiff} from 'business/shopify/calculatedEditOrder'
+import {refreshAppliedDiscounts} from 'business/shopify/discount'
 import {
     addCustomLineItem,
     addVariant,
     initDraftOrderPayload,
 } from 'business/shopify/draftOrder'
-import {refreshAppliedDiscounts} from 'business/shopify/discount'
-import {calculateEditDiff} from 'business/shopify/calculatedEditOrder'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     Product,
     Variant,
     EditOrderAction,
 } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
 import {RootState, StoreDispatch} from 'state/types'
 import {onApiError} from 'state/utils'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
-import {getEditOrderState} from './selectors'
 import {
     SET_CALCULATED_EDIT_ORDER,
     SET_INITIAL_STATE,
@@ -30,6 +29,7 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
+import {getEditOrderState} from './selectors'
 
 let _apiInstances: {[key: string]: GorgiasApi} = {}
 

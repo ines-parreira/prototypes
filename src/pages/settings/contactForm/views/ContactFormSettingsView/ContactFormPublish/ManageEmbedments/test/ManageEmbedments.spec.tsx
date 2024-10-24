@@ -1,28 +1,29 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {integrationsState} from 'fixtures/integrations'
 import {account as accountFixture} from 'fixtures/account'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {integrationsState} from 'fixtures/integrations'
+import {user as userFixture} from 'fixtures/users'
+import {ContactFormPageEmbedment} from 'models/contactForm/types'
+import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
+import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
-import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {user as userFixture} from 'fixtures/users'
 import {
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
 } from 'pages/settings/contactForm/queries'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import ManageEmbedments from '../ManageEmbedments'
 
 jest.mock('common/segment')

@@ -1,7 +1,8 @@
 import {GorgiasAction} from 'state/types'
 import {getMoment} from 'utils/date'
-import {QueriesState} from './types'
+
 import * as constants from './constants'
+import {QueriesState} from './types'
 
 export const initialState: QueriesState = {
     timestamp: {},

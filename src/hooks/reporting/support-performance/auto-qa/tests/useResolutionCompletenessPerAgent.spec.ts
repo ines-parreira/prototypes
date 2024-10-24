@@ -1,8 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
-import {resolutionCompletenessPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {resolutionCompletenessPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'

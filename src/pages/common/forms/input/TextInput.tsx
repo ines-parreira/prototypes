@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -8,16 +9,15 @@ import React, {
     useImperativeHandle,
     useState,
 } from 'react'
-import classnames from 'classnames'
 
+import useEffectOnce from 'hooks/useEffectOnce'
+import useEvent from 'hooks/useEvent'
+import useId from 'hooks/useId'
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
-import useId from 'hooks/useId'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useEvent from 'hooks/useEvent'
 
 import css from './TextInput.less'
 

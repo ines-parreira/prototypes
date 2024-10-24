@@ -1,7 +1,7 @@
+import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {Button} from 'reactstrap'
 
-import classnames from 'classnames'
 import PopoverModal from 'pages/common/components/PopoverModal'
 
 import css from './HeaderTitle.less'

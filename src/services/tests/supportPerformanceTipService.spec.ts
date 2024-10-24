@@ -1,4 +1,5 @@
 import {formatDuration} from 'pages/stats/common/utils'
+import {MetricName} from 'services/reporting/constants'
 import {
     MetricsBaselinesJSON,
     formatMetricValue,
@@ -8,7 +9,6 @@ import {
     tips,
     randomIndexGrade,
 } from 'services/supportPerformanceTipService'
-import {MetricName} from 'services/reporting/constants'
 import {PlanName} from 'utils/paywalls'
 
 describe('SupportPerformanceTipService', () => {

@@ -1,6 +1,6 @@
+import {fromJS, List, Map as ImmutableMap} from 'immutable'
 import React, {RefObject, memo} from 'react'
 import {Table} from 'reactstrap'
-import {fromJS, List, Map as ImmutableMap} from 'immutable'
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 

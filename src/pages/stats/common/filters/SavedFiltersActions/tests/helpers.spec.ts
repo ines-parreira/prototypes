@@ -1,17 +1,17 @@
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
     FilterComponentKey,
     FilterKey,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {isAdmin} from 'utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {
     areFiltersFilled,
     isFilterFilled,
 } from 'pages/stats/common/filters/SavedFiltersActions/helpers'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import {isAdmin} from 'utils'
 
 export const filterKeysMock: OptionalFilter[] = [
     FilterKey.Channels,

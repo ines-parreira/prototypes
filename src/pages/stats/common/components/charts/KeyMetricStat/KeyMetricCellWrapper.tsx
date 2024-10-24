@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {ReactNode} from 'react'
 
 import StatsHelpIcon from '../../StatsHelpIcon'
 import css from './KeyMetricCellWrapper.less'

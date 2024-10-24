@@ -1,17 +1,17 @@
-import React, {useRef, useState} from 'react'
 import classNames from 'classnames'
+import React, {useRef, useState} from 'react'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
+import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 import css from './EndNodeTypeSelect.less'
 

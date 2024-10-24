@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {
     ReactElement,
     useCallback,
@@ -5,18 +7,16 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classNames from 'classnames'
 import {Badge, Spinner} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Article} from 'models/helpCenter/types'
-import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
-import {getRootCategory} from 'state/entities/helpCenter/categories'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {ARTICLES_PER_PAGE} from 'pages/settings/helpCenter/constants'
+import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
+import {getRootCategory} from 'state/entities/helpCenter/categories'
 
 import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
 import css from './CategoriesTableBasicRow.less'

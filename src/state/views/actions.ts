@@ -1,50 +1,38 @@
+import {JobType} from '@gorgias/api-queries'
 import axios, {CancelToken, AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
 import _chunk from 'lodash/chunk'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import {JobType} from '@gorgias/api-queries'
 
-import {JOBS_PATH} from 'models/job/resources'
-import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
+import {FeatureFlagKey} from 'config/featureFlags'
 import * as viewsConfig from 'config/views'
-import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
-import {Job} from 'models/job/types'
-import {Ticket} from 'models/ticket/types'
-import {View, ViewType} from 'models/view/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, Notification} from 'state/notifications/types'
-import history from 'pages/history'
-import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType, JoinEventType} from 'services/socketManager/types'
-import {
-    getHashOfObj,
-    getPluralObjectName,
-    isCurrentlyOnTicket,
-    isCurrentlyOnView,
-} from 'utils'
-import {reportError} from 'utils/errors'
-import {buildJobMessage} from 'utils/notificationUtils'
-import {getMoment} from 'utils/date'
-import {StoreDispatch, RootState} from 'state/types'
+import {SearchRank} from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
-import {fetchViewsPaginated} from 'models/view/resources'
+import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
+import {searchCustomersWithHighlights} from 'models/customer/resources'
+import {JOBS_PATH} from 'models/job/resources'
+import {Job} from 'models/job/types'
+import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
     SearchEngine,
     SearchType,
 } from 'models/search/types'
-import {SearchRank} from 'hooks/useSearchRankScenario'
-import GorgiasApi from 'services/gorgiasApi'
-import {getLDClient} from 'utils/launchDarkly'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
-import {searchCustomersWithHighlights} from 'models/customer/resources'
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {activeViewUrl} from 'state/views/utils'
-import * as viewsSelectors from 'state/views/selectors'
+import {Ticket} from 'models/ticket/types'
+import {fetchViewsPaginated} from 'models/view/resources'
+import {View, ViewType} from 'models/view/types'
+import history from 'pages/history'
+import GorgiasApi from 'services/gorgiasApi'
+import socketManager from 'services/socketManager/socketManager'
+import {SocketEventType, JoinEventType} from 'services/socketManager/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, Notification} from 'state/notifications/types'
+import {StoreDispatch, RootState} from 'state/types'
 import * as types from 'state/views/constants'
+import * as viewsSelectors from 'state/views/selectors'
 import {
     FetchViewItemsOptions,
     FieldSearchResult,
@@ -52,6 +40,17 @@ import {
     ViewImmutable,
     ViewNavDirection,
 } from 'state/views/types'
+import {activeViewUrl} from 'state/views/utils'
+import {
+    getHashOfObj,
+    getPluralObjectName,
+    isCurrentlyOnTicket,
+    isCurrentlyOnView,
+} from 'utils'
+import {getMoment} from 'utils/date'
+import {reportError} from 'utils/errors'
+import {getLDClient} from 'utils/launchDarkly'
+import {buildJobMessage} from 'utils/notificationUtils'
 
 export const setViewActive =
     (view: ViewImmutable) =>

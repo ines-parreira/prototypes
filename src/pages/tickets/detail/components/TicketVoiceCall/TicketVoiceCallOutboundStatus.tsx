@@ -1,14 +1,16 @@
 import React from 'react'
+
 import {
     getDisplayOutboundVoiceCallStatus,
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import TicketVoiceCallEvents from './TicketVoiceCallEvents'
+
 import CollapsibleDetails from './CollapsibleDetails'
 
 import css from './TicketVoiceCallContainer.less'
+import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 type Props = {
     voiceCall: VoiceCall

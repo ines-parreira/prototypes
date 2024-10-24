@@ -1,5 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {AxiosResponse} from 'axios'
+
+import {
+    useTimeSeries,
+    useTimeSeriesPerDimension,
+} from 'hooks/reporting/useTimeSeries'
 import {
     BREAKDOWN_FIELD,
     TAG_SEPARATOR,
@@ -25,10 +30,6 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import {
-    useTimeSeries,
-    useTimeSeriesPerDimension,
-} from 'hooks/reporting/useTimeSeries'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

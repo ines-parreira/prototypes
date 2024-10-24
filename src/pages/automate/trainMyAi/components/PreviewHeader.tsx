@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
 import classnames from 'classnames'
+import React, {useState} from 'react'
+
 import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
 import Button from 'pages/common/components/button/Button'
+
 import {Components as ComponentsSSP} from '../../../../rest_api/ssp_api/client.generated'
-import css from './PreviewHeader.less'
 import ArticleSelectPreview from './ArticleSelectPreview'
+import css from './PreviewHeader.less'
 
 interface Props {
     noRelevantArticles: boolean

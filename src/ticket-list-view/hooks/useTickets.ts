@@ -1,21 +1,21 @@
 import {useEffect, useMemo, useState} from 'react'
 
-import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import usePrevious from 'hooks/usePrevious'
-import useElementSize from 'hooks/useElementSize'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useElementSize from 'hooks/useElementSize'
+import usePrevious from 'hooks/usePrevious'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
-import useTicketIds from '../hooks/useTicketIds'
 import {TICKET_HEIGHT} from '../constants'
+import useTicketIds from '../hooks/useTicketIds'
 import {SortField, TicketPartial} from '../types'
+import usePrevNextTicketId from './usePrevNextTicketId'
 import useScrollOffset from './useScrollOffset'
 import {SortOrder} from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
-import usePrevNextTicketId from './usePrevNextTicketId'
 
 export default function useTickets(
     viewId: number,

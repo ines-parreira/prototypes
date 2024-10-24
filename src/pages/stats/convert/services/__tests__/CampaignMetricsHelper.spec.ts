@@ -1,4 +1,16 @@
 import moment from 'moment'
+
+import {ReportingGranularity} from 'models/reporting/types'
+import {Stat} from 'models/stat/types'
+import {
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    EventsDimension,
+    EventsMeasure,
+    OrderConversionDimension,
+    OrderConversionMeasure,
+    SharedDimension,
+} from 'pages/stats/convert/clients/constants'
 import {
     backFillGraphData,
     getDataFromResult,
@@ -17,23 +29,12 @@ import {
     transformToCampaignAbTestEvent,
     transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {Stat} from 'models/stat/types'
-import {
-    CampaignOrderEventsDimension,
-    CampaignOrderEventsMeasure,
-    EventsDimension,
-    EventsMeasure,
-    OrderConversionDimension,
-    OrderConversionMeasure,
-    SharedDimension,
-} from 'pages/stats/convert/clients/constants'
 import {
     AbTestMetricNames,
     CampaignsTotalsMetricNames,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/convert/services/constants'
 import {RevenueByDate} from 'pages/stats/convert/services/types'
-import {ReportingGranularity} from 'models/reporting/types'
 
 describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {

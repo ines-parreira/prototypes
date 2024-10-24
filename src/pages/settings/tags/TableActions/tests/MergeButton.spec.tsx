@@ -1,6 +1,6 @@
 import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {tags} from 'fixtures/tag'
 

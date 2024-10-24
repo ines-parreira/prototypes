@@ -1,12 +1,13 @@
-import React, {ReactNode, useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
+import React, {ReactNode, useCallback, useMemo, useState} from 'react'
+
 import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
+import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
-import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 
 export type ConvertNavbarLink = {
     label: ReactNode

@@ -1,10 +1,10 @@
 import {OrderDirection} from 'models/api/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {FilterKey, StatsFilters} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {getCampaignOrderPerformanceDrillDownData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {CubeFilterParams} from 'pages/stats/convert/clients/types'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export const campaignSalesDrillDownQueryFactory = (
     shopName: string,

@@ -2,8 +2,8 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from 'state/types'
 
-import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('teams reducers', () => {
     const team = {id: 1, name: 'Team 1'}

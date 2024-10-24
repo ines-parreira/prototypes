@@ -1,17 +1,18 @@
 import React, {useState} from 'react'
+
 import {StatsFilters} from 'models/stat/types'
-import {useVoiceCallList} from 'pages/stats/voice/hooks/useVoiceCallList'
-import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
-import {
-    getVoiceSegmentFromFilter,
-    VoiceCallFilterOptions,
-} from 'pages/stats/voice/models/types'
+import Pagination from 'pages/common/components/Pagination'
 import {
     CALL_LIST_PAGE_SIZE,
     MAX_VOICE_CALLS_PAGE_NUMBER,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
+import {useVoiceCallList} from 'pages/stats/voice/hooks/useVoiceCallList'
+import {
+    getVoiceSegmentFromFilter,
+    VoiceCallFilterOptions,
+} from 'pages/stats/voice/models/types'
 
-import Pagination from 'pages/common/components/Pagination'
 import css from './VoiceCallTable.less'
 import VoiceCallTableContent from './VoiceCallTableContent'
 

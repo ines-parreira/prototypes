@@ -1,3 +1,8 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import _isUndefined from 'lodash/isUndefined'
+import _noop from 'lodash/noop'
+import _omit from 'lodash/omit'
+import _uniqueId from 'lodash/uniqueId'
 import React, {
     Component,
     ComponentType,
@@ -6,14 +11,13 @@ import React, {
     FormEvent,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import _isUndefined from 'lodash/isUndefined'
-import _omit from 'lodash/omit'
-import _uniqueId from 'lodash/uniqueId'
-import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {WithAppNodeProps, withAppNode} from 'appNode'
+import Button from 'pages/common/components/button/Button'
+import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     CustomerContext,
     CustomerContextType,
@@ -22,10 +26,6 @@ import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
-import Button from 'pages/common/components/button/Button'
-import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import {executeAction} from 'state/infobar/actions'
 import {getPendingActionCallbacks} from 'state/infobar/selectors'

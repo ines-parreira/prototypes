@@ -1,11 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import {useParams} from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 
 import useGoToNextTicket from '../useGoToNextTicket'
 import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'

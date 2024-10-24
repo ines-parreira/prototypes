@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
 import {shopifyWidget} from 'fixtures/widgets'
+import {LEAF_TYPES} from 'models/widget/constants'
 import {
     CardTemplate,
     LeafTemplate,
@@ -10,6 +10,8 @@ import {
     ListTemplate,
     WrapperTemplate,
 } from 'models/widget/types'
+import {EditionContext} from 'providers/infobar/EditionContext'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import Card, {
@@ -17,18 +19,16 @@ import Card, {
     HiddenField,
 } from 'Widgets/modules/Template/modules/Card'
 import Field from 'Widgets/modules/Template/modules/Field'
-import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import ListWidget from 'Widgets/modules/Template/modules/List'
+import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {LEAF_TYPES} from 'models/widget/constants'
 import {CustomizationContext} from '../../contexts/CustomizationContext'
 import {
     seekCardCustomization,
     seekFieldCustomization,
 } from '../../helpers/customization'
-import Template, {self} from '../Template'
 import {FieldEditFormData} from '../../modules/Field/types'
+import Template, {self} from '../Template'
 
 jest.spyOn(self, 'Template')
 const spiedTemplate = assumeMock(self.Template)

@@ -1,12 +1,13 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import ArticleCategorySelect from '../ArticleCategorySelect'
 import useCategoriesOptions from '../hooks/useCategoriesOptions'
 

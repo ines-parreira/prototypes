@@ -5,8 +5,8 @@ import {UserSettingType} from 'config/types/user'
 import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 
-import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 describe('current user selectors', () => {
     let state: RootState

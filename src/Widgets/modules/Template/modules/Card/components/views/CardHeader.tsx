@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React, {ComponentProps, SyntheticEvent, ReactNode, useState} from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
-import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
@@ -10,10 +10,9 @@ import {
 } from 'Widgets/modules/Template/config/template'
 
 import {CardEditFormState} from '../../types'
-import {CardHeaderIcon} from './CardHeaderIcon'
 import CardEditForm from './CardEditForm'
-
 import css from './CardHeader.less'
+import {CardHeaderIcon} from './CardHeaderIcon'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

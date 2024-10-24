@@ -1,21 +1,16 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-
-import routerDom from 'react-router-dom'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import {RootState, StoreDispatch} from 'state/types'
+import {Provider} from 'react-redux'
+import routerDom from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
-import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {channelConnection} from 'fixtures/channelConnection'
 import {
     useCreateCampaign,
     useDeleteCampaign,
@@ -23,8 +18,13 @@ import {
     useListCampaigns,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import {campaign} from 'fixtures/campaign'
+import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import CampaignDetailsFactory from '../CampaignDetailsFactory'
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')

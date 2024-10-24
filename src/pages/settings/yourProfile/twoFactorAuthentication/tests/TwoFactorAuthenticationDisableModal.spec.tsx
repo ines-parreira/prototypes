@@ -1,12 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+
+import {User} from '../../../../../config/types/user'
 import {deleteTwoFASecret} from '../../../../../models/twoFactorAuthentication/resources'
 import TwoFactorAuthenticationDisableModal from '../TwoFactorAuthenticationDisableModal'
-import {User} from '../../../../../config/types/user'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const deleteTwoFASecretMock = deleteTwoFASecret as jest.MockedFunction<

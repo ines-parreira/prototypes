@@ -1,5 +1,7 @@
-import React, {useRef} from 'react'
 import {EditorState} from 'draft-js'
+import {List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useRef} from 'react'
 import {
     Button,
     DropdownItem,
@@ -7,21 +9,19 @@ import {
     DropdownToggle,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {UploadType} from 'common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {insertText} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {MacroActionName} from 'models/macroAction/types'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
-import {convertToHTML, getPlainText} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import useAppSelector from 'hooks/useAppSelector'
-import {MacroActionName} from 'models/macroAction/types'
 import {getVariables} from 'tickets/common/utils'
+import {insertText} from 'utils'
+import {convertToHTML, getPlainText} from 'utils/editor'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,

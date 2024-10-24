@@ -1,10 +1,11 @@
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+
+import {UserRole} from 'config/types/user'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import {mockStore} from 'utils/testing'
-import {UserRole} from 'config/types/user'
 
 describe('SubscriptionModalFooter', () => {
     const confirmLabel = 'Confirm'

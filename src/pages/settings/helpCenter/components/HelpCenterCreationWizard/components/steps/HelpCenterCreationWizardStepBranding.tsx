@@ -1,10 +1,17 @@
+import {Label} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {Label} from '@gorgias/ui-kit'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+
+import ColorField from 'pages/common/forms/ColorField'
+import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -12,22 +19,16 @@ import {
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import WizardFooter, {
-    FOOTER_BUTTONS,
-} from 'pages/common/components/wizard/WizardFooter'
-
-import ColorField from 'pages/common/forms/ColorField'
-import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import {useFileUpload} from 'pages/settings/helpCenter/hooks/useFileUpload'
+import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
-import {ImageUpload} from '../../../ImageUpload'
-import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
+
 import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
+import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
+import {ImageUpload} from '../../../ImageUpload'
 import {LayoutSwitch} from '../../../LayoutSwitch'
+import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
 import css from './HelpCenterCreationWizardStepBranding.less'
 
 type Props = {

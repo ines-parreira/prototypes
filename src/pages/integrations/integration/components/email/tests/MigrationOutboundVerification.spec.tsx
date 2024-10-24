@@ -5,12 +5,14 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
 import {act} from 'react-dom/test-utils'
-import {mockStore} from 'utils/testing'
-import * as dateUtils from 'utils/date'
+import {Provider} from 'react-redux'
+
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
+import * as dateUtils from 'utils/date'
+import {mockStore} from 'utils/testing'
+
 import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVerification'
 
 jest.useFakeTimers()

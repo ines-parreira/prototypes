@@ -1,5 +1,6 @@
-import React from 'react'
 import {useGetTicketMessage} from '@gorgias/api-queries'
+import React from 'react'
+
 import {Actor, ReplyMetaTicketMessage, Source} from 'models/ticket/types'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 

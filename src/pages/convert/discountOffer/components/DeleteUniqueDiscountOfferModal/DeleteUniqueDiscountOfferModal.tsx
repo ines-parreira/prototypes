@@ -1,19 +1,19 @@
-import React, {FC, MouseEvent} from 'react'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import {useDispatch} from 'react-redux'
 import {List, Map} from 'immutable'
+import React, {FC, MouseEvent} from 'react'
+import {useDispatch} from 'react-redux'
+import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
+import {AttachmentEnum} from 'common/types'
+import useAppSelector from 'hooks/useAppSelector'
 import {useModalManager} from 'hooks/useModalManager'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {DELETE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
+import Button from 'pages/common/components/button/Button'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {useDeleteDiscountOffer} from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'
-import useAppSelector from 'hooks/useAppSelector'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {deleteAttachment} from 'state/newMessage/actions'
-import {AttachmentEnum} from 'common/types'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
 type Props = {
     isOpen: boolean

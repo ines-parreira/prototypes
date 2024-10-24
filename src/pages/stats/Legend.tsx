@@ -1,8 +1,9 @@
-import React from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React from 'react'
 
 import CheckBox from 'pages/common/forms/CheckBox'
+
 import css from './Legend.less'
 
 type LegendItem = {

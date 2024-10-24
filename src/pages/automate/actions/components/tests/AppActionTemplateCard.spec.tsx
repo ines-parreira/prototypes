@@ -1,9 +1,11 @@
-import React from 'react'
-import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
+
 import AppActionTemplateCard from '../AppActionTemplateCard'
 
 const mockUseFlags = jest.mocked(useFlags)

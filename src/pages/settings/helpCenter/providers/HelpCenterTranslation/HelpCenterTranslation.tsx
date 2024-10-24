@@ -9,24 +9,25 @@ import React, {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {ContactForm, UpdateSubjectLinesProps} from 'models/contactForm/types'
 import {
     EmailIntegration,
     ContactInfoDto,
     HelpCenter,
     HelpCenterTranslation,
 } from 'models/helpCenter/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {reportError} from 'utils/errors'
-import {getContactFormById} from 'state/entities/contactForm/contactForms'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {Paths} from 'rest_api/help_center_api/client.generated'
-import {ContactForm, UpdateSubjectLinesProps} from 'models/contactForm/types'
+import {getContactFormById} from 'state/entities/contactForm/contactForms'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {reportError} from 'utils/errors'
+
 import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterTranslationState = {

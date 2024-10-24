@@ -1,16 +1,17 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
-
 import {
     EmailDomain,
     useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
 } from '@gorgias/api-queries'
-import {notify} from 'state/notifications/actions'
-import useLocalStorage from 'hooks/useLocalStorage'
+import {useCallback, useEffect, useMemo, useState} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
 import useInterval from 'hooks/useInterval'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {populateCurrentValuesForDNSRecords} from '../helpers'
 
 const DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS = 60

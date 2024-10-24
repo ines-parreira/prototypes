@@ -1,31 +1,33 @@
-import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
 import {waitFor} from '@testing-library/react'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {TicketMessage} from 'models/ticket/types'
+import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {
     useSubmitAIAgentTicketMessagesFeedback,
     useDeleteAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
-import {assumeMock} from 'utils/testing'
 import {
     DeleteMessageFeedback,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
+import {TicketMessage} from 'models/ticket/types'
+import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
-import {useAIAgentSendFeedback} from '../useAIAgentSendFeedback'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {
     FeedbackStatus,
     ResourceSection,
 } from '../../components/AIAgentFeedbackBar/types'
+import {useAIAgentSendFeedback} from '../useAIAgentSendFeedback'
 
 const queryClient = mockQueryClient()
 

@@ -1,14 +1,16 @@
 import {cleanup, fireEvent, screen, waitFor} from '@testing-library/react'
-import React from 'react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Moment} from 'moment'
+import React from 'react'
+import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
-import {mockStore, renderWithRouter} from 'utils/testing'
+
+import {IntegrationType} from 'models/integration/constants'
 import * as resources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import {IntegrationType} from 'models/integration/constants'
 import * as dateUtils from 'utils/date'
+import {mockStore, renderWithRouter} from 'utils/testing'
+
 import StartMigration from '../EmailMigration/StartMigration'
 
 jest.mock(

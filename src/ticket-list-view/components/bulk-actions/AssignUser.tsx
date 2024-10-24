@@ -1,13 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
+import React, {useCallback, useRef, useState} from 'react'
 
+import {Item} from 'components/Dropdown'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import {Item} from 'components/Dropdown'
 
-import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
 import css from './style.less'
+import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
 
 export default function AssignUser({
     isDisabled,

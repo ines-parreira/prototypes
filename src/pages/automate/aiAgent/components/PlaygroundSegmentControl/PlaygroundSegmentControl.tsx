@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
+
 import {PlaygroundChannels} from '../PlaygroundChat/PlaygroundChat.types'
 import css from './PlaygroundSegmentControl.less'
 

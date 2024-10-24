@@ -1,17 +1,17 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/types'
 import {dummyAppListData as appData} from 'fixtures/apps'
 import client from 'models/api/resources'
+import {IntegrationType} from 'models/integration/types'
 
-import Mine, {LOCAL_STORAGE_KEY} from '../Mine'
 import {CARD_LINK_TEST_ID} from '../../Card'
+import Mine, {LOCAL_STORAGE_KEY} from '../Mine'
 
 const mockStore = configureMockStore([thunk])
 

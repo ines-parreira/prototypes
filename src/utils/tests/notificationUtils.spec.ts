@@ -1,5 +1,5 @@
-import {buildJobMessage} from '../notificationUtils'
 import {JobType} from '../../models/job/types'
+import {buildJobMessage} from '../notificationUtils'
 
 describe('Notification utils', () => {
     describe('buildActionNotificationMessage()', () => {

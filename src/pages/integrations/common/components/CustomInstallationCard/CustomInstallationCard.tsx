@@ -1,12 +1,12 @@
-import React, {ReactNode, Component} from 'react'
-import Clipboard from 'clipboard'
 import classnames from 'classnames'
+import Clipboard from 'clipboard'
+import React, {ReactNode, Component} from 'react'
 import {Alert, Card, CardBody} from 'reactstrap'
 
-import {assetsUrl} from 'utils'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {assetsUrl} from 'utils'
 
 import css from './CustomInstallationCard.less'
 

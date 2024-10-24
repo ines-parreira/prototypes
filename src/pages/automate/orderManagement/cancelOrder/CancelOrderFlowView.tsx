@@ -1,27 +1,28 @@
+import _isEqual from 'lodash/isEqual'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     AUTOMATED_RESPONSE,
     ResponseMessageContent,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import useCancelOrderFlow from './hooks/useCancelOrderFlow'
-import CancelOrderEligibility from './components/CancelOrderEligibility'
-import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
+import {getHasAutomate} from 'state/billing/selectors'
+
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
 import CancelOrderFlowViewContext, {
     CancelOrderFlowViewContextType,
 } from './CancelOrderFlowViewContext'
+import CancelOrderEligibility from './components/CancelOrderEligibility'
+import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
 import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from './constants'
+import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 
 const CancelOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()

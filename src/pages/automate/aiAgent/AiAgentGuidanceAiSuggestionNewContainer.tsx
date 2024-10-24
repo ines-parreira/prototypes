@@ -1,9 +1,11 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
+
 import Loader from 'pages/common/components/Loader/Loader'
-import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+
 import {AiAgentGuidanceAiSuggestionNewView} from './AiAgentGuidanceAiSuggestionNewView'
+import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 
 export const AiAgentGuidanceAiSuggestionNewContainer = () => {

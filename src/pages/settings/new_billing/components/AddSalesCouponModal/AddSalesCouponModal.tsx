@@ -1,19 +1,21 @@
-import React, {useState} from 'react'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {Label} from '@gorgias/ui-kit'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import React, {useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {isGorgiasApiError} from 'models/api/types'
+import {getBillingStateQuery} from 'models/billing/queries'
+import {addSalesCoupon, deleteSalesCoupon} from 'models/billing/resources'
+import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
-import Button from 'pages/common/components/button/Button'
 import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getBillingStateQuery} from 'models/billing/queries'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {addSalesCoupon, deleteSalesCoupon} from 'models/billing/resources'
+
 import css from './AddSalesCouponModal.less'
 
 interface AddSalesCouponModalProps {

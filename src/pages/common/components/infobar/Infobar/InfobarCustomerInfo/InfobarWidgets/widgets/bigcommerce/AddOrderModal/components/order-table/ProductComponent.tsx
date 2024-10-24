@@ -1,5 +1,8 @@
-import React, {useCallback} from 'react'
 import classnames from 'classnames'
+import React, {useCallback} from 'react'
+
+import errorIcon from 'assets/img/icons/error.svg'
+import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
@@ -7,13 +10,12 @@ import {
     BigCommerceCustomProduct,
     BigCommerceProductVariant,
 } from 'models/integration/types'
-import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import errorIcon from 'assets/img/icons/error.svg'
+import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
 import {
     isBigCommerceCartLineItem,
     isBigCommerceProduct,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
-import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
+
 import css from './OrderLineItemRow.less'
 
 type Props = {

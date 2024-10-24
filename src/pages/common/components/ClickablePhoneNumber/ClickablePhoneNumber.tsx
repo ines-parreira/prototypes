@@ -1,6 +1,6 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {useEffect, useMemo, useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,9 +10,9 @@ import {
     getSmsIntegrations,
 } from 'state/integrations/selectors'
 
+import css from './ClickablePhoneNumber.less'
 import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
 import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
-import css from './ClickablePhoneNumber.less'
 
 type Props = {
     id: string

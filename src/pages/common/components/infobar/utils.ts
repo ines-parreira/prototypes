@@ -1,5 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import _compact from 'lodash/compact'
+import _forEach from 'lodash/forEach'
+import _forIn from 'lodash/forIn'
 import _get from 'lodash/get'
 import _initial from 'lodash/initial'
 import _isArray from 'lodash/isArray'
@@ -7,20 +9,18 @@ import _isBoolean from 'lodash/isBoolean'
 import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import _last from 'lodash/last'
+import _max from 'lodash/max'
 import _omitBy from 'lodash/omitBy'
 import _pickBy from 'lodash/pickBy'
 import _size from 'lodash/size'
 import _sortBy from 'lodash/sortBy'
-import _forEach from 'lodash/forEach'
-import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
-import _max from 'lodash/max'
-import momentTimezone from 'moment-timezone'
 import moment, {MomentInput} from 'moment'
+import momentTimezone from 'moment-timezone'
 
 import {isImmutable} from 'common/utils'
-import * as utils from 'utils'
-import {reportError} from 'utils/errors'
+import {DateTimeResultFormatType} from 'constants/datetime'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {
     Template,
     CardTemplate,
@@ -30,8 +30,6 @@ import {
     isListTemplate,
     isCardTemplate,
 } from 'models/widget/types'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
@@ -40,10 +38,11 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {DateTimeResultFormatType} from 'constants/datetime'
-
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import {WidgetEnvironment} from 'state/widgets/types'
+import {getSourcePathFromContext} from 'state/widgets/utils'
+import * as utils from 'utils'
 import {formatDatetime} from 'utils'
+import {reportError} from 'utils/errors'
 
 /**
  * Check if is an array of objects (and no an array of string for example)

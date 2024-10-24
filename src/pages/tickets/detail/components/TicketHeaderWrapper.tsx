@@ -2,17 +2,17 @@ import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import React, {useMemo} from 'react'
 
-import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentLabel} from 'pages/common/utils/labels'
+import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
 import {
     getOtherAgentsOnTicket,
     getOtherAgentsTypingOnTicket,
 } from 'state/agents/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
-import css from './TicketHeaderWrapper.less'
 import TicketFields from './TicketFields/TicketFields'
+import css from './TicketHeaderWrapper.less'
 
 const CollisionDetection = () => {
     const agentsViewing =

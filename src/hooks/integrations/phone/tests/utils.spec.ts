@@ -1,9 +1,10 @@
 import {EventEmitter} from 'events'
-import {fromJS} from 'immutable'
-import {Call, Device} from '@twilio/voice-sdk'
-import {waitFor} from '@testing-library/react'
 
-import {reportError} from 'utils/errors'
+import {waitFor} from '@testing-library/react'
+import {Call, Device} from '@twilio/voice-sdk'
+import {fromJS} from 'immutable'
+
+import {appQueryClient} from 'api/queryClient'
 import {
     TwilioErrorCode,
     TwilioSocketEventType,
@@ -11,6 +12,8 @@ import {
     VoiceAppErrorCode,
 } from 'business/twilio'
 
+import * as api from 'hooks/integrations/phone/api'
+import * as utils from 'hooks/integrations/phone/utils'
 import {
     generateCallId,
     getCallSid,
@@ -23,16 +26,13 @@ import {
     handleAcceptedCallEvent,
     logCallEnd,
 } from 'hooks/integrations/phone/utils'
-
-import * as utils from 'hooks/integrations/phone/utils'
-import * as api from 'hooks/integrations/phone/api'
-import * as LDUtils from 'utils/launchDarkly'
-import * as activityTracker from 'services/activityTracker'
-import * as envUtils from 'utils/environment'
-import {ActivityEvents} from 'services/activityTracker'
-import {appQueryClient} from 'api/queryClient'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import {ActivityEvents} from 'services/activityTracker'
+import * as activityTracker from 'services/activityTracker'
+import * as envUtils from 'utils/environment'
+import {reportError} from 'utils/errors'
+import * as LDUtils from 'utils/launchDarkly'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')

@@ -1,6 +1,6 @@
-import React from 'react'
 import {Call} from '@twilio/voice-sdk'
 import classNames from 'classnames'
+import React from 'react'
 
 import {useCallStatus} from 'hooks/integrations/phone/useCallStatus'
 import Button from 'pages/common/components/button/Button'

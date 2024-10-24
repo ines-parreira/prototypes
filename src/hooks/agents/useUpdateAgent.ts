@@ -1,13 +1,13 @@
 import {useQueryClient} from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {UPDATE_AGENT_SUCCESS} from 'state/agents/constants'
 import {
     agentsKeys,
     useUpdateAgent as usePureUpdateAgent,
 } from 'models/agents/queries'
+import {UPDATE_AGENT_SUCCESS} from 'state/agents/constants'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {handleError} from './errorHandler'
 

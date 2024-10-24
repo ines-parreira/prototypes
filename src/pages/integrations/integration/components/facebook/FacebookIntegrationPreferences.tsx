@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
 import classnames from 'classnames'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
 
 import {

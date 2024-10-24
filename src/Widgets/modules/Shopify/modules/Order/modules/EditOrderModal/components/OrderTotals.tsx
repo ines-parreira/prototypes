@@ -1,7 +1,7 @@
-import React from 'react'
-import {FormGroup, FormText} from 'reactstrap'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React from 'react'
+import {FormGroup, FormText} from 'reactstrap'
 
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 

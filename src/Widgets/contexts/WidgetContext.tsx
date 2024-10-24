@@ -1,8 +1,8 @@
-import React, {createContext, useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {createContext, useMemo} from 'react'
 
-import {Widget, WidgetEnvironment} from 'state/widgets/types'
 import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
+import {Widget, WidgetEnvironment} from 'state/widgets/types'
 
 export const WidgetContext = createContext<Widget>({
     order: 0,

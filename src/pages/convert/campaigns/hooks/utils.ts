@@ -1,4 +1,5 @@
 import {QueryClient} from '@tanstack/react-query'
+
 import {campaignKeys} from 'models/convert/campaign/queries'
 
 export const invalidateCacheOnCampaignChange = (

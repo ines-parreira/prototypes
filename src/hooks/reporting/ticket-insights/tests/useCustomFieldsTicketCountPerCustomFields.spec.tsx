@@ -1,17 +1,18 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks/dom'
+import _zip from 'lodash/zip'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import _zip from 'lodash/zip'
-import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+
 import {
     calculateDecile,
     enrichWithPercentagesAndDeciles,
     useCustomFieldsTicketCountPerCustomFields,
 } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'

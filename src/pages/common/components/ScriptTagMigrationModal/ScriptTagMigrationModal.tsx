@@ -1,22 +1,21 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState, useEffect} from 'react'
 import {useLocation} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {isAdmin} from 'utils'
-
-import {IntegrationType} from 'models/integration/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
-import history from 'pages/history'
+import {IntegrationType} from 'models/integration/constants'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import history from 'pages/history'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {makeGetRedirectUri} from 'state/integrations/selectors'
+import {isAdmin} from 'utils'
+
 import ModalActionsFooter from '../modal/ModalActionsFooter'
 
 import useStoresRequiringScriptTagMigration from '../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'

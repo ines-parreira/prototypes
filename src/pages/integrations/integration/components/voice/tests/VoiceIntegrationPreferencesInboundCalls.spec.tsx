@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     render,
     fireEvent,
@@ -8,9 +7,12 @@ import {
 } from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import React from 'react'
+
 import {PhoneRingingBehaviour} from 'models/integration/types'
-import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
+
 import {isValueInRange} from '../utils'
+import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
 
 jest.mock('models/team/queries', () => ({
     useListTeams: jest.fn(),

@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {ReactNode} from 'react'
 
 import useId from 'hooks/useId'
 import ToggleInput from 'pages/common/forms/ToggleInput'

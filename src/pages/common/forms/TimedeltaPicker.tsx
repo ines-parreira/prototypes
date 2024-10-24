@@ -11,12 +11,12 @@ import {
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
     TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
 } from 'config'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import {reportError} from 'utils/errors'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './TimedeltaPicker.less'
 

@@ -1,9 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'

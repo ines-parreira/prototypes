@@ -2,8 +2,10 @@ import {render, screen} from '@testing-library/react'
 import {forEach} from 'lodash'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
+import {ReportingGranularity} from 'models/reporting/types'
+import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {
     CustomFieldsTicketCountDataRowContent,
     EXPAND_COLUMN_WIDTH,
@@ -26,7 +28,6 @@ import {
     mockStore,
     triggerWidthResize,
 } from 'utils/testing'
-import {ReportingGranularity} from 'models/reporting/types'
 
 const rafControl = mockRequestAnimationFrame()
 

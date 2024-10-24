@@ -1,11 +1,12 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import copy from 'copy-to-clipboard'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {notify} from 'state/notifications/actions'
+import configureMockStore from 'redux-mock-store'
+
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {notify} from 'state/notifications/actions'
 
 import CopyButton from '../CopyButton'
 

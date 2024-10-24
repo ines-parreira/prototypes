@@ -1,16 +1,16 @@
-import React, {useMemo} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isTicketNavigationAvailable} from 'state/ticket/actions'
+import useAppSelector from 'hooks/useAppSelector'
 import {ArrowPagination} from 'pages/common/components/Paginations'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
-import useAppSelector from 'hooks/useAppSelector'
+import {isTicketNavigationAvailable} from 'state/ticket/actions'
 import {getActiveView} from 'state/views/selectors'
 
-import useGoToPreviousTicket from './hooks/useGoToPreviousTicket'
 import useGoToNextTicket from './hooks/useGoToNextTicket'
+import useGoToPreviousTicket from './hooks/useGoToPreviousTicket'
 import css from './TicketNavigationArrowPagination.less'
 
 type Props = {

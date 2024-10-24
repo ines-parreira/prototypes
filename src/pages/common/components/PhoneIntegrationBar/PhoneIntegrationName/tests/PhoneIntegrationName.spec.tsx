@@ -1,9 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import PhoneIntegrationName from '../PhoneIntegrationName'

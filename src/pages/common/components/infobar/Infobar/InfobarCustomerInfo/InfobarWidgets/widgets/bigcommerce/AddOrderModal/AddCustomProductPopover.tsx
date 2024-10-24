@@ -1,11 +1,11 @@
 import React, {useRef, useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-
 import {BigCommerceCustomProduct} from 'models/integration/types'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
+
 import css from './AddCustomProductPopover.less'
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 

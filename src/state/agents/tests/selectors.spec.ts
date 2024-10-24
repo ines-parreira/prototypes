@@ -1,12 +1,13 @@
 import {fromJS, Map, List} from 'immutable'
+
 import {UserRole} from 'config/types/user'
 
-import * as selectors from 'state/agents/selectors'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {initialState} from 'state/agents/reducers'
-import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import * as agentFixtures from 'fixtures/agents'
 import * as userFixtures from 'fixtures/users'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+import {initialState} from 'state/agents/reducers'
+import * as selectors from 'state/agents/selectors'
+import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {getDisplayName} from 'state/customers/helpers'
 import {RootState} from 'state/types'
 

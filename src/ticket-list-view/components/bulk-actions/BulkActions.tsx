@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo} from 'react'
 import {JobType} from '@gorgias/api-queries'
+import React, {useCallback, useMemo} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {Update, useBulkAction} from 'jobs'

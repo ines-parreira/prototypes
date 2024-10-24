@@ -1,18 +1,18 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
 import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
 import {assumeMock} from 'utils/testing'
 
-import Preview, {CustomFieldName} from '../Preview'
 import {
     addInternalNoteAction,
     addTagsAction,
     setCustomFieldValueAction as mockSetCustomFieldValueAction,
 } from '../../../../../fixtures/macro'
+import Preview, {CustomFieldName} from '../Preview'
 
 const flags = {
     [FeatureFlagKey.MacroForwardByEmail]: true,

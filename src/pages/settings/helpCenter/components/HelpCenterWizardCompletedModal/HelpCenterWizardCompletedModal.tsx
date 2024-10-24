@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+
 import {useSearchParam} from 'hooks/useSearchParam'
 import SuccessModal, {
     SuccessModalIcon,
 } from 'pages/common/components/SuccessModal/SuccessModal'
+
 import {
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,

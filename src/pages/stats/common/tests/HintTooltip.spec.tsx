@@ -1,5 +1,6 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
 import {DOCUMENTATION_LINK_TEXT} from 'services/reporting/constants'
 
 import {HintTooltip} from '../HintTooltip'

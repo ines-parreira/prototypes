@@ -1,4 +1,3 @@
-import React, {FC, ReactElement} from 'react'
 import {
     QueryCache,
     QueryClient,
@@ -7,6 +6,7 @@ import {
 } from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+import React, {FC, ReactElement} from 'react'
 
 export function mockQueryClient({
     cachedData,

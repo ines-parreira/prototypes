@@ -1,11 +1,12 @@
 import {Reducer} from 'react'
+
+import {CommonReasonLabel} from './constants'
 import {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReasonsActionType,
     CancellationReasonsState,
     Reason,
 } from './types'
-import {CommonReasonLabel} from './constants'
 
 export const DEFAULT_STATE: CancellationReasonsState = {
     primaryReason: null,

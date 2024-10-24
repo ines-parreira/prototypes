@@ -2,7 +2,6 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {HelpCenter} from 'models/helpCenter/types'
 
-import {HelpCentersState} from './types'
 import {
     helpCenterCreated,
     helpCenterDeleted,
@@ -10,6 +9,7 @@ import {
     helpCentersFetched,
     helpCenterFetched,
 } from './actions'
+import {HelpCentersState} from './types'
 
 export const initialState: HelpCentersState = {
     helpCentersById: {},

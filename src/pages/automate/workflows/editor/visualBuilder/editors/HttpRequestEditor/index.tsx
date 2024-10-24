@@ -1,42 +1,43 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import _uniq from 'lodash/uniq'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import _uniq from 'lodash/uniq'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
-    HttpRequestNodeType,
-    isTriggerNodeType,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import TextInput from 'pages/common/forms/input/TextInput'
 import {
     extractVariablesFromNode,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
     validateJSONWithVariables,
 } from 'pages/automate/workflows/models/variables.model'
-import {Drawer} from 'pages/common/components/Drawer'
-import Button from 'pages/common/components/button/Button'
-import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {saveFileAsDownloaded} from 'utils/file'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    HttpRequestNodeType,
+    isTriggerNodeType,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {Drawer} from 'pages/common/components/Drawer'
+import TextInput from 'pages/common/forms/input/TextInput'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {saveFileAsDownloaded} from 'utils/file'
 
-import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
+import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import css from '../NodeEditor.less'
-import Headers from './Headers'
-import MethodSelect from './MethodSelect'
 import BodyContentTypeSelect from './BodyContentTypeSelect'
 import FormUrlencoded from './FormUrlencoded'
-import Variables from './Variables'
-import TestRequestModal from './TestRequestModal'
-import useSendTestRequest from './useSendTestRequest'
-import TestRequestModalWithInputs from './TestRequestModalWithInputs'
+import Headers from './Headers'
+import MethodSelect from './MethodSelect'
 import Outputs from './Outputs'
+import TestRequestModal from './TestRequestModal'
+import TestRequestModalWithInputs from './TestRequestModalWithInputs'
+import useSendTestRequest from './useSendTestRequest'
+import Variables from './Variables'
 
 const nameTextLimit = 100
 

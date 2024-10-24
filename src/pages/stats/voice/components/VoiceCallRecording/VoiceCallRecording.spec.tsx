@@ -1,11 +1,12 @@
+import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {fireEvent, render} from '@testing-library/react'
-import {RootState, StoreDispatch} from 'state/types'
 import {VoiceCallSummary} from 'pages/stats/voice/models/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import VoiceCallRecording from './VoiceCallRecording'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

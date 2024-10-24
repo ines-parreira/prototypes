@@ -1,16 +1,16 @@
 import moment from 'moment'
 import React from 'react'
 
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {StatsFilters} from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     comparedPeriodString,
     formatMetricValue,
     MetricTrendFormat,
 } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 
 type VoiceCallVolumeMetricProps = {

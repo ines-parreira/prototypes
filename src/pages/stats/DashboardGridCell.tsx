@@ -1,5 +1,5 @@
-import React, {ReactNode, useMemo} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode, useMemo} from 'react'
 
 import css from './DashboardGridCell.less'
 

@@ -1,9 +1,9 @@
 import React, {ComponentProps, ComponentType} from 'react'
 
 import App from 'pages/App'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 
 type NarrowedWithUserRoleParams =
     Parameters<typeof withUserRoleRequired> extends [

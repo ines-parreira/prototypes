@@ -18,6 +18,7 @@ import {
 import {CustomerChannel} from 'models/customerChannel/types'
 import {initialState} from 'state/twilio/voiceDevice'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {CustomerChannels} from '../CustomerChannels'
 
 jest.mock(

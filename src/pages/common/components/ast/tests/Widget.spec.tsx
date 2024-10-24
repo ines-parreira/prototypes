@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS, List, Map} from 'immutable'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS, List, Map} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,9 +8,10 @@ import thunk from 'redux-thunk'
 import _schemas from 'fixtures/openapi.json'
 
 import {humanizeChannel} from 'state/ticket/utils'
+
 import Widget from '../Widget'
-import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeContains from './fixtures/astCodeContains.json'
+import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta.json'
 import _astCodeReplyToTicket from './fixtures/astCodeReplyToTicket.json'
 

@@ -1,6 +1,9 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TagFilterInstanceId} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
@@ -14,8 +17,6 @@ import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {renderWithStore} from 'utils/testing'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('@gorgias/ui-kit', () => ({
     Tooltip: () => <div />,

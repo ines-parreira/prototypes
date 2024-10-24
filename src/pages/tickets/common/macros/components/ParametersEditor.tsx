@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
-import {Map, List} from 'immutable'
-import {Row, Col} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
+import {Map, List} from 'immutable'
+import React, {Component} from 'react'
+import {Row, Col} from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
 import IconButton from 'pages/common/components/button/IconButton'
+import InputField from 'pages/common/forms/input/InputField'
+
 import {MAX_HEADER_LENGTH} from '../../../../../config'
 import {hasUnicodeChars} from '../../../../../utils'
 

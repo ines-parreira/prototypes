@@ -1,17 +1,18 @@
-import React from 'react'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {TicketMessage} from 'models/ticket/types'
 import TicketTag from 'pages/common/components/TicketTag'
+
 import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
-import {ActionName} from '../AuditLogEvent'
-import cssEvent from '../Event.less'
-import {TicketEventEnum} from '../AIAgentFeedbackBar/types'
 import {
     TicketEventToIcon,
     TicketEventToLabel,
 } from '../AIAgentFeedbackBar/TicketEvent'
+import {TicketEventEnum} from '../AIAgentFeedbackBar/types'
+import {ActionName} from '../AuditLogEvent'
+import cssEvent from '../Event.less'
 import css from './AIAgentMessageEvents.less'
 
 export type Props = {

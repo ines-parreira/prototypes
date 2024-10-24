@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {act, render, fireEvent, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import FileField from 'pages/common/forms/FileField'
 import {assumeMock, getLastMockCall} from 'utils/testing'

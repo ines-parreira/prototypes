@@ -1,33 +1,35 @@
-import React, {useMemo, useRef, useState} from 'react'
-import {Route, Switch, useParams} from 'react-router-dom'
 import {Label} from '@gorgias/ui-kit'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import useEffectOnce from 'hooks/useEffectOnce'
+import React, {useMemo, useRef, useState} from 'react'
+import {Route, Switch, useParams} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useEffectOnce from 'hooks/useEffectOnce'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+
 import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
-import TrainMyAiViewContainer from '../trainMyAi/TrainMyAiViewContainer'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
+import TrainMyAiViewContainer from '../trainMyAi/TrainMyAiViewContainer'
+import ArticleRecommendationPreview from './ArticleRecommendationPreview'
+
+import css from './ArticleRecommendationView.less'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
     ManyHelpCentersAlert,
     NoHelpCenterAlert,
 } from './components/ArticleRecommendationAlerts'
-import ArticleRecommendationPreview from './ArticleRecommendationPreview'
-
-import css from './ArticleRecommendationView.less'
 
 const ArticleRecommendationView = () => {
     useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)

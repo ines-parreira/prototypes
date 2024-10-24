@@ -1,8 +1,5 @@
-import {useCallback, useEffect, useReducer, useState} from 'react'
-
 import {useQueryClient} from '@tanstack/react-query'
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import {NotificationStatus} from 'state/notifications/types'
+import {useCallback, useEffect, useReducer, useState} from 'react'
 
 import {
     useGetWorkflowConfigurations,
@@ -10,6 +7,9 @@ import {
     useDeleteWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
+import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {
     WorkflowConfigurationShallow,
     WorkflowConfiguration,

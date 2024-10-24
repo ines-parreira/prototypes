@@ -1,10 +1,10 @@
-import Mousetrap, {ExtendedKeyboardEvent} from 'mousetrap'
-import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
-import _get from 'lodash/get'
 import _findIndex from 'lodash/findIndex'
+import _get from 'lodash/get'
 import _isFunction from 'lodash/isFunction'
 import _isObject from 'lodash/isObject'
+import _merge from 'lodash/merge'
+import Mousetrap, {ExtendedKeyboardEvent} from 'mousetrap'
 
 import keymap from 'config/shortcuts'
 import {isEditable} from 'services/common/utils'

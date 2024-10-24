@@ -1,13 +1,14 @@
-import React from 'react'
 import {render, screen, fireEvent, act} from '@testing-library/react'
+import React from 'react'
 
-import {agents} from 'fixtures/agents'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import {agents} from 'fixtures/agents'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/voice/constants/voiceAgents'
 import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
 import {saveReport} from 'services/reporting/voiceAgentsReportingService'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/voice/constants/voiceAgents'
+import {assumeMock} from 'utils/testing'
+
 import {VoiceAgentsDownloadDataButton} from './VoiceAgentsDownloadDataButton'
 
 jest.mock('pages/stats/voice/hooks/useVoiceAgentsMetrics')

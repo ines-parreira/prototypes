@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     RenderResult,
     render,
@@ -10,38 +9,35 @@ import {
 import userEvent, {TargetElement} from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
+import {AttachmentEnum} from 'common/types'
 import {User} from 'config/types/user'
-
-import {getLDClient} from 'utils/launchDarkly'
-
-import {integrationsState} from 'fixtures/integrations'
-
-import {RootState, StoreDispatch} from 'state/types'
-
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-
 import {
     campaign as campaignFixture,
     campaignSchedule as campaignScheduleFixture,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
-import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {toJS} from 'utils'
-import {assumeMock} from 'utils/testing'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {AttachmentEnum} from 'common/types'
 
+import {channelConnection} from 'fixtures/channelConnection'
+import {integrationsState} from 'fixtures/integrations'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-import {channelConnection} from 'fixtures/channelConnection'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {RootState, StoreDispatch} from 'state/types'
+import {toJS} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
+import {assumeMock} from 'utils/testing'
+
 import {Campaign} from '../../../types/Campaign'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
 

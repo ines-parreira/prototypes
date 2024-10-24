@@ -1,11 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {RootState, StoreDispatch} from 'state/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {IntegrationType} from 'models/integration/types'
+
 import {phoneNumbers} from 'fixtures/newPhoneNumber'
+import {IntegrationType} from 'models/integration/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import PhoneNumberSelectField from '../PhoneNumberSelectField'
 

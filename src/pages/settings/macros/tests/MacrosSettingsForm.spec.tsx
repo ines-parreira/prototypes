@@ -3,8 +3,8 @@ import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 import * as ReactRouterDom from 'react-router-dom'
 
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {macros as macrosFixtures} from 'fixtures/macro'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
     createMacro,
     deleteMacro,

@@ -1,21 +1,20 @@
 import moment from 'moment'
 import React from 'react'
 
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {getAdvancedVoicePeriodFilters} from 'models/reporting/queryFactories/voice/voiceCall'
+import {StatsFilters} from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     comparedPeriodString,
     formatMetricValue,
 } from 'pages/stats/common/utils'
-import MetricCard from 'pages/stats/MetricCard'
-import {StatsFilters} from 'models/stat/types'
-import {getAdvancedVoicePeriodFilters} from 'models/reporting/queryFactories/voice/voiceCall'
-import {getPreviousPeriod} from 'utils/reporting'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
-
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import MetricCard from 'pages/stats/MetricCard'
+import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
+import {getPreviousPeriod} from 'utils/reporting'
 
 type VoiceCallCallerExperienceMetricProps = {
     title: string

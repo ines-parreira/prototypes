@@ -1,3 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
+import _noop from 'lodash/noop'
 import React, {
     ComponentType,
     Component,
@@ -6,10 +10,6 @@ import React, {
     KeyboardEvent,
 } from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import _debounce from 'lodash/debounce'
-import _noop from 'lodash/noop'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -17,8 +17,8 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
 
-import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'
+import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 
 export type Props<ResultType, SubResultType> = {
     endpoint: string

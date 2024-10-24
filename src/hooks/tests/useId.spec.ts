@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useId from 'hooks/useId'
 
 describe('useId', () => {

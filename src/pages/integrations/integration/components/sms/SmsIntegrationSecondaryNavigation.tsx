@@ -1,10 +1,11 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {SmsIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {SmsIntegration} from 'models/integration/types'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {getSmsIntegrations} from 'state/integrations/selectors'
+
 import {getDefaultRoutes} from '../../utils/defaultRoutes'
 
 type Props = {

@@ -1,21 +1,20 @@
-import React, {useRef} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useRef} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {hasAgentPrivileges, isAdmin} from 'utils'
 
-import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
-import css from './AutomateSavingsCard.less'
 import AutomateExploreDataModal, {
     AutomateExploreDataModalHandle,
 } from './AutomateExploreDataModal'
+import css from './AutomateSavingsCard.less'
 
 interface Props {
     moneySavedPerInteraction: number

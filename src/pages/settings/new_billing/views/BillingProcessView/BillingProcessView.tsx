@@ -1,7 +1,7 @@
+import _capitalize from 'lodash/capitalize'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
-import _capitalize from 'lodash/capitalize'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,21 +18,22 @@ import {fetchCreditCard} from 'state/billing/actions'
 import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
+
 import BackLink from '../../components/BackLink'
 import Card from '../../components/Card'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
+import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
 import SummaryFooter from '../../components/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection'
 import SummaryTotal from '../../components/SummaryTotal'
+import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import {
     ENTERPRISE_PRICE_ID,
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
 } from '../../constants'
 
-import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
-import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
 import {useCreditCard} from '../../hooks/useCreditCard'
 import {formatNumTickets} from '../../utils/formatAmount'

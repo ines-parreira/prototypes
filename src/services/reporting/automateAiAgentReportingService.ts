@@ -1,18 +1,19 @@
 import moment from 'moment/moment'
-import {Period} from 'models/stat/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+
 import {Metric} from 'hooks/reporting/metrics'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {OrderDirection} from 'models/api/types'
+import {Period} from 'models/stat/types'
+import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {
     AgentsPerformanceReportData,
     getData as getPerformanceData,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
 import {getPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
-import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {getData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import {createCsv, saveZippedFiles} from 'utils/file'
 
 export const AI_AGENT_PERFORMANCE_FILENAME = 'ai-agent-performance'
 export const AI_AGENT_TICKET_INSIGHTS_FILENAME = 'ai-agent-ticket-insights'

@@ -1,12 +1,13 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {createMemoryHistory, MemoryHistory} from 'history'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {Route, Router} from 'react-router-dom'
 
-import {Provider} from 'react-redux'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {mockStore} from 'utils/testing'
+
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
 
 function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {

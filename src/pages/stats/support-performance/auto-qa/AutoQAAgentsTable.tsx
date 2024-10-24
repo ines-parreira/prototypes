@@ -1,13 +1,8 @@
 import classNames from 'classnames'
-import {useDispatch} from 'react-redux'
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import {useDispatch} from 'react-redux'
+
 import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
-import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
-import {
-    AgentsCellContent,
-    AgentsCellContentProps,
-} from 'pages/stats/support-performance/agents/AgentsCellContent'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {NumberedPagination} from 'pages/common/components/Paginations'
@@ -16,6 +11,12 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/AnalyticsTable.less'
+import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
+import {
+    AgentsCellContent,
+    AgentsCellContentProps,
+} from 'pages/stats/support-performance/agents/AgentsCellContent'
+import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     TableLabels,

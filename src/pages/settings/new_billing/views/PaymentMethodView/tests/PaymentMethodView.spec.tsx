@@ -1,13 +1,11 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {RootState, StoreDispatch} from 'state/types'
-import {createStripeCardToken} from 'utils/stripe'
-import {account} from 'fixtures/account'
 
+import {account} from 'fixtures/account'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
@@ -15,9 +13,13 @@ import {
     basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import {renderWithRouter} from 'utils/testing'
 import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
+import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {createStripeCardToken} from 'utils/stripe'
+
+import {renderWithRouter} from 'utils/testing'
+
 import PaymentMethodView from '../PaymentMethodView'
 
 const mockedDispatch = jest.fn()

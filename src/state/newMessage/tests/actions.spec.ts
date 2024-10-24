@@ -1,76 +1,77 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {ContentState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import {ContentState} from 'draft-js'
+import {fromJS, Map} from 'immutable'
 import {omit} from 'lodash'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import * as segmentTracker from 'common/segment'
-import {SegmentEvent} from 'common/segment'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {channels as mockChannels} from 'fixtures/channels'
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
 import {
     TicketChannel,
     TicketVia,
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import * as segmentTracker from 'common/segment'
+import {SegmentEvent} from 'common/segment'
+import {AttachmentEnum} from 'common/types'
 import * as commonUtils from 'common/utils'
-import * as utils from 'utils'
-import * as actions from 'state/newMessage/actions'
-import * as types from 'state/newMessage/constants'
-import {initialState, makeNewMessage} from 'state/newMessage/reducers'
-import {initialState as ticketInitialState} from 'state/ticket/reducers'
-import {RootState, StoreDispatch} from 'state/types'
-
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {channels as mockChannels} from 'fixtures/channels'
 import {integrationsState} from 'fixtures/integrations'
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {PhoneNumber} from 'models/phoneNumber/types'
-import * as integrationSelectors from 'state/integrations/selectors'
-import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
-import {
-    chatTicket,
-    emailTicket,
-    instagramMedia,
-} from 'state/ticket/tests/fixtures'
-import socketManager from 'services/socketManager/socketManager'
-import {ticket} from 'fixtures/ticket'
-import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
-import {convertFromHTML} from 'utils/editor'
-import {ReplyAreaState} from 'state/newMessage/types'
-import {
-    MacroActionType,
-    MacroActionName,
-    MacroAction,
-} from 'models/macroAction/types'
-import {
-    TicketMessageActionValidationError,
-    TicketMessageInvalidSendDataError,
-} from 'state/newMessage/errors'
-import {
-    NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
-    NEW_MESSAGE_DELETE_ATTACHMENT,
-    NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-} from 'state/newMessage/constants'
-import client from 'models/api/resources'
-import {SearchType} from 'models/search/types'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
 import {
     addInternalNoteAction,
     setClosedStatusAction,
     setOpenStatusAction,
     setSubjectAction,
 } from 'fixtures/macro'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
+import {ticket} from 'fixtures/ticket'
+import client from 'models/api/resources'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {
+    MacroActionType,
+    MacroActionName,
+    MacroAction,
+} from 'models/macroAction/types'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import {SEARCH_ENDPOINT} from 'models/search/resources'
+import {SearchType} from 'models/search/types'
+import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as activityTracker from 'services/activityTracker'
 import {ActivityEvents} from 'services/activityTracker'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import socketManager from 'services/socketManager/socketManager'
 import {AccountSettingType} from 'state/currentAccount/types'
+import * as integrationSelectors from 'state/integrations/selectors'
+import * as actions from 'state/newMessage/actions'
+import * as types from 'state/newMessage/constants'
+import {
+    NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+    NEW_MESSAGE_DELETE_ATTACHMENT,
+    NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+} from 'state/newMessage/constants'
+import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
+import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from 'state/newMessage/errors'
+import {initialState, makeNewMessage} from 'state/newMessage/reducers'
+import {ReplyAreaState} from 'state/newMessage/types'
+import {initialState as ticketInitialState} from 'state/ticket/reducers'
+import {
+    chatTicket,
+    emailTicket,
+    instagramMedia,
+} from 'state/ticket/tests/fixtures'
+import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
+import {RootState, StoreDispatch} from 'state/types'
 
-import {AttachmentEnum} from 'common/types'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import * as utils from 'utils'
+
+import {convertFromHTML} from 'utils/editor'
+
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {

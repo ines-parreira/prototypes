@@ -4,10 +4,9 @@ import useSearch from 'hooks/useSearch'
 
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
-import {useSortedCampaigns} from '../useSortedCampaigns'
-
 import {Campaign} from '../../types/Campaign'
 import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
+import {useSortedCampaigns} from '../useSortedCampaigns'
 
 jest.mock('hooks/useSearch')
 

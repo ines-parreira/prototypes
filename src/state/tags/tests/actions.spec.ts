@@ -1,18 +1,18 @@
+import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS, Map} from 'immutable'
+import _isEqual from 'lodash/isEqual'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS, Map} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import _isEqual from 'lodash/isEqual'
-import axios from 'axios'
-import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
 import {TagDraft} from 'models/tag/types'
-import {StoreDispatch} from 'state/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import {initialState} from 'state/tags/reducers'
+import {StoreDispatch} from 'state/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(

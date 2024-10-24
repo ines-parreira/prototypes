@@ -1,15 +1,17 @@
-import React, {ReactNode, useMemo} from 'react'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ReactNode, useMemo} from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useId from 'hooks/useId'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import {AI_AGENT} from 'pages/automate/common/components/constants'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import useId from 'hooks/useId'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {SegmentEvent, logEvent} from 'common/segment'
+
+import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import css from './AiAgentLayout.less'
 
 type Props = {

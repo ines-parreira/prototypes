@@ -1,4 +1,5 @@
 import {Tooltip} from '@gorgias/ui-kit'
+import cn from 'classnames'
 import React, {
     ComponentProps,
     MouseEvent,
@@ -6,20 +7,19 @@ import React, {
     useMemo,
     useRef,
 } from 'react'
-import cn from 'classnames'
-import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
+import {CSSTransition} from 'react-transition-group'
 import {Components} from 'react-virtuoso'
 
 import RelativeTime from 'pages/common/components/RelativeTime'
-import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import SourceIcon from 'pages/common/components/SourceIcon'
+import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
 import {TicketPartial, TicketSummary} from '../types'
-import TicketSkeleton from './TicketSkeleton'
 import css from './Ticket.less'
+import TicketSkeleton from './TicketSkeleton'
 
 type InjectedProps = ComponentProps<typeof CSSTransition> &
     ComponentProps<NonNullable<Components['Item']>>

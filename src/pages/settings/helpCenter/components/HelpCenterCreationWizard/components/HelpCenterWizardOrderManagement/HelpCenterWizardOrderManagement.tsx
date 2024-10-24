@@ -1,6 +1,8 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import css from './HelpCenterWizardOrderManagement.less'
 
 type HelpCenterWizardArticleRecProps = {

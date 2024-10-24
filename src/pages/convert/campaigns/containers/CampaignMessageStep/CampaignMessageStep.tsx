@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react'
 import {EditorState} from 'draft-js'
+import React, {useEffect, useState} from 'react'
 
 import {User} from 'config/types/user'
 
 import RichField from 'pages/common/forms/RichField/RichField'
 import {Value} from 'pages/common/forms/SelectField/types'
+import {CampaignMessage} from 'pages/convert/campaigns/components/CampaignMessage'
+import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
 import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-
-import {CampaignMessage} from 'pages/convert/campaigns/components/CampaignMessage'
-import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
 
 import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 

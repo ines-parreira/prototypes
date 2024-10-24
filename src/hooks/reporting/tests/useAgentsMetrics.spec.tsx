@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 import React from 'react'
 import {Provider} from 'react-redux'
+
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
@@ -12,6 +13,7 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
+import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
@@ -23,7 +25,6 @@ import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 
 import {assumeMock, mockStore} from 'utils/testing'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/useMessagesSentPerHourPerAgent')

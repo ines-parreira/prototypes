@@ -1,3 +1,5 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     ComponentProps,
     useCallback,
@@ -5,18 +7,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
+import {states} from 'fixtures/states'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {states} from 'fixtures/states'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import InputField from 'pages/common/forms/input/InputField'
+
 import SelectInputBox, {SelectInputBoxContext} from '../input/SelectInputBox'
-import css from '../ProvinceInput/ProvinceInput.less'
 import TextInput from '../input/TextInput'
+import css from '../ProvinceInput/ProvinceInput.less'
 
 type Props = {
     disabled?: boolean

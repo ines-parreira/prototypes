@@ -1,9 +1,9 @@
+import {useGetTicketMessage} from '@gorgias/api-queries'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {useGetTicketMessage} from '@gorgias/api-queries'
 
 import ReplyDetailsCard from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'

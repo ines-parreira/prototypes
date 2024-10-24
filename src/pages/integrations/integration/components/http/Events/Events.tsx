@@ -1,14 +1,15 @@
+import classnames from 'classnames'
+import _truncate from 'lodash/truncate'
 import React from 'react'
 import {Link} from 'react-router-dom'
-import _truncate from 'lodash/truncate'
-import classnames from 'classnames'
 
 import {HTTP_METHOD_GET} from 'config'
-import {HTTPIntegrationEvent} from 'models/integration/types'
 import {useGetHTTPEvents} from 'models/integration/queries/http'
+import {HTTPIntegrationEvent} from 'models/integration/types'
+import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
+
 import {BASE_PATH, EVENTS_PATH} from '../constants'
 import css from './Events.less'
 

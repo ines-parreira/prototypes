@@ -1,9 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
-import TwitterIntegrationListItem from '../TwitterIntegrationListItem'
 import {IntegrationType} from '../../../../../../models/integration/types'
+import TwitterIntegrationListItem from '../TwitterIntegrationListItem'
 
 describe('<TwitterIntegrationListItem/>', () => {
     let integration: Map<string, any>

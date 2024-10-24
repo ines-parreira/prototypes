@@ -1,8 +1,10 @@
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+
 import ProductRecommendationModal from '../ProductRecommendationModal'
 
 describe('<ProductRecommendationModal />', () => {

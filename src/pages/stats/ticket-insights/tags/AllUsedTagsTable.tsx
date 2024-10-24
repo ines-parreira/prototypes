@@ -2,6 +2,7 @@ import {Tag} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'

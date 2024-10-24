@@ -1,24 +1,23 @@
+import {useUpdateEmailIntegrationDomain} from '@gorgias/api-queries'
 import React, {useCallback, useState} from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
-import {useUpdateEmailIntegrationDomain} from '@gorgias/api-queries'
-import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {isGorgiasApiError} from 'models/api/types'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-
+import {isGorgiasApiError} from 'models/api/types'
 import {
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
     EmailProvider,
 } from 'models/integration/constants'
-
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {getDomainFromEmailAddress} from '../../helpers'
 
 import css from './EmailDomainVerificationForm.less'

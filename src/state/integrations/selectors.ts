@@ -1,9 +1,14 @@
 import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
+import {createSelector} from 'reselect'
 
-import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
+import {
+    CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
+    HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
+    MESSAGING_INTEGRATION_TYPES,
+} from 'models/integration/constants'
 import {
     AppIntegration,
     Integration,
@@ -17,15 +22,16 @@ import {
     WhatsAppIntegration,
 } from 'models/integration/types'
 import {
-    CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
-    HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
-    MESSAGING_INTEGRATION_TYPES,
-} from 'models/integration/constants'
-import {compare} from 'utils'
-import {RootState} from 'state/types'
-import {getCurrentUserState} from 'state/currentUser/selectors'
-import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
+    isSourceAddress,
+    isTicketChannel,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
+import {SourceAddress} from 'models/ticket/types'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {
+    getApplicationById,
+    getApplicationsByChannel,
+} from 'services/applications'
 import {
     Channel,
     ChannelLike,
@@ -33,18 +39,12 @@ import {
     getChannelBySlug,
     toChannel,
 } from 'services/channels'
-import {SourceAddress} from 'models/ticket/types'
-import {
-    getApplicationById,
-    getApplicationsByChannel,
-} from 'services/applications'
-import {
-    isSourceAddress,
-    isTicketChannel,
-    isTicketMessageSourceType,
-} from 'models/ticket/predicates'
-import {nestedReplace} from 'tickets/common/utils'
 import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
+import {getCurrentUserState} from 'state/currentUser/selectors'
+import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
+import {RootState} from 'state/types'
+import {nestedReplace} from 'tickets/common/utils'
+import {compare} from 'utils'
 
 import {IntegrationListItem, IntegrationsState} from './types'
 

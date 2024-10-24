@@ -1,6 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import Avatar from 'pages/common/components/Avatar/Avatar'
+
 import AgentCard from './AgentCard'
 
 jest.mock('pages/common/components/Avatar/Avatar')

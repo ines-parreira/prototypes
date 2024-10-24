@@ -1,5 +1,5 @@
-import React from 'react'
 import {act, fireEvent, render, screen, within} from '@testing-library/react'
+import React from 'react'
 
 import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'

@@ -1,6 +1,7 @@
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
+
 import {RuleItemActions} from 'pages/settings/rules/types'
 
 import AddActionOrIfStatement from '../AddActionOrIfStatement'

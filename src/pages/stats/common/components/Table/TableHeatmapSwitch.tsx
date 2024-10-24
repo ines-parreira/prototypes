@@ -1,4 +1,5 @@
 import React from 'react'
+
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 export const TABLE_MODE_LABEL = 'Table'

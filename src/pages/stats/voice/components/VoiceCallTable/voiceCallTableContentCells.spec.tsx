@@ -1,8 +1,10 @@
-import React from 'react'
 import {VoiceCallStatus} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
+
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
+import {assumeMock} from 'utils/testing'
+
 import {VoiceCallSummary} from '../../models/types'
 import LiveVoiceCallStatusLabel from '../LiveVoice/LiveVoiceCallStatusLabel'
 import VoiceCallRecording from '../VoiceCallRecording/VoiceCallRecording'

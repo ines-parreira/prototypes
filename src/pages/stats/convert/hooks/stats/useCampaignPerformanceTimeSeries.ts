@@ -1,12 +1,13 @@
 import {useMemo} from 'react'
+
+import {TimeSeriesDataItem, useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {ReportingGranularity} from 'models/reporting/types'
-import {CubeFilterParams} from 'pages/stats/convert/clients/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     campaignImpressionTimeSeriesQueryFactory,
     campaignOrdersTimeSeriesQueryFactory,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {TimeSeriesDataItem, useTimeSeries} from 'hooks/reporting/useTimeSeries'
+import {CubeFilterParams} from 'pages/stats/convert/clients/types'
 
 export type GetCampaignPerformance = {
     isFetching: boolean

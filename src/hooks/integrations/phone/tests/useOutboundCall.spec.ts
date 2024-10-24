@@ -1,16 +1,18 @@
-import {renderHook, act} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {renderHook, act} from '@testing-library/react-hooks'
+
 import {TwilioSocketEventType} from 'business/twilio'
-import {assumeMock} from 'utils/testing'
 import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {assumeMock} from 'utils/testing'
+
+import {connectCall} from '../api'
 import {useOutboundCall} from '../useOutboundCall'
 import useVoiceDevice from '../useVoiceDevice'
-import {connectCall} from '../api'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/integrations/phone/utils')

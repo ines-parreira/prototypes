@@ -1,19 +1,20 @@
-import React, {useEffect, useCallback, useState} from 'react'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
+import React, {useEffect, useCallback, useState} from 'react'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {IntegrationType} from 'models/integration/types'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import Button from 'pages/common/components/button/Button'
-import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import Alert from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
 
 import css from 'pages/settings/settings.less'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 type Props = {
     selectedPhoneNumberId?: number

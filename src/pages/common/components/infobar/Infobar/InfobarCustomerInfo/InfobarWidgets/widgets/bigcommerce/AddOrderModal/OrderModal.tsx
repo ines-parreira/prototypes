@@ -1,3 +1,5 @@
+import {Label, Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     ChangeEvent,
     useCallback,
@@ -6,17 +8,13 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classnames from 'classnames'
 import {Row} from 'reactstrap'
-import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {
     AddressType,
     BigCommerceActionType,
@@ -34,20 +32,36 @@ import {
     IntegrationType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import Button from 'pages/common/components/button/Button'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+
+import {AddressesDropdown} from './AddressesDropdown'
+
+import useAddModifiersPopover from './components/modifiers-popover/useAddModifiersPopover'
+import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
 import OrderTable from './components/order-table/OrderTable'
+import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
+import GeneralErrorPopupModal from './GeneralErrorPopupModal'
+import css from './OrderModal.less'
+import {
+    initializeCart,
+    useCheckout,
+    useValidationStatus,
+} from './OrderModalHelper'
 import OrderTotals from './OrderTotals'
+import {ProductSearch} from './ProductSearch'
 import {
     addCustomLineItem,
     addLineItem,
@@ -61,19 +75,6 @@ import {
     updateLineItemModifiers,
     updateRow,
 } from './utils'
-import {AddressesDropdown} from './AddressesDropdown'
-import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
-
-import css from './OrderModal.less'
-import {ProductSearch} from './ProductSearch'
-import useAddModifiersPopover from './components/modifiers-popover/useAddModifiersPopover'
-import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
-import GeneralErrorPopupModal from './GeneralErrorPopupModal'
-import {
-    initializeCart,
-    useCheckout,
-    useValidationStatus,
-} from './OrderModalHelper'
 
 type Props = {
     integration: BigCommerceIntegration

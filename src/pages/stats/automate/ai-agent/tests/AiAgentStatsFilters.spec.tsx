@@ -1,12 +1,14 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+
 import AiAgentStatsFilters from '../AiAgentStatsFilters'
 
 jest.mock('hooks/useAppDispatch')

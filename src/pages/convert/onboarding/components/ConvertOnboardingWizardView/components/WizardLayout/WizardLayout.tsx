@@ -1,39 +1,41 @@
-import React, {useCallback, useContext, useMemo, useState} from 'react'
-import classnames from 'classnames'
-import {Container} from 'reactstrap'
-import {Map} from 'immutable'
 import {useQueryClient} from '@tanstack/react-query'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import PageHeader from 'pages/common/components/PageHeader'
-import {
-    ONBOARDING_WIZARD_LABELS,
-    OnboardingWizardSteps,
-} from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import {ChannelConnection} from 'models/convert/channelConnection/types'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import classnames from 'classnames'
+import {Map} from 'immutable'
+import React, {useCallback, useContext, useMemo, useState} from 'react'
+import {Container} from 'reactstrap'
 
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
 import {
     BundleActionResponse,
     BundleInstallationMethod,
 } from 'models/convert/bundle/types'
-import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
 import {
     campaignKeys,
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
-import {reportError} from 'utils/errors'
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import {ChannelConnection} from 'models/convert/channelConnection/types'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import WizardFooter from '../WizardFooter'
+import PageHeader from 'pages/common/components/PageHeader'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
+import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
+import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import {
+    ONBOARDING_WIZARD_LABELS,
+    OnboardingWizardSteps,
+} from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
+import history from 'pages/history'
+
+import {reportError} from 'utils/errors'
+
 import WizardCampaignsStep from '../WizardCampaignsStep'
+import WizardFooter from '../WizardFooter'
 import WizardInstallStep from '../WizardInstallStep'
 import css from './WizardLayout.less'
 

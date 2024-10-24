@@ -1,14 +1,15 @@
-import React from 'react'
 import {render, waitFor} from '@testing-library/react'
-import thunk from 'redux-thunk'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import {RootState} from 'state/types'
+import thunk from 'redux-thunk'
+
 import {macros} from 'fixtures/macro'
 import client from 'models/api/resources'
 import MacroSelect from 'pages/common/components/ast/widget/MacroSelect'
+import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

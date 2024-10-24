@@ -1,8 +1,8 @@
 import _debounce from 'lodash/debounce'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {DropTargetMonitor} from 'react-dnd'
 import {connect, ConnectedProps} from 'react-redux'
 import {useHistory, useParams} from 'react-router-dom'
-import {DropTargetMonitor} from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
 
@@ -13,8 +13,8 @@ import {
     UserViewsOrderingSettingData,
 } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearch from 'hooks/useSearch'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useSearch from 'hooks/useSearch'
 import {createAccountSetting, updateAccountSetting} from 'models/account'
 import {
     fetchSections,
@@ -33,6 +33,10 @@ import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import {tryLocalStorage} from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {
+    SplitTicketViewToggle,
+    useSplitTicketViewSwitcher,
+} from 'split-ticket-view-toggle'
 import {submitSettingSuccess as submitAccountSettingSuccess} from 'state/currentAccount/actions'
 import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {
@@ -68,16 +72,12 @@ import {
     getBottomSystemTicketNavbarElements,
 } from 'state/views/selectors'
 
-import {
-    SplitTicketViewToggle,
-    useSplitTicketViewSwitcher,
-} from 'split-ticket-view-toggle'
-
 import {hasRole, isTicketPath} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
+import css from './TicketNavbar.less'
 import TicketNavbarContent, {TicketNavbarElement} from './TicketNavbarContent'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
@@ -85,8 +85,6 @@ import TicketNavbarDropTarget, {
     TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
-
-import css from './TicketNavbar.less'
 
 const viewCategories = {
     public: 'Shared views',

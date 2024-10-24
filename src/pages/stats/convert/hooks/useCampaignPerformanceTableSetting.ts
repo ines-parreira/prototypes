@@ -2,23 +2,23 @@ import {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {TableView} from 'state/ui/stats/types'
-import {getIntegrationByIdAndType} from 'state/integrations/selectors'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {SettingRequest} from 'models/convert/settings/types'
 import {useGetSettingsList} from 'models/convert/settings/queries'
-import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
+import {SettingRequest} from 'models/convert/settings/types'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {ConvertRouteParams} from 'pages/convert/common/types'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
-
+import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
 import {
     CampaignPerformanceTableDefaultConfigurationViews,
     CampaignSettingType,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+
+import {getIntegrationByIdAndType} from 'state/integrations/selectors'
+import {TableView} from 'state/ui/stats/types'
 
 export const useCampaignPerformanceTableSetting = () => {
     const {selectedIntegrations} = useCampaignStatsFilters()

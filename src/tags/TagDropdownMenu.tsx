@@ -1,3 +1,11 @@
+import {
+    ListTagsOrderBy,
+    ListTagsParams,
+    queryKeys,
+    Tag,
+} from '@gorgias/api-queries'
+import {QueryKey, useQueryClient} from '@tanstack/react-query'
+import cn from 'classnames'
 import React, {
     KeyboardEvent,
     useCallback,
@@ -5,14 +13,6 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {QueryKey, useQueryClient} from '@tanstack/react-query'
-import {
-    ListTagsOrderBy,
-    ListTagsParams,
-    queryKeys,
-    Tag,
-} from '@gorgias/api-queries'
-import cn from 'classnames'
 
 import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
 import {UserRole} from 'config/types/user'

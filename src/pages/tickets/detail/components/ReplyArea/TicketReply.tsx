@@ -1,6 +1,6 @@
-import React, {ReactNode, useCallback} from 'react'
 import classNames from 'classnames'
 import {List, Map} from 'immutable'
+import React, {ReactNode, useCallback} from 'react'
 
 import {canReply} from 'business/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,9 +15,9 @@ import {
 import {deleteActionOnApplied} from 'state/ticket/actions'
 
 import TicketAttachments from './TicketAttachments'
-import TicketReplyEditor from './TicketReplyEditor'
-import TicketReplyActions from './TicketReplyActions'
 import css from './TicketReply.less'
+import TicketReplyActions from './TicketReplyActions'
+import TicketReplyEditor from './TicketReplyEditor'
 
 type Props = {
     replyAreaHeader?: ReactNode

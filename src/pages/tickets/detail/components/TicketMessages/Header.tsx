@@ -1,7 +1,7 @@
+import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
-import classnames from 'classnames'
 
 import {TicketMessage} from 'models/ticket/types'
 import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'

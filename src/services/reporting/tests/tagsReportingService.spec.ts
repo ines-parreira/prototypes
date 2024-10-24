@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+
 import {tags} from 'fixtures/tag'
 import {FormattedDataItem} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'

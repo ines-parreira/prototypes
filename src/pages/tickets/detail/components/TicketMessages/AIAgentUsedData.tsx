@@ -1,9 +1,10 @@
-import React, {useMemo} from 'react'
 import classNames from 'classnames'
+import React, {useMemo} from 'react'
 
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import shopifyLogo from 'assets/img/ai-agent/ai-agent-shopify.svg'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+
 import {
     getActionUrl,
     getGuidanceUrl,

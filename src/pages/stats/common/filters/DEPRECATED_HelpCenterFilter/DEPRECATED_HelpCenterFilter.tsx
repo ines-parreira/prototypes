@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react'
+
 import {HelpCenter} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Button from 'pages/common/components/button/Button'
-import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
 import css from 'pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.less'
+import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
 
 type HelpCenterFilterProps = {
     selectedHelpCenter: HelpCenter

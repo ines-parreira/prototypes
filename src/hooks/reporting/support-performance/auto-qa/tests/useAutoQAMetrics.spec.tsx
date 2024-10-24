@@ -1,9 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {ReportingGranularity} from 'models/reporting/types'
+
 import {agents} from 'fixtures/agents'
 import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
@@ -13,9 +11,12 @@ import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performanc
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {ReportingGranularity} from 'models/reporting/types'
 import {initialState} from 'state/stats/statsSlice'
-import {assumeMock, mockStore} from 'utils/testing'
 import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock(
     'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'

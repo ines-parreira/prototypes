@@ -1,10 +1,12 @@
 import React, {FormEventHandler, HTMLProps, useRef} from 'react'
+
 import Button from 'pages/common/components/button/Button'
-import {BillingContact} from 'state/billing/types'
 import Caption from 'pages/common/forms/Caption/Caption'
-import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
 import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
+import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
 import {useSubmitBillingAddress} from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
+import {BillingContact} from 'state/billing/types'
+
 import css from './Form.less'
 
 export const Form: React.FC<

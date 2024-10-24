@@ -1,14 +1,14 @@
+import {capitalize} from 'lodash'
 import React, {useRef, useState} from 'react'
 
-import {capitalize} from 'lodash'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Button from 'pages/common/components/button/Button'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
 import css from './Condition.less'
 

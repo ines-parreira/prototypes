@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'

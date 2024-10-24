@@ -1,15 +1,16 @@
 import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
-import {saveReport} from 'services/reporting/voiceAgentsReportingService'
-import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
 import {
     DOWNLOAD_BUTTON_TITLE,
     DOWNLOAD_DATA_BUTTON_LABEL,
 } from 'pages/stats/voice/constants/voiceAgents'
+import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
+import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
+import {saveReport} from 'services/reporting/voiceAgentsReportingService'
 
 export const VoiceAgentsDownloadDataButton = () => {
     const {reportData, isLoading, period} = useVoiceAgentsMetrics()

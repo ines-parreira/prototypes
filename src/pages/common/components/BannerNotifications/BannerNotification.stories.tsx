@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
 

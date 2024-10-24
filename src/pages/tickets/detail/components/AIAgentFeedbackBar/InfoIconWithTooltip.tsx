@@ -1,6 +1,7 @@
-import React, {ReactNode} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 import {Placement} from '@floating-ui/react'
+import {Tooltip} from '@gorgias/ui-kit'
+import React, {ReactNode} from 'react'
+
 import StatsHelpIcon from '../../../../stats/common/components/StatsHelpIcon'
 import css from './InfoIconWithTooltip.less'
 

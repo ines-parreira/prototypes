@@ -1,14 +1,14 @@
-import React, {Fragment, useEffect, useState} from 'react'
 import {Map} from 'immutable'
+import React, {Fragment, useEffect, useState} from 'react'
 
-import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/input/InputField'
 
 import {MigrationProvider} from '../../types'
 
-import ProviderInfo from '../ProviderInfo'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
+import ProviderInfo from '../ProviderInfo'
 
 type Props = {
     isOpen: boolean

@@ -1,4 +1,5 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
 
 describe('useAutoMerge', () => {

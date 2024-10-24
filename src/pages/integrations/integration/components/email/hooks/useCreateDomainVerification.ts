@@ -1,10 +1,11 @@
 import {useState} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
-import {createDomainVerification as createDomainVerificationRequest} from 'models/integration/resources/email'
-import {notify} from 'state/notifications/actions'
 import {GorgiasApiError} from 'models/api/types'
 import {EmailProvider} from 'models/integration/constants'
+import {createDomainVerification as createDomainVerificationRequest} from 'models/integration/resources/email'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export default function useCreateDomainVerification() {
     const [isLoading, setIsLoading] = useState(false)

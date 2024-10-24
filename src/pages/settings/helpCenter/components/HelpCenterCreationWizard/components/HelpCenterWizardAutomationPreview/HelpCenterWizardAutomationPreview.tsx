@@ -1,11 +1,13 @@
 import React from 'react'
-import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
-import {HelpCenter} from 'models/helpCenter/types'
+
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
+import {HelpCenter} from 'models/helpCenter/types'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
-import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
+import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
+import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
+
 import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
+import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
 
 type Props = {
     shopName: string

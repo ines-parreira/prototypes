@@ -1,12 +1,13 @@
-import React from 'react'
 import {fromJS, List, Map} from 'immutable'
+import React from 'react'
 
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {Source, Template} from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
-import css from './Widgets.less'
+
 import Widget from './Widget'
+import css from './Widgets.less'
 
 type Props = {
     source: Map<string, unknown>

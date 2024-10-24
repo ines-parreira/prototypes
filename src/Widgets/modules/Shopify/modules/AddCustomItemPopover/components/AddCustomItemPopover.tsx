@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {
     ChangeEvent,
     FormEvent,
@@ -6,7 +8,6 @@ import React, {
     KeyboardEvent,
     RefObject,
 } from 'react'
-import {ulid} from 'ulidx'
 import {
     Button,
     Form,
@@ -16,18 +17,16 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, Map} from 'immutable'
-import classnames from 'classnames'
+import {ulid} from 'ulidx'
 
+import {formatPrice} from 'business/shopify/number'
 import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {formatPrice} from 'business/shopify/number'
 import {focusElement} from 'utils/html'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import css from './AddCustomItemPopover.less'
 

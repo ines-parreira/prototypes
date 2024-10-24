@@ -1,5 +1,6 @@
 import React from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import {LEAF_TYPES} from 'models/widget/constants'
 import {LeafTemplate, LeafType} from 'models/widget/types'
 import {
@@ -8,12 +9,11 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 import {FieldEditFormData, HiddenFields} from '../types'
-import {TypeOption} from './views/FieldEditForm'
-import UIField from './views'
 import CopyButton from './CopyButton'
+import UIField from './views'
+import {TypeOption} from './views/FieldEditForm'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

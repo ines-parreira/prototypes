@@ -1,28 +1,27 @@
 import React, {useCallback} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
-
-import Alert from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
+import {EmailProvider} from 'models/integration/constants'
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import Alert from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {fetchIntegration} from 'state/integrations/actions'
-import {EmailProvider} from 'models/integration/constants'
+import {hasRole} from 'utils'
+
 import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
-import RecordsTable from './components/RecordsTable'
 import EmailDomainVerificationForm from './components/EmailDomainVerificationForm'
+import RecordsTable from './components/RecordsTable'
 
 import css from './EmailDomainVerification.less'
 import {useDomainVerification} from './useDomainVerification'

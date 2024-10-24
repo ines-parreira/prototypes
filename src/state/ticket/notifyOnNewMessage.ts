@@ -1,9 +1,9 @@
 import {fromJS, List, Map} from 'immutable'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import browserNotification from 'services/browserNotification'
 import {isTabActive} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
 
 const ldClient = getLDClient()
 

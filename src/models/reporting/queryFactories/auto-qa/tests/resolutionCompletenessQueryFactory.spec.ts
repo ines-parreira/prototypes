@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import {TicketStatus} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -7,6 +8,10 @@ import {
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {
+    resolutionCompletenessDrillDownQueryFactory,
+    resolutionCompletenessQueryFactory,
+} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -14,10 +19,6 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
-import {
-    resolutionCompletenessDrillDownQueryFactory,
-    resolutionCompletenessQueryFactory,
-} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 
 describe('resolutionCompletenessQueryFactory', () => {
     const periodStart = moment()

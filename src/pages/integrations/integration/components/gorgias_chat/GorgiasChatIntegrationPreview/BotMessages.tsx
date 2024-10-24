@@ -1,18 +1,15 @@
-import React, {useContext} from 'react'
 import classnames from 'classnames'
-
-import Avatar from 'gorgias-design-system/Avatar/Avatar'
+import React, {useContext} from 'react'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-
-import ChatTitle from './ChatTitle'
-
-import previewCss from './ChatIntegrationPreview.less'
+import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
 import {ChatIntegrationPreviewContext} from '.'
+import previewCss from './ChatIntegrationPreview.less'
+import ChatTitle from './ChatTitle'
 
 type Props = {
     className?: string

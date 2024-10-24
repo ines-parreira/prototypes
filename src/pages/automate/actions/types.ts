@@ -1,10 +1,10 @@
-import {Paths, Components} from 'rest_api/workflows_api/client.generated'
-
 import {
     HttpRequestNodeType,
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {Paths, Components} from 'rest_api/workflows_api/client.generated'
+
 import {WfConfigurationResponseDto} from '../workflows/types'
 
 export type StoreWorkflowsConfiguration =

@@ -1,10 +1,11 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import moment from 'moment'
-import {formatReportingQueryDate} from 'utils/reporting'
+import React from 'react'
+
 import {LegacyStatsFilters} from 'models/stat/types'
-import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
 import SearchResultDonut from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut'
+import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
     useSearchResultRange: jest.fn(),

@@ -1,23 +1,23 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
 import {NavLink, useHistory} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import classNames from 'classnames'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import dotError from 'assets/img/icons/dot-error.svg'
 import {TicketChannel} from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
-import Button from 'pages/common/components/button/Button'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import dotError from 'assets/img/icons/dot-error.svg'
+import {getHasAutomate} from 'state/billing/selectors'
 
-import css from './HelpCenterNavigation.less'
 import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import css from './HelpCenterNavigation.less'
 
 type Props = {
     helpCenterId: string | number

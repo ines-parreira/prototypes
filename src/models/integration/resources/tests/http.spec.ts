@@ -1,4 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 
 import client from 'models/api/resources'

@@ -1,16 +1,11 @@
-import React, {Component, FormEvent} from 'react'
-import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 import classnames from 'classnames'
-import {getLDClient} from 'utils/launchDarkly'
-import {RootState} from 'state/types'
+import {fromJS, Map, List} from 'immutable'
+import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
-import PageHeader from 'pages/common/components/PageHeader'
-import ListField from 'pages/common/forms/ListField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
@@ -18,23 +13,29 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import {IntegrationType} from 'models/integration/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import Button from 'pages/common/components/button/Button'
+
+import PageHeader from 'pages/common/components/PageHeader'
+import ListField from 'pages/common/forms/ListField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {RootState} from 'state/types'
+import {getLDClient} from 'utils/launchDarkly'
+
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
+import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
-import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 
-import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
 
 type Props = {

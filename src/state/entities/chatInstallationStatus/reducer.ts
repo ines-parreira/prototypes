@@ -1,10 +1,12 @@
 import {createReducer} from '@reduxjs/toolkit'
+
 import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
-import {ChatInstallationStatusState} from './types'
+
 import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
 } from './actions'
+import {ChatInstallationStatusState} from './types'
 
 export const initialState: ChatInstallationStatusState = {
     installed: true,

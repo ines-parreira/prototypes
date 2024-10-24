@@ -2,11 +2,11 @@ import {FeedEventPayload, FeedRealTimeCallback} from '@knocklabs/client'
 import {useKnockFeed} from '@knocklabs/react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import getNotificationSound from 'common/notifications/utils/getNotificationSound'
 import useAppSelector from 'hooks/useAppSelector'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
-import getNotificationSound from 'common/notifications/utils/getNotificationSound'
 
 import {Notification, RawNotification} from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'

@@ -2,6 +2,7 @@ import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 
 import {assetsUrl} from 'utils'
+
 import HeroImageCarousel from './HeroImageCarousel'
 
 const storyConfig: Meta = {

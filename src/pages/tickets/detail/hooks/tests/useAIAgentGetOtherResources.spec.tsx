@@ -1,12 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
 
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {useGetAICompatibleMacros} from 'models/macro/queries'
-import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
-import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
+import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
+import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
+import {assumeMock} from 'utils/testing'
 
 import * as useAIAgentGetOtherResources from '../useAIAgentGetOtherResources'
 

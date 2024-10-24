@@ -1,7 +1,8 @@
-import React, {ComponentProps, ReactNode} from 'react'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
 
 import {resetLDMocks} from 'jest-launchdarkly-mock'
+import React, {ComponentProps, ReactNode} from 'react'
+
 import {testimonial as testimonialFixture} from 'fixtures/paywall'
 
 import Paywall, {PaywallTheme, UpgradeType} from '../Paywall'

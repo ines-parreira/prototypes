@@ -1,4 +1,5 @@
 import {ulid} from 'ulidx'
+
 import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.model'
 import {
     WorkflowConfiguration,

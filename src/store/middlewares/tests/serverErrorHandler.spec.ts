@@ -1,6 +1,6 @@
+import _get from 'lodash/get'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _get from 'lodash/get'
 
 import serverErrorHandler from '../serverErrorHandler'
 

@@ -1,11 +1,11 @@
 import {useMemo} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
-import * as integrationsSelectors from 'state/integrations/selectors'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import useAppSelector from 'hooks/useAppSelector'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import {StoreMapping} from 'models/storeMapping/types'
+import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import * as integrationsSelectors from 'state/integrations/selectors'
 
 export const useHasEmailToStoreConnection = (storeIntegrationId?: number) => {
     const integrations = useAppSelector(

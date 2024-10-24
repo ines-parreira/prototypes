@@ -1,6 +1,6 @@
+import {InternalAxiosRequestConfig} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {InternalAxiosRequestConfig} from 'axios'
 import {apiClient} from 'models/aiAgent/resources/account-configuration'
 import {
     getAIAgentTicketMessagesFeedback,
@@ -9,8 +9,9 @@ import {
 } from 'models/aiAgentFeedback/resources'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {assumeMock} from 'utils/testing'
-import {SubmitMessageFeedback, DeleteMessageFeedback} from '../types'
+
 import {ReportIssueOption} from '../constants'
+import {SubmitMessageFeedback, DeleteMessageFeedback} from '../types'
 
 const mockedServer = new MockAdapter(apiClient)
 

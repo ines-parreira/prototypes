@@ -1,5 +1,5 @@
-import React, {FunctionComponent, MouseEvent} from 'react'
 import classNames from 'classnames'
+import React, {FunctionComponent, MouseEvent} from 'react'
 
 import css from './HelpText.less'
 

@@ -1,6 +1,6 @@
+import {LocationDescriptor} from 'history'
 import React, {ComponentProps} from 'react'
 import {Link} from 'react-router-dom'
-import {LocationDescriptor} from 'history'
 
 import BaseCard from './BaseCard'
 import css from './Card.less'

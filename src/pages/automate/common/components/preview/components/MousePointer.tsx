@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode} from 'react'
 
 import mousePointer from 'assets/img/self-service/mouse-pointer.png'
 

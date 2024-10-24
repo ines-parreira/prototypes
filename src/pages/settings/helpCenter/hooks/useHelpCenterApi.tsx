@@ -7,9 +7,10 @@ import React, {
     useCallback,
     useMemo,
 } from 'react'
-import {AppAbility} from 'rest_api/help_center_api/ability'
 
 import {getHelpCenterClient} from 'rest_api/help_center_api'
+import {AppAbility} from 'rest_api/help_center_api/ability'
+
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 
 type UseHelpCenterApiInterface = {

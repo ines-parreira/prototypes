@@ -5,10 +5,12 @@ import {
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/api-queries'
-import {VoiceCallStatus as LegacyVoiceCallStatus} from 'models/voiceCall/types'
+
 import {OrderDirection} from 'models/api/types'
+import {VoiceCallStatus as LegacyVoiceCallStatus} from 'models/voiceCall/types'
 import {getMoment} from 'utils/date'
 import {formatReportingQueryDate} from 'utils/reporting'
+
 import {VoiceCallSummary} from '../../models/types'
 import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
 import {LiveVoiceStatusFilterOption} from './types'

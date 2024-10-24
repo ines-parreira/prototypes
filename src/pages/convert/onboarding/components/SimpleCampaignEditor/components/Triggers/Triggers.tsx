@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
+import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './Triggers.less'
 

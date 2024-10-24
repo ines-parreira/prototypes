@@ -1,39 +1,38 @@
-import React, {useContext} from 'react'
+import classnames from 'classnames'
 import {Map, fromJS} from 'immutable'
 import _last from 'lodash/last'
-import classnames from 'classnames'
+import React, {useContext} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {Integration, IntegrationType} from 'models/integration/types'
-import {WidgetType} from 'state/widgets/types'
+import {Source, Template, WrapperTemplate} from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {
+    getWidgetId,
+    getWidgetTitle,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {AppContext} from 'providers/infobar/AppContext'
+import {EditionContext} from 'providers/infobar/EditionContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import * as integrationsSelectors from 'state/integrations/selectors'
 import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import * as integrationsSelectors from 'state/integrations/selectors'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {AppContext} from 'providers/infobar/AppContext'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {WidgetType} from 'state/widgets/types'
 
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {
-    getWidgetId,
-    getWidgetTitle,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {Source, Template, WrapperTemplate} from 'models/widget/types'
-
-import WidgetPanel from 'Widgets/modules/WidgetPanel'
-import {EXPAND_CONTAINER_MARKER} from 'Widgets/modules/Template/config/template'
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import {EXPAND_CONTAINER_MARKER} from 'Widgets/modules/Template/config/template'
+import WidgetPanel from 'Widgets/modules/WidgetPanel'
 
 import WrapperEditActions from './views/WrapperEditActions'
 import css from './Wrapper.less'

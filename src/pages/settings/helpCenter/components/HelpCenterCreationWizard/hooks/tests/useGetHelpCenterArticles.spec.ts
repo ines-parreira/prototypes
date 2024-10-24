@@ -1,24 +1,26 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {chain} from 'lodash'
 import {fromJS} from 'immutable'
-import {assumeMock} from 'utils/testing'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
+import {chain} from 'lodash'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {IntegrationType} from 'models/integration/constants'
+import {
+    AIArticlesGroupedFixture,
+    AIArticlesListFixture,
+} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {
     ArticleTemplatesGroupedByCategoryFixture,
     ArticleTemplatesListFixture,
     ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
-import {
-    AIArticlesGroupedFixture,
-    AIArticlesListFixture,
-} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
+import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {StoreState} from 'state/types'
-import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
+import {assumeMock} from 'utils/testing'
+
 import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
+import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')

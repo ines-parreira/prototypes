@@ -1,7 +1,9 @@
 import {useEffect, useMemo} from 'react'
+
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useGetArticleIngestionLogs} from 'models/helpCenter/queries'
 import {reportError} from 'utils/errors'
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+
 import {mapArticleIngestionLogsToSourceItem} from '../components/PublicSourcesSection/utils'
 
 export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {

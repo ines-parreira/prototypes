@@ -1,21 +1,21 @@
+import {endsWith} from 'lodash'
 import React, {useCallback, useMemo} from 'react'
 import {Col, FormGroup, Label, Row} from 'reactstrap'
-import {endsWith} from 'lodash'
 
 import {
     PhoneNumberMeta,
     PhoneCountry,
     PhoneType,
 } from 'models/phoneNumber/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type {SelectableOption} from 'pages/common/forms/SelectField/types'
 
-import rawCountryOptions from './options/countries.json'
-import rawCaAreaCodeOptions from './options/area-codes/ca.json'
-import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
+import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
+import rawUsAreaCodeOptions from './options/area-codes/us.json'
+import rawCountryOptions from './options/countries.json'
 import {getAvailableStates} from './utils'
 
 const countryOptions: SelectableOption[] = rawCountryOptions

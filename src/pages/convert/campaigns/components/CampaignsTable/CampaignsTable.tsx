@@ -1,3 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     Fragment,
     MouseEvent,
@@ -7,25 +11,6 @@ import React, {
     useState,
 } from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {Tooltip} from '@gorgias/ui-kit'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-
-import IconButton from 'pages/common/components/button/IconButton'
-
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import TableHead from 'pages/common/components/table/TableHead'
-import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -33,33 +18,45 @@ import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
-import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
 import {Language} from 'constants/languages'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {GorgiasChatIntegration} from 'models/integration/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
+import IconButton from 'pages/common/components/button/IconButton'
+
+import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
+import {abVariantsUrl} from 'pages/convert/abVariants/urls'
 import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaignBadge/LightCampaignBadge'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-
-import useLocalStorage from 'hooks/useLocalStorage'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {abVariantsUrl} from 'pages/convert/abVariants/urls'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 
+import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
+
+import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
+import {Campaign} from '../../types/Campaign'
 import {
     CampaignStatus,
     isActiveStatus,
 } from '../../types/enums/CampaignStatus.enum'
-import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
-
-import {Campaign} from '../../types/Campaign'
 
 import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
 
-import {CampaignToolsCell} from './components/CampaignToolsCell'
-import ABGroupVariants from './components/ABGroupVariants'
-
 import css from './CampaignsTable.less'
+import ABGroupVariants from './components/ABGroupVariants'
+import {CampaignToolsCell} from './components/CampaignToolsCell'
 
 const TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
     'You already have 3 or more campaigns active. Disable them to activate this one.'

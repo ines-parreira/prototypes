@@ -1,12 +1,11 @@
-import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
+import React, {useContext} from 'react'
 
 import useSearch from 'hooks/useSearch'
 
-import * as utils from '../utils'
-import {CampaignListOptionsContext} from '../context'
-
 import {CampaignListOptions} from '../CampaignListOptions'
+import {CampaignListOptionsContext} from '../context'
+import * as utils from '../utils'
 
 jest.mock('hooks/useSearch')
 jest.mock('../utils')

@@ -11,8 +11,8 @@ import React, {
     useRef,
 } from 'react'
 
-import CheckBox from 'pages/common/forms/CheckBox'
 import useEffectOnce from 'hooks/useEffectOnce'
+import CheckBox from 'pages/common/forms/CheckBox'
 
 import {DropdownContext} from './Dropdown'
 import css from './DropdownQuickSelect.less'

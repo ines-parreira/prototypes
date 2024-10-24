@@ -1,14 +1,15 @@
 import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock} from 'utils/testing'
-import {CustomerInfobarContainer} from '../CustomerInfobarContainer'
+
 import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
+import {CustomerInfobarContainer} from '../CustomerInfobarContainer'
 
 jest.mock('state/widgets/actions')
 jest.mock(

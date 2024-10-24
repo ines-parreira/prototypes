@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import React, {useState} from 'react'
+
 import TagList from './TagList'
 
 const meta: Meta<typeof TagList> = {

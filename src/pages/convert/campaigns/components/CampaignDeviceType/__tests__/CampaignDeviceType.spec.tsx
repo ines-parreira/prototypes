@@ -1,5 +1,5 @@
-import React from 'react'
 import {fireEvent, render, screen, act} from '@testing-library/react'
+import React from 'react'
 
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {assumeMock} from 'utils/testing'

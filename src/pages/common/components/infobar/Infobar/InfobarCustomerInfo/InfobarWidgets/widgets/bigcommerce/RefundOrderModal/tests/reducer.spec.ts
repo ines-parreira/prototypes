@@ -1,4 +1,8 @@
 import {
+    bigCommerceCalculateOrderRefundDataResponseApiFixture,
+    bigCommerceOrderFixture,
+} from 'fixtures/bigcommerce'
+import {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceOrder,
     BigCommerceRefundableItemType,
@@ -6,10 +10,7 @@ import {
     BigCommerceRefundType,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
-import {
-    bigCommerceCalculateOrderRefundDataResponseApiFixture,
-    bigCommerceOrderFixture,
-} from 'fixtures/bigcommerce'
+
 import {
     bigcommerceRefundOrderReducer,
     initialBigCommerceRefundOrderState,

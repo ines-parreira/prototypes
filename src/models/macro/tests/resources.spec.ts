@@ -5,6 +5,7 @@ import _pick from 'lodash/pick'
 import {macros as macrosFixtures} from 'fixtures/macro'
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
+
 import {
     fetchMacros,
     fetchMacro,

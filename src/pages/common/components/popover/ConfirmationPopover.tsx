@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import _get from 'lodash/get'
 import React, {
     ComponentProps,
     ReactNode,
@@ -7,14 +9,12 @@ import React, {
     useState,
 } from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import _get from 'lodash/get'
-import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
-import Button from 'pages/common/components/button/Button'
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
 import useId from 'hooks/useId'
 import useIsMounted from 'hooks/useIsMounted'
+import Button from 'pages/common/components/button/Button'
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import css from './ConfirmationPopover.less'
 

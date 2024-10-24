@@ -1,7 +1,9 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
-import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
+import React, {ComponentProps} from 'react'
+
 import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
+import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
+
 import {CheckPlaygroundPrerequisites} from '../PlaygroundPrerequisites'
 
 jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({

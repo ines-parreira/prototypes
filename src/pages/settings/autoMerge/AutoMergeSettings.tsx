@@ -1,22 +1,22 @@
+import classNames from 'classnames'
 import React, {useCallback, FormEvent} from 'react'
 
-import classNames from 'classnames'
-import CheckBox from 'pages/common/forms/CheckBox'
 import Button from 'pages/common/components/button/Button'
-import PageHeader from 'pages/common/components/PageHeader'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
+import PageHeader from 'pages/common/components/PageHeader'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 
-import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
-import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
+import autoMergeSettingsCss from 'pages/settings/autoMerge/AutoMergeSettings.less'
 import {
     defaultAutoMergeSettings,
     MAX_MERGING_WINDOW_DAYS,
 } from 'pages/settings/autoMerge/constants'
+import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
+import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
 
 import css from 'pages/settings/settings.less'
-import autoMergeSettingsCss from 'pages/settings/autoMerge/AutoMergeSettings.less'
 
 export default function AutoMergeSettings() {
     const {initialAutoMergeSettings, saveAutoMergeSettings} =

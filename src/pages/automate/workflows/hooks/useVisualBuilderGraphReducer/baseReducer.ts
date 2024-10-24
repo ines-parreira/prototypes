@@ -1,11 +1,12 @@
 import {produce} from 'immer'
 
-import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
+import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     AutomatedMessageNodeType,
     CancelSubscriptionNodeType,
@@ -24,7 +25,6 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
-import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     buildAutomatedMessageNode,
     buildCancelOrderNode,

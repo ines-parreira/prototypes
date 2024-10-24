@@ -1,11 +1,11 @@
-import React, {Component, SyntheticEvent} from 'react'
 import {fromJS} from 'immutable'
+import {isArray} from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 
-import {isArray} from 'lodash'
 import {ContentType, HttpMethod} from 'models/api/types'
 import {EventType} from 'models/event/types'
 import {
@@ -21,23 +21,22 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {DEFAULT_FORM} from 'pages/integrations/integration/components/http/Integration/constants'
+import {validateHeaderName} from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
+import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
+import ObjectListField, {
+    Field,
+} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 import css from 'pages/settings/settings.less'
-import {RootState} from 'state/types'
 import {
     activateIntegration,
     deactivateIntegration,
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
-
 import {getIntegrationsLoading} from 'state/integrations/selectors'
-import ObjectListField, {
-    Field,
-} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
-import {DEFAULT_FORM} from 'pages/integrations/integration/components/http/Integration/constants'
-import {validateHeaderName} from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
-import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
+import {RootState} from 'state/types'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 type Props = {
     integration: HttpIntegration | undefined

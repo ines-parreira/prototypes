@@ -7,8 +7,8 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyLineItemFixture,
 } from '../../../fixtures/shopify'
-import {addCustomLineItem} from '../draftOrder'
 import {getDiscountAmount, refreshAppliedDiscounts} from '../discount'
+import {addCustomLineItem} from '../draftOrder'
 import {formatPrice} from '../number'
 
 describe('getDiscountAmount()', () => {

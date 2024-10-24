@@ -1,5 +1,6 @@
 import {queryKeys} from '@gorgias/api-queries'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+
 import {appQueryClient} from 'api/queryClient'
 import {createJob} from 'models/job/resources'
 import {

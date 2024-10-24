@@ -1,4 +1,5 @@
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+
 import {ConditionsSchema} from './conditions.types'
 
 export type MessageContent = {

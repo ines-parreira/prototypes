@@ -2,13 +2,11 @@ import React from 'react'
 
 import {SegmentEvent} from 'common/segment'
 
+import useEffectOnce from 'hooks/useEffectOnce'
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types/gorgiasChat'
 
-import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
-
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-
-import useEffectOnce from 'hooks/useEffectOnce'
+import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
 import useLogWizardEvent from '../hooks/useLogWizardEvent'
 

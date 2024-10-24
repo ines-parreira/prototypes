@@ -1,30 +1,17 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import {Map, List} from 'immutable'
-import React, {Component, ReactText} from 'react'
-import moment from 'moment-timezone'
 import _isFunction from 'lodash/isFunction'
 import _trim from 'lodash/trim'
 import _truncate from 'lodash/truncate'
-import {Table} from 'reactstrap'
+import moment from 'moment-timezone'
+import React, {Component, ReactText} from 'react'
 import {Link, RouteComponentProps} from 'react-router-dom'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Table} from 'reactstrap'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
-import withRouter from 'pages/common/utils/withRouter'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {Integration, StoreIntegration} from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {
-    formatComparedPeriodString,
-    formatCurrency,
-    formatDuration,
-} from 'pages/stats/common/utils'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
@@ -35,17 +22,29 @@ import {
     StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
 } from 'config/stats'
-import StatDifference from 'pages/stats/common/components/StatDifference'
-import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
+import {Integration, StoreIntegration} from 'models/integration/types'
+import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import withRouter from 'pages/common/utils/withRouter'
 import DistributionVariantStat, {
     DistributionStatVariant,
 } from 'pages/stats/common/components/charts/DistributionVariantStat'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ProductCell from 'pages/stats/common/components/charts/TableStat/cells/ProductCell'
 import css from 'pages/stats/common/components/charts/TableStat/TableStat.less'
 import TicketDetailsStat from 'pages/stats/common/components/charts/TableStat/TicketDetailsStat'
-import {LegacyStatsFilters} from 'models/stat/types'
+import StatDifference from 'pages/stats/common/components/StatDifference'
+import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
+import {
+    formatComparedPeriodString,
+    formatCurrency,
+    formatDuration,
+} from 'pages/stats/common/utils'
 
 type OwnProps = {
     data: Map<any, any>

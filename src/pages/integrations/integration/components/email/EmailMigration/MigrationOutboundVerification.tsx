@@ -1,21 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Col} from 'reactstrap'
-import {useHistory} from 'react-router-dom'
 import {AxiosError} from 'axios'
+import React, {useEffect, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {Col} from 'reactstrap'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchMigrationDomains} from 'models/integration/resources/email'
 import {EmailMigrationOutboundVerification} from 'models/integration/types'
-import {getMoment} from 'utils/date'
 import Button from 'pages/common/components/button/Button'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useAsyncFn from 'hooks/useAsyncFn'
+import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import MigrationTutorialList from './MigrationTutorialList'
-import MigrationDomainList from './MigrationDomainList'
+import {getMoment} from 'utils/date'
 
+import MigrationDomainList from './MigrationDomainList'
 import css from './MigrationOutboundVerification.less'
+import MigrationTutorialList from './MigrationTutorialList'
 
 type Props = {
     onBackClick: () => void

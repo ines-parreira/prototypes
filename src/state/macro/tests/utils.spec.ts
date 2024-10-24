@@ -1,9 +1,10 @@
 import {fromJS} from 'immutable'
 
 import {ActionTemplateExecution} from 'config'
+
 import {MacroActionName} from '../../../models/macroAction/types'
-import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
 import {MacroApiError} from '../types'
+import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {

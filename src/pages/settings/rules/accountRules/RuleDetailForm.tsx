@@ -2,16 +2,17 @@ import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {fetchRule} from 'models/rule/resources'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
 import {ruleFetched} from 'state/entities/rules/actions'
+import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import history from 'pages/history'
-import useAsyncFn from 'hooks/useAsyncFn'
 
 import {RootState} from 'state/types'
+
 import {RuleFormEditor} from './components/RuleFormEditor'
 
 export function RuleDetailForm({

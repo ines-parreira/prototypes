@@ -1,4 +1,5 @@
 import {useEffect, useRef} from 'react'
+
 import {TicketSummary} from '../types'
 
 export default function useTicketIds(tickets: TicketSummary[]) {

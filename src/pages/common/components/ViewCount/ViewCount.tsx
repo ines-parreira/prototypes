@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
 import {compactInteger} from 'utils'
+
 import DeactivatedViewIcon from '../DeactivatedViewIcon'
 
 type OwnProps = {

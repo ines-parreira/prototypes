@@ -1,24 +1,24 @@
 import React, {memo, useCallback, useContext, useMemo, useState} from 'react'
 import {Collapse} from 'reactstrap'
 
-import {Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {Source} from 'models/widget/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {
+    Link as LinkType,
+    SubmitLink,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {AppContext} from 'providers/infobar/AppContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     removeEditedWidget,
     startWidgetEdition,
     updateCustomActions,
 } from 'state/widgets/actions'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
-import {
-    Link as LinkType,
-    SubmitLink,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import Editor from './Editor'
 import Link from './Link'

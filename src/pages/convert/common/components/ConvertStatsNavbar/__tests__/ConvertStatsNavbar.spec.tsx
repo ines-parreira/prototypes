@@ -1,23 +1,24 @@
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _cloneDeep from 'lodash/cloneDeep'
-import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {NavbarLinkProps} from 'pages/common/components/navbar/NavbarLink'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
 import {HelpdeskPlan} from 'models/billing/types'
+import {NavbarLinkProps} from 'pages/common/components/navbar/NavbarLink'
+import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {AccountFeature} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
 import ConvertStatsNavbar from '../ConvertStatsNavbar'

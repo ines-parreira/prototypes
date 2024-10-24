@@ -1,13 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {CardTemplate} from 'models/widget/types'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
-import {Action} from '../types'
-import {Links} from '../Links/Links'
 import {ActionButtons} from '../ActionButtons/ActionButtons'
 import CustomActions from '../index'
+import {Links} from '../Links/Links'
+import {Action} from '../types'
 
 jest.mock('../Links/Links')
 jest.mock('../ActionButtons/ActionButtons')

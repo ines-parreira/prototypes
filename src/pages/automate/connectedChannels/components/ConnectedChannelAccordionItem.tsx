@@ -1,21 +1,21 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Button from 'pages/common/components/button/Button'
+import {TicketChannel} from 'business/types/ticket'
+import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
 import {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {TicketChannel} from 'business/types/ticket'
-import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import Button from 'pages/common/components/button/Button'
 
-import css from './ConnectedChannelAccordionItem.less'
 import ConnectedChannelAccordionBodyChat from './ConnectedChannelAccordionBodyChat'
 import ConnectedChannelAccordionBodyHelpCenter from './ConnectedChannelAccordionBodyHelpCenter'
 import ConnectedChannelAccordionBodyStandaloneContactForm from './ConnectedChannelAccordionBodyStandaloneContactForm'
+import css from './ConnectedChannelAccordionItem.less'
 
 type Props = {
     index: number

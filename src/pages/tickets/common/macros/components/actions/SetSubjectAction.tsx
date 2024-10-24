@@ -1,5 +1,5 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import TextInput from 'pages/common/forms/input/TextInput'
 

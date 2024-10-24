@@ -3,12 +3,11 @@ import React from 'react'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {DEVICE_TYPE_VALUES} from 'pages/convert/campaigns/constants/triggerValueLabels'
 import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
+import {DEVICE_TYPE_VALUES} from 'pages/convert/campaigns/constants/triggerValueLabels'
+import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
 import css from './CampaignDeviceType.less'
 

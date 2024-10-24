@@ -1,13 +1,13 @@
-import React, {useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useMemo} from 'react'
 
-import {Drawer} from 'pages/common/components/Drawer'
-import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {Drawer} from 'pages/common/components/Drawer'
 
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 import TextInputWithVariables from '../components/variables/TextInputWithVariables'
+import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 

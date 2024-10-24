@@ -1,8 +1,9 @@
 import {render, screen} from '@testing-library/react'
-import {BrowserRouter} from 'react-router-dom'
 import React from 'react'
-import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
+import {BrowserRouter} from 'react-router-dom'
+
 import {EmailIntegration, IntegrationType} from 'models/integration/types'
+import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
 
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {
     it('renders the breadcrumb items correctly without integration', () => {

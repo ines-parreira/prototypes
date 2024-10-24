@@ -1,14 +1,15 @@
 import {useQueryClient} from '@tanstack/react-query'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {billingKeys, useUpdateBillingContact} from 'models/billing/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {updateBillingContact} from 'models/billing/resources'
 import {
     UPDATE_BILLING_CONTACT_ERROR,
     UPDATE_BILLING_CONTACT_SUCCESS,
 } from 'state/billing/constants'
-import {updateBillingContact} from 'models/billing/resources'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {MutationOverrides} from 'types/query'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 export const useUpdateBillingContactWithSideEffects = (
     overrides?: MutationOverrides<typeof updateBillingContact>

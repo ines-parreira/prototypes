@@ -1,12 +1,13 @@
-import React, {ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {ReactNode} from 'react'
+
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import NumberedList from './NumberedList'
 
 import css from './MigrationTutorialList.less'
+import NumberedList from './NumberedList'
 
 type Instruction = {
     message: ReactNode

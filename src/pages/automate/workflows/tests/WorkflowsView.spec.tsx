@@ -1,26 +1,27 @@
-import React from 'react'
-import {fireEvent, screen, waitFor, within} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, screen, waitFor, within} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter, renderWithRouterAndDnD} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {IntegrationType} from 'models/integration/constants'
 import {
     useGetWorkflowConfigurations,
     useDuplicateWorkflowConfiguration,
     useDeleteWorkflowConfiguration,
 } from 'models/workflows/queries'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FLOWS} from 'pages/automate/common/components/constants'
-import WorkflowsView from '../WorkflowsView'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter, renderWithRouterAndDnD} from 'utils/testing'
+
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
+import WorkflowsView from '../WorkflowsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const queryClient = mockQueryClient()

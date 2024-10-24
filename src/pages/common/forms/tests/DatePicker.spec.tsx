@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
-import moment from 'moment-timezone'
 import {Options} from 'daterangepicker'
+import moment from 'moment-timezone'
+import React, {ComponentProps} from 'react'
 
 import DatePicker from 'pages/common/forms/DatePicker'
 

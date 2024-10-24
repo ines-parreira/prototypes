@@ -1,7 +1,7 @@
 // g/integrations/magento2/schemas.py
 import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type Magento2Integration = IntegrationBase & {
     type: IntegrationType.Magento2

@@ -1,32 +1,33 @@
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React from 'react'
-import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
-import {Label} from '@gorgias/ui-kit'
+import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import BackLink from 'pages/common/components/BackLink'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import settingsCss from 'pages/settings/settings.less'
-import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
-import {
-    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-    CONTACT_FORM_PUBLISH_PATH,
-} from 'pages/settings/contactForm/constants'
-import BackLink from 'pages/common/components/BackLink'
-import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
-import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {ContactFormAutoEmbedReadinessStatus} from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
 import ContactFormIntegrationWarningBanner, {
     ContactFormIntegrationWarningBannerProps,
 } from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
-import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
+import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
+import {
+    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
+    CONTACT_FORM_PUBLISH_PATH,
+} from 'pages/settings/contactForm/constants'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
+import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
+import settingsCss from 'pages/settings/settings.less'
+
 import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
+import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
 
 const getBannerDetails = ({
     integrationId,

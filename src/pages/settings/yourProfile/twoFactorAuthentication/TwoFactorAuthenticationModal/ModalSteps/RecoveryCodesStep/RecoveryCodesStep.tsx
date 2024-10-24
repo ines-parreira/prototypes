@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import Clipboard from 'clipboard'
 import React, {
     Dispatch,
     SetStateAction,
@@ -5,13 +7,12 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import Clipboard from 'clipboard'
 
-import Button from 'pages/common/components/button/Button'
-import settingsCss from 'pages/settings/settings.less'
 import {RecoveryCode} from 'models/twoFactorAuthentication/types'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import settingsCss from 'pages/settings/settings.less'
+
 import modalStepsCss from '../ModalSteps.less'
 import css from './RecoveryCodesStep.less'
 

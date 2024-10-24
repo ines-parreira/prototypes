@@ -1,10 +1,10 @@
+import {fromJS, List, Map} from 'immutable'
 import React, {
     ContextType,
     createContext,
     FunctionComponent,
     useContext,
 } from 'react'
-import {fromJS, List, Map} from 'immutable'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 

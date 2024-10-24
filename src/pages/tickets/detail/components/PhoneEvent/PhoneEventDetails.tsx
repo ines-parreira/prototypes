@@ -1,6 +1,6 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
+import React from 'react'
 
 import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
 

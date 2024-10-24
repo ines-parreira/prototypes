@@ -3,6 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {customer} from 'fixtures/customer'
 import {useCustomerSearch} from 'pages/common/components/infobar/Infobar/useCustomerSearch'
 import {searchWithHighlights} from 'state/infobar/actions'

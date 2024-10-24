@@ -1,13 +1,15 @@
 import React from 'react'
+
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {SearchResultsLoadingContent} from '../SearchResults/SearchResultsLoadingContent'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import nestingCss from '../SearchResults/nesting.less'
+import {SearchResultsLoadingContent} from '../SearchResults/SearchResultsLoadingContent'
+
 import css from './CategoriesTableSkeleton.less'
 
 const SkeletonRow = () => {

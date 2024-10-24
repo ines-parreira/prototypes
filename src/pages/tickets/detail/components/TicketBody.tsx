@@ -6,10 +6,10 @@ import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 import useAppSelector from 'hooks/useAppSelector'
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {TicketElement, TicketMessage} from 'models/ticket/types'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
-import {getDisplayHistory} from 'state/ticket/selectors'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
+import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import {getDisplayHistory} from 'state/ticket/selectors'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {
     useExpandedMessages,
@@ -19,11 +19,10 @@ import {
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
 import MessageQuoteContext from './MessageQuoteContext'
+import css from './TicketBody.less'
 import TicketBodyElement from './TicketBodyElement'
 import TicketFooter, {TicketFooterContext} from './TicketFooter'
 import TicketHeaderWrapper from './TicketHeaderWrapper'
-
-import css from './TicketBody.less'
 
 interface Props {
     customScrollParentRef?: React.RefObject<HTMLDivElement>

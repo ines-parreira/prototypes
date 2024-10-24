@@ -1,38 +1,36 @@
+import {AxiosError} from 'axios'
+import {fromJS, Map} from 'immutable'
 import React, {useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {AxiosError} from 'axios'
-import {fromJS, Map} from 'immutable'
-
 import {UploadType} from 'common/types'
 import {uploadFiles} from 'common/utils'
-import Loader from 'pages/common/components/Loader/Loader'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import Button from 'pages/common/components/button/Button'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {saveFileAsDownloaded} from 'utils/file'
+
 import {FetchedProvidersState, ImportArticlesModalState} from '../../types'
 
+import DropAreas from './components/DropAreas'
+import FileSelectedArea from './components/FileSelectedArea'
+
+import css from './ImportArticlesModal.less'
 import {
     buildCsvColumnMatchingUrl,
     fileIsTooBig,
     generateCSVTemplate,
 } from './utils'
-
-import FileSelectedArea from './components/FileSelectedArea'
-import DropAreas from './components/DropAreas'
-
-import css from './ImportArticlesModal.less'
 
 type Props = {
     isOpen: boolean

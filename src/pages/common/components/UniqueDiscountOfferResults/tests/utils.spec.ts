@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
+
 import {integrationsState} from 'fixtures/integrations'
+
 import {computeDiscountOfferSummary} from '../utils'
 
 describe('UniqueDiscountOffers utils', () => {

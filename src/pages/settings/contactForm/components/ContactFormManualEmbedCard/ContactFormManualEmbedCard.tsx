@@ -2,6 +2,7 @@ import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import InstructionsCard from 'pages/common/components/InstructionsCard'
+
 import {useContactFormManualEmbedInstructionsCardState} from './useContactFormManualEmbedTabs'
 
 type ContactFormManualEmbedCardProps = {

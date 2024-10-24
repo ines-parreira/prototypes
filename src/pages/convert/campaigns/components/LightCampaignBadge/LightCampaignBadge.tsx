@@ -1,5 +1,6 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
+
 import Badge from 'gorgias-design-system/Badge/Badge'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'

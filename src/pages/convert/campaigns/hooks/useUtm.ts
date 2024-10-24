@@ -1,7 +1,8 @@
 import {useEffect, useRef, useState} from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
 import {ChannelConnection} from 'models/convert/channelConnection/types'
-import {logEvent, SegmentEvent} from 'common/segment'
 
 export const useUtm = (
     channelConnection: ChannelConnection | null,

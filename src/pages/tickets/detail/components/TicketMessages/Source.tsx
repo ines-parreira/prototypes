@@ -1,17 +1,17 @@
-import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
-import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
-import {Source as SourceType, SourceAddress} from 'models/ticket/types'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import {Source as SourceType, SourceAddress} from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {toChannel} from 'services/channels'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
 import {humanizeChannel} from 'state/ticket/utils'
-import {DateAndTimeFormatting} from 'constants/datetime'
 
 import css from './Source.less'
 

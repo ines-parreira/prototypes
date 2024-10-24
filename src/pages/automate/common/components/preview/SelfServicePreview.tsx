@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react'
-import {Router, Switch} from 'react-router-dom'
 import {History} from 'history'
 import _uniqueId from 'lodash/uniqueId'
+import React, {useMemo} from 'react'
+import {Router, Switch} from 'react-router-dom'
 
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {TicketChannel} from 'business/types/ticket'
+import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import SelfServiceChatIntegrationPreview from './SelfServiceChatIntegrationPreview'
 import SelfServiceHelpCenterPreview from './SelfServiceHelpCenterPreview'

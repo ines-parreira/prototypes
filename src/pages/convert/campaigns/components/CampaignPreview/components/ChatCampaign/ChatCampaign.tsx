@@ -1,29 +1,29 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
 import ReactPlayer from 'react-player'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import classNames from 'classnames'
-import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useMeasure from 'hooks/useMeasure'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
-import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
-import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useMeasure from 'hooks/useMeasure'
+import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
 
 import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
+import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
+import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
+import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
+
 import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
-import {ProductCarousel} from '../ProductCarousel'
-
-import {DiscountOfferPreview} from '../DiscountOfferPreview/DiscountOfferPreview'
 import {ContactCaptureFormPreview} from '../ContactCaptureFormPreview/ContactCaptureFormPreview'
+import {DiscountOfferPreview} from '../DiscountOfferPreview/DiscountOfferPreview'
+import {ProductCarousel} from '../ProductCarousel'
 import css from './ChatCampaign.less'
 
 type AuthorNameProps = {

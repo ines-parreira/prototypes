@@ -1,25 +1,25 @@
-import React, {RefObject, memo, useCallback, useEffect, useState} from 'react'
-import {Map, List, fromJS} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
+import {Map, List, fromJS} from 'immutable'
 import _debounce from 'lodash/debounce'
+import React, {RefObject, memo, useCallback, useEffect, useState} from 'react'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {logEvent, SegmentEvent} from 'common/segment'
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
 } from 'business/shopify/lineItem'
 import {formatPrice} from 'business/shopify/number'
-import CheckBox from 'pages/common/forms/CheckBox'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import IconButton from 'pages/common/components/button/IconButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {ProductStockQuantity} from 'pages/common/components/StockQuantity'
+import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import css from './OrderLineItemRow.less'
 

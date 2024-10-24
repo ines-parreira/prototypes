@@ -1,10 +1,12 @@
 import React, {useCallback, useMemo} from 'react'
-import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
+
 import {TicketChannel} from 'business/types/ticket'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
+import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
 import ChannelToggle from './ChannelToggle'

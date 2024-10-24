@@ -1,5 +1,6 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import ButtonPopover from '../ButtonPopover'
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */

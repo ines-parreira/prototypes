@@ -1,10 +1,12 @@
-import moment from 'moment'
 import {renderHook} from '@testing-library/react-hooks'
-import {assumeMock} from 'utils/testing'
-import {StatsFilters} from 'models/stat/types'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {formatReportingQueryDate} from 'utils/reporting'
+import moment from 'moment'
+
 import {useMetric} from 'hooks/reporting/useMetric'
+import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
+
 import {useVoiceCallCountMetric} from '../useVoiceCallCountMetric'
 
 jest.mock('hooks/reporting/useMetric')

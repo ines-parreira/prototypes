@@ -1,18 +1,18 @@
-import MockAdapter from 'axios-mock-adapter'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {Provider} from 'react-redux'
-import React from 'react'
 
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     useGetHTTPEvent,
     useGetHTTPEvents,
 } from 'models/integration/queries/http'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()

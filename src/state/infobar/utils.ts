@@ -1,10 +1,10 @@
 import hash from 'object-hash'
 
-import {ActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {
     BigCommerceRefundOrderPayload,
     BigCommerceRefundType,
 } from 'models/integration/types'
+import {ActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {ShopifyActionType} from 'Widgets/modules/Shopify'
 
 export type ActionDataPayload =

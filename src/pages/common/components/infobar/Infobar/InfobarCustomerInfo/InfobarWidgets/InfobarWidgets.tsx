@@ -1,11 +1,15 @@
-import React, {useContext} from 'react'
 import classnames from 'classnames'
 import {List, Map, fromJS} from 'immutable'
+import React, {useContext} from 'react'
 
-import {compare} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {Integration, IntegrationType} from 'models/integration/types'
-import {getSourcePathFromContext} from 'state/widgets/utils'
+import {ImmutableSource, Source, Template} from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {canDisplayWidget} from 'pages/common/components/infobar/utils'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import {getIntegrations} from 'state/integrations/selectors'
 import {
     CUSTOM_WIDGET_TYPE,
@@ -13,18 +17,15 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetEnvironment, WidgetType} from 'state/widgets/types'
 import {getWidgetsState} from 'state/widgets/selectors'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {canDisplayWidget} from 'pages/common/components/infobar/utils'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {WidgetEnvironment, WidgetType} from 'state/widgets/types'
+import {getSourcePathFromContext} from 'state/widgets/utils'
 
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {ImmutableSource, Source, Template} from 'models/widget/types'
+import {compare} from 'utils'
 import RootWidget from 'Widgets/modules/Widget'
-import css from './InfobarWidgets.less'
+
 import {InfobarTabs} from './InfobarTabs'
+import css from './InfobarWidgets.less'
 
 const Widget = React.memo(RootWidget)
 

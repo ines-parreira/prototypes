@@ -1,20 +1,20 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {ContentState, EditorState} from 'draft-js'
+import React from 'react'
 
 import {convertFromHTML} from '../../../../utils/editor'
 import createToolbarPlugin from '../plugins/toolbar/index'
 import {Config} from '../plugins/toolbar/types'
+import {Plugin} from '../plugins/types'
 import {variable as variableDecorator} from '../plugins/variables/decorators'
 import {attachEntitiesToVariables} from '../plugins/variables/utils'
-import {Plugin} from '../plugins/types'
 
-import TestEditor from './TestEditor'
-import * as utils from './utils'
 import {
     createCompositeDecorator,
     createEditorStateFromHtml,
 } from './draftTestUtils'
+import TestEditor from './TestEditor'
+import * as utils from './utils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

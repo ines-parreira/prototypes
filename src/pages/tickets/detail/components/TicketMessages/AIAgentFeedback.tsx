@@ -1,10 +1,10 @@
-import React, {FC} from 'react'
 import classNames from 'classnames'
+import React, {FC} from 'react'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Button from 'pages/common/components/button/Button'
-
-import {TicketMessage} from 'models/ticket/types'
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     BinaryFeedbackOnMessage,
     Feedback,
@@ -12,11 +12,12 @@ import {
     MessageFeedback,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import {TicketMessage} from 'models/ticket/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {
     changeActiveTab,
     changeTicketMessage,
@@ -24,9 +25,6 @@ import {
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {BANNER_TYPE} from '../AIAgentFeedbackBar/constants'
 import css from './AIAgentFeedback.less'

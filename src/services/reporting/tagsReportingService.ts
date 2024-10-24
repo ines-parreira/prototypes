@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import {FormattedDataItem} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {Period} from 'models/stat/types'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'

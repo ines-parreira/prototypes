@@ -1,9 +1,13 @@
-import React from 'react'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {SegmentEvent} from 'common/segment'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -11,28 +15,26 @@ import {
     proMonthlyHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/productPrices'
-import {assumeMock, getLastMockCall} from 'utils/testing'
-import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
-import {ProductType} from 'models/billing/types'
-import {billingState} from 'fixtures/billing'
 import {user} from 'fixtures/users'
-import {account} from 'fixtures/account'
+import {trackBillingEvent} from 'models/billing/resources'
+import {ProductType} from 'models/billing/types'
+import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {SegmentEvent} from 'common/segment'
-import {trackBillingEvent} from 'models/billing/resources'
-import CancelProductModal from '../CancelProductModal'
-import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
-import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
+import {assumeMock, getLastMockCall} from 'utils/testing'
+
 import CancellationReasons from '../CancellationReasons'
+import CancellationSummary from '../CancellationSummary'
+import CancelProductModal from '../CancelProductModal'
+import ChurnMitigationOffer from '../ChurnMitigationOffer'
 import {CancellationFlowStep} from '../constants'
 import useCancellationFlowStepsStateMachine from '../hooks/useCancellationFlowStepsStateMachine'
-import {cancellationReasonsReducer, DEFAULT_STATE} from '../reducers'
-import ChurnMitigationOffer from '../ChurnMitigationOffer'
-import CancellationSummary from '../CancellationSummary'
-import Disclaimer from '../UI/Disclaimer'
 import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
+import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
+import {cancellationReasonsReducer, DEFAULT_STATE} from '../reducers'
 import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
+import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
+import Disclaimer from '../UI/Disclaimer'
 
 // components mocks
 const mockStore = configureMockStore([thunk])

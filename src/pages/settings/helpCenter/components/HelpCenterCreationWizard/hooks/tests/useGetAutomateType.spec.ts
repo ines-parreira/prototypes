@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpCenterAutomateType} from 'models/helpCenter/types'
+
 import useGetAutomateType from '../useGetAutomateType'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

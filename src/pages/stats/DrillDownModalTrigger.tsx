@@ -1,16 +1,17 @@
-import React, {PropsWithChildren} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {PropsWithChildren} from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useId from 'hooks/useId'
+import {hintTooltipDelay} from 'pages/stats/common/constants'
+import css from 'pages/stats/DrillDownModalTrigger.less'
 import {
     DrillDownMetric,
     setMetricData,
     setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
-import css from 'pages/stats/DrillDownModalTrigger.less'
-import {hintTooltipDelay} from 'pages/stats/common/constants'
-import useId from 'hooks/useId'
 
 import {
     ConvertMetric,

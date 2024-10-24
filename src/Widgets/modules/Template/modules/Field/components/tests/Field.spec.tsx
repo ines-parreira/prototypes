@@ -1,19 +1,19 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
 import {idTemplate} from 'fixtures/widgets'
+import {LEAF_TYPES} from 'models/widget/constants'
 import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import {LEAF_TYPES} from 'models/widget/constants'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import CopyButton from '../CopyButton'
-import UIField from '../views'
 import Field from '../Field'
+import UIField from '../views'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

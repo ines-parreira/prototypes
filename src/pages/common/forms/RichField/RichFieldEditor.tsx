@@ -8,7 +8,6 @@ import {Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import _uniq from 'lodash/uniq'
-import ReactPlayer from 'react-player'
 import React, {
     ReactNode,
     ComponentType,
@@ -17,29 +16,17 @@ import React, {
     ComponentProps,
     Component,
 } from 'react'
+import ReactPlayer from 'react-player'
 
 import {UploadType} from 'common/types'
-import {extractUrlsFromString} from 'utils'
-import {addVideo} from 'pages/common/draftjs/plugins/utils'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import shortcutManager from 'services/shortcutManager'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {addVideo} from 'pages/common/draftjs/plugins/utils'
+import shortcutManager from 'services/shortcutManager'
+import {extractUrlsFromString} from 'utils'
 
-import {ConnectedAction} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
-import {scrollToReactNode} from '../../../common/utils/keyboard'
-
-import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
-import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
-import createMentionPlugin from '../../draftjs/plugins/mentions'
-import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
-import createVariablesPlugin from '../../draftjs/plugins/variables/index'
-import createPredictionPlugin from '../../draftjs/plugins/prediction'
-import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
-
-import {ActionName} from '../../draftjs/plugins/toolbar/types'
-import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
-import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
+import {ConnectedAction} from '../../../../state/types'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
@@ -48,18 +35,31 @@ import {
     refreshEditor,
     removeMentions,
 } from '../../../../utils/editor'
+import {scrollToReactNode} from '../../../common/utils/keyboard'
+
+import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
+import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
+import createMentionPlugin from '../../draftjs/plugins/mentions'
+import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
+import createPredictionPlugin from '../../draftjs/plugins/prediction'
+import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
+
+import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
+import {ActionName} from '../../draftjs/plugins/toolbar/types'
+import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
+import createVariablesPlugin from '../../draftjs/plugins/variables/index'
 
 import EmailExtraButton from './EmailExtraButton'
-import provideToolbarPlugin, {
-    InjectedProps as ToolbarPluginProps,
-} from './provideToolbarPlugin'
 import provideMentionFilteredSuggestions, {
     InjectedProps as MentionFilteredSuggestionsProps,
 } from './provideMentionSearchResults'
+import provideToolbarPlugin, {
+    InjectedProps as ToolbarPluginProps,
+} from './provideToolbarPlugin'
+import css from './RichFieldEditor.less'
 import withGrammarlyUsageTracking, {
     InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
-import css from './RichFieldEditor.less'
 
 type suggestionsType = List<any>
 type canAddMentionType = boolean

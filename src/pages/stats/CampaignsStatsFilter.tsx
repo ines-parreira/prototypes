@@ -1,10 +1,11 @@
 import React, {ComponentProps, useCallback} from 'react'
 
-import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LegacyStatsFilters} from 'models/stat/types'
 
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
+
 import SelectFilter from './common/SelectFilter'
 
 type Props = {

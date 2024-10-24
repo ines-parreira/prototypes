@@ -1,12 +1,12 @@
-import React, {useCallback, useRef, useState} from 'react'
 import {
     useKnockFeed,
     FilterStatus,
     NotificationFeedHeaderProps,
 } from '@knocklabs/react'
-import {Link} from 'react-router-dom'
-import _capitalize from 'lodash/capitalize'
 import cn from 'classnames'
+import _capitalize from 'lodash/capitalize'
+import React, {useCallback, useRef, useState} from 'react'
+import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'

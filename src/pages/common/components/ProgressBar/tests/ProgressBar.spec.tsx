@@ -1,5 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+
 import ProgressBar from '../ProgressBar'
 
 const defaultProps: ComponentProps<typeof ProgressBar> = {

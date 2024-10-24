@@ -1,26 +1,25 @@
-import React, {useCallback, useState, useMemo} from 'react'
 import classnames from 'classnames'
-import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
-
-import {IntegrationType} from 'models/integration/constants'
-import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
-import {ProductCardDetails} from 'models/integration/types'
-import {insertLink, insertText} from 'utils'
-import {getIconFromType} from 'state/integrations/helpers'
+import React, {useCallback, useState, useMemo} from 'react'
+import {ListGroup, ListGroupItem} from 'reactstrap'
 
 import {AttachmentEnum} from 'common/types'
+import {IntegrationType} from 'models/integration/constants'
+import {ProductCardDetails} from 'models/integration/types'
+import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
+import {getIconFromType} from 'state/integrations/helpers'
+import {insertLink, insertText} from 'utils'
+
+import {useToolbarContext} from '../ToolbarContext'
 import {ActionInjectedProps, ActionName} from '../types'
 import {
     getTooltipTourConfiguration,
     mapIntegrationToPickedShopifyIntegration,
     transformProductCardDetailsToProductCardAttachment,
 } from '../utils'
-import {useToolbarContext} from '../ToolbarContext'
-import Popover from './ButtonPopover'
-
 import css from './AddProductLink.less'
+import Popover from './ButtonPopover'
 
 type Props = ActionInjectedProps
 

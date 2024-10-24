@@ -3,9 +3,9 @@ import {fromJS} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import pollingManager from 'services/pollingManager'
+import {EqualityOperator} from 'state/rules/types'
 import {getViewFilters} from 'state/views/utils'
 
-import {EqualityOperator} from 'state/rules/types'
 import usePollingManager from '../usePollingManager'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

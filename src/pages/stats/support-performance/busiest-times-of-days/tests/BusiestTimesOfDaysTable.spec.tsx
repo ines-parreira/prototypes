@@ -3,16 +3,17 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {
-    get24Hours,
-    hourFromHourIndex,
-} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+
 import {ReportingGranularity} from 'models/reporting/types'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
     BusiestTimeOfDaysMetrics,
     columnsOrder,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import {
+    get24Hours,
+    hourFromHourIndex,
+} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,

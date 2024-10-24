@@ -1,6 +1,6 @@
 import {render} from '@testing-library/react'
-import React from 'react'
 import _noop from 'lodash/noop'
+import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import NumberInput from 'pages/common/forms/input/NumberInput'

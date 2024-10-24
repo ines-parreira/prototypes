@@ -1,14 +1,14 @@
 import {cleanup, fireEvent, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 
-import {mockStore, renderWithRouter} from 'utils/testing'
 import * as hooks from 'common/hooks'
-import {IntegrationType} from 'models/integration/constants'
 import {UserRole} from 'config/types/user'
+import {IntegrationType} from 'models/integration/constants'
 import {OutboundVerificationStatusValue} from 'models/integration/types'
+import {mockStore, renderWithRouter} from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 

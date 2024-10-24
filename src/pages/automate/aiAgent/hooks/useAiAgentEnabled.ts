@@ -1,13 +1,14 @@
-import {useCallback, useMemo} from 'react'
 import {RuleType} from '@gorgias/api-queries'
+import {useCallback, useMemo} from 'react'
 import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {useRules} from 'state/entities/rules/hooks'
+
 import {updateRule} from 'models/rule/resources'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import {useRules} from 'state/entities/rules/hooks'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const useAiAgentEnabled = (
     monitoredEmailIntegrations: {id: number; email: string}[],

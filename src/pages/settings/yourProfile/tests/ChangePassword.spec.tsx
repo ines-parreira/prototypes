@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, Matcher, render, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {ChangePasswordContainer} from '../ChangePassword'
 

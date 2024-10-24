@@ -1,14 +1,15 @@
-import React from 'react'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouterAndDnD} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreIntegration} from 'models/integration/types'
 
 import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouterAndDnD} from 'utils/testing'
+
 import WorkflowRow, {getLink} from '../WorkflowRow'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

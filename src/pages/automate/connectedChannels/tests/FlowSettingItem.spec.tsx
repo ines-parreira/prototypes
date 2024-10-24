@@ -1,9 +1,10 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {createDragDropManager} from 'dnd-core'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React from 'react'
 import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {act} from 'react-dom/test-utils'
+
 import {FlowSettingsItem} from '../components/FlowSettingsItem'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)

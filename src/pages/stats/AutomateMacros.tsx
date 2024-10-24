@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppSelector from 'hooks/useAppSelector'
 import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     getStatsFilters,
@@ -9,9 +10,8 @@ import {
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
-import useStatResource from 'hooks/reporting/useStatResource'
-import ChannelsStatsFilter from './common/filters/DEPRECATED_ChannelsStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
+import ChannelsStatsFilter from './common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from './common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from './common/filters/DEPRECATED_PeriodStatsFilter'
 import StatsPage from './StatsPage'

@@ -1,8 +1,9 @@
 import {render, screen, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {toJS} from 'utils'
+
 import AddSiblingCondition from '../AddSiblingCondition'
 
 describe('AddSiblingCondition component', () => {

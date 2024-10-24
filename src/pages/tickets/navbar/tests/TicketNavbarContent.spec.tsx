@@ -1,8 +1,8 @@
 import {render, fireEvent} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {fromJS} from 'immutable'
 
 import {section} from 'fixtures/section'
 import {user} from 'fixtures/users'
@@ -14,9 +14,9 @@ import {
     TicketNavbarElement,
     getNextSettings,
 } from '../TicketNavbarContent'
-import TicketNavbarView from '../TicketNavbarView'
 import {TicketNavbarDropDirection} from '../TicketNavbarDropTarget'
 import TicketNavbarSection from '../TicketNavbarSection'
+import TicketNavbarView from '../TicketNavbarView'
 
 jest.mock(
     '../TicketNavbarView',

@@ -1,38 +1,37 @@
+import {fromJS, Map} from 'immutable'
 import React, {useCallback, useMemo, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import {fromJS, Map} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
-import {getHumanAgentsJS} from 'state/agents/selectors'
-import {
-    getIntegrationById,
-    getIntegrationByIdAndType,
-} from 'state/integrations/selectors'
-import history from 'pages/history'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
+import {abVariantsUrl} from 'pages/convert/abVariants/urls'
+
+import {
+    CampaignDetailsForm,
+    Props as CampaignDetailsFormProps,
+} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {Label} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
-
 import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
-import {abVariantsUrl} from 'pages/convert/abVariants/urls'
-
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {Label} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import history from 'pages/history'
+import {getHumanAgentsJS} from 'state/agents/selectors'
 import {
-    CampaignDetailsForm,
-    Props as CampaignDetailsFormProps,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+    getIntegrationById,
+    getIntegrationByIdAndType,
+} from 'state/integrations/selectors'
 
 import css from './ABTestVariantEditPage.less'
 

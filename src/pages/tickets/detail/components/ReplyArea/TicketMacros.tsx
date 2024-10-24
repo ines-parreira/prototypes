@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {fromJS, Map, List} from 'immutable'
 import React, {
     MouseEvent,
     useCallback,
@@ -5,8 +7,6 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {fromJS, Map, List} from 'immutable'
-import classnames from 'classnames'
 import {
     Dropdown,
     DropdownItem,
@@ -19,17 +19,17 @@ import {
 import {useAppNode} from 'appNode'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {UserRole} from 'config/types/user'
-import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import Preview from 'pages/tickets/common/macros/Preview'
+import history from 'pages/history'
 import MacroList from 'pages/tickets/common/macros/components/MacroList'
 import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import Preview from 'pages/tickets/common/macros/Preview'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {CurrentUserState} from 'state/currentUser/types'
 import {deleteMacro} from 'state/macro/actions'

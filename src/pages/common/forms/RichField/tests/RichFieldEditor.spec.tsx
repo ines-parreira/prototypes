@@ -1,18 +1,18 @@
-import React, {ComponentProps} from 'react'
+import {convertToHTML} from 'draft-convert'
+import {ContentState, EditorState} from 'draft-js'
+import Editor from 'draft-js-plugins-editor'
 import {mount, shallow} from 'enzyme'
+import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
-import {ContentState, EditorState} from 'draft-js'
-import {convertToHTML} from 'draft-convert'
-import Editor from 'draft-js-plugins-editor'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {convertFromHTML} from 'utils/editor'
 
-import {RichFieldEditor} from '../RichFieldEditor'
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
+import {RichFieldEditor} from '../RichFieldEditor'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

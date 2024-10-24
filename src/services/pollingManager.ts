@@ -1,11 +1,11 @@
 import {AnyAction} from 'redux'
 
+import {store as reduxStore} from 'common/store'
+import {isFullWidthViewPath} from 'common/utils'
 import {
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
 } from 'state/views/actions'
-import {store as reduxStore} from 'common/store'
-import {isFullWidthViewPath} from 'common/utils'
 
 type Intervals = {
     activeViewTickets: ReturnType<typeof setTimeout>

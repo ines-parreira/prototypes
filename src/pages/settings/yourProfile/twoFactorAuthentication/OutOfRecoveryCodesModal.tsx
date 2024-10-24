@@ -2,12 +2,12 @@ import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import outOfRecoveryCodesImage from 'assets/img/auth/out-of-recovery-codes.svg'
+import useSearch from 'hooks/useSearch'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import useSearch from 'hooks/useSearch'
 
 export default function OutOfRecoveryCodesModal() {
     // Only show the modal when "?out_of_recovery_codes=true" is passed in the URL

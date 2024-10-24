@@ -1,21 +1,21 @@
-import React, {useRef, useState} from 'react'
-import classnames from 'classnames'
 import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useRef, useState} from 'react'
 
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
-import Button from 'pages/common/components/button/Button'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Caption from 'pages/common/forms/Caption/Caption'
-import {PopoverContainer} from '../popover-container/PopoverContainer'
-
-import {isBigCommerceCartLineItem} from '../../utils'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 import commonCss from '../../OrderTotals.less'
+import {isBigCommerceCartLineItem} from '../../utils'
+import {PopoverContainer} from '../popover-container/PopoverContainer'
+
 import css from './OrderLineItemRow.less'
 
 type Props = {

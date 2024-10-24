@@ -1,9 +1,10 @@
 import React, {useMemo} from 'react'
 
 import {Plan, PlanInterval} from 'models/billing/types'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 
 import {formatAmount} from '../../utils/formatAmount'
+import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+
 import css from './SummaryTotal.less'
 
 export type SummaryTotalProps = {

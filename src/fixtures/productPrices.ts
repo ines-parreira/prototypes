@@ -1,4 +1,3 @@
-import {AccountFeature} from 'state/currentAccount/types'
 import {
     AutomatePlan,
     AutomatePlanFeatures,
@@ -11,6 +10,7 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import {CurrentProductsUsages} from 'state/billing/types'
+import {AccountFeature} from 'state/currentAccount/types'
 
 export const basicHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.Api1stPartyRateLimit]: {

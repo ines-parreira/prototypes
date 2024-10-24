@@ -1,17 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react'
 import classnames from 'classnames'
-import _upperFirst from 'lodash/upperFirst'
-import _uniq from 'lodash/uniq'
-import _difference from 'lodash/difference'
-import _xor from 'lodash/xor'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import _difference from 'lodash/difference'
+import _uniq from 'lodash/uniq'
+import _upperFirst from 'lodash/upperFirst'
+import _xor from 'lodash/xor'
+import React, {useEffect, useRef, useState} from 'react'
 
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SourceAddress} from 'models/ticket/types'
-import {RootState} from 'state/types'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {setReceivers} from 'state/newMessage/actions'
 import {
     getNewMessageType,
@@ -22,14 +23,12 @@ import {
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
-
 import {getTicket} from 'state/ticket/selectors'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {RootState} from 'state/types'
 
+import ReceiversSelectField from './components/ReceiversSelectField'
 import DEPRECATED_SenderSelectField from './components/SenderSelectField/DEPRECATED_SenderSelectField'
 import SenderSelectField from './components/SenderSelectField/SenderSelectField'
-import ReceiversSelectField from './components/ReceiversSelectField'
 
 import css from './MessageSourceFields.less'
 

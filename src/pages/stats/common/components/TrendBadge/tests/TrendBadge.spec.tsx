@@ -1,11 +1,12 @@
-import React from 'react'
 import {act, render, screen} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import React from 'react'
+
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge/TrendBadge'
+import {formatMetricValue} from 'pages/stats/common/utils'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />

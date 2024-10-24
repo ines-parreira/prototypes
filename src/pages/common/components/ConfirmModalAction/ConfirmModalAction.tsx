@@ -1,9 +1,9 @@
 import React from 'react'
 
 import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 type Props = {
     actions: (onClose: () => void) => React.ReactNode

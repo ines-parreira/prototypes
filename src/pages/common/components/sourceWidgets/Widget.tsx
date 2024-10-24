@@ -9,9 +9,9 @@ import {
 } from 'models/widget/types'
 import {seekNextValues} from 'Widgets/modules/Template/helpers/iterator'
 
+import Card from './widgets/Card'
 import Field from './widgets/Field'
 import List from './widgets/List'
-import Card from './widgets/Card'
 import Wrapper from './widgets/Wrapper'
 
 export type Props = {

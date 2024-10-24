@@ -1,11 +1,12 @@
-import React, {useCallback} from 'react'
 import {List, Map} from 'immutable'
+import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
+
 import {IntegrationType} from '../../../../../models/integration/types'
-import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../../../common/components/ForwardIcon'
+import IntegrationList from '../IntegrationList'
 
 type Props = {
     integrations: List<Map<any, any>>

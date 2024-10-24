@@ -5,8 +5,8 @@ import {
     shopifyDraftOrderPayloadFixture,
 } from 'fixtures/shopify'
 
-import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_LOADING', () => {

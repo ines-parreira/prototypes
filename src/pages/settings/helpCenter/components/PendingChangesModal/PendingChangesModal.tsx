@@ -1,6 +1,7 @@
 import {UnregisterCallback} from 'history'
 import React, {ReactNode, useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
+
 import {CloseModal} from '../articles/CloseModal'
 
 type PendingChangesModalProps = {

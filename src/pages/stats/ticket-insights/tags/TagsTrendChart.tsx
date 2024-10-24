@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
+import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {LINES_COLORS} from 'pages/stats/constants'
-import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 
 export function TagsTrendChart() {
     const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =

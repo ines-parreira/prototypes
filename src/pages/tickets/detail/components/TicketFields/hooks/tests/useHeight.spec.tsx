@@ -1,7 +1,7 @@
-import React, {createRef, forwardRef} from 'react'
+import {render} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
-import {render} from '@testing-library/react'
+import React, {createRef, forwardRef} from 'react'
 
 import useHeight from '../useHeight'
 

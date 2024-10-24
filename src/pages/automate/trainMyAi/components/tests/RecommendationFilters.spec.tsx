@@ -1,7 +1,9 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import RecommendationFilters from '../RecommendationFilters'
 
 const queryClient = mockQueryClient()

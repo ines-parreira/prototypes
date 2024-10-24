@@ -1,27 +1,20 @@
-import React, {createRef, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {createRef, useEffect, useMemo, useState} from 'react'
 import {FormGroup, FormText} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {LocaleCode, UpdateHelpCenterDto} from 'models/helpCenter/types'
+import {validLocaleCode} from 'models/helpCenter/utils'
 import Button from 'pages/common/components/button/Button'
 
-import {validLocaleCode} from 'models/helpCenter/utils'
+import InputField from 'pages/common/forms/input/InputField'
 import {Value} from 'pages/common/forms/SelectField/types'
 
-import {getViewLanguage} from 'state/ui/helpCenter'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import {LocaleCode, UpdateHelpCenterDto} from 'models/helpCenter/types'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {
-    FileUpload,
-    useFileUpload,
-} from 'pages/settings/helpCenter/hooks/useFileUpload'
 import {
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_FONT,
@@ -31,33 +24,38 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
+    FileUpload,
+    useFileUpload,
+} from 'pages/settings/helpCenter/hooks/useFileUpload'
+import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {
     HelpCenterTheme,
     isHelpCenterTheme,
 } from 'pages/settings/helpCenter/types'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-
-import {Client, Components} from 'rest_api/help_center_api/client.generated'
 
 import settingsCss from 'pages/settings/settings.less'
+import {Client, Components} from 'rest_api/help_center_api/client.generated'
 
-import InputField from 'pages/common/forms/input/InputField'
-import {reportError} from 'utils/errors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {hasNestedCategories} from 'state/entities/helpCenter/categories'
-import {ImageUpload} from '../ImageUpload'
-import {UpdateToggle} from '../UpdateToggle'
-import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import {ThemeSwitch} from '../ThemeSwitch'
-import {ImageRepositioningModal} from '../ImageRepositioningModal'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {reportError} from 'utils/errors'
 
-import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
+import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
+import {HelpCenterLayout, isHelpCenterLayout} from '../../types/layout.enum'
+import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import {ImageRepositioningModal} from '../ImageRepositioningModal'
+import {ImageUpload} from '../ImageUpload'
 
 import {LanguageSelect} from '../LanguageSelect/LanguageSelect'
-import {HelpCenterLayout, isHelpCenterLayout} from '../../types/layout.enum'
 import {LayoutSwitch} from '../LayoutSwitch'
-import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
+import {ThemeSwitch} from '../ThemeSwitch'
+import {UpdateToggle} from '../UpdateToggle'
 import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {

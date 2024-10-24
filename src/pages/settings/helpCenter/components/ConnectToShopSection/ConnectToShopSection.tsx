@@ -1,23 +1,25 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {Tooltip} from '@gorgias/ui-kit'
 
 import classNames from 'classnames'
-import {useTheme} from 'theme'
+import React, {useEffect, useRef, useState} from 'react'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+
 import store from 'assets/img/icons/store.svg'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import {getHasAutomate} from 'state/billing/selectors'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import useAppSelector from 'hooks/useAppSelector'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {IntegrationType} from 'models/integration/types'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
+import {useTheme} from 'theme'
+
 import {useStoreWithChatConnectionsOptions} from '../../hooks/useStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'

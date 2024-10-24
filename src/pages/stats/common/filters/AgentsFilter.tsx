@@ -1,13 +1,8 @@
 import React, {useCallback, useState} from 'react'
 import {connect} from 'react-redux'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {getFilterTeamsJS} from 'state/teams/selectors'
-import {getFilterAgentsJS} from 'state/agents/selectors'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
@@ -19,10 +14,15 @@ import {
     agentsFilterLogicalOperators,
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {RootState} from 'state/types'
+import {getFilterAgentsJS} from 'state/agents/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {getFilterTeamsJS} from 'state/teams/selectors'
+import {RootState} from 'state/types'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Agents]

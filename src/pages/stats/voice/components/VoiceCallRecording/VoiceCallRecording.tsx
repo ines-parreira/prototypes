@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
-import {replaceAttachmentURL} from 'utils'
+
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
 import {VoiceCallSummary} from 'pages/stats/voice/models/types'
 import {useDownloadRecording} from 'pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording'
+import {replaceAttachmentURL} from 'utils'
 
 import css from './VoiceCallRecording.less'
 

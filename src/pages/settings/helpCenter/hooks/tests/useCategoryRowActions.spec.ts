@@ -1,8 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {useCategoryRowActions} from '../useCategoryRowActions'
 import {CATEGORY_TREE_MAX_LEVEL} from '../../constants'
+import {useCategoryRowActions} from '../useCategoryRowActions'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 

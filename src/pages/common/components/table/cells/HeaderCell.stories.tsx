@@ -1,9 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import {OrderDirection} from 'models/api/types'
-import TableWrapper from '../TableWrapper'
+
 import TableHead from '../TableHead'
+import TableWrapper from '../TableWrapper'
 import HeaderCell from './HeaderCell'
 import HeaderCellProperty from './HeaderCellProperty'
 

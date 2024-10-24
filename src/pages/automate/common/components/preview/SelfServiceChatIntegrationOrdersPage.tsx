@@ -1,22 +1,21 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
+import Badge from 'gorgias-design-system/Badge/Badge'
+import Button from 'gorgias-design-system/Buttons/Button'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
-import Button from 'gorgias-design-system/Buttons/Button'
-import Badge from 'gorgias-design-system/Badge/Badge'
-import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
 import MousePointer from './components/MousePointer'
-import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
 import {LINE_ITEMS} from './constants'
-
+import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
 import css from './SelfServiceChatIntegrationOrdersPage.less'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration

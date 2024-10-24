@@ -1,7 +1,9 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {personNames} from 'fixtures/personNames'
+
 import Shoutout, {
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,

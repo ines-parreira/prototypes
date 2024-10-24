@@ -1,5 +1,5 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 

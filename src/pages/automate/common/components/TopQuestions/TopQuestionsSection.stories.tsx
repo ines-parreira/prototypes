@@ -1,10 +1,11 @@
+import {action} from '@storybook/addon-actions'
+import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {Meta, StoryObj} from '@storybook/react'
-import {action} from '@storybook/addon-actions'
-
 import {MemoryRouter} from 'react-router-dom'
+
 import {IntegrationType} from 'models/integration/constants'
+
 import {
     TopQuestionsSection as TopQuestionsSectionComponent,
     TopQuestionsSectionLoading as TopQuestionsSectionLoadingComponent,

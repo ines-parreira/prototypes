@@ -1,13 +1,12 @@
-import React, {ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {ReactNode} from 'react'
 
+import checkIconDisabled from 'assets/img/icons/check-circle-disabled.svg'
+import checkIcon from 'assets/img/icons/check-circle.svg'
+import warningIcon from 'assets/img/icons/warning-big.svg'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-
-import checkIcon from 'assets/img/icons/check-circle.svg'
-import checkIconDisabled from 'assets/img/icons/check-circle-disabled.svg'
-import warningIcon from 'assets/img/icons/warning-big.svg'
 
 import css from './style.less'
 

@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {
     PhoneIntegration,
     VoiceMessage,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import {updatePhoneGreetingMessageConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'

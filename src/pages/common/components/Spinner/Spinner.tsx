@@ -1,5 +1,5 @@
-import React, {SVGProps} from 'react'
 import classnames from 'classnames'
+import React, {SVGProps} from 'react'
 
 import css from './Spinner.less'
 

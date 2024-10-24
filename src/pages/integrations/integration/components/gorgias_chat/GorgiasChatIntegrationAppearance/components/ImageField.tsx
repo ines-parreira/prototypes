@@ -1,10 +1,10 @@
-import React, {useCallback, useRef, useState} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useRef, useState} from 'react'
 
 import {UploadType} from 'common/types'
+import useAppSelector from 'hooks/useAppSelector'
 import FileField, {FileFieldContainer} from 'pages/common/forms/FileField'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentIntegration} from 'state/integrations/selectors'
 
 import css from './ImageField.less'

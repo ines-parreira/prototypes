@@ -1,5 +1,6 @@
 import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {AiAgentOnboardingWizardStep, Tag} from '../../../models/aiAgent/types'
 import {AiAgentChannel, ToneOfVoice} from './constants'
 

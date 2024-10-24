@@ -1,14 +1,14 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import _difference from 'lodash/difference'
+import _intersection from 'lodash/intersection'
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import _intersection from 'lodash/intersection'
-import _difference from 'lodash/difference'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketChannel} from 'business/types/ticket'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {ChannelLanguage} from 'pages/automate/common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {ChannelLanguage} from 'pages/automate/common/types'
 
 function getChannelLanguageLabel(l: ChannelLanguage): string {
     switch (l) {

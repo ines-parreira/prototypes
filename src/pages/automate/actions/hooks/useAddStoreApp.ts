@@ -1,11 +1,11 @@
-import {useCallback} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
+import {useCallback} from 'react'
 
+import {Integration} from 'models/integration/types'
 import {
     useUpsertStoreApps,
     storeWorkflowsAppDefinitionKeys,
 } from 'models/workflows/queries'
-import {Integration} from 'models/integration/types'
 
 type Props = {
     storeName: string

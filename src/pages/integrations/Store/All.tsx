@@ -1,7 +1,10 @@
 import React, {ReactNode, useEffect, useState} from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import {getCheapestPriceNameForFeature} from 'utils/paywalls'
+import useTitle from 'hooks/useTitle'
+import {AutomatePlan, HelpdeskPlan} from 'models/billing/types'
 import {fetchApps} from 'models/integration/resources'
 import {
     AppListItem,
@@ -12,11 +15,7 @@ import {
     Category as CategoryType,
     isCategory,
 } from 'models/integration/types/app'
-import {AutomatePlan, HelpdeskPlan} from 'models/billing/types'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {IntegrationListItem} from 'state/integrations/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import PageHeader from 'pages/common/components/PageHeader'
 import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
@@ -26,16 +25,22 @@ import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
+import {fetchIntegrations} from 'state/integrations/actions'
 import {
     getIntegrations,
     getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
-import useTitle from 'hooks/useTitle'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import PageHeader from 'pages/common/components/PageHeader'
+import {IntegrationListItem} from 'state/integrations/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 
+import css from './All.less'
+import Card from './Card'
+import CardsWrapper from './CardsWrapper'
+import Category from './Category'
+import CategoryFilter from './CategoryFilter'
 import {
     ORDERED_CATEGORIES,
     MAX_CARDS_DISPLAYED,
@@ -43,16 +48,11 @@ import {
     CATEGORY_URL_PARAM,
     CATEGORY_DATA,
 } from './constants'
-import css from './All.less'
 import {filterOutDeprecatedIntegrations} from './filters'
-import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
 import Loader from './Loader'
-import Category from './Category'
-import CardsWrapper from './CardsWrapper'
-import Card from './Card'
-import Search from './Search'
 import RequestApp from './RequestApp'
+import Search from './Search'
 
 type Item = IntegrationListItem
 

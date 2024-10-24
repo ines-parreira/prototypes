@@ -1,12 +1,12 @@
 import {useQueryClient} from '@tanstack/react-query'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useUpdateABTest as usePureUpdateABTest,
     abTestKeys,
 } from 'models/convert/abTest/queries'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 export const useUpdateABTest = () => {
     const dispatch = useAppDispatch()

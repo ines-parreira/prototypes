@@ -1,3 +1,4 @@
+import {LocationDescriptor} from 'history'
 import _noop from 'lodash/noop'
 import React, {
     cloneElement,
@@ -7,15 +8,14 @@ import React, {
     useRef,
 } from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import {LocationDescriptor} from 'history'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
+import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 type CreateTicketButtonProps = {
     buttonProps?: ComponentProps<typeof Button>

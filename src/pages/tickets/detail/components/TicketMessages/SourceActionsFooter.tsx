@@ -1,26 +1,26 @@
-import React, {Component, ReactNode} from 'react'
 import classNamesBind from 'classnames/bind'
+import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
+import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
+import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
+import hahaIcon from 'assets/img/integrations/facebook-reaction-haha.svg'
 import likeIcon from 'assets/img/integrations/facebook-reaction-like.svg'
 import likedIcon from 'assets/img/integrations/facebook-reaction-liked.svg'
-import hahaIcon from 'assets/img/integrations/facebook-reaction-haha.svg'
-import wowIcon from 'assets/img/integrations/facebook-reaction-wow.svg'
 import loveIcon from 'assets/img/integrations/facebook-reaction-love.svg'
-import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
-import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
 import prideIcon from 'assets/img/integrations/facebook-reaction-pride.png'
-import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
+import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
+import wowIcon from 'assets/img/integrations/facebook-reaction-wow.svg'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     FacebookReaction,
     FacebookReactionCounter,
     Meta,
     Source,
 } from 'models/ticket/types'
+import Loader from 'pages/common/components/Loader/Loader'
 import * as infobarActions from 'state/infobar/actions'
 
 import css from './SourceActionsFooter.less'

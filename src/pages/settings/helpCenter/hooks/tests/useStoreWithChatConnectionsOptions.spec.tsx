@@ -1,8 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {IntegrationType, Integration} from 'models/integration/types'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, Integration} from 'models/integration/types'
 import {StoreState} from 'state/types'
+
 import {
     useStoreWithChatConnectionsOptions,
     CssClasses,

@@ -1,13 +1,15 @@
 import React from 'react'
+
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
-import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
-import InputField from 'pages/common/forms/input/InputField'
 import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
+import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
+import InputField from 'pages/common/forms/input/InputField'
+
 import {ConditionsBranchBody} from './ConditionsBranchBody'
 import css from './ConditionsNodeEditor.less'
 

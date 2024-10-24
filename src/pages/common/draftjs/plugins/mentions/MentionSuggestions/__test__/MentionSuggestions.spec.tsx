@@ -1,8 +1,8 @@
-import {ContentState, EditorState, SelectionState} from 'draft-js'
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
-
 import {render, screen} from '@testing-library/react'
+import {ContentState, EditorState, SelectionState} from 'draft-js'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+
 import MentionSuggestions from 'pages/common/draftjs/plugins/mentions/MentionSuggestions'
 
 const mentionablePerson = {

@@ -1,3 +1,4 @@
+import {Label} from '@gorgias/ui-kit'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -5,7 +6,6 @@ import React, {
     useImperativeHandle,
     useRef,
 } from 'react'
-import {Label} from '@gorgias/ui-kit'
 
 import Caption from '../forms/Caption/Caption'
 import {RadioFieldOption} from '../forms/RadioFieldSet'

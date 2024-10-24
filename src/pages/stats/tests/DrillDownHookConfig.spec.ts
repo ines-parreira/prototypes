@@ -1,4 +1,17 @@
 import {
+    defaultEnrichmentFields,
+    useDrillDownData,
+    useEnrichedDrillDownData,
+} from 'hooks/reporting/useDrillDownData'
+import {EnrichmentFields} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    formatConvertCampaignSalesDrillDownRowData,
+    formatTicketDrillDownRowData,
+    formatVoiceDrillDownRowData,
+} from 'pages/stats/DrillDownFormatters'
+import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
+import {
     AgentsMetrics,
     ChannelsMetrics,
     DrillDownMetric,
@@ -14,20 +27,7 @@ import {
     VoiceAgentsMetric,
     ChannelsTableColumns,
 } from 'state/ui/stats/types'
-import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
-import {
-    defaultEnrichmentFields,
-    useDrillDownData,
-    useEnrichedDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
 import {assumeMock} from 'utils/testing'
-import {EnrichmentFields} from 'models/reporting/types'
-import {
-    formatConvertCampaignSalesDrillDownRowData,
-    formatTicketDrillDownRowData,
-    formatVoiceDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('hooks/reporting/useDrillDownData')
 

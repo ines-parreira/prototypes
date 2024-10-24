@@ -1,22 +1,23 @@
-import React, {useMemo, useCallback, useState} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
-import ArticleEditor from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+import React, {useMemo, useCallback, useState} from 'react'
 
-import {NotificationStatus} from 'state/notifications/types'
-import {
-    slugify,
-    getArticleUrl,
-    getHelpCenterDomain,
-} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {ArticleTemplateType, HelpCenter} from 'models/helpCenter/types'
-import {notify} from 'state/notifications/actions'
 import {
     useUpdateArticleTranslation,
     helpCenterArticleKeys,
     helpCenterKeys,
 } from 'models/helpCenter/queries'
+import {ArticleTemplateType, HelpCenter} from 'models/helpCenter/types'
+import ArticleEditor from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {
+    slugify,
+    getArticleUrl,
+    getHelpCenterDomain,
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {Components} from '../../../../rest_api/help_center_api/client.generated'
 import css from './PreviewArticle.less'

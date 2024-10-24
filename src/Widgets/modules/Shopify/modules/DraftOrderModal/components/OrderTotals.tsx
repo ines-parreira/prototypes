@@ -1,24 +1,23 @@
-import React, {Component, ContextType, RefObject} from 'react'
-import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 import hash from 'object-hash'
+import React, {Component, ContextType, RefObject} from 'react'
+import {connect} from 'react-redux'
 
 import {getDraftOrderTotalLineItemsPrice} from 'business/shopify/lineItem'
 import {formatPrice} from 'business/shopify/number'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
 import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
 import {RootState} from 'state/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
-
-import TaxesPopover from './TaxesPopover'
-import ShippingPopover from './ShippingPopover'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import css from './OrderTotals.less'
+import ShippingPopover from './ShippingPopover'
+import TaxesPopover from './TaxesPopover'
 
 type Props = {
     editable: boolean

@@ -1,35 +1,34 @@
-import React, {ReactNode, useCallback, useMemo, useRef, useState} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-
+import classNames from 'classnames'
 import {noop} from 'lodash'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {isTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import React, {ReactNode, useCallback, useMemo, useRef, useState} from 'react'
+
+import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {
     colorByVisualBuilderNodeType,
     iconByVisualBuilderNodeType,
     labelByVisualBuilderNodeType,
 } from 'pages/automate/workflows/constants'
 import {
+    useVisualBuilderContext,
+    VisualBuilderContext,
+} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {
     hasParentNodeInPath,
     isNodeUniquePerPath,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
-    useVisualBuilderContext,
-    VisualBuilderContext,
-} from 'pages/automate/workflows/hooks/useVisualBuilder'
-
-import EdgeIconButton from './EdgeIconButton'
-import EdgeLabel from './EdgeLabel'
+import {isTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './EdgeBlock.less'
+import EdgeIconButton from './EdgeIconButton'
+import EdgeLabel from './EdgeLabel'
 
 type MenuItemProps = {
     label: string

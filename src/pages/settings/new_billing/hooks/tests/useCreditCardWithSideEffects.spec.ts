@@ -1,11 +1,13 @@
-import MockAdapter from 'axios-mock-adapter'
 import {waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+
+import client from 'models/api/resources'
 import {
     FETCH_CREDIT_CARD_ERROR,
     FETCH_CREDIT_CARD_SUCCESS,
 } from 'state/billing/constants'
-import client from 'models/api/resources'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+
 import {useCreditCardWithSideEffects} from '../useCreditCardWithSideEffects'
 
 const mockedServer = new MockAdapter(client)

@@ -1,7 +1,8 @@
 import {useMemo} from 'react'
-import {getIncoming} from '../models/visualBuilderGraph.model'
+
 import {VisualBuilderEdgeProps} from '../editor/visualBuilder/components/EdgeBlock'
 import {VisualBuilderDeleteProps} from '../editor/visualBuilder/components/NodeDeleteIcon'
+import {getIncoming} from '../models/visualBuilderGraph.model'
 import {useVisualBuilderContext} from './useVisualBuilder'
 
 type Node = {

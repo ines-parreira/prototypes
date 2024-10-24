@@ -1,13 +1,15 @@
-import React from 'react'
+import * as uiKit from '@gorgias/ui-kit'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import * as uiKit from '@gorgias/ui-kit'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {RootState, StoreDispatch} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
@@ -22,17 +24,16 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {account} from 'fixtures/account'
-import {assumeMock} from 'utils/testing'
 import {ProductType} from 'models/billing/types'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
-import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP} from 'pages/settings/new_billing/constants'
 import {storeWithCanceledSubscription} from 'pages/settings/new_billing/fixtures'
+import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/ui-kit', () => {

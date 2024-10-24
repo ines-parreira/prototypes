@@ -1,15 +1,17 @@
+import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
 import React, {ReactNode} from 'react'
-import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
+import {CombinedState} from 'redux'
 import configureMockStore, {MockGetState} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {CombinedState} from 'redux'
+
 import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
+
 import {useStore} from '../useStore'
 
 const integrationContextValue = {

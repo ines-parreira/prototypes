@@ -1,5 +1,5 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroAction} from 'models/macroAction/types'

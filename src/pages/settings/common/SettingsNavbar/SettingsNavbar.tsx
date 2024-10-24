@@ -1,23 +1,23 @@
-import React from 'react'
 import classnames from 'classnames'
-import {useLocation} from 'react-router-dom'
-import _kebabCase from 'lodash/kebabCase'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import _kebabCase from 'lodash/kebabCase'
+import React from 'react'
+import {useLocation} from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {hasRole} from 'utils'
-import {closePanels} from 'state/layout/actions'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
 import {buildPasswordAnd2FaText} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {closePanels} from 'state/layout/actions'
+import {hasRole} from 'utils'
 
-import SettingsNavbarLink from './SettingsNavbarLink'
 import {NavbarConfig} from './config'
+import SettingsNavbarLink from './SettingsNavbarLink'
 
 const SettingsNavbar = () => {
     const dispatch = useAppDispatch()

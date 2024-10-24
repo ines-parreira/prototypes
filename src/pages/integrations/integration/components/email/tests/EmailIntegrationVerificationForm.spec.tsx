@@ -1,9 +1,10 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
 
 import {EmailIntegration} from 'models/integration/types'
-import {assumeMock} from 'utils/testing'
 import EmailIntegrationVerificationForm from 'pages/integrations/integration/components/email/EmailIntegrationVerificationForm'
+import {assumeMock} from 'utils/testing'
+
 import {
     EmailIntegrationOnboardingStep,
     UseEmailOnboardingHookResult,

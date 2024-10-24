@@ -1,9 +1,10 @@
 import {ContentType, HttpMethod} from 'models/api/types'
 import type {EventType} from 'models/event/types'
 import type {Field} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+
 import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type HttpIntegration = IntegrationBase & {
     type: IntegrationType.Http

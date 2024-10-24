@@ -1,9 +1,11 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
+
 import {RootState} from 'state/types'
-import {mockStore} from 'utils/testing'
 import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
+import {mockStore} from 'utils/testing'
+
 import {ConvertFeatures} from '../constants'
 import ConvertPaywallView from '../ConvertPaywallView'
 

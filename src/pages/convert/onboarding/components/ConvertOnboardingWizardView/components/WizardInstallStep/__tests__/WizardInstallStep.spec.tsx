@@ -1,11 +1,13 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {shopifyIntegration} from 'fixtures/integrations'
 import {BundleInstallationMethod} from 'models/convert/bundle/types'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+
 import WizardInstallStep from '../WizardInstallStep'
 
 const mockStore = configureMockStore()

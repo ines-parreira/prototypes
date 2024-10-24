@@ -2,17 +2,17 @@ import React, {ComponentProps, useMemo} from 'react'
 import {DropdownMenu} from 'reactstrap'
 
 import {
-    eventTypes as getEventTypes,
-    getArraysIntersection,
-} from '../../../../state/rules/helpers'
-import {
     eventNameToLabel,
     events,
     eventsDependencies,
 } from '../../../../config/rules'
-import SelectField from '../../../common/forms/MultiSelectField'
-import Errors from '../../../common/components/ast/Errors'
+import {
+    eventTypes as getEventTypes,
+    getArraysIntersection,
+} from '../../../../state/rules/helpers'
 import {RuleDraft} from '../../../../state/rules/types'
+import Errors from '../../../common/components/ast/Errors'
+import SelectField from '../../../common/forms/MultiSelectField'
 
 import css from './RulesTriggerSelect.less'
 

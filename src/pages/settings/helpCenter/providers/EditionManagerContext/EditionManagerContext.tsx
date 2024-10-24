@@ -7,17 +7,18 @@ import React, {
     useEffect,
 } from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     Article,
     CreateArticleDto,
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import {getViewLanguage} from 'state/ui/helpCenter/selectors'
 import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import {changeViewLanguage} from 'state/ui/helpCenter'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import {getViewLanguage} from 'state/ui/helpCenter/selectors'
+
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {ArticleTemplateKey} from '../../types/articleTemplates'
 

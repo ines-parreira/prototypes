@@ -10,21 +10,22 @@ import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Bar} from 'react-chartjs-2'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {AnalyticsTheme, withAnalyticsTheme} from 'theme/withAnalyticsTheme'
 import {GreyArea} from 'pages/stats/ChartPluginGreyArea'
 import {ChartTooltip} from 'pages/stats/ChartTooltip'
-import {TwoDimensionalDataItem} from 'pages/stats/types'
-import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
-import {renderTickLabelAsNumber} from 'pages/stats/utils'
-import {ChartTooltipContent} from 'pages/stats/common/components/charts/ChartTooltipContent'
+import css from 'pages/stats/common/components/charts/Chart.less'
 import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
-import {ChartColors} from 'pages/stats/common/components/charts/types'
+import {ChartTooltipContent} from 'pages/stats/common/components/charts/ChartTooltipContent'
 import {
     chartColorsFallbackTokens,
     OPTIONS,
 } from 'pages/stats/common/components/charts/config'
-import css from 'pages/stats/common/components/charts/Chart.less'
+import {ChartColors} from 'pages/stats/common/components/charts/types'
+import {TwoDimensionalDataItem} from 'pages/stats/types'
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {renderTickLabelAsNumber} from 'pages/stats/utils'
+import {AnalyticsTheme, withAnalyticsTheme} from 'theme/withAnalyticsTheme'
 
 type Props = {
     data: TwoDimensionalDataItem[]

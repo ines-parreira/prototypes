@@ -1,17 +1,17 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {view as viewFixture} from '../../../../../../fixtures/views'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {
     removeFieldFilter,
     updateFieldFilter,
     updateFieldFilterOperator,
 } from '../../../../../../state/views/actions'
-import {view as viewFixture} from '../../../../../../fixtures/views'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
 import ViewFilters from '../ViewFilters'
 
 jest.mock('../../../../../../state/views/actions')

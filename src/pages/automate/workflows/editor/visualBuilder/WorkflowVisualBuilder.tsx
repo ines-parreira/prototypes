@@ -1,5 +1,6 @@
 import 'reactflow/dist/style.css'
 
+import classNames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
     Controls,
@@ -11,36 +12,34 @@ import {
     useNodesInitialized,
     useReactFlow,
 } from 'reactflow'
-import classNames from 'classnames'
-
-import Loader from 'pages/common/components/Loader/Loader'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+import Loader from 'pages/common/components/Loader/Loader'
+
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
-import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
 import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
+import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
-import ChannelTriggerNode from './nodes/ChannelTriggerNode'
-import LLMPromptTriggerNode from './nodes/LLMPromptTriggerNode'
-import AutomatedMessageNode from './nodes/AutomatedMessageNode'
-import MultipleChoicesNode from './nodes/MultipleChoicesNode'
-import EndNode from './nodes/EndNode'
-import TextReplyNode from './nodes/TextReplyNode'
-import FileUploadNode from './nodes/FileUploadNode'
-import OrderSelectionNode from './nodes/OrderSelectionNode'
-import HttpRequestNode from './nodes/HttpRequestNode'
-import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
-import ConditionsNode from './nodes/ConditionsNode'
-import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
-
 import CustomEdge from './CustomEdge'
-import NodeEditorDrawer from './NodeEditorDrawer'
-
-import css from './WorkflowVisualBuilder.less'
 import {TestFlowEditor} from './editors/TestFlowEditor'
+import NodeEditorDrawer from './NodeEditorDrawer'
+import AutomatedMessageNode from './nodes/AutomatedMessageNode'
+import ChannelTriggerNode from './nodes/ChannelTriggerNode'
+import ConditionsNode from './nodes/ConditionsNode'
+import EndNode from './nodes/EndNode'
+import FileUploadNode from './nodes/FileUploadNode'
+import HttpRequestNode from './nodes/HttpRequestNode'
+import LLMPromptTriggerNode from './nodes/LLMPromptTriggerNode'
+import MultipleChoicesNode from './nodes/MultipleChoicesNode'
+import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
+import OrderSelectionNode from './nodes/OrderSelectionNode'
+import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
+import TextReplyNode from './nodes/TextReplyNode'
+
 import WorkflowsPublisher from './publisher/WorkflowsPublisher'
+import css from './WorkflowVisualBuilder.less'
 
 const nodeTypes = {
     channel_trigger: ChannelTriggerNode,

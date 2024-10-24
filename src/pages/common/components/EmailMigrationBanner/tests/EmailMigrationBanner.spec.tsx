@@ -1,13 +1,15 @@
 import {cleanup, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
+import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
-import {mockStore, renderWithRouter} from 'utils/testing'
-import {EmailMigrationStatus} from 'models/integration/types'
+
 import * as useAppSelector from 'hooks/useAppSelector'
+import {EmailMigrationStatus} from 'models/integration/types'
+import {mockStore, renderWithRouter} from 'utils/testing'
+
 import EmailMigrationBanner from '../EmailMigrationBanner'
-import * as migrationBannerHook from '../hooks/useMigrationBannerStatus'
 import * as helpers from '../helpers'
+import * as migrationBannerHook from '../hooks/useMigrationBannerStatus'
 
 const appSelectorSpy = jest.spyOn(useAppSelector, 'default')
 const computeBannerSpy = jest.spyOn(

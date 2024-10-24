@@ -1,14 +1,15 @@
 import React from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
-import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
-import SelectFilter from 'pages/stats/common/SelectFilter'
 import {SourceAddress} from 'models/ticket/types'
 import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
 import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import {getLanguageDisplayName} from 'utils'
-import {normalizeLocale} from 'pages/integrations/integration/components/whatsapp/utils'
 import Loader from 'pages/common/components/Loader/Loader'
+import {normalizeLocale} from 'pages/integrations/integration/components/whatsapp/utils'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
+import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
+import {getLanguageDisplayName} from 'utils'
 
 type Props = {
     value: string[]

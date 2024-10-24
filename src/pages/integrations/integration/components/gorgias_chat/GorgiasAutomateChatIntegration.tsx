@@ -1,14 +1,16 @@
 import {IntegrationType} from '@gorgias/api-queries'
+import {Map} from 'immutable'
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {Map} from 'immutable'
-import PageHeader from 'pages/common/components/PageHeader'
-import {ConnectedChannelsChatView} from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import {ConnectedChannelsChatView} from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
+import PageHeader from 'pages/common/components/PageHeader'
+
 import css from './GorgiasAutomateChatIntegration.less'
+import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
 
 interface Props {
     integration: Map<any, any>

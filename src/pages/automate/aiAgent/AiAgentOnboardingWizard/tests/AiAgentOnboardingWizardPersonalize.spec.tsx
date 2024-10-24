@@ -1,22 +1,22 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, {ComponentProps} from 'react'
 import {screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
 import {createMemoryHistory} from 'history'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import useAppSelector from 'hooks/useAppSelector'
-import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AiAgentChannel,
@@ -25,6 +25,8 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
 import {FormValues} from '../../types'
+import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
+import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 
 const mockStore = configureMockStore([thunk])
 jest.mock(

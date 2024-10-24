@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ReactNode,
     useCallback,
@@ -7,30 +8,31 @@ import React, {
 } from 'react'
 
 import {useParams} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
 
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
+import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import {ConvertRouteParams} from 'pages/convert/common/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
+import {getIntegrationById} from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {isCleanStatsDirty} from 'state/ui/stats/selectors'
-import {FilterKey} from 'models/stat/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
+
 import {FiltersContext} from './context'
 
 type Props = {

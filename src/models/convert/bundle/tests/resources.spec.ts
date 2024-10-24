@@ -1,6 +1,6 @@
+import {convertBundle} from 'fixtures/convertBundle'
 import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
 
-import {convertBundle} from 'fixtures/convertBundle'
 import * as resources from '../resources'
 
 jest.mock('rest_api/revenue_addon_api/client')

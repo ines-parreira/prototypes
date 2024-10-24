@@ -1,4 +1,5 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+
 import {fetchPhoneCapabilities} from './resources'
 
 export const phoneNumberKeys = {

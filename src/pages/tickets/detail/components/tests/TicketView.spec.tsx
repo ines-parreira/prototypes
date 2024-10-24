@@ -1,7 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {assumeMock} from 'utils/testing'
 

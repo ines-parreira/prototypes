@@ -1,6 +1,6 @@
+import {Label} from '@gorgias/ui-kit'
 import React from 'react'
 import {Col, Row} from 'reactstrap'
-import {Label} from '@gorgias/ui-kit'
 
 import {validLocaleCode} from 'models/helpCenter/utils'
 import Caption from 'pages/common/forms/Caption/Caption'

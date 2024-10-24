@@ -1,12 +1,12 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {produce} from 'immer'
 import {set} from 'lodash'
+import React from 'react'
 
 import Form from './Form'
 import FormField from './FormField'
-import ToggleInputFormField from './ToggleInputFormField'
 import FormSubmitButton from './FormSubmitButton'
+import ToggleInputFormField from './ToggleInputFormField'
 import {FormErrors} from './validation'
 
 const onSubmit = jest.fn()

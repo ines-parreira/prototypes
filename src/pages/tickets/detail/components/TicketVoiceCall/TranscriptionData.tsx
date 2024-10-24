@@ -1,15 +1,17 @@
-import React, {useState, useEffect} from 'react'
-import classnames from 'classnames'
 import {
     useGetVoiceCallRecordingTranscription,
     VoiceCallRecordingTranscriptionSpeakersItem,
     VoiceCallRecordingTranscriptionTranscriptionItem,
 } from '@gorgias/api-queries'
+import classnames from 'classnames'
+import React, {useState, useEffect} from 'react'
+
 import {VoiceCallRecordingType} from 'models/voiceCall/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import TranscriptionReply from './TranscriptionReply'
+
 import css from './TranscriptionData.less'
+import TranscriptionReply from './TranscriptionReply'
 
 type Props = {
     recordingType: VoiceCallRecordingType

@@ -1,23 +1,25 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {account} from 'fixtures/account'
-import {renderWithRouter} from 'utils/testing'
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
-import {RootState, StoreDispatch} from 'state/types'
-import {ShopifyIntegration} from 'models/integration/types'
+import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {billingState} from 'fixtures/billing'
+import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
+import {ShopifyIntegration} from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
+
 import CancelOrderFlowViewContainer from '../CancelOrderFlowViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

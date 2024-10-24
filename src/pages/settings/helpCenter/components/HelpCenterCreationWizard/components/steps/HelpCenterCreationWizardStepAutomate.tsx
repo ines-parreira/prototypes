@@ -1,3 +1,4 @@
+import {Label} from '@gorgias/ui-kit'
 import React, {
     forwardRef,
     useCallback,
@@ -8,40 +9,40 @@ import React, {
     useState,
 } from 'react'
 
-import {Label} from '@gorgias/ui-kit'
+import store from 'assets/img/icons/store.svg'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
+import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import WizardFooter, {
-    FOOTER_BUTTONS,
-} from 'pages/common/components/wizard/WizardFooter'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
-import store from 'assets/img/icons/store.svg'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
-import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+
+import {mapEntrypointsToAutomationSettings} from '../../HelpCenterCreationWizardUtils'
 import {
     UseHelpCenterAutomationFormState,
     useHelpCenterAutomationForm,
 } from '../../hooks/useHelpCenterAutomationForm'
-import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
-import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
-import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
 import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
-import {mapEntrypointsToAutomationSettings} from '../../HelpCenterCreationWizardUtils'
+import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
+import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
+import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
+import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
 import css from './HelpCenterCreationWizardStepAutomate.less'
 
 type Props = {

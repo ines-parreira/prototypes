@@ -1,34 +1,35 @@
-import React, {useEffect, useState} from 'react'
-import copy from 'copy-to-clipboard'
-import classNames from 'classnames'
 import {Label} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import copy from 'copy-to-clipboard'
+import React, {useEffect, useState} from 'react'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import InputField from 'pages/common/forms/input/InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
     LocalArticleTranslation,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
-import useAppSelector from 'hooks/useAppSelector'
 import {getCategories} from 'state/entities/helpCenter/categories'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
+import {useEditionManager} from '../../providers/EditionManagerContext'
 import {
     getAbsoluteUrl,
     getArticleUrl,
     slugify,
 } from '../../utils/helpCenter.utils'
+import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
-import {useEditionManager} from '../../providers/EditionManagerContext'
 import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'

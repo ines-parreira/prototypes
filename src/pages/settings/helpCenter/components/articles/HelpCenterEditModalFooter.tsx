@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {useState} from 'react'
 import {
     DropdownItem,
@@ -5,22 +6,19 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import useId from 'hooks/useId'
+import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
-import down from 'assets/img/icons/rating-down.svg'
-
-import Button from 'pages/common/components/button/Button'
-import Group from 'pages/common/components/layout/Group'
-import IconButton from 'pages/common/components/button/IconButton'
+import useId from 'hooks/useId'
 
 import {Rating} from 'models/helpCenter/types'
-import {articleRequiredFields} from '../../utils/helpCenter.utils'
-import {ConfirmationModal} from '../ConfirmationModal'
-import {useRatingScore} from '../../hooks/useRatingScore'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import Group from 'pages/common/components/layout/Group'
 
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import {useRatingScore} from '../../hooks/useRatingScore'
 import {
     ArticleMode,
     ArticleModeModified,
@@ -28,7 +26,9 @@ import {
     ArticleModeUnchangedNotPublished,
     canDelete,
 } from '../../types/articleMode'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import {articleRequiredFields} from '../../utils/helpCenter.utils'
+import {ConfirmationModal} from '../ConfirmationModal'
+
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {

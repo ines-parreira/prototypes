@@ -1,11 +1,11 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import StarRating from 'pages/common/components/StarRating'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 import css from './Reviews.less'
 

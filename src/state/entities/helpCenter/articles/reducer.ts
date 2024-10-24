@@ -1,9 +1,8 @@
 import {createReducer} from '@reduxjs/toolkit'
 import _uniq from 'lodash/uniq'
 
-import {HelpCenterArticlesState} from './types'
-
 import * as articleActions from './actions'
+import {HelpCenterArticlesState} from './types'
 
 export const initialState: HelpCenterArticlesState = {
     articlesById: {},

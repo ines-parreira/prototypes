@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     ComponentProps,
     FocusEvent,
@@ -8,7 +9,6 @@ import React, {
     useImperativeHandle,
     useState,
 } from 'react'
-import classnames from 'classnames'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import TextInput from 'pages/common/forms/input/TextInput'

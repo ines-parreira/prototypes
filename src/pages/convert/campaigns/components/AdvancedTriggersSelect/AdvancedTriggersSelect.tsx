@@ -1,6 +1,6 @@
+import _reduce from 'lodash/reduce'
 import React, {useMemo, useRef, useState} from 'react'
 
-import _reduce from 'lodash/reduce'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -9,6 +9,7 @@ import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 
 import {TriggerConfigValue} from 'pages/convert/campaigns/types/TriggerConfig'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+
 import {useAvailableTriggerList} from '../../hooks/useAvailableTriggerList'
 import {useIsHeadlessShopifyStore} from '../../hooks/useIsHeadlessShopifyStore'
 

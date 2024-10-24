@@ -2,19 +2,19 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getTimezone} from 'state/currentUser/selectors'
-import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
-
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGridSize} from 'hooks/useGridSize'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
-import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import {CAMPAIGN_REVENUE_LABEL} from 'pages/stats/convert/constants/labels'
-import {useGridSize} from 'hooks/useGridSize'
+import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
+
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {getTimezone} from 'state/currentUser/selectors'
 
 const CampaignRevenueChart = () => {
     const {

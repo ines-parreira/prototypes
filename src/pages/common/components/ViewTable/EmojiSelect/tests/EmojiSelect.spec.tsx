@@ -1,8 +1,8 @@
-import React, {ComponentProps, MouseEvent} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import _noop from 'lodash/noop'
 import {EmojiData} from 'emoji-mart'
+import _noop from 'lodash/noop'
+import React, {ComponentProps, MouseEvent} from 'react'
 
 import EmojiPicker from '../../../EmojiPicker/EmojiPicker'
 import EmojiSelect from '../EmojiSelect'

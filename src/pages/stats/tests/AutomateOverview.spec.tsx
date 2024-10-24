@@ -1,47 +1,47 @@
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {act} from 'react-dom/test-utils'
 
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import thunk from 'redux-thunk'
 
-import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
 import {TicketChannel} from 'business/types/ticket'
-import {account} from 'fixtures/account'
-
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {saveReport} from 'services/reporting/automateOverviewReportingService'
-import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    AutomateOverview,
-    AAO_TIPS_VISIBILITY_KEY,
-} from 'pages/stats/AutomateOverview'
-import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {AutomateTimeseries} from 'hooks/reporting/automate/types'
 import {
     useAutomateMetricsTimeseriesV2,
     useAutomateMetricsTrendV2,
 } from 'hooks/reporting/automate/useAutomationDatasetV2'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {IntegrationType} from 'models/integration/constants'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
+import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
+import {
+    AutomateOverview,
+    AAO_TIPS_VISIBILITY_KEY,
+} from 'pages/stats/AutomateOverview'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+
+import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import {saveReport} from 'services/reporting/automateOverviewReportingService'
+import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState} from 'state/ui/stats/filtersSlice'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 const queryClient = mockQueryClient()
 

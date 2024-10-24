@@ -1,14 +1,17 @@
 import _isNumber from 'lodash/isNumber'
 import moment, {Moment} from 'moment-timezone'
 import {useContext, useMemo} from 'react'
+
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 
+import {DateTimeResultFormatType} from 'constants/datetime'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {ReportingGranularity} from 'models/reporting/types'
 import {ViewField} from 'models/view/types'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {
     CollectionOperator,
     DatetimeOperator,
@@ -17,8 +20,6 @@ import {
 import {RootState} from 'state/types'
 import {ViewFilter} from 'state/views/types'
 import {formatDatetime} from 'utils'
-import {DateTimeResultFormatType} from 'constants/datetime'
-import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'

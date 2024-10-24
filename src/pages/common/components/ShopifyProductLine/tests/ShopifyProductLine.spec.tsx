@@ -1,17 +1,18 @@
-import React from 'react'
 import {fireEvent, render, waitFor, screen} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
+import React from 'react'
 
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
-import {Provider} from 'react-redux'
 
 import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
-import ShopifyProductLine from '../ShopifyProductLine'
+
+import {PRODUCTS_PER_PAGE} from '../../../../../constants/integration'
 import {shopifyProductResult} from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
-import {PRODUCTS_PER_PAGE} from '../../../../../constants/integration'
+import ShopifyProductLine from '../ShopifyProductLine'
 import css from '../ShopifyProductLine.less'
 
 const minProps = {

@@ -1,12 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import _noop from 'lodash/noop'
+import React from 'react'
+
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import ProductSearchInput from '../ProductSearchInput'
 import {shopifyDataMappers} from '../Mappings'
+import ProductSearchInput from '../ProductSearchInput'
 
 describe('<ProductSearchInput/>', () => {
     describe('render()', () => {

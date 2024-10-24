@@ -1,7 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {InstructionTab} from '../types'
+import React from 'react'
+
 import InstructionsCard, {InstructionsCardProps} from '../InstructionsCard'
+import {InstructionTab} from '../types'
 
 const tabA: InstructionTab = {
     id: 'a',

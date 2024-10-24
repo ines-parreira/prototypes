@@ -1,7 +1,7 @@
-import React from 'react'
-import {noop} from 'lodash'
-
 import {fireEvent, render, screen} from '@testing-library/react'
+import {noop} from 'lodash'
+import React from 'react'
+
 import {migrationProviders} from '../../fixtures/migration-providers'
 import ProviderInfo from './ProviderInfo'
 

@@ -2,10 +2,12 @@ import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
 import {ShopifyIntegration} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
-import ReturnOrderAutomatedResponseAction from '../ReturnOrderAutomatedResponseAction'
+
 import {useReturnOrderFlowViewContext} from '../../ReturnOrderFlowViewContext'
+import ReturnOrderAutomatedResponseAction from '../ReturnOrderAutomatedResponseAction'
 
 jest.mock('../../ReturnOrderFlowViewContext')
 

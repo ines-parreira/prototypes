@@ -1,3 +1,5 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     useState,
     useMemo,
@@ -6,21 +8,21 @@ import React, {
     ComponentProps,
     useEffect,
 } from 'react'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
-import {countries} from 'config/countries'
-import TextInput from 'pages/common/forms/input/TextInput'
 
+import {countries} from 'config/countries'
+
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
+import TextInput from 'pages/common/forms/input/TextInput'
+
 import css from './CountryInput.less'
 import {getCountryLabel, getCountrySelectOptions} from './utils'
 

@@ -1,16 +1,16 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
-import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {EntityType} from 'models/view/types'
 
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
-import {fetchViewItems, updateView} from 'state/views/actions'
+import {EntityType} from 'models/view/types'
 import {ViewTableContainer} from 'pages/common/components/ViewTable/ViewTable'
+import {fetchViewItems, updateView} from 'state/views/actions'
 
 const storyConfig: Meta = {
     title: 'Data Display/ViewTable/ViewTable',

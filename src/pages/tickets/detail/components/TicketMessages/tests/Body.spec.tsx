@@ -1,16 +1,18 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {message as defaultMessage} from 'models/ticket/tests/mocks'
-import {TicketMessage} from 'models/ticket/types'
+import configureMockStore from 'redux-mock-store'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
+import {message as defaultMessage} from 'models/ticket/tests/mocks'
+import {TicketMessage} from 'models/ticket/types'
 import {Account} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
+
 import Body from '../Body'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

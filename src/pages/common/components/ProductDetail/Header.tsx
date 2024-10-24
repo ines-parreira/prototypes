@@ -1,9 +1,9 @@
-import React from 'react'
 import classNames from 'classnames'
-
-import {assetsUrl} from 'utils'
+import React from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {assetsUrl} from 'utils'
+
 import css from './Detail.less'
 import {ProductDetail} from './types'
 

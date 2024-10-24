@@ -1,11 +1,11 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
 import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 
 import {ActionFormInputValues} from '../types'
 

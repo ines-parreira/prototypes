@@ -1,11 +1,13 @@
-import {act} from '@testing-library/react-hooks'
 import {useElements, useStripe} from '@stripe/react-stripe-js'
 import {waitFor} from '@testing-library/react'
+import {act} from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
+
+import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
-import client from 'models/api/resources'
 import {assumeMock} from 'utils/testing'
+
 import {useConfirmStripeSetupIntent} from '../useConfirmStripeSetupIntent'
 
 jest.mock('@stripe/react-stripe-js')

@@ -1,9 +1,9 @@
-import React, {ComponentType} from 'react'
-import _keyBy from 'lodash/keyBy'
-import {Provider} from 'react-redux'
 import {act, renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
+import _keyBy from 'lodash/keyBy'
+import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
 import {createStore} from 'redux'
+import configureMockStore from 'redux-mock-store'
 
 import {tags} from 'fixtures/tag'
 import useAppSelector from 'hooks/useAppSelector'

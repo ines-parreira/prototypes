@@ -1,4 +1,5 @@
 import {AIArticle} from 'models/helpCenter/types'
+
 import {filteredSortedTopQuestionsFromFetchedArticles} from '../utils'
 
 describe('filteredSortedTopQuestionsFromFetchedArticles', () => {

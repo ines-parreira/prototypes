@@ -1,8 +1,8 @@
-import {TableSetting} from 'state/ui/stats/types'
 import {TooltipData} from 'pages/stats/types'
+import {TableSetting} from 'state/ui/stats/types'
 
-import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
+import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableValueFormat} from '../../types/enums/CampaignTableValueFormat.enum'
 
 export const enum CampaignSettingType {

@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import css from '../StoreConfigForm.less'
+
 import {BannerText, SettingsBannerType} from '../constants'
+import css from '../StoreConfigForm.less'
 
 type SettingsBannerProps = {
     type: SettingsBannerType

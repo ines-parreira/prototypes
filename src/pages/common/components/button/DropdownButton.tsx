@@ -1,5 +1,5 @@
-import React, {ComponentProps, ForwardedRef, forwardRef, Ref} from 'react'
 import classnames from 'classnames'
+import React, {ComponentProps, ForwardedRef, forwardRef, Ref} from 'react'
 
 import Button from './Button'
 import css from './DropdownButton.less'

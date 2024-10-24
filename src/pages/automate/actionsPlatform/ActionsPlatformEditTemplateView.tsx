@@ -1,28 +1,27 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
-import Button from 'pages/common/components/button/Button'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
 import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import PageHeader from 'pages/common/components/PageHeader'
+import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import InputField from 'pages/common/forms/input/InputField'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import {ActionTemplate} from './types'
+import css from './ActionsPlatformEditTemplateView.less'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
 import useValidateVisualBuilderGraph from './hooks/useValidateVisualBuilderGraph'
-
-import css from './ActionsPlatformEditTemplateView.less'
+import {ActionTemplate} from './types'
 
 type Props = {
     template: ActionTemplate

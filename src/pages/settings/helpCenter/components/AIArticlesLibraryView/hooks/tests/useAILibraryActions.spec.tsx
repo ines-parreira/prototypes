@@ -1,13 +1,15 @@
-import React from 'react'
-import {renderHook, act} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {renderHook, act} from '@testing-library/react-hooks'
+import React from 'react'
+
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {AILibraryArticleItemsFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useUpsertArticleTemplateReview} from 'pages/settings/helpCenter/queries'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import {useUpsertArticleTemplateReview} from 'pages/settings/helpCenter/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
+
 import useAILibraryActions from '../useAILibraryActions'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

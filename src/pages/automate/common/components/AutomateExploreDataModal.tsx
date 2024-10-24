@@ -1,31 +1,30 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
-
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
+import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getAgentCostsSettings} from 'state/currentAccount/selectors'
 import {createAccountSetting, updateAccountSetting} from 'models/account'
+
+import css from 'pages/automate/common/components/AutomateExploreDataModal.less'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {submitSettingSuccess} from 'state/currentAccount/actions'
+import {getAgentCostsSettings} from 'state/currentAccount/selectors'
 import {
     AccountSettingAgentCostType,
     AccountSettingAgentCosts,
     AccountSettingType,
 } from 'state/currentAccount/types'
-
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import InputField from 'pages/common/forms/input/InputField'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-
-import css from 'pages/automate/common/components/AutomateExploreDataModal.less'
 
 const defaultAgentCostPerTicket = 3.1
 const defaultHourlyRateMultiplier = 5

@@ -1,25 +1,25 @@
-import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
-
 import userEvent from '@testing-library/user-event'
-import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter/'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {InferredCampaignStatus} from 'models/convert/campaign/types'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter/'
 import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {statFiltersClean} from 'state/ui/stats/actions'
 import {renderWithStore} from 'utils/testing'
-import {InferredCampaignStatus} from 'models/convert/campaign/types'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FilterKey} from 'models/stat/types'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()

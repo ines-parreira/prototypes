@@ -1,4 +1,5 @@
 import {voiceCall} from 'fixtures/voiceCalls'
+
 import {isVoiceCall, isOutboundVoiceCall} from '../types'
 
 describe('type guards', () => {

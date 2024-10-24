@@ -1,23 +1,24 @@
-import React, {FormEvent, useCallback} from 'react'
-import {Map} from 'immutable'
-import {Col, Container, Row} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
+import {Map} from 'immutable'
+import React, {FormEvent, useCallback} from 'react'
+import {Col, Container, Row} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import InputGroup from 'pages/common/forms/input/InputGroup'
+import TextInput from 'pages/common/forms/input/TextInput'
+import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,
 } from 'state/integrations/actions'
-import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Loader from 'pages/common/components/Loader/Loader'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
-import settingsCss from 'pages/settings/settings.less'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+
 import {getConnectUrl} from './Utils'
 
 type Props = {

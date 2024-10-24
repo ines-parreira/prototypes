@@ -1,7 +1,7 @@
-import moment from 'moment'
 import {renderHook} from '@testing-library/react-hooks'
-import * as files from 'utils/file'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import moment from 'moment'
+
+import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {
     AUTOMATE_IMPACT_FILENAME,
     AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
@@ -9,7 +9,8 @@ import {
     OVERVIEW_METRICS_FILENAME,
     saveReport,
 } from 'services/reporting/automateOverviewReportingService'
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import * as files from 'utils/file'
 
 jest.mock('utils/file')
 

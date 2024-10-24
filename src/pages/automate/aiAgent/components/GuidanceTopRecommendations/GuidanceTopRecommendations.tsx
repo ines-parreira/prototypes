@@ -1,8 +1,8 @@
 import React from 'react'
-import Loader from 'pages/common/components/Loader/Loader'
 
 import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {AIGuidance} from 'pages/automate/aiAgent/types'
+import Loader from 'pages/common/components/Loader/Loader'
 
 import css from './GuidanceTopRecommendations.less'
 

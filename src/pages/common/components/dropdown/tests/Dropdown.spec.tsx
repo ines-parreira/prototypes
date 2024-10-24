@@ -1,5 +1,5 @@
-import React, {ComponentProps, useRef} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React, {ComponentProps, useRef} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 

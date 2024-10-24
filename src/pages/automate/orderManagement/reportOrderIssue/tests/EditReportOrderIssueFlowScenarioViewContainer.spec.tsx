@@ -1,26 +1,28 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {DndProvider} from 'react-dnd'
-import {fromJS} from 'immutable'
+import {screen} from '@testing-library/react'
 import {createDragDropManager} from 'dnd-core'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {account} from 'fixtures/account'
-import {renderWithRouter} from 'utils/testing'
-import {RootState, StoreDispatch} from 'state/types'
+import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {billingState} from 'fixtures/billing'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
+
 import EditReportOrderIssueFlowScenarioViewContainer from '../EditReportOrderIssueFlowScenarioViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

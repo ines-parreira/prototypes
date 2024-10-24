@@ -1,23 +1,25 @@
-import React from 'react'
+import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {Call} from '@twilio/voice-sdk'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {Call} from '@twilio/voice-sdk'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
+
 import {TwilioSocketEventType} from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
 
-import {mockIncomingCall} from 'tests/twilioMocks'
-import {RootState, StoreDispatch} from 'state/types'
 import client from 'models/api/resources'
 import socketManager from 'services/socketManager'
 import {
     SocketEventType,
     VoiceCallTransferFailedEvent,
 } from 'services/socketManager/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockIncomingCall} from 'tests/twilioMocks'
+
 import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
 import OngoingPhoneCall from '../OngoingPhoneCall'
 

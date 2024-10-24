@@ -1,11 +1,11 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
-import useDebouncedValue from 'hooks/useDebouncedValue'
 import {useInviteAgent} from 'hooks/agents/useInviteAgent'
-import InputField from 'pages/common/forms/input/InputField'
+import useDebouncedValue from 'hooks/useDebouncedValue'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import InputField from 'pages/common/forms/input/InputField'
 
 import css from './Detail.less'
 import {AgentState} from './types'

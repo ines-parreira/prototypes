@@ -1,19 +1,28 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
-import moment from 'moment'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {isEnterprise} from 'models/billing/utils'
+import {AlertType} from 'pages/common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {BillingBanner, TicketPurpose} from 'state/billing/types'
-import useAppSelector from 'hooks/useAppSelector'
+import useGetConvertStatus, {
+    BundleOnboardingStatus,
+    UsageStatus,
+} from 'pages/convert/common/hooks/useGetConvertStatus'
+import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
+import {PaymentMethodSetupView} from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
 import {
-    getCurrentAccountState,
-    getCurrentSubscription,
-    isTrialing,
-    paymentMethod,
-} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+    fetchCurrentProductsUsage,
+    fetchPaymentMethod,
+} from 'state/billing/actions'
 import {
     getCurrentAutomatePlan,
     getCurrentConvertPlan,
@@ -23,29 +32,23 @@ import {
     getCurrentVoicePlan,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
+import {BillingBanner, TicketPurpose} from 'state/billing/types'
+import {
+    getCurrentAccountState,
+    getCurrentSubscription,
+    isTrialing,
+    paymentMethod,
+} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {notify} from 'state/notifications/actions'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {
-    fetchCurrentProductsUsage,
-    fetchPaymentMethod,
-} from 'state/billing/actions'
-import Loader from 'pages/common/components/Loader/Loader'
-import {AlertType} from 'pages/common/components/Alert/Alert'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
-import {isEnterprise} from 'models/billing/utils'
-import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
-import useGetConvertStatus, {
-    BundleOnboardingStatus,
-    UsageStatus,
-} from 'pages/convert/common/hooks/useGetConvertStatus'
-import {PaymentMethodSetupView} from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
+
+import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -59,16 +62,15 @@ import {
     ZAPIER_BILLING_HOOK,
     BILLING_INTERNAL_PATH,
 } from '../../constants'
-import UsageAndPlansView from '../UsageAndPlansView'
-import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
-import PaymentsHistoryView from '../PaymentHistoryView'
-import BillingProcessView from '../BillingProcessView'
-import BillingInformationView from '../BillingInformationView'
-import BillingFrequencyView from '../BillingFrequencyView'
-import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
-import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
-import BillingInternalView from '../BillingInternalView'
 import {BillingAddressSetupView} from '../BillingAddressSetupView/BillingAddressSetupView'
+import BillingFrequencyView from '../BillingFrequencyView'
+import BillingInformationView from '../BillingInformationView'
+import BillingInternalView from '../BillingInternalView'
+import BillingProcessView from '../BillingProcessView'
+import PaymentsHistoryView from '../PaymentHistoryView'
+import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
+import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
+import UsageAndPlansView from '../UsageAndPlansView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {

@@ -1,21 +1,21 @@
 import React, {useCallback, useContext} from 'react'
 
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import {Source} from 'models/widget/types'
+import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
 import {
     Link as LinkType,
     RemoveLink,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import {AppContext} from 'providers/infobar/AppContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import css from './Links.less'
 import Editor from './Editor'
+import css from './Links.less'
 
 type Props = {
     index: number

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {ToneOfVoice} from '../constants'
 
 export const CUSTOMER_NAME = 'Alex'

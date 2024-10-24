@@ -1,8 +1,10 @@
 import React from 'react'
-import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
-import ChartCard from 'pages/stats/ChartCard'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+
 import {StatsFilters} from 'models/stat/types'
+import ChartCard from 'pages/stats/ChartCard'
+import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+
 import {useSearchResultRange} from '../../hooks/useSearchResultRange'
 import css from './SearchResultDonut.less'
 

@@ -1,12 +1,12 @@
-import React from 'react'
-import {produce} from 'immer'
-
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {produce} from 'immer'
+import React from 'react'
 
 import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
 
 import {BigCommerceActionType} from 'models/integration/types'
+
 import {Discount} from '../Discount'
 
 describe('<Discount />', () => {

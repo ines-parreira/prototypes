@@ -1,15 +1,15 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
 import {PageSection} from 'config/pages'
 import {UserRole} from 'config/types/user'
 import App from 'pages/App'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
+import {AccountFeature} from 'state/currentAccount/types'
 import {assumeMock} from 'utils/testing'
 
-import {AccountFeature} from 'state/currentAccount/types'
 import {renderAppSettings} from '../settingsRenderer'
 
 jest.mock('pages/App', () =>

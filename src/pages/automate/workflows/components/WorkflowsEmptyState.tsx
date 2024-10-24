@@ -2,15 +2,14 @@ import React from 'react'
 
 import {Container} from 'reactstrap'
 
+import templatesImage from 'assets/img/workflows/templates.png'
+import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 import Button from 'pages/common/components/button/Button'
 
-import templatesImage from 'assets/img/workflows/templates.png'
-
-import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
+import {WORKFLOWS_DESCRIPTION, WORKFLOWS_MAIN_TITLE} from '../common/constants'
 import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
 
 import templatesCss from '../WorkflowTemplatesView.less'
-import {WORKFLOWS_DESCRIPTION, WORKFLOWS_MAIN_TITLE} from '../common/constants'
 import css from './WorkflowsEmptyState.less'
 import WorkflowTemplateCard from './WorkflowTemplateCard'
 

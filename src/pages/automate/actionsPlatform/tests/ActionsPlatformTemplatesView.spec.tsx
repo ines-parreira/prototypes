@@ -1,13 +1,13 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {IntegrationType} from 'models/integration/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {IntegrationType} from 'models/integration/constants'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 
+import ActionsPlatformTemplatesView from '../ActionsPlatformTemplatesView'
 import useApps from '../hooks/useApps'
 import useDeleteActionTemplate from '../hooks/useDeleteActionTemplate'
-import ActionsPlatformTemplatesView from '../ActionsPlatformTemplatesView'
 
 jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')

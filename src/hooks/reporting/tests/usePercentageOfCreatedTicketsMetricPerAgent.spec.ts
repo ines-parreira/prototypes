@@ -1,14 +1,15 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+
+import {TicketChannel} from 'business/types/ticket'
+import {useTicketsCreatedMetric} from 'hooks/reporting/metrics'
 import {useCreatedTicketsMetricPerChannel} from 'hooks/reporting/metricsPerChannel'
 import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
 
-import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
-import {useTicketsCreatedMetric} from 'hooks/reporting/metrics'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 
 jest.mock('hooks/reporting/metricsPerChannel')
 jest.mock('hooks/reporting/metrics')

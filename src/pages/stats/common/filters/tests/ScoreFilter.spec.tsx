@@ -1,7 +1,10 @@
-import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
-
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -9,16 +12,7 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
-import {statFiltersClean} from 'state/ui/stats/actions'
-import {renderWithStore} from 'utils/testing'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FilterKey} from 'models/stat/types'
-import {SegmentEvent, logEvent} from 'common/segment'
 import {
     MAX_SCORE_VALUE,
     ScoreFilter,
@@ -28,6 +22,12 @@ import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {statFiltersClean} from 'state/ui/stats/actions'
+import {renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()

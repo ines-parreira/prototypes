@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, screen, act, fireEvent, waitFor} from '@testing-library/react'
+import React from 'react'
 
 import Accordion from '../Accordion'
-import AccordionItem from '../AccordionItem'
-import AccordionHeader from '../AccordionHeader'
 import AccordionBody from '../AccordionBody'
+import AccordionHeader from '../AccordionHeader'
+import AccordionItem from '../AccordionItem'
 
 describe('<Accordion />', () => {
     it('should render accordion component', () => {

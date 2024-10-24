@@ -1,8 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {dummyAppListData} from 'fixtures/apps'
 import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
 import {useListActionsApps} from 'models/workflows/queries'
+
 import TemplateActionBanner from '../TemplateActionBanner'
 
 jest.mock('models/integration/queries')

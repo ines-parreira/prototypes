@@ -1,8 +1,8 @@
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import _noop from 'lodash/noop'
-
 import {render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 describe('DEPRECATED_InputField', () => {

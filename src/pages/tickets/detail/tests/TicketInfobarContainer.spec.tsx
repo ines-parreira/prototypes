@@ -1,16 +1,20 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {TicketStatus} from 'business/types/ticket'
 import {useFlag} from 'common/flags'
 import {UserRole} from 'config/types/user'
-import {selectContext, fetchWidgets} from 'state/widgets/actions'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
+import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
+import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getAIAgentMessages} from 'state/ticket/selectors'
 import {RootState, StoreState} from 'state/types'
 import {
     changeActiveTab,
@@ -18,18 +22,15 @@ import {
     getActiveTab,
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {getAIAgentMessages} from 'state/ticket/selectors'
-import {user} from 'fixtures/users'
-import {ticket} from 'fixtures/ticket'
-import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
-import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import {selectContext, fetchWidgets} from 'state/widgets/actions'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
+import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
 import {
     CUSTOMER_DETAILS_TAB,
     AI_FEEDBACK_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
-import {TRIAL_MESSAGE_TAG} from '../components/AIAgentFeedbackBar/constants'
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     default: () => <div>TicketFeedback</div>,

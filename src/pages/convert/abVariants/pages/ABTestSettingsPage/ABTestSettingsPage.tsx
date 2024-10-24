@@ -1,17 +1,18 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
+
+import {useModalManager} from 'hooks/useModalManager'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import Button from 'pages/common/components/button/Button'
+import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
+import VariantsList from 'pages/convert/abVariants/components/VariantsList'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
-import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
-import VariantsList from 'pages/convert/abVariants/components/VariantsList'
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
 
-import Button from 'pages/common/components/button/Button'
-import {useModalManager} from 'hooks/useModalManager'
-import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
 import css from './ABTestSettingsPage.less'
 
 type Props = {

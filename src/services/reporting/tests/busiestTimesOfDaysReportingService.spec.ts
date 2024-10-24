@@ -3,6 +3,7 @@ import {
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import * as files from 'utils/file'
+
 import {saveReport} from '../busiestTimesOfDaysReportingService'
 
 jest.mock('utils/file')

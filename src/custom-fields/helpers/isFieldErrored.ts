@@ -1,4 +1,5 @@
 import {CustomField, CustomFieldState} from 'custom-fields/types'
+
 import {isCustomFieldValueEmpty} from './isCustomFieldValueEmpty'
 
 export function isFieldErrored({

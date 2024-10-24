@@ -3,11 +3,11 @@ import React from 'react'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import {HelpCenter} from 'models/helpCenter/types'
 
-import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter

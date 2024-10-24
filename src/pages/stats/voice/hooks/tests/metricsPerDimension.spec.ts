@@ -1,17 +1,17 @@
-import moment from 'moment/moment'
 import {renderHook} from '@testing-library/react-hooks'
+import moment from 'moment/moment'
 
-import {assumeMock} from 'utils/testing'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {declinedVoiceCallsCountPerAgentQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
 
 import {
     useAnsweredCallsMetricPerAgent,

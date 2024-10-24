@@ -1,9 +1,9 @@
+import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
 import React, {Component, ComponentType} from 'react'
 import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
-import classnames from 'classnames'
 
 import css from './Dropdown.less'
 import Input from './Input'

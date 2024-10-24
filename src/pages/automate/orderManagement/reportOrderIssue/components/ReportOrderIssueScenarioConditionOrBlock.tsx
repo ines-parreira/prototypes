@@ -1,14 +1,13 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {
     JsonLogicOrBlock,
     JsonLogicRuleOverVariable,
 } from 'models/selfServiceConfiguration/types'
 
-import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
-
 import css from './ReportOrderIssueScenarioConditionOrBlock.less'
+import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
 
 type Props = {
     value: JsonLogicOrBlock

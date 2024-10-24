@@ -1,10 +1,11 @@
 import {useEffect} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {useCreditCard} from 'models/billing/queries'
 import {
     FETCH_CREDIT_CARD_ERROR,
     FETCH_CREDIT_CARD_SUCCESS,
 } from 'state/billing/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 export const useCreditCardWithSideEffects = (
     overrides?: Omit<

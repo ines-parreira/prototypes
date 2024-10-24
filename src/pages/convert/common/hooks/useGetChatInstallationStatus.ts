@@ -1,5 +1,6 @@
-import {useMemo} from 'react'
 import moment from 'moment'
+import {useMemo} from 'react'
+
 import {
     GorgiasChatInstallationMethod,
     GorgiasChatIntegration,

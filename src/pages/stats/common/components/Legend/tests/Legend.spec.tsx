@@ -1,6 +1,6 @@
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import Legend from '../Legend'
 

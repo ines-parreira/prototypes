@@ -6,14 +6,16 @@ import {
     useParams,
     useRouteMatch,
 } from 'react-router-dom'
+
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+
 import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
 import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
-import css from './ConnectedChannelsView.less'
-import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
 import {ConnectedChannelsContactFormView} from './components/ConnectedChannelsContactFormView'
 import {ConnectedChannelsEmailView} from './components/ConnectedChannelsEmailView'
+import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
+import css from './ConnectedChannelsView.less'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{

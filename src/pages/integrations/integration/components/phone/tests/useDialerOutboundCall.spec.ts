@@ -1,9 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
-import * as userSelectors from 'state/currentUser/selectors'
-import {PhoneIntegration} from 'models/integration/types'
+
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import {assumeMock} from 'utils/testing'
+import {PhoneIntegration} from 'models/integration/types'
+import * as userSelectors from 'state/currentUser/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
+import {assumeMock} from 'utils/testing'
+
 import useDialerOutboundCall from '../useDialerOutboundCall'
 import usePhoneNumbers from '../usePhoneNumbers'
 

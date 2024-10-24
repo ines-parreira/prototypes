@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -18,13 +19,13 @@ import {
 } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
-import {subtractDaysFromDate} from 'utils/date'
 
 describe('oneTouchTicketsPerAgentQueryFactory', () => {
     const periodStart = moment()

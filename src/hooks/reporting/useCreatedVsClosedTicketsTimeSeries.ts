@@ -1,3 +1,7 @@
+import {
+    useTicketsClosedTimeSeries,
+    useTicketsCreatedTimeSeries,
+} from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {
@@ -8,10 +12,6 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {
-    useTicketsClosedTimeSeries,
-    useTicketsCreatedTimeSeries,
-} from 'hooks/reporting/timeSeries'
 
 export const useCreatedVsClosedTicketsTimeSeries = (
     isAnalyticsNewFilters = false

@@ -2,8 +2,8 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import ModalBody from '../ModalBody'
+import ModalHeader from '../ModalHeader'
 
 describe('<Modal />', () => {
     const minProps = {

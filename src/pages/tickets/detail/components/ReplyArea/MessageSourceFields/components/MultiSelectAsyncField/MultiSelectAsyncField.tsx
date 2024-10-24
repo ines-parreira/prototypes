@@ -1,3 +1,12 @@
+import classnames from 'classnames'
+import _cloneDeep from 'lodash/cloneDeep'
+import _debounce from 'lodash/debounce'
+import _find from 'lodash/find'
+import _initial from 'lodash/initial'
+import _isArray from 'lodash/isArray'
+import _max from 'lodash/max'
+import _min from 'lodash/min'
+import _trim from 'lodash/trim'
 import React, {
     ChangeEvent,
     createRef,
@@ -7,15 +16,6 @@ import React, {
     SyntheticEvent,
 } from 'react'
 import {findDOMNode} from 'react-dom'
-import classnames from 'classnames'
-import _initial from 'lodash/initial'
-import _find from 'lodash/find'
-import _max from 'lodash/max'
-import _min from 'lodash/min'
-import _cloneDeep from 'lodash/cloneDeep'
-import _trim from 'lodash/trim'
-import _isArray from 'lodash/isArray'
-import _debounce from 'lodash/debounce'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ReceiverValue} from 'state/ticket/utils'

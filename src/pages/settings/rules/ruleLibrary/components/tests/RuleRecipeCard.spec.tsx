@@ -1,24 +1,23 @@
+import {render, act, fireEvent, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
 import React from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, act, fireEvent, waitFor} from '@testing-library/react'
-import _noop from 'lodash/noop'
-import {fromJS} from 'immutable'
+import thunk from 'redux-thunk'
 
-import {createView} from 'models/view/resources'
-import {createTag} from 'models/tag/resources'
-import {createRule} from 'models/rule/resources'
-import {createSection} from 'models/section/resources'
-
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {emptyManagedRule} from 'fixtures/rule'
 import {
     emptyRuleRecipeFixture,
     emptyRuleRecipeFixtureWithSections,
 } from 'fixtures/ruleRecipe'
-import {emptyManagedRule} from 'fixtures/rule'
-import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {createRule} from 'models/rule/resources'
+import {createSection} from 'models/section/resources'
+import {createTag} from 'models/tag/resources'
+import {createView} from 'models/view/resources'
 
 import RuleRecipeCard from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
 

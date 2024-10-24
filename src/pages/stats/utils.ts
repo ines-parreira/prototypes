@@ -1,5 +1,6 @@
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
+
 import {ReportingGranularity} from 'models/reporting/types'
 import {AggregationWindow, Period} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'

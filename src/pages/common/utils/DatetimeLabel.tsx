@@ -1,13 +1,13 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React from 'react'
 import {UncontrolledTooltipProps} from 'reactstrap'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
+import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
 import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
 import {formatDatetime} from 'utils'
-import useAppSelector from 'hooks/useAppSelector'
 
 import css from './DatetimeLabel.less'
 

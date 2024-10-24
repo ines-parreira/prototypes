@@ -1,9 +1,9 @@
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
-import {History, Location} from 'history'
-import {match} from 'react-router-dom'
 import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {History, Location} from 'history'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {match} from 'react-router-dom'
 
 import {
     PENDING_AUTHENTICATION_STATUS,

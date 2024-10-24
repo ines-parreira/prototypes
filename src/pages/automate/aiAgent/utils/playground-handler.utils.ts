@@ -1,3 +1,4 @@
+import {StoreConfiguration} from 'models/aiAgent/types'
 import {
     AiAgentMessageType,
     AiAgentResponse,
@@ -5,9 +6,9 @@ import {
     PlaygroundMessage,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {AI_AGENT_SENDER} from '../components/PlaygroundMessage/PlaygroundMessage'
+
 import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
+import {AI_AGENT_SENDER} from '../components/PlaygroundMessage/PlaygroundMessage'
 import {
     shouldAiAgentResponseDisplay,
     shouldDisplayActions,

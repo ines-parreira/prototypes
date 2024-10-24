@@ -1,5 +1,5 @@
-import {MacroAction} from 'models/macroAction/types'
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
+import {MacroAction} from 'models/macroAction/types'
 
 export type Macro = MacroDraft & {
     id: number

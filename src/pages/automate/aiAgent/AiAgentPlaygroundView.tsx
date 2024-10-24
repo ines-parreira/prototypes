@@ -1,6 +1,7 @@
+import {isAxiosError} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {Redirect} from 'react-router-dom'
-import {isAxiosError} from 'axios'
+
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,19 +9,20 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
+import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
-import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 
 type Props = {
     shopName: string

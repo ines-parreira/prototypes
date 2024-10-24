@@ -1,11 +1,12 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {formatDuration} from 'pages/stats/common/utils'
+
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
+import {formatDuration} from 'pages/stats/common/utils'
 import {
     PENDING_SLA_TIME_LABEL,
     SLAStatusCell,

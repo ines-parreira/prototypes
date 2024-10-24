@@ -1,7 +1,6 @@
-import {humanizeString} from 'utils'
-import {WrapperTemplate} from 'models/widget/types'
-import {IntegrationType} from 'models/integration/types'
 import {httpIntegration} from 'fixtures/integrations'
+import {IntegrationType} from 'models/integration/types'
+import {WrapperTemplate} from 'models/widget/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
@@ -9,6 +8,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetType} from 'state/widgets/types'
+import {humanizeString} from 'utils'
 
 import {getWidgetId, getWidgetTitle, LABELS} from '../helpers'
 

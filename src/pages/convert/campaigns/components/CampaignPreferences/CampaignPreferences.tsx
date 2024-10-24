@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {CampaignWithNoReply} from 'pages/convert/campaigns/components/CampaignWithNoReply'
 import CampaignIncognitoVisitorsSwitch from 'pages/convert/campaigns/components/CampaignIncognitoVisitorsSwitch'
+import {CampaignWithNoReply} from 'pages/convert/campaigns/components/CampaignWithNoReply'
 import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
 
 import css from './CampaignPreferences.less'

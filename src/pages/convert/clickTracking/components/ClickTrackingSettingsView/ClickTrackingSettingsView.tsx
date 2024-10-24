@@ -1,18 +1,18 @@
 import React, {useMemo} from 'react'
 
+import {Redirect, useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
 
-import {Redirect, useParams} from 'react-router-dom'
-import css from 'pages/settings/settings.less'
-
-import PageHeader from 'pages/common/components/PageHeader'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import PageHeader from 'pages/common/components/PageHeader'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
+import css from 'pages/settings/settings.less'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
 const ClickTrackingSettingsView = () => {

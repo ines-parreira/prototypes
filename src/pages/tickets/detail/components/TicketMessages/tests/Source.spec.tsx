@@ -1,12 +1,13 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
-import moment from 'moment'
 import {omit} from 'lodash'
+import moment from 'moment'
+import React from 'react'
 
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {channels as mockChannels} from 'fixtures/channels'
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {channels as mockChannels} from 'fixtures/channels'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {Source as MessageSource} from 'models/ticket/types'
 
 import Source from '../Source'

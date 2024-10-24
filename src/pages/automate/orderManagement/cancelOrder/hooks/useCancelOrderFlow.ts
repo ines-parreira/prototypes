@@ -1,11 +1,11 @@
 import {useCallback, useMemo} from 'react'
 
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {
     AUTOMATED_RESPONSE,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from '../constants'
 

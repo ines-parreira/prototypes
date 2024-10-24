@@ -1,8 +1,10 @@
 import {fromJS} from 'immutable'
-import {shopifyProductResult} from 'fixtures/shopify'
-import {shopifyIntegration} from 'fixtures/integrations'
+
 import {AttachmentEnum} from 'common/types'
+import {shopifyIntegration} from 'fixtures/integrations'
+import {shopifyProductResult} from 'fixtures/shopify'
 import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
+
 import {pickNRandomShopifyProducts} from '../pickNRandomShopifyProducts'
 
 describe('pickNRandomShopifyProducts', () => {

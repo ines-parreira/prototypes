@@ -1,8 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import React from 'react'
+
 import {AILibraryArticleItem} from 'models/helpCenter/types'
+import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+
 import AIArticleRow, {AIArticleRowProps} from '../AIArticleRow'
 
 describe('AIArticleRow', () => {

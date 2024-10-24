@@ -1,7 +1,8 @@
-import {useCallback, useEffect, useMemo, useRef} from 'react'
 import {fromPairs} from 'lodash'
-import useLocalStorage from 'hooks/useLocalStorage'
+import {useCallback, useEffect, useMemo, useRef} from 'react'
+
 import useEffectOnce from 'hooks/useEffectOnce'
+import useLocalStorage from 'hooks/useLocalStorage'
 import usePrevious from 'hooks/usePrevious'
 
 export type PagesWithTopQuestions = 'automate-overview' | 'all-recommendations'

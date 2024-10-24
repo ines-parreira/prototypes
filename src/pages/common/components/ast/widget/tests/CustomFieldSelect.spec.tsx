@@ -1,12 +1,14 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
+
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     aiManagedTicketInputFieldDefinition,
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {assumeMock} from 'utils/testing'
+
 import CustomFieldSelect from '../CustomFieldSelect'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')

@@ -1,27 +1,28 @@
-import React from 'react'
+import {UseQueryResult} from '@tanstack/react-query'
 import {render, screen, fireEvent, act} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {UseQueryResult} from '@tanstack/react-query'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
-import {saveReport} from 'services/reporting/ticketFieldsReportingService'
-import {OrderDirection} from 'models/api/types'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {formatDates} from 'pages/stats/utils'
-import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {RootState} from 'state/types'
+import {OrderDirection} from 'models/api/types'
+import {ReportingGranularity} from 'models/reporting/types'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+
+import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import {formatDates} from 'pages/stats/utils'
+import {saveReport} from 'services/reporting/ticketFieldsReportingService'
 import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {
     ticketInsightsSlice,
     getCustomFieldsOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('services/reporting/ticketFieldsReportingService')
 jest.mock('hooks/reporting/timeSeries')

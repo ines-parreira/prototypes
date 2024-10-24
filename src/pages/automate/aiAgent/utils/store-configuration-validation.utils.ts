@@ -1,4 +1,5 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+
 import {
     SIGNATURE_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,

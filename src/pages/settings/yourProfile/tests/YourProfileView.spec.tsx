@@ -1,6 +1,4 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
-import {Provider} from 'react-redux'
+import {SelectInput} from '@gorgias/ui-kit'
 import {
     act,
     fireEvent,
@@ -10,16 +8,18 @@ import {
     within,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {SelectInput} from '@gorgias/ui-kit'
 
-import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {user} from 'fixtures/users'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
 import {Theme, ThemeColors} from 'theme/types'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

@@ -1,19 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, withFilter} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+
 import {
     ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
@@ -28,6 +15,20 @@ import {
     useTicketsCreatedMetric,
 } from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
+import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
+import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate, withFilter} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetric')
 const useMetricMock = assumeMock(useMetric)

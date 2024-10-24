@@ -1,5 +1,5 @@
-import client from '../api/resources'
 import {AccountSetting} from '../../state/currentAccount/types'
+import client from '../api/resources'
 
 export const createAccountSetting = async (
     data: Omit<AccountSetting, 'id'>

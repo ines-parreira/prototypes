@@ -1,5 +1,5 @@
-import React from 'react'
 import {act, fireEvent, render, screen, within} from '@testing-library/react'
+import React from 'react'
 
 import {IntegrationType} from 'models/integration/constants'
 

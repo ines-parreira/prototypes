@@ -1,5 +1,5 @@
-import React, {Component, ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {Component, ComponentProps} from 'react'
 import {DropdownMenu} from 'reactstrap'
 
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'

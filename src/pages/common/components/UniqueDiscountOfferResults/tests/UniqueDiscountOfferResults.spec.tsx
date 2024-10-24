@@ -1,27 +1,28 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import userEvent from '@testing-library/user-event'
+
 import {integrationsState} from 'fixtures/integrations'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import {uniqueDiscountOffers} from 'fixtures/uniqueDiscountOffers'
+import {useModalManager} from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useListDiscountOffers,
     useUpdateDiscountOffer,
     useDeleteDiscountOffer,
 } from 'models/convert/discountOffer/queries'
-import {uniqueDiscountOffers} from 'fixtures/uniqueDiscountOffers'
-import {useModalManager} from 'hooks/useModalManager'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
 

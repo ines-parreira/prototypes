@@ -1,33 +1,33 @@
 import {AxiosError} from 'axios'
-import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
+import _capitalize from 'lodash/capitalize'
+
+import {getAccountSettings} from 'models/account/resources'
+import client from 'models/api/resources'
+import {GorgiasApiError, isGorgiasApiError} from 'models/api/types'
 import {AgentsTableViews} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {ChannelsTableViews} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import GorgiasApi from 'services/gorgiasApi'
+import {ProductData, Subscription} from 'state/billing/types'
+import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
 } from 'state/currentAccount/selectors'
-import {
-    AgentsTableColumn,
-    ChannelsTableColumns,
-    TableView,
-} from 'state/ui/stats/types'
 
-import {RootState, StoreDispatch} from 'state/types'
-import client from 'models/api/resources'
-
-import {GorgiasApiError, isGorgiasApiError} from 'models/api/types'
-import * as constants from 'state/currentAccount/constants'
 import {
     Account,
     AccountSetting,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {ProductData, Subscription} from 'state/billing/types'
-import GorgiasApi from 'services/gorgiasApi'
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
-import {getAccountSettings} from 'models/account/resources'
+import {RootState, StoreDispatch} from 'state/types'
+import {
+    AgentsTableColumn,
+    ChannelsTableColumns,
+    TableView,
+} from 'state/ui/stats/types'
 
 export const updateAccount =
     (values: Account) =>

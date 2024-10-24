@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
+import React, {ComponentProps} from 'react'
 
 import DEPRECATED_BooleanField from '../DEPRECATED_BooleanField'
 

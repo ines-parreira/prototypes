@@ -1,11 +1,11 @@
 import React, {ComponentProps, ComponentType} from 'react'
 
 import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {currentAccountHasProduct} from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import {currentAccountHasProduct} from 'state/billing/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
 
 export const withProductEnabledPaywall = (
     product: ProductType,

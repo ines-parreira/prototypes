@@ -1,7 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
-import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {MemoryRouter} from 'react-router-dom'
+
 import {revenuePerAgent, ticketsClosedPerAgent} from 'fixtures/stats'
 
 import TableStat from './TableStat'

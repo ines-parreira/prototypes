@@ -1,10 +1,12 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {isValidPhoneNumber} from 'libphonenumber-js'
+
 import {UserSearchResult} from 'models/search/types'
 import * as selectors from 'state/integrations/selectors'
 import {assumeMock} from 'utils/testing'
-import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
+
 import useDialerOutboundCall from '../useDialerOutboundCall'
+import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())

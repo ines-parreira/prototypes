@@ -1,8 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import ModalStep from '../ModalStep'
+import React from 'react'
+
 import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
 import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
+import ModalStep from '../ModalStep'
 
 jest.mock('../ModalSteps/AppSetupStep/AppSetupStep', () => () => (
     <div>App Setup step mocked</div>

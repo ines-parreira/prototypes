@@ -1,13 +1,13 @@
-import React from 'react'
-import axios from 'axios'
-
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-import {useAgentDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import axios from 'axios'
+import classNames from 'classnames'
+import React from 'react'
 
-import {AgentLabel} from 'pages/common/utils/labels'
 import useId from 'hooks/useId'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import {useAgentDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
+
 import css from './VoiceCallAgentLabel.less'
 
 type AgentLabelProps = {

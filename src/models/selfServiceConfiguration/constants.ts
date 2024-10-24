@@ -1,5 +1,5 @@
-import {Option, SelectableOption} from 'pages/common/forms/SelectField/types'
 import {Option as MultiSelectOption} from 'pages/common/forms/MultiSelectOptionsField/types'
+import {Option, SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import {
     AUTOMATED_RESPONSE,

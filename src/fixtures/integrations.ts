@@ -1,5 +1,6 @@
 import {fromJS, Map} from 'immutable'
-import {IntegrationBase} from 'models/integration/types/base'
+
+import {ContentType, HttpMethod} from 'models/api/types'
 import {
     HttpIntegration,
     HttpIntegrationMeta,
@@ -7,7 +8,7 @@ import {
     IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
-import {ContentType, HttpMethod} from 'models/api/types'
+import {IntegrationBase} from 'models/integration/types/base'
 
 export const integrationBase: IntegrationBase = {
     id: 5,

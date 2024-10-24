@@ -1,8 +1,9 @@
-import {MutableRefObject} from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import {MutableRefObject} from 'react'
 import {VirtuosoHandle} from 'react-virtuoso'
 
 import {TicketSummary} from 'ticket-list-view/types'
+
 import useScrollActiveTicketIntoView from '../useScrollActiveTicketIntoView'
 
 type HookParams = {

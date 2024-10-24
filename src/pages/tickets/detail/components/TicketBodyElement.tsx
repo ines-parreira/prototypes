@@ -11,6 +11,8 @@ import {
     isTicketContactReasonSuggestion,
 } from 'models/ticket/predicates'
 import {TicketElement, TicketEvent, TicketMessage} from 'models/ticket/types'
+import {isVoiceCall} from 'models/voiceCall/types'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import AuditLogEvent, {
     contentfulEventTypesValues,
     HighlightedElements,
@@ -23,16 +25,15 @@ import {
     PRIVATE_REPLY_ACTIONS,
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import PrivateReplyEvent from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
-import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason'
+import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getLastCustomerMessage, getTicketState} from 'state/ticket/selectors'
-import {reportError} from 'utils/errors'
 import {generateTicketMessagesId} from 'utils'
-import {isVoiceCall} from 'models/voiceCall/types'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {reportError} from 'utils/errors'
+
 import {TicketEventPrivateReplyData} from '../../../../models/event/types'
 import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
 

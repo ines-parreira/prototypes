@@ -1,17 +1,17 @@
+import {waitFor} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {waitFor} from '@testing-library/react'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
 import {useHelpCenterList} from '../useHelpCenterList'
 

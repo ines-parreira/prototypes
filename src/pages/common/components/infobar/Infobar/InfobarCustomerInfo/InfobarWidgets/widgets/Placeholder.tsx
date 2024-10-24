@@ -1,14 +1,14 @@
-import React, {MouseEvent, useContext} from 'react'
 import classnames from 'classnames'
+import React, {MouseEvent, useContext} from 'react'
 
-import {Template} from 'models/widget/types'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {removeEditedWidget} from 'state/widgets/actions'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {Template} from 'models/widget/types'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {removeEditedWidget} from 'state/widgets/actions'
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Placeholder.less'
 

@@ -1,38 +1,34 @@
 import React, {UIEventHandler, useCallback, useState, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
+import useMeasure from 'hooks/useMeasure'
 import {opposite, OrderDirection} from 'models/api/types'
 
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
+import Navigation from 'pages/common/components/Navigation/Navigation'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import useMeasure from 'hooks/useMeasure'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
+import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
 import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
 
-import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {useSortedAndPaginatedTableRows} from 'pages/stats/convert/hooks/useSortedAndPaginatedTableRows'
 import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-
-import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
 
-import {useSortedAndPaginatedTableRows} from 'pages/stats/convert/hooks/useSortedAndPaginatedTableRows'
-
-import {CampaignPerformanceConfig} from './constants'
-
-import {CampaignTableCell} from './components/CampaignTableCell'
-
 import css from './CampaignTableStats.less'
+import {CampaignTableCell} from './components/CampaignTableCell'
+import {CampaignPerformanceConfig} from './constants'
 
 type Props = {
     chatIntegrationId?: number

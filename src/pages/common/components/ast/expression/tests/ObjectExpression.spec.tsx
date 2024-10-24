@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS, List} from 'immutable'
 import {render, screen} from '@testing-library/react'
+import {fromJS, List} from 'immutable'
+import React from 'react'
 
 import {RuleItemActions} from 'pages/settings/rules/types'
 

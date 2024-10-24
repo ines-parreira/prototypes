@@ -1,13 +1,14 @@
 import {useElements, useStripe} from '@stripe/react-stripe-js'
-import {useMutation} from '@tanstack/react-query'
 import {SetupIntentResult} from '@stripe/stripe-js'
-import {MutationOverrides} from 'types/query'
-import {useBillingContact} from 'models/billing/queries'
+import {useMutation} from '@tanstack/react-query'
+
+import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useBillingContact} from 'models/billing/queries'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {MutationOverrides} from 'types/query'
 import {reportError} from 'utils/errors'
-import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 
 export const useConfirmStripeSetupIntent = (
     overrides?: MutationOverrides<() => Promise<SetupIntentResult>>

@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {PageSection} from 'config/pages'
 import {UserRole} from 'config/types/user'

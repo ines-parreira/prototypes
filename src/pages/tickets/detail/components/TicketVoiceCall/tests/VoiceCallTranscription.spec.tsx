@@ -1,16 +1,18 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import _noop from 'lodash/noop'
+import React from 'react'
+
 import {
     VoiceCallRecording,
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
-import {assumeMock} from 'utils/testing'
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
 import {VoiceRecordingsContextState} from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
+import {assumeMock} from 'utils/testing'
+
 import VoiceCallTranscription from '../VoiceCallTranscription'
 
 jest.mock('../TranscriptionData', () => ({

@@ -1,5 +1,6 @@
-import React from 'react'
 import {produce} from 'immer'
+import React from 'react'
+
 import {
     ConditionSchema,
     EqualsSchema,

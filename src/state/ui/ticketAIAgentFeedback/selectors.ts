@@ -1,5 +1,7 @@
 import {createSelector} from 'reselect'
+
 import {StoreState} from 'state/types'
+
 import {TicketAIAgentFeedbackState} from './types'
 
 const getTicketAIAgentFeedbackState = (

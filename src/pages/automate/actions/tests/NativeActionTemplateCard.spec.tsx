@@ -1,13 +1,13 @@
-import React from 'react'
 import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
 import {shopifyIntegration} from 'fixtures/integrations'
+import {renderWithRouter} from 'utils/testing'
 
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import NativeActionTemplateCard from '../components/NativeActionTemplateCard'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 
 jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('../hooks/useGetActionAppIntegration')

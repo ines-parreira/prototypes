@@ -1,14 +1,14 @@
-import React, {useRef, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useRef, useState} from 'react'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
+import {IntegrationType} from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import {IntegrationType} from 'models/integration/types'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 import {App} from '../types'
 

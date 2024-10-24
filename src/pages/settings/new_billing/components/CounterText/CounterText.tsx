@@ -1,4 +1,6 @@
 import React from 'react'
+
+import {Plan, ProductType} from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
@@ -6,7 +8,6 @@ import {
     isTrial,
 } from 'models/billing/utils'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
-import {Plan, ProductType} from 'models/billing/types'
 
 export type CounterTextProps = {
     plan: Plan | undefined

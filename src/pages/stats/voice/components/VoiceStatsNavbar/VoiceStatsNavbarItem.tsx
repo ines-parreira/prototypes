@@ -1,14 +1,15 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
+import cssNavbar from 'assets/css/navbar.less'
 import useAppSelector from 'hooks/useAppSelector'
+import {ProductType} from 'models/billing/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import cssNavbar from 'assets/css/navbar.less'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import {currentAccountHasProduct} from 'state/billing/selectors'
-import {ProductType} from 'models/billing/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
     to: string

@@ -1,20 +1,22 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {Moment} from 'moment'
-import {assumeMock} from 'utils/testing'
-import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {useMetric} from 'hooks/reporting/useMetric'
-import * as constants from 'pages/stats/voice/constants/liveVoice'
+import React, {ComponentProps} from 'react'
 
 import {Metric} from 'hooks/reporting/metrics'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {useMetric} from 'hooks/reporting/useMetric'
+import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import * as constants from 'pages/stats/voice/constants/liveVoice'
+
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
+
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
-import LiveVoiceMetrics from './LiveVoiceMetrics'
+import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
-import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
+import LiveVoiceMetrics from './LiveVoiceMetrics'
 import {LiveVoiceStatusFilterOption} from './types'
+import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof LiveVoiceMetrics>> = {

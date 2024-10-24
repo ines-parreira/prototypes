@@ -1,17 +1,17 @@
 import {Map} from 'immutable'
 
 import {getTrackingLink} from 'common/tracking'
-import {formatDatetime} from 'utils'
-import {StoreState} from 'state/types'
-import {IntegrationType} from 'models/integration/types'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
 import {
     DateAndTimeFormatting,
     DateTimeFormatMapper,
     DateTimeFormatType,
 } from 'constants/datetime'
+import {IntegrationType} from 'models/integration/types'
 import {momentToLDMLFormat} from 'pages/common/utils/template'
-import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {StoreState} from 'state/types'
+import {formatDatetime} from 'utils'
 
 function getLastOrderTrackingURL(
     context: Map<any, any>,

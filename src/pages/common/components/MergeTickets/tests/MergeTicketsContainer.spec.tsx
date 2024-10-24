@@ -1,11 +1,11 @@
+import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React from 'react'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
+import React from 'react'
 
-import {screen} from '@testing-library/react'
-import {renderWithStore} from 'utils/testing'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
+import {renderWithStore} from 'utils/testing'
 
 describe('MergeTicketsContainer component', () => {
     const ticketSubject = 'foo'

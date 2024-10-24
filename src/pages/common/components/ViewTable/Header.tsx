@@ -1,12 +1,13 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {Map} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {createRef, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Map} from 'immutable'
-import classnames from 'classnames'
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import closeIcon from 'assets/img/icons/close.svg'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewCategory} from 'models/view/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -14,7 +15,9 @@ import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import css from 'pages/common/components/ViewTable/Header.less'
 import history from 'pages/history'
+import {RootState} from 'state/types'
 import {
     fetchViewItems,
     removeFieldFilter,
@@ -23,12 +26,8 @@ import {
     updateView,
 } from 'state/views/actions'
 import {getActiveView, getLastViewId} from 'state/views/selectors'
-import {RootState} from 'state/types'
 import {slugify} from 'utils'
 import {systemViewIcons} from 'utils/views'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import css from 'pages/common/components/ViewTable/Header.less'
 
 type OwnProps = {
     isSearch: boolean

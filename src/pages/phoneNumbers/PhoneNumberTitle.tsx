@@ -1,10 +1,11 @@
 import React from 'react'
+
 import {NewPhoneNumber} from 'models/phoneNumber/types'
 
-import {countryCode} from './utils'
 import CountryFlag from './CountryFlag'
 
 import css from './PhoneNumberTitle.less'
+import {countryCode} from './utils'
 
 type Props = {
     phoneNumber: NewPhoneNumber

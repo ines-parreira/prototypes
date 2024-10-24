@@ -1,10 +1,10 @@
-import React, {ComponentProps} from 'react'
 import Clipboard from 'clipboard'
+import React, {ComponentProps} from 'react'
 
+import {store} from 'common/store'
 import IconButton from 'pages/common/components/button/IconButton'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {store} from 'common/store'
 
 import css from '../EmailDomainVerification.less'
 

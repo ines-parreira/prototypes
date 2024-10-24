@@ -1,6 +1,8 @@
 import {screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
 
 jest.mock(

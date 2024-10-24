@@ -2,8 +2,8 @@ import React, {useCallback} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import WorkflowTemplatesView from './WorkflowTemplatesView'
 

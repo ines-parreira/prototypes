@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map, List} from 'immutable'
+import React from 'react'
 
 import {IntegrationType} from 'models/integration/constants'
 import history from 'pages/history'

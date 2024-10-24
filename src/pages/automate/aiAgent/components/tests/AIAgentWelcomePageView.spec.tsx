@@ -1,17 +1,19 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import {createMemoryHistory} from 'history'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {renderWithRouter} from 'utils/testing'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
-import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {notify} from 'state/notifications/actions'
+import {renderWithRouter} from 'utils/testing'
+
 import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 const MOCK_WIZARD_VALUES = {
     wizard: {

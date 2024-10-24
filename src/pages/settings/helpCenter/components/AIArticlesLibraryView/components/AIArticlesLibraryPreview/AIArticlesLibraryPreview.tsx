@@ -1,19 +1,19 @@
-import React from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React from 'react'
+
 import {SegmentEvent, logEvent} from 'common/segment'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Button from 'pages/common/components/button/Button'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {AIArticle} from 'models/helpCenter/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {isAdmin} from 'utils'
 
-import AIArticlesLibraryPreviewEmptyState from './AIArticlesLibraryPreviewEmptyState'
-
 import css from './AIArticlesLibraryPreview.less'
+import AIArticlesLibraryPreviewEmptyState from './AIArticlesLibraryPreviewEmptyState'
 
 const editIconId = 'article-preview-edit-icon'
 

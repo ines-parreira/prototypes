@@ -1,13 +1,13 @@
 import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
+import refreshIcon from 'assets/img/icons/refresh.svg'
 import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 
-import refreshIcon from 'assets/img/icons/refresh.svg'
 import useVoiceDevice from './useVoiceDevice'
 
 enum PhoneBannerNotification {

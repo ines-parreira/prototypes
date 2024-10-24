@@ -1,7 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {useMemo} from 'react'
 
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
@@ -9,12 +9,13 @@ import {
     getProductLabel,
     isTrial,
 } from 'models/billing/utils'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+
+import warningIcon from '../../../../../assets/img/icons/warning.svg'
 import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
 
-import warningIcon from '../../../../../assets/img/icons/warning.svg'
 import {getNextTier} from '../../utils/getNextTier'
+import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import css from './SummaryItem.less'
 
 export type SummaryItemProps = {

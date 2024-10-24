@@ -1,19 +1,18 @@
-import React, {useState} from 'react'
-import parsePhoneNumber from 'libphonenumber-js'
 import classnames from 'classnames'
-import settingsCss from 'pages/settings/settings.less'
+import parsePhoneNumber from 'libphonenumber-js'
+import React, {useState} from 'react'
 
 import {PhoneContactInfoDto} from 'models/helpCenter/types'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import settingsCss from 'pages/settings/settings.less'
 
-import ContactCard from '../ContactCard'
-
-import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import {MAX_DESCRIPTION_LENGTH} from '../../constants'
-import PhoneNumbersForm from './PhoneNumbersForm'
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import ContactCard from '../ContactCard'
 import css from './PhoneContactInfoSection.less'
+import PhoneNumbersForm from './PhoneNumbersForm'
 
 const PhoneContactInfoSection: React.FC = () => {
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)

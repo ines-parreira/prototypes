@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 
 import css from './TestRequestInputs.less'

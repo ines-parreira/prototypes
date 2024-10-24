@@ -1,14 +1,16 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+
+import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
 import HelpCenterAutoEmbedWarningBanner, {
     HelpCenterAutoEmbedWarningBannerProps,
 } from '../HelpCenterAutoEmbedWarningBanner'
-import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
-import {HelpCenterAutoEmbedReadinessStatus} from './types'
 import css from './HelpCenterAutoEmbedPublishSection.less'
+import {HelpCenterAutoEmbedReadinessStatus} from './types'
 
 export type HelpCenterAutoEmbedPublishSectionProps = {
     helpCenterShopName: string | null

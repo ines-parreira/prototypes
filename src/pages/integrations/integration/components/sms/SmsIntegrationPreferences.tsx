@@ -1,24 +1,24 @@
+import classnames from 'classnames'
+import {fromJS} from 'immutable'
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
-import classnames from 'classnames'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import settingsCss from 'pages/settings/settings.less'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import settingsCss from 'pages/settings/settings.less'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 
 import css from './SmsIntegrationPreferences.less'
 

@@ -1,25 +1,24 @@
+import classnames from 'classnames'
 import React, {ReactNode, useEffect, useState} from 'react'
 import {Table} from 'reactstrap'
-import classnames from 'classnames'
-
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
-import ReactSortable from '../../../common/components/dragging/ReactSortable'
+import {activateRule, reorderRules} from '../../../../models/rule/resources'
+import {
+    rulesReordered,
+    ruleUpdated,
+} from '../../../../state/entities/rules/actions'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     Rule,
     RuleLimitStatus,
     RulePriority,
 } from '../../../../state/rules/types'
-import {activateRule, reorderRules} from '../../../../models/rule/resources'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {notify} from '../../../../state/notifications/actions'
-import {
-    rulesReordered,
-    ruleUpdated,
-} from '../../../../state/entities/rules/actions'
+import ReactSortable from '../../../common/components/dragging/ReactSortable'
 
 import RuleRow from './components/RuleRow'
 

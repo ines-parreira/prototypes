@@ -1,23 +1,23 @@
-import {fromJS, Map, List} from 'immutable'
 import {ContentState} from 'draft-js'
-import _pick from 'lodash/pick'
+import {fromJS, Map, List} from 'immutable'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
-
-import {DiscountCode} from 'models/discountCodes/types'
+import _pick from 'lodash/pick'
 
 import {
     TicketMessageSourceType,
     TicketChannel,
     TicketVia,
 } from 'business/types/ticket'
+import {DiscountCode} from 'models/discountCodes/types'
+
+import {MacroAction} from 'models/macroAction/types'
+import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as ticketTypes from 'state/ticket/constants'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
 import {GorgiasAction} from 'state/types'
 import {getChannelFromSourceType, isPublic} from 'tickets/common/utils'
 
-import {MacroAction} from 'models/macroAction/types'
-import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {addEmailExtra} from './actions'
 import * as types from './constants'
 import {
@@ -26,8 +26,6 @@ import {
     hasEmailExtraContent,
     updateEmailExtraOnUserInput,
 } from './emailExtraUtils'
-import ticketReplyCache from './ticketReplyCache'
-import {getReceiversProperties} from './selectors'
 import {
     addCache,
     applyMacro,
@@ -36,6 +34,8 @@ import {
     updateCache,
     updateNewMessageWithContentState,
 } from './responseUtils'
+import {getReceiversProperties} from './selectors'
+import ticketReplyCache from './ticketReplyCache'
 import {NewMessage, NewMessageState, ReplyAreaState} from './types'
 import {getMentionIds} from './utils'
 

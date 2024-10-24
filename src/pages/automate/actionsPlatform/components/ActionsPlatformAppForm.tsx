@@ -2,17 +2,16 @@ import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {IntegrationType} from 'models/integration/constants'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import InputField from 'pages/common/forms/input/InputField'
 
 import {ActionsApp, App} from '../types'
+import css from './ActionsPlatformAppForm.less'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
-
-import css from './ActionsPlatformAppForm.less'
 
 type Props = {
     value?: ActionsApp

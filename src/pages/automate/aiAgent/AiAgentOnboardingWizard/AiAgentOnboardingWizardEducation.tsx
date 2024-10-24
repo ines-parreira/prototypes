@@ -1,11 +1,13 @@
 import React from 'react'
+
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useCallbackRef from 'hooks/useCallbackRef'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -13,8 +15,8 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 import css from './AiAgentOnboardingWizardEducation.less'
+import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 
 type Props = AiAgentOnboardingWizardProps
 

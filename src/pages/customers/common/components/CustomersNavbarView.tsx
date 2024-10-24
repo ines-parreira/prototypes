@@ -1,8 +1,8 @@
 import React from 'react'
 
-import ViewNavbarView from 'pages/common/components/ViewNavbarView/ViewNavbarView'
-import {ViewType} from 'models/view/types'
 import {UserSettingType} from 'config/types/user'
+import {ViewType} from 'models/view/types'
+import ViewNavbarView from 'pages/common/components/ViewNavbarView/ViewNavbarView'
 
 type Props = {
     settingType: UserSettingType

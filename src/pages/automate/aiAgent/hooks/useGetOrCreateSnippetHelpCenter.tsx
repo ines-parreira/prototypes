@@ -1,9 +1,10 @@
 import {useEffect, useMemo, useState} from 'react'
-import {reportError} from 'utils/errors'
+
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HelpCenter} from 'models/helpCenter/types'
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {reportError} from 'utils/errors'
 
 type Props = {
     accountDomain: string

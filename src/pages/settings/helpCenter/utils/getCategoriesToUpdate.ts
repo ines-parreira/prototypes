@@ -1,4 +1,5 @@
 import {cloneDeep as _cloneDeep} from 'lodash'
+
 import {Category, CategoryTranslation} from 'models/helpCenter/types'
 import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 

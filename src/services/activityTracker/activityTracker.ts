@@ -1,9 +1,9 @@
-import {AxiosError} from 'axios'
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
+import {AxiosError} from 'axios'
 
-import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
 import {isDevelopment} from 'utils/environment'
 import {reportError} from 'utils/errors'
+import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
 
 import {ActivityEvents, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL} from './constants'
 import {checkIfTrackerIsEnabled} from './utils'

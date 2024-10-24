@@ -1,28 +1,29 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {useMemo, useState} from 'react'
 import {Link, useLocation, useParams} from 'react-router-dom'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import history from 'pages/history'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 
+import webhooksIcon from 'assets/img/icons/webhooks.svg'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import useDimensions from 'hooks/useDimensions'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {formatDatetime} from 'utils'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import webhooksIcon from 'assets/img/icons/webhooks.svg'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import history from 'pages/history'
+
+import {formatDatetime} from 'utils'
+
+import useDeleteAction from '../hooks/useDeleteAction'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import useDeleteAction from '../hooks/useDeleteAction'
 import useUpsertAction from '../hooks/useUpsertAction'
 
 import {StoreWorkflowsConfiguration} from '../types'
+import css from './ActionsRow.less'
 import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
-
-import css from './ActionsRow.less'
 
 type Props = {
     action: StoreWorkflowsConfiguration

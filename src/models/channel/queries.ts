@@ -1,4 +1,5 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+
 import {listChannels} from './resources'
 
 export const channelsQueryKeys = {

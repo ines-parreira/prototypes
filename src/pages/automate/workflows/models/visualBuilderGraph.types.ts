@@ -1,12 +1,12 @@
 import {Edge, Node} from 'reactflow'
 
+import {ConditionSchema, ConditionsSchema} from './conditions.types'
 import {
     LanguageCode,
     MessageContent,
     WorkflowConfiguration,
     WorkflowTransition,
 } from './workflowConfiguration.types'
-import {ConditionSchema, ConditionsSchema} from './conditions.types'
 
 export type ChannelTriggerNodeType = Node<
     {

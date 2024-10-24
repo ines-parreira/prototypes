@@ -27,12 +27,13 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import useEvent from 'hooks/useEvent'
-import useKey from 'hooks/useKey'
 
 import {useAppNode} from 'appNode'
+import useEvent from 'hooks/useEvent'
+import useKey from 'hooks/useKey'
+import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+
 import css from './Dropdown.less'
 
 type Props = {

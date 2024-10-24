@@ -1,17 +1,16 @@
-import React from 'react'
 import classNames from 'classnames'
 import pluralize from 'pluralize'
+import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
+import {TicketFeedback} from 'models/aiAgentFeedback/types'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 
-import {TicketFeedback} from 'models/aiAgentFeedback/types'
-
 import css from './AIAgentFeedbackBar.less'
-import FeedbackOrders from './FeedbackOrders'
-import FeedbackEvents from './FeedbackEvents'
 import {QA_FAILED_MESSAGE} from './constants'
+import FeedbackEvents from './FeedbackEvents'
+import FeedbackOrders from './FeedbackOrders'
 
 type Props = {
     ticketFeedback?: TicketFeedback

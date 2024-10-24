@@ -1,12 +1,12 @@
 import React from 'react'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import Header from './Header'
-import Slides from './Slides'
-import InfoCard from './InfoCard'
-import {ProductDetail} from './types'
 
 import css from './Detail.less'
+import Header from './Header'
+import InfoCard from './InfoCard'
+import Slides from './Slides'
+import {ProductDetail} from './types'
 
 export default function Detail(props: ProductDetail) {
     const {screenshots = [], longDescription, benefits, infocard} = props

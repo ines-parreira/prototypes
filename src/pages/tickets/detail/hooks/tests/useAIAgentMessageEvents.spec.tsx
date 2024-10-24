@@ -1,13 +1,15 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {TicketStatus} from 'business/types/ticket'
-import {TicketMessage} from 'models/ticket/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {TicketMessage} from 'models/ticket/types'
+import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+
 import {useAIAgentMessageEvents} from '../useAIAgentMessageEvents'
 
 const mockStore = configureMockStore([thunk])

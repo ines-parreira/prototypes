@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useTopQuestionsViewedOnPage} from '../useTopQuestionsViewedOnPage'
 
 const dateNow = new Date('2022-02-10T08:00:00Z')

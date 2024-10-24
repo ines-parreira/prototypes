@@ -1,17 +1,17 @@
 import {render, waitFor} from '@testing-library/react'
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
-import {RootState, StoreDispatch} from 'state/types'
-import {AccountSettingType} from 'state/currentAccount/types'
-import * as accountActions from 'state/currentAccount/actions'
-import {ViewCategory} from 'models/view/types'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {ViewCategory} from 'models/view/types'
+import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
+import * as accountActions from 'state/currentAccount/actions'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockViewsStore = fromJS({
     items: [

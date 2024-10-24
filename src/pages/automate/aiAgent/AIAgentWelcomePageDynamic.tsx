@@ -1,18 +1,19 @@
 import React, {useMemo} from 'react'
 
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {IntegrationType} from 'models/integration/constants'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useHelpCentersArticleCount} from '../common/hooks/useHelpCentersArticleCount'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import {useHasEmailToStoreConnection} from '../common/components/TopQuestions/useHasEmailToStoreConnection'
+import {useHelpCentersArticleCount} from '../common/hooks/useHelpCentersArticleCount'
+
 import useSelfServiceStoreIntegration from '../common/hooks/useSelfServiceStoreIntegration'
+import {READ_FULFILLMENTS_PERMISSION} from './AiAgentConfigurationView/AiAgentConfigurationView'
 import {
     AiAgentWelcomePageProps,
     AIAgentWelcomePageView,
     DynamicItem,
 } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
-import {READ_FULFILLMENTS_PERMISSION} from './AiAgentConfigurationView/AiAgentConfigurationView'
 
 type Props = AiAgentWelcomePageProps & {
     state: 'dynamic' | 'onboardingWizard'

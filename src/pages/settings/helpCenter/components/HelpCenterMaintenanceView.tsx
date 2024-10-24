@@ -1,5 +1,7 @@
 import React from 'react'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {ManageRedirects} from './ManageRedirects'

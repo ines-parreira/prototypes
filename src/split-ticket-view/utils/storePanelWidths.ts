@@ -1,9 +1,10 @@
 import _debounce from 'lodash/debounce'
+
+import {tryLocalStorage} from 'services/common/utils'
 import {
     LayoutKeys,
     PANELS_STORAGE_DEBOUNCE_TIME,
 } from 'split-ticket-view/constants'
-import {tryLocalStorage} from 'services/common/utils'
 
 const storePanelWidths = _debounce(
     (layoutKey: LayoutKeys, widths: number[]) => {

@@ -1,8 +1,8 @@
 import React, {ReactNode, Component, ComponentProps} from 'react'
 import Lightbox from 'react-images'
 
-import LinkAlert from '../Alert/LinkAlert'
 import {AlertType} from '../Alert/Alert'
+import LinkAlert from '../Alert/LinkAlert'
 import Carousel from './Carousel'
 
 type LinkAlertProps = ComponentProps<typeof LinkAlert>

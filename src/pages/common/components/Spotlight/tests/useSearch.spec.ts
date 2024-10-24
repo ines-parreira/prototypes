@@ -1,7 +1,8 @@
-import {KeyboardEvent} from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
-import {ticket} from 'fixtures/ticket'
+import {KeyboardEvent} from 'react'
+
 import {customer} from 'fixtures/customer'
+import {ticket} from 'fixtures/ticket'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'

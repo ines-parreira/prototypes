@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
-import {createTrigger} from '../../utils/createTrigger'
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import {createTrigger} from '../../utils/createTrigger'
 
 import {CampaignPreviewPopover} from './CampaignPreviewPopover'
 

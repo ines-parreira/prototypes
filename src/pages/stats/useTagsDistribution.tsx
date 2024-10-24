@@ -1,12 +1,13 @@
 import {useMemo} from 'react'
+
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
 import useAppSelector from 'hooks/useAppSelector'
-import {getEntitiesTags} from 'state/entities/tags/selectors'
+import {OrderDirection} from 'models/api/types'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {OrderDirection} from 'models/api/types'
+import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
 

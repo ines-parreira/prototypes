@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
-import {useParams} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
+import {useParams} from 'react-router-dom'
 
 import {UserSettingType} from 'config/types/user'
 

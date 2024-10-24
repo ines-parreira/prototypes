@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {List, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
+
+import Expression from '../../expression/Expression'
 import {ConsequentStatement} from '../ConsequentStatement'
 import Statement from '../Statement'
-import Expression from '../../expression/Expression'
 
 const mockStore = configureMockStore()
 const defaultStore = {

@@ -1,8 +1,8 @@
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
 
 import {logEvent} from 'common/segment'
 import {ticket as ticketFixture} from 'fixtures/ticket'

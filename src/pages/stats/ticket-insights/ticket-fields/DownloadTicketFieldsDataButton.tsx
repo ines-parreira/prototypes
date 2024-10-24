@@ -1,17 +1,17 @@
 import React from 'react'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useAppSelector from 'hooks/useAppSelector'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
-import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {formatDates} from 'pages/stats/utils'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {saveReport} from 'services/reporting/ticketFieldsReportingService'
+import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Ticket Fields Data'

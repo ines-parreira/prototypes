@@ -1,4 +1,5 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+
 import useThrottledValue from 'hooks/useThrottledValue'
 
 const mockedFn = jest.fn((value) => value as unknown)

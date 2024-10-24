@@ -1,17 +1,18 @@
 // Connect customers on your cart page with your team
 
 import {ulid} from 'ulidx'
-import {assetsUrl} from 'utils'
+
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {assetsUrl} from 'utils'
 
-import {CampaignConfiguration, CampaignTemplate} from '../types'
 import {CampaignConfigurationBuilder} from '../constructor'
+import {CampaignConfiguration, CampaignTemplate} from '../types'
 
 export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
     slug: 'connect-customer-on-cart-with-team',

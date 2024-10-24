@@ -1,4 +1,5 @@
 import client from 'models/api/resources'
+
 import {SenderVerification, SenderInformation} from './types'
 
 export const createVerification = async (

@@ -1,5 +1,5 @@
-import React, {ComponentProps, useRef, useState} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps, useRef, useState} from 'react'
 
 import Dropdown, {DropdownContext} from '../Dropdown'
 import DropdownSearch from '../DropdownSearch'

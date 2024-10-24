@@ -1,5 +1,6 @@
-import React from 'react'
 import {render, act, fireEvent, waitFor} from '@testing-library/react'
+import React from 'react'
+
 import {CampaignFrequencySettings} from 'pages/convert/settings/types'
 
 import {CampaignFrequencySetting} from '../CampaignFrequencySetting'

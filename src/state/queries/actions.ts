@@ -1,4 +1,5 @@
 import {QueryKey} from '@tanstack/react-query'
+
 import * as constants from './constants'
 
 export const updateQueryTimestamp = (queryKey: QueryKey) => ({

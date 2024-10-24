@@ -1,9 +1,9 @@
-import React, {ForwardedRef, forwardRef, MouseEvent} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {ForwardedRef, forwardRef, MouseEvent} from 'react'
 
-import IconButton from 'pages/common/components/button/IconButton'
 import useId from 'hooks/useId'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Button.less'
 

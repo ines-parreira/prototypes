@@ -1,4 +1,5 @@
 import {logEvent} from 'common/segment'
+
 import {
     logUserSubmissionEvent,
     logDropdownOpenEvent,

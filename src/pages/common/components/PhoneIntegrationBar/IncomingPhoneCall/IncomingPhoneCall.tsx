@@ -1,18 +1,19 @@
-import React, {SyntheticEvent, useCallback, useRef} from 'react'
 import {Call} from '@twilio/voice-sdk'
-import {useHistory, useLocation} from 'react-router-dom'
 import classNames from 'classnames'
 import moment from 'moment'
+import React, {SyntheticEvent, useCallback, useRef} from 'react'
+import {useHistory, useLocation} from 'react-router-dom'
 
 import {useNow} from 'common/hooks'
-import Button from 'pages/common/components/button/Button'
 import {declineCall} from 'hooks/integrations/phone/api'
-import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
-import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
-import {useConnectionParameters} from '../hooks'
+import Button from 'pages/common/components/button/Button'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import {useConnectionParameters} from '../hooks'
+import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
+
+import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
+import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import css from './IncomingPhoneCall.less'
 
 type Props = {

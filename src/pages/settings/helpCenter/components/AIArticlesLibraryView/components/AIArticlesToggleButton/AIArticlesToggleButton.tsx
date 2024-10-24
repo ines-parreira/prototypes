@@ -1,11 +1,11 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
-import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {
     AIArticleToggleOptionValue,
     AIArticleToggleOption,
 } from 'models/helpCenter/types'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 import css from './AIArticlesToggleButton.less'
 

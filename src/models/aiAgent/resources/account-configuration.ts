@@ -1,7 +1,10 @@
 import axios from 'axios'
+
 import {HelpCenter} from 'models/helpCenter/types'
+
 import {isProduction, isStaging} from '../../../utils/environment'
 
+import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AccountConfiguration,
     AccountConfigurationResponse,
@@ -11,7 +14,6 @@ import {
     UpsertStoreConfigurationPayload,
     WelcomePageAcknowledgedResponse,
 } from '../types'
-import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 
 /**
  * API Client for AI Agent

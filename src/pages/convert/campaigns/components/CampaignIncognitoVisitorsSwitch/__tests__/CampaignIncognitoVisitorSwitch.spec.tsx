@@ -1,8 +1,8 @@
-import React from 'react'
 import {render, act, screen} from '@testing-library/react'
+import React from 'react'
 
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
 
 import CampaignIncognitoVisitorsSwitch from '../CampaignIncognitoVisitorsSwitch'

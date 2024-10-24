@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import Tag, {TagColor} from './Tag'
 

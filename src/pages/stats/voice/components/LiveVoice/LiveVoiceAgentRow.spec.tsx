@@ -2,12 +2,14 @@ import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
 } from '@gorgias/api-queries'
-import React from 'react'
 import {act, render, waitFor} from '@testing-library/react'
+import React from 'react'
+
 import useInterval from 'hooks/useInterval'
-import {assumeMock} from 'utils/testing'
-import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import AgentCard from 'pages/common/components/AgentCard/AgentCard'
+import {assumeMock} from 'utils/testing'
+
 import LiveVoiceAgentRow from './LiveVoiceAgentRow'
 import {getOldestCall, isAgentAvailable, isAgentBusy} from './utils'
 

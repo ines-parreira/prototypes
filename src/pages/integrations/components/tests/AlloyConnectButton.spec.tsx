@@ -1,10 +1,10 @@
-import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 
 import client from 'models/api/resources'
 import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'

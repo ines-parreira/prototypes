@@ -1,9 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import Wizard from '../Wizard'
-import WizardStep from '../WizardStep'
 import WizardProgress from '../WizardProgress'
+import WizardStep from '../WizardStep'
 
 describe('<WizardProgress />', () => {
     it('should render', () => {

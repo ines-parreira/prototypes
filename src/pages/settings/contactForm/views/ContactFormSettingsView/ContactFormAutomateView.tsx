@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {ConnectedChannelsContactFormView} from 'pages/automate/connectedChannels/components/ConnectedChannelsContactFormView'
+
 import {useCurrentContactForm} from '../../hooks/useCurrentContactForm'
 import css from './ContactFormAutomateView.less'
 

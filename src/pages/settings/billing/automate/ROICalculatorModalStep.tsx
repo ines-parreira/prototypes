@@ -1,12 +1,12 @@
+import classNames from 'classnames'
 import React from 'react'
 import {ModalFooter, ModalHeader} from 'reactstrap'
-import classNames from 'classnames'
 
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import Button from 'pages/common/components/button/Button'
-import ROICalculator from './ROICalculator/ROICalculator'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 
 import css from './AutomateSubscriptionModal.less'
+import ROICalculator from './ROICalculator/ROICalculator'
 
 type Props = {
     handleOnClose: () => void

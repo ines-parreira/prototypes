@@ -1,11 +1,6 @@
 import React, {useRef, useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import shopify from 'assets/img/integrations/shopify.png'
 import {
     JsonLogicOperator,
     JsonLogicOrBlock,
@@ -14,14 +9,18 @@ import {
     ReportIssueVariable,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
-import shopify from 'assets/img/integrations/shopify.png'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import {SCENARIO_MAX_NUMBER_OF_CONDITIONS_PER_VARIABLE} from '../constants'
 import ReportOrderIssueScenarioConditionOrBlock from './ReportOrderIssueScenarioConditionOrBlock'
 import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
-import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
-
 import css from './ReportOrderIssueScenarioConditions.less'
+import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
 
 type Props = {
     value: SelfServiceReportIssueCase['conditions']

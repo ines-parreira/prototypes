@@ -1,16 +1,17 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {Link} from 'react-router-dom'
+
 import {usePersistedState} from 'common/hooks'
-import {NotificationStatus} from 'state/notifications/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import useAppSelector from 'hooks/useAppSelector'
-import {getEmailIntegrations} from 'state/integrations/selectors'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
 } from 'pages/integrations/integration/components/email/helpers'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getEmailIntegrations} from 'state/integrations/selectors'
+import {NotificationStatus} from 'state/notifications/types'
 import {isAdmin} from 'utils'
 
 const BANNER_VISIBILITY_KEY = 'email-domain-verification-banner-visibility'

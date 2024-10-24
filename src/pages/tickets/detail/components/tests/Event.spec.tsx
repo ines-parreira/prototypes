@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
 

@@ -1,12 +1,32 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useEffect, useMemo, useState} from 'react'
 
+import store from 'assets/img/icons/store.svg'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import {useCheckHelpCenterWithSubdomainExists} from 'models/helpCenter/queries'
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/constants'
+import {
+    Language,
+    LanguagePicker,
+} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import WizardFooter, {
+    FOOTER_BUTTONS,
+} from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import GroupAddon from 'pages/common/forms/input/GroupAddon'
+import InputField from 'pages/common/forms/input/InputField'
+import InputGroup from 'pages/common/forms/input/InputGroup'
+import TextInput from 'pages/common/forms/input/TextInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import history from 'pages/history'
 import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -15,41 +35,22 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import WizardFooter, {
-    FOOTER_BUTTONS,
-} from 'pages/common/components/wizard/WizardFooter'
-import InputField from 'pages/common/forms/input/InputField'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
-import {
-    Language,
-    LanguagePicker,
-} from 'pages/common/components/LanguagePicker/LanguagePicker'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import {slugify} from 'utils'
+import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from 'pages/settings/helpCenter/utils/validations'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import history from 'pages/history'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {useCheckHelpCenterWithSubdomainExists} from 'models/helpCenter/queries'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
-import store from 'assets/img/icons/store.svg'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {IntegrationType} from 'models/integration/constants'
-import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import {slugify} from 'utils'
+
 import {
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
     mapLanguagePickerToHelpCenterLanguages,
 } from '../../HelpCenterCreationWizardUtils'
+import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
 import css from './HelpCenterCreationWizardStepBasics.less'
 
 type Props = {

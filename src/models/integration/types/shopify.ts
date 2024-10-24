@@ -1,8 +1,8 @@
 // g/integrations/shopify/schemas.py
 import {IntegrationType} from '../constants'
+import type {Integration} from './'
 import type {IntegrationBase} from './base'
 import type {OAuth2} from './misc'
-import type {Integration} from './'
 
 export type ShopifyIntegration = IntegrationBase & {
     type: IntegrationType.Shopify

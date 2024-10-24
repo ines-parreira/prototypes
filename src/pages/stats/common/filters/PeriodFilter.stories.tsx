@@ -1,12 +1,13 @@
+import {Meta, StoryFn} from '@storybook/react'
 import {within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import moment from 'moment'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import {Meta, StoryFn} from '@storybook/react'
-import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
-import {ThemeProvider} from 'theme'
+
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
+import {ThemeProvider} from 'theme'
 
 const defaultState = {}
 

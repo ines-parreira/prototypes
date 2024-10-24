@@ -1,15 +1,15 @@
+import {Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import PageHeader from 'pages/common/components/PageHeader'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
+import PageHeader from 'pages/common/components/PageHeader'
+import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 type Props = {

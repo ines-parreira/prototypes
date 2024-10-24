@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
+
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {assumeMock} from 'utils/testing'
 import {getBillingStateQuery, useExtendTrial} from 'models/billing/queries'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock

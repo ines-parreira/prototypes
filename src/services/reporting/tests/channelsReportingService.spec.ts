@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+
 import {channels} from 'fixtures/channels'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Channel} from 'models/channel/types'

@@ -2,15 +2,15 @@ import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     PhoneIntegration,
     IntegrationType,
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import useAppSelector from 'hooks/useAppSelector'
 import {friendlyName} from 'pages/phoneNumbers/utils'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 
 type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp

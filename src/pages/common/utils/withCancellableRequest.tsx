@@ -1,6 +1,6 @@
+import {CancelToken} from 'axios'
 import React, {ComponentType} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {CancelToken} from 'axios'
 
 import useCancellableRequest from '../../../hooks/useCancellableRequest'
 

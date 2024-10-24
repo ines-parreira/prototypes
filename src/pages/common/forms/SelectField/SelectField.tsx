@@ -1,3 +1,8 @@
+import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
+import _max from 'lodash/max'
+import _min from 'lodash/min'
+import _noop from 'lodash/noop'
 import React, {
     Component,
     ComponentProps,
@@ -19,11 +24,6 @@ import {
     UncontrolledDropdown,
     UncontrolledTooltip,
 } from 'reactstrap'
-import classnames from 'classnames'
-import _max from 'lodash/max'
-import _min from 'lodash/min'
-import _noop from 'lodash/noop'
-import _isEqual from 'lodash/isEqual'
 
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
 

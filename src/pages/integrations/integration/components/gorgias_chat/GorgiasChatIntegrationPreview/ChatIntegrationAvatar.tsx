@@ -1,12 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
-import {getHumanAgents} from 'state/agents/selectors'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -17,6 +15,7 @@ import {
 } from 'models/integration/types'
 
 import {getInitials} from 'pages/common/components/Avatar/utils'
+import {getHumanAgents} from 'state/agents/selectors'
 
 import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat'
 

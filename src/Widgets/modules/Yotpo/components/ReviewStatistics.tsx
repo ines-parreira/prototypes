@@ -1,12 +1,12 @@
-import React from 'react'
 import type {Map} from 'immutable'
+import React from 'react'
 
 import {toJS} from 'utils'
 
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
-import {CardHeaderYotpoReviewStatistics} from './CardHeaderYotpoReviewStatistics'
 import {CardContentYotpoReviewTopics} from './CardContentYotpoReviewTopics'
+import {CardHeaderYotpoReviewStatistics} from './CardHeaderYotpoReviewStatistics'
 
 type TitleWrapperProps = {
     source: Map<string, any>

@@ -1,26 +1,27 @@
+import {Options as InitialSettings} from 'daterangepicker'
 import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
-import {Options as InitialSettings} from 'daterangepicker'
 
 import {connect} from 'react-redux'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {FilterKey, StatsFilters} from 'models/stat/types'
-
-import {getDateRangePickerLabel} from 'pages/stats/common/utils'
-import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {getNewSetOfRanges} from 'pages/stats/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
-import css from 'pages/stats/common/filters/PeriodFilter.less'
-import {RootState} from 'state/types'
+import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import css from 'pages/stats/common/filters/PeriodFilter.less'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import PeriodPicker from 'pages/stats/common/PeriodPicker'
+import {getDateRangePickerLabel} from 'pages/stats/common/utils'
+import {getNewSetOfRanges} from 'pages/stats/constants'
+import {getPageStatsFilters} from 'state/stats/selectors'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
+
+import {RootState} from 'state/types'
 
 const MAX_SPAN = 90
 

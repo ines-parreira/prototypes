@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import ConfirmationPopover from '../ConfirmationPopover'
 import Group from '../../layout/Group'
+import ConfirmationPopover from '../ConfirmationPopover'
 
 jest.spyOn(window, 'clearTimeout')
 

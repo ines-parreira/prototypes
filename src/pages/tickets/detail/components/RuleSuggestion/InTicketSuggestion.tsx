@@ -1,19 +1,18 @@
 import React, {useState, useEffect, useContext} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {MacroAction} from 'models/macroAction/types'
+import {TicketMessage} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import {setInTicketSuggestionState} from 'state/ticket/actions'
 import {ThemeContext} from 'theme'
 
-import {TicketMessage} from 'models/ticket/types'
-import InTicketSuggestionContainer from './InTicketSuggestionContainer'
-import SuggestionHeader from './SuggestionHeader'
-import SuggestionBody from './SuggestionBody'
-
 import css from './InTicketSuggestion.less'
+import InTicketSuggestionContainer from './InTicketSuggestionContainer'
+import SuggestionBody from './SuggestionBody'
+import SuggestionHeader from './SuggestionHeader'
 
 type Props = {
     ticketId: number

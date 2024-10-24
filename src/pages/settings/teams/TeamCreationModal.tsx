@@ -1,3 +1,6 @@
+import {Label} from '@gorgias/ui-kit'
+import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
+import {Map} from 'immutable'
 import React, {
     FormEvent,
     useCallback,
@@ -7,15 +10,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
-import {Map} from 'immutable'
-import {Label} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import usePrevious from 'hooks/usePrevious'
 import useAsyncFn from 'hooks/useAsyncFn'
+import usePrevious from 'hooks/usePrevious'
 import {createTeam} from 'models/team/resources'
 import {Team} from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -48,8 +48,8 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {FETCH_TEAM_SUCCESS} from 'state/teams/constants'
 
-import css from './TeamCreationModal.less'
 import RuleCreationModalContent from './RuleCreationModalContent'
+import css from './TeamCreationModal.less'
 
 type Props = {
     isOpen: boolean

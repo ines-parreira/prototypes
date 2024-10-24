@@ -1,6 +1,6 @@
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
-import {render, screen} from '@testing-library/react'
 
 import Expression from 'pages/common/components/ast/expression/Expression'
 import {renderWithStore} from 'utils/testing'

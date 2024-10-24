@@ -1,14 +1,16 @@
-import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {StatsFilters} from 'models/stat/types'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {assumeMock, mockStore} from 'utils/testing'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {StatsFilters} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
-import {VoiceMetric} from 'state/ui/stats/types'
-import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
+import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
+import {VoiceMetric} from 'state/ui/stats/types'
+import {assumeMock, mockStore} from 'utils/testing'
+
 import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,

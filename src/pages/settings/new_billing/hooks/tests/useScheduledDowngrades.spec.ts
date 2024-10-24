@@ -1,12 +1,12 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {fetchSubscription} from 'models/billing/resources'
-
 import {
     advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import useAppSelector from 'hooks/useAppSelector'
+import {fetchSubscription} from 'models/billing/resources'
+
 import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

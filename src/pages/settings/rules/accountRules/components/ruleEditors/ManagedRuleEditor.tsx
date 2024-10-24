@@ -1,3 +1,6 @@
+import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
+import moment from 'moment'
 import React, {
     ComponentProps,
     ForwardedRef,
@@ -9,10 +12,7 @@ import React, {
     useState,
 } from 'react'
 import {Label} from 'reactstrap'
-import moment from 'moment'
-import _isEqual from 'lodash/isEqual'
-import classnames from 'classnames'
-import {convertFromHTML, convertToHTML} from 'utils/editor'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -20,8 +20,9 @@ import useMeasure from 'hooks/useMeasure'
 import {activateRule} from 'models/rule/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
+import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
+import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {ruleUpdated} from 'state/entities/rules/actions'
 import {notify} from 'state/notifications/actions'
@@ -29,15 +30,16 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleSettings, ManagedRulesSlugs} from 'state/rules/types'
 
-import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
+import {convertFromHTML, convertToHTML} from 'utils/editor'
+
 import type {ManagedRuleEditorProps, EditorHandle} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'
-import AutoReplyWismoEditor from './AutoReplyWismoEditor'
-import AutoReplyWismoDemo from './AutoReplyWismoDemo'
-import AutoReplyReturnEditor from './AutoReplyReturnEditor'
-import AutoReplyReturnDemo from './AutoReplyReturnDemo'
-import AutoReplyFAQEditor from './AutoReplyFAQEditor'
 import AutoReplyFAQDemo from './AutoReplyFAQDemo'
+import AutoReplyFAQEditor from './AutoReplyFAQEditor'
+import AutoReplyReturnDemo from './AutoReplyReturnDemo'
+import AutoReplyReturnEditor from './AutoReplyReturnEditor'
+import AutoReplyWismoDemo from './AutoReplyWismoDemo'
+import AutoReplyWismoEditor from './AutoReplyWismoEditor'
 
 import css from './RuleEditor.less'
 

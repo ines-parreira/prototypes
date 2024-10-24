@@ -1,7 +1,7 @@
+import {createEvent, fireEvent, render, screen} from '@testing-library/react'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import {createEvent, fireEvent, render, screen} from '@testing-library/react'
 import Input from 'pages/common/forms/MultiSelectOptionsField/Input'
 
 describe('MultiSelectField Input', () => {

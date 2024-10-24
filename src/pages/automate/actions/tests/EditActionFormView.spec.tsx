@@ -1,29 +1,28 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {Provider} from 'react-redux'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {fromJS} from 'immutable'
-import {createMemoryHistory} from 'history'
 
-import {renderWithRouter} from 'utils/testing'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useGetStoreApps,
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {shopifyIntegration} from 'fixtures/integrations'
-
-import useUpsertAction from '../hooks/useUpsertAction'
-import useDeleteAction from '../hooks/useDeleteAction'
-import useAddStoreApp from '../hooks/useAddStoreApp'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
 
 import EditActionFormView from '../EditActionFormView'
+import useAddStoreApp from '../hooks/useAddStoreApp'
+import useDeleteAction from '../hooks/useDeleteAction'
+import useUpsertAction from '../hooks/useUpsertAction'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('models/workflows/queries')

@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, List} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
+import {fromJS, List} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
 import {logEvent} from 'common/segment'
 import {user} from 'fixtures/users'

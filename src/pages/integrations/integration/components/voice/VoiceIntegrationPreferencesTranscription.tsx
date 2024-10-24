@@ -1,8 +1,10 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import {PhoneIntegrationPreferences} from 'models/integration/types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
+
 import css from './VoiceIntegrationPreferences.less'
 
 type Props = {

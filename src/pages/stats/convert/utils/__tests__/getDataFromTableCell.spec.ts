@@ -1,12 +1,11 @@
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {campaignVariant} from 'fixtures/campaign'
 import {
     CampaignPreview,
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
-
-import {campaignVariant} from 'fixtures/campaign'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
 
 describe('getDataFromTableCell', () => {
     const campaignName = 'Super conversion campaign name'

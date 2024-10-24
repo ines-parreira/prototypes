@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import css from './CardHeaderYotpoLoyaltyPoints.less'
 
 type Props = {

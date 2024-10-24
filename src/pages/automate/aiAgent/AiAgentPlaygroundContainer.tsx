@@ -1,10 +1,10 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
+
+import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
+import css from './AiAgentPlaygroundContainer.less'
 import {AiAgentPlaygroundView} from './AiAgentPlaygroundView'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-
-import css from './AiAgentPlaygroundContainer.less'
-import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 
 export const AiAgentPlaygroundContainer = () => {
     const {shopName} = useParams<{

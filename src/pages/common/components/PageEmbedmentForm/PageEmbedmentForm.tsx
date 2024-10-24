@@ -1,26 +1,26 @@
-import React, {useRef, useState, useEffect} from 'react'
-import classNames from 'classnames'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useRef, useState, useEffect} from 'react'
 
+import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
+import imageLayoutTop from 'assets/img/icons/layout-top.svg'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import InputField from 'pages/common/forms/input/InputField'
-
-import imageLayoutTop from 'assets/img/icons/layout-top.svg'
-import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
 import {slugify} from 'utils/slugifyForShopify'
+
 import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from './constants'
+import css from './PageEmbedmentForm.less'
 import {EmbedMode, PageEmbedmentPosition, EmbeddablePage} from './types'
 
-import css from './PageEmbedmentForm.less'
 import {
     PageEmbedmentFormReducerDispatch,
     PageEmbedmentFormReducerState,

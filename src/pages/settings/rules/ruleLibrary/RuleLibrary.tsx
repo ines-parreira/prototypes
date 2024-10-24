@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useEffect, useState} from 'react'
 
-import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
+import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 
 import RuleRecipeCard from './components/RuleRecipeCard'
 
-import css from './RuleLibrary.less'
 import {RuleTemplateRecipeSlugs} from './constants'
+import css from './RuleLibrary.less'
 
 export type Props = {
     recipes: RuleRecipe[]

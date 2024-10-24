@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding'
 

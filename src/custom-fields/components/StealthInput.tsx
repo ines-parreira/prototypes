@@ -1,10 +1,10 @@
+import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
     InputHTMLAttributes,
     useState,
 } from 'react'
-import classnames from 'classnames'
 
 import css from './StealthInput.less'
 

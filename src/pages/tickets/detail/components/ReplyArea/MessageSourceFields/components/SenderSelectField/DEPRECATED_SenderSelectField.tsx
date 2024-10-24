@@ -1,9 +1,11 @@
-import React from 'react'
 import classnames from 'classnames'
-import {SourceAddress} from 'models/ticket/types'
+import React from 'react'
+
 import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
+import {SourceAddress} from 'models/ticket/types'
 
 import {humanizeAddress} from 'state/ticket/utils'
+
 import css from './DEPRECATED_SenderSelectField.less'
 
 type Props = {

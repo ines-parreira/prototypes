@@ -1,19 +1,20 @@
-import React, {useMemo, useState} from 'react'
 import _get from 'lodash/get'
+import React, {useMemo, useState} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {
     saveReport,
     CampaignPerformanceReportData,
 } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {getTimezone} from 'state/currentUser/selectors'
 
 const DownloadOverviewData = () => {
     const [waitForTheReportData, setwaitForTheReportData] = useState(false)

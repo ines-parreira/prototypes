@@ -1,11 +1,11 @@
-import {StatsFilters} from 'models/stat/types'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {getPreviousPeriod} from 'utils/reporting'
+import {StatsFilters} from 'models/stat/types'
 import {VoiceCallAverageTimeMetric} from 'pages/stats/voice/models/types'
+import {getPreviousPeriod} from 'utils/reporting'
 
 export const useVoiceCallAverageTimeTrend = (
     metric: VoiceCallAverageTimeMetric,

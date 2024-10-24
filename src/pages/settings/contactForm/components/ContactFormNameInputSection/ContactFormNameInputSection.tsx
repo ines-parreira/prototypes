@@ -1,11 +1,11 @@
-import React, {useMemo, useCallback, useEffect, useState} from 'react'
-import _debounce from 'lodash/debounce'
 import {Label} from '@gorgias/ui-kit'
+import _debounce from 'lodash/debounce'
+import React, {useMemo, useCallback, useEffect, useState} from 'react'
 
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import InputField from 'pages/common/forms/input/InputField'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
+import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
 
 type ContactFormNameInputSectionProps = {
     onChange: (name: string) => void

@@ -1,5 +1,5 @@
-import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import React from 'react'
 
 import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
 import {ArticleViewsGraphComponent} from './ArticleViewsGraph'

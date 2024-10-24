@@ -1,12 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
 
-import {EventObjectType, EventType} from 'models/event/types'
 import {events as events} from 'fixtures/event'
+import {EventObjectType, EventType} from 'models/event/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import UserAuditRow from '../UserAuditRow'

@@ -1,6 +1,7 @@
 import {createContext, useContext} from 'react'
 
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+
 import {ListWfConfigurationsResponseDto} from '../workflows/types'
 
 export type ConnectedChannelsViewContextType = {

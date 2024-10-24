@@ -1,9 +1,9 @@
 import React, {ReactNode} from 'react'
 import {useHistory} from 'react-router-dom'
 
+import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import {PreviewChannelButton} from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'
 import SelfServicePreviewChannelSelect from './SelfServicePreviewChannelSelect'

@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {notification} from 'common/notifications/fixtures/fixtures'
 import {Notification} from 'common/notifications/types'

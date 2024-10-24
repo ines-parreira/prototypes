@@ -1,10 +1,12 @@
-import React, {ReactNode} from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React, {ReactNode} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {emptyRule} from 'fixtures/rule'
 import {fetchRules} from 'models/rule/resources'
+
 import {useRules} from '../hooks'
 
 jest.mock('models/rule/resources')

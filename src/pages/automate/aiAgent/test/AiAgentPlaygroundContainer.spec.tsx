@@ -1,26 +1,27 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {RootState} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import configureMockStore from 'redux-mock-store'
 
-import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
+import {RootState} from 'state/types'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
-import {usePublicResources} from '../hooks/usePublicResources'
-import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
-import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
 import {getAccountConfigurationWithHttpIntegrationFixture} from '../fixtures/accountConfiguration.fixture'
+import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
+import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
+import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
+import {usePublicResources} from '../hooks/usePublicResources'
 
 const mockStore = configureMockStore()
 

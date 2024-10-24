@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {Value} from 'pages/common/forms/SelectField/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-
-import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
 import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
+import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
 import css from './style.less'
 

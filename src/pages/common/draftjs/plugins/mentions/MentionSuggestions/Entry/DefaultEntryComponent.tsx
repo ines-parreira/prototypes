@@ -1,8 +1,8 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
 import {AgentLabel} from 'pages/common/utils/labels'
 

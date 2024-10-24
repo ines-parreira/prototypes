@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
+import {List} from 'immutable'
 import React, {
     ComponentProps,
     useCallback,
@@ -8,7 +9,6 @@ import React, {
     useState,
 } from 'react'
 import {useLocation, useParams} from 'react-router-dom'
-import {List} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -21,6 +21,8 @@ import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenar
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import {TicketListActions} from 'pages/tickets/list/components/TicketListActions'
+import css from 'pages/tickets/list/TicketList.less'
 import {fetchTags} from 'state/tags/actions'
 import {getTickets} from 'state/tickets/selectors'
 import {updateSelectedItemsIds} from 'state/views/actions'
@@ -31,9 +33,6 @@ import {
     hasActiveView as getHasActiveView,
 } from 'state/views/selectors'
 import {compactInteger} from 'utils'
-
-import {TicketListActions} from 'pages/tickets/list/components/TicketListActions'
-import css from 'pages/tickets/list/TicketList.less'
 
 const TicketList = () => {
     const dispatch = useAppDispatch()

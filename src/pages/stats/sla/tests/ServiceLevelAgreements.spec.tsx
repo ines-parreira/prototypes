@@ -1,23 +1,24 @@
-import React, {ComponentProps, PropsWithChildren} from 'react'
 import {render, screen} from '@testing-library/react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ComponentProps, PropsWithChildren} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
-import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
+import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
-import {RootState, StoreDispatch} from 'state/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {
     ServiceLevelAgreements,
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
 } from 'pages/stats/sla/ServiceLevelAgreements'
+import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

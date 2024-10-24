@@ -1,5 +1,7 @@
 import {fromJS, List} from 'immutable'
+
 import {BigCommerceActionType} from 'models/integration/types'
+
 import {eventMaker} from './types'
 
 const bigCommerceEvent = ({

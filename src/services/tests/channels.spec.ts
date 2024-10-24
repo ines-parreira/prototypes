@@ -1,6 +1,9 @@
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {channels as mockChannels} from 'fixtures/channels'
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {channels as mockChannels} from 'fixtures/channels'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import {IntegrationType} from 'models/integration/constants'
 import {
     getChannelById,
     getChannelBySlug,
@@ -10,8 +13,6 @@ import {
     isNewChannel,
     toChannel,
 } from 'services/channels'
-import {IntegrationType} from 'models/integration/constants'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

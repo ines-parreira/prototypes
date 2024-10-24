@@ -1,18 +1,18 @@
 import React from 'react'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
-
-import Button from 'pages/common/components/button/Button'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
+import Button from 'pages/common/components/button/Button'
 
 import PageHeader from 'pages/common/components/PageHeader'
+
 import {FLOWS} from '../common/components/constants'
+import WorkflowCustomFlowCard from './components/WorkflowCustomFlowCard'
 import WorkflowTemplateCard from './components/WorkflowTemplateCard'
 import {WORKFLOW_TEMPLATES_LIST} from './workflowTemplates'
 
 import css from './WorkflowTemplatesView.less'
-import WorkflowCustomFlowCard from './components/WorkflowCustomFlowCard'
 
 type Props = {
     goToNewWorkflowPage: () => void

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -13,6 +13,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     medianResolutionTimeMetricPerAgentQueryFactory,
     resolutionTimeMetricPerTicketDrillDownQueryFactory,

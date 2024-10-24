@@ -1,11 +1,13 @@
 import React, {Dispatch, SetStateAction} from 'react'
+
 import {
     AIArticleToggleOption,
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
-import AIArticlesToggleButton from '../AIArticlesToggleButton'
+
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
+import AIArticlesToggleButton from '../AIArticlesToggleButton'
 import css from './AIArticlesLibraryList.less'
 
 type AIArticleListProps = {

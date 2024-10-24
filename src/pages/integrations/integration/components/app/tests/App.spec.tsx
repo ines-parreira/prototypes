@@ -1,23 +1,22 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
 import {fireEvent, screen, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
-import {notify} from 'state/notifications/actions'
-import App, {Tab} from 'pages/integrations/integration/components/app/App'
-import client from 'models/api/resources'
+import {applications as mockApplications} from 'fixtures/applications'
 import {dummyAppData} from 'fixtures/apps'
-import {TrialPeriod} from 'models/integration/types/app'
+import client from 'models/api/resources'
 import {Integration} from 'models/integration/types'
-import {RootState} from 'state/types'
-
+import {TrialPeriod} from 'models/integration/types/app'
+import App, {Tab} from 'pages/integrations/integration/components/app/App'
 import {DEFAULT_VALUES} from 'pages/integrations/mappers/mapDefaults'
 import {Application, getApplicationById} from 'services/applications'
-import {applications as mockApplications} from 'fixtures/applications'
+import {notify} from 'state/notifications/actions'
+import {RootState} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

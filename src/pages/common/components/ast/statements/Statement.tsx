@@ -2,8 +2,9 @@ import React, {ComponentType} from 'react'
 import {connect} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getSchemas} from 'state/schemas/selectors'
 import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
+import {getSchemas} from 'state/schemas/selectors'
+
 import UnknownSyntax from '../UnknownSyntax'
 
 import BlockStatement from './BlockStatement'

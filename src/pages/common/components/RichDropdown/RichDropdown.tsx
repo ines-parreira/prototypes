@@ -1,11 +1,11 @@
 import classnames from 'classnames'
+import _identity from 'lodash/identity'
 import React, {ReactNode} from 'react'
 import {
     DropdownMenu,
     DropdownToggle,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import _identity from 'lodash/identity'
 
 import css from './RichDropdown.less'
 import RichDropdownOptionGroups from './RichDropdownOptionGroups'

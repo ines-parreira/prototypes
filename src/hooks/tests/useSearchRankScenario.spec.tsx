@@ -1,10 +1,11 @@
 import {act, renderHook} from '@testing-library/react-hooks'
-import React, {ComponentType} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {account} from 'fixtures/account'
 import useSearchRankScenario, {
     DATABASE_TYPE,
     EntityType,
@@ -12,9 +13,8 @@ import useSearchRankScenario, {
     SearchRankResponse,
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import {RootState, StoreDispatch} from 'state/types'
-import {account} from 'fixtures/account'
 import {SearchEngine} from 'models/search/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('common/segment')

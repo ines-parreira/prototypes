@@ -1,5 +1,5 @@
-import {HelpCenterCategoriesState} from './categories'
 import {HelpCenterArticlesState} from './articles'
+import {HelpCenterCategoriesState} from './categories'
 import {HelpCentersState} from './helpCenters'
 import {HelpCentersAutomationSettingsState} from './helpCentersAutomationSettings'
 

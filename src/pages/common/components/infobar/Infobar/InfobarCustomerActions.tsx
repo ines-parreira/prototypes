@@ -1,5 +1,5 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'

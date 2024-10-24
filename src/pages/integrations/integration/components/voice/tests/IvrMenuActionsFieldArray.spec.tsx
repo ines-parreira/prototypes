@@ -1,12 +1,12 @@
-import React from 'react'
+import {fireEvent, render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {times} from 'lodash'
-import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import userEvent from '@testing-library/user-event'
 import {
     IvrMenuAction,
     IvrMenuActionType,

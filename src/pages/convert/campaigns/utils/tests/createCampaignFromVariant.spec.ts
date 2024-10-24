@@ -1,6 +1,7 @@
 import {campaign, campaignVariant} from 'fixtures/campaign'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+
 import {createCampaignFromVariant} from '../createCampaignFromVariant'
 
 const channelConnectionId = 'channelConnectionId'

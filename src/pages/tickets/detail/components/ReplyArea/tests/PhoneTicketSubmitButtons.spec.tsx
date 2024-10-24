@@ -1,14 +1,16 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import {resetLDMocks} from 'jest-launchdarkly-mock'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {resetLDMocks} from 'jest-launchdarkly-mock'
-import {isDeviceReady} from 'utils/device'
+import thunk from 'redux-thunk'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {isDeviceReady} from 'utils/device'
+
 import {assumeMock} from 'utils/testing'
+
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 
 jest.mock('utils/device')

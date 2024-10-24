@@ -1,5 +1,5 @@
-import React from 'react'
 import {Meta, Story} from '@storybook/react'
+import React from 'react'
 import {BrowserRouter} from 'react-router-dom'
 
 import {Language} from 'constants/languages'

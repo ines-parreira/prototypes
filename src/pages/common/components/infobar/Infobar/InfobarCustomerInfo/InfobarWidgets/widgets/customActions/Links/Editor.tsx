@@ -9,17 +9,17 @@ import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
 import useAppSelector from 'hooks/useAppSelector'
-import {ensureHTTPS} from 'utils/url'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
 import {
     Link,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import InputField from 'pages/common/forms/input/InputField'
+import {AppContext} from 'providers/infobar/AppContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {ensureHTTPS} from 'utils/url'
 
 import css from './Links.less'
 

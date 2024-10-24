@@ -2,30 +2,30 @@ import React, {memo, useMemo} from 'react'
 import {Route, useHistory, useLocation} from 'react-router-dom'
 
 import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    getPrimaryLanguageFromChatConfig,
+} from 'config/integrations/gorgias_chat'
+import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import {
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    getPrimaryLanguageFromChatConfig,
-} from 'config/integrations/gorgias_chat'
 
+import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import SelfServiceChatIntegrationArticleRecommendationPage from './SelfServiceChatIntegrationArticleRecommendationPage'
+import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 
-import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
-import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
-import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
+import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
+import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
 import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationReturnPage'
 import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
-import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
-import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
-import SelfServiceChatIntegrationArticleRecommendationPage from './SelfServiceChatIntegrationArticleRecommendationPage'
+import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
+import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
     integration: GorgiasChatIntegration

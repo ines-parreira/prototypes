@@ -1,9 +1,11 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {VoiceCallStatus} from 'models/voiceCall/types'
-import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 import {assumeMock} from 'utils/testing'
+
 import {VoiceCallSummary} from '../../models/types'
 import {isLiveCallRinging} from '../LiveVoice/utils'
 import VoiceCallActivity from './VoiceCallActivity'

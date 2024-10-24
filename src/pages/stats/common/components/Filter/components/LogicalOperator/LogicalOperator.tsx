@@ -1,11 +1,11 @@
 import React from 'react'
 
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import css from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import css from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 
 type Props = {
     logicalOperators: LogicalOperatorEnum[]

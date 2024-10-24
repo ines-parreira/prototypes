@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {agents} from 'fixtures/agents'
@@ -7,16 +7,16 @@ import {
     basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {usePaginatedQuery} from 'hooks/usePaginatedQuery'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Row from 'pages/settings/users/List/Row'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import UserList from '..'
 
 jest.mock('react-router-dom', () => ({

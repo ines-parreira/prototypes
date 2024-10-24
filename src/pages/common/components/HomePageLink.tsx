@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React from 'react'
 import {NavLink} from 'react-router-dom'
-import classnames from 'classnames'
 
 import navBarCss from 'assets/css/navbar.less'
 

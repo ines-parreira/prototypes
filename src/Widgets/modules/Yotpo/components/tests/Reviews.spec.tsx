@@ -1,8 +1,9 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+
 import {renderWithStore} from 'utils/testing'
+
 import {reviewsCustomization} from '../Reviews'
 
 jest.mock('react-rating-stars-component', () => () => null)

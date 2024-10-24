@@ -1,8 +1,10 @@
 import {Dispatch, SetStateAction} from 'react'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
-import {StoreIntegration} from 'models/integration/types'
+
 import {AIArticle, HelpCenter} from 'models/helpCenter/types'
+import {StoreIntegration} from 'models/integration/types'
+import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+
 import {TopQuestion, TopQuestionsSectionProps} from './TopQuestionsSection'
 
 type FetchedArticles = ReturnType<typeof useGetAIArticles>['fetchedArticles']

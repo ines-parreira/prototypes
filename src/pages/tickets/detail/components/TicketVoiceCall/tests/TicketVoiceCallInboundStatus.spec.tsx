@@ -1,6 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+
 import {TicketVoiceCallInboundStatus} from '../TicketVoiceCallInboundStatus'
 
 jest.mock(

@@ -1,13 +1,15 @@
-import React, {MouseEvent, useCallback} from 'react'
-import moment from 'moment'
-
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import React, {MouseEvent, useCallback} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
     Locale,
 } from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -18,8 +20,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import Button from 'pages/common/components/button/Button'
-import {FeatureFlagKey} from 'config/featureFlags'
 import IconButton from '../../../common/components/button/IconButton'
 import css from './HelpCenterTable.less'
 import StoreName from './StoreName'

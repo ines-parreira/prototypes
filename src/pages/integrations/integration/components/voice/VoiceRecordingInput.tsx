@@ -1,8 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {replaceAttachmentURL} from 'utils'
+
 import css from './VoiceMessageField.less'
 
 type PropsVoiceRecordingInput = {

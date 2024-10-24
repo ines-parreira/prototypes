@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {assetsUrl} from 'utils'
 import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import {assetsUrl} from 'utils'
 
 export enum ConvertFeatures {
     Default = 'Default',

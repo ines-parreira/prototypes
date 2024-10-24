@@ -1,16 +1,18 @@
-import React from 'react'
 import {renderHook, act} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useHistory} from 'react-router-dom'
-import {fromJS} from 'immutable'
+
 import GorgiasApi from 'services/gorgiasApi'
 import {setCurrentSubscription} from 'state/currentAccount/actions'
 import * as selectors from 'state/currentAccount/selectors'
+import * as actions from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
-import * as actions from 'state/notifications/actions'
+
 import {useStartSubscription} from '../useStartSubscription'
 
 jest.useFakeTimers()

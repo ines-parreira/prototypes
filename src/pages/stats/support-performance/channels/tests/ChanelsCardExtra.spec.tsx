@@ -1,10 +1,11 @@
 import {fromJS, Map} from 'immutable'
 import React from 'react'
+
 import {UserRole} from 'config/types/user'
-import {ChannelsEditColumns} from 'pages/stats/support-performance/channels/ChannelsEditColumns'
 import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import {ChannelsEditColumns} from 'pages/stats/support-performance/channels/ChannelsEditColumns'
 import {ChannelsHeatmapSwitch} from 'pages/stats/support-performance/channels/ChannelsHeatmapSwitch'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/channels/ChannelsEditColumns')
 const ChannelsEditColumnsMock = assumeMock(ChannelsEditColumns)

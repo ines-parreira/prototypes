@@ -1,11 +1,12 @@
 import moment from 'moment'
+
 import {Period} from 'models/stat/types'
-import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
     SupportPerformanceReportData,
     saveReport,
 } from 'services/reporting/supportPerformanceReportingService'
+import * as files from 'utils/file'
 
 jest.mock('utils/file')
 

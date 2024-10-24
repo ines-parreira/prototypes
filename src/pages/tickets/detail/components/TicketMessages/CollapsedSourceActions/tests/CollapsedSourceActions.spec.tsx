@@ -1,18 +1,14 @@
+import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {render, fireEvent, screen} from '@testing-library/react'
-
+import {message} from 'models/ticket/tests/mocks'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {message} from 'models/ticket/tests/mocks'
-
-import CollapsedSourceActions from '../CollapsedSourceActions'
-
-import {TicketMessageIntent} from '../../../../../../../models/ticket/types'
-
 import client from '../../../../../../../models/api/resources'
+import {TicketMessageIntent} from '../../../../../../../models/ticket/types'
+import CollapsedSourceActions from '../CollapsedSourceActions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)

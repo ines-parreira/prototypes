@@ -1,12 +1,14 @@
-import React from 'react'
 import classNames from 'classnames'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import React from 'react'
+
 import {
     VoiceCall,
     VoiceCallRecordingErrorCode,
     VoiceCallRecording,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
+import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+
 import DownloadableDeletableRecording from '../PhoneEvent/DownloadableDeletableRecording'
 import css from './TicketVoiceCallContainer.less'
 

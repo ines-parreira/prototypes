@@ -1,28 +1,29 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import Button from 'pages/common/components/button/Button'
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ContactForm,
     UpdateContactFormDto,
     UpdateSubjectLinesProps,
 } from 'models/contactForm/types'
+import Button from 'pages/common/components/button/Button'
+import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
+import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
-import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
-import {FeatureFlagKey} from 'config/featureFlags'
-import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
-import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 import css from './ContactFormCustomization.less'
+import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
 const initUpdateDto = (
     subject_lines: ContactForm['subject_lines'],

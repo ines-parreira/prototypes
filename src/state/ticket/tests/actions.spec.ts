@@ -1,28 +1,16 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
-import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
-import {dismissNotification} from 'reapop'
 
 import _pick from 'lodash/pick'
+import moment from 'moment'
+import {dismissNotification} from 'reapop'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
-import {notify} from 'state/notifications/actions'
-import {initialState as newMessageState} from 'state/newMessage/reducers'
-import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
-import {StoreDispatch} from 'state/types'
-import {Ticket, TicketMessage} from 'models/ticket/types'
-import socketManager from 'services/socketManager/socketManager'
-import {
-    TicketMessageFailedEvent,
-    SocketEventType,
-} from 'services/socketManager/types'
-import history from 'pages/history'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {ViewType} from 'models/view/types'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {
     ecommerceStoreFixture,
@@ -30,16 +18,29 @@ import {
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
+import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {Ticket, TicketMessage} from 'models/ticket/types'
+import {ViewType} from 'models/view/types'
+import history from 'pages/history'
+import socketManager from 'services/socketManager/socketManager'
+import {
+    TicketMessageFailedEvent,
+    SocketEventType,
+} from 'services/socketManager/types'
+import {initialState as newMessageState} from 'state/newMessage/reducers'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
-import {NotificationStatus} from 'state/notifications/types'
 import notifyOnNewMessage from 'state/ticket/notifyOnNewMessage'
+import {StoreDispatch} from 'state/types'
+import {getLDClient} from 'utils/launchDarkly'
 
-import {initialState} from '../reducers'
 import * as actions from '../actions'
+import {initialState} from '../reducers'
 
 type MockedRootState = {
     ticket: Map<any, any>

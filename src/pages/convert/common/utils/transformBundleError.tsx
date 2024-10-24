@@ -1,11 +1,12 @@
 import {AxiosError} from 'axios'
+
+import history from 'pages/history'
 import {
     Notification,
     NotificationButton,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import history from 'pages/history'
 
 export const transformBundleError = (
     error: unknown,

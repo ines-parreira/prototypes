@@ -1,5 +1,6 @@
-import React from 'react'
 import {useGetTicketMessage} from '@gorgias/api-queries'
+import React from 'react'
+
 import {ReplyMetaTicketMessage} from 'models/ticket/types'
 import {AgentLabel} from 'pages/common/utils/labels'
 

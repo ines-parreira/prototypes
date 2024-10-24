@@ -1,11 +1,12 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+
 import * as segment from 'common/segment'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import * as btodService from 'services/reporting/busiestTimesOfDaysReportingService'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+import * as btodService from 'services/reporting/busiestTimesOfDaysReportingService'
 import {assumeMock} from 'utils/testing'
 
 jest.mock(

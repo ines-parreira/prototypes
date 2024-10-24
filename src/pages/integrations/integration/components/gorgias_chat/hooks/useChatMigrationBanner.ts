@@ -1,16 +1,17 @@
 import {List, Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
-import useAppSelector from 'hooks/useAppSelector'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatInstallationMethod,
     IntegrationType,
     latestSnippetVersion,
 } from 'models/integration/types'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 
 const useChatMigrationBanner = (
     integration: Map<any, any>

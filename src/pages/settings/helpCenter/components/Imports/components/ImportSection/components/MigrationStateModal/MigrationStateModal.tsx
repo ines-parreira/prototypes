@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import classNames from 'classnames'
+import React, {useMemo} from 'react'
 
 import gorgiasLogo from 'assets/img/icons/gorgias-icon-logo-black.png'
 
@@ -10,17 +10,17 @@ import {
 } from '../../types'
 import {ParsedSessionStats} from '../../utils'
 
-import MigrationProviderPair from '../MigrationProviderPair'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
+import MigrationProviderPair from '../MigrationProviderPair'
 
-import MigrationQuickSummary from './components/MigrationQuickSummary'
-import MigrationFailuresDetails from './components/MigrationFailuresDetails'
-import MigrationSucceededActions from './components/MigrationSucceededActions'
-import MigrationInProgressActions from './components/MigrationInProgressActions'
 import MigrationConnectedActions from './components/MigrationConnectedActions'
-import MigrationPartiallySucceededActions from './components/MigrationPartiallySucceededActions'
 import MigrationFailedActions from './components/MigrationFailedActions'
+import MigrationFailuresDetails from './components/MigrationFailuresDetails'
+import MigrationInProgressActions from './components/MigrationInProgressActions'
+import MigrationPartiallySucceededActions from './components/MigrationPartiallySucceededActions'
+import MigrationQuickSummary from './components/MigrationQuickSummary'
+import MigrationSucceededActions from './components/MigrationSucceededActions'
 
 import css from './MigrationStateModal.less'
 

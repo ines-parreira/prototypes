@@ -1,12 +1,11 @@
-import React from 'react'
 import {act, fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import React from 'react'
 
 import {renderWithRouter} from 'utils/testing'
 
-import {TemplateConfiguration} from '../types'
-
 import ActionsTemplatesCards from '../components/ActionsTemplatesCards'
+import {TemplateConfiguration} from '../types'
 
 jest.mock(
     '../components/AppActionTemplateCard',

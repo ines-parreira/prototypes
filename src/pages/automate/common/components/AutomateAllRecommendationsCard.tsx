@@ -1,15 +1,17 @@
-import React from 'react'
 import {Card} from '@gorgias/analytics-ui-kit'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {TooltipData} from 'pages/stats/types'
+import React from 'react'
+
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import {TooltipData} from 'pages/stats/types'
+
 import {
     AIArticleRecommendationItem,
     AllRecommendationsStatus,
 } from '../hooks/useAIArticleRecommendationItems'
-import AutomateAllRecommendationsTable from './AutomateAllRecommendationsTable'
 import css from './AutomateAllRecommendationsCard.less'
+import AutomateAllRecommendationsTable from './AutomateAllRecommendationsTable'
 
 export type AllRecomendationsColumn = {
     name: string

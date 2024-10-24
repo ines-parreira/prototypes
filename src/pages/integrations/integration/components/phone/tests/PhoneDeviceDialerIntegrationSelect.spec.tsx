@@ -1,7 +1,9 @@
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
 import {PhoneIntegration} from 'models/integration/types'
 import {assumeMock} from 'utils/testing'
+
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import usePhoneNumbers from '../usePhoneNumbers'
 

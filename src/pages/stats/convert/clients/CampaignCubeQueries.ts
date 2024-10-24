@@ -1,10 +1,14 @@
 import {OrderDirection} from 'models/api/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
+import {FilterOperatorMap} from 'models/reporting/queryFactories/utils'
 import {
-    CampaignCubeFilterParams,
-    CubeFilter,
-    CubeFilterParams,
-    DefaultFilterParams,
-} from 'pages/stats/convert/clients/types'
+    ReportingGranularity,
+    ReportingParams,
+    ReportingQuery,
+    TimeSeriesQuery,
+} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -17,16 +21,12 @@ import {
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
 import {
-    ReportingGranularity,
-    ReportingParams,
-    ReportingQuery,
-    TimeSeriesQuery,
-} from 'models/reporting/types'
+    CampaignCubeFilterParams,
+    CubeFilter,
+    CubeFilterParams,
+    DefaultFilterParams,
+} from 'pages/stats/convert/clients/types'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {FilterOperatorMap} from 'models/reporting/queryFactories/utils'
 
 const _getDefaultFilters = ({
     startDate,

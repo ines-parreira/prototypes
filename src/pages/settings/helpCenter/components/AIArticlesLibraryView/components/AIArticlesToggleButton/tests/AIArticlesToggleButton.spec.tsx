@@ -1,13 +1,14 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {
     AIArticleToggleOptionValue,
     AIArticleToggleOption,
 } from 'models/helpCenter/types'
-import AIArticlesToggleButton from '../AIArticlesToggleButton'
+
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../../constants'
+import AIArticlesToggleButton from '../AIArticlesToggleButton'
 
 describe('AIArticlesToggleButton', () => {
     const countArray = [3, 8, 11]

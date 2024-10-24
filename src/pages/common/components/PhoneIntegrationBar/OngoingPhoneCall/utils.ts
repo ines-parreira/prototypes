@@ -1,4 +1,5 @@
 import {User} from '@gorgias/api-queries'
+
 import {
     AvailabilityStatusTag,
     User as GorgiasStateUser,

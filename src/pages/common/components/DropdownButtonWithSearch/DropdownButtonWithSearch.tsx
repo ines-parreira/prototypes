@@ -1,6 +1,7 @@
+import classnames from 'classnames'
 import React from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import classnames from 'classnames'
+
 import InputField from 'pages/common/forms/input/InputField'
 
 import css from './DropdownButtonWithSearch.less'

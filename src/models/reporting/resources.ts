@@ -1,4 +1,5 @@
 import client from 'models/api/resources'
+
 import {
     Cube,
     EnrichmentFields,

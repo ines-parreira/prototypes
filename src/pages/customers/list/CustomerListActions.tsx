@@ -1,3 +1,5 @@
+import {List, Map} from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {
@@ -9,18 +11,16 @@ import {
     PopoverHeader,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import _isUndefined from 'lodash/isUndefined'
-import {List, Map} from 'immutable'
 
 import {WithAppNodeProps, withAppNode} from 'appNode'
+import Button from 'pages/common/components/button/Button'
 import shortcutManager from 'services/shortcutManager/index'
 import {bulkDeleteCustomer} from 'state/customers/actions'
+import {RootState} from 'state/types'
 import {
     areAllActiveViewItemsSelected,
     makeGetViewCount,
 } from 'state/views/selectors'
-import {RootState} from 'state/types'
-import Button from 'pages/common/components/button/Button'
 
 import css from './CustomerListActions.less'
 

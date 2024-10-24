@@ -1,20 +1,21 @@
-import React, {memo, useCallback, useState} from 'react'
-import uniqueId from 'lodash/uniqueId'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import uniqueId from 'lodash/uniqueId'
+import React, {memo, useCallback, useState} from 'react'
 
-import Caption from 'pages/common/forms/Caption/Caption'
 import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
-import Button from 'pages/common/components/button/Button'
 import {
     CustomField,
     CustomFieldInput,
     CustomFieldObjectTypes,
     CustomFieldValue,
 } from 'custom-fields/types'
+import Button from 'pages/common/components/button/Button'
+import Caption from 'pages/common/forms/Caption/Caption'
+
 import DropdownCSVImport from './DropdownCSVImport'
-import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
+import DropdownInputRow from './DropdownInputRow'
 
 interface DropdownInputProps {
     field: CustomField | CustomFieldInput

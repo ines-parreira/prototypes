@@ -1,8 +1,9 @@
 import React from 'react'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import LinkButton from 'pages/common/components/button/LinkButton'
 import storeIntegrations from 'assets/img/self-service/e-commerce-integrations.svg'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import PageHeader from 'pages/common/components/PageHeader'
+
 import css from './StoreIntegrationView.less'
 
 const StoreIntegrationView = ({title}: {title: string}) => {

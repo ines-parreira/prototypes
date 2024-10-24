@@ -1,27 +1,28 @@
 import classNames from 'classnames'
 import React from 'react'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import heatmapCss from 'pages/stats/heatmap.less'
 import {
     BREAKDOWN_FIELD,
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
 import useAppSelector from 'hooks/useAppSelector'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/BreakdownTable.less'
-import {getHeatmapMode, getValueMode} from 'state/ui/stats/ticketInsightsSlice'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {TicketFieldsMetric, ValueMode} from 'state/ui/stats/types'
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import heatmapCss from 'pages/stats/heatmap.less'
 import {
     formatDates,
     getUtcPeriodFromDateAndGranularity,
 } from 'pages/stats/utils'
+import {getHeatmapMode, getValueMode} from 'state/ui/stats/ticketInsightsSlice'
+import {TicketFieldsMetric, ValueMode} from 'state/ui/stats/types'
 
 export const EXPAND_COLUMN_WIDTH = 24
 export const MOBILE_EXPAND_COLUMN_WIDTH = 10

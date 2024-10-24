@@ -1,26 +1,25 @@
-import React, {ReactNode} from 'react'
+import {waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
+import {produce} from 'immer'
+import React, {ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {waitFor} from '@testing-library/react'
-import {produce} from 'immer'
 
-import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
-import {RootState} from 'state/types'
-import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
-import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/fetchingMapSlice'
-import {assumeMock} from 'utils/testing'
-import {fetchStat} from 'models/stat/resources'
-import {statFetched} from 'state/entities/stats/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
+import {firstResponseTime} from 'fixtures/stats'
 import useStatResource, {
     DEFAULT_ERROR_MESSAGE,
 } from 'hooks/reporting/useStatResource'
+import {fetchStat} from 'models/stat/resources'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {statFetched} from 'state/entities/stats/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/fetchingMapSlice'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock

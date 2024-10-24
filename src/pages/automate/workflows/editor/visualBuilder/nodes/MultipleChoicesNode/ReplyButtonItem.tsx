@@ -1,12 +1,11 @@
-import React, {RefObject, useEffect, useState} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {RefObject, useEffect, useState} from 'react'
 
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import TextInput from 'pages/common/forms/input/TextInput'
-
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReplyButtonItem.less'
 

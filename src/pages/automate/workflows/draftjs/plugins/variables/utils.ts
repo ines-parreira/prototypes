@@ -1,4 +1,5 @@
 import {ContentBlock, ContentState, Modifier, SelectionState} from 'draft-js'
+
 import {
     extractVariablesFromText,
     parseWorkflowVariable,

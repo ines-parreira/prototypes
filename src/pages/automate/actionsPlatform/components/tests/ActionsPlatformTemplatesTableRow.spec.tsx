@@ -1,8 +1,8 @@
-import React from 'react'
 import {act, fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {IntegrationType} from 'models/integration/constants'
 
 import ActionsPlatformTemplatesTableRow from '../ActionsPlatformTemplatesTableRow'
 

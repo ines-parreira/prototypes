@@ -1,16 +1,17 @@
 import moment from 'moment'
+
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {LegacyStatsFilters} from 'models/stat/types'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     Cube,
     FilterOperator,
     OrderConversionDimension,
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
+import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 describe('campaignSalesDrillDownQueryFactory', () => {
     const periodStart = moment()

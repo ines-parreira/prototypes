@@ -1,6 +1,6 @@
-import React from 'react'
 import {fromJS, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
+import React from 'react'
 
 import {TICKET_STATUSES} from 'config'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

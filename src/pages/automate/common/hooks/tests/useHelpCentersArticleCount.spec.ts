@@ -1,5 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+
 import {useHelpCentersArticleCount} from '../useHelpCentersArticleCount'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')

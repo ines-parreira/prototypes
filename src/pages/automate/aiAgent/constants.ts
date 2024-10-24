@@ -1,5 +1,6 @@
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
+
 import {FormValues, PlaygroundCustomer, WizardFormValues} from './types'
 import {TicketCustomer} from './utils/playground-ticket.util'
 

@@ -1,8 +1,8 @@
-import {renderHook, act} from '@testing-library/react-hooks/dom'
 import {waitFor} from '@testing-library/react'
+import {renderHook, act} from '@testing-library/react-hooks/dom'
 
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {flushPromises} from 'utils/testing'
 

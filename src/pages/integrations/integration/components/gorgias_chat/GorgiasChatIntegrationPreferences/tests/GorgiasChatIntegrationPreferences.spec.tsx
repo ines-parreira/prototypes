@@ -1,14 +1,11 @@
+import {mount, shallow} from 'enzyme'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
 import React, {ComponentProps, SyntheticEvent} from 'react'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import {mount, shallow} from 'enzyme'
-import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
 
-import history from 'pages/history'
-
-import {user} from 'fixtures/users'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -22,9 +19,11 @@ import {
 } from 'config/integrations/index'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {Language} from 'constants/languages'
-import {getLDClient} from 'utils/launchDarkly'
-import {RootState, StoreDispatch} from 'state/types'
+import {user} from 'fixtures/users'
+import history from 'pages/history'
 import * as IntegrationsActions from 'state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     GorgiasChatIntegrationPreferencesComponent,

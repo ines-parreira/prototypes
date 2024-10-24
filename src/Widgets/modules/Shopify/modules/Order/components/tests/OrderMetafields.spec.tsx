@@ -1,9 +1,10 @@
-import React from 'react'
 import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {OrderMetafields} from '../OrderMetafields'
 
 jest.mock('@gorgias/api-queries')

@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -6,9 +8,9 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
+import css from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue.less'
+import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_MAX_WIDTH,
@@ -17,9 +19,6 @@ import {
     LogicalOperatorLabel,
     REMOVE_FILTER_LABEL,
 } from 'pages/stats/common/components/Filter/constants'
-
-import css from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue.less'
-import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 
 const TOOLTIP_LABELS_TO_SHOW = 20
 

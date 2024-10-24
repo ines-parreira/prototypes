@@ -1,26 +1,27 @@
-import React, {ComponentProps} from 'react'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fireEvent, render, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {emptyManagedRule, emptyRule as ruleFixture} from 'fixtures/rule'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 
+import {user} from 'fixtures/users'
 import {createRule, deleteRule} from 'models/rule/resources'
 
-import {RootState, StoreDispatch} from 'state/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
 import {ManagedRulesSlugs} from 'state/rules/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
+import {RootState, StoreDispatch} from 'state/types'
+
 import {RuleRow} from '../RuleRow'
 
 jest.mock('models/rule/resources')

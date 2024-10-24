@@ -1,8 +1,8 @@
 import React from 'react'
 
+import {ZendeskIntegrationMeta} from '../../../../models/integration/types'
 import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 
-import {ZendeskIntegrationMeta} from '../../../../models/integration/types'
 import {ImportStatus} from './types'
 
 interface ImportStatusAlertProps {

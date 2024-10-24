@@ -1,9 +1,10 @@
 import moment from 'moment/moment'
-import {LegacyStatsFilters} from 'models/stat/types'
+
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {useHelpCenterTrend} from 'pages/stats/help-center/hooks/useHelpCenterTrend'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 jest.mock('hooks/reporting/useMetricTrend', () => jest.fn())
 

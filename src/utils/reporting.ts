@@ -1,11 +1,7 @@
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
 import moment, {Moment} from 'moment'
-import {
-    addOptionalFilter,
-    hasFilter,
-} from 'models/reporting/queryFactories/utils'
-import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
+
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -15,13 +11,20 @@ import {Cubes} from 'models/reporting/cubes'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 
+import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
 import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    addOptionalFilter,
+    hasFilter,
+} from 'models/reporting/queryFactories/utils'
 import {
     Cube,
     QueryFactory,
@@ -36,8 +39,6 @@ import {
     Period,
     StatsFilters,
 } from 'models/stat/types'
-import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')

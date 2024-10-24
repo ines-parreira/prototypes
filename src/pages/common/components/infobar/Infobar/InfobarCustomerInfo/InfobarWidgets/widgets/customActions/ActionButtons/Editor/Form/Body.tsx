@@ -1,8 +1,9 @@
 import React from 'react'
 
 import {ContentType} from 'models/api/types'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import JsonField from 'pages/common/forms/JsonField'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+
 import {Action, OnChangeAction} from '../../../types'
 
 import css from './Body.less'

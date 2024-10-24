@@ -1,3 +1,7 @@
+import {Label} from '@gorgias/ui-kit'
+import {AxiosError} from 'axios'
+import {Map} from 'immutable'
+import {isEqual} from 'lodash'
 import React, {
     FormEvent,
     useCallback,
@@ -5,8 +9,6 @@ import React, {
     useState,
     useMemo,
 } from 'react'
-import {Map} from 'immutable'
-import {Label} from '@gorgias/ui-kit'
 import {
     FormGroup,
     InputGroup,
@@ -15,38 +17,36 @@ import {
     ModalHeader,
     Form as ReactStrapForm,
 } from 'reactstrap'
-import {isEqual} from 'lodash'
-import {AxiosError} from 'axios'
 
 import {useAppNode} from 'appNode'
+import {logEvent, SegmentEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
+import {useModalManager} from 'hooks/useModalManager'
 import {
     UniqueDiscountOffer,
     UniqueDiscountOfferCreatePayload,
     UniqueDiscountOfferTypeEnum,
 } from 'models/convert/discountOffer/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import InputField from 'pages/common/forms/input/InputField'
-import {useCreateDiscountOffer} from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
-import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
-import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
-import {logEvent, SegmentEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import InputField from 'pages/common/forms/input/InputField'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     AppliesTypeEnum,
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
-import {transformAxiosError} from './utils'
+import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
+import {useCreateDiscountOffer} from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
+import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 import css from './UniqueDiscountOfferCreateModal.less'
+import {transformAxiosError} from './utils'
 
 export type UniqueDiscountOfferCreateModalProps = {
     isOpen: boolean

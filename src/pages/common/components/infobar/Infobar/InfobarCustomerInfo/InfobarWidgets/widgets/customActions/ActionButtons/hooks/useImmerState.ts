@@ -1,6 +1,6 @@
-import {useCallback, useState} from 'react'
 import {produce} from 'immer'
 import {set as _set} from 'lodash'
+import {useCallback, useState} from 'react'
 
 export function useImmerState<T extends Record<string, unknown>>(
     initialState: T

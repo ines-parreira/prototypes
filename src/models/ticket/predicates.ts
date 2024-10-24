@@ -1,7 +1,7 @@
+import {isObject} from 'lodash'
+import _get from 'lodash/get'
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
-import _get from 'lodash/get'
-import {isObject} from 'lodash'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 

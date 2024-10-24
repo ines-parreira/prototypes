@@ -1,5 +1,6 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
 import {abGroup} from 'fixtures/abGroup'
+import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+
 import * as resources from '../resources'
 
 jest.mock('rest_api/revenue_addon_api/client')

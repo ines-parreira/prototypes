@@ -1,25 +1,25 @@
+import classnames from 'classnames'
 import React, {ComponentProps, memo, useRef} from 'react'
 import {UncontrolledDropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import classnames from 'classnames'
 
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {Source} from 'models/widget/types'
 import {ContentType} from 'models/api/types'
-import Group from 'pages/common/components/layout/Group'
+import {Source} from 'models/widget/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {
-    Action,
-    Button as ButtonType,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {mapTemplateParameters} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
 import {useComputeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
 import {
     applyCustomActionTemplate,
     applyCustomActionVariables,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
-import {mapTemplateParameters} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
+import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import {
+    Action,
+    Button as ButtonType,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import Group from 'pages/common/components/layout/Group'
 
-import css from './ButtonsGroup.less'
 import Button from './Button'
+import css from './ButtonsGroup.less'
 
 type Props = {
     buttons: ButtonType[]

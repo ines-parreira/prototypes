@@ -1,16 +1,16 @@
-import React, {useMemo, useCallback} from 'react'
 import {produce} from 'immer'
+import React, {useMemo, useCallback} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
-import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
+import IconButton from 'pages/common/components/button/IconButton'
 import {
     DEFAULT_SCHEDULE_VALUE,
     DAYS_OPTIONS,
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
+import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
+import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
 
 import css from './CampaignCustomSchedule.less'
 

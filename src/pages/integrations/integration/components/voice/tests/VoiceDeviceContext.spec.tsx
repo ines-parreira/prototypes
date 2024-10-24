@@ -1,8 +1,10 @@
-import {useContext} from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 import {omit} from 'lodash'
+import {useContext} from 'react'
+
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import {initialState} from 'state/twilio/voiceDevice'
+
 import {Context} from '../VoiceDeviceContext'
 
 describe('VoiceDeviceContext', () => {

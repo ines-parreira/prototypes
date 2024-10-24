@@ -1,9 +1,13 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FilterComponentKey} from 'models/stat/types'
 import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import {metricLabels} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {RootState} from 'state/types'
 import {
     busiestTimesSlice,
@@ -11,9 +15,6 @@ import {
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
 import {renderWithStore} from 'utils/testing'
-import {metricLabels} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FilterComponentKey} from 'models/stat/types'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),

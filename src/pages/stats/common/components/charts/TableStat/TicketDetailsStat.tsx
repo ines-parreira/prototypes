@@ -1,17 +1,17 @@
 import React, {useMemo} from 'react'
 
-import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
-import {reportError} from 'utils/errors'
 import {TicketStatus} from 'business/types/ticket'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import {ViewFilter} from 'state/views/types'
+import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
-import {EqualityOperator} from 'state/rules/types'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewLink from 'pages/stats/common//ViewLink'
 import {useStatsViewFilters} from 'pages/stats/common/utils'
 import {getChannels} from 'services/channels'
+import {EqualityOperator} from 'state/rules/types'
 import {humanizeChannel} from 'state/ticket/utils'
+import {ViewFilter} from 'state/views/types'
+import {reportError} from 'utils/errors'
 
 import css from './TicketDetailsStat.less'
 

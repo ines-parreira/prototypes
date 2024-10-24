@@ -1,6 +1,6 @@
 import {cleanup, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
+import {Provider} from 'react-redux'
 
 import {migrationOutboundVerificationUnverifiedSingleSender} from 'fixtures/emailMigration'
 import {mockStore} from 'utils/testing'

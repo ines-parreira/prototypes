@@ -4,9 +4,12 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+
+import {TicketChannel} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {agents} from 'fixtures/agents'
+import {integrationsState} from 'fixtures/integrations'
 import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
@@ -30,12 +33,10 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
-import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'

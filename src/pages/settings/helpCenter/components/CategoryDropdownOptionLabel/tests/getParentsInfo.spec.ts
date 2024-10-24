@@ -1,5 +1,7 @@
 import {keyBy as _keyBy} from 'lodash'
+
 import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+
 import {getParentsInfo} from '../CategoryDropdownOptionLabel'
 
 describe('getParentsInfo()', () => {

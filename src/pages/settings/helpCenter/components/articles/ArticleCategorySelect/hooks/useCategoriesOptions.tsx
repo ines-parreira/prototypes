@@ -1,8 +1,10 @@
 import React, {useMemo} from 'react'
-import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
+
 import {LocaleCode, NonRootCategory} from 'models/helpCenter/types'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 import {Option} from 'pages/common/forms/SelectField/types'
+import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
+import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+
 import {CategoryDropdownOptionLabel} from '../../../CategoryDropdownOptionLabel/CategoryDropdownOptionLabel'
 
 interface UseCategoriesOptions {

@@ -1,15 +1,16 @@
-import React, {useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 
 import _keyBy from 'lodash/keyBy'
-import TextInput from 'pages/common/forms/input/TextInput'
-import IconButton from 'pages/common/components/button/IconButton'
+import React, {useMemo, useRef, useState} from 'react'
+
+import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from '../NodeEditor.less'
 

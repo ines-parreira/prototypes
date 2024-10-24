@@ -1,7 +1,9 @@
-import React from 'react'
 import {cleanup, render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
+
 import TicketVoiceCallDuration from '../TicketVoiceCallDuration'
 
 jest.mock('models/voiceCall/utils', () => ({

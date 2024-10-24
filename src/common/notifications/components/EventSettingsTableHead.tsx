@@ -1,9 +1,9 @@
 import React from 'react'
 
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'common/notifications/components/EventSettings.less'
 import {channels} from 'common/notifications/data'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableHead from 'pages/common/components/table/TableHead'
 
 type EventSettingsTableHeadProps = {
     typeHeader: string

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBody from 'pages/common/components/table/TableBody'
 import useAppSelector from 'hooks/useAppSelector'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {getIntegrationsByAppId} from 'state/integrations/selectors'
 
 import IntegrationRow from './IntegrationRow'

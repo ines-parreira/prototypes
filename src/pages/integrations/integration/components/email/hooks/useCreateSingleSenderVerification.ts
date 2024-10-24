@@ -1,11 +1,12 @@
 import {AxiosError} from 'axios'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {createVerification} from 'models/singleSenderVerification/resources'
+import {SenderInformation} from 'models/singleSenderVerification/types'
+import {setVerification} from 'state/entities/singleSenderVerification/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {createVerification} from 'models/singleSenderVerification/resources'
-import {setVerification} from 'state/entities/singleSenderVerification/actions'
-import {SenderInformation} from 'models/singleSenderVerification/types'
 
 export default function useCreateSingleSenderVerification() {
     const dispatch = useAppDispatch()

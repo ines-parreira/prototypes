@@ -1,26 +1,26 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, fireEvent} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {QueryClientProvider} from '@tanstack/react-query'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
-import {usePaywallConfig} from 'pages/automate/common/hooks/usePaywallConfig'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
-import {ticket} from 'fixtures/ticket'
 import {AGENT_ROLE} from 'config/user'
-import {user} from 'fixtures/users'
+import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
+import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
+import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
+import {usePaywallConfig} from 'pages/automate/common/hooks/usePaywallConfig'
+import {AutomateFeatures} from 'pages/automate/common/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('common/segment')

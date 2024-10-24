@@ -6,6 +6,7 @@ import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {shopifyCustomerFixture} from 'fixtures/shopify'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
 import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 
 jest.mock(

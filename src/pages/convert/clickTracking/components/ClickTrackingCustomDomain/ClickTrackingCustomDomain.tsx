@@ -1,28 +1,25 @@
-import React, {useEffect, useState} from 'react'
-import classNames from 'classnames'
-
 import {AxiosError} from 'axios'
-import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
+import classNames from 'classnames'
+import React, {useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {CustomDomain as CustomDomainEntity} from 'models/clickTracking/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import Loader from 'pages/common/components/Loader/Loader'
-
-import settingsCss from 'pages/settings/settings.less'
+import Button from 'pages/common/components/button/Button'
 
 import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
-import {StatusCheck} from 'pages/common/components/StatusCheck'
-import {isDomain} from 'utils'
+import Loader from 'pages/common/components/Loader/Loader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {StatusCheck} from 'pages/common/components/StatusCheck'
+import InputField from 'pages/common/forms/input/InputField'
 import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-
-import {HelpText} from './components/HelpText'
+import settingsCss from 'pages/settings/settings.less'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {isDomain} from 'utils'
 
 import css from './ClickTrackingCustomDomain.less'
+import {HelpText} from './components/HelpText'
 
 const CUSTOM_DOMAIN_ZONE = 'gorgias-convert.com'
 

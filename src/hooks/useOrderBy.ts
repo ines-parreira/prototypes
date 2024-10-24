@@ -1,4 +1,5 @@
 import {useCallback, useState} from 'react'
+
 import {OrderDirection} from 'models/api/types'
 
 export default function useOrderBy<T extends string>(

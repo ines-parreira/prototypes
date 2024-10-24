@@ -1,19 +1,21 @@
-import React from 'react'
-import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {dummyAppListData} from 'fixtures/apps'
-import {renderWithRouter} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
 import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
 import {RootState} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
+
 import useDeleteAction from '../../hooks/useDeleteAction'
 import useUpsertAction from '../../hooks/useUpsertAction'
 import ActionsRow from '../ActionsRow'

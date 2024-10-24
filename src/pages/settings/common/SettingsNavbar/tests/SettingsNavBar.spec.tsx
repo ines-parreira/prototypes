@@ -1,19 +1,20 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
-import {fromJS} from 'immutable'
+import React from 'react'
+
 import {logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {hasRole} from 'utils'
-import {closePanels} from 'state/layout/actions'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {closePanels} from 'state/layout/actions'
+import {hasRole} from 'utils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
-import SettingsNavbar from '../SettingsNavbar'
 import * as config from '../config'
+import SettingsNavbar from '../SettingsNavbar'
 
 const mockedDispatch = jest.fn()
 jest.mock('utils')

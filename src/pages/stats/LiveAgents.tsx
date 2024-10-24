@@ -1,12 +1,11 @@
-import React, {useMemo, useCallback} from 'react'
-import moment from 'moment-timezone'
 import {produce} from 'immer'
-import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
+import moment from 'moment-timezone'
+import React, {useMemo, useCallback} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
+
+import useStatResource from 'hooks/reporting/useStatResource'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     NumericStatAxisValue,
     Stat,
@@ -18,15 +17,16 @@ import {
     LegacyStatsFilters,
 } from 'models/stat/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import StatsPage from 'pages/stats/StatsPage'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import css from 'pages/stats/LiveAgents.less'
-import StatWrapper from 'pages/stats/StatWrapper'
-import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
+import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import StatsPage from 'pages/stats/StatsPage'
+import StatWrapper from 'pages/stats/StatWrapper'
+import {AccountFeature} from 'state/currentAccount/types'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'

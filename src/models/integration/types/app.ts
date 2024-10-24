@@ -1,9 +1,9 @@
-import type {IntegrationListItem} from 'state/integrations/types'
 import type {IntegrationConfig} from 'config'
+import type {IntegrationListItem} from 'state/integrations/types'
 
+import type {Integration} from '.'
 import {IntegrationType} from '../constants'
 import type {IntegrationBase} from './base'
-import type {Integration} from '.'
 
 export type AppIntegration = IntegrationBase & {
     type: IntegrationType.App

@@ -1,24 +1,24 @@
 import React, {useCallback, useMemo} from 'react'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {CampaignPreview} from 'models/convert/campaign/types'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {DropdownOption} from 'pages/stats/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {CampaignPreview} from 'models/convert/campaign/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {DropdownOption} from 'pages/stats/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]

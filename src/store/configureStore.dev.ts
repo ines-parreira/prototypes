@@ -1,11 +1,10 @@
-import {createStore, applyMiddleware} from 'redux'
 import {composeWithDevTools} from '@redux-devtools/extension'
+import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 
 import rootReducer from 'state/reducers'
-import {InitialRootState} from 'types'
-
 import serverErrorHandler from 'store/middlewares/serverErrorHandler'
+import {InitialRootState} from 'types'
 
 export default function configureStore(
     initialState: InitialRootState = {} as InitialRootState

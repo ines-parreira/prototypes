@@ -1,5 +1,6 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
+
 import ForwardingCallsPreferences from '../components/ForwardingCallsPreferences'
 
 const mockSetPreference = jest.fn()

@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {fromJS, List, Map} from 'immutable'
 import {RawDraftContentState, SelectionState, convertFromRaw} from 'draft-js'
+import {fromJS, List, Map} from 'immutable'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {v4 as uuidv4} from 'uuid'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
@@ -34,6 +34,7 @@ import {
     restoreTicketDraftApplyMacro,
 } from 'state/ticket/actions'
 import {getAppliedMacro, getProperty} from 'state/ticket/selectors'
+
 import useEffectOnce from './useEffectOnce'
 import usePrevious from './usePrevious'
 

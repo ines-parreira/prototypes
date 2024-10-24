@@ -1,14 +1,14 @@
-import React, {useRef, useState, FormEvent} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useRef, useState, FormEvent} from 'react'
 
 import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'
-import ColorField from 'pages/common/forms/ColorField'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
+import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
 
 import {CardEditFormState, HiddenField} from '../../types'

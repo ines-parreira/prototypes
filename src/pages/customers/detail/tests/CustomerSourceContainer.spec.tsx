@@ -1,10 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {shopifyWidget} from 'fixtures/widgets'
+
 import {renderWithRouter} from '../../../../utils/testing'
-import {CustomerSourceContainer} from '../CustomerSourceContainer'
 import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
+import {CustomerSourceContainer} from '../CustomerSourceContainer'
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',

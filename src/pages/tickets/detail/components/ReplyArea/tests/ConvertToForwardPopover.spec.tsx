@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {useEffect, useRef, useState} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {setShowConvertToForwardPopover} from 'state/newMessage/actions'
 

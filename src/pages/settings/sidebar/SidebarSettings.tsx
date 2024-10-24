@@ -1,28 +1,27 @@
-import React, {useMemo, useState} from 'react'
 import classNames from 'classnames'
-import _isEqual from 'lodash/isEqual'
 import {produce} from 'immer'
+import _isEqual from 'lodash/isEqual'
+import React, {useMemo, useState} from 'react'
 
+import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getBottomSystemTicketNavbarWithHiddenElements,
-    getTopSystemTicketNavbarWithHiddenElements,
-} from 'state/views/selectors'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import settingsCss from 'pages/settings/settings.less'
+import {submitSetting} from 'state/currentAccount/actions'
 import {getViewsVisibilitySettings} from 'state/currentAccount/selectors'
 import {
     AccountSettingType,
     AccountSettingViewsVisibility,
 } from 'state/currentAccount/types'
-import {submitSetting} from 'state/currentAccount/actions'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import Button from 'pages/common/components/button/Button'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {
+    getBottomSystemTicketNavbarWithHiddenElements,
+    getTopSystemTicketNavbarWithHiddenElements,
+} from 'state/views/selectors'
 
-import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
-
-import settingsCss from 'pages/settings/settings.less'
 import css from './SidebarSettings.less'
 
 type SystemView = {

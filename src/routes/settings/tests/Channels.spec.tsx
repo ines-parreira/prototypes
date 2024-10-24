@@ -1,16 +1,16 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {assumeMock} from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Channels} from '../Channels'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),

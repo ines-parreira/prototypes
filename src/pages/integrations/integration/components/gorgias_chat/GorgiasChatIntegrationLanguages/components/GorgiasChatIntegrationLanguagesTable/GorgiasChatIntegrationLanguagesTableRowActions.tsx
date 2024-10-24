@@ -1,12 +1,13 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+
 import GorgiasChatIntegrationLanguageDeleteModal from './GorgiasChatIntegrationLanguageDeleteModal'
 import type {LanguageItemRow} from './types'
 

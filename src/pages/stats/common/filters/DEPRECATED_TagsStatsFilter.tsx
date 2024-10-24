@@ -1,15 +1,16 @@
 import React, {ComponentProps, useCallback} from 'react'
+
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
 
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import {LegacyStatsFilters} from 'models/stat/types'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter.less'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 const TagDropdownMenuWrapper = (
     props: ComponentProps<typeof TagDropdownMenu>

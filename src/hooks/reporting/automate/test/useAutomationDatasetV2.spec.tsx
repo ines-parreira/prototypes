@@ -1,25 +1,27 @@
-import React from 'react'
+import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
-import {StatsFilters} from 'models/stat/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
+
 import {
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {AUTOMATION_RATE_LABEL} from 'pages/stats/self-service/constants'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {AUTOMATION_RATE_LABEL} from 'pages/stats/self-service/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
+import {useAIAgentUserId} from '../useAIAgentUserId'
 import {
     useAutomateMetricsTimeseriesV2,
     useAutomateMetricsTrendV2,
 } from '../useAutomationDatasetV2'
 import {AutomateEventType} from '../utils'
-import {useAIAgentUserId} from '../useAIAgentUserId'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'

@@ -1,10 +1,16 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
-import {QueryClientProvider} from '@tanstack/react-query'
 
-import userEvent from '@testing-library/user-event'
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
+import {MessageFeedback} from 'models/aiAgentFeedback/types'
+import {TicketMessage} from 'models/ticket/types'
+import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     changeActiveTab,
@@ -12,20 +18,15 @@ import {
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {TicketMessage} from 'models/ticket/types'
-import {MessageFeedback} from 'models/aiAgentFeedback/types'
-import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {logEventWithSampling} from 'common/segment/segment'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {SegmentEvent} from 'common/segment'
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import {assumeMock} from 'utils/testing'
+
+import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
 import AIAgentFeedback, {
     CORRECT_RESPONSE,
     ACCURATE_RESPONSE,
     REVIEW_RESPONSE,
 } from '../AIAgentFeedback'
-import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('common/segment/segment')

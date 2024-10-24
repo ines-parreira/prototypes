@@ -3,13 +3,13 @@ import _isEqual from 'lodash/isEqual'
 
 import {UserRole, User} from 'config/types/user'
 
-import {StoreAction} from '../types'
-import * as currentUserConstants from '../currentUser/constants'
-
 import {
     FeedbackStatus,
     ResourceSection,
 } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import * as currentUserConstants from '../currentUser/constants'
+import {StoreAction} from '../types'
+
 import * as agentsConstants from './constants'
 import {AgentsState} from './types'
 

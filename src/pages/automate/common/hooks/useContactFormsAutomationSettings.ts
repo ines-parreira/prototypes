@@ -4,14 +4,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {
     contactFormsAutomationSettingsFetched,
     getContactFormsAutomationSettings,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     const dispatch = useAppDispatch()

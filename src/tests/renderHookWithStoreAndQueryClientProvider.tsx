@@ -1,8 +1,10 @@
-import {Provider} from 'react-redux'
 import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
+import {Provider} from 'react-redux'
+
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
+
 import {mockQueryClientProvider} from './reactQueryTestingUtils'
 
 export const renderHookWithStoreAndQueryClientProvider = <TProps, TResult>(

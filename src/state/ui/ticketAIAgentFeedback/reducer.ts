@@ -1,9 +1,8 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {TicketAIAgentFeedbackState} from './types'
-
 import {changeActiveTab, changeTicketMessage} from './actions'
 import {TicketAIAgentFeedbackTab} from './constants'
+import {TicketAIAgentFeedbackState} from './types'
 
 export const initialState: TicketAIAgentFeedbackState = {
     activeTab: TicketAIAgentFeedbackTab.CustomerInformation,

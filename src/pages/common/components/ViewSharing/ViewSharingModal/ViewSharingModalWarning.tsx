@@ -1,6 +1,6 @@
+import {List} from 'immutable'
 import React from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
-import {List} from 'immutable'
 
 import Alert, {AlertType} from '../../Alert/Alert'
 

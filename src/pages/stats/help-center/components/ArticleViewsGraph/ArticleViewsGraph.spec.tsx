@@ -1,10 +1,11 @@
-import React, {ComponentProps} from 'react'
-import {render, screen} from '@testing-library/react'
-import moment from 'moment'
-import {CoreScaleOptions, Scale} from 'chart.js'
 import {UseQueryResult} from '@tanstack/react-query'
-import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
+import {render, screen} from '@testing-library/react'
+import {CoreScaleOptions, Scale} from 'chart.js'
+import moment from 'moment'
+import React, {ComponentProps} from 'react'
+
 import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
+import {useArticleViewTimeSeries} from '../../hooks/useArticleViewTimeSeries'
 import ArticleViewsGraph, {renderXTickLabel} from './ArticleViewsGraph'
 
 jest.mock('../../hooks/useArticleViewTimeSeries', () => ({

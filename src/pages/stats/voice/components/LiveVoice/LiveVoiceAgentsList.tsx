@@ -1,16 +1,17 @@
-import React, {useMemo} from 'react'
 import {LiveCallQueueAgent} from '@gorgias/api-queries'
+import React, {useMemo} from 'react'
+
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import {
     TableBodyRowExpandable,
     WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import LiveVoiceAgentRow from './LiveVoiceAgentRow'
 import css from './LiveVoiceAgentsList.less'
 import {AgentStatusCategory, groupAgentsByStatus} from './utils'
-import LiveVoiceAgentRow from './LiveVoiceAgentRow'
 
 type Props = {
     agents: LiveCallQueueAgent[]

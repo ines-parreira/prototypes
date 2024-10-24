@@ -1,8 +1,13 @@
-import React, {useCallback, useState, useEffect} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {
+    createPhoneNumber,
+    fetchNewPhoneNumber,
+} from 'models/phoneNumber/resources'
 import {
     PhoneNumber,
     PhoneNumberMeta,
@@ -10,25 +15,20 @@ import {
     AddressType,
     PhoneType,
 } from 'models/phoneNumber/types'
-import {
-    createPhoneNumber,
-    fetchNewPhoneNumber,
-} from 'models/phoneNumber/resources'
-import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import Button from 'pages/common/components/button/Button'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-import history from 'pages/history'
 import Alert from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/input/InputField'
+import history from 'pages/history'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
+import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
-import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
-import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import css from './PhoneNumberCreateForm.less'
+import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
 
 export default function PhoneNumberCreateForm(): JSX.Element {
     const dispatch = useAppDispatch()

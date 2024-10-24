@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+
 import {OrderDirection} from 'models/api/types'
 import {
     TicketDimension,
@@ -17,13 +18,13 @@ import {
 } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
-import {subtractDaysFromDate} from 'utils/date'
 
 describe('messagesPerTicketQueryFactory', () => {
     const periodStart = formatReportingQueryDate(moment())

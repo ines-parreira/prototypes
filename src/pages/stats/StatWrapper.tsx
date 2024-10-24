@@ -1,3 +1,7 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import axios, {AxiosError, CancelToken} from 'axios'
+import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {
     HTMLAttributes,
     ReactNode,
@@ -6,24 +10,20 @@ import React, {
     useMemo,
 } from 'react'
 import {Button} from 'reactstrap'
-import classnames from 'classnames'
-import axios, {AxiosError, CancelToken} from 'axios'
-import {fromJS, Map} from 'immutable'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import Loader from 'pages/common/components/Loader/Loader'
-import {Stat, LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useCancellableRequest from 'hooks/useCancellableRequest'
 import {downloadStat} from 'models/stat/resources'
-import {saveFileAsDownloaded} from 'utils/file'
+import {Stat, LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useCancellableRequest from 'hooks/useCancellableRequest'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {saveFileAsDownloaded} from 'utils/file'
 
 import StatsHelpIcon from './common/components/StatsHelpIcon'
 import css from './StatWrapper.less'

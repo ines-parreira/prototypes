@@ -1,5 +1,6 @@
 // bypassing mocked values in setup.js
 import moment from 'moment'
+
 import {
     DETAILED_FORMATTED_DATE_OPTIONS,
     getDetailedFormattedDate,

@@ -6,11 +6,13 @@ import {
     waitFor,
 } from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import {
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
 import {EmailMigrationOutboundVerification} from 'models/integration/types'
+
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 
 jest.mock('../EmailDomainVerification/components/RecordsTable', () => () => (

@@ -1,16 +1,18 @@
-import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import React, {ComponentProps} from 'react'
+
 import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
+import Avatar from 'pages/common/components/Avatar/Avatar'
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
-import TicketVoiceCallDuration from './TicketVoiceCallDuration'
-import TicketVoiceCallAudios from './TicketVoiceCallAudios'
-import TicketVoiceCallSource from './TicketVoiceCallSource'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
+import TicketVoiceCallAudios from './TicketVoiceCallAudios'
 import css from './TicketVoiceCallContainer.less'
+import TicketVoiceCallDuration from './TicketVoiceCallDuration'
+import TicketVoiceCallSource from './TicketVoiceCallSource'
 
 type Props = {
     header: JSX.Element

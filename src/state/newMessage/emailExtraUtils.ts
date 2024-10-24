@@ -1,9 +1,11 @@
-import moment from 'moment'
 import {ContentBlock, ContentState, Modifier} from 'draft-js'
 import {fromJS, Map} from 'immutable'
+import moment from 'moment'
 
-import {Ticket, TicketElement, TicketMessage} from '../../models/ticket/types'
+import {TicketChannel} from '../../business/types/ticket'
 import {isTicketMessage} from '../../models/ticket/predicates'
+import {Ticket, TicketElement, TicketMessage} from '../../models/ticket/types'
+import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
     contentStateFromTextOrHTML,
     convertFromHTML,
@@ -14,8 +16,6 @@ import {
     truncateContentStateWords,
     ContentStateCounter,
 } from '../../utils/editor'
-import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
-import {TicketChannel} from '../../business/types/ticket'
 
 export type Signature = Map<'text' | 'html', string | undefined>
 

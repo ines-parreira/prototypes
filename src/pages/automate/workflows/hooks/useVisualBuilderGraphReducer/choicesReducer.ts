@@ -1,17 +1,17 @@
 import {produce} from 'immer'
 import {ulid} from 'ulidx'
 
+import {getWorkflowVariableListForNode} from '../../models/variables.model'
+import {
+    buildEdgeCommonProperties,
+    cleanConditionsFromEmptyVariables,
+} from '../../models/visualBuilderGraph.model'
 import {
     AutomatedMessageNodeType,
     MultipleChoicesNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
 import {MessageContent} from '../../models/workflowConfiguration.types'
-import {
-    buildEdgeCommonProperties,
-    cleanConditionsFromEmptyVariables,
-} from '../../models/visualBuilderGraph.model'
-import {getWorkflowVariableListForNode} from '../../models/variables.model'
 import {
     buildEndNode,
     buildMultipleChoicesNode,

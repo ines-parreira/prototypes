@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     HTMLProps,
     ReactNode,
@@ -7,7 +8,6 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classnames from 'classnames'
 
 import css from 'pages/common/components/InfiniteScroll/InfiniteScroll.less'
 

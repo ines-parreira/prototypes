@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
 import {
     GorgiasChatIntegration,

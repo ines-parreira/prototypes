@@ -1,16 +1,16 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 
-import {agents} from 'fixtures/agents'
 import {UserRole} from 'config/types/user'
-import {RootState} from 'state/types'
-import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
+import {agents} from 'fixtures/agents'
 import {AgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/agents/AgentPerformanceHeatmapSwitch'
+import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
+import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
+import {RootState} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/agents/AgentsEditColumns.tsx')

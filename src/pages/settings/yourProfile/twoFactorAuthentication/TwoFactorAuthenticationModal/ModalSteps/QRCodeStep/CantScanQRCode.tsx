@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react'
-import Clipboard from 'clipboard'
 import {Label} from '@gorgias/ui-kit'
+import Clipboard from 'clipboard'
+import React, {useEffect, useState} from 'react'
 
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
-import InputGroup from 'pages/common/forms/input/InputGroup'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
+import InputGroup from 'pages/common/forms/input/InputGroup'
+
 import ButtonIconLabel from '../../../../../../common/components/button/ButtonIconLabel'
 import css from './CantScanQRCode.less'
 

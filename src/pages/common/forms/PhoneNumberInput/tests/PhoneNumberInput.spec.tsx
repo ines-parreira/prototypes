@@ -1,7 +1,8 @@
-import React, {createRef} from 'react'
 import {render, fireEvent, waitFor} from '@testing-library/react'
+import React, {createRef} from 'react'
 
 import {reportError} from 'utils/errors'
+
 import PhoneNumberInput, {PhoneNumberInputHandle} from '../PhoneNumberInput'
 
 jest.mock('utils/errors')

@@ -1,32 +1,30 @@
 import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+
+import {appQueryClient} from 'api/queryClient'
+import {User} from 'config/types/user'
+import {createJob} from 'models/job/resources'
+import {Job, JobType} from 'models/job/types'
+import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
+import {
+    buildAgentMetric,
+    TableLabels,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AutoQAAgentsTableColumn,
     AutoQAAgentsColumnConfig,
     TableLabels as autoQATableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
-import {appQueryClient} from 'api/queryClient'
-import {createJob} from 'models/job/resources'
-import {Job, JobType} from 'models/job/types'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    OverviewMetric,
-    SlaMetric,
-    AgentsTableColumn,
-    TicketFieldsMetric,
-    ConvertMetric,
-    VoiceAgentsMetric,
-    AutoQAMetric,
-    ChannelsTableColumns,
-} from 'state/ui/stats/types'
 import {
     initialState,
     setMetricData,
@@ -42,14 +40,17 @@ import {
     setShouldUseNewFilterData,
     getIsNewFilter,
 } from 'state/ui/stats/drillDownSlice'
-import {User} from 'config/types/user'
 import {
-    buildAgentMetric,
-    TableLabels,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
+    OverviewMetric,
+    SlaMetric,
+    AgentsTableColumn,
+    TicketFieldsMetric,
+    ConvertMetric,
+    VoiceAgentsMetric,
+    AutoQAMetric,
+    ChannelsTableColumns,
+} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 jest.mock('models/job/resources')
 const createJobMock = assumeMock(createJob)

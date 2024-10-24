@@ -1,25 +1,27 @@
-import React from 'react'
 import {AxiosError} from 'axios'
-import history from 'pages/history'
+import React from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {getSingleSenderVerification} from 'state/entities/singleSenderVerification/selectors'
-import useAppSelector from 'hooks/useAppSelector'
 import {getVerification} from 'models/singleSenderVerification/resources'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import {setVerification} from 'state/entities/singleSenderVerification/actions'
 import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
+import {setVerification} from 'state/entities/singleSenderVerification/actions'
+import {getSingleSenderVerification} from 'state/entities/singleSenderVerification/selectors'
 import {fetchIntegration, fetchIntegrations} from 'state/integrations/actions'
-import VerificationForm from '../VerificationForm/VerificationForm'
-import DeleteVerificationButton from '../DeleteVerificationButton'
-import BackButton from '../BackButton'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import useCreateSingleSenderVerification from '../../hooks/useCreateSingleSenderVerification'
+import BackButton from '../BackButton'
+import DeleteVerificationButton from '../DeleteVerificationButton'
+import VerificationForm from '../VerificationForm/VerificationForm'
 import VerificationEmailSent from './VerificationEmailSent'
 
 export type Props = {

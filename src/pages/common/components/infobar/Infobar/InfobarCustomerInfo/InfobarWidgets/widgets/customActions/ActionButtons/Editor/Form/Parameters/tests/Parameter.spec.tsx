@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
+import React from 'react'
 
 import {ParameterTypes} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 

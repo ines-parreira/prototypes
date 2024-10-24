@@ -1,4 +1,3 @@
-import {has, get, toString, parseInt, join, startsWith} from 'lodash'
 import parsePhoneNumber, {
     CountryCode,
     isValidPhoneNumber,
@@ -6,6 +5,10 @@ import parsePhoneNumber, {
     getCountryCallingCode,
     Metadata,
 } from 'libphonenumber-js'
+import {has, get, toString, parseInt, join, startsWith} from 'lodash'
+
+import {State, states} from 'config/states'
+import {IntegrationType} from 'models/integration/types'
 import {
     PhoneNumber,
     PhoneCountry,
@@ -19,9 +22,8 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 
-import {IntegrationType} from 'models/integration/types'
 import rawCountries from 'pages/phoneNumbers/options/countries.json'
-import {State, states} from 'config/states'
+
 import {validationAlertMessages} from './constants'
 
 const CAPABILITY_KEY: Record<

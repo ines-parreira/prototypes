@@ -1,5 +1,5 @@
-import {matcherHint, printReceived} from 'jest-matcher-utils'
 import {MatcherContext} from '@jest/expect'
+import {matcherHint, printReceived} from 'jest-matcher-utils'
 
 import {isElementOrAncestorAriaDisabled, isHtmlElement} from './utils'
 

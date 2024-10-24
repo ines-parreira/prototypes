@@ -1,12 +1,14 @@
 import axios from 'axios'
+
 import {createMockHttpIntegrationPayload} from 'pages/automate/aiAgent/utils/playground-ticket.util'
+
+import {isProduction, isStaging} from '../../../utils/environment'
+import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AiAgentInput,
     AiAgentResponse,
     CreatePlaygroundBody,
 } from '../../aiAgentPlayground/types'
-import {isProduction, isStaging} from '../../../utils/environment'
-import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 
 /**
  * Api Client for AI Agent

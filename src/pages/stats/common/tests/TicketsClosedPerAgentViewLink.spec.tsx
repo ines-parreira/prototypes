@@ -1,20 +1,20 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import {LinkProps} from 'react-router-dom'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import {LinkProps} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {RootState, StoreDispatch} from 'state/types'
-import {integrationsState} from 'fixtures/integrations'
-import {agents as agentsFixtures} from 'fixtures/agents'
-import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {TicketChannel} from 'business/types/ticket'
+import {logEvent} from 'common/segment'
+import {agents as agentsFixtures} from 'fixtures/agents'
+import {integrationsState} from 'fixtures/integrations'
 import {LegacyStatsFilters} from 'models/stat/types'
 
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

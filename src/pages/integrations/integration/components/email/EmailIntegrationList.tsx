@@ -1,40 +1,40 @@
-import React, {useEffect, useState} from 'react'
-import {List, Map} from 'immutable'
-import {Link} from 'react-router-dom'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import Button from 'pages/common/components/button/Button'
+import React, {useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
 
 import gmailImg from 'assets/img/integrations/gmail.png'
 import outlookImg from 'assets/img/integrations/outlook.png'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import Loader from 'pages/common/components/Loader/Loader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     EmailDomain,
     IntegrationType,
     isEmailIntegration,
 } from 'models/integration/types'
+import {useListStoreMappings} from 'models/storeMapping/queries'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+
+import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
+import {fetchIntegrations} from 'state/integrations/actions'
 import {
     getIconFromType,
     getIntegrationsByTypes,
 } from 'state/integrations/helpers'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {fetchIntegrations} from 'state/integrations/actions'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useListStoreMappings} from 'models/storeMapping/queries'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import IntegrationList from '../IntegrationList'
 import DefaultIntegrationBadge from './DefaultIntegrationBadge'
-import {fetchEmailDomains} from './resources'
+import css from './EmailIntegrationList.less'
 import {
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
@@ -42,8 +42,7 @@ import {
     isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
 } from './helpers'
-
-import css from './EmailIntegrationList.less'
+import {fetchEmailDomains} from './resources'
 
 type Props = {
     integrations: List<Map<any, any>>

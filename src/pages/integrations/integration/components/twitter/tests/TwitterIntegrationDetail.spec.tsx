@@ -1,8 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {IntegrationType} from 'models/integration/types'
+
 import TwitterIntegrationDetail from '../TwitterIntegrationDetail'
 
 describe('<TwitterIntegrationDetail/>', () => {

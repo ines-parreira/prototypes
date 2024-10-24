@@ -1,13 +1,15 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React from 'react'
+
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import {billingState} from 'fixtures/billing'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
 import {RootState} from 'state/types'
-import {billingState} from 'fixtures/billing'
+
 import ContactFormFlowsBanner from '../ContactFormFlowsBanner'
 
 jest.mock('react-router-dom')

@@ -1,4 +1,5 @@
 import {Statement, Literal} from 'estree'
+
 import {ActionType, Rule} from 'models/rule/types'
 import {RuleDraft} from 'state/rules/types'
 

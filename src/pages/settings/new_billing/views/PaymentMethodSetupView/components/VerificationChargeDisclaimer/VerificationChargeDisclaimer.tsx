@@ -1,4 +1,5 @@
 import React from 'react'
+
 import css from './VerificationChargeDisclaimer.less'
 
 export const VerificationChargeDisclaimer: React.FC = () => (

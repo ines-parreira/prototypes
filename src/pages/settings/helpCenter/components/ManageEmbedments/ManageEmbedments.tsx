@@ -1,43 +1,44 @@
-import React, {useState, useEffect} from 'react'
+import {useQueryClient} from '@tanstack/react-query'
 import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import {useQueryClient} from '@tanstack/react-query'
+import React, {useState, useEffect} from 'react'
 import {useHistory, Link} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import {
     PageEmbedmentPosition,
     EmbeddablePage,
 } from 'pages/common/components/PageEmbedmentForm'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import Button from 'pages/common/components/button/Button'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {CONTACT_FORM_EMBEDMENTS_LIMIT} from 'pages/settings/contactForm/constants'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {
     helpCenterPageEmbedmentsKeys,
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
     useGetShopifyPages,
 } from 'pages/settings/helpCenter/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {CONTACT_FORM_EMBEDMENTS_LIMIT} from 'pages/settings/contactForm/constants'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
-import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {HELP_CENTER_BASE_PATH} from '../../constants'
+import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {

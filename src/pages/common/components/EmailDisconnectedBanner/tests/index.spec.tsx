@@ -1,12 +1,14 @@
+import {Location} from '@sentry/react/types/types'
 import {cleanup, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Provider} from 'react-redux'
-import React from 'react'
 import {List, fromJS} from 'immutable'
-import {Location} from '@sentry/react/types/types'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {MemoryRouter, Route} from 'react-router-dom'
-import {mockStore, renderWithRouter} from 'utils/testing'
+
 import * as useAppSelector from 'hooks/useAppSelector'
+import {mockStore, renderWithRouter} from 'utils/testing'
+
 import EmailDisconnectedBanner from '..'
 
 const appSelectorSpy = jest.spyOn(useAppSelector, 'default')

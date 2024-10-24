@@ -1,9 +1,11 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {TicketChannel} from 'business/types/ticket'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+
 import ChannelBlock from '../../helper/ChannelBlock'
 import useOnlySupportedChannels from '../../helper/useOnlySupportedChannels'
 import ChannelToggle from '../ChannelToggle'

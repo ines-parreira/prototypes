@@ -1,16 +1,18 @@
-import {Provider} from 'react-redux'
-import React from 'react'
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {mockStore} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroAction} from 'models/macroAction/types'
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
+import {mockStore} from 'utils/testing'
+
+import useWhatsAppEditor from '../useWhatsAppEditor'
 import * as whatsAppUtils from '../utils'
 import WhatsAppEditorProvider from '../WhatsAppEditorProvider'
-import useWhatsAppEditor from '../useWhatsAppEditor'
 
 const isWhatsAppWindowOpenSpy = jest.spyOn(
     whatsAppUtils,

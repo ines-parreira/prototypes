@@ -1,20 +1,22 @@
 import {cleanup, render, screen, waitFor} from '@testing-library/react'
-import React from 'react'
 import {merge} from 'lodash'
+import React from 'react'
 import {Provider} from 'react-redux'
 import createMockStore from 'redux-mock-store'
+
+import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
+import {getVerification} from 'models/singleSenderVerification/resources'
 import {
     SenderVerification,
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
-import {entitiesInitialState} from 'fixtures/entities'
-import {getVerification} from 'models/singleSenderVerification/resources'
+import {RootState, StoreDispatch} from 'state/types'
+
 import SingleSenderVerification, {
     Props,
 } from '../SingleSenderVerification/SingleSenderVerification'

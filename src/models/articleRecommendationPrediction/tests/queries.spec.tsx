@@ -1,9 +1,11 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import React from 'react'
-import MockAdapter from 'axios-mock-adapter'
 import {renderHook, act} from '@testing-library/react-hooks'
 import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {
     useArticleRecommendationPredictions,
     useUpdateArticleRecommendationPredictions,

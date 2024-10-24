@@ -4,11 +4,11 @@ import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import css from './HelpCenterPreferencesView.less'
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
 import {FooterActions} from './components/FooterActions'
 import {SEO} from './components/SEO'
+import css from './HelpCenterPreferencesView.less'
 
 export const HelpCenterPreferencesView: React.FC = () => {
     const locales = useSupportedLocales()

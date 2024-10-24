@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import {render, screen, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {ComponentProps} from 'react'
 
 import {
     bigCommerceCartFixture,
@@ -11,6 +11,7 @@ import {
     bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
+
 import {ShippingMethod, useShippingMethods} from '../ShippingMethod'
 
 // Mocking to check what text is provided to `Tooltip`

@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
 import {TicketMessage} from 'models/ticket/types'
 import * as dateUtils from 'utils/date'
+
 import {
     normalizeLocale,
     countDistinctVariables,

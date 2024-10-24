@@ -1,11 +1,12 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,

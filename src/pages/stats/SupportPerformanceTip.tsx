@@ -1,8 +1,8 @@
 import React from 'react'
-import {sanitizeHtmlDefault} from 'utils/html'
-import useAppSelector from 'hooks/useAppSelector'
-import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
+
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
+import useAppSelector from 'hooks/useAppSelector'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
 import {MetricName} from 'services/reporting/constants'
@@ -10,6 +10,7 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 export const SupportPerformanceTip = ({
     metric,

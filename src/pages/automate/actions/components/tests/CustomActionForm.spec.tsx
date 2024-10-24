@@ -1,4 +1,4 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {
     act,
     createEvent,
@@ -6,18 +6,18 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
-import {getInitialConfiguration} from '../../utils'
-import useUpsertAction from '../../hooks/useUpsertAction'
 import useDeleteAction from '../../hooks/useDeleteAction'
+import useUpsertAction from '../../hooks/useUpsertAction'
+import {getInitialConfiguration} from '../../utils'
 import CustomActionForm from '../CustomActionForm'
 
 jest.mock('launchdarkly-react-client-sdk')

@@ -1,10 +1,10 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React from 'react'
 import {Button} from 'reactstrap'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
+import shopifyLogo from 'assets/img/integrations/shopify.png'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import css from './OneClickInstallationCardStoreRow.less'

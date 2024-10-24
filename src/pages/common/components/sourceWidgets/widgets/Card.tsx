@@ -1,10 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
 import _last from 'lodash/last'
+import React from 'react'
 
+import {Source, Template} from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {stripLastListsFromPath} from 'pages/common/components/infobar/utils'
-import {Source, Template} from 'models/widget/types'
 
 import css from './Card.less'
 

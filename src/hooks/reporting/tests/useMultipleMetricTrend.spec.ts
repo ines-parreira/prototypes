@@ -1,14 +1,14 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
-
 import {
     AutomationDatasetCube,
     AutomationDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {usePostReporting} from 'models/reporting/queries'
+import {ReportingQuery} from 'models/reporting/types'
+import {assumeMock} from 'utils/testing'
+
 import {useMultipleMetricsTrends} from '../useMultipleMetricsTrend'
 
 jest.mock('models/reporting/queries')

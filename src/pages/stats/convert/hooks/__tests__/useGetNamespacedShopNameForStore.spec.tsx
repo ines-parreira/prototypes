@@ -1,15 +1,12 @@
-import React, {ComponentType} from 'react'
-import {createStore} from 'redux'
-import {Provider} from 'react-redux'
-
-import {fromJS} from 'immutable'
-
 import {renderHook} from '@testing-library/react-hooks'
-
-import {RootState} from 'state/types'
+import {fromJS} from 'immutable'
+import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
 
 import {IntegrationType} from 'models/integration/types'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {RootState} from 'state/types'
 
 const defaultState = {
     integrations: fromJS({

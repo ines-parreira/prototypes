@@ -1,13 +1,13 @@
-import React, {useRef, useState} from 'react'
-import cn from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import cn from 'classnames'
+import React, {useRef, useState} from 'react'
 
+import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
-import IconButton from 'pages/common/components/button/IconButton'
 import {sortOrderOptions, SortOrder} from '../hooks/useSortOrder'
 import css from './SortOrderDropdown.less'
 

@@ -1,65 +1,59 @@
-import React, {useEffect, useState, useMemo} from 'react'
 import {Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useState, useMemo} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {toJS} from 'utils'
-
-import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
-
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-
-import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-
-import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
-
-import {sanitizeHtmlDefault} from 'utils/html'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {setNewMessageForChatCampaign} from 'state/newMessage/actions'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
-import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import SimpleCampaignEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-import {transformAttachmentsToDiscountOffers} from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {GorgiasChatIntegration} from 'models/integration/types'
+import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
+import Button from 'pages/common/components/button/Button'
+
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+
+import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
+import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
-
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
+import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import {transformAttachmentsToDiscountOffers} from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'
+import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import SimpleCampaignEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {setNewMessageForChatCampaign} from 'state/newMessage/actions'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {toJS} from 'utils'
+import {sanitizeHtmlDefault} from 'utils/html'
+
 import css from './ConvertSimplifiedEditorModal.less'
 
 type Props = {

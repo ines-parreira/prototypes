@@ -1,8 +1,8 @@
+import classNames from 'classnames'
 import React from 'react'
 
-import classNames from 'classnames'
-import {BigCommerceOrderProduct} from 'models/integration/types'
 import defaultProductImage from 'assets/img/presentationals/shopify-product-default-image.png'
+import {BigCommerceOrderProduct} from 'models/integration/types'
 import bigcommerceLineItemRowCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/order-table/OrderLineItemRow.less'
 
 type Props = {

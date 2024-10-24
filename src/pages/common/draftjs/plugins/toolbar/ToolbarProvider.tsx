@@ -1,6 +1,6 @@
-import React, {ReactNode, useMemo} from 'react'
-import _noop from 'lodash/noop'
 import {List} from 'immutable'
+import _noop from 'lodash/noop'
+import React, {ReactNode, useMemo} from 'react'
 
 import {ToolbarContext, ToolbarContextType} from './ToolbarContext'
 

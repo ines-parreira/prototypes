@@ -1,6 +1,5 @@
-import React, {createContext, useContext} from 'react'
-
 import classnames from 'classnames'
+import React, {createContext, useContext} from 'react'
 
 import css from './ToggleButton.less'
 

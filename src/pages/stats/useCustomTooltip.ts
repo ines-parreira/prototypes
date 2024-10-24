@@ -1,6 +1,6 @@
 import {Chart, TooltipModel} from 'chart.js'
-import {useCallback, useState} from 'react'
 import _isEqual from 'lodash/isEqual'
+import {useCallback, useState} from 'react'
 
 export type TooltipStyle = {
     opacity: number

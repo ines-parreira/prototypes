@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -10,16 +11,14 @@ import {
     isNonRootCategory,
     savePositions,
 } from 'state/entities/helpCenter/categories'
-import useAppDispatch from 'hooks/useAppDispatch'
 
+import css from './CategoriesTable.less'
+import {CategoriesTableBasicRow} from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {
     CategoriesTableRow,
     CategoriesTableRowProps,
 } from './components/CategoriesTableRow'
-import {CategoriesTableBasicRow} from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {DND_ENTITIES} from './constants'
-
-import css from './CategoriesTable.less'
 
 export type CategoriesPositionsType = {
     categories: number[]

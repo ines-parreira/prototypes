@@ -1,9 +1,10 @@
 import React from 'react'
-import {AUTOMATION_INTENTS_CHANNELS} from 'pages/stats/constants'
+
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
+import {AUTOMATION_INTENTS_CHANNELS} from 'pages/stats/constants'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,

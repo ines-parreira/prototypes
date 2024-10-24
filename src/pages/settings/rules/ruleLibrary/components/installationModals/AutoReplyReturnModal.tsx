@@ -1,10 +1,9 @@
-import React from 'react'
 import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
+import React from 'react'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
+import {assetsUrl} from 'utils'
 
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
 

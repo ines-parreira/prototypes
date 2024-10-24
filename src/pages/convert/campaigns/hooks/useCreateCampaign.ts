@@ -1,10 +1,11 @@
 import {useQueryClient} from '@tanstack/react-query'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {useCreateCampaign as usePureCreateCampaign} from 'models/convert/campaign/queries'
+import {Campaign} from 'models/convert/campaign/types'
+import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
-import {Campaign} from 'models/convert/campaign/types'
 
 export const useCreateCampaign = () => {
     const dispatch = useAppDispatch()

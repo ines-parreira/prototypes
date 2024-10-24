@@ -1,6 +1,6 @@
-import {useEffect} from 'react'
 import {queryKeys} from '@gorgias/api-queries'
 import {useInfiniteQuery, UseInfiniteQueryOptions} from '@tanstack/react-query'
+import {useEffect} from 'react'
 
 import {handleError} from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'

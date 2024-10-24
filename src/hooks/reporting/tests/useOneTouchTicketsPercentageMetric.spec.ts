@@ -1,11 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+
 import {
     useClosedTicketsTrend,
     useOneTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {StatsFilters} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricTrends')
 const mockUseOneTicketsTrend = assumeMock(useOneTouchTicketsTrend)

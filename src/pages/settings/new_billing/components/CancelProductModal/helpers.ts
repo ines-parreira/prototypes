@@ -1,6 +1,7 @@
 import {ProductType} from 'models/billing/types'
-import {CancellationScenario} from './types'
+
 import {HELPDESK_CANCELLATION_SCENARIO} from './scenarios'
+import {CancellationScenario} from './types'
 
 export const findCancellationScenarioByProductType = (
     productType: ProductType

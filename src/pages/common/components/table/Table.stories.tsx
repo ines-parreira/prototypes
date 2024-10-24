@@ -1,17 +1,17 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
-
-import GaugeAddon from 'pages/stats/GaugeAddon'
+import React, {ComponentProps} from 'react'
 
 import {OrderDirection} from 'models/api/types'
 import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
+import GaugeAddon from 'pages/stats/GaugeAddon'
+
+import BodyCell from './cells/BodyCell'
 import HeaderCell from './cells/HeaderCell'
 import HeaderCellProperty from './cells/HeaderCellProperty'
-import BodyCell from './cells/BodyCell'
-import TableWrapper from './TableWrapper'
-import TableHead from './TableHead'
 import TableBody from './TableBody'
 import TableBodyRow from './TableBodyRow'
+import TableHead from './TableHead'
+import TableWrapper from './TableWrapper'
 
 const tableColumns = [
     {

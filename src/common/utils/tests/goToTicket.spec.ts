@@ -1,5 +1,5 @@
-import history from 'pages/history'
 import goToTicket from 'common/utils/goToTicket'
+import history from 'pages/history'
 
 jest.mock('pages/history')
 

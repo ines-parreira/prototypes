@@ -1,6 +1,6 @@
-import React from 'react'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
+import React from 'react'
 
 import DialPad from '../DialPad'
 

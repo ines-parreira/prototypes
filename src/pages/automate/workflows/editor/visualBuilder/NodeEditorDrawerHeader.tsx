@@ -3,9 +3,8 @@ import React, {ReactNode} from 'react'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import {labelByVisualBuilderNodeType} from '../../constants'
-import {useNodeEditorDrawerContext} from './NodeEditorDrawerContext'
-
 import EditorDrawerHeader from './EditorDrawerHeader'
+import {useNodeEditorDrawerContext} from './NodeEditorDrawerContext'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode

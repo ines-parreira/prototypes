@@ -1,17 +1,18 @@
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {formatDates} from 'pages/stats/utils'
-import {TOTAL_COLUMN_LABEL} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
+
 import {tags} from 'fixtures/tag'
 import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     AllUsedTagsTable,
     TAG_COLUMN_LABEL,
 } from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
+import {TOTAL_COLUMN_LABEL} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
+import {formatDates} from 'pages/stats/utils'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 

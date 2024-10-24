@@ -1,10 +1,12 @@
 import {cleanup, fireEvent, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
 import {act} from 'react-dom/test-utils'
-import {mockStore} from 'utils/testing'
+import {Provider} from 'react-redux'
+
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {mockStore} from 'utils/testing'
+
 import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
 
 jest.mock(

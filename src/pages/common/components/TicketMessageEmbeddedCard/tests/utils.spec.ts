@@ -1,10 +1,9 @@
-import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../utils'
-
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from '../../../../../business/types/ticket'
+import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../utils'
 
 describe('TicketMessageEmbeddedCard utils', () => {
     describe('mapQuotedTweetTicketMessageToEmbeddedCard()', () => {

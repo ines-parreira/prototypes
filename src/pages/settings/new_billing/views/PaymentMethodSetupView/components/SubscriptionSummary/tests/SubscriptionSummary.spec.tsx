@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
 import {screen, fireEvent, waitFor} from '@testing-library/react'
-import useSessionStorage from 'hooks/useSessionStorage'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {PlanInterval, ProductType} from 'models/billing/types'
-import * as selectors from 'state/currentAccount/selectors'
+import React from 'react'
+
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import useSessionStorage from 'hooks/useSessionStorage'
+import {PlanInterval, ProductType} from 'models/billing/types'
 import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import * as selectors from 'state/currentAccount/selectors'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {
     SubscriptionSummary,
     ISubscriptionSummaryProps,

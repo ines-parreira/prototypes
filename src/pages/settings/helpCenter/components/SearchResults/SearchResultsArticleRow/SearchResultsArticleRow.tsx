@@ -1,31 +1,30 @@
-import React, {FC, useCallback, useMemo} from 'react'
-import _keyBy from 'lodash/keyBy'
 import {Tooltip} from '@gorgias/ui-kit'
+import _keyBy from 'lodash/keyBy'
+import React, {FC, useCallback, useMemo} from 'react'
 
-import up from 'assets/img/icons/rating-up-white.svg'
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
+import up from 'assets/img/icons/rating-up-white.svg'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import {Article, LocaleCode} from 'models/helpCenter/types'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-import {sanitizeHtmlDefault} from 'utils/html'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {changeViewLanguage} from 'state/ui/helpCenter/actions'
+import {sanitizeHtmlDefault} from 'utils/html'
 
+import {useArticleRowActions} from '../../../hooks/useArticleRowActions'
 import {useRatingScore} from '../../../hooks/useRatingScore'
 import {useSupportedLocales} from '../../../providers/SupportedLocales'
 import {TableActions} from '../../TableActions'
-import {isLoading, SearchResultArticle} from '../types'
-import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
-import {isResultOrAncestorUnlisted} from '../utils'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
-
 import nestingCss from '../nesting.less'
+import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
+import {isLoading, SearchResultArticle} from '../types'
+import {isResultOrAncestorUnlisted} from '../utils'
 
-import {useArticleRowActions} from '../../../hooks/useArticleRowActions'
 import css from './SearchResultsArticleRow.less'
 
 const Highlight: FC<{

@@ -1,4 +1,5 @@
 import {stringify} from 'qs'
+
 import client from 'models/api/resources'
 
 import {StoreMapping} from './types'

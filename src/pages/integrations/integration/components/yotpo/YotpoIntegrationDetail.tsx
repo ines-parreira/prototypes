@@ -1,6 +1,8 @@
+import classNames from 'classnames'
+import {fromJS, Map} from 'immutable'
+import {parse} from 'qs'
 import React, {MouseEvent, Component} from 'react'
 import {Link, RouteComponentProps} from 'react-router-dom'
-import classNames from 'classnames'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -9,24 +11,22 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {parse} from 'qs'
-import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import withRouter from 'pages/common/utils/withRouter'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     fetchIntegration,
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import withRouter from 'pages/common/utils/withRouter'
-import css from 'pages/settings/settings.less'
 
 interface IActions {
     deleteIntegration: typeof deleteIntegration

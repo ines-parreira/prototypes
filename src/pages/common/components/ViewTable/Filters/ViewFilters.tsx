@@ -1,23 +1,23 @@
-import React from 'react'
-import {List, Map} from 'immutable'
 import {
     Expression,
     LogicalExpression,
     Program,
     ExpressionStatement,
 } from 'estree'
+import {List, Map} from 'immutable'
+import React from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {getHumanAgents} from 'state/agents/selectors'
 import {getSchemas} from 'state/schemas/selectors'
 import {getTeams} from 'state/teams/selectors'
-import {getActiveView} from 'state/views/selectors'
 import {
     removeFieldFilter,
     updateFieldFilter,
     updateFieldFilterOperator,
 } from 'state/views/actions'
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {getActiveView} from 'state/views/selectors'
 
 import CallExpression from './CallExpression'
 

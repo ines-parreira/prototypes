@@ -1,8 +1,10 @@
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
-import {mockStore} from 'utils/testing'
+import {Provider} from 'react-redux'
+
 import {EmailMigrationInboundVerification} from 'models/integration/types'
+import {mockStore} from 'utils/testing'
+
 import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'
 
 const migration = {

@@ -1,25 +1,27 @@
+import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+import React, {ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import React, {ReactNode} from 'react'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {waitFor} from '@testing-library/react'
-import {RulesState} from 'state/entities/rules/types'
-import {useRules} from 'state/entities/rules/hooks'
+import thunk from 'redux-thunk'
+
 import {updateRule} from 'models/rule/resources'
-import {notify} from 'state/notifications/actions'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {useAiAgentEnabled} from '../useAiAgentEnabled'
-import {assumeMock} from '../../../../../utils/testing'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+import {useRules} from 'state/entities/rules/hooks'
+import {RulesState} from 'state/entities/rules/types'
+import {notify} from 'state/notifications/actions'
+
 import {TicketChannel} from '../../../../../business/types/ticket'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {GorgiasChatIntegration} from '../../../../../models/integration/types'
+import {NotificationStatus} from '../../../../../state/notifications/types'
 import {RuleType} from '../../../../../state/rules/types'
+import {assumeMock} from '../../../../../utils/testing'
+import {useAiAgentEnabled} from '../useAiAgentEnabled'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('react-router-dom', () => ({

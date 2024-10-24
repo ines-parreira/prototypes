@@ -1,19 +1,21 @@
 import moment from 'moment'
-import {formatReportingQueryDate} from 'utils/reporting'
+
 import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {ReportingFilterOperator} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
+import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
+
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,

@@ -1,6 +1,6 @@
-import React, {memo, useContext} from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {memo, useContext} from 'react'
 
 import {WidgetContextProvider, WidgetContext} from '../WidgetContext'
 

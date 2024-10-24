@@ -1,7 +1,7 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {getRefundAmount, getRestockType, getTransactionToRefund} from './refund'
 import {formatPrice} from './number'
+import {getRefundAmount, getRestockType, getTransactionToRefund} from './refund'
 
 export function initCancelOrderPayload(order: Map<any, any>): Map<any, any> {
     return fromJS({

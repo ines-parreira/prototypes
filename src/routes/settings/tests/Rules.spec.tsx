@@ -1,13 +1,13 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {AGENT_ROLE} from 'config/user'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
 import RulesLibrary from 'pages/settings/rules/RulesLibrary'
 import RulesView from 'pages/settings/rules/RulesList'
-import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {assumeMock} from 'utils/testing'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'

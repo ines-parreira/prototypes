@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
-import TableWrapper from '../TableWrapper'
 import TableBody from '../TableBody'
 import TableBodyRow from '../TableBodyRow'
+import TableWrapper from '../TableWrapper'
 import BodyCell from './BodyCell'
 
 const storyConfig: Meta = {

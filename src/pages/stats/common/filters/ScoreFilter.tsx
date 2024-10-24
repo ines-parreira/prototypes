@@ -1,10 +1,7 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
@@ -16,14 +13,17 @@ import {
     FilterLabels,
     scoreFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {DropdownOption} from 'pages/stats/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {RootState} from 'state/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
+import {DropdownOption} from 'pages/stats/types'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 export const MAX_SCORE_VALUE = 5
 

@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
 

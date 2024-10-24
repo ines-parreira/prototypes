@@ -1,12 +1,14 @@
-import React from 'react'
-import {render, fireEvent, screen, waitFor, act} from '@testing-library/react'
 import {useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {StripeElements} from '@stripe/stripe-js/dist'
+import {render, fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {assumeMock} from 'utils/testing'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+
 import client from 'models/api/resources'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {BillingAddressSetupView} from '../BillingAddressSetupView'
 
 jest.mock('react-redux')

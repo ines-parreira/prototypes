@@ -1,9 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {assumeMock} from 'utils/testing'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters} from 'models/stat/types'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -12,10 +13,9 @@ import {
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
+import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import {formatReportingQueryDate} from 'utils/reporting'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)

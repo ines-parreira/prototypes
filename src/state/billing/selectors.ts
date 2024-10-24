@@ -20,6 +20,7 @@ import {
     AccountFeatureMetadata,
     CurrentAccountState,
 } from 'state/currentAccount/types'
+
 import {RootState} from '../types'
 
 import {

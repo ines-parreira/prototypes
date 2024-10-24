@@ -1,28 +1,29 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
-import HelpCenterLanguageFilter, {
-    HelpCenterLanguageFilterWithState,
-} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
-import {renderWithStore} from 'utils/testing'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import {HelpCenter} from 'models/helpCenter/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
-import {RootState} from 'state/types'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
+import HelpCenterLanguageFilter, {
+    HelpCenterLanguageFilterWithState,
+} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

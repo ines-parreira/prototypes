@@ -1,6 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useEffect, useState} from 'react'
 
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
@@ -8,14 +9,13 @@ import {
     BigCommerceCustomProduct,
 } from 'models/integration/types'
 
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
 import useEditModifiersPopover from '../modifiers-popover/useEditModifiersPopover'
 import {modifierValuesToOptionSelections} from '../modifiers-popover/utils'
-import ProductComponent from './ProductComponent'
-import {TotalPriceComponent} from './TotalPriceComponent'
-import {QuantityComponent} from './QuantityComponent'
 import PriceComponent from './PriceComponent'
+import ProductComponent from './ProductComponent'
+import {QuantityComponent} from './QuantityComponent'
+import {TotalPriceComponent} from './TotalPriceComponent'
 
 type Props = {
     id: string

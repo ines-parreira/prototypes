@@ -1,8 +1,8 @@
 // g/integrations/facebook/schemas.py
 import {IntegrationType} from '../constants'
+import type {Integration} from './'
 import type {IntegrationBase} from './base'
 import type {OAuth2, AutoResponder} from './misc'
-import type {Integration} from './'
 
 export type FacebookIntegration = IntegrationBase & {
     type: IntegrationType.Facebook

@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {PhoneNumberMeta} from 'models/phoneNumber/types'
 import {PhoneCountry, PhoneType} from 'business/twilio'
+import {PhoneNumberMeta} from 'models/phoneNumber/types'
 
 import PhoneMetaFields from '../PhoneMetaFields'
 

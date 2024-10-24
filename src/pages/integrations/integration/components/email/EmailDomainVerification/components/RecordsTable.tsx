@@ -1,12 +1,13 @@
+import {EmailDNSRecord} from '@gorgias/api-queries'
 import React from 'react'
 
-import {EmailDNSRecord} from '@gorgias/api-queries'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableBody from 'pages/common/components/table/TableBody'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {useDomainVerification} from '../useDomainVerification'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+
 import {removeDomainFromDNSRecords} from '../../helpers'
+import {useDomainVerification} from '../useDomainVerification'
 
 import RecordItem from './RecordItem'
 import css from './RecordsTable.less'

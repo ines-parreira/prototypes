@@ -1,8 +1,9 @@
+import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {render, screen} from '@testing-library/react'
 import {UncontrolledButtonDropdown} from 'reactstrap'
+
 import RichDropdownOptions from 'pages/common/components/RichDropdown/RichDropdownOptions'
 
 describe('<RichDropdownOptions/>', () => {

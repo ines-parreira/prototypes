@@ -1,14 +1,16 @@
 import React, {useState} from 'react'
+
 import {useSearchParam} from 'hooks/useSearchParam'
-import SuccessModal from 'pages/common/components/SuccessModal'
-import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import HeroImageCarousel, {
     CarouselData,
 } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import SuccessModal from 'pages/common/components/SuccessModal'
+import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {assetsUrl} from 'utils'
+
 import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,

@@ -1,14 +1,14 @@
+import {List, Map} from 'immutable'
 import React from 'react'
 
 import {Link} from 'react-router-dom'
-import {List, Map} from 'immutable'
 
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import history from '../../../../history'
 
-import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../../../common/components/ForwardIcon'
+import IntegrationList from '../IntegrationList'
 
 type Props = {
     integrations: List<Map<string, unknown>>

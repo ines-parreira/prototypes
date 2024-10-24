@@ -1,13 +1,13 @@
-import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-import {SearchParams, SearchType, SearchApiResponse} from 'models/search/types'
 import client from 'models/api/resources'
 import {
     search,
     SEARCH_ENDPOINT,
     SEARCH_ENGINE_HEADER,
 } from 'models/search/resources'
+import {SearchParams, SearchType, SearchApiResponse} from 'models/search/types'
 
 const mockedServer = new MockAdapter(client)
 

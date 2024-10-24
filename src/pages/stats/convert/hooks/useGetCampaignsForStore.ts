@@ -2,17 +2,16 @@ import {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {useListCampaigns} from 'models/convert/campaign/queries'
 import {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignPreview,
 } from 'models/convert/campaign/types'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {getCampaignStatus} from 'pages/stats/convert/utils/getCampaignStatus'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {getCampaignStatus} from 'pages/stats/convert/utils/getCampaignStatus'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 export function useGetCampaignsForStore(
     selectedIntegrations: number[],

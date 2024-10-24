@@ -1,18 +1,18 @@
-import React from 'react'
 import {History} from 'history'
+import React from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
-import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
-import SelfServicePreviewContext, {
-    SelfServicePreviewContextType,
-} from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     PolicyKey,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
-import useAppSelector from 'hooks/useAppSelector'
+import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
+import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
+import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
+import SelfServicePreviewContext, {
+    SelfServicePreviewContextType,
+} from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
 

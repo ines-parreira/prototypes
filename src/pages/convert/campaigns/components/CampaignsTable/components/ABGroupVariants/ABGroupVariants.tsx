@@ -1,15 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
+import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 import css from './ABGroupVariants.less'
 

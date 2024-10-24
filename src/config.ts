@@ -1,18 +1,18 @@
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
 import {Order} from 'constants/integrations/types/shopify'
 
+import {Customer} from 'models/customer/types'
 import {IntegrationType, Category, PricingPlan} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
-import {Customer} from 'models/customer/types'
 
 import {AccountFeature} from 'state/currentAccount/types'
-import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,

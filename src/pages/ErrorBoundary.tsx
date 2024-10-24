@@ -1,6 +1,6 @@
+import {Emoji} from 'emoji-mart'
 import React, {ReactNode, PureComponent} from 'react'
 import {Card, CardBody, Collapse} from 'reactstrap'
-import {Emoji} from 'emoji-mart'
 
 import {reportError} from '../utils/errors'
 

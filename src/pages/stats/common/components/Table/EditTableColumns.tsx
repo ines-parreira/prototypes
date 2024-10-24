@@ -1,24 +1,25 @@
-import React, {useState} from 'react'
 import classNames from 'classnames'
+import React, {useState} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {Selector} from 'reselect'
 import {v4 as uuidv4} from 'uuid'
+
+import useAppSelector from 'hooks/useAppSelector'
+import useDeepEffect from 'hooks/useDeepEffect'
+import Button from 'pages/common/components/button/Button'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import css from 'pages/stats/common/components/Table/EditColumns.less'
+import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
+
 import {TooltipData} from 'pages/stats/types'
 import {AccountSettingTableConfig} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
-import useAppSelector from 'hooks/useAppSelector'
-import useDeepEffect from 'hooks/useDeepEffect'
 import {
     TableColumnSet,
     TableSetting,
     TableView,
     TableViewColumn,
 } from 'state/ui/stats/types'
-import Button from 'pages/common/components/button/Button'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
-
-import css from 'pages/stats/common/components/Table/EditColumns.less'
 
 export const TOGGLE_LABEL = 'Edit Columns'
 export const SAVE_TOOLTIP =

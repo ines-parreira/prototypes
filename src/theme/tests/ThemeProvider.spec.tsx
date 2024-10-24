@@ -1,8 +1,8 @@
 import {render} from '@testing-library/react'
 import React, {useContext} from 'react'
 
-import ThemeProvider from '../ThemeProvider'
 import ThemeContext from '../ThemeContext'
+import ThemeProvider from '../ThemeProvider'
 
 describe('ThemeProvider', () => {
     it('should provide the theme context and render its children', () => {

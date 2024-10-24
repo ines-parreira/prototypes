@@ -5,15 +5,17 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import React from 'react'
 import {merge} from 'lodash'
+import React from 'react'
 import {Provider} from 'react-redux'
+
 import {integrationsState} from 'fixtures/integrations'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
 import {mockStore} from 'utils/testing'
+
 import EmailVerification, {Props} from '../EmailVerification'
 
 const integration = integrationsState.integrations.find(

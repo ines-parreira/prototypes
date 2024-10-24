@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     act,
     render,
@@ -7,22 +6,23 @@ import {
     waitForElementToBeRemoved,
     screen,
 } from '@testing-library/react'
+import {AxiosResponse} from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
-import {AxiosResponse} from 'axios'
 
-import {AuditLogEventsState} from 'state/entities/auditLogEvents/types'
-import {fetchEvents} from 'models/event/resources'
-import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {Event} from 'models/event/types'
 import {
     events as eventsFixtures,
     eventsServerMeta as eventsMetaFixtures,
 } from 'fixtures/event'
+import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {fetchEvents} from 'models/event/resources'
+import {Event} from 'models/event/types'
+import {AuditLogEventsState} from 'state/entities/auditLogEvents/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises} from 'utils/testing'
 

@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
-import 'emoji-mart/css/emoji-mart.css'
 import {EditorState} from 'draft-js'
 import {EmojiData} from 'emoji-mart'
+import React, {Component} from 'react'
+import 'emoji-mart/css/emoji-mart.css'
 
-import {insertText} from 'utils'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
+import {insertText} from 'utils'
 
 import {ActionInjectedProps} from '../types'
 

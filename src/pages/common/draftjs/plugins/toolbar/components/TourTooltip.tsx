@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
 import cn from 'classnames'
+import React, {ReactNode} from 'react'
+
 import css from './TourTooltip.less'
 
 type Props = {

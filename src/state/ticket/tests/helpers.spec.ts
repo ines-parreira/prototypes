@@ -1,12 +1,12 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
 
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
-import {TICKET_EVENT_TYPES} from 'models/event/types'
 import {
     MAGENTO2_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
+import {TICKET_EVENT_TYPES} from 'models/event/types'
 
 import {
     deduplicateAuditLogEvents,

@@ -1,4 +1,5 @@
 import {CustomField} from 'custom-fields/types'
+
 import {isTextInput, isNumberInput, isDropdownInput} from '../typeGuards'
 
 const textInputField = {

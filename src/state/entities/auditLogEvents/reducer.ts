@@ -2,8 +2,8 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {Event} from '../../../models/event/types'
 
-import {AuditLogEventsState} from './types'
 import {auditLogEventsFetched} from './actions'
+import {AuditLogEventsState} from './types'
 
 const initialState: AuditLogEventsState = {}
 

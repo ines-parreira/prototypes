@@ -1,5 +1,5 @@
-import React, {ComponentProps, CSSProperties, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, CSSProperties, useState} from 'react'
 
 import IconInput from './IconInput'
 import InputField from './InputField'

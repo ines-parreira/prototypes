@@ -1,3 +1,4 @@
+import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {
     macroCreated,
     macroDeleted,
@@ -6,8 +7,6 @@ import {
     macrosFetched,
 } from '../actions'
 import reducer from '../reducer'
-
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
 
 describe('macros reducer', () => {
     describe('createMacro action', () => {

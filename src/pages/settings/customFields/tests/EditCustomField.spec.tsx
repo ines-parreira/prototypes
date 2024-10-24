@@ -1,16 +1,16 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
 
 import {OBJECT_TYPES} from 'custom-fields/constants'
-import {CustomField} from 'custom-fields/types'
-import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import {CustomField} from 'custom-fields/types'
 import {
     aiManagedTicketInputFieldDefinition,
     productManagedTicketInputFieldDefinition,
     managedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
+import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {assumeMock} from 'utils/testing'
 
 import EditFieldForm from '../components/EditFieldForm'

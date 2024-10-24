@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable'
+
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {ActionTemplate} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
 import {
     getPersonLabelFromSource,
@@ -7,7 +9,6 @@ import {
     getSortedIntegrationActionsNames,
 } from 'pages/tickets/common/utils'
 import {getActionTemplate} from 'utils'
-import {ActionTemplate} from 'config'
 
 describe('getPersonLabelFromSource()', () => {
     it('should return email label', () => {

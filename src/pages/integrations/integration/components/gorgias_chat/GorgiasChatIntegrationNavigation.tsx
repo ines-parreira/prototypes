@@ -1,20 +1,21 @@
-import React, {useMemo} from 'react'
 import {Map} from 'immutable'
-import {NavLink} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo} from 'react'
+import {NavLink} from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import dotError from 'assets/img/icons/dot-error.svg'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {getHasAutomate} from 'state/billing/selectors'
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import {IntegrationType} from '../../../../../models/integration/types'
+import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 
+import {IntegrationType} from '../../../../../models/integration/types'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+
+import GorgiasChatIntegrationConnectedChannel from './GorgiasChatIntegrationConnectedChannel'
 import css from './GorgiasChatIntegrationNavigation.less'
 import useIsQuickRepliesEnabled from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import GorgiasChatIntegrationConnectedChannel from './GorgiasChatIntegrationConnectedChannel'
 
 type Props = {
     integration: Map<any, any>

@@ -2,6 +2,13 @@ import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
 import {screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import {TicketChannel} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {agents} from 'fixtures/agents'
+import {integrationsState} from 'fixtures/integrations'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey, TagFilterInstanceId} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_DROPDOWN_ICON,
@@ -10,17 +17,11 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {SLAPolicyFilter} from 'pages/stats/common/filters/SLAPolicyFilter'
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean} from 'state/ui/stats/actions'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FilterKey, TagFilterInstanceId} from 'models/stat/types'
 
 jest.mock('@gorgias/api-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)

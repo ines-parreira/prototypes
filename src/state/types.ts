@@ -1,10 +1,19 @@
+import {Tag} from '@gorgias/api-queries'
 import {List, Map} from 'immutable'
 import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
-import {Tag} from '@gorgias/api-queries'
 
-import {EntityType, ViewType} from 'models/view/types'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
+import {OrderDirection, PaginationMeta} from 'models/api/types'
+import {Customer} from 'models/customer/types'
+import {
+    EcommerceStore,
+    Shopper,
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
+import {DiscountCode} from 'models/discountCodes/types'
 import {
     EmailDomain,
     EmailMigrationBannerStatus,
@@ -14,33 +23,25 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import {OrderDirection, PaginationMeta} from 'models/api/types'
 import {TicketEvent} from 'models/ticket/types'
-import {Customer} from 'models/customer/types'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {EntityType, ViewType} from 'models/view/types'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {DiscountCode} from 'models/discountCodes/types'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {
-    EcommerceStore,
-    Shopper,
-    ShopperAddress,
-    ShopperOrder,
-} from 'models/customerEcommerceData/types'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {StatsState} from 'state/stats/statsSlice'
+
 import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
-import {MacrosAction} from './entities/macros/types'
 import {AuditLogEventsAction} from './entities/auditLogEvents/types'
+import {MacrosAction} from './entities/macros/types'
 import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
+import {Notification} from './notifications/types'
+import {QueriesState} from './queries/types'
 import rootReducer from './reducers'
 import {Rule, RuleOperation, RulePriority} from './rules/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetEnvironment, WidgetType} from './widgets/types'
-import {Notification} from './notifications/types'
-import {QueriesState} from './queries/types'
 
 export type StoreState = {
     agents: Map<any, any>

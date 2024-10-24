@@ -1,6 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 

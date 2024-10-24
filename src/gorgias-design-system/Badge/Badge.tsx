@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import styled from '@emotion/styled'
 import React from 'react'
 
-import styled from '@emotion/styled'
 import {ColorType, gorgiasColors} from 'gorgias-design-system/styles'
 
 export type BadgeColor = Extract<

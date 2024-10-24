@@ -1,12 +1,12 @@
-import React, {useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useMemo} from 'react'
 
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {LocaleCode} from 'models/helpCenter/types'
 import {validLocaleCode} from 'models/helpCenter/utils'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 type LanguageInputSectionProps = {
     onChange: (locale: LocaleCode) => void

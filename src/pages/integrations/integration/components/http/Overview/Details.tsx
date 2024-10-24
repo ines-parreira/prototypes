@@ -1,11 +1,12 @@
 import React from 'react'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import RootDetails from 'pages/common/components/ProductDetail'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from 'models/integration/constants'
+import Button from 'pages/common/components/button/Button'
+import RootDetails from 'pages/common/components/ProductDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import {getIntegrationConfig} from 'state/integrations/helpers'
+
 import {BASE_PATH, NEW_INTEGRATION_PATH} from '../constants'
 
 const httpConfig = getIntegrationConfig(IntegrationType.Http)

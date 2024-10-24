@@ -1,7 +1,7 @@
 import {CancelToken} from 'axios'
+import classnames from 'classnames'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
@@ -13,10 +13,10 @@ import {
     Macro,
 } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
-import Video from 'pages/common/components/Video/Video'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
+import Video from 'pages/common/components/Video/Video'
 import settingsCss from 'pages/settings/settings.less'
 import {macrosFetched} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
@@ -24,8 +24,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 
 import {MacrosCreateDropdown} from './MacrosCreateDropdown'
-import MacrosSettingsTable from './MacrosSettingsTable'
 import css from './MacrosSettingsContent.less'
+import MacrosSettingsTable from './MacrosSettingsTable'
 
 export function MacrosSettingsContentContainer({
     macros,

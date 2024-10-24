@@ -1,7 +1,7 @@
 import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
 import React, {ComponentType, ReactNode, memo} from 'react'
 import {Container} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
 import 'assets/css/main.less'
 

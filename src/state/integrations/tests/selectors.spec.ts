@@ -1,14 +1,14 @@
 import {fromJS, List} from 'immutable'
 import {size} from 'lodash'
 
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {channels as mockChannels} from 'fixtures/channels'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {applications as mockApplications} from 'fixtures/applications'
+import {channels as mockChannels} from 'fixtures/channels'
 import {integrationsState} from 'fixtures/integrations'
+import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {
     Integration,
     EmailIntegration,
@@ -17,8 +17,9 @@ import {
     IntegrationType,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {RootState} from 'state/types'
 import {getChannelBySlug} from 'services/channels'
+import {RootState} from 'state/types'
+
 import {
     getBaseEmailIntegration,
     getChannelByTypeAndAddress,

@@ -6,36 +6,33 @@ import {
 } from '@tanstack/react-query'
 
 import {useEffect} from 'react'
-import {reportError} from 'utils/errors'
 
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
 
+import {Product} from 'constants/integrations/types/shopify'
+import {handleError} from 'hooks/agents/errorHandler'
+import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import {ApiListResponse} from 'models/api/types'
-
+import {fetchIntegrationProducts} from 'models/integration/resources'
+import GorgiasApi from 'services/gorgiasApi'
 import {
     getApplications,
     getInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
+import {reportError} from 'utils/errors'
 
-import GorgiasApi from 'services/gorgiasApi'
-
-import {Product} from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {handleError} from 'hooks/agents/errorHandler'
-import {fetchIntegrationProducts} from 'models/integration/resources'
-import {AppData, AppListData} from './types/app'
-
-import {
-    GetInstallationSnippetParams,
-    IntegrationDataItem,
-    ShopifyTags,
-} from './types'
 import {
     fetchShopTags,
     fetchCustomerSegments,
     fetchShopifyCollections,
 } from './resources/shopify'
+import {
+    GetInstallationSnippetParams,
+    IntegrationDataItem,
+    ShopifyTags,
+} from './types'
+import {AppData, AppListData} from './types/app'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes

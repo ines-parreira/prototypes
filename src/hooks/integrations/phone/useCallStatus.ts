@@ -1,5 +1,6 @@
-import {useState} from 'react'
 import {Call} from '@twilio/voice-sdk'
+import {useState} from 'react'
+
 import useInterval from 'hooks/useInterval'
 
 export function useCallStatus(call: Call): Call.State {

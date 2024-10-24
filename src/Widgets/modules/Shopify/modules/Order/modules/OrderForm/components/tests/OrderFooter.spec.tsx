@@ -1,7 +1,7 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {
     shopifyRefundOrderPayloadFixture,

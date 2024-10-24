@@ -1,7 +1,6 @@
-import React from 'react'
-
 import {act, render} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 
 import useCallbackRef from '../useCallbackRef'
 

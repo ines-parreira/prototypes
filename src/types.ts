@@ -1,5 +1,5 @@
-import {Map} from 'immutable'
 import {Tag} from '@gorgias/api-queries'
+import {Map} from 'immutable'
 
 import {RecentChatTicket} from 'business/types/recentChats'
 import {User} from 'config/types/user'
@@ -13,10 +13,10 @@ import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
 import {Team} from 'models/team/types'
 import {View} from 'models/view/types'
-import {Account} from 'state/currentAccount/types'
-import {BillingProducts} from 'state/billing/types'
 import {Application} from 'services/applications'
 import {Channel} from 'services/channels'
+import {BillingProducts} from 'state/billing/types'
+import {Account} from 'state/currentAccount/types'
 
 export type Schemas = Map<any, any>
 

@@ -9,8 +9,9 @@ import {View, ViewVisibility} from 'models/view/types'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
 import {hasRole} from 'utils'
-import css from './TicketNavbarView.less'
+
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
+import css from './TicketNavbarView.less'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
 
 type Props = {

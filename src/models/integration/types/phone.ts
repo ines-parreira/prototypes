@@ -1,12 +1,13 @@
 // g/integrations/phone/schemas.py
 import {PhoneFunction} from 'business/twilio'
+
 import {
     IntegrationType,
     IvrMenuActionType,
     VoiceMessageType,
 } from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type PhoneIntegration = IntegrationBase & {
     type: IntegrationType.Phone

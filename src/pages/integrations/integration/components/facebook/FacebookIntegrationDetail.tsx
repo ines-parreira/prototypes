@@ -1,10 +1,11 @@
-import React, {Component, SyntheticEvent} from 'react'
-import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
-import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     FormGroup,
     Breadcrumb,
@@ -13,7 +14,6 @@ import {
     Row,
     Col,
 } from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
@@ -21,7 +21,15 @@ import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
 } from 'config/integrations/facebook'
+import {
+    FacebookIntegration,
+    FacebookIntegrationSettings,
+    isFacebookIntegration,
+} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -33,14 +41,11 @@ import {
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 import {RootState} from 'state/types'
-import {
-    FacebookIntegration,
-    FacebookIntegrationSettings,
-    isFacebookIntegration,
-} from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
+import CheckBoxFieldSet, {
+    Props as CheckBoxFieldSetProps,
+} from './CheckBoxFieldSet/CheckBoxFieldSet'
+import FacebookIntegrationDetailSummary from './FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookIntegrationLoginButton from './FacebookLoginButton/FacebookIntegrationLoginButton'
 import {
@@ -51,10 +56,6 @@ import {
     hasFacebookRole,
     InstagramDMSettingStatus,
 } from './utils'
-import FacebookIntegrationDetailSummary from './FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
-import CheckBoxFieldSet, {
-    Props as CheckBoxFieldSetProps,
-} from './CheckBoxFieldSet/CheckBoxFieldSet'
 
 type Props = {
     integration: FacebookIntegration

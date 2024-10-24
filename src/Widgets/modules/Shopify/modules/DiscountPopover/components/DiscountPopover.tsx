@@ -1,3 +1,4 @@
+import {fromJS, Map} from 'immutable'
 import React, {
     ChangeEvent,
     ComponentProps,
@@ -19,7 +20,6 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, Map} from 'immutable'
 
 import {getDiscountAmount} from 'business/shopify/discount'
 import {formatPrice} from 'business/shopify/number'
@@ -31,8 +31,8 @@ import {
 import {getMoneySymbol} from 'utils/getMoneySymbol'
 import {focusElement} from 'utils/html'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import css from './DiscountPopover.less'
 

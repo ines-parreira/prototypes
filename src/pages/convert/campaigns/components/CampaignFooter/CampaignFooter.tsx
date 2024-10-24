@@ -1,22 +1,20 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import classnames from 'classnames'
-
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useCallback, useMemo, useState} from 'react'
 
 import {useDismissFlag} from 'hooks/useDismissFlag'
 
+import useLocalStorage from 'hooks/useLocalStorage'
 import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
+import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
+import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
+import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
-import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
-import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
-
-import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-import useLocalStorage from 'hooks/useLocalStorage'
 
 import css from './style.less'
 

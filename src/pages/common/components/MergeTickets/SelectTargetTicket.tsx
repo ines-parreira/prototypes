@@ -1,14 +1,14 @@
+import {fromJS, Map, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
 
-import {searchTickets} from 'state/mergeTickets/actions'
 import * as viewsConfig from 'config/views'
-import Search from 'pages/common/components/Search'
-import Table from 'pages/common/components/ViewTable/Table'
 
 import {EntityType} from 'models/view/types'
 import css from 'pages/common/components/MergeTickets/SelectTargetTicket.less'
+import Search from 'pages/common/components/Search'
+import Table from 'pages/common/components/ViewTable/Table'
+import {searchTickets} from 'state/mergeTickets/actions'
 
 type Props = ConnectedProps<typeof connector> & {
     sourceTicket: Map<any, any>

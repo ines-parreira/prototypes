@@ -1,29 +1,30 @@
-import React, {useCallback, useEffect, useState} from 'react'
 import cn from 'classnames'
-import Button from 'pages/common/components/button/Button'
-import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
+import React, {useCallback, useEffect, useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {SettingRequest} from 'models/convert/settings/types'
-import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {
     CampaignFrequencySetting,
     defaultValidationValues,
 } from 'pages/convert/settings/components/CampaignFrequencySetting'
-import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
-import {toJS} from 'utils'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import Loader from 'pages/common/components/Loader/Loader'
-import {notify} from 'state/notifications/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus} from 'state/notifications/types'
+import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
 import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
 import {
     DisclaimerSettings,
     CampaignFrequencySettings,
 } from 'pages/convert/settings/types'
-
 import settingsCss from 'pages/settings/settings.less'
+import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
+import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {toJS} from 'utils'
+
 import css from './GeneralSettingsView.less'
 
 export const GeneralSettingsView = () => {

@@ -3,9 +3,10 @@ import {
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+
+import {ToneOfVoice} from '../../constants'
 import {FormValues, ValidFormValues} from '../../types'
 import {filterNonNull} from '../../util'
-import {ToneOfVoice} from '../../constants'
 
 export const getStoreConfigurationFromFormValues = (
     storeName: string,

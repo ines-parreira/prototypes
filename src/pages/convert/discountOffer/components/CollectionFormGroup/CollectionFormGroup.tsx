@@ -3,6 +3,7 @@ import {FormGroup, InputGroup, Label} from 'reactstrap'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ProductSelector from 'pages/convert/discountOffer/components/ProductSelector'
+
 import CollectionSelector from '../CollectionSelector'
 
 import css from './CollectionFormGroup.less'

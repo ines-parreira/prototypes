@@ -1,9 +1,6 @@
-import moment from 'moment/moment'
 import {renderHook} from '@testing-library/react-hooks'
+import moment from 'moment/moment'
 
-import {assumeMock} from 'utils/testing'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {useMetric} from 'hooks/reporting/useMetric'
 import {
     VoiceCallMeasure,
@@ -15,6 +12,9 @@ import {
     VoiceEventsByAgentMember,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
 
 import {
     useTotalCallsMetric,

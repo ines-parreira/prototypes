@@ -1,6 +1,6 @@
-import React, {Component, ComponentType} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React, {Component, ComponentType} from 'react'
 
 import {MentionPluginTheme} from 'pages/common/draftjs/plugins/mentions/types'
 

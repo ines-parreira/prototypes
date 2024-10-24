@@ -1,18 +1,18 @@
+import {act, render, RenderOptions} from '@testing-library/react'
+import {BackendFactory} from 'dnd-core'
+import {createMemoryHistory, History} from 'history'
+import _findLast from 'lodash/findLast'
+import _last from 'lodash/last'
 import React, {ComponentType, Context, ReactElement, useContext} from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
+import {Route, Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {act, render, RenderOptions} from '@testing-library/react'
-import {Route, Router} from 'react-router-dom'
-import {createMemoryHistory, History} from 'history'
-import _last from 'lodash/last'
-import _findLast from 'lodash/findLast'
-import {BackendFactory} from 'dnd-core'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {DndProvider} from 'react-dnd'
-import {RootState} from 'state/types'
 
 import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {RootState} from 'state/types'
 
 const middlewares = [thunk]
 

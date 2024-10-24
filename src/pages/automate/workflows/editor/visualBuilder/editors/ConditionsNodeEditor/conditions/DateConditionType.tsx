@@ -1,5 +1,8 @@
-import React from 'react'
 import {produce} from 'immer'
+import React from 'react'
+
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ConditionSchema,
     DateSchema,
@@ -8,10 +11,8 @@ import {
     IntervalSign,
     IntervalUnit,
 } from 'pages/automate/workflows/models/conditions.types'
-import InputField from 'pages/common/forms/input/InputField'
 import DatePicker from 'pages/common/forms/DatePicker'
-import {formatDatetime} from 'utils'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
@@ -19,10 +20,11 @@ import {
     getDateAndTimeFormatter,
 } from 'state/currentUser/selectors'
 import {StoreState} from 'state/types'
-import useAppSelector from 'hooks/useAppSelector'
+import {formatDatetime} from 'utils'
 import {stringToDatetime} from 'utils/date'
-import {TIMEPERIOD_REGEX} from '../constants'
+
 import css from '../ConditionsNodeEditor.less'
+import {TIMEPERIOD_REGEX} from '../constants'
 
 interface Props {
     condition: Exclude<DateSchema, ExistsSchema | DoesNotExistSchema>

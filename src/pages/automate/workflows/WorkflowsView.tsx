@@ -1,5 +1,6 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Container} from 'reactstrap'
 import {
     matchPath,
     Redirect,
@@ -7,27 +8,28 @@ import {
     Switch,
     useRouteMatch,
 } from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import classNames from 'classnames'
-import PageHeader from 'pages/common/components/PageHeader'
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-import useEffectOnce from 'hooks/useEffectOnce'
+import {Container} from 'reactstrap'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import {AGENT_ROLE} from 'config/user'
+import useEffectOnce from 'hooks/useEffectOnce'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+
+import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+
 import {FLOWS} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import {WORKFLOWS_DESCRIPTION} from './common/constants'
 import WorkflowsEmptyState from './components/WorkflowsEmptyState'
 import WorkflowsList from './components/WorkflowsList'
 
-import css from './WorkflowsView.less'
 import useStoreWorkflows from './hooks/useStoreWorkflows'
 import {useStoreWorkflowsApi} from './hooks/useStoreWorkflowsApi'
+import css from './WorkflowsView.less'
 import WorkflowTemplatesViewContainer from './WorkflowTemplatesViewContainer'
-import {WORKFLOWS_DESCRIPTION} from './common/constants'
 
 type WorkflowsViewProps = {
     shopType: string

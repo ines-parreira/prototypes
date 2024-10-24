@@ -1,10 +1,10 @@
 import React from 'react'
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
 import {Category} from 'models/integration/types/app'
+import {renderWithRouter} from 'utils/testing'
 
 import CategoryFilter from '../CategoryFilter'
 import {CATEGORY_DATA, CATEGORY_URL_PARAM} from '../constants'

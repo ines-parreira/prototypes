@@ -1,8 +1,8 @@
 import {act} from '@testing-library/react-hooks'
-import {ulid} from 'ulidx'
 import {produce} from 'immer'
+import {ulid} from 'ulidx'
 
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
@@ -11,8 +11,8 @@ import {
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {shopifyIntegration} from 'fixtures/integrations'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {useWorkflowEditor} from '../useWorkflowEditor'
 

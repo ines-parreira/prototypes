@@ -1,13 +1,13 @@
-import {MergedRecord} from 'hooks/reporting/withEnrichment'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
+import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import {
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
 import {EnrichmentFields} from 'models/reporting/types'
 import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
 import {VoiceCallSummary} from 'pages/stats/voice/models/types'
 
 export interface TicketDetails {

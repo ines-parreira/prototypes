@@ -1,11 +1,12 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
+import {getIntegrationConfig} from 'state/integrations/helpers'
+
 import Details from '../Details'
 
 const mockStore = configureMockStore([thunk])

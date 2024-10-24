@@ -1,17 +1,17 @@
-import React, {ComponentProps, useMemo, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
-import {Tooltip} from '@gorgias/ui-kit'
 import _uniqueId from 'lodash/uniqueId'
+import React, {ComponentProps, useMemo, useState} from 'react'
 
 import {getElementWrapInfo} from 'common/utils'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
+import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
 
-import Badge, {BadgeIcon, ColorType} from 'pages/common/components/Badge'
 import TagDropdown from './TagDropdown'
 import css from './TicketTags.less'
 

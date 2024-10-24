@@ -1,5 +1,5 @@
-import {Map} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
+import {Map} from 'immutable'
 
 import {getActionByName} from 'config/actions'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,

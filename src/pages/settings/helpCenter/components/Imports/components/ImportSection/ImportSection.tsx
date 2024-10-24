@@ -1,30 +1,32 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {Spinner} from 'reactstrap'
-import {ParamType} from 'openapi-client-axios'
-
-import {Map} from 'immutable'
-
-import classnames from 'classnames'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useHistory} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
-import settingsCss from 'pages/settings/settings.less'
-import Button from 'pages/common/components/button/Button'
-import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import classnames from 'classnames'
+import {Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {ParamType} from 'openapi-client-axios'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {Spinner} from 'reactstrap'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import Button from 'pages/common/components/button/Button'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import settingsCss from 'pages/settings/settings.less'
+
+import {getAccessToken} from 'rest_api/auth'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-
-import {getAccessToken} from 'rest_api/auth'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {SegmentEvent, logEvent} from 'common/segment'
 import {CSV_MIGRATION_PROVIDER_TYPE} from '../CsvColumnMatching/utils'
+import ImportArticlesModal from './components/ImportArticlesModal'
+import MigrationCredentialsModal from './components/MigrationCredentialsModal'
+import MigrationStateModal from './components/MigrationStateModal'
+import ProviderSelectModal from './components/ProviderSelectModal'
+import {csvProviderMeta} from './csv-provider-meta'
+import css from './ImportSection.less'
 import {
     AutoOpenSessionLocationState,
     FetchedMigrationSessionState,
@@ -47,15 +49,6 @@ import {
     responseIsSessionsList,
     sessionHasProgressStatus,
 } from './utils'
-
-import ImportArticlesModal from './components/ImportArticlesModal'
-import ProviderSelectModal from './components/ProviderSelectModal'
-import MigrationCredentialsModal from './components/MigrationCredentialsModal'
-import MigrationStateModal from './components/MigrationStateModal'
-
-import {csvProviderMeta} from './csv-provider-meta'
-
-import css from './ImportSection.less'
 
 type Props = {
     className?: string

@@ -1,14 +1,14 @@
-import {Col, Row} from 'reactstrap'
 import classnames from 'classnames'
-import Lightbox from 'react-images'
 import React, {isValidElement, ReactNode, useState} from 'react'
+import Lightbox from 'react-images'
+import {Col, Row} from 'reactstrap'
 
 import {PaywallConfig} from 'config/paywalls'
 import {PLAN_NAME_TO_BADGE_COLOR} from 'models/billing/utils'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import UpgradeButton from '../UpgradeButton'
 import PageHeader from '../PageHeader'
+import UpgradeButton from '../UpgradeButton'
 import css from './Paywall.less'
 
 export enum PaywallTheme {

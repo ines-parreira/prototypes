@@ -1,12 +1,12 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {RuleTemplateRecipeSlugs} from '../../constants'
 
 import {DefaultModalProps} from '../InstallRuleModalBody'
 import css from '../RuleRecipeModal.less'
-import TargetCount from './components/TargetCount'
 import {AiAgentRequirements} from './components/AiAgentRequirement'
+import TargetCount from './components/TargetCount'
 
 const howItWorksText: Record<
     Exclude<

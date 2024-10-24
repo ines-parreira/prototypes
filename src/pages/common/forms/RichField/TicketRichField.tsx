@@ -1,37 +1,38 @@
-import React, {ForwardedRef, forwardRef, useMemo} from 'react'
 import {fromJS} from 'immutable'
+import React, {ForwardedRef, forwardRef, useMemo} from 'react'
 
+import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {
-    ToolbarContext,
-    ToolbarContextType,
-} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {
-    getNewMessageChannel,
-    isNewMessagePublic as getIsNewMessagePublic,
-} from 'state/newMessage/selectors'
-import {getTicketState} from 'state/ticket/selectors'
 import {
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS,
 } from 'config/integrations/shopify'
-import {TicketChannel} from 'business/types/ticket'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {ShopifyIntegration} from 'models/integration/types'
+import {
+    ToolbarContext,
+    ToolbarContextType,
+} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {
     addNewMessageDiscountCode,
     addAttachment,
 } from 'state/newMessage/actions'
-import {canAddVideoPlayer} from 'utils'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {
+    getNewMessageChannel,
+    isNewMessagePublic as getIsNewMessagePublic,
+} from 'state/newMessage/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
-import {ShopifyIntegration} from 'models/integration/types'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import {getTicketState} from 'state/ticket/selectors'
+import {canAddVideoPlayer} from 'utils'
+
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {

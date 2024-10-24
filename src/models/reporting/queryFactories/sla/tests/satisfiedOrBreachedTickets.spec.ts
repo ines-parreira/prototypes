@@ -1,14 +1,7 @@
 import {QueryFiltersItemOperator} from '@gorgias/api-types'
 import moment from 'moment/moment'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'models/reporting/types'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {
-    breachedTicketsDrillDownQueryFactory,
-    satisfiedOrBreachedTicketsDrillDownQueryFactory,
-} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+
+import {OrderDirection} from 'models/api/types'
 import {
     TicketSLADimension,
     TicketSLAMeasure,
@@ -16,7 +9,15 @@ import {
     TicketSLASegment,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {OrderDirection} from 'models/api/types'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
+    breachedTicketsDrillDownQueryFactory,
+    satisfiedOrBreachedTicketsDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,

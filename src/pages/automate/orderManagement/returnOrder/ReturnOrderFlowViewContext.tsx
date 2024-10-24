@@ -1,8 +1,8 @@
-import {createContext, useContext, useEffect} from 'react'
 import _noop from 'lodash/noop'
+import {createContext, useContext, useEffect} from 'react'
 
-import {StoreIntegration} from 'models/integration/types'
 import usePrevious from 'hooks/usePrevious'
+import {StoreIntegration} from 'models/integration/types'
 
 export type ReturnOrderFlowViewContextType = {
     storeIntegration: StoreIntegration | undefined

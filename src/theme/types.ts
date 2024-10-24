@@ -1,6 +1,6 @@
-import legacyColors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import light from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
 import dark from '@gorgias/design-tokens/dist/tokens/color/merchantDark.json'
+import light from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
+import legacyColors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
 export enum Theme {
     System = 'system',

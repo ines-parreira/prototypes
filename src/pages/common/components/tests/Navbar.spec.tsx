@@ -1,23 +1,23 @@
-import React from 'react'
+import {within} from '@testing-library/dom'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {within} from '@testing-library/dom'
+import React from 'react'
 
-import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_PREFERENCES} from 'config'
-import {user} from 'fixtures/users'
-import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     advancedMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import * as utils from 'utils'
+import {user} from 'fixtures/users'
+import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import {AcceptedThemes, Theme} from 'theme'
 import {ThemeColors} from 'theme/types'
+import * as utils from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {Navbar} from '../Navbar'
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 

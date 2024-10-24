@@ -1,6 +1,6 @@
 import {EditorState, SelectionState} from 'draft-js'
-import _deburr from 'lodash/deburr'
 import {List, Map} from 'immutable'
+import _deburr from 'lodash/deburr'
 
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin

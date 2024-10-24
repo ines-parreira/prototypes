@@ -1,12 +1,12 @@
-import React from 'react'
 import {act} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import React from 'react'
 
 import * as utils from 'common/utils'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 
-import {useFileUpload} from '../useFileUpload'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {useFileUpload} from '../useFileUpload'
 
 const renderOptions = {
     wrapper: ({children}: {children: React.ReactNode}) => (

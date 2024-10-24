@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import {AI_AGENT} from 'pages/automate/common/components/constants'
+
 import {
     playgroundErrorMessageFixture,
     playgroundMessageFixture,

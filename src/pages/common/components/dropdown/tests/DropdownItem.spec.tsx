@@ -1,8 +1,8 @@
-import React, {ContextType, useRef} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ContextType, useRef} from 'react'
 
-import DropdownItem, {Props as DropdownItemProps} from '../DropdownItem'
 import {DropdownContext} from '../Dropdown'
+import DropdownItem, {Props as DropdownItemProps} from '../DropdownItem'
 
 jest.mock('react', () => ({
     ...jest.requireActual<typeof React>('react'),

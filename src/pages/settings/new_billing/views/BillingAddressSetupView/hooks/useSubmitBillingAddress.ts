@@ -1,8 +1,9 @@
 import {useHistory} from 'react-router-dom'
+
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
-import {reportError} from 'utils/errors'
 import {useUpdateBillingContactWithSideEffects} from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
+import {reportError} from 'utils/errors'
 
 export const useSubmitBillingAddress = () => {
     const history = useHistory()

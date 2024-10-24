@@ -1,9 +1,10 @@
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import AutomateStatsNavbar from '../AutomateStatsNavbar'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

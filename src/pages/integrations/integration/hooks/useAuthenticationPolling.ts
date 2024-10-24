@@ -1,10 +1,11 @@
-import {useEffect, useRef} from 'react'
 import {Map} from 'immutable'
+import {useEffect, useRef} from 'react'
 
 import {useHistory} from 'react-router-dom'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import useAppDispatch from 'hooks/useAppDispatch'
+
 import {
     fetchIntegration,
     triggerCreateSuccess,

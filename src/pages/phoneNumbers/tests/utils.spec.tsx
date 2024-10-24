@@ -1,5 +1,5 @@
-import {IntegrationType} from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
+import {IntegrationType} from 'models/integration/types'
 import {
     NewPhoneNumber,
     OldPhoneNumber,
@@ -8,6 +8,7 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 
+import {validationAlertMessages} from '../constants'
 import {
     countryCode,
     friendlyName,
@@ -24,7 +25,6 @@ import {
     getAvailableStates,
     getAddressValidationAlertMessage,
 } from '../utils'
-import {validationAlertMessages} from '../constants'
 
 describe('isNewPhoneNumber()', () => {
     it('returns true if the number is of the new structure', () => {

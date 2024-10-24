@@ -1,16 +1,17 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+
 import {
     AnalyticsFooter,
     generateBusinessHoursTimeZoneMessage,
     generateTimeZoneMessage,
 } from 'pages/stats/AnalyticsFooter'
-import {getTimezone} from 'state/currentUser/selectors'
-import {assumeMock, mockStore} from 'utils/testing'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {AccountSettingBusinessHours} from 'state/currentAccount/types'
+import {getTimezone} from 'state/currentUser/selectors'
+import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')

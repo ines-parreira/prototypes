@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
-
 import {resetLDMocks} from 'jest-launchdarkly-mock'
-import {AccountFeature} from 'state/currentAccount/types'
+import _cloneDeep from 'lodash/cloneDeep'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {PaywallConfig} from 'config/paywalls'
+import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
     customHelpdeskPlan,
@@ -15,8 +16,7 @@ import {
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import {account} from 'fixtures/account'
-import {PaywallConfig} from 'config/paywalls'
+import {AccountFeature} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import FeaturePaywall from '../FeaturePaywall'

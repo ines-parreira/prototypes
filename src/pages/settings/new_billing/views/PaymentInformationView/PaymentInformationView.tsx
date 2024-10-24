@@ -1,28 +1,29 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {countries} from 'config/countries'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchContact, fetchCreditCard} from 'state/billing/actions'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    creditCard,
-    getContact,
-    getCurrentHelpdeskInterval,
-} from 'state/billing/selectors'
 import {
     AutomatePlan,
     HelpdeskPlan,
     PlanInterval,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {BillingContact, TicketPurpose} from 'state/billing/types'
-import {countries} from 'config/countries'
-import Loader from 'pages/common/components/Loader/Loader'
-import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 import {isLegacyAutomate} from 'models/billing/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
+import Loader from 'pages/common/components/Loader/Loader'
+import {fetchContact, fetchCreditCard} from 'state/billing/actions'
+import {
+    creditCard,
+    getContact,
+    getCurrentHelpdeskInterval,
+} from 'state/billing/selectors'
+import {BillingContact, TicketPurpose} from 'state/billing/types'
+import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
+
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {
     BILLING_INFORMATION_PATH,

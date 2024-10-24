@@ -1,12 +1,12 @@
 import {Map, List} from 'immutable'
 
-import {isRecord} from 'utils/types'
 import {ApiPaginationParams} from 'models/api/types'
-import {THIRD_PARTY_APP_NAME_KEY} from 'state/widgets/constants'
 import {
     Link,
     Button,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {THIRD_PARTY_APP_NAME_KEY} from 'state/widgets/constants'
+import {isRecord} from 'utils/types'
 
 import {LEAF_TYPES} from './constants'
 

@@ -1,12 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {formatReportingQueryDate} from 'utils/reporting'
+
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {LegacyStatsFilters} from 'models/stat/types'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+
 import {useSearchResultRange} from '../useSearchResultRange'
 
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({

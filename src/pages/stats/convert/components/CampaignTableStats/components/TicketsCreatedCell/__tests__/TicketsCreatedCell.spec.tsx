@@ -1,13 +1,13 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
 
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import history from 'pages/history'
 
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
 jest.mock('pages/history')

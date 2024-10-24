@@ -1,14 +1,15 @@
-import React from 'react'
 import {AxiosError} from 'axios'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {SenderVerification} from 'models/singleSenderVerification/types'
-import {deleteVerification} from 'models/singleSenderVerification/resources'
-import {NotificationStatus} from 'state/notifications/types'
+import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {deleteVerification} from 'models/singleSenderVerification/resources'
+import {SenderVerification} from 'models/singleSenderVerification/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {removeVerification} from 'state/entities/singleSenderVerification/actions'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 type Props = {
     isLoading?: boolean

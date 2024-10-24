@@ -1,9 +1,9 @@
 import React, {ComponentProps, useEffect, useMemo} from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {isCustomFieldAIManagedType} from 'custom-fields/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 type Props = Pick<
     ComponentProps<typeof SelectField>,

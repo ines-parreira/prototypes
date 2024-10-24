@@ -1,9 +1,9 @@
 import {useEffect} from 'react'
 
-import useSearch from 'hooks/useSearch'
-import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useSearch from 'hooks/useSearch'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 // Display a notification based on some query params
 export default function useQueryNotify() {

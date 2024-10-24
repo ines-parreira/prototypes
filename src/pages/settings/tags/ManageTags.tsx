@@ -1,3 +1,12 @@
+import {
+    ListTagsOrderBy,
+    ListTagsParams,
+    OrderDirection,
+    Tag,
+} from '@gorgias/api-queries'
+import axios, {AxiosError, CancelToken} from 'axios'
+import classnames from 'classnames'
+import {Map} from 'immutable'
 import React, {
     FormEvent,
     useCallback,
@@ -6,22 +15,13 @@ import React, {
     useState,
 } from 'react'
 import {Link} from 'react-router-dom'
-import classnames from 'classnames'
 import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import axios, {AxiosError, CancelToken} from 'axios'
-import {Map} from 'immutable'
-import {
-    ListTagsOrderBy,
-    ListTagsParams,
-    OrderDirection,
-    Tag,
-} from '@gorgias/api-queries'
 
 import {useAppNode} from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {CursorDirection, CursorMeta} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
@@ -31,15 +31,15 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
-import Video from 'pages/common/components/Video/Video'
 import Search from 'pages/common/components/Search'
+import Video from 'pages/common/components/Video/Video'
 import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
-import {REMOVE_TAG_ERROR} from 'state/tags/constants'
-
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {bulkDelete, create, merge, selectAll} from 'state/tags/actions'
+import {REMOVE_TAG_ERROR} from 'state/tags/constants'
+
 import {getMeta, getIsCreating, getSelectAll} from 'state/tags/selectors'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
 

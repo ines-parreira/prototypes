@@ -1,13 +1,13 @@
-import moment from 'moment'
 import {renderHook} from '@testing-library/react-hooks'
+import moment from 'moment'
 
+import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import {communicationSkillsQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {communicationSkillsQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {assumeMock} from 'utils/testing'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)

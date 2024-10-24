@@ -1,16 +1,16 @@
-import {useContext, useMemo} from 'react'
 import {IntegrationType} from '@gorgias/api-queries'
+import {useContext, useMemo} from 'react'
 
-import {CURRENT_USER_TEMPLATE_FIELDS} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {CustomerIntegration} from 'models/customer/types'
 import {Source, isSourceRecord} from 'models/widget/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
+import {CURRENT_USER_TEMPLATE_FIELDS} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
-import {getTicket} from 'state/ticket/selectors'
-import {getActiveCustomer} from 'state/customers/selectors'
+import {AppContext} from 'providers/infobar/AppContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCurrentUserState} from 'state/currentUser/selectors'
+import {getActiveCustomer} from 'state/customers/selectors'
+import {getTicket} from 'state/ticket/selectors'
 
 // Matches `USABLE_IN_RULES` backend declarations which is used in templating to
 // allow doing `customer.integrations.shopify.whatever` and similar.

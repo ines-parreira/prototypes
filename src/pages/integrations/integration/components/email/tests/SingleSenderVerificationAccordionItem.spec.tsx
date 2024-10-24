@@ -1,12 +1,14 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
+
 import {
     migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
 import {EmailMigrationOutboundVerification} from 'models/integration/types'
 import {mockStore} from 'utils/testing'
+
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 jest.mock('@gorgias/analytics-ui-kit', () => ({

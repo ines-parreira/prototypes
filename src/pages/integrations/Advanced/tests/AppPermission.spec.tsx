@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import AppPermission from 'pages/integrations/Advanced/AppPermission'
 import {oauthPermissions} from 'config/oauthPermissions'
+import AppPermission from 'pages/integrations/Advanced/AppPermission'
 
 describe(`AppPermission`, () => {
     it('should render', () => {

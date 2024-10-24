@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
-import {LineStatContainer} from '../LineStat'
 import {
     stats as statsConfig,
     RESOLUTION_TIME,
 } from '../../../../../../config/stats'
+import {LineStatContainer} from '../LineStat'
 
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
 

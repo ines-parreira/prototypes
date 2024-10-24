@@ -1,6 +1,5 @@
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-
 import {variants as variantsFixtures} from 'fixtures/abGroup'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 
 import {deleteVariant} from '../deleteVariant'
 

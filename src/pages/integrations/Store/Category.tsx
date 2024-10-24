@@ -2,13 +2,12 @@ import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import {Category as CategoryType} from 'models/integration/types/app'
-
-import {CATEGORY_DATA} from './constants'
+import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import css from './Category.less'
+import {CATEGORY_DATA} from './constants'
 
 type Props = {
     category: CategoryType

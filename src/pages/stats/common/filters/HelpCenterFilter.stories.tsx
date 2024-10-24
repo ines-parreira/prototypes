@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+
+import {HelpCenter} from 'models/helpCenter/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
 import HelpCenterFilter from 'pages/stats/common/filters/HelpCenterFilter'
-import {HelpCenter} from 'models/helpCenter/types'
 import {RootState} from 'state/types'
 
 const mockStore = {

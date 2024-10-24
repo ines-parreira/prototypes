@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
+
 import {personNames} from 'fixtures/personNames'
+import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
@@ -26,9 +27,9 @@ import {
     toggleHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 
 describe('agentPerformanceSlice', () => {
     const agents = [

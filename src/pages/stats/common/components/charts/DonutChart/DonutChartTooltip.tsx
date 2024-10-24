@@ -1,7 +1,8 @@
-import React from 'react'
 import {TooltipLabelStyle, TooltipModel} from 'chart.js'
+import React from 'react'
 
 import {formatPercentage} from 'pages/common/utils/numbers'
+
 import css from './DonutChartTooltip.less'
 
 type Props = {

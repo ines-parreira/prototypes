@@ -1,9 +1,9 @@
 import {Liquid, Output} from 'liquidjs'
-import _flatten from 'lodash/flatten'
-import _set from 'lodash/set'
-import _get from 'lodash/get'
-
 import {PropertyAccessToken, IdentifierToken} from 'liquidjs/dist/src/tokens'
+import _flatten from 'lodash/flatten'
+import _get from 'lodash/get'
+import _set from 'lodash/set'
+
 import {validateJSON} from '../../../../utils'
 import {
     WorkflowVariableList,

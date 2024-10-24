@@ -1,6 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+
 import HelpCenterPreviewHomePage from '../HelpCenterPreviewHomePage'
 
 const renderComponent = (

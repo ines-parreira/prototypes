@@ -1,16 +1,18 @@
+import {fireEvent, render, waitFor, screen} from '@testing-library/react'
+import user from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
-import MockAdapter from 'axios-mock-adapter'
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import user from '@testing-library/user-event'
 import thunk from 'redux-thunk'
-import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
-import {NotificationStatus} from 'state/notifications/types'
+
 import useAppDispatch from 'hooks/useAppDispatch'
+import client from 'models/api/resources'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import RemoveShopifyBilling from '../RemoveShopifyBilling'
 
 jest.mock('hooks/useAppDispatch')

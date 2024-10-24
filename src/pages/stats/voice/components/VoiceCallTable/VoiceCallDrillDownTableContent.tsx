@@ -1,9 +1,11 @@
 import React from 'react'
-import {formatVoiceDrillDownRowData} from 'pages/stats/DrillDownFormatters'
+
 import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {formatVoiceDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import VoiceCallTableContent from './VoiceCallTableContent'
+
 import {getVoiceDrillDownColumns} from './utils'
+import VoiceCallTableContent from './VoiceCallTableContent'
 
 type Props = {
     metricData: DrillDownMetric

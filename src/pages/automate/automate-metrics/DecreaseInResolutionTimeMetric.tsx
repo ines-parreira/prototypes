@@ -1,10 +1,12 @@
 import React from 'react'
+
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import MetricCard from 'pages/stats/MetricCard'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
+import MetricCard from 'pages/stats/MetricCard'
+
+import {DECREASE_IN_RESOLUTION_TIME} from './constants'
 import {BaseAutomateMetricProps} from './types'
 import {getTrendProps, toDuration} from './utils'
-import {DECREASE_IN_RESOLUTION_TIME} from './constants'
 
 export const DECREASE_IN_RESOLUTION_TIME_TOOLTIP = (
     <>

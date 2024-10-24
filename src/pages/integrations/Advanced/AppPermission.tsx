@@ -1,9 +1,9 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-
-import useId from 'hooks/useId'
+import React from 'react'
 
 import {AppOAuthPermission} from 'config/oauthPermissions'
+import useId from 'hooks/useId'
+
 import css from './AppPermission.less'
 
 function makePermissionsLabel(verbs: string[]): string {

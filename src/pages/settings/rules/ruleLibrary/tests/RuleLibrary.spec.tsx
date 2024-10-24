@@ -1,16 +1,17 @@
-import React, {ComponentProps} from 'react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, screen} from '@testing-library/react'
+import thunk from 'redux-thunk'
 
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {rule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
-import {billingState} from 'fixtures/billing'
-import {RuleRecipeTag} from 'models/ruleRecipe/types'
 import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {rule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {RuleRecipeTag} from 'models/ruleRecipe/types'
+import {ManagedRulesSlugs} from 'state/rules/types'
+
 import RuleLibrary from '../RuleLibrary'
 
 describe('<RuleLibrary/>', () => {

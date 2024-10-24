@@ -1,18 +1,17 @@
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
 import React from 'react'
 import * as reactstrap from 'reactstrap'
-import {fromJS} from 'immutable'
 
-import {fireEvent, render, screen} from '@testing-library/react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
 } from 'constants/integrations/types/shopify'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover/components/DiscountPopover'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 jest.mock('common/segment', () => {
     const segmentTracker: Record<string, unknown> =

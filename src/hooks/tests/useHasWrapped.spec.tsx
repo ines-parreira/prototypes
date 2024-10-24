@@ -1,7 +1,7 @@
-import React, {MutableRefObject, forwardRef} from 'react'
+import {render} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
-import {render} from '@testing-library/react'
+import React, {MutableRefObject, forwardRef} from 'react'
 
 import useHasWrapped from '../useHasWrapped'
 

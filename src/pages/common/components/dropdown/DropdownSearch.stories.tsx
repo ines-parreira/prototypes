@@ -1,5 +1,5 @@
-import React, {ComponentProps, useRef, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 

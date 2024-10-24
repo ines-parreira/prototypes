@@ -1,5 +1,7 @@
 import {AxiosError, AxiosHeaders, AxiosResponse} from 'axios'
+
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+
 import {doNotRetry40XErrorsHandler} from '../utils'
 
 describe('doNotRetry40XErrorsHandler', () => {

@@ -1,19 +1,20 @@
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {render, screen} from '@testing-library/react'
-import {IntegrationDataItem} from 'models/integration/types'
-import {
-    integrationDataItemProductFixture,
-    shopifyProductFixture,
-    shopifyVariantFixture,
-} from 'fixtures/shopify'
 import {
     InventoryManagement,
     Product,
     Variant,
 } from 'constants/integrations/types/shopify'
-import Result from '../Result'
+import {
+    integrationDataItemProductFixture,
+    shopifyProductFixture,
+    shopifyVariantFixture,
+} from 'fixtures/shopify'
+import {IntegrationDataItem} from 'models/integration/types'
+
 import {shopifyDataMappers} from '../Mappings'
+import Result from '../Result'
 
 describe('<Result/>', () => {
     describe('render()', () => {

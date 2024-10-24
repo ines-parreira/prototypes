@@ -1,10 +1,10 @@
-import React, {Component, CSSProperties} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {Component, CSSProperties} from 'react'
 
-import {getInitials, getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
+import {getInitials, getAvatar, getAvatarFromCache} from './utils'
 
 type Props = {
     email: string

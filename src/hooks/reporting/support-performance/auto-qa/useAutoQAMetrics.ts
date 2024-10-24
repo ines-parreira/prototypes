@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
+
 import {User} from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
@@ -8,6 +8,7 @@ import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performanc
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
 import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
 
 export const useAutoQAMetrics = () => {

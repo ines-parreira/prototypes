@@ -1,14 +1,16 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {dismissNotification} from 'reapop'
+
+import {isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {assumeMock} from 'utils/testing'
-import {notify} from 'state/notifications/actions'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {isRecoverableError} from 'hooks/integrations/phone/utils'
-import useVoiceDevice from '../useVoiceDevice'
+import {assumeMock} from 'utils/testing'
+
 import {useErrorHandling} from '../useErrorHandling'
+import useVoiceDevice from '../useVoiceDevice'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('../useVoiceDevice')

@@ -1,12 +1,12 @@
+import cs from 'classnames'
 import React from 'react'
 import {Link} from 'react-router-dom'
-import cs from 'classnames'
 
-import {toJS} from 'utils'
 import {AvailabilityStatusTag, User} from 'config/types/user'
+import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {RoleLabel} from 'pages/common/utils/labels'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import {toJS} from 'utils'
 
 import css from './List.less'
 

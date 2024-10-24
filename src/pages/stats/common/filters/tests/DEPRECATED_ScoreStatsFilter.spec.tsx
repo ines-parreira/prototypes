@@ -1,8 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {DEPRECATED_ScoreStatsFilter} from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
 import {initialState} from 'state/stats/statsSlice'

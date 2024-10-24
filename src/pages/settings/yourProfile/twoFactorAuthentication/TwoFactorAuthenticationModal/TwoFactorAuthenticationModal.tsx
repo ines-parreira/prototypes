@@ -1,3 +1,4 @@
+import {AxiosError} from 'axios'
 import React, {
     useCallback,
     useState,
@@ -5,11 +6,11 @@ import React, {
     useMemo,
     ReactNode,
 } from 'react'
-import {AxiosError} from 'axios'
 import {dismissNotification} from 'reapop'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
@@ -18,27 +19,27 @@ import {
     fetchAuthenticatorData as fetchAuthenticatorDataResource,
     fetchAuthenticatorDataRenewed as fetchAuthenticatorDataRenewedResource,
 } from 'models/twoFactorAuthentication/resources'
-import Button from 'pages/common/components/button/Button'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {update2FAEnabled} from 'state/currentUser/actions'
 import {
     AuthenticatorData,
     RecoveryCode,
 } from 'models/twoFactorAuthentication/types'
-import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import Wizard from 'pages/common/components/wizard/Wizard'
+import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
+import {update2FAEnabled} from 'state/currentUser/actions'
+import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
 import {
     has2FaEnabled as has2FaEnabledSelector,
     hasPassword as hasPasswordSelector,
 } from 'state/currentUser/selectors'
-import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
-import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
-import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import css from './TwoFactorAuthenticationModal.less'
+
+import ModalBanners from './ModalBanners'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
-import ModalBanners from './ModalBanners'
 import ModalWizardHeader from './ModalWizardHeader'
+import css from './TwoFactorAuthenticationModal.less'
 
 export type OwnProps = {
     isOpen: boolean

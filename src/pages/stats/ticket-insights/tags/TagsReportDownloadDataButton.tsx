@@ -1,10 +1,10 @@
 import React from 'react'
-import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {formatDates} from 'pages/stats/utils'
 import {saveReport} from 'services/reporting/tagsReportingService'
 

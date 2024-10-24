@@ -1,6 +1,7 @@
 import React from 'react'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+
 import Button from 'pages/common/components/button/Button'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import listCss from '../AIArticlesLibraryList/AIArticlesLibraryList.less'
 import previewCss from '../AIArticlesLibraryPreview/AIArticlesLibraryPreview.less'

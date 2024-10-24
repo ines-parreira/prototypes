@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+
 import css from './WhatsAppMessageTemplateStatus.less'
 
 export enum StatusIntent {

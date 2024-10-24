@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import {HEATMAP_MODE_LABEL} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {PERCENTAGE_LABEL} from 'pages/stats/common/components/Table/TableValueModeSwitch'
 import {AllUsedTagsTable} from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'

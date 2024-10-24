@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
+
+import {TicketChannel} from 'business/types/ticket'
+import {integrationsState} from 'fixtures/integrations'
+import {ticketsPerTagStat} from 'fixtures/stats'
+import useStatResource from 'hooks/reporting/useStatResource'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TagFilterInstanceId} from 'models/stat/types'
 
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import {RootState, StoreDispatch} from 'state/types'
-import {TicketChannel} from 'business/types/ticket'
-import {ticketsPerTagStat} from 'fixtures/stats'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {renderWithRouter} from 'utils/testing'
-import {integrationsState} from 'fixtures/integrations'
-
-import useStatResource from 'hooks/reporting/useStatResource'
-import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
-import TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',

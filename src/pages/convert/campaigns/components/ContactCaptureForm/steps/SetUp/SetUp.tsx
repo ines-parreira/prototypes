@@ -1,17 +1,19 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
 import classnames from 'classnames'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {UncontrolledTooltip} from 'reactstrap'
+
+import {IntegrationType} from 'models/integration/constants'
+import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
+import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import {
     StepProps,
     TransitoryAttachmentData,
     TransitoryAttachmentSubscriber,
 } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {getIconFromType} from 'state/integrations/helpers'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
-import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {getIconFromType} from 'state/integrations/helpers'
+
 import css from './SetUp.less'
 
 export const SetUp = (props: StepProps) => {

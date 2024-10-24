@@ -1,5 +1,5 @@
-import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
+import {NotificationStatus} from 'state/notifications/types'
 import {NodeEnv, envVars} from 'utils/environment'
 
 import {IncidentImpact} from './types'

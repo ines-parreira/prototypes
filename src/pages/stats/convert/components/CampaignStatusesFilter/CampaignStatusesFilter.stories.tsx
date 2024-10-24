@@ -1,11 +1,11 @@
+import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Meta, StoryFn} from '@storybook/react'
 
-import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter'
 
 const storyConfig: Meta = {
     title: 'Common/Filters/CampaignStatusesFilter',

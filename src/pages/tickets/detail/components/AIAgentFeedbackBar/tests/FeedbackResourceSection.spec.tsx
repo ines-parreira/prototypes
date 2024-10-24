@@ -1,17 +1,19 @@
 import {render, screen} from '@testing-library/react'
-import {useCookies} from 'react-cookie'
-import React from 'react'
 import userEvent from '@testing-library/user-event'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
+import {useCookies} from 'react-cookie'
+
 import {logEventWithSampling} from 'common/segment/segment'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {assumeMock} from 'utils/testing'
+
 import {SegmentEvent} from '../../../../../../common/segment'
-import {ResourceSection} from '../types'
 import {Feedback} from '../../../../../../models/aiAgentFeedback/types'
 import {
     FeedbackResourceSection,
     TOOLTIP_COOKIE_NAME,
 } from '../FeedbackResourceSection'
+import {ResourceSection} from '../types'
 
 const mockHandleSubmitFeedback = jest.fn()
 const mockSetCookie = jest.fn()

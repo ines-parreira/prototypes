@@ -1,33 +1,34 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
-import Accordion from 'pages/common/components/accordion/Accordion'
+import {SegmentEvent, logEvent} from 'common/segment'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useSearch from 'hooks/useSearch'
 import {IntegrationType} from 'models/integration/constants'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import AutomateView from 'pages/automate/common/components/AutomateView'
+import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChannels, {
     isSelfServiceChatChannel,
     isSelfServiceStandaloneContactFormChannel,
     SelfServiceChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import useSearch from 'hooks/useSearch'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import useEffectOnce from 'hooks/useEffectOnce'
+import Accordion from 'pages/common/components/accordion/Accordion'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {FeatureFlagKey} from '../../../config/featureFlags'
+import {CHANNELS} from '../common/components/constants'
+import useContactFormsAutomationSettings from '../common/hooks/useContactFormsAutomationSettings'
+import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import NoChannelsAlert from '../workflows/editor/visualBuilder/publisher/helper/NoChannelAlert'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../workflows/hooks/useWorkflowChannelSupport'
-import {FeatureFlagKey} from '../../../config/featureFlags'
-import {CHANNELS} from '../common/components/constants'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
-import useContactFormsAutomationSettings from '../common/hooks/useContactFormsAutomationSettings'
-import NoChannelsAlert from '../workflows/editor/visualBuilder/publisher/helper/NoChannelAlert'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {

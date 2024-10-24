@@ -1,18 +1,18 @@
-import React from 'react'
+import {render} from '@testing-library/react'
 import {Location} from 'history'
 import {Map} from 'immutable'
 import _noop from 'lodash/noop'
-import {render} from '@testing-library/react'
 import {compressToEncodedURIComponent} from 'lz-string'
 import {stringify} from 'qs'
+import React from 'react'
 import reactRouterDom from 'react-router-dom'
-import {EntityType} from 'models/view/types'
 
+import * as viewsConfig from 'config/views'
+import {EntityType} from 'models/view/types'
 import {
     ViewSearchUrlSyncInjectedProps,
     withViewSearchUrlSyncContainer,
 } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
-import * as viewsConfig from 'config/views'
 import history from 'pages/history'
 import {getLDClient} from 'utils/launchDarkly'
 

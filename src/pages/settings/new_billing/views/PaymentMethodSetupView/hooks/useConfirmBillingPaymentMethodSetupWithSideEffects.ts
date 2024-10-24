@@ -1,13 +1,14 @@
 import {useConfirmBillingPaymentMethodSetup} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import {useStore} from 'react-redux'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {billingKeys} from 'models/billing/queries'
+import {useStartSubscription} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
+import {ErrorResponse} from 'state/billing/types'
+import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
-import {ErrorResponse} from 'state/billing/types'
-import {useStartSubscription} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
 
 export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
     overrides?: NonNullable<

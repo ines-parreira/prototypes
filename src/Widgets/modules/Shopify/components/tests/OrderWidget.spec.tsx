@@ -1,14 +1,14 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
-import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
 import {EditionContext} from 'providers/infobar/EditionContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
+import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 
 import {Wrapper, orderCustomization} from '../Order'
 

@@ -1,26 +1,28 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+// eslint-disable-next-line import/order
+import mockedVirtuoso from 'tests/mockedVirtuoso'
+import {customer} from 'fixtures/customer'
+import {ticket} from 'fixtures/ticket'
 import {Customer} from 'models/customer/types'
-import {
-    CUSTOMERS_LABEL,
-    TICKETS_LABEL,
-} from 'pages/common/components/Spotlight/constants'
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
 } from 'models/search/types'
-import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
-import {customer} from 'fixtures/customer'
-import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {ViewType} from 'models/view/types'
-import mockedVirtuoso from 'tests/mockedVirtuoso'
+import {
+    CUSTOMERS_LABEL,
+    TICKETS_LABEL,
+} from 'pages/common/components/Spotlight/constants'
+import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import {
     MORE_RESULTS_LABEL,
     RECENTLY_ACCESSED_LABEL,
     SpotlightModalContent,
 } from 'pages/common/components/Spotlight/SpotlightModalContent'
-import {ticket} from 'fixtures/ticket'
+import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)

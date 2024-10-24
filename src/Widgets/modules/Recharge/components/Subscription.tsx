@@ -1,3 +1,4 @@
+import {fromJS, Map} from 'immutable'
 import React, {
     ContextType,
     ReactNode,
@@ -5,29 +6,28 @@ import React, {
     useContext,
     FunctionComponent,
 } from 'react'
-import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {RootState} from 'state/types'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import * as ticketSelectors from 'state/ticket/selectors'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
+import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {renderTemplate} from 'pages/common/utils/template'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import * as ticketSelectors from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
 

@@ -1,13 +1,14 @@
+import {Map} from 'immutable'
 import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
 
-import {Map} from 'immutable'
+import useLocalStorage from 'hooks/useLocalStorage'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
-import useLocalStorage from 'hooks/useLocalStorage'
+import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+
 import {Campaign} from '../../../../types/Campaign'
 
 type Props = {

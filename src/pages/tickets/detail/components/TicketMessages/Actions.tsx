@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
 import _truncate from 'lodash/truncate'
-import classnames from 'classnames'
+import React, {Component} from 'react'
 import {Badge} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {ActionTemplate, ActionTemplateExecution} from 'config'
 import {ContentType} from 'models/api/types'

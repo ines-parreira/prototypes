@@ -1,12 +1,12 @@
-import notification, {PushNotification} from 'push.js'
-import _throttle from 'lodash/throttle'
 import _isString from 'lodash/isString'
+import _throttle from 'lodash/throttle'
+import notification, {PushNotification} from 'push.js'
 
+import {store} from 'common/store'
 import history from 'pages/history'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
-import {store} from 'common/store'
 import {assetsUrl} from 'utils'
 
 const icon = assetsUrl('/img/icons/logo.png')

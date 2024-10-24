@@ -1,13 +1,13 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {getConfigByName, getTicketViewField} from 'config/views'
-import {EntityType, ViewField} from 'models/view/types'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
-import FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
 import {mockSearchRank} from 'fixtures/searchRank'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import {EntityType, ViewField} from 'models/view/types'
+import FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
+import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
 
 import FilterDropdown from '../FilterDropdown'
 

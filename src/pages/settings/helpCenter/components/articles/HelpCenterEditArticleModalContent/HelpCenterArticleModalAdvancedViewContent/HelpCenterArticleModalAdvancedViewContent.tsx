@@ -1,21 +1,22 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
 
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import IconButton from 'pages/common/components/button/IconButton'
+import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import {
     getHelpCenterDomain,
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
-import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {WhatsAppMessageTemplateCategory} from 'models/whatsAppMessageTemplates/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 

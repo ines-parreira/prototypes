@@ -1,10 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {
     FLOWS,
     QUICK_RESPONSES,
     ARTICLE_RECOMMENDATION,
 } from 'pages/automate/common/components/constants'
+
 import {useAutomateStatsMeasureLabelMap} from '../useAutomateStatsMeasureLabelMap'
 
 // Mock useFlags from launchdarkly-react-client-sdk

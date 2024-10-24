@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 import * as utils from '../utils'
 
 describe('infobar reducers', () => {

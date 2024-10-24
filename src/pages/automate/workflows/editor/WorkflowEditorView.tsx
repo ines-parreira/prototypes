@@ -1,57 +1,58 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useRef} from 'react'
+import {useLocation} from 'react-router-dom'
 import {Container} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useLocation} from 'react-router-dom'
-import PageHeader from 'pages/common/components/PageHeader'
-import TextInput from 'pages/common/forms/input/TextInput'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import useSearch from 'hooks/useSearch'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {
     useSelfServiceStoreIntegrationContext,
     withSelfServiceStoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import PageHeader from 'pages/common/components/PageHeader'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import TextInput from 'pages/common/forms/input/TextInput'
 
-import useSearch from 'hooks/useSearch'
-import useEffectOnce from 'hooks/useEffectOnce'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {getTimezone} from 'state/currentUser/selectors'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {formatDatetime} from 'utils'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {FeatureFlagKey} from 'config/featureFlags'
-import * as ToggleButton from 'pages/common/components/ToggleButton'
-import {
-    WorkflowToggle,
-    supportedLanguages,
-} from '../models/workflowConfiguration.types'
+
+import {DraftBadge} from '../components/DraftBadge'
+import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
+import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
+import useWorkflowChannelSupport, {
+    WorkflowChannelSupportContext,
+} from '../hooks/useWorkflowChannelSupport'
 import {
     useWorkflowEditorContext,
     withWorkflowEditorContext,
 } from '../hooks/useWorkflowEditor'
-import useWorkflowChannelSupport, {
-    WorkflowChannelSupportContext,
-} from '../hooks/useWorkflowChannelSupport'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
-
-import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
-import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
-import {DraftBadge} from '../components/DraftBadge'
 import {
     useWorkflowsIdsEnabledInChat,
     useWorkflowsIdsEnabledInContactForm,
     useWorkflowsIdsEnabledInHelpCenter,
 } from '../hooks/useWorkflowEnabledInChannels'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import {
+    WorkflowToggle,
+    supportedLanguages,
+} from '../models/workflowConfiguration.types'
+
+import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
-import css from './WorkflowEditorView.less'
 import {WorkflowEditorActionButtons} from './WorkflowEditorActionButtons'
+import css from './WorkflowEditorView.less'
 
 type WorkflowEditorViewProps = {
     shopType: string

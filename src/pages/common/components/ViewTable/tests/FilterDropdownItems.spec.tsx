@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import {Dropdown} from 'reactstrap'
 import {fromJS, Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Dropdown} from 'reactstrap'
 
 import {getTicketViewField} from 'config/views'
 import {ViewField} from 'models/view/types'

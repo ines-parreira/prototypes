@@ -1,8 +1,8 @@
 import {useMemo} from 'react'
 
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 const useShopifyIntegrations = () => {
     const getShopifyIntegrations = useMemo(

@@ -1,18 +1,20 @@
-import React from 'react'
 import classNames from 'classnames'
 import moment from 'moment'
+import React from 'react'
+
+import {WorkflowTrendMetrics} from 'hooks/reporting/automate/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {Period} from 'models/stat/types'
 import {getTrendPropsToPercent} from 'pages/automate/automate-metrics/utils'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {WorkflowTrendMetrics} from 'hooks/reporting/automate/types'
-import {Period} from 'models/stat/types'
 import {comparedPeriodString} from 'pages/stats/common/utils'
-import css from './WorkflowOverviewMetrics.less'
+
 import {
     displayMetric,
     displayPercentMetric,
     isValidNumber,
 } from './visualBuilder/utils'
+import css from './WorkflowOverviewMetrics.less'
 
 interface Props {
     metrics: Record<WorkflowTrendMetrics, MetricTrend>

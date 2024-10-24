@@ -1,20 +1,20 @@
+import {waitFor} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {waitFor} from '@testing-library/react'
+import {getCategories} from 'state/entities/helpCenter/categories'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {getCategories} from 'state/entities/helpCenter/categories'
 
-import {useHelpCenterCategories} from '../useHelpCenterCategories'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {useCategoriesActions} from '../useCategoriesActions'
+import {useHelpCenterCategories} from '../useHelpCenterCategories'
 
 jest.mock('../useCategoriesActions')
 ;(useCategoriesActions as jest.Mock).mockReturnValue({

@@ -1,19 +1,18 @@
+import classnames from 'classnames'
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import classnames from 'classnames'
 
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 
-import {TemplateConfiguration} from '../types'
-import useSortedActionTemplates from '../hooks/useSortedActionTemplates'
 import useEnabledActionTemplates from '../hooks/useEnabledActionTemplates'
+import useSortedActionTemplates from '../hooks/useSortedActionTemplates'
+import {TemplateConfiguration} from '../types'
+import css from './ActionsTemplatesCards.less'
 import AppActionTemplateCard from './AppActionTemplateCard'
 import NativeActionTemplateCard from './NativeActionTemplateCard'
-
-import css from './ActionsTemplatesCards.less'
 
 type Props = {
     showCustomAction?: boolean

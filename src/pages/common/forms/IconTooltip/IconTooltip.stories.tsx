@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
-import {Meta, Story} from '@storybook/react'
 import {Label} from '@gorgias/ui-kit'
+import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import IconTooltip from './IconTooltip'
 

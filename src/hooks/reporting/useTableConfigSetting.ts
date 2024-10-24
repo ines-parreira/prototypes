@@ -1,5 +1,6 @@
 import {CombinedState} from 'redux'
 import {Selector} from 'reselect'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {AccountSettingTableConfig} from 'state/currentAccount/types'

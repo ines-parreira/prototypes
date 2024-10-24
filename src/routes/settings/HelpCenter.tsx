@@ -2,16 +2,16 @@ import React from 'react'
 
 import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useFlag} from 'common/flags'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 

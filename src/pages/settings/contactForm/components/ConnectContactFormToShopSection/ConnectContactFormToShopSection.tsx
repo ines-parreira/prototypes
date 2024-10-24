@@ -1,7 +1,7 @@
+import {Label} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 
-import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import {useShopifyStoreWithChatConnectionsOptions} from 'pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'

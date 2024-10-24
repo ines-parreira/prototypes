@@ -1,3 +1,5 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -8,11 +10,10 @@ import React, {
     useImperativeHandle,
     useEffect,
 } from 'react'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
+
 import css from './TextArea.less'
 
 type Props = {

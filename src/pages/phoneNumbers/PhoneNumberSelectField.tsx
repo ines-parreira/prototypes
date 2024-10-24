@@ -1,18 +1,18 @@
 import React, {useCallback, useState} from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 
-import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     countryCode,
     hasCapability,
     isNewPhoneNumber,
 } from 'pages/phoneNumbers/utils'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 
 type Props = {
     value: Maybe<NewPhoneNumber> | '_new'

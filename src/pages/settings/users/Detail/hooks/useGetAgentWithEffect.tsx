@@ -1,9 +1,9 @@
 import {Dispatch, SetStateAction, useEffect} from 'react'
 
 import {UserRole} from 'config/types/user'
+import {handleError} from 'hooks/agents/errorHandler'
 import {useGetAgent} from 'models/agents/queries'
 import {StoreDispatch} from 'state/types'
-import {handleError} from 'hooks/agents/errorHandler'
 
 export const useGetAgentWithEffects = ({
     agentId,

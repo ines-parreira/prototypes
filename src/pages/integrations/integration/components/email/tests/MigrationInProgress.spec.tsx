@@ -1,11 +1,13 @@
 import {cleanup, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React from 'react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
-import {mockStore} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import client from 'models/api/resources'
 import {EmailMigrationInboundVerification} from 'models/integration/types'
+import {mockStore} from 'utils/testing'
+
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
 

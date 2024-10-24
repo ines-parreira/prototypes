@@ -1,19 +1,18 @@
-import React, {useState} from 'react'
 import {fromJS} from 'immutable'
-
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import React, {useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {AircallIntegration} from 'models/integration/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {
     deleteIntegration,
     activateIntegration,
     deactivateIntegration,
 } from 'state/integrations/actions'
-import {AircallIntegration} from 'models/integration/types'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
 type Props = {
     integration: AircallIntegration

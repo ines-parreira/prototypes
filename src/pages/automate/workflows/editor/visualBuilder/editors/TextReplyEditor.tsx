@@ -1,17 +1,17 @@
-import React, {useCallback, useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useCallback, useMemo} from 'react'
 
-import {Drawer} from 'pages/common/components/Drawer'
-import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {TextReplyNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {Drawer} from 'pages/common/components/Drawer'
 
-import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
-import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 import MessageContentFormField from '../components/MessageContentFormField'
 import SupportedChannelsWarning from '../components/SupportedChannelsWarning'
+import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
+import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'

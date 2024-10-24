@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import Message from 'pages/tickets/detail/components/TicketMessages/Message'
 import {TicketMessage} from 'models/ticket/types'
+import Message from 'pages/tickets/detail/components/TicketMessages/Message'
 
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
     <div>AIBanner</div>

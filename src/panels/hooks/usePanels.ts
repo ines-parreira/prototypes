@@ -1,3 +1,4 @@
+import _isEqual from 'lodash/isEqual'
 import {
     MouseEvent as ReactMouseEvent,
     useCallback,
@@ -6,13 +7,12 @@ import {
     useState,
     useRef,
 } from 'react'
-import _isEqual from 'lodash/isEqual'
 
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {computeDefaultWidths, mutatePanels, createConfig} from '../utils'
 import {Config} from '../types'
+import {computeDefaultWidths, mutatePanels, createConfig} from '../utils'
 
 import useScreenSize from './useScreenSize'
 

@@ -1,14 +1,14 @@
-import React, {useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {useDismissFlag} from 'hooks/useDismissFlag'
+import {IntegrationType} from 'models/integration/constants'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {useDismissFlag} from 'hooks/useDismissFlag'
-import useAppSelector from 'hooks/useAppSelector'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {IntegrationType} from 'models/integration/constants'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {isAccountDuringBusinessHours} from 'state/integrations/helpers'
 

@@ -1,19 +1,20 @@
-import React, {useCallback, useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
-import {DropdownOption} from 'pages/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
 
-import Filter from 'pages/stats/common/components/Filter'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import useAppSelector from 'hooks/useAppSelector'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RootState} from 'state/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import Filter from 'pages/stats/common/components/Filter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {DropdownOption} from 'pages/stats/types'
+
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 type HelpCenterFilterProps = {
     value: StatsFiltersWithLogicalOperator[FilterKey.HelpCenters]

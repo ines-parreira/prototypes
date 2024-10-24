@@ -1,10 +1,10 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map, List} from 'immutable'
 import {shallow} from 'enzyme'
+import {fromJS, Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {AccountFeature} from 'state/currentAccount/types'
-import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
+
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -25,6 +25,7 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
 } from '../../utils'
+import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
 
 const allPermissions = [
     PAGES_MANAGE_ADS,

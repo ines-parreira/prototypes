@@ -1,6 +1,6 @@
+import classNames from 'classnames'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
-import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 

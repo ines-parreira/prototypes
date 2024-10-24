@@ -1,19 +1,19 @@
-import React, {ReactNode, useEffect, useMemo} from 'react'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
+import React, {ReactNode, useEffect, useMemo} from 'react'
 
+import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {getTimezone} from 'state/currentUser/selectors'
+import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {
     resetStatsFilters,
     defaultStatsFilters,
     setStatsFiltersWithLogicalOperators,
 } from 'state/stats/statsSlice'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {isCleanStatsDirty} from 'state/ui/stats/selectors'
-import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
-import {getTimezone} from 'state/currentUser/selectors'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 type Props = {
     children?: ReactNode

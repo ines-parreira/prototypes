@@ -1,12 +1,14 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {searchCustomer} from 'models/aiAgentPlayground/resources'
 import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
-import {MutationOverrides} from 'types/query'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {Paths} from 'rest_api/help_center_api/client.generated'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {MutationOverrides} from 'types/query'
+
 import {
     createStoreConfiguration,
     createStoreSnippetHelpCenter,
@@ -17,9 +19,9 @@ import {
     upsertAccountConfiguration,
     upsertStoreConfiguration,
 } from './resources/account-configuration'
+import {getAIGeneratedGuidances} from './resources/guidances'
 import {createContextAndSubmitPlaygroundTicket} from './resources/message-processing'
 import {GetStoreConfigurationParams} from './types'
-import {getAIGeneratedGuidances} from './resources/guidances'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes

@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
 import {

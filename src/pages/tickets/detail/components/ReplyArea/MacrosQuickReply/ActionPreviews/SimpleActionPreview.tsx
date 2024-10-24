@@ -1,12 +1,12 @@
+import classnames from 'classnames'
 import React from 'react'
 import {Badge} from 'reactstrap'
 
-import classnames from 'classnames'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
+import {CustomFieldName} from 'pages/tickets/common/macros/Preview'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
 import {getActionTemplate} from 'utils'
-import {CustomFieldName} from 'pages/tickets/common/macros/Preview'
 
 import {BaseActionPreview} from './BaseActionPreview'
 

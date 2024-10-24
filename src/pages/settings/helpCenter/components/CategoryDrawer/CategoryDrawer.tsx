@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {useModalManager} from 'hooks/useModalManager'
 import {
     Category,
@@ -9,23 +11,22 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
+import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
+import {
+    HELP_CENTER_DEFAULT_LOCALE,
+    MODALS,
+} from 'pages/settings/helpCenter/constants'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {
     getCategoryById,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {
-    HELP_CENTER_DEFAULT_LOCALE,
-    MODALS,
-} from 'pages/settings/helpCenter/constants'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
-import useAsyncFn from 'hooks/useAsyncFn'
 
 import {reportError} from 'utils/errors'
+
 import {useSearchContext} from '../../providers/SearchContext'
 import {getGenericMessageFromError} from '../../utils'
 

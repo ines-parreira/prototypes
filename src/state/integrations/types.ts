@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
 import {IntegrationConfig} from 'config'
-import {IntegrationBase} from '../../models/integration/types/base'
+
 import {
     EmailDomain,
     Integration,
@@ -10,6 +10,7 @@ import {
     EmailMigrationBannerStatus,
     EmailMigrationInboundVerification,
 } from '../../models/integration/types'
+import {IntegrationBase} from '../../models/integration/types/base'
 
 export type IntegrationsImmutableState = Map<any, any>
 

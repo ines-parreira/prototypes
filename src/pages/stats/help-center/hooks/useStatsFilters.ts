@@ -1,9 +1,10 @@
 import {useCallback, useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {LegacyStatsFilters} from 'models/stat/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export const useStatsFilters = (initialState: Partial<LegacyStatsFilters>) => {

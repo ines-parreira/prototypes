@@ -2,11 +2,12 @@ import React, {useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
+import Button from 'pages/common/components/button/Button'
+
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueFlowPreview from './ReportOrderIssueFlowPreview'

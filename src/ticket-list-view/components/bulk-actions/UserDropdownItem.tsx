@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react'
 import {User} from '@gorgias/api-queries'
+import React, {useMemo} from 'react'
 
 import {Item} from 'components/Dropdown'
+import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
-import useAppSelector from 'hooks/useAppSelector'
 import {getHumanAgentsJS} from 'state/agents/selectors'
 
 import css from './style.less'

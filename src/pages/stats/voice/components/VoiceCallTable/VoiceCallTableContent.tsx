@@ -1,21 +1,22 @@
-import React, {UIEventHandler, useMemo, useState} from 'react'
 import classNames from 'classnames'
+import React, {UIEventHandler, useMemo, useState} from 'react'
+
 import useMeasure from 'hooks/useMeasure'
+import {OrderDirection} from 'models/api/types'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
-import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {OrderDirection} from 'models/api/types'
+import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
+import {VoiceCallSummary} from 'pages/stats/voice/models/types'
 
-import css from './VoiceCallTable.less'
 import {VoiceCallTableColumnName, skeletonColumnsWidth} from './constants'
 import {Cell, getVoiceDrillDownColumns} from './utils'
+import css from './VoiceCallTable.less'
 import {
     getOrderedCells,
     getOrderedHeaderCells,

@@ -1,11 +1,11 @@
-import React, {memo} from 'react'
 import classnames from 'classnames'
+import React, {memo} from 'react'
 
 import {Source, CardTemplate} from 'models/widget/types'
 
-import Links from './Links'
 import ActionButtons from './ActionButtons'
 import css from './CustomActions.less'
+import Links from './Links'
 
 type Props = {
     template: CardTemplate

@@ -1,7 +1,8 @@
-import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
+import React from 'react'
 
 import {ContentType} from 'models/api/types'
+
 import Body from '../Body'
 
 describe('<Body/>', () => {

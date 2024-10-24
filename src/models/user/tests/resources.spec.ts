@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
-import client from '../../api/resources'
 import {UserSettingType, UserSetting} from '../../../config/types/user'
+import client from '../../api/resources'
 import {createUserSetting, updateUserSetting} from '../resources'
 
 const mockedServer = new MockAdapter(client)

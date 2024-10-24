@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {KeyMetricCell} from './KeyMetricCell'
 

@@ -1,26 +1,23 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, act, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {fromJS} from 'immutable'
-import {fireEvent, act, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import routerDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import routerDom from 'react-router-dom'
-
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {useListABTests, useUpdateABTest} from 'models/convert/abTest/queries'
-import {RootState, StoreDispatch} from 'state/types'
 import {abTest} from 'fixtures/abTest'
 import {account} from 'fixtures/account'
+import {channelConnection} from 'fixtures/channelConnection'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
-import {channelConnection} from 'fixtures/channelConnection'
+import {useListABTests, useUpdateABTest} from 'models/convert/abTest/queries'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
 import UpdateABTestView from '../UpdateABTestView'
 

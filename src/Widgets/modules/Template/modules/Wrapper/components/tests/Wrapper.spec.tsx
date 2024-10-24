@@ -1,22 +1,22 @@
-import React, {ComponentProps, ReactNode} from 'react'
 import {screen, render} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import React, {ComponentProps, ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import {Action} from 'redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {renderHook} from '@testing-library/react-hooks'
-import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationType} from 'models/integration/types'
 import {WrapperTemplate} from 'models/widget/types'
+import {EditionContext} from 'providers/infobar/EditionContext'
 import * as actions from 'state/widgets/actions'
-import {Widget, WidgetType} from 'state/widgets/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {Widget, WidgetType} from 'state/widgets/types'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'

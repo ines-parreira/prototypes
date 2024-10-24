@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useWorkflowAnalyticsDisplayBanner from '../useWorkflowAnalyticsDisplayBanner'
 
 describe('useWorkflowAnalyticsDisplayBanner', () => {

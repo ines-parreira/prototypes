@@ -1,9 +1,9 @@
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 
-import {assumeMock} from 'utils/testing'
 import useAppSelector from 'hooks/useAppSelector'
 import * as viewUtils from 'state/views/utils'
+import {assumeMock} from 'utils/testing'
 
 import useIsTicketViewed from '../useIsTicketViewed'
 

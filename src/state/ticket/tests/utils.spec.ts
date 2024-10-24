@@ -1,15 +1,15 @@
 import {fromJS, List, Map} from 'immutable'
 import {omit} from 'lodash'
 
+import {appQueryClient} from 'api/queryClient'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
 
-import {integrationsState} from 'fixtures/integrations'
 import {channels as mockChannels} from 'fixtures/channels'
-import * as channelsService from 'services/channels'
+import {integrationsState} from 'fixtures/integrations'
 import {
     addInternalNoteAction,
     addTagsAction,
@@ -19,20 +19,21 @@ import {
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
-import {getEmailChannels} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     GorgiasContactFormTicketMeta,
     Source,
     TicketMessage,
 } from 'models/ticket/types'
-import * as utils from 'utils'
-import {appQueryClient} from 'api/queryClient'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import * as channelsService from 'services/channels'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {getEmailChannels} from 'state/integrations/selectors'
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {RootState} from 'state/types'
+import * as utils from 'utils'
+
 import {
     getNewMessageSender,
     getOutboundCallFrom,

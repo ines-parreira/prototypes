@@ -1,10 +1,11 @@
-import moment from 'moment/moment'
 import _flatten from 'lodash/flatten'
 import _orderBy from 'lodash/orderBy'
-import {Period} from 'models/stat/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import moment from 'moment/moment'
+
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
+import {Period} from 'models/stat/types'
+import {createCsv, saveZippedFiles} from 'utils/file'
 
 import {DATE_TIME_FORMAT} from './constants'
 

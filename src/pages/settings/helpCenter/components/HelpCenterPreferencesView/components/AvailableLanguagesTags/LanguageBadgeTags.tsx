@@ -1,15 +1,14 @@
-import React, {useCallback, useMemo, useState} from 'react'
-
 import {produce} from 'immer'
 import _keyBy from 'lodash/keyBy'
-
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
+import React, {useCallback, useMemo, useState} from 'react'
 
 import {Locale, LocaleCode} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'

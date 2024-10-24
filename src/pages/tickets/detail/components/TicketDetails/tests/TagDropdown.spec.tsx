@@ -1,8 +1,8 @@
-import React, {ComponentProps} from 'react'
+import {Tag} from '@gorgias/api-queries'
 import {render} from '@testing-library/react'
 import {List, Map, fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {act} from 'react-dom/test-utils'
-import {Tag} from '@gorgias/api-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import {TagDropdownMenu} from 'tags'

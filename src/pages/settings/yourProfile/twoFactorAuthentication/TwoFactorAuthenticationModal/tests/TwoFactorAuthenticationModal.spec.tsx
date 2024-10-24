@@ -1,4 +1,3 @@
-import React, {ComponentProps} from 'react'
 import {
     fireEvent,
     render,
@@ -6,14 +5,16 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 
 import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {authenticatorData} from 'fixtures/authenticatorData'
+import {recoveryCodes as recoveryCodesFixture} from 'fixtures/recoveryCodes'
 import {
     createRecoveryCodes,
     fetchAuthenticatorData,
@@ -21,8 +22,8 @@ import {
     saveTwoFASecret,
     validateVerificationCode,
 } from 'models/twoFactorAuthentication/resources'
-import {recoveryCodes as recoveryCodesFixture} from 'fixtures/recoveryCodes'
 import {RootState, StoreDispatch} from 'state/types'
+
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 
 jest.mock('models/twoFactorAuthentication/resources')

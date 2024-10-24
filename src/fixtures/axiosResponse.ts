@@ -1,4 +1,5 @@
 import {AxiosHeaders, AxiosResponse} from 'axios'
+
 import {ApiListResponseCursorPagination} from 'models/api/types'
 
 export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {

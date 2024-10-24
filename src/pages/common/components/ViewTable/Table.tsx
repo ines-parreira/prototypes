@@ -1,15 +1,21 @@
-import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
-import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+
+import usePrevious from 'hooks/usePrevious'
 import {EntityType} from 'models/view/types'
 
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import css from 'pages/common/components/ViewTable/Table.less'
+import HeaderCell from 'pages/common/components/ViewTable/Table/HeaderCell'
+import Row from 'pages/common/components/ViewTable/Table/Row'
+import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager'
 import {RootState} from 'state/types'
@@ -26,12 +32,6 @@ import {
     ViewImmutable,
     ViewNavDirection,
 } from 'state/views/types'
-import usePrevious from 'hooks/usePrevious'
-
-import HeaderCell from 'pages/common/components/ViewTable/Table/HeaderCell'
-import Row from 'pages/common/components/ViewTable/Table/Row'
-import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
-import css from 'pages/common/components/ViewTable/Table.less'
 
 type OwnProps = {
     headerRow?: ReactNode

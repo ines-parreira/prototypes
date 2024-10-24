@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {Components} from 'rest_api/help_center_api/client.generated'
 
 import {RootState, StoreDispatch} from 'state/types'

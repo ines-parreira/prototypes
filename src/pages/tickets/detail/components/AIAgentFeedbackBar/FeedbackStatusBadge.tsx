@@ -1,7 +1,9 @@
 import React, {useEffect} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
+
 import css from './FeedbackStatusBadge.less'
 import {FeedbackStatus, ResourceSection} from './types'
 

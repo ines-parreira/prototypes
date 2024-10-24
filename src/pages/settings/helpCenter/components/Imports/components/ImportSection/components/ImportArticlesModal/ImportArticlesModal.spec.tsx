@@ -1,21 +1,19 @@
+import {fireEvent, render, screen} from '@testing-library/react'
+import {noop} from 'lodash'
 import React from 'react'
+import {Provider as ReduxProvider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider as ReduxProvider} from 'react-redux'
-import {noop} from 'lodash'
 
-import {fireEvent, render, screen} from '@testing-library/react'
-
-import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-
-import {FetchedProvidersState} from '../../types'
 import {migrationProviders} from '../../fixtures/migration-providers'
+import {FetchedProvidersState} from '../../types'
 
 import ImportArticlesModal from './ImportArticlesModal'
 import {buildCsvColumnMatchingUrl, fileIsTooBig} from './utils'

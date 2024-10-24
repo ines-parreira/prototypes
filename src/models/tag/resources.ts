@@ -1,10 +1,10 @@
-import {AxiosRequestConfig} from 'axios'
 import {
     ListTagsOrderBy,
     ListTagsParams,
     OrderDirection,
     Tag,
 } from '@gorgias/api-queries'
+import {AxiosRequestConfig} from 'axios'
 
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'

@@ -4,13 +4,13 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {appQueryClient} from 'api/queryClient'
+import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
+import {getCustomFields} from 'custom-fields/resources'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import client from 'models/api/resources'
-import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {getCustomFields} from 'custom-fields/resources'
 import {initialState as newMessageState} from 'state/newMessage/reducers'
 import {initialState as ticketState} from 'state/ticket/reducers'
 import {StoreDispatch} from 'state/types'

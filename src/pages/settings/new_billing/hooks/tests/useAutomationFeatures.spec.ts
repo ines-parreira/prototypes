@@ -1,9 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {
     FLOWS,
     ORDER_MANAGEMENT,
     ARTICLE_RECOMMENDATION,
 } from 'pages/automate/common/components/constants'
+
 import useAutomationFeatures from '../useAutomationFeatures'
 
 jest.mock('launchdarkly-react-client-sdk')

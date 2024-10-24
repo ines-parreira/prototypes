@@ -1,5 +1,6 @@
 import {useListSlaPolicies} from '@gorgias/api-queries'
 import React, {PropsWithChildren} from 'react'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ServiceLevelAgreementsEmptyState} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
 

@@ -1,9 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
-import {ManagedRulesSlugs} from 'state/rules/types'
+import React, {ComponentProps} from 'react'
 
 import {emptyManagedRule} from 'fixtures/rule'
+import {ManagedRulesSlugs} from 'state/rules/types'
+
 import {AutoReplyReturnModal} from '../AutoReplyReturnModal'
 
 describe('<AutoReplyReturnModal/>', () => {

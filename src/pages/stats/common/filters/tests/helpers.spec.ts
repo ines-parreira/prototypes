@@ -1,12 +1,13 @@
-import {Channel} from 'services/channels'
+// eslint-disable-next-line import/order
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {
     filterChannels,
     logSegmentEvent,
 } from 'pages/stats/common/filters/helpers'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {Channel} from 'services/channels'
 
 const mockedChannels = [
     {

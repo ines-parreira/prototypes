@@ -1,19 +1,21 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import moment from 'moment'
 import mockDate from 'mockdate'
+import moment from 'moment'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {UserSetting, UserSettingType} from 'config/types/user'
 import client from 'models/api/resources'
-import {StoreDispatch} from 'state/types'
 import history from 'pages/history'
 import * as notificationActions from 'state/notifications/actions'
+import {StoreDispatch} from 'state/types'
+
 import * as actions from '../actions'
-import {initialState} from '../reducers'
 import * as types from '../constants'
 import {OPEN_TWO_FA_MODAL_URL, TWO_FA_REQUIRED_AFTER_DAYS} from '../constants'
+import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

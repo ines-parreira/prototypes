@@ -1,5 +1,6 @@
-import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import React from 'react'
+
 import ChurnMitigationOfferFooter from '../ChurnMitigationOfferFooter'
 
 describe('ChurnMitigationOfferFooter', () => {

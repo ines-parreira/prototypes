@@ -1,7 +1,7 @@
-import {StoreState} from 'state/types'
-
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {StoreState} from 'state/types'
+
 import {initialState as uiState} from '../reducer'
 import {getCurrentHelpCenterId, getViewLanguage} from '../selectors'
 

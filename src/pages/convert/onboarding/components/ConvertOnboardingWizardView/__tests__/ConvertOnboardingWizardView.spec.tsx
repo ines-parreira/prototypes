@@ -1,31 +1,33 @@
-import React from 'react'
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {channelConnection} from 'fixtures/channelConnection'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import history from 'pages/history'
+import {render, fireEvent, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {campaign} from 'fixtures/campaign'
-import {
-    useCreateCampaign,
-    useListCampaigns,
-} from 'models/convert/campaign/queries'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {channelConnection} from 'fixtures/channelConnection'
 import {
     convertBundle,
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import {
+    useCreateCampaign,
+    useListCampaigns,
+} from 'models/convert/campaign/queries'
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
+import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import history from 'pages/history'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
 const queryClient = mockQueryClient()

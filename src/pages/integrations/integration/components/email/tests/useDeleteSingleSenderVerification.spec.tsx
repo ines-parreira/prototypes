@@ -1,8 +1,10 @@
-import {Provider} from 'react-redux'
-import React from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
-import {mockStore} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {deleteVerification} from 'models/singleSenderVerification/resources'
+import {mockStore} from 'utils/testing'
+
 import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')

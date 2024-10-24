@@ -1,16 +1,17 @@
+import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
-import {renderHook} from '@testing-library/react-hooks'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import thunk from 'redux-thunk'
+
+import {UserSettingType} from 'config/types/user'
 import {
     DateFormatType,
     TimeFormatType,
     DateAndTimeFormatting,
 } from 'constants/datetime'
-import {UserSettingType} from 'config/types/user'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
 describe('useGetDateAndTimeFormat', () => {
     it('should test en-GB format', () => {

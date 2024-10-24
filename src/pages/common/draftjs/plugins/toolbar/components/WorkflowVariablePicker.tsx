@@ -1,10 +1,10 @@
-import React, {useRef, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef, useState} from 'react'
 
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import Button, {ButtonSize} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 
 export type WorkflowVariablePickerProps = {

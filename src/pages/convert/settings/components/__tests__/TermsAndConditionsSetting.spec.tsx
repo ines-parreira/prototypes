@@ -1,12 +1,13 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {Language as MockLanguage} from 'constants/languages'
-import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
-import {mockStore} from 'utils/testing'
-import {DisclaimerSettings} from 'pages/convert/settings/types'
 import {chatIntegrationFixtures} from 'fixtures/chat'
+import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
+import {DisclaimerSettings} from 'pages/convert/settings/types'
+import {mockStore} from 'utils/testing'
 
 const store = mockStore({})
 

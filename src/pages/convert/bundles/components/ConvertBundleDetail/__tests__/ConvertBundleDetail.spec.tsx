@@ -1,15 +1,17 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {QueryClientProvider} from '@tanstack/react-query'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import ConvertBundleDetail from '../ConvertBundleDetail'
 
 const mockStore = configureMockStore([thunk])

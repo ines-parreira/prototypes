@@ -1,28 +1,29 @@
+import moment from 'moment'
 import React, {useState} from 'react'
 
-import moment from 'moment'
+import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {CurrentProductsUsages} from 'state/billing/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentDomain, isTrialing} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
+import {CurrentProductsUsages} from 'state/billing/types'
+import {getCurrentDomain, isTrialing} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+
 import {
     BILLING_SUPPORT_EMAIL,
     CANCEL_AUTOMATION_REASONS,
     DATE_FORMAT,
     ZAPIER_REMOVE_AAO_HOOK,
 } from '../../constants'
-import {sendRemoveNotificationZap} from '../../utils/sendRemoveNotificationZap'
 import useAutomationFeatures from '../../hooks/useAutomationFeatures'
+import {sendRemoveNotificationZap} from '../../utils/sendRemoveNotificationZap'
 import css from './CancelAAOModal.less'
 import ReasonsAAOModal from './ReasonsAAOModal'
 

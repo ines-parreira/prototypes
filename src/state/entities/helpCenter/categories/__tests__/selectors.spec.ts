@@ -3,25 +3,25 @@ import _keyBy from 'lodash/keyBy'
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {getArticlesResponseFixture} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
-import {StoreState} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {
     getInitialRootCategory,
     getRootCategory,
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {StoreState} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
-import {
-    getCategories,
-    getCategoriesWithArticles,
-    hasNestedCategories,
-} from '../selectors'
 import {
     getCategoryById,
     getNonRootCategoriesById,
     getParentCategories,
 } from '..'
+import {
+    getCategories,
+    getCategoriesWithArticles,
+    hasNestedCategories,
+} from '../selectors'
 
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)

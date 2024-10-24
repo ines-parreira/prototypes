@@ -1,44 +1,44 @@
+import {Label} from '@gorgias/ui-kit'
 import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent, ContextType, useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
-import {Label} from '@gorgias/ui-kit'
-import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
-import {closest} from 'services/shortcutManager/utils'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import {connect, ConnectedProps} from 'react-redux'
 
+import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import {
     addVideo,
     linkifyWithTemplate,
     removeLink,
 } from 'pages/common/draftjs/plugins/utils'
+import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
+import {closest} from 'services/shortcutManager/utils'
+
+import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
 import {
     focusToTheEndOfContent,
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
 } from 'utils/editor'
-import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
 import {linkify} from 'utils/linkify'
 
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
-import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import CheckBox from 'pages/common/forms/CheckBox'
-import {getTooltipTourConfiguration} from '../utils'
-import {ActionInjectedProps, ActionName} from '../types'
 import {
     ToolbarContextType,
     withToolbarContext,
     ToolbarContext,
 } from '../ToolbarContext'
-import Popover from './ButtonPopover'
-
+import {ActionInjectedProps, ActionName} from '../types'
+import {getTooltipTourConfiguration} from '../utils'
 import css from './AddLink.less'
 import AddUtm from './AddUtm'
+import Popover from './ButtonPopover'
 
 const tabs = [
     {value: 'url', label: 'URL'},

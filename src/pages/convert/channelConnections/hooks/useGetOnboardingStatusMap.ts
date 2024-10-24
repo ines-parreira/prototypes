@@ -1,8 +1,9 @@
 import {useMemo} from 'react'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {useListChannelConnections} from 'models/convert/channelConnection/queries'
 import {ChannelConnectionChannel} from 'models/convert/channelConnection/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'

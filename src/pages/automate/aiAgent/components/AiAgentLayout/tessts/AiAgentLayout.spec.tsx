@@ -1,8 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {renderWithRouter} from 'utils/testing'
+import React, {ComponentProps} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {renderWithRouter} from 'utils/testing'
+
 import {AiAgentLayout} from '../AiAgentLayout'
 
 jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({

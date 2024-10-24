@@ -1,8 +1,8 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import {fromJS} from 'immutable'
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useParams} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
-import {fromJS} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,33 +10,33 @@ import {
     PopoverBody,
     Table,
 } from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
+import {bindActionCreators} from 'redux'
 
 import {useAppNode} from 'appNode'
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {ZENDESK_INTEGRATION_TYPE} from 'constants/integration'
+import useEffectOnce from 'hooks/useEffectOnce'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {IntegrationType} from 'models/integration/constants'
+import {ZendeskIntegration} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import settingsCss from 'pages/settings/settings.less'
+import {getTimezone} from 'state/currentUser/selectors'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {getTimezone} from 'state/currentUser/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {ZENDESK_INTEGRATION_TYPE} from 'constants/integration'
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
-import settingsCss from 'pages/settings/settings.less'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useEffectOnce from 'hooks/useEffectOnce'
-
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import {ZendeskIntegration} from 'models/integration/types'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {ImportStatus} from './types'
-import {getImportCompletionDate} from './utils'
+import {RootState, StoreDispatch} from 'state/types'
+
+import EditCredentialsForm from './EditCredentialsForm'
 import ImportStatusAlert from './ImportStatusAlert'
 import css from './ImportZendeskDetail.less'
-import EditCredentialsForm from './EditCredentialsForm'
+import {ImportStatus} from './types'
+import {getImportCompletionDate} from './utils'
 
 export const ImportZendeskDetail = ({
     fetchIntegration,

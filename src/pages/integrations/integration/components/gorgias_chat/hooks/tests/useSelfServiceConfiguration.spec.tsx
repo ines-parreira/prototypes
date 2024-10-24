@@ -1,10 +1,12 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
 import {act, renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {waitFor} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
+import React from 'react'
+
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 
 const initialSelfServiceConfiguration = {

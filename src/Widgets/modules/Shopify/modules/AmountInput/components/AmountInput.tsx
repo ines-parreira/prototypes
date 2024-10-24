@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import React, {PureComponent} from 'react'
 
 import {NON_FRACTIONAL_CURRENCIES} from 'constants/integrations/shopify'
 import NumberInput from 'pages/common/forms/input/NumberInput'

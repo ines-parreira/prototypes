@@ -3,9 +3,12 @@ import {ThemeProvider} from '@emotion/react'
 import styled from '@emotion/styled'
 import classnames from 'classnames'
 import {List} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {createContext, ReactNode} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import noise from 'assets/img/integrations/noise.svg'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
@@ -23,12 +26,10 @@ import {
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import noise from 'assets/img/integrations/noise.svg'
+
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,

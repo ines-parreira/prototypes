@@ -1,12 +1,14 @@
-import {useMemo} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {useMemo} from 'react'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {
     aiGeneratedGuidanceKeys,
     useGetAIGeneratedGuidances,
 } from 'models/aiAgent/queries'
-import useAppSelector from 'hooks/useAppSelector'
+import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {getStoreIntegrations} from 'state/integrations/selectors'
+
 import {mapAIGuidanceDTOToAIGuidance} from '../utils/guidance.utils'
 import {useGuidanceArticles} from './useGuidanceArticles'
 

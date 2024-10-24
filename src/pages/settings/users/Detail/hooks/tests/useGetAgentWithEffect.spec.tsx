@@ -1,10 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
 import {agents} from 'fixtures/agents'
-import {StoreDispatch} from 'state/types'
-import {useGetAgent} from 'models/agents/queries'
 import {handleError} from 'hooks/agents/errorHandler'
+import {useGetAgent} from 'models/agents/queries'
+import {StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 import {useGetAgentWithEffects} from '../useGetAgentWithEffect'
 

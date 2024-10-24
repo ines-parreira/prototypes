@@ -1,8 +1,9 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
+import React from 'react'
+
 import * as shopifyModels from 'models/integration/resources/shopify'
 import {ShopifyIntegration, ShopifyTags} from 'models/integration/types'
+import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 
 jest.mock('models/integration/resources/shopify')

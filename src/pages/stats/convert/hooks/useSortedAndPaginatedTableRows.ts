@@ -1,13 +1,13 @@
 import {useMemo} from 'react'
+
 import {OrderDirection} from 'models/api/types'
 
-import {getDataFromTableCell} from '../utils/getDataFromTableCell'
-
+import {CampaignTableContentCell} from '../types/CampaignTableContentCell'
 import {
     CampaignTableKeys,
     isCampaignTableKey,
 } from '../types/enums/CampaignTableKeys.enum'
-import {CampaignTableContentCell} from '../types/CampaignTableContentCell'
+import {getDataFromTableCell} from '../utils/getDataFromTableCell'
 
 type Options = {
     offset: number

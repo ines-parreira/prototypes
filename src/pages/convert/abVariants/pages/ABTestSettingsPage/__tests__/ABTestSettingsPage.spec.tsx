@@ -1,15 +1,16 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {campaignWithABGroup} from 'fixtures/abGroup'
 
+import {channelConnection} from 'fixtures/channelConnection'
+import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {assumeMock, renderWithStore} from 'utils/testing'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {channelConnection} from 'fixtures/channelConnection'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import {assumeMock, renderWithStore} from 'utils/testing'
+
 import ABTestSettingPage from '../ABTestSettingsPage'
 
 jest.mock('pages/convert/abVariants/components/VariantsList', () => () => (

@@ -1,5 +1,5 @@
-import {Event, EventObjectType, EventType} from 'models/event/types'
 import {CursorMeta} from 'models/api/types'
+import {Event, EventObjectType, EventType} from 'models/event/types'
 
 export const events: Event[] = [
     {

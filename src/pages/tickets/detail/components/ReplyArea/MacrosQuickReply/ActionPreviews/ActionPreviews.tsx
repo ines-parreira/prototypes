@@ -1,18 +1,17 @@
-import React, {ComponentType} from 'react'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {getActionTemplate} from 'utils'
+import {fromJS} from 'immutable'
+import React, {ComponentType} from 'react'
 
 import {ActionTemplateExecution} from 'config'
 import {MacroDraft} from 'models/macro/types'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import Preview from 'pages/tickets/common/macros/Preview'
-
-import {ComplexActionPreview} from './ComplexActionPreview'
-import TagActionPreview from './TagActionPreview'
-import {SimpleActionPreview} from './SimpleActionPreview'
+import {getActionTemplate} from 'utils'
 
 import css from './ActionPreviews.less'
+import {ComplexActionPreview} from './ComplexActionPreview'
+import {SimpleActionPreview} from './SimpleActionPreview'
+import TagActionPreview from './TagActionPreview'
 
 type Props = {
     actions: MacroDraft['actions']

@@ -1,11 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RootState} from 'state/types'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+
 import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 const START_DATE = '2021-02-03T00:00:00.000Z'
 const END_DATE = '2021-02-03T23:59:59.999Z'

@@ -1,10 +1,11 @@
+import classnames from 'classnames'
 import React from 'react'
 import {Popover, PopoverBody} from 'reactstrap'
-import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
 import {
     setSourceExtra,
     setShowConvertToForwardPopover,
@@ -13,8 +14,6 @@ import {
     getShowConvertToForwardPopover,
     getNewMessageExtra,
 } from 'state/newMessage/selectors'
-
-import Button from 'pages/common/components/button/Button'
 
 import css from './ConvertToForwardPopover.less'
 

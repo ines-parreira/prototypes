@@ -1,9 +1,9 @@
 // g/integrations/twitter/schemas.py
 import {IntegrationType} from '../constants'
 
+import type {Integration} from './'
 import type {IntegrationBase} from './base'
 import type {OAuth2} from './misc'
-import type {Integration} from './'
 
 export type TwitterIntegration = IntegrationBase & {
     type: IntegrationType.Twitter

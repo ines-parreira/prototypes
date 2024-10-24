@@ -1,8 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import {assumeMock} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import {useAiAgentNavigation} from '../useAiAgentNavigation'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({

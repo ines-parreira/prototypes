@@ -1,6 +1,7 @@
+import Clipboard from 'clipboard'
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     Button,
     Breadcrumb,
@@ -13,11 +14,10 @@ import {
     Col,
     FormGroup,
 } from 'reactstrap'
-import Clipboard from 'clipboard'
 
-import {RootState} from 'state/types'
 import {IntegrationType} from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
+import {RootState} from 'state/types'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import css from '../../../../settings/settings.less'

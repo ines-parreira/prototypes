@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
+
 import useDebouncedCallback from '../useDebouncedCallback'
 
 jest.useFakeTimers()

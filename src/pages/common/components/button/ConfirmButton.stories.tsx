@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {action} from '@storybook/addon-actions'
 import {Meta, Story} from '@storybook/react'
 import _omit from 'lodash/omit'
+import React, {ComponentProps} from 'react'
 
 import ConfirmButton from './ConfirmButton'
 

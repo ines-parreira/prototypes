@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
-import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+
+import {LocaleCode} from 'models/helpCenter/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
-import {LocaleCode} from 'models/helpCenter/types'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 
 type Props = {
     supportedLocales: LocaleCode[]

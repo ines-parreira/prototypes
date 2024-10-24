@@ -1,9 +1,4 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-
+import {QueryClientProvider} from '@tanstack/react-query'
 import {
     act,
     createEvent,
@@ -12,14 +7,17 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
 
-import {QueryClientProvider} from '@tanstack/react-query'
+import {Provider} from 'react-redux'
+
 import routerDom, {useParams} from 'react-router-dom'
 
 import configureMockStore from 'redux-mock-store'
-import {mockFlags} from 'jest-launchdarkly-mock'
-
-import {createMemoryHistory} from 'history'
+import thunk from 'redux-thunk'
 
 import {
     campaignWithABGroup,
@@ -28,24 +26,23 @@ import {
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsState} from 'fixtures/integrations'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-
 import {
     useGetCampaign,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {
     abVariantAddUrl,
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {getLDClient} from 'utils/launchDarkly'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {ABGroupView} from '../ABGroupPage'
 

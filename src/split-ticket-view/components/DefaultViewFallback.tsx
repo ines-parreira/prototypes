@@ -3,8 +3,8 @@ import React, {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewType} from 'models/view/types'
 import {getViewIdToDisplay} from 'state/views/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 import {TicketListView} from 'ticket-list-view'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 type Params = {
     ticketId?: string

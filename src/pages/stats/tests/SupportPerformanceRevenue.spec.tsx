@@ -1,46 +1,46 @@
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import useStatResource from 'hooks/reporting/useStatResource'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
+import {
+    REVENUE_OVERVIEW,
+    REVENUE_PER_AGENT,
+    REVENUE_PER_DAY,
+} from 'config/stats'
+import {account} from 'fixtures/account'
+import {agents} from 'fixtures/agents'
+
+import {billingState} from 'fixtures/billing'
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {convertStatusOk} from 'fixtures/convert'
 import {
     revenueOverview,
     revenuePerAgent,
     revenuePerDay,
     revenuePerTicket,
 } from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {
-    REVENUE_OVERVIEW,
-    REVENUE_PER_AGENT,
-    REVENUE_PER_DAY,
-} from 'config/stats'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
-import {account} from 'fixtures/account'
-import {AccountFeature} from 'state/currentAccount/types'
-
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {convertStatusOk} from 'fixtures/convert'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import useStatResource from 'hooks/reporting/useStatResource'
 import {useListCampaigns} from 'models/convert/campaign/queries'
-import {channelConnection} from 'fixtures/channelConnection'
-import {campaign} from 'fixtures/campaign'
+import {IntegrationType} from 'models/integration/constants'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {TagFilterInstanceId} from 'models/stat/types'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
+import {AccountFeature} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))

@@ -1,20 +1,20 @@
 import {Tag} from '@gorgias/api-queries'
-import React, {ComponentProps} from 'react'
-import {QueryClientProvider} from '@tanstack/react-query'
 import {Meta, StoryFn} from '@storybook/react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
 import {appQueryClient} from 'api/queryClient'
-
-import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 
 import {reportingKeys} from 'models/reporting/queries'
 import {
     satisfiedOrBreachedTicketsQueryFactory,
     satisfiedOrBreachedTicketsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
+
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
 const slaPoliciesResponse = {

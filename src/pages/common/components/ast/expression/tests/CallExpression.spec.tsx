@@ -1,14 +1,14 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
-import {ObjectExpressionPropertyKey} from 'state/rules/types'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import CallExpression from 'pages/common/components/ast/expression/CallExpression'
 import Expression from 'pages/common/components/ast/expression/Expression'
 import Statement from 'pages/common/components/ast/statements/Statement'
+import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {ObjectExpressionPropertyKey} from 'state/rules/types'
 import {renderWithStore} from 'utils/testing'
-import CallExpression from 'pages/common/components/ast/expression/CallExpression'
 
 jest.mock(
     'pages/common/components/ast/operations/DeleteBinaryExpression',

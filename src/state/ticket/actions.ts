@@ -1,11 +1,11 @@
+import {createAction} from '@reduxjs/toolkit'
+import {AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _pick from 'lodash/pick'
-import {AxiosError} from 'axios'
-import {createAction} from '@reduxjs/toolkit'
-import {dismissNotification} from 'reapop'
-import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
+import {Moment} from 'moment'
+import {dismissNotification} from 'reapop'
 
 import {
     TicketChannel,
@@ -17,24 +17,23 @@ import {
     setInvalidCustomFieldsToErrored,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
+import goToTicket from 'common/utils/goToTicket'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
-import {MacroActionName} from 'models/macroAction/types'
-import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {CustomFields, CustomFieldState} from 'custom-fields/types'
-import GorgiasApi from 'services/gorgiasApi'
-import socketManager from 'services/socketManager/socketManager'
-import {markChatAsRead} from 'state/chats/actions'
-import * as newMessageActions from 'state/newMessage/actions'
-import * as newMessageTypes from 'state/newMessage/constants'
-import {getSourceTypeCache} from 'state/newMessage/responseUtils'
-import {notify} from 'state/notifications/actions'
-import * as ticketsSelectors from 'state/tickets/selectors'
-import * as viewsSelectors from 'state/views/selectors'
-import {isCurrentlyOnTicket} from 'utils'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-
+import client from 'models/api/resources'
+import {getCustomer} from 'models/customer/resources'
+import {
+    EcommerceStore,
+    Shopper,
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
+import {Macro as MacroModel} from 'models/macro/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {Member, Team} from 'models/team/types'
+import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {
     Action,
     NextPrevTicketPartial,
@@ -44,43 +43,43 @@ import {
     TicketMessageIntent,
 } from 'models/ticket/types'
 import {View, ViewType} from 'models/view/types'
-
-import {getChannelsByType} from 'state/integrations/selectors'
+import history from 'pages/history'
+import GorgiasApi from 'services/gorgiasApi'
+import socketManager from 'services/socketManager/socketManager'
 import {
     JoinEventType,
     SocketEventType,
     TicketMessageFailedEvent,
 } from 'services/socketManager/types'
+import {markChatAsRead} from 'state/chats/actions'
+import {InTicketSuggestionState} from 'state/entities/rules/types'
+import {getChannelsByType} from 'state/integrations/selectors'
+import {Macro} from 'state/macro/types'
+import * as newMessageActions from 'state/newMessage/actions'
+import * as newMessageTypes from 'state/newMessage/constants'
+import {getSourceTypeCache} from 'state/newMessage/responseUtils'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {notify} from 'state/notifications/actions'
 import {
     Notification,
     NotificationButton,
     NotificationStatus,
 } from 'state/notifications/types'
-import history from 'pages/history'
-import client from 'models/api/resources'
+import * as ticketsSelectors from 'state/tickets/selectors'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
-import {Macro} from 'state/macro/types'
-import {getCustomer} from 'models/customer/resources'
-import {Member, Team} from 'models/team/types'
-import {Macro as MacroModel} from 'models/macro/types'
-import {mapNormalizedToArray} from 'models/ticket/mappers'
-
-import {CustomerExternalData} from 'models/customerExternalData/types'
+import * as viewsSelectors from 'state/views/selectors'
 import {nestedReplace} from 'tickets/common/utils'
-import {
-    EcommerceStore,
-    Shopper,
-    ShopperAddress,
-    ShopperOrder,
-} from 'models/customerEcommerceData/types'
-import goToTicket from 'common/utils/goToTicket'
+import {isCurrentlyOnTicket} from 'utils'
+
+import {getLDClient} from 'utils/launchDarkly'
+
+import * as types from './constants'
+import notifyOnNewMessage from './notifyOnNewMessage'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
 } from './utils'
-import notifyOnNewMessage from './notifyOnNewMessage'
-import * as types from './constants'
 
 export const mergeTicket =
     (ticket: Ticket) =>

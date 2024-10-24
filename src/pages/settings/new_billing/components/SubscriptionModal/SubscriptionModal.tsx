@@ -1,23 +1,24 @@
 import React, {useCallback, useMemo, useState} from 'react'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
+import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
+import useAppSelector from 'hooks/useAppSelector'
+import {Plan, ProductType} from 'models/billing/types'
+import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
+import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
-import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import {
     BILLING_SUPPORT_EMAIL,
     ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
-import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
-import useAppSelector from 'hooks/useAppSelector'
+import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
+import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
-import {Plan, ProductType} from 'models/billing/types'
+
 import css from './SubscriptionModal.less'
 
 type Props = {

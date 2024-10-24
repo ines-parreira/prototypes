@@ -1,10 +1,11 @@
-import React from 'react'
-import {waitFor, render, screen, fireEvent} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {assumeMock} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {waitFor, render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import CollectionSelector from '../CollectionSelector'
 
 jest.mock('models/integration/queries')

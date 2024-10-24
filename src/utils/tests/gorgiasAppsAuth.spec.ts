@@ -1,6 +1,7 @@
-import MockAdapter from 'axios-mock-adapter'
 import axios, {AxiosInstance} from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
+
 import client from 'models/api/resources'
 
 import {buildGorgiasAppsAuthInterceptor} from '../gorgiasAppsAuth'

@@ -1,37 +1,34 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {fromJS} from 'immutable'
-import {render, waitFor} from '@testing-library/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {AttachmentEnum} from 'common/types'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {campaignProductRecommendationAttachment} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {integrationsState} from 'fixtures/integrations'
 import {
     useCreateCampaign,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {channelConnection} from 'fixtures/channelConnection'
-import {integrationsState} from 'fixtures/integrations'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {RootState, StoreDispatch} from 'state/types'
-
-import {assumeMock} from 'utils/testing'
-import {getLDClient} from 'utils/launchDarkly'
-
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
-import {campaignProductRecommendationAttachment} from 'fixtures/campaign'
-import {AttachmentEnum} from 'common/types'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {getLDClient} from 'utils/launchDarkly'
+import {assumeMock} from 'utils/testing'
+
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')

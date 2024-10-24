@@ -1,10 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     IntegrationType,

@@ -1,36 +1,23 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Link, NavLink, useParams, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {useDismissFlag} from 'hooks/useDismissFlag'
 import {useModalManager} from 'hooks/useModalManager'
 
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-
-import {usePauseABGroup} from 'pages/convert/abVariants/hooks/usePauseABGroup'
-import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
-import {useStopABGroup} from 'pages/convert/abVariants/hooks/useStopABGroup'
-
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {
-    CONVERT_ROUTE_PARAM_NAME,
-    CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
-} from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
-import history from 'pages/history'
 
 import PageHeader from 'pages/common/components/PageHeader'
-
-import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import StartABTestModal from 'pages/convert/abVariants/components/StartABTestModal'
 import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal'
+import {usePauseABGroup} from 'pages/convert/abVariants/hooks/usePauseABGroup'
+import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
+import {useStopABGroup} from 'pages/convert/abVariants/hooks/useStopABGroup'
+import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
 
 import {
     abVariantAddUrl,
@@ -40,6 +27,15 @@ import {
 } from 'pages/convert/abVariants/urls'
 
 import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import {
+    CONVERT_ROUTE_PARAM_NAME,
+    CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
+} from 'pages/convert/common/constants'
+import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import history from 'pages/history'
 
 import css from './ABGroupContainer.less'
 

@@ -1,7 +1,8 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 
 import {useFlag} from 'common/flags'
+
 import ValidateVerificationCodeStep from '../ValidateVerificationCodeStep'
 
 jest.mock('common/flags', () => ({useFlag: jest.fn()}))

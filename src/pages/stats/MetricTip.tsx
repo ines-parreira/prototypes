@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 
 import React, {PropsWithChildren, ReactNode} from 'react'
+
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/MetricTip.less'
 

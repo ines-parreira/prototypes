@@ -1,11 +1,13 @@
 import {useMemo} from 'react'
+
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {searchResultRangeQueryFactory} from 'models/reporting/queryFactories/help-center/searchResult'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {searchResultRangeQueryFactory} from 'models/reporting/queryFactories/help-center/searchResult'
 import {StatsFilters} from 'models/stat/types'
+
 import {OneDimensionalDataItem} from '../../types'
 
 type CubeJsDateItem = {

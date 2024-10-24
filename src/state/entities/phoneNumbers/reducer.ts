@@ -2,7 +2,6 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {OldPhoneNumber} from 'models/phoneNumber/types'
 
-import {PhoneNumbersState} from './types'
 import {
     phoneNumberCreated,
     phoneNumberDeleted,
@@ -10,6 +9,7 @@ import {
     phoneNumberUpdated,
     phoneNumbersFetched,
 } from './actions'
+import {PhoneNumbersState} from './types'
 
 const initialState: PhoneNumbersState = {}
 

@@ -1,5 +1,5 @@
-import React from 'react'
 import {TooltipLabelStyle, TooltipModel} from 'chart.js'
+import React from 'react'
 
 import css from './ChartTooltip.less'
 

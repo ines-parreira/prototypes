@@ -1,22 +1,23 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
+
 import {SegmentEvent, logEvent} from 'common/segment'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import useEffectOnce from 'hooks/useEffectOnce'
 import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {getViewLanguage} from 'state/ui/helpCenter'
+
+import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import LibrarySkeleton from './components/AIArticlesLibrarySkeleton/AIArticlesLibrarySkeleton'
-import AIArticlesLibraryList from './components/AIArticlesLibraryList'
-import AIArticlesLibraryPreview from './components/AIArticlesLibraryPreview'
-import {useHelpCenterAIArticlesLibrary} from './hooks/useHelpCenterAIArticlesLibrary'
+import css from './AIArticlesLibraryView.less'
 import AIArticleArchiveModal from './components/AIArticleArchiveModal/AIArticleArchiveModal'
 import ArticleEditor from './components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor'
-
-import css from './AIArticlesLibraryView.less'
+import AIArticlesLibraryList from './components/AIArticlesLibraryList'
+import AIArticlesLibraryPreview from './components/AIArticlesLibraryPreview'
+import LibrarySkeleton from './components/AIArticlesLibrarySkeleton/AIArticlesLibrarySkeleton'
 import useAILibraryActions from './hooks/useAILibraryActions'
+import {useHelpCenterAIArticlesLibrary} from './hooks/useHelpCenterAIArticlesLibrary'
 
 const AIArticlesLibraryView = () => {
     const history = useHistory()

@@ -1,12 +1,14 @@
-import React from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {HELP_CENTER_EMBED_FORM_TEXTS} from 'pages/settings/helpCenter/constants'
 import {useCreatePageEmbedment} from 'pages/settings/helpCenter/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
+
 import {MODAL_LABELS} from '../constants'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 

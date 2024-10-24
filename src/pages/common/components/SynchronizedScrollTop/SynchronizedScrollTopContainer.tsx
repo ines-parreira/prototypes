@@ -1,5 +1,5 @@
-import React, {useRef, useEffect, HTMLProps, useContext} from 'react'
 import classNames from 'classnames'
+import React, {useRef, useEffect, HTMLProps, useContext} from 'react'
 
 import css from './SynchronizedScrollTopContainer.less'
 import SynchronizedScrollTopContext from './SynchronizedScrollTopContext'

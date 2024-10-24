@@ -1,5 +1,5 @@
-import React, {HTMLProps, ReactNode} from 'react'
 import classNames from 'classnames'
+import React, {HTMLProps, ReactNode} from 'react'
 
 import css from './BodyCellContent.less'
 

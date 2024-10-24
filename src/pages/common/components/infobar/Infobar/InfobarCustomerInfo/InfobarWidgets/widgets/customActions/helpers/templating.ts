@@ -1,5 +1,5 @@
-import {renderTemplate} from 'pages/common/utils/template'
 import {TemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {renderTemplate} from 'pages/common/utils/template'
 
 const TEMPLATE_VARIABLES = ['listIndex', 'integrationId', 'appId'] as const
 

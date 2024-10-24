@@ -1,19 +1,19 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {QueryClientProvider} from '@tanstack/react-query'
-import MockAdapter from 'axios-mock-adapter'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import client from 'models/api/resources'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import TextField from '../TextField'
 

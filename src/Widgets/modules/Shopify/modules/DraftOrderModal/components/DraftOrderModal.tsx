@@ -1,13 +1,31 @@
+import {fromJS, List, Map} from 'immutable'
 import React, {useCallback, useContext, useMemo, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button} from 'reactstrap'
-import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {Button} from 'reactstrap'
 
+import {DateAndTimeFormatting} from 'constants/datetime'
+import {Product, Variant} from 'constants/integrations/types/shopify'
+import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import {
+    IntegrationType,
+    IntegrationDataItem,
+    ShopifyIntegration,
+} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Spinner from 'pages/common/components/Spinner'
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 
-import {Product, Variant} from 'constants/integrations/types/shopify'
-import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
     addRow,
@@ -18,35 +36,17 @@ import {
     onLineItemChange,
     onReset,
 } from 'state/infobarActions/shopify/createOrder/actions'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {
-    IntegrationType,
-    IntegrationDataItem,
-    ShopifyIntegration,
-} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import Spinner from 'pages/common/components/Spinner'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Modal from 'pages/common/components/modal/Modal'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import OrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
+import css from './DraftOrderModal.less'
 import EmailInvoicePopover from './EmailInvoicePopover'
 import OrderFooter from './OrderFooter'
-import css from './DraftOrderModal.less'
 
 type OwnProps = {
     draftOrder?: Map<any, any>

@@ -1,11 +1,11 @@
-import React from 'react'
 import {HttpResponse, queryKeys, useUpdateSlaPolicy} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
+import React from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 import LandingPage from '../../LandingPage/LandingPage'
 import SLAListView from '../views/SLAListView'

@@ -1,3 +1,5 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     AriaAttributes,
     InputHTMLAttributes,
@@ -5,8 +7,6 @@ import React, {
     ReactNode,
     useCallback,
 } from 'react'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Spinner from 'pages/common/components/Spinner'

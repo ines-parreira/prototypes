@@ -1,18 +1,19 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
-import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {
     BUSIEST_TIME_OF_DAY_PAGE_TITLE,
     BusiestTimesOfDays,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {RootState} from 'state/types'
 import {busiestTimesSlice, initialState} from 'state/ui/stats/busiestTimesSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'

@@ -1,9 +1,10 @@
 import {fromJS, Map, List} from 'immutable'
-import {createSelector} from 'reselect'
 import moment from 'moment'
+import {createSelector} from 'reselect'
 
 import {UserSettingType} from 'config/types/user'
 import * as viewsConfig from 'config/views'
+import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
 import {
     EntityType,
@@ -14,6 +15,11 @@ import {
     ViewVisibility,
 } from 'models/view/types'
 import {
+    TicketNavbarElement,
+    TicketNavbarSectionElement,
+} from 'pages/tickets/navbar/TicketNavbarContent'
+import {tryLocalStorage} from 'services/common/utils'
+import {
     DEPRECATED_getViewsOrderingSetting,
     getViewsOrderingSetting,
     getViewsVisibilitySettings,
@@ -23,23 +29,16 @@ import {
     makeGetSettingsByType,
 } from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {createImmutableSelector, isCurrentlyOnView} from 'utils'
-import {BASE_VIEW_ID} from 'constants/view'
-
-import {
-    TicketNavbarElement,
-    TicketNavbarSectionElement,
-} from 'pages/tickets/navbar/TicketNavbarContent'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
 } from 'state/ui/ticketNavbar/selectors'
-import {tryLocalStorage} from 'services/common/utils'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import {createImmutableSelector, isCurrentlyOnView} from 'utils'
 
-import {sortViews} from './utils'
-import {ViewsState} from './types'
 import {SYSTEM_VIEWS} from './constants'
+import {ViewsState} from './types'
+import {sortViews} from './utils'
 
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})

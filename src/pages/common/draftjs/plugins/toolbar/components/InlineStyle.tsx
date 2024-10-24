@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import {RichUtils} from 'draft-js'
+import React, {useMemo} from 'react'
 
 import {ActionInjectedProps} from '../types'
 

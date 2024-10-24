@@ -2,13 +2,12 @@ import React from 'react'
 
 import {getConfigByType} from 'config/views'
 import useAppSelector from 'hooks/useAppSelector'
+import css from 'pages/common/components/ViewTable/Table.less'
 import {
     getActiveView,
     makeGetViewCount,
     isDirty as getIsDirty,
 } from 'state/views/selectors'
-
-import css from 'pages/common/components/ViewTable/Table.less'
 
 type Props = {
     colSize: number

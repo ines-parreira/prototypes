@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
 import classnames from 'classnames'
+import React, {useState} from 'react'
 import {DropdownItem} from 'reactstrap'
-import searchInputCss from 'pages/common/forms/SearchInput/SearchInput.less'
+
 import {
     BigCommerceCustomProduct,
     BigCommerceProduct,
@@ -11,6 +11,8 @@ import {
 } from 'models/integration/types'
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import searchInputCss from 'pages/common/forms/SearchInput/SearchInput.less'
+
 import {AddCustomProductPopover} from './AddCustomProductPopover'
 
 import css from './OrderModal.less'

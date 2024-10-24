@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
-import {getMoneySymbol} from 'utils/getMoneySymbol'
 import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 // TODO: Revisit the summary text
 // We have to compute the offer summary everytime because this field is not part of the

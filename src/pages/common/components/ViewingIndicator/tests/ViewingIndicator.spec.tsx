@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 

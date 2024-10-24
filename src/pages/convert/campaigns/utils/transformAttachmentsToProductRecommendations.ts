@@ -1,4 +1,5 @@
 import {List} from 'immutable'
+
 import {
     attachmentIsProductRecommendation,
     AttachmentType,

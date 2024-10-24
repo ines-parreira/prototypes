@@ -1,17 +1,23 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import Accordion from 'pages/common/components/accordion/Accordion'
+import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
+import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+
+import {ChatSettingsFormComponent} from '../components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
+import {EmailFormComponent} from '../components/StoreConfigForm/FormComponents/EmailFormComponent'
+import {SignatureFormComponent} from '../components/StoreConfigForm/FormComponents/SignatureFormComponent'
+import {ToneOfVoiceFormComponent} from '../components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -19,17 +25,12 @@ import {
     AiAgentChannel,
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
-
-import {ToneOfVoiceFormComponent} from '../components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
-import {SignatureFormComponent} from '../components/StoreConfigForm/FormComponents/SignatureFormComponent'
-import {EmailFormComponent} from '../components/StoreConfigForm/FormComponents/EmailFormComponent'
-import {ChatSettingsFormComponent} from '../components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
 import {FormValues} from '../types'
-import css from './AiAgentOnboardingWizardPersonalize.less'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
-import {TicketPreview} from './TicketPreview'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
+import css from './AiAgentOnboardingWizardPersonalize.less'
 import {HeaderSection} from './HeaderSection'
+import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
+import {TicketPreview} from './TicketPreview'
 
 type Props = AiAgentOnboardingWizardProps
 

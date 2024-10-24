@@ -1,14 +1,15 @@
-import React from 'react'
-import MockAdapter from 'axios-mock-adapter'
 import {Call, Device} from '@twilio/voice-sdk'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
 
-import {mockIncomingCall, mockDevice, mockOutgoingCall} from 'tests/twilioMocks'
-import {initialState} from 'state/twilio/voiceDevice'
-import client from 'models/api/resources'
-import {assumeMock, renderWithRouter} from 'utils/testing'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
+import client from 'models/api/resources'
+import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import {initialState} from 'state/twilio/voiceDevice'
+import {mockIncomingCall, mockDevice, mockOutgoingCall} from 'tests/twilioMocks'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
 jest.mock('@twilio/voice-sdk')

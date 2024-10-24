@@ -1,24 +1,25 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {PlanInterval, Plan, ProductType} from 'models/billing/types'
+import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
+import {Value} from 'pages/common/forms/SelectField/types'
+import CounterText from 'pages/settings/new_billing/components/CounterText'
+import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
+import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
+import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
+
 import {
     ENTERPRISE_PRICE_ID,
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
-import {Value} from 'pages/common/forms/SelectField/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchCreditCard} from 'state/billing/actions'
-import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
-
-import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
-import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
-import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
-import CounterText from 'pages/settings/new_billing/components/CounterText'
 import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
+import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
+import {fetchCreditCard} from 'state/billing/actions'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType

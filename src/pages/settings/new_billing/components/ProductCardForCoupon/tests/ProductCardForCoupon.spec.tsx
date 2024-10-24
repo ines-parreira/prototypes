@@ -1,11 +1,13 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {advancedMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {CouponSummary} from 'models/billing/types'
 import {getPlanDescription} from 'models/billing/utils'
 import {assumeMock} from 'utils/testing'
-import ProductCardForCoupon from '../ProductCardForCoupon'
+
 import AddSalesCouponModal from '../../AddSalesCouponModal'
+import ProductCardForCoupon from '../ProductCardForCoupon'
 
 const endOfTrialDatetime = '2024-06-25T09:27:00+00:00'
 const availableCoupons = ['sales-hd-year-05%-once', 'sales-hd-year-10%-once']

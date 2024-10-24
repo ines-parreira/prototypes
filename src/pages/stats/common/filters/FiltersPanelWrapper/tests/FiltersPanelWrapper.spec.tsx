@@ -1,17 +1,18 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import {
     emptyFiltersMock,
     filterKeysMock,
 } from 'pages/stats/common/filters/SavedFiltersActions/tests/helpers.spec'
-import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/stats/selectors')

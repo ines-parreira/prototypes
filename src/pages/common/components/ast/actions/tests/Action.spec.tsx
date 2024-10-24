@@ -1,6 +1,6 @@
-import React, {ComponentType} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentType} from 'react'
 
 import {ActionType} from 'models/rule/types'
 

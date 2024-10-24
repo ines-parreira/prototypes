@@ -1,14 +1,16 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {renderWithRouter} from 'utils/testing'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import React from 'react'
+
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {renderWithRouter} from 'utils/testing'
+
+import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
+import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
 import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),

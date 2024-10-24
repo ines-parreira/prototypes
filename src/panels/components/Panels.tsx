@@ -1,5 +1,5 @@
-import React, {Children, cloneElement, Fragment, ReactElement} from 'react'
 import _isEqual from 'lodash/isEqual'
+import React, {Children, cloneElement, Fragment, ReactElement} from 'react'
 
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'

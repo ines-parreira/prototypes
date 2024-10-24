@@ -1,15 +1,15 @@
-import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
 import {queryKeys} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import {waitFor} from '@testing-library/react'
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 
-import {tags} from 'fixtures/tag'
 import {
     axiosSuccessResponse,
     apiListCursorPaginationResponse,
 } from 'fixtures/axiosResponse'
+import {tags} from 'fixtures/tag'
 import {handleError} from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchTags} from 'models/tag/resources'

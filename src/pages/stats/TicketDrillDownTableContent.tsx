@@ -1,14 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import {HintTooltipContent} from 'pages/stats/common/HintTooltip'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
-import {
-    COMMUNICATION_SKILLS_LABEL,
-    RESOLUTION_COMPLETENESS_SHORT_LABEL,
-    TrendCardConfig,
-} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
@@ -24,6 +17,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
 import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import {HintTooltipContent} from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -32,6 +26,13 @@ import {formatTicketDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 import css from 'pages/stats/DrillDownTable.less'
 import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
 import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
+import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
+import {
+    COMMUNICATION_SKILLS_LABEL,
+    RESOLUTION_COMPLETENESS_SHORT_LABEL,
+    TrendCardConfig,
+} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
     DrillDownMetric,

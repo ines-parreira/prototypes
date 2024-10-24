@@ -1,13 +1,13 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import uspsLogo from 'assets/img/self-service/usps.png'
+import {HELP_CENTER_TEXTS} from 'config/helpCenter'
+import {HelpCenter} from 'models/helpCenter/types'
 
+import {LINE_ITEMS} from './constants'
 import useOrderDates from './hooks/useOrderDates'
 import useTrackPagePreview from './hooks/useTrackPagePreview'
-import {LINE_ITEMS} from './constants'
 
 import css from './SelfServiceHelpCenterTrackPage.less'
 

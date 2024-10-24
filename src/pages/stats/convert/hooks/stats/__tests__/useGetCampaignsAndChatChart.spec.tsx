@@ -1,18 +1,19 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+
+import {usePostReporting} from 'models/reporting/queries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {assumeMock} from 'utils/testing'
-import {usePostReporting} from 'models/reporting/queries'
-import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {useGetCampaignsAndChatChart} from 'pages/stats/convert/hooks/stats/useGetCampaignsAndChatChart'
 import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
-import {ReportingGranularity} from 'models/reporting/types'
+import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignGraphData} from 'pages/stats/convert/services/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

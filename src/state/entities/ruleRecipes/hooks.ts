@@ -1,9 +1,11 @@
 import {useEffect} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
 import {ruleRecipesFetched} from './actions'
 import {ruleRecipes} from './selectors'
 import {RuleRecipesState} from './types'

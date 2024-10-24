@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {fromJS, Map} from 'immutable'
-import {Link} from 'react-router-dom'
 import classNames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
+import React, {useCallback, useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,6 +14,8 @@ import {
 } from 'reactstrap'
 
 import {IntegrationType} from 'models/integration/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import css from 'pages/settings/settings.less'
@@ -21,8 +23,6 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
     integration: Map<string, any>

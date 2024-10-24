@@ -1,18 +1,19 @@
-import React, {Dispatch, useRef, useState} from 'react'
-import classNames from 'classnames'
 import {Label} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {Dispatch, useRef, useState} from 'react'
 
-import TextArea from 'pages/common/forms/TextArea'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {OrderStatusList} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import Button from 'pages/common/components/button/Button'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import TextArea from 'pages/common/forms/TextArea'
+
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,

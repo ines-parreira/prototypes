@@ -2,18 +2,18 @@ import {fromJS, Map, Seq} from 'immutable'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import {
-    DEPRECATED_getIntegrationsState,
-    getEmailIntegrations,
-} from '../selectors'
-import reducer, {initialState} from '../reducers'
-import * as types from '../constants'
-import {RootState} from '../../types'
-import {
     EmailMigrationInboundVerification,
     GorgiasChatStatusEnum,
     IntegrationType,
     EmailMigrationInboundVerificationStatus,
 } from '../../../models/integration/types'
+import {RootState} from '../../types'
+import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
+import {
+    DEPRECATED_getIntegrationsState,
+    getEmailIntegrations,
+} from '../selectors'
 
 const state = {
     integrations: fromJS(integrationsState),

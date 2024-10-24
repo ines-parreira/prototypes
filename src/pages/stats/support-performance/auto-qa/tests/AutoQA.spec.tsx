@@ -1,18 +1,19 @@
 import {screen} from '@testing-library/react'
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
-import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
-import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
-import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import AutoQA, {
     AUTO_QA_PAGE_TITLE,
 } from 'pages/stats/support-performance/auto-qa/AutoQA'
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
+import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,

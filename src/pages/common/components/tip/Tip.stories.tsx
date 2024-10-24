@@ -1,9 +1,9 @@
 import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {BrowserRouter} from 'react-router-dom'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 import {Map} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import {BrowserRouter} from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
 import Tip from './Tip'
 

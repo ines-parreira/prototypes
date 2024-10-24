@@ -1,21 +1,23 @@
-import React, {useCallback, useMemo} from 'react'
-import _ from 'lodash'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import {MAX_ACTIVE_FLOWS} from 'pages/automate/common/components/constants'
+import _ from 'lodash'
+import React, {useCallback, useMemo} from 'react'
+
+import {TicketChannel} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import {MAX_ACTIVE_FLOWS} from 'pages/automate/common/components/constants'
 import {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {TicketChannel} from 'business/types/ticket'
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
 import {ChannelLanguage} from 'pages/automate/common/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import css from '../WorkflowsPublisher.less'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import ChannelWarning from '../helper/ChannelWarning'
+import css from '../WorkflowsPublisher.less'
 
 const getChannelLanguages = (
     channel: SelfServiceChannel

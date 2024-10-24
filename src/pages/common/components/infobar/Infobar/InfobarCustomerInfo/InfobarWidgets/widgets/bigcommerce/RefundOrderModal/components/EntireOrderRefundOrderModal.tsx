@@ -6,13 +6,14 @@ import {
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 import Spinner from 'pages/common/components/Spinner'
+
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
-import OrderTable from './order-table/OrderTable'
 import css from './EntireOrderRefundOrderModal.less'
+import OrderTable from './order-table/OrderTable'
 
 type Props = {
     refundData: CalculateOrderRefundDataResponse

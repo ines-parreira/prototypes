@@ -1,12 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {PerformanceByArticle} from '../PerformanceByArticle'
+
 import {usePerformanceByArticleMetrics} from '../../../hooks/usePerformanceByArticleMetrics'
 import {TableCellType} from '../../HelpCenterStatsTable/HelpCenterStatsTable'
+import {PerformanceByArticle} from '../PerformanceByArticle'
 
 jest.mock('../../../hooks/usePerformanceByArticleMetrics', () => ({
     usePerformanceByArticleMetrics: jest.fn(),

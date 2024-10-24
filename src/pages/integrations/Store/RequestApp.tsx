@@ -1,15 +1,16 @@
 import React, {MouseEvent, useEffect, useRef, useState} from 'react'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import Button from 'pages/common/components/button/Button'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import TextArea from 'pages/common/forms/TextArea'
-import {requestNewIntegration} from 'models/integration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {requestNewIntegration} from 'models/integration/resources'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import TextArea from 'pages/common/forms/TextArea'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
 import css from './RequestApp.less'
 
 export default function RequestApp() {

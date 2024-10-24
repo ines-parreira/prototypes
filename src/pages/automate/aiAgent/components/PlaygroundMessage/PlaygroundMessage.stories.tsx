@@ -1,6 +1,8 @@
-import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import React from 'react'
+
 import {MessageType} from 'models/aiAgentPlayground/types'
+
 import PlaygroundMessage, {AI_AGENT_SENDER} from './PlaygroundMessage'
 
 const meta: Meta<typeof PlaygroundMessage> = {

@@ -1,4 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {
     AiAgentMessageType,
@@ -6,16 +7,17 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import {AI_AGENT} from 'pages/automate/common/components/constants'
-import {usePlaygroundMessages} from '../usePlaygroundMessages'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
+
 import {PlaygroundChannels} from '../../components/PlaygroundChat/PlaygroundChat.types'
-import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
 import {
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
 } from '../../constants'
+import {playgroundMessageFixture} from '../../fixtures/playgroundMessages.fixture'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {getTicketCustomer} from '../../utils/playground-ticket.util'
+import {usePlaygroundMessages} from '../usePlaygroundMessages'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),

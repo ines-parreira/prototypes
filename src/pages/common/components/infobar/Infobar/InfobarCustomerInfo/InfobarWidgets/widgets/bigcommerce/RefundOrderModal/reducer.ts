@@ -1,5 +1,5 @@
-import {Reducer} from 'react'
 import {produce} from 'immer'
+import {Reducer} from 'react'
 
 import {
     BigCommerceRefundOrderState,
@@ -10,12 +10,13 @@ import {
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
-import {formatPrice} from './utils'
+
 import {defaultBigCommerceRefundType} from './consts'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from './types'
+import {formatPrice} from './utils'
 
 export const initialBigCommerceRefundOrderState: BigCommerceRefundOrderState = {
     refundData: {

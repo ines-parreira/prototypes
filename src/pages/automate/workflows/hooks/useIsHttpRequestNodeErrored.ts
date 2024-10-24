@@ -2,12 +2,12 @@ import {useMemo} from 'react'
 
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 
-import {HttpRequestNodeType} from '../models/visualBuilderGraph.types'
 import {
     getWorkflowVariableListForNode,
     isValidLiquidSyntaxInNode,
     validateJSONWithVariables,
 } from '../models/variables.model'
+import {HttpRequestNodeType} from '../models/visualBuilderGraph.types'
 import {useVisualBuilderContext} from './useVisualBuilder'
 
 export default function useIsHttpRequestNodeErrored(

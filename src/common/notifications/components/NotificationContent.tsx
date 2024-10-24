@@ -1,13 +1,13 @@
+import cn from 'classnames'
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import cn from 'classnames'
 
 import TicketIcon from 'pages/common/components/TicketIcon'
 
 import {Notification, NotificationType} from '../types'
 
-import Subtitle from './Subtitle'
 import css from './NotificationContent.less'
+import Subtitle from './Subtitle'
 
 type Props = {
     headerExtra?: ReactNode

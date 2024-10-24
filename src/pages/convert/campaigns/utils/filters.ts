@@ -7,13 +7,13 @@ import {
 } from '../constants/filters'
 
 import {Campaign} from '../types/Campaign'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
     campaignAttachmentIsProductRecommendation,
 } from '../types/CampaignAttachment'
+import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
 
 export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
     return campaigns.filter(

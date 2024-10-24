@@ -1,10 +1,12 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+
+import ToolbarProvider from '../../ToolbarProvider'
 import WorkflowVariablePicker, {
     WorkflowVariablePickerProps,
 } from '../WorkflowVariablePicker'
-import ToolbarProvider from '../../ToolbarProvider'
 
 const workflowVariables: WorkflowVariableList = [
     {

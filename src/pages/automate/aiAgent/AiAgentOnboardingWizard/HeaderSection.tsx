@@ -1,8 +1,10 @@
 import classnames from 'classnames'
 import React from 'react'
+
 import CheckBox from 'pages/common/forms/CheckBox'
-import {FormValues, WizardFormValues} from '../types'
+
 import {AiAgentChannel} from '../constants'
+import {FormValues, WizardFormValues} from '../types'
 import css from './HeaderSection.less'
 
 type HeaderSectionProps = {

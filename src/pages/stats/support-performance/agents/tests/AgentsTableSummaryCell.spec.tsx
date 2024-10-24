@@ -4,15 +4,16 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {AgentsColumnConfig} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AGENT_SUMMARY_CELL_LABEL,
     AgentsTableSummaryCell,
 } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import {formatMetricValue} from 'pages/stats/common/utils'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'

@@ -1,7 +1,9 @@
 import {useQuery, UseQueryOptions, useMutation} from '@tanstack/react-query'
+
 import {MutationOverrides} from 'types/query'
-import {Paths} from '../../rest_api/help_center_api/client.generated'
+
 import {useHelpCenterApi} from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {Paths} from '../../rest_api/help_center_api/client.generated'
 import {
     getHelpCenterArticles,
     getCategoryTree,

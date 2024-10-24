@@ -1,5 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {
     convertPlan0,
     proYearlyAutomationPlan,
@@ -9,10 +10,11 @@ import {
 } from 'fixtures/productPrices'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
-import CancellationSummary from '../CancellationSummary'
+
 import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
 import SummaryBody from '../../UI/SummaryBody'
 import SummaryHeader from '../../UI/SummaryHeader'
+import CancellationSummary from '../CancellationSummary'
 
 jest.mock('../../UI/SummaryBody')
 const SummaryBodyMock = assumeMock(SummaryBody)

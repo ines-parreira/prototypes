@@ -1,9 +1,8 @@
-import React, {useMemo} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import React, {useMemo} from 'react'
 
 import useId from 'hooks/useId'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './MigrationQuickSummary.less'
 

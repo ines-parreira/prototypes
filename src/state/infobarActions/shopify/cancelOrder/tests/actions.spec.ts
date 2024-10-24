@@ -1,19 +1,19 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
-import {initialState} from '../reducers'
-import * as actions from '../../cancelOrder/actions'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 import client from '../../../../../models/api/resources'
 import {GorgiasAction, StoreDispatch} from '../../../../types'
+import * as actions from '../../cancelOrder/actions'
+import {initialState} from '../reducers'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()

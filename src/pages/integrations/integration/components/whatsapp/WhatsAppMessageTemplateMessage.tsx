@@ -1,20 +1,22 @@
 import React from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ApplyExternalTemplateActionArguments,
     WhatsAppMessageTemplate,
 } from 'models/whatsAppMessageTemplates/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {setNewMessageActions} from 'state/newMessage/actions'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     getNewMessageActions,
     getNewMessageExternalTemplateAction,
 } from 'state/newMessage/selectors'
 import {mergeActionsJS} from 'state/ticket/utils'
+
 import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
 
-import css from './WhatsAppMessageTemplateMessage.less'
 import WhatsAppMessageTemplateHeader from './WhatsAppMessageTemplateHeader'
+import css from './WhatsAppMessageTemplateMessage.less'
 
 type Props = {
     template: WhatsAppMessageTemplate

@@ -207,7 +207,7 @@
         "@babel/preset-typescript": "^7.23.3",
         "@codecov/webpack-plugin": "^0.0.1-beta.6",
         "@gorgias/api-queries": "0.2.8",
-        "@gorgias/javascript-shared-config": "0.1.0",
+        "@gorgias/javascript-shared-config": "0.1.1",
         "@jest/expect": "^29.7.0",
         "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
         "@redux-devtools/extension": "3.1.0",

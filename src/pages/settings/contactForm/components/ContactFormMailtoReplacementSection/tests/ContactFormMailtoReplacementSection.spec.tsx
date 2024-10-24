@@ -1,20 +1,22 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
+
 import {
     GmailIntegration,
     IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {useEmailIntegrations} from '../../../hooks/useEmailIntegrations'
+import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'
 
 import {getMailtoReplacementConfig} from '../resources'
 

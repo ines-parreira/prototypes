@@ -1,12 +1,12 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
+import {RootState} from 'state/types'
 
 import OnboardingSidePanel from '../OnboardingSidePanel'
 

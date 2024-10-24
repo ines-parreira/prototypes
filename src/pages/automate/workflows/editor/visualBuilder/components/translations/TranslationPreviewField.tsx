@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
 import classNames from 'classnames'
 import {CompositeDecorator, Editor, EditorState} from 'draft-js'
+import React, {useCallback, useEffect, useMemo} from 'react'
 
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {contentStateFromTextOrHTML} from 'utils/editor'
 
-import {getWorkflowVariableListForNode} from '../../../../models/variables.model'
 import createWorkflowVariablesPlugin from '../../../../draftjs/plugins/variables'
+import {getWorkflowVariableListForNode} from '../../../../models/variables.model'
 
 import 'draft-js/dist/Draft.css'
 import css from './TranslationPreviewField.less'

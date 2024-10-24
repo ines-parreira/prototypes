@@ -1,16 +1,18 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import {RootState, StoreDispatch} from 'state/types'
-import * as billingActions from 'state/billing/actions'
+
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
+import * as billingActions from 'state/billing/actions'
+import {RootState, StoreDispatch} from 'state/types'
+
 import BillingInformationView from '../BillingInformationView'
 
 const mockedDispatch = jest.fn()

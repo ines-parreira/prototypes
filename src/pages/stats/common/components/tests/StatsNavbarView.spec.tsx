@@ -1,26 +1,27 @@
+import {screen} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import {fromJS, Map} from 'immutable'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {DndProvider} from 'react-dnd'
-import {mockFlags} from 'jest-launchdarkly-mock'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreements'
+import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

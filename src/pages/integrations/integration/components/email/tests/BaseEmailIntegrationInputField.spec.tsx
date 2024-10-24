@@ -1,6 +1,6 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import copy from 'copy-to-clipboard'
+import React from 'react'
 
 import {notify} from 'state/notifications/actions'
 import {assumeMock} from 'utils/testing'

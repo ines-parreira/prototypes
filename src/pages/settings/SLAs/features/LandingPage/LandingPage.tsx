@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Templates from 'pages/settings/SLAs/features/SLATemplateList/views/Templates'
 import {TEMPLATES_LIST} from 'pages/settings/SLAs/config/templates'
+import Templates from 'pages/settings/SLAs/features/SLATemplateList/views/Templates'
 
 import PageHeader from '../PageHeader/PageHeader'
 

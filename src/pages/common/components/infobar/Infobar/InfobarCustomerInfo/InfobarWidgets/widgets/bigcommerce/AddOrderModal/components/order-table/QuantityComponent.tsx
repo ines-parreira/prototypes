@@ -1,7 +1,9 @@
-import React from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import TextInput from 'pages/common/forms/input/TextInput'
+import React from 'react'
+
 import IconButton from 'pages/common/components/button/IconButton'
+import TextInput from 'pages/common/forms/input/TextInput'
+
 import css from './OrderLineItemRow.less'
 
 type Props = {

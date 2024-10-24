@@ -1,5 +1,10 @@
 import 'draft-js/dist/Draft.css'
 
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {ContentState, EditorState} from 'draft-js'
+import Editor from 'draft-js-plugins-editor'
+import createSingleLinePlugin from 'draft-js-single-line-plugin'
 import React, {
     useCallback,
     useMemo,
@@ -8,26 +13,21 @@ import React, {
     useEffect,
     memo,
 } from 'react'
-import {ContentState, EditorState} from 'draft-js'
-import createSingleLinePlugin from 'draft-js-single-line-plugin'
-import Editor from 'draft-js-plugins-editor'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {contentStateFromTextOrHTML} from 'utils/editor'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import {insertText} from 'utils'
-import InputGroup, {
-    InputGroupContext,
-} from 'pages/common/forms/input/InputGroup'
-import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
+import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
+import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import InputGroup, {
+    InputGroupContext,
+} from 'pages/common/forms/input/InputGroup'
+import {insertText} from 'utils'
+import {contentStateFromTextOrHTML} from 'utils/editor'
 
-import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
 import css from './TextInputWithVariables.less'
 
 type Props = {

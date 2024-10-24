@@ -1,7 +1,8 @@
-import React, {ReactNode} from 'react'
 import classNames from 'classnames'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import React, {ReactNode} from 'react'
+
 import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import css from './FacebookLoginButton.less'
 

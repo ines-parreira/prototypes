@@ -1,7 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps} from 'react'
 
 import {personNames} from 'fixtures/personNames'
+
 import Shoutout from './Shoutout'
 
 const storyConfig: Meta = {

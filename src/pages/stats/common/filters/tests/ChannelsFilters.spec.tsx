@@ -1,9 +1,12 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {channels} from 'fixtures/channels'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -15,6 +18,7 @@ import {
     ChannelsFilter,
     ChannelsFilterWithState,
 } from 'pages/stats/common/filters/ChannelsFilter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {getChannels, toChannel} from 'services/channels'
 import {
     initialState,
@@ -24,9 +28,6 @@ import {RootState} from 'state/types'
 import {statFiltersClean} from 'state/ui/stats/actions'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 import {assumeMock, renderWithStore} from 'utils/testing'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FilterKey} from 'models/stat/types'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 const mockedChannels = channels
 

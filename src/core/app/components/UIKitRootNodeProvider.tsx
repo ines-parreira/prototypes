@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
 import {RootNodeProvider} from '@gorgias/ui-kit'
+import React, {ReactNode} from 'react'
+
 import {useAppNode} from 'appNode'
 
 type Props = {

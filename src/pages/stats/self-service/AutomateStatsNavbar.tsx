@@ -1,16 +1,16 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import cssNavbar from 'assets/css/navbar.less'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import cssNavbar from 'assets/css/navbar.less'
-import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,

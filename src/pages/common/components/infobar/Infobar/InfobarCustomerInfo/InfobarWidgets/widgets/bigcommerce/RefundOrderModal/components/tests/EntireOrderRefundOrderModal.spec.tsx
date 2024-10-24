@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import {BigCommerceOrder} from 'models/integration/types'
 import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
-import {EntireOrderRefundOrderModal} from '../EntireOrderRefundOrderModal'
+import {BigCommerceOrder} from 'models/integration/types'
+
 import {BigCommerceRefundActionType} from '../../types'
+import {EntireOrderRefundOrderModal} from '../EntireOrderRefundOrderModal'
 
 type Props = ComponentProps<typeof EntireOrderRefundOrderModal>
 

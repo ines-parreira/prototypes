@@ -1,23 +1,25 @@
-import React from 'react'
-import {render, waitFor} from '@testing-library/react'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStore} from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {Provider} from 'react-redux'
+import {render, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore, {MockStore} from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {AttachmentEnum} from 'common/types'
-import {assumeMock} from 'utils/testing'
+import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useGetDiscountOffer,
     useUpdateDiscountOffer,
 } from 'models/convert/discountOffer/queries'
-import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
+import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {
     DiscountOfferTicketAttachment,
     DiscountOfferTicketAttachmentType,

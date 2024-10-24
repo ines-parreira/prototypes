@@ -1,19 +1,19 @@
-import React, {useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo, useRef, useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Button from 'pages/common/components/button/Button'
 
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     LanguageCode,
     supportedLanguages,

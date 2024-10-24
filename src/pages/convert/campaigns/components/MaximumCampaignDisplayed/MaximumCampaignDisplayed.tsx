@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import NumberInput from 'pages/common/forms/input/NumberInput'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {CampaignDisplaysInSession} from 'pages/convert/campaigns/types/CampaignMeta'
+
 import css from './MaximumCampaignDisplayed.less'
 
 const DEFAULT_LABEL = 'Maximum campaign display in a session'

@@ -1,18 +1,18 @@
 import React, {useRef, useState} from 'react'
 
+import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
 import {
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
+import IconButton from 'pages/common/components/button/IconButton'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './ReturnOrderEligibility.less'
 

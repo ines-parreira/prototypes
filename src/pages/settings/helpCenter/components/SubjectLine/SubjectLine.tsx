@@ -1,5 +1,5 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import TextInput from 'pages/common/forms/input/TextInput'
 import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'

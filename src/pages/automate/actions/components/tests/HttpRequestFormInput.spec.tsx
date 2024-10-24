@@ -1,7 +1,7 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {useForm} from 'react-hook-form'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+import {useForm} from 'react-hook-form'
 
 import {CustomActionFormInputValues} from '../../types'
 

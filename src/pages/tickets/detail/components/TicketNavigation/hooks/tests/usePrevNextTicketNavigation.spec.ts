@@ -1,9 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 import {SegmentEvent} from 'common/segment'
 import * as segmentTracker from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
+
 import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

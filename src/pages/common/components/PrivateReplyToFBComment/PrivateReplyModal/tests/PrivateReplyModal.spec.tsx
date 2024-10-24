@@ -1,17 +1,19 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
 
 import {fromJS} from 'immutable'
-import {SET_INVALID_CUSTOM_FIELDS_TO_ERRORED} from 'state/ticket/constants'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {TicketMessageSourceType} from 'business/types/ticket'
-import * as infobarActions from 'state/infobar/actions'
 import client from 'models/api/resources'
+import * as infobarActions from 'state/infobar/actions'
+import {SET_INVALID_CUSTOM_FIELDS_TO_ERRORED} from 'state/ticket/constants'
 
 import {flushPromises} from 'utils/testing'
+
 import PrivateReplyModal from '../PrivateReplyModal'
 
 jest.mock(

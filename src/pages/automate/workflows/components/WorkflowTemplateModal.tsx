@@ -2,14 +2,14 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {WorkflowTemplate} from '../models/workflowConfiguration.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import VisualBuilderTemplatePreview from '../editor/visualBuilder/components/VisualBuilderTemplatePreview'
 import {computeNodesPositions} from '../hooks/useVisualBuilderGraphReducer/utils'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import {WorkflowTemplate} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowTemplateModal.less'
 

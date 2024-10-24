@@ -1,11 +1,10 @@
+import classnames from 'classnames'
 import React, {useState, useCallback, useContext} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import classnames from 'classnames'
-
-import IntentsFeedback from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
-import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
 
 import type {TicketMessage} from 'models/ticket/types'
+import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
+import IntentsFeedback from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
 
 import SourceDetailsContext from '../SourceDetailsContext'
 

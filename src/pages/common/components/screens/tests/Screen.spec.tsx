@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import Screens from '../Screens'
 import Screen from '../Screen'
+import Screens from '../Screens'
 
 describe('<Screen />', () => {
     it('should render', () => {

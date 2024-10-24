@@ -1,8 +1,9 @@
-import {connect} from 'react-redux'
 import React, {useCallback} from 'react'
+import {connect} from 'react-redux'
+
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomField} from 'custom-fields/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
 import {CustomFieldFilter} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'

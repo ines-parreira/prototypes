@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {Ref, RefObject, useEffect} from 'react'
+
 import {Category} from 'models/helpCenter/types'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -9,6 +10,7 @@ import {
     DragItemRequired,
     useReorderDnD,
 } from 'pages/common/hooks/useReorderDnD'
+
 import {getCategoryDndType} from '../../utils/getCategoryDndType'
 
 import css from './DroppableTableBodyRow.less'

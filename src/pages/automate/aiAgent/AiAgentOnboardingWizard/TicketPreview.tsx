@@ -1,10 +1,12 @@
 import classnames from 'classnames'
 import React from 'react'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+
 import {ToneOfVoice} from '../constants'
-import css from './TicketPreview.less'
 import {CUSTOMER_LAST_NAME, CUSTOMER_NAME, TICKET_PREVIEW} from './constants'
+import css from './TicketPreview.less'
 
 type TicketPreviewProps = {
     toneOfVoice: ToneOfVoice | null

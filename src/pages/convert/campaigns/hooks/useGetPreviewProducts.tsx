@@ -1,14 +1,15 @@
-import {useEffect, useMemo, useState} from 'react'
 import {Map, fromJS} from 'immutable'
+import {useEffect, useMemo, useState} from 'react'
+
+import {Product} from 'constants/integrations/types/shopify'
 import {useListProducts} from 'models/integration/queries'
+import {IntegrationDataItem} from 'models/integration/types'
+import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
+import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
+import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
 import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
 import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
-import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import {IntegrationDataItem} from 'models/integration/types'
-import {Product} from 'constants/integrations/types/shopify'
 
 export const useGetPreviewProducts = (
     shopifyIntegration: Map<string, any>,

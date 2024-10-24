@@ -1,4 +1,3 @@
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import {AttachmentEnum} from 'common/types'
 import {
     campaignDiscountOfferAttachment,
@@ -6,6 +5,7 @@ import {
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
 import {sampleContactFormAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
+import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 
 describe('transformCampaignAttachmentsToDetails', () => {
     it('should transform product attachment', () => {

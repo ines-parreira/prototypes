@@ -1,7 +1,10 @@
 import {captureException, init, setTag, setUser} from '@sentry/react'
-import {ScopeContext} from '@sentry/types'
 import {BrowserTracing} from '@sentry/tracing'
+import {ScopeContext} from '@sentry/types'
 
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import {GorgiasUIEnv} from 'utils/environment'
 import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
@@ -21,9 +24,6 @@ import {
     mockProductionEnvironment,
     mockStagingEnvironment,
 } from 'utils/testing'
-import {GorgiasUIEnv} from 'utils/environment'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
 
 jest.mock('@sentry/react')
 

@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import useHelpCenterCustomDomainHostnames from '../useHelpCenterCustomDomainHostnames'
 
 const mockedListCustomDomains = jest.fn()

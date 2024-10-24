@@ -5,6 +5,7 @@ import {
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
+
 import {
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,

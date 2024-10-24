@@ -1,7 +1,8 @@
-import zendeskLogo from 'assets/img/integrations/zendesk.png'
 import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
-import reamazeLogo from 'assets/img/integrations/reamaze.png'
 import intercomLogo from 'assets/img/integrations/intercom.png'
+import reamazeLogo from 'assets/img/integrations/reamaze.png'
+import zendeskLogo from 'assets/img/integrations/zendesk.png'
+
 import {
     HelpCenterMigrationConfig,
     MigrationProvider,

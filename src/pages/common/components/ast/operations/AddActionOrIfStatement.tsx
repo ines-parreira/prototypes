@@ -1,5 +1,5 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -7,10 +7,11 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {RuleOperation} from 'state/rules/types'
-import {RuleItemActions} from 'pages/settings/rules/types'
 import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {RuleOperation} from 'state/rules/types'
+
 import useHoverable from '../../../hooks/useHoverable'
 
 type Props = {

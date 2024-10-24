@@ -1,5 +1,6 @@
-import React, {ForwardedRef, forwardRef} from 'react'
 import classnames from 'classnames'
+import React, {ForwardedRef, forwardRef} from 'react'
+
 import BaseEdgeButton, {BaseEdgeButtonProps} from './BaseEdgeButton'
 
 import css from './EdgeIconButton.less'

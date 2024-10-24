@@ -1,12 +1,14 @@
-import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {executeAction} from 'state/infobar/actions'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+
 import {OrderNotesField} from '../OrderNotesField'
 
 // Mock the dependencies

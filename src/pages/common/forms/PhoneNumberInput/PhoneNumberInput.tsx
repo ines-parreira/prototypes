@@ -1,3 +1,11 @@
+import {Label} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {
+    getCountryCallingCode,
+    CountryCode,
+    parsePhoneNumber,
+    isValidPhoneNumber,
+} from 'libphonenumber-js'
 import React, {
     useState,
     useEffect,
@@ -11,34 +19,26 @@ import React, {
     ForwardedRef,
 } from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
-import {
-    getCountryCallingCode,
-    CountryCode,
-    parsePhoneNumber,
-    isValidPhoneNumber,
-} from 'libphonenumber-js'
-import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import {countries} from 'config/countries'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import Caption from 'pages/common/forms/Caption/Caption'
 import InputGroup, {
     InputGroupContext,
 } from 'pages/common/forms/input/InputGroup'
-import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
-import {reportError} from 'utils/errors'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import {
     getCountryFromPhoneNumber,
     buildInternationalNumber,
     formatAsNationalNumber,
 } from 'pages/phoneNumbers/utils'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import IconButton from 'pages/common/components/button/IconButton'
-import Loader from 'pages/common/components/Loader/Loader'
+import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
+import {reportError} from 'utils/errors'
 
 import css from './PhoneNumberInput.less'
 

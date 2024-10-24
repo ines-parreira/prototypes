@@ -1,26 +1,26 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render, screen, within} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {agents} from 'fixtures/agents'
-import {RootState} from 'state/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {assumeMock, mockStore} from 'utils/testing'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {initialState} from 'state/stats/statsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
 import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import {assumeMock, mockStore} from 'utils/testing'
 
 import AgentsShoutouts from '../AgentsShoutouts'
 import {agentsShoutoutsConfig} from '../AgentsShoutoutsConfig'

@@ -1,19 +1,19 @@
-import React, {useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {useMemo} from 'react'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {IntegrationProvider} from 'pages/convert/campaigns/containers/IntegrationProvider'
-
-import Triggers from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/Triggers'
-import TextEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/TextEditor'
-import {
-    UtmConfiguration,
-    WizardConfiguration,
-} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+
+import {
+    UtmConfiguration,
+    WizardConfiguration,
+} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import TextEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/TextEditor'
+import Triggers from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/Triggers'
 
 import css from './SimpleCampaignEditor.less'
 

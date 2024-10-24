@@ -1,36 +1,35 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS, Map} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
-
+import {fireEvent, render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {user} from 'fixtures/users'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
-import {AccountFeature} from 'state/currentAccount/types'
-import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
+import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
+import {user} from 'fixtures/users'
+import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
+import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
+import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
+import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
+import {AccountFeature} from 'state/currentAccount/types'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
-
-import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
-import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,

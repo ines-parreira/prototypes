@@ -1,13 +1,13 @@
-import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import React, {useContext} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {IntegrationType} from 'models/integration/constants'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
-import {IntegrationType} from 'models/integration/constants'
 import {assumeMock} from 'utils/testing'
 
 import {ShopifyContext} from '../../contexts/ShopifyContext'

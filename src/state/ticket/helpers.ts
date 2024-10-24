@@ -1,9 +1,9 @@
-import moment, {Moment} from 'moment'
 import {fromJS, List, Map} from 'immutable'
+import moment, {Moment} from 'moment'
 
-import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {TicketStatus} from 'business/types/ticket'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
+import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
 
 const MAX_DIFF_SECONDS = 5
 

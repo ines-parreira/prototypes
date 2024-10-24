@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import styled from '@emotion/styled'
 import React, {HTMLAttributes} from 'react'
 
-import styled from '@emotion/styled'
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
 export interface ConversationHeaderProps {

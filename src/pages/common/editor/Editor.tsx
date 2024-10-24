@@ -1,23 +1,24 @@
 import cn from 'classnames'
 import React from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {MacrosProperties} from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
-import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
-import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
-import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import ChannelSelect from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
 import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
+import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
+import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
+import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
+import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {getHasAutomate} from 'state/billing/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+
+import css from './Editor.less'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'
-import css from './Editor.less'
 
 type Props = {
     initialMacroFilters: MacrosProperties

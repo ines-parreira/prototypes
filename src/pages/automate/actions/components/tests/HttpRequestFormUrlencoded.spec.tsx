@@ -1,9 +1,10 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
-import {useForm} from 'react-hook-form'
 import {renderHook} from '@testing-library/react-hooks'
-import HttpRequestFormUrlencoded from '../HttpRequestFormUrlencoded'
+import React from 'react'
+import {useForm} from 'react-hook-form'
+
 import {CustomActionFormInputValues} from '../../types'
+import HttpRequestFormUrlencoded from '../HttpRequestFormUrlencoded'
 
 describe('<HttpRequestFormUrlencoded />', () => {
     it('should render component', () => {

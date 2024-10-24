@@ -1,23 +1,25 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {useEffect, useMemo, useState} from 'react'
 
 import {useLocation} from 'react-router-dom'
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
-import {Plan, ProductType} from 'models/billing/types'
-import Button from 'pages/common/components/button/Button'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import warningIcon from 'assets/img/icons/warning.svg'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Modal from 'pages/common/components/modal/Modal'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {Plan, ProductType} from 'models/billing/types'
 import {
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
 } from 'models/billing/utils'
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+
 import {ENTERPRISE_PRICE_ID} from '../../constants'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {getNextTier} from '../../utils/getNextTier'
+import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import css from './AutoUpgradeToggle.less'
 
 export type AutoUpgradeToggleProps = {

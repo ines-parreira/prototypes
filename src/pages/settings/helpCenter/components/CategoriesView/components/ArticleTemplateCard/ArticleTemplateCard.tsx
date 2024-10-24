@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
 import classNames from 'classnames'
+import React, {useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import {ArticleTemplate} from 'models/helpCenter/types'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {ArticleTemplate} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
+
 import {ArticleTemplateModal} from '../ArticleTemplateModal/ArticleTemplateModal'
 
 import css from './ArticleTemplateCard.less'

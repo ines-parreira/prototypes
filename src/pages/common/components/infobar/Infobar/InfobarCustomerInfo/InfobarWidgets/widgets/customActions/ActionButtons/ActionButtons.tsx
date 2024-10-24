@@ -4,8 +4,8 @@ import {Source} from 'models/widget/types'
 
 import {Button as ButtonType} from '../types'
 
-import Editor from './Editor'
 import ButtonsGroup from './Display'
+import Editor from './Editor'
 
 type Props = {
     templatePath: string

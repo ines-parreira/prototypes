@@ -1,9 +1,5 @@
 import {useMemo} from 'react'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
-import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
-import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
+
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -14,6 +10,11 @@ import {
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
+import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
 
 export function useAgentsSummaryMetrics() {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()

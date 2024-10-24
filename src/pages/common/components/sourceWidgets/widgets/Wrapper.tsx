@@ -1,16 +1,16 @@
-import React, {useContext} from 'react'
 import classnames from 'classnames'
+import React, {useContext} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {isSourceRecord, Source, WrapperTemplate} from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import {getIntegrationById} from 'state/integrations/selectors'
 import {
     WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {isSourceRecord, Source, WrapperTemplate} from 'models/widget/types'
-import useAppSelector from 'hooks/useAppSelector'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Wrapper.less'

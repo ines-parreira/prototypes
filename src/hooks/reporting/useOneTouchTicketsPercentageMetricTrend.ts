@@ -1,10 +1,10 @@
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {calculatePercentage} from 'utils/reporting'
 import {
     useClosedTicketsTrend,
     useOneTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {StatsFilters} from 'models/stat/types'
+import {calculatePercentage} from 'utils/reporting'
 
 export const useOneTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,

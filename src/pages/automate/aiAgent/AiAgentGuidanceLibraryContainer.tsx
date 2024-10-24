@@ -1,10 +1,12 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
+
 import Loader from 'pages/common/components/Loader/Loader'
-import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import css from './AiAgentGuidanceLibraryContainer.less'
+
 import {AiAgentGuidanceLibrary} from './AiAgentGuidanceLibrary'
+import css from './AiAgentGuidanceLibraryContainer.less'
+import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 
 export const AiAgentGuidanceLibraryContainer = () => {
     const {shopName} = useParams<{

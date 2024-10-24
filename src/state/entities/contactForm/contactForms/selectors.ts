@@ -1,8 +1,9 @@
 import {createSelector} from '@reduxjs/toolkit'
-import {StoreState} from 'state/types'
-import {ContactFormsState} from 'state/entities/contactForm/contactForms/types'
-import {getCurrentContactFormId} from 'state/ui/contactForm'
+
 import {ContactForm} from 'models/contactForm/types'
+import {ContactFormsState} from 'state/entities/contactForm/contactForms/types'
+import {StoreState} from 'state/types'
+import {getCurrentContactFormId} from 'state/ui/contactForm'
 
 export const getContactForms = (
     state: StoreState

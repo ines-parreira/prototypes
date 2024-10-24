@@ -1,14 +1,15 @@
 import React from 'react'
 
 import {EmailIntegration} from 'models/integration/types'
-import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import FormRow from 'pages/common/forms/FormRow'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
+import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
+import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
-import {useEmailOnboarding} from './hooks/useEmailOnboarding'
 
 import css from './EmailIntegrationVerificationForm.less'
+import {useEmailOnboarding} from './hooks/useEmailOnboarding'
 
 type Props = {
     integration?: EmailIntegration | undefined

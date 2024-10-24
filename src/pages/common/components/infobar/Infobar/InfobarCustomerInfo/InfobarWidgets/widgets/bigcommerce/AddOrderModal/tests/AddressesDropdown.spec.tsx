@@ -1,13 +1,15 @@
 import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {bigCommerceShippingAddressesFixture} from 'fixtures/bigcommerce'
+import {integrationsState} from 'fixtures/integrations'
 import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {integrationsState} from 'fixtures/integrations'
-import {bigCommerceShippingAddressesFixture} from 'fixtures/bigcommerce'
+
 import {AddressesDropdown} from '../AddressesDropdown'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}

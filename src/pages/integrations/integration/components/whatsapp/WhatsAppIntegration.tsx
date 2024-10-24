@@ -1,25 +1,24 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import WhatsAppIntegrationSecondaryNavigation from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationSecondaryNavigation'
-import WhatsAppIntegrationDetails from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationDetails'
-import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
-import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
-import WhatsAppIntegrationMigration from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration'
-import WhatsAppIntegrationConnectButton from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationConnectButton'
-
-import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-
-import {IntegrationType, isWhatsAppIntegration} from 'models/integration/types'
-import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType, isWhatsAppIntegration} from 'models/integration/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
+import WhatsAppIntegrationConnectButton from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationConnectButton'
+import WhatsAppIntegrationDetails from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationDetails'
+import WhatsAppIntegrationMigration from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration'
+import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
+import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
+import WhatsAppIntegrationSecondaryNavigation from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationSecondaryNavigation'
 
 import {getIntegrationById} from 'state/integrations/selectors'
-import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
+
 import WhatsappBusinessManagerLinkButton from './WhatsappBusinessManagerLinkButton'
+import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
 
 export default function WhatsAppIntegration() {
     const {integrationId} = useParams<{integrationId: string}>()

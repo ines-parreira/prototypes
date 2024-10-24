@@ -1,12 +1,13 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
-import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {RootState, StoreDispatch} from 'state/types'
+
 import PhoneEvent from '../PhoneEvent'
 
 describe('<PhoneEvent/>', () => {

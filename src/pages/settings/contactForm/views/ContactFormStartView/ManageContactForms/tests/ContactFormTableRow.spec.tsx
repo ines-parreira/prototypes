@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {ContactFormTableRow} from '../ContactFormTableRow'
+import React from 'react'
+
 import {ContactFormFixture} from '../../../../fixtures/contacForm'
+import {ContactFormTableRow} from '../ContactFormTableRow'
 
 describe('<ContactFormTableRow />', () => {
     it('should display the name, ecom platform logo and store name, language, and arrow', () => {

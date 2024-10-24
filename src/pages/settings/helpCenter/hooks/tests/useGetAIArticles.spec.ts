@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {assumeMock} from 'utils/testing'
+
 import {doNotRetry40XErrorsHandler} from 'api/utils'
+import {assumeMock} from 'utils/testing'
+
 import {useGetAIArticlesByHelpCenterAndStore} from '../../queries'
 import {useGetAIArticles} from '../useGetAIArticles'
 

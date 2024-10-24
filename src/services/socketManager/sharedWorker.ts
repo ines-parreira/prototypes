@@ -36,13 +36,13 @@ import {
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
     INCREMENTAL_RECONNECT_BACKOFF,
 } from './constants'
+import IncrementalBackoff from './incrementalBackoff'
 import {
     WSMessage,
     MessagePortEvent,
     BroadcastChannelEvent,
     SocketEvent,
 } from './types'
-import IncrementalBackoff from './incrementalBackoff'
 
 export class WebsocketSharedWorker {
     wsUrl: string | null = null

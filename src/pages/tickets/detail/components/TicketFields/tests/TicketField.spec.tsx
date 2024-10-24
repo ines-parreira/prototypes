@@ -1,19 +1,19 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {QueryClientProvider} from '@tanstack/react-query'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {CustomFieldDefinition} from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
-import {CustomFieldDefinition} from 'custom-fields/types'
 import TicketField from '../TicketField'
 
 const mockStore = configureMockStore()

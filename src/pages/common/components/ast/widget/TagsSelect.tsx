@@ -1,18 +1,19 @@
-import React, {useMemo, useState} from 'react'
-import _isString from 'lodash/isString'
-
 import {CancelToken} from 'axios'
+import _isString from 'lodash/isString'
+import React, {useMemo, useState} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {TagDraft} from 'models/tag/types'
 import useAppSelector from 'hooks/useAppSelector'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {createTag, fetchTags} from 'models/tag/resources'
-import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
+import {TagDraft} from 'models/tag/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import SelectField from '../../../forms/SelectField/SelectField'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 

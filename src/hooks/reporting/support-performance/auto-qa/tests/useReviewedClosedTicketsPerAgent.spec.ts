@@ -1,8 +1,9 @@
-import moment from 'moment'
 import {renderHook} from '@testing-library/react-hooks'
+import moment from 'moment'
+
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
-import {reviewedClosedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {reviewedClosedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'

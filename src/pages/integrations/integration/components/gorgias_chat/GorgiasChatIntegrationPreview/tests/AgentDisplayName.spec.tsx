@@ -1,9 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GorgiasChatAvatarNameType} from 'models/integration/types'
+
 import {AgentDisplayName} from '../AgentDisplayName'
 
 describe('<AgentDisplayName />', () => {

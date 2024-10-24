@@ -1,11 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {
     FACEBOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+
 import FacebookPageRow from '../FacebookPageRow'
 
 describe('FacebookPageRow component', () => {

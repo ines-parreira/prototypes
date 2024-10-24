@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map, List} from 'immutable'
 import {createEvent, fireEvent, render} from '@testing-library/react'
+import {fromJS, Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {EntityType} from 'models/view/types'
+import thunk from 'redux-thunk'
 
 import * as viewsConfig from 'config/views'
+import {mockSearchRank} from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
+import {EntityType} from 'models/view/types'
+
+import BlankState from 'pages/common/components/BlankState/BlankState'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import Table from 'pages/common/components/ViewTable/Table'
+import Row from 'pages/common/components/ViewTable/Table/Row'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {RootState, StoreDispatch} from 'state/types'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {mockSearchRank} from 'fixtures/searchRank'
-import BlankState from 'pages/common/components/BlankState/BlankState'
-import Row from 'pages/common/components/ViewTable/Table/Row'
 import {ViewNavDirection} from 'state/views/types'
-
-import Table from 'pages/common/components/ViewTable/Table'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(

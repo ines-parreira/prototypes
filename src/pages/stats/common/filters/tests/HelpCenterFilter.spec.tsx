@@ -1,19 +1,20 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import {HelpCenter} from 'models/helpCenter/types'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey} from 'models/stat/types'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import HelpCenterFilter, {
     HelpCenterFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterFilter'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithStore} from 'utils/testing'
-import {HelpCenter} from 'models/helpCenter/types'
-import {RootState} from 'state/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {initialState} from 'state/stats/statsSlice'
-import {FilterKey} from 'models/stat/types'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {RootState} from 'state/types'
+import {renderWithStore} from 'utils/testing'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]

@@ -1,15 +1,12 @@
+import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
-
-import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import {getHelpCenterClient} from 'rest_api/help_center_api/index'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {
     deleteCategory,
     pushCategorySupportedLocales,
@@ -19,11 +16,13 @@ import {
     updateCategoryTranslation,
     savePositions,
 } from 'state/entities/helpCenter/categories'
-import {getHelpCenterClient} from 'rest_api/help_center_api/index'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
+import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../constants'
 import {useCategoriesActions} from '../useCategoriesActions'
 import {useHelpCenterApi} from '../useHelpCenterApi'
-import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../constants'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({

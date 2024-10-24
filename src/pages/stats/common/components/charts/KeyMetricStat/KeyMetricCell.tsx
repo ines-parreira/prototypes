@@ -1,15 +1,14 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {Map, List, fromJS} from 'immutable'
+import _isObject from 'lodash/isObject'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
-import {Map, List, fromJS} from 'immutable'
-import classnames from 'classnames'
-import _isObject from 'lodash/isObject'
-import {Tooltip} from '@gorgias/ui-kit'
-import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
+import {StatConfigMetric} from 'config/stats'
 import {StatType} from 'models/stat/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {StatConfigMetric} from 'config/stats'
-
+import StatDifference from 'pages/stats/common/components/StatDifference'
 import {
     formatNumber,
     formatCurrency,
@@ -17,13 +16,12 @@ import {
     formatPercent,
     formatComparedPeriodString,
 } from 'pages/stats/common/utils'
-import StatDifference from 'pages/stats/common/components/StatDifference'
+import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 import DonutKeyMetricStat from './DonutKeyMetricStat'
-import KeyMetricCellWrapper from './KeyMetricCellWrapper'
-
 import css from './KeyMetricCell.less'
+import KeyMetricCellWrapper from './KeyMetricCellWrapper'
 
 export const NO_VALUE_PLACEHOLDER = '-'
 

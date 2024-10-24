@@ -1,6 +1,6 @@
-import React, {useMemo, useState} from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import _isEqual from 'lodash/isEqual'
+import _uniqueId from 'lodash/uniqueId'
+import React, {useMemo, useState} from 'react'
 
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 

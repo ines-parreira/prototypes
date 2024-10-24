@@ -1,5 +1,5 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {FROALA_KEY} from 'config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'

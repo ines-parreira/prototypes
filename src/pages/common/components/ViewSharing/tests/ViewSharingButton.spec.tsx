@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS, Map} from 'immutable'
 import {render, screen} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {BASIC_AGENT_ROLE} from 'config/user'
 import {user} from 'fixtures/users'

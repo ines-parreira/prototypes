@@ -1,27 +1,26 @@
-import React, {useMemo} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {useMemo} from 'react'
 
-import up from 'assets/img/icons/rating-up-white.svg'
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
+import up from 'assets/img/icons/rating-up-white.svg'
 
-import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
 import {Article} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
+import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
+import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {isNotPublished} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {TableActions} from '../../../TableActions'
-
-import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
+import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
 
 import {useArticleRowActions} from '../../../../hooks/useArticleRowActions'
+import {TableActions} from '../../../TableActions'
+import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 import css from './ArticleRow.less'
 
 export type RowEventListeners = {

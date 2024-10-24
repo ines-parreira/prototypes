@@ -7,6 +7,7 @@ import {
     linkToContactFormPreferences,
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
+
 import {ContactFormAutoEmbedReadinessStatus} from '../ContactFormAutoEmbedPublishSection/types'
 import css from './ContactFormIntegrationWarningBanner.less'
 

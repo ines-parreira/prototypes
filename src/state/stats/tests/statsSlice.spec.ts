@@ -1,15 +1,16 @@
 import {AnyAction} from 'redux'
+
+import {
+    withDefaultCustomFieldAndLogicalOperator,
+    withDefaultLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
+import {ReportingGranularity} from 'models/reporting/types'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {ReportingGranularity} from 'models/reporting/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {
-    withDefaultCustomFieldAndLogicalOperator,
-    withDefaultLogicalOperator,
-} from 'models/reporting/queryFactories/utils'
 
 import {
     initialState,

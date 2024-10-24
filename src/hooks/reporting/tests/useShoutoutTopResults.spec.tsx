@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {agents} from 'fixtures/agents'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'

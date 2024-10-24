@@ -1,28 +1,28 @@
-import React, {FormEvent, useCallback, useEffect, useState} from 'react'
-import {Map} from 'immutable'
-import {Col, Container, Row} from 'reactstrap'
 import {Label} from '@gorgias/ui-kit'
+import {Map} from 'immutable'
+import React, {FormEvent, useCallback, useEffect, useState} from 'react'
+import {Col, Container, Row} from 'reactstrap'
 
-import {
-    deleteIntegration,
-    updateOrCreateIntegrationRequest,
-} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import css from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
+import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 
-import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
+import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import css from 'pages/settings/settings.less'
+import {
+    deleteIntegration,
+    updateOrCreateIntegrationRequest,
+} from 'state/integrations/actions'
 
 type Props = {
     integration: Map<any, any>

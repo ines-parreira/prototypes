@@ -1,5 +1,6 @@
 import {Cube} from 'models/reporting/types'
 import {StatsFiltersMembers} from 'utils/reporting'
+
 import {TicketMember} from './TicketCube'
 
 export enum VoiceEventsByAgentMeasure {

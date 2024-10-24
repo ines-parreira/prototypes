@@ -1,3 +1,4 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import React, {
     ComponentProps,
@@ -7,7 +8,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -40,10 +41,10 @@ import {
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
+import {ScoreFiltersWithState} from 'pages/stats/common/filters/ScoreFilter'
 import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
 import {StoreFilterFromContext} from 'pages/stats/common/filters/StoreFilter'
 import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
-import {ScoreFiltersWithState} from 'pages/stats/common/filters/ScoreFilter'
 import {CampaignStatusesFilterFromContext} from 'pages/stats/convert/components/CampaignStatusesFilter'
 import {
     activeParams,

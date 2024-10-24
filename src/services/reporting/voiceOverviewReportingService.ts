@@ -1,15 +1,9 @@
 import moment from 'moment/moment'
+
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {Period} from 'models/stat/types'
 
-import {
-    CURRENT_PERIOD_LABEL,
-    DATE_TIME_FORMAT,
-    EMPTY_LABEL,
-    NOT_AVAILABLE_LABEL,
-    PREVIOUS_PERIOD_LABEL,
-} from 'services/reporting/constants'
-import {createCsv, saveZippedFiles} from 'utils/file'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {formatMetricValue} from 'pages/stats/common/utils'
 import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
@@ -18,7 +12,14 @@ import {
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import {
+    CURRENT_PERIOD_LABEL,
+    DATE_TIME_FORMAT,
+    EMPTY_LABEL,
+    NOT_AVAILABLE_LABEL,
+    PREVIOUS_PERIOD_LABEL,
+} from 'services/reporting/constants'
+import {createCsv, saveZippedFiles} from 'utils/file'
 
 export interface VoiceReportData {
     averageWaitTimeTrend: MetricTrend

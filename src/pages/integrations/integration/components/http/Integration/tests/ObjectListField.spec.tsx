@@ -1,6 +1,6 @@
+import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import {render, screen} from '@testing-library/react'
 import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
 describe('ObjectListField component', () => {

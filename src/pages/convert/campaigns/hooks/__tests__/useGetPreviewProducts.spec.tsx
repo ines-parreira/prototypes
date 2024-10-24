@@ -1,28 +1,29 @@
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+
+import {AttachmentEnum} from 'common/types'
+import {
+    InventoryManagement as ShipifyInventoryManagement,
+    InventoryPolicy as ShipifyInventoryPolicy,
+} from 'constants/integrations/types/shopify'
+import {campaignProductAttachment} from 'fixtures/campaign'
+import {shopifyIntegration} from 'fixtures/integrations'
+import {
+    shopifyProductFixture,
+    shopifyProductResult,
+    shopifyVariantFixture,
+} from 'fixtures/shopify'
+import {useListProducts} from 'models/integration/queries'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {
     CampaignProductRecommendation,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {AttachmentEnum} from 'common/types'
-import {assumeMock} from 'utils/testing'
-import {
-    shopifyProductFixture,
-    shopifyProductResult,
-    shopifyVariantFixture,
-} from 'fixtures/shopify'
-import {
-    InventoryManagement as ShipifyInventoryManagement,
-    InventoryPolicy as ShipifyInventoryPolicy,
-} from 'constants/integrations/types/shopify'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-import {campaignProductAttachment} from 'fixtures/campaign'
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
-import {useListProducts} from 'models/integration/queries'
+import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)

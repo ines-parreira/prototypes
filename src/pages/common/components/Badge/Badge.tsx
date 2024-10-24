@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     CSSProperties,
     ForwardedRef,
@@ -5,7 +6,6 @@ import React, {
     ReactNode,
     forwardRef,
 } from 'react'
-import classnames from 'classnames'
 
 import css from './Badge.less'
 

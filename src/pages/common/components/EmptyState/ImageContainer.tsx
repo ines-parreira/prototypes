@@ -1,4 +1,5 @@
 import React, {PropsWithChildren} from 'react'
+
 import css from 'pages/common/components/EmptyState/ImageContainer.less'
 
 export default function ImageContainer({children}: PropsWithChildren<unknown>) {

@@ -1,18 +1,19 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState} from 'react'
-import IconButton from 'pages/common/components/button/IconButton'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import useAppSelector from 'hooks/useAppSelector'
+import IconButton from 'pages/common/components/button/IconButton'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import GaugeChart from 'pages/stats/GaugeChart'
+import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 
 export const WorkloadPerChannelChart = ({
     isAnalyticsNewFilters = false,

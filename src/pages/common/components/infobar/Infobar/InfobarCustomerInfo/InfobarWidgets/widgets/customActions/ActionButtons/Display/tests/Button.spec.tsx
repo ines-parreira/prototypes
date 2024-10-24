@@ -1,16 +1,17 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {createStore, applyMiddleware, Reducer} from 'redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {actionFixture} from 'fixtures/infobarCustomActions'
-import * as infobarActions from 'state/infobar/actions'
 import ActionEditor from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor'
+import * as infobarActions from 'state/infobar/actions'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
+
 import Button from '../Button'
 
 const mockedActionId = 'someActionId'

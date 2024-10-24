@@ -1,5 +1,6 @@
-import React, {ReactNode, useState} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode, useState} from 'react'
+
 import orderIcon from 'assets/img/icons/order-icon.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
 

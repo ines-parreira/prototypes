@@ -1,10 +1,16 @@
 import {useMemo} from 'react'
+
+import {TicketChannel} from 'business/types/ticket'
+import {usePostReporting} from 'models/reporting/queries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {getCampaignsPerformanceGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     CubeData,
     CubeFilterParams,
     CubeMetric,
 } from 'pages/stats/convert/clients/types'
-import {getCampaignsPerformanceGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
+import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
 import {
     backFillGraphData,
     getDataFromResult,
@@ -13,11 +19,6 @@ import {
     transformToChatConversionRateOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignChatPerformanceData} from 'pages/stats/convert/services/types'
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TicketChannel} from 'business/types/ticket'
-import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export type GetCampaignsAndChatChartQuery = {
     isFetching: boolean

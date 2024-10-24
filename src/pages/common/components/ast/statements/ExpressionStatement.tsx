@@ -1,11 +1,11 @@
-import React, {ComponentProps} from 'react'
-import {Map, List} from 'immutable'
 import classnames from 'classnames'
+import {Map, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {RuleItemActions} from '../../../../settings/rules/types'
-import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
-import Expression from '../expression/Expression'
 import useHoverable from '../../../hooks/useHoverable'
+import Expression from '../expression/Expression'
+import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
 
 type Props = {
     rule: Map<any, any>

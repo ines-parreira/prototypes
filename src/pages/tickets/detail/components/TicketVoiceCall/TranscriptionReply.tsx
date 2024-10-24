@@ -1,7 +1,9 @@
-import React from 'react'
-import classnames from 'classnames'
 import {VoiceCallRecordingTranscriptionSpeakersItem} from '@gorgias/api-queries'
+import classnames from 'classnames'
+import React from 'react'
+
 import {getFormattedDurationTranscriptionStart} from 'models/voiceCall/utils'
+
 import css from './TranscriptionData.less'
 
 type TranscriptionReplyProps = {

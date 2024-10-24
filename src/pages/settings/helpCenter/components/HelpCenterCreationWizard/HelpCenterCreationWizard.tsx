@@ -1,26 +1,26 @@
+import classnames from 'classnames'
 import React, {useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import classnames from 'classnames'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
 
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import PageHeader from 'pages/common/components/PageHeader'
-
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import {logEvent, SegmentEvent} from 'common/segment'
+import PageHeader from 'pages/common/components/PageHeader'
+import Wizard from 'pages/common/components/wizard/Wizard'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
+
 import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
-import css from './HelpCenterCreationWizard.less'
-import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
-import useGetAutomateType from './hooks/useGetAutomateType'
-import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
 import HelpCenterCreationWizardStepArticles from './components/steps/HelpCenterCreationWizardStepArticles'
 import HelpCenterCreationWizardStepAutomate from './components/steps/HelpCenterCreationWizardStepAutomate'
+import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
+import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
+import css from './HelpCenterCreationWizard.less'
+import useGetAutomateType from './hooks/useGetAutomateType'
 
 type Props = {
     helpCenter?: HelpCenter

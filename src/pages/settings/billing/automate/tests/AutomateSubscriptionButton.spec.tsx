@@ -1,20 +1,20 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import _cloneDeep from 'lodash/cloneDeep'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
     products,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
+import {RootState, StoreDispatch} from 'state/types'
 
 import AutomateSubscriptionButton from '../AutomateSubscriptionButton'
 

@@ -1,32 +1,32 @@
-import React, {FC, useCallback, useMemo} from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
+import React, {FC, useCallback, useMemo} from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {useModalManager} from 'hooks/useModalManager'
 import {Article, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
-import {sanitizeHtmlDefault} from 'utils/html'
 import {
     ArticleRowActionTypes,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {useModalManager} from 'hooks/useModalManager'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-
-import {isSearchResultArticle, isLoading, SearchResultCategory} from '../types'
-import {SearchResultsArticleRow} from '../SearchResultsArticleRow'
-import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
-import {TableActions} from '../../TableActions'
-
-import nestingCss from '../nesting.less'
-
-import VisibilityCell from '../../VisibilityCell/VisibilityCell'
-import {isResultOrAncestorUnlisted} from '../utils'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 import {useCategoryRowActions} from '../../../hooks/useCategoryRowActions'
+import {TableActions} from '../../TableActions'
+
+import VisibilityCell from '../../VisibilityCell/VisibilityCell'
+import nestingCss from '../nesting.less'
+
+import {SearchResultsArticleRow} from '../SearchResultsArticleRow'
+import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
+import {isSearchResultArticle, isLoading, SearchResultCategory} from '../types'
+import {isResultOrAncestorUnlisted} from '../utils'
+
 import css from './SearchResultsCategoryRow.less'
 
 const Highlight: FC<{

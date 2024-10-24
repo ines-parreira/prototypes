@@ -1,7 +1,9 @@
 import {useMemo} from 'react'
-import {HelpCenter} from 'models/helpCenter/types'
+
 import {TicketChannel} from 'business/types/ticket'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import {HelpCenter} from 'models/helpCenter/types'
+
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
 export type SelfServiceHelpCenterChannel = {

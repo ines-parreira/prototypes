@@ -1,11 +1,11 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {EmailProvider} from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {EmailProvider} from 'models/integration/constants'
 
 type Props = {
     integration: Map<string, any>

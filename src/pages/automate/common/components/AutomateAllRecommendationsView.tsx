@@ -1,22 +1,24 @@
+import {Card} from '@gorgias/analytics-ui-kit'
+import moment from 'moment'
 import React from 'react'
 import {Link} from 'react-router-dom'
-import moment from 'moment'
-import {Card} from '@gorgias/analytics-ui-kit'
-import StatsPage from 'pages/stats/StatsPage'
-import {StoreIntegration} from 'models/integration/types'
+
 import {HelpCenter} from 'models/helpCenter/types'
+import {StoreIntegration} from 'models/integration/types'
 import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import StatsPage from 'pages/stats/StatsPage'
+
 import {
     AllRecommendationsStatus,
     useAIArticleRecommendationItems,
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
+import css from './AutomateAllRecommendationsView.less'
 import {
     HelpCenterFilter,
     StoreFilter,
     TopQuestionsSectionProps,
 } from './TopQuestions/TopQuestionsSection'
-import css from './AutomateAllRecommendationsView.less'
 import {useTopQuestionsViewedOnPage} from './TopQuestions/useTopQuestionsViewedOnPage'
 
 const ITEMS_PER_PAGE = 15

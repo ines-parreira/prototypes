@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import QuotesWrapper, {
     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX,

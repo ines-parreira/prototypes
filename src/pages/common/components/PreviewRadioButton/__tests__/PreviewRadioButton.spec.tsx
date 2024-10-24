@@ -1,5 +1,5 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
 
 import previewLight from 'assets/img/help-center/preview-light.svg'
 

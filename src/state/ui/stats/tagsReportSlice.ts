@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+
 import {opposite, OrderDirection} from 'models/api/types'
 import {RootState} from 'state/types'
 

@@ -1,31 +1,29 @@
-import React from 'react'
+import {act, render, fireEvent, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import {ulid} from 'ulidx'
-import thunk from 'redux-thunk'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import userEvent from '@testing-library/user-event'
-import {act, render, fireEvent, screen} from '@testing-library/react'
-
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import thunk from 'redux-thunk'
+import {ulid} from 'ulidx'
 
 import {campaign, campaignSchedule} from 'fixtures/campaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
-import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {
-    CampaignScheduleRuleValueEnum,
-    CampaignScheduleModeEnum,
-} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 import {
     CampaignDetailsFormApi,
     CampaignDetailsFormProvider,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {
+    CampaignScheduleRuleValueEnum,
+    CampaignScheduleModeEnum,
+} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+
+import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
+import {RootState, StoreDispatch} from 'state/types'
 
 import CampaignPublishScheduleStep from '../CampaignPublishScheduleStep'
 

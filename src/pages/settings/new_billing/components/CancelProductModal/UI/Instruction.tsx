@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react'
+
 import css from './Instruction.less'
 
 type InstructionProps = {

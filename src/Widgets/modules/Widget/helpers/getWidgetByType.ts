@@ -1,6 +1,7 @@
 import {IntegrationType} from '@gorgias/api-types'
-import {WidgetType} from 'state/widgets/types'
+
 import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
+import {WidgetType} from 'state/widgets/types'
 
 import BigCommerceWidget from 'Widgets/modules/BigCommerce/'
 import HttpWidget from 'Widgets/modules/Http/'

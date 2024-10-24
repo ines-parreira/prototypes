@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import {ReportingGranularity} from 'models/reporting/types'

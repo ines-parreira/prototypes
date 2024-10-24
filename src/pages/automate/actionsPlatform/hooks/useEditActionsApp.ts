@@ -1,10 +1,10 @@
 import {useQueryClient} from '@tanstack/react-query'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     actionsAppDefinitionKeys,
     useUpsertActionsApp,
 } from 'models/workflows/queries'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 

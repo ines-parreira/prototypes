@@ -1,7 +1,7 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {STATUSES} from 'reapop'
 import _omit from 'lodash/omit'
+import React, {ComponentProps} from 'react'
+import {STATUSES} from 'reapop'
 
 import notificationsTheme from '../../components/Notifications'
 import {NotificationIcon} from '../NotificationIcon'

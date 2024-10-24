@@ -1,14 +1,13 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import Avatar from 'gorgias-design-system/Avatar/Avatar'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
-
-import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
 type Props = {
     agentName: string

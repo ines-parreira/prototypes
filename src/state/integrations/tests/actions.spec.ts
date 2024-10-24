@@ -1,26 +1,26 @@
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
 import type {Client} from 'rest_api/gorgias_chat_protected_api/client.generated'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import history from '../../../pages/history'
-import * as actions from '../actions'
-import * as helpers from '../helpers'
-import {initialState} from '../reducers'
+
 import client from '../../../models/api/resources'
-import {StoreDispatch} from '../../types'
 import {
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
 } from '../../../models/integration/types'
-
+import history from '../../../pages/history'
+import {StoreDispatch} from '../../types'
+import * as actions from '../actions'
 import * as gorgiasChatActions from '../actions/gorgias-chat.actions'
+import * as helpers from '../helpers'
+import {initialState} from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

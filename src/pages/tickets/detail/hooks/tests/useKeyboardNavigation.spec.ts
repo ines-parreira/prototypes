@@ -1,5 +1,5 @@
-import _noop from 'lodash/noop'
 import {renderHook} from '@testing-library/react-hooks'
+import _noop from 'lodash/noop'
 
 import shortcutManager from 'services/shortcutManager'
 

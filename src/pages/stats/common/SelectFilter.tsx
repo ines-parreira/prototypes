@@ -28,8 +28,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 

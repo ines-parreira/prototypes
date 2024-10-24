@@ -1,22 +1,21 @@
 import React from 'react'
-import {Progress, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-
-import {assetsUrl} from 'utils'
+import {Progress, Table} from 'reactstrap'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
 import {
     IntegrationType,
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
-import {RootState} from 'state/types'
 import history from 'pages/history'
+import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {assetsUrl} from 'utils'
 
-import {getImportCompletionDate} from './utils'
 import {ImportStatus} from './types'
+import {getImportCompletionDate} from './utils'
 
 export const ImportZendeskDataList = (
     props: ConnectedProps<typeof connector>

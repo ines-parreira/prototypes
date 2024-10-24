@@ -1,7 +1,7 @@
 import {EditorState} from 'draft-js'
 
-import {linkifyWithTemplate, removeLink} from '../utils'
 import {convertFromHTML} from '../../../../../utils/editor'
+import {linkifyWithTemplate, removeLink} from '../utils'
 
 describe('plugin utils', () => {
     describe('removeLink()', () => {

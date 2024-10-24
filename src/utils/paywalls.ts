@@ -1,8 +1,8 @@
+import {AutomatePlan, HelpdeskPlan, PlanInterval} from '../models/billing/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
 } from '../state/currentAccount/types'
-import {AutomatePlan, HelpdeskPlan, PlanInterval} from '../models/billing/types'
 
 export enum PlanName {
     Starter = 'Starter',

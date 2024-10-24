@@ -31,14 +31,9 @@ module.exports = {
         'import/order': [
             'error',
             {
-                groups: [
-                    'builtin',
-                    'external',
-                    'internal',
-                    'parent',
-                    'sibling',
-                    'index',
-                ],
+                alphabetize: {order: 'asc', caseInsensitive: true},
+                groups: ['builtin', 'external', 'internal'],
+                'newlines-between': 'always-and-inside-groups',
             },
         ],
         'import/namespace': ['off'],

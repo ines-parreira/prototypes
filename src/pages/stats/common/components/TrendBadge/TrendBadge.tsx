@@ -1,18 +1,19 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import React from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
+
 import useId from 'hooks/useId'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import css from 'pages/stats/common/components/TrendBadge/TrendBadge.less'
 import {getTrendColorFromSign} from 'pages/stats/common/components/TrendBadge/helper'
+import css from 'pages/stats/common/components/TrendBadge/TrendBadge.less'
+import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
 import {
     formatMetricTrend,
     formatMetricValue,
     MetricTrendFormat,
 } from 'pages/stats/common/utils'
-import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
 
 const getTooltipText = (prevValue: string, period: string) => (
     <>

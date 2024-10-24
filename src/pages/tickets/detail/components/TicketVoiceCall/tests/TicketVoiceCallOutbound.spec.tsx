@@ -1,12 +1,14 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {
     VoiceCall,
     OutboundVoiceCall,
     VoiceCallStatus,
 } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
+
 import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
 
 jest.mock(

@@ -1,5 +1,5 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'

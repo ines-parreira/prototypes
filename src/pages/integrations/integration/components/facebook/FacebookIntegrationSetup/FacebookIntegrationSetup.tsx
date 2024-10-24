@@ -1,9 +1,9 @@
-import React, {Component, FormEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
+import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     Form,
     FormGroup,
@@ -12,11 +12,11 @@ import {
     Container,
 } from 'reactstrap'
 
-import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import warningIcon from 'assets/img/icons/warning2.svg'
+import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import {IntegrationType} from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Pagination from 'pages/common/components/Pagination'

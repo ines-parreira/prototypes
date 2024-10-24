@@ -1,5 +1,5 @@
-import React, {PropsWithChildren} from 'react'
 import {render} from '@testing-library/react'
+import React, {PropsWithChildren} from 'react'
 
 import {channels} from 'common/notifications/data'
 

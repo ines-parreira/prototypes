@@ -1,16 +1,15 @@
 // Please use src/pages/common/forms/input/InputField.tsx instead
-import React, {ChangeEvent, ReactNode} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
+import React, {ChangeEvent, ReactNode} from 'react'
 import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
 import {InputProps} from 'reactstrap/lib/Input'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import {defined} from 'utils'
-
-import Errors from 'pages/common/forms/Errors'
 import css from 'pages/common/forms/DEPRECATED_InputField.less'
+import Errors from 'pages/common/forms/Errors'
+import {defined} from 'utils'
 
 export type InputFieldProps<T = any> = {
     onChange?: (value: T) => void

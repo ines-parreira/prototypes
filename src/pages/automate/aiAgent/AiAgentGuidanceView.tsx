@@ -1,19 +1,21 @@
 import React, {useEffect} from 'react'
-import Loader from 'pages/common/components/Loader/Loader'
-import useAppDispatch from 'hooks/useAppDispatch'
-import history from 'pages/history'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import {LocaleCode} from 'models/helpCenter/types'
+
 import {SegmentEvent, logEvent} from 'common/segment'
-import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
-import {GuidanceList} from './components/GuidanceList/GuidanceList'
-import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {LocaleCode} from 'models/helpCenter/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
+import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
+import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
+import {GuidanceList} from './components/GuidanceList/GuidanceList'
 import {GuidanceTopRecommendations} from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
+import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
 type Props = {
     helpCenterId: number

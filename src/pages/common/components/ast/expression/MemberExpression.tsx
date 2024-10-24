@@ -14,12 +14,12 @@ import {
     getAstPath,
     getCategoryFromPath,
 } from 'models/rule/utils'
-import {RootState} from 'state/types'
-import {ObjectExpressionPropertyKey, RuleOperation} from 'state/rules/types'
-import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {RuleItemActions} from 'pages/settings/rules/types'
-import {getIconFromUrl} from 'utils'
 import {getHasAutomate} from 'state/billing/selectors'
+import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
+import {ObjectExpressionPropertyKey, RuleOperation} from 'state/rules/types'
+import {RootState} from 'state/types'
+import {getIconFromUrl} from 'utils'
 
 import RuleSelect from '../widget/RuleSelect'
 

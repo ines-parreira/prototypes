@@ -1,27 +1,27 @@
-import React, {ComponentProps, useState as mockUseState} from 'react'
 import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React, {ComponentProps, useState as mockUseState} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import {agents} from 'fixtures/agents'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {startEditionMode, stopEditionMode} from 'state/widgets/actions'
+import {mockSearchRank} from 'fixtures/searchRank'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
+import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {InfobarSearchResultsList} from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
+import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import Search from 'pages/common/components/Search'
 import {
     similarCustomer,
     fetchPreviewCustomer,
     searchWithHighlights,
 } from 'state/infobar/actions'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import {mockSearchRank} from 'fixtures/searchRank'
+import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
+import {startEditionMode, stopEditionMode} from 'state/widgets/actions'
+import {WidgetEnvironment} from 'state/widgets/types'
 
-import Search from 'pages/common/components/Search'
-import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
-import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {InfobarSearchResultsList} from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
-import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore()
 

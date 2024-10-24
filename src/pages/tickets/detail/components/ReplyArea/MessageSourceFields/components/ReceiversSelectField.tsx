@@ -1,7 +1,7 @@
-import React, {ForwardedRef, forwardRef} from 'react'
-import _debounce from 'lodash/debounce'
 import {CancelToken} from 'axios'
 import {isValidPhoneNumber} from 'libphonenumber-js'
+import _debounce from 'lodash/debounce'
+import React, {ForwardedRef, forwardRef} from 'react'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,6 +9,8 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
+import {SearchResponse, SearchType} from 'models/search/types'
+import {updatePotentialCustomers} from 'state/newMessage/actions'
 import {
     receiversValueFromState,
     receiversStateFromValue,
@@ -16,14 +18,13 @@ import {
     Receivers,
     ReceiverValue,
 } from 'state/ticket/utils'
-import {updatePotentialCustomers} from 'state/newMessage/actions'
-import {isEmail} from 'utils'
-import {SearchResponse, SearchType} from 'models/search/types'
 
 import {
     getValuePropFromSourceType,
     isPhoneBasedSource,
 } from 'tickets/common/utils'
+import {isEmail} from 'utils'
+
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
 type Props = {

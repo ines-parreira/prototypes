@@ -2,8 +2,8 @@ import _noop from 'lodash/noop'
 
 import {EditorHandledNotHandled} from 'utils/editor'
 
-import {insertInlineImages, isImage} from '../utils'
 import {PluginMethods, ImagePluginConfig} from '../types'
+import {insertInlineImages, isImage} from '../utils'
 
 const _handlePastedFiles =
     (config: ImagePluginConfig) =>

@@ -1,16 +1,18 @@
-import React, {ComponentType} from 'react'
-import {render} from '@testing-library/react'
 import * as apiQueries from '@gorgias/api-queries'
-import {assumeMock} from 'utils/testing'
-import {getTimezone} from 'state/currentUser/selectors'
+import {render} from '@testing-library/react'
+import React, {ComponentType} from 'react'
+
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {AccountSettingBusinessHours} from 'state/currentAccount/types'
+import {getTimezone} from 'state/currentUser/selectors'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import LiveVoice from '../LiveVoice'
-import LiveVoiceMetrics from '../../components/LiveVoice/LiveVoiceMetrics'
-import LiveVoiceCallTable from '../../components/LiveVoice/LiveVoiceCallTable'
+import {assumeMock} from 'utils/testing'
+
 import LiveVoiceAgentsSection from '../../components/LiveVoice/LiveVoiceAgentsSection'
+import LiveVoiceCallTable from '../../components/LiveVoice/LiveVoiceCallTable'
+import LiveVoiceMetrics from '../../components/LiveVoice/LiveVoiceMetrics'
+import LiveVoice from '../LiveVoice'
 
 jest.mock('state/ui/stats/selectors')
 jest.mock('@gorgias/api-queries')

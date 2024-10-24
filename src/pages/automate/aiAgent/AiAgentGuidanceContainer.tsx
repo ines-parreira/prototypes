@@ -1,19 +1,20 @@
 import React, {useEffect, useMemo} from 'react'
 import {Link, useParams} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import {reportError} from 'utils/errors'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import {AiAgentGuidanceView} from './AiAgentGuidanceView'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {reportError} from 'utils/errors'
+
 import css from './AiAgentGuidanceContainer.less'
+import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
+import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{

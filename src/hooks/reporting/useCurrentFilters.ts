@@ -1,6 +1,5 @@
 import _isEqual from 'lodash/isEqual'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import useSessionStorage from 'hooks/useSessionStorage'
 import {
     isAggregationWindowFilter,
@@ -10,6 +9,7 @@ import {
     isTagFilter,
     OptionalFilter,
 } from 'models/reporting/queryFactories/utils'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 
 export const CURRENT_FILTERS = 'current-filters'

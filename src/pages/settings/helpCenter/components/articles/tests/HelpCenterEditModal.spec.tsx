@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import HelpCenterEditModal from '../HelpCenterEditModal'
 import {HelpCenterArticleModalView} from '../HelpCenterEditArticleModalContent/types'
+import HelpCenterEditModal from '../HelpCenterEditModal'
 
 const mockedUseEditionManager = {
     isFullscreenEditModal: false,

@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState, DependencyList} from 'react'
+
 import useAsyncFn, {AsyncFnState} from './useAsyncFn'
 
 type FunctionReturningPromise = (...args: any[]) => Promise<any>

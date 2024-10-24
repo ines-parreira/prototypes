@@ -1,8 +1,10 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+
 import client from 'models/api/resources'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {EmailInputField} from './EmailInputField'
 
 const mockedServer = new MockAdapter(client)

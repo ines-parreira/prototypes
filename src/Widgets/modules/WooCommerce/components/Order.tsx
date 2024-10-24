@@ -1,8 +1,8 @@
-import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 
 import {useStore} from '../hooks/useStore'
 

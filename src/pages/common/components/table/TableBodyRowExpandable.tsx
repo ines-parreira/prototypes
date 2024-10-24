@@ -1,9 +1,10 @@
 import classnames from 'classnames'
 import React, {ComponentProps, FC, useState} from 'react'
+
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/common/components/table/TableBodyRowExpandable.less'
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
 export type WithChildren<T> = T & {children: WithChildren<T>[]}
 

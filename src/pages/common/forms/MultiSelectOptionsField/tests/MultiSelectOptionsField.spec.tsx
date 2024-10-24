@@ -3,6 +3,7 @@ import _noop from 'lodash/noop'
 import React, {ComponentProps, ReactElement} from 'react'
 
 import {TAGS_LIMIT} from 'models/integration/constants'
+
 import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
 
 import Dropdown from '../Dropdown'

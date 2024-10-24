@@ -1,5 +1,5 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {useCancelJob as useCancelJobQuery} from '@gorgias/api-queries'
+import {renderHook} from '@testing-library/react-hooks'
 import {POSITIONS} from 'reapop'
 
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'

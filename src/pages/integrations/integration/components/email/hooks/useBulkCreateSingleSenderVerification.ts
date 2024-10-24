@@ -1,7 +1,8 @@
 import {useState} from 'react'
+
+import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
 import {createVerification} from 'models/singleSenderVerification/resources'
 import {SenderInformation} from 'models/singleSenderVerification/types'
-import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
 
 export default function useBulkCreateSingleSenderVerification() {
     const [isLoading, setIsLoading] = useState(false)

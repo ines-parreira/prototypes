@@ -1,12 +1,12 @@
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
 import {SLAPolicyMetricUnit} from '@gorgias/api-types'
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 import {timeUnits} from 'pages/settings/SLAs/config/time'
 
 type TimeUnitSelectBoxProps = {

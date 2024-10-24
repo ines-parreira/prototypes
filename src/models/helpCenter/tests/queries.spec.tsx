@@ -1,14 +1,17 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import React from 'react'
+
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
     getHelpCentersResponseFixture,
     getSingleHelpCenterResponseFixture,
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../../pages/settings/helpCenter/constants'
 import {
     useGetHelpCenterArticleList,
     useGetHelpCenter,
@@ -19,7 +22,6 @@ import {
     useStartArticleIngestion,
 } from '../queries'
 import * as resources from '../resources'
-import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../../pages/settings/helpCenter/constants'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),

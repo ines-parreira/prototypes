@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     cleanup,
     fireEvent,
@@ -6,13 +5,15 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import {isDesktopDevice, isDeviceReady} from 'utils/device'
-import {assumeMock} from 'utils/testing'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import React from 'react'
+
 import useHasPhone from 'core/app/hooks/useHasPhone'
-import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
-import * as platform from 'utils/platform'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
+import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
+import {isDesktopDevice, isDeviceReady} from 'utils/device'
+import * as platform from 'utils/platform'
+import {assumeMock} from 'utils/testing'
 
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 

@@ -1,4 +1,6 @@
 import {useEffect, useMemo, useState} from 'react'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {
     AIArticle,
     AIArticleToggleOptionValue,
@@ -6,13 +8,13 @@ import {
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import useAppSelector from 'hooks/useAppSelector'
 import {getStoreIntegrations} from 'state/integrations/selectors'
-import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
+
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
+import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 
 export const useHelpCenterAIArticlesLibrary = (
     helpCenterId: number,

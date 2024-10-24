@@ -1,14 +1,14 @@
-import React from 'react'
-import {Provider} from 'react-redux'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import * as modelsAccount from 'models/account'
 
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import AutomateExploreDataModal, {
     AutomateExploreDataModalHandle,

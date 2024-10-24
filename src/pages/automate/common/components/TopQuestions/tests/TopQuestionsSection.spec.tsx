@@ -1,8 +1,9 @@
-import React from 'react'
 import {act, fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {IntegrationType} from 'models/integration/constants'
+
 import {TopQuestionsSection} from '../TopQuestionsSection'
 
 jest.mock('common/segment')

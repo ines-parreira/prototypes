@@ -1,4 +1,5 @@
 import {dummyAppDetail} from 'fixtures/apps'
+
 import {mapDefaults, DEFAULT_VALUES} from '../mapDefaults'
 
 describe(`mapDefaults`, () => {

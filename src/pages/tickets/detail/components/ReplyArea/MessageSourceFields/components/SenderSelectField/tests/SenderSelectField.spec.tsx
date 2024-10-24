@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, waitFor, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {useFlag} from 'common/flags'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 import history from 'pages/history'
-import {useFlag} from 'common/flags'
 import {assumeMock} from 'utils/testing'
 
 import SenderSelectField from '../SenderSelectField'

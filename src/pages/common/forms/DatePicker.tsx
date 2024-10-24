@@ -1,3 +1,4 @@
+import moment, {Moment} from 'moment-timezone'
 import React, {
     ReactNode,
     useCallback,
@@ -11,7 +12,7 @@ import DateRangePicker, {
     Props as DateRangeProps,
 } from 'react-bootstrap-daterangepicker'
 import {Tooltip} from 'reactstrap'
-import moment, {Moment} from 'moment-timezone'
+
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import {useTheme} from 'theme'

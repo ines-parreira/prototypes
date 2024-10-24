@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {SegmentEvent, logEvent} from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
 

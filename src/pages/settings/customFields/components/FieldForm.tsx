@@ -3,8 +3,6 @@ import {Location} from 'history'
 import {pick, set} from 'lodash'
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 
-import history from 'pages/history'
-
 import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
@@ -21,12 +19,13 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
+import history from 'pages/history'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 
 import DropdownInput from './DropdownInput'
-import TypeSelectInput from './TypeSelectInput'
 
 import css from './FieldForm.less'
+import TypeSelectInput from './TypeSelectInput'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 

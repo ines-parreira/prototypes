@@ -1,10 +1,11 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {ReactElement, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+
 import css from './ConnectLink.less'
 
 const CONNECT_BUTTON_ID = 'connect-button'

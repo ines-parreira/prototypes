@@ -1,6 +1,8 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import {AxiosResponse} from 'axios'
 
+import {doNotRetry40XErrorsHandler} from 'api/utils'
+import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 import {
     Cube,
     EnrichmentFields,
@@ -8,8 +10,6 @@ import {
     ReportingQuery,
     ReportingResponse,
 } from 'models/reporting/types'
-import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
-import {doNotRetry40XErrorsHandler} from 'api/utils'
 
 const defaultOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes

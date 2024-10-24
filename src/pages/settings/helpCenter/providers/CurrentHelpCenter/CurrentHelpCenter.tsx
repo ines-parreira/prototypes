@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react'
 import axios from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect} from 'react'
 import {
     Route,
     Switch,
@@ -8,46 +9,44 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import Loader from 'pages/common/components/Loader/Loader'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import Loader from 'pages/common/components/Loader/Loader'
 
-import {
-    changeHelpCenterId,
-    changeViewLanguage,
-    getViewLanguage,
-} from 'state/ui/helpCenter'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import settingsCss from 'pages/settings/settings.less'
 import HelpCenterAppearanceView from 'pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView'
 import HelpCenterArticlesView from 'pages/settings/helpCenter/components/HelpCenterArticlesView'
 import HelpCenterContactView from 'pages/settings/helpCenter/components/HelpCenterContactView'
 import HelpCenterCustomizationView from 'pages/settings/helpCenter/components/HelpCenterCustomizationView'
 import HelpCenterImportCsvColumnMatchingView from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
-import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
 import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
+import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import settingsCss from 'pages/settings/settings.less'
 import {
     getCurrentHelpCenter,
     helpCentersFetched,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {
+    changeHelpCenterId,
+    changeViewLanguage,
+    getViewLanguage,
+} from 'state/ui/helpCenter'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
-import {EditionManagerContextProvider} from '../EditionManagerContext'
-import {SearchContextProvider} from '../SearchContext'
-import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
-import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
-import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
-import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 import AILibraryView from '../../components/AIArticlesLibraryView'
 import {useHasAccessToAILibrary} from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import {HelpCenterAutomateView} from '../../components/HelpCenterAutomateView'
+import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
+import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
+import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
+import {EditionManagerContextProvider} from '../EditionManagerContext'
+import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
+import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
+import {SearchContextProvider} from '../SearchContext'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()

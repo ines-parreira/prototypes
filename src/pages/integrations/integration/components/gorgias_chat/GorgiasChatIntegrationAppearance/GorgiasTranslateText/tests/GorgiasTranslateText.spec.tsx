@@ -1,17 +1,17 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import * as ReactRouterDom from 'react-router-dom'
 
 import {Language} from 'constants/languages'
-import {RootState, StoreDispatch} from 'state/types'
+import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {entitiesInitialState} from 'fixtures/entities'
-import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
+import {RootState, StoreDispatch} from 'state/types'
 
 import GorgiasTranslateText from '../GorgiasTranslateText'
 

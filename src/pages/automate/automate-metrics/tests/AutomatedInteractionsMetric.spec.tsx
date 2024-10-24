@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import {AUTOMATED_INTERACTIONS_LABEL} from 'pages/automate/automate-metrics/constants'

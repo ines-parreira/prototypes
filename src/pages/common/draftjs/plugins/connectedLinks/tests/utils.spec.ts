@@ -1,5 +1,5 @@
-import {EditorState} from 'draft-js'
 import {convertFromHTML} from 'draft-convert'
+import {EditorState} from 'draft-js'
 
 import {setConnectedLinks, parseUrl, ConnectedLinksEntityData} from '../utils'
 

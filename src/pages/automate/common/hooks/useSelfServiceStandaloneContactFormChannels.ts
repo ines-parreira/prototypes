@@ -1,10 +1,10 @@
 import {useMemo} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel} from 'business/types/ticket'
-import {getContactFormsList} from 'state/entities/contactForm/contactForms'
+import useAppSelector from 'hooks/useAppSelector'
 import {ContactForm} from 'models/contactForm/types'
+import {IntegrationType} from 'models/integration/constants'
+import {getContactFormsList} from 'state/entities/contactForm/contactForms'
 
 export type SelfServiceStandaloneContactFormChannel = {
     type: TicketChannel.ContactForm

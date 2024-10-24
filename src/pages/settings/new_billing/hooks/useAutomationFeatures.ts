@@ -1,10 +1,10 @@
+import flowsIcon from 'assets/img/icons/flows.svg'
+import orderManagementIcon from 'assets/img/icons/order-management.svg'
 import {
     FLOWS,
     ORDER_MANAGEMENT,
     ARTICLE_RECOMMENDATION,
 } from 'pages/automate/common/components/constants'
-import flowsIcon from 'assets/img/icons/flows.svg'
-import orderManagementIcon from 'assets/img/icons/order-management.svg'
 
 export default function useAutomationFeatures() {
     return [

@@ -1,8 +1,9 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
 import {
     channelConnection,
     channelConnectionId,
 } from 'fixtures/channelConnection'
+import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+
 import * as resources from '../resources'
 
 jest.mock('rest_api/revenue_addon_api/client')

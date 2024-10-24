@@ -4,18 +4,19 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
+
+import {agents} from 'fixtures/agents'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
+import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {agents} from 'fixtures/agents'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {

@@ -1,6 +1,6 @@
+import debounce from 'lodash/debounce'
 import React, {memo, useCallback, useMemo} from 'react'
 import {ulid} from 'ulidx'
-import debounce from 'lodash/debounce'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -10,9 +10,9 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 
-import {checkDuplicates} from './validators'
-import css from './Parameters.less'
 import Parameter from './Parameter'
+import css from './Parameters.less'
+import {checkDuplicates} from './validators'
 
 type Props = {
     addLabel?: string

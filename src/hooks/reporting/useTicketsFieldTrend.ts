@@ -2,17 +2,18 @@ import _flatten from 'lodash/flatten'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 import {useMemo} from 'react'
-import {TICKET_CUSTOM_FIELDS_API_SEPARATOR} from 'models/reporting/queryFactories/utils'
+
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {OrderDirection} from 'models/api/types'
+import {TicketCustomFieldsDimension} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {TICKET_CUSTOM_FIELDS_API_SEPARATOR} from 'models/reporting/queryFactories/utils'
 import {TICKET_CUSTOM_FIELDS_NEW_SEPARATOR} from 'pages/stats/utils'
 
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 
 const DATASET_VISIBILITY_ITEMS = 3
 

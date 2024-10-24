@@ -1,11 +1,12 @@
-import {StatsFilters} from 'models/stat/types'
 import {
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentFiltersMembers,
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
+import {StatsFilters} from 'models/stat/types'
 import {statsFiltersToReportingFilters} from 'utils/reporting'
+
 import {getTicketPeriodFilters} from './voiceCall'
 
 export const voiceEventsByAgentDefaultFilters = (filters: StatsFilters) => {

@@ -1,5 +1,7 @@
 import axios from 'axios'
+
 import {Notification, NotificationButton} from 'state/notifications/types'
+
 import {MigrationFailuresSection} from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
 import {QuickSummaryEntry} from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
 import {

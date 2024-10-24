@@ -1,7 +1,8 @@
-import React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
+import React from 'react'
 
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
+
 import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,

@@ -1,4 +1,5 @@
 import {Template} from 'models/widget/types'
+
 import {isDefaultOpen} from '../isDefaultOpen'
 
 describe('isDefaultOpen', () => {

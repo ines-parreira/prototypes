@@ -1,23 +1,24 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {PhoneCountry, PhoneFunction} from 'business/twilio'
+import * as accountFixtures from 'fixtures/account'
 import {
     IntegrationType,
     PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
 } from 'models/integration/types'
-import {PhoneCountry, PhoneFunction} from 'business/twilio'
-import * as accountFixtures from 'fixtures/account'
-import {RootState, StoreDispatch} from 'state/types'
 import * as api from 'pages/integrations/integration/components/phone/actions'
-import * as actions from 'state/integrations/actions'
-import {renderWithRouter} from 'utils/testing'
 import {Account} from 'state/currentAccount/types'
+import * as actions from 'state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
 

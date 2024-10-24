@@ -1,13 +1,14 @@
 import React from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
-import IconButton from 'pages/common/components/button/IconButton'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import Caption from 'pages/common/forms/Caption/Caption'
+import TextInput from 'pages/common/forms/input/TextInput'
+
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 
 import css from '../NodeEditor.less'

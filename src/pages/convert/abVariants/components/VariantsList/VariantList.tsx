@@ -1,24 +1,18 @@
-import React, {useMemo} from 'react'
 import _get from 'lodash/get'
 import moment from 'moment'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {ABGroup} from 'models/convert/campaign/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-
-import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
 import {
     TableColumn,
@@ -26,20 +20,25 @@ import {
 } from 'pages/convert/abVariants/components/VariantsList/types'
 
 import {getDataFromTableCell} from 'pages/convert/abVariants/components/VariantsList/utils'
-import {ABGroup} from 'models/convert/campaign/types'
-import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
 
 import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
-
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
 
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
+import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
+
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import {SharedDimension} from 'pages/stats/convert/clients/constants'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+
 import DataCell from './components/DataCell'
 
 import css from './VariantList.less'

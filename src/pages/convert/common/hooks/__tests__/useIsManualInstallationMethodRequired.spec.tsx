@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
+
 import {
     MAGENTO2_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -9,7 +9,9 @@ import {
     GorgiasChatIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
+import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
+
 import useIsManualInstallationMethodRequired from '../useIsManualInstallationMethodRequired'
 
 const useGetChatInstallationStatusSpy = jest.spyOn(

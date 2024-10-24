@@ -1,9 +1,9 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 

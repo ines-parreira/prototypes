@@ -1,5 +1,6 @@
 import 'reactflow/dist/style.css'
 
+import classNames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
     Controls,
@@ -10,24 +11,22 @@ import {
     useNodesInitialized,
     useReactFlow,
 } from 'reactflow'
-import classNames from 'classnames'
-
-import Loader from 'pages/common/components/Loader/Loader'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
-import {TestFlowEditor} from '../../editor/visualBuilder/editors/TestFlowEditor'
+import Loader from 'pages/common/components/Loader/Loader'
 
+import {TestFlowEditor} from '../../editor/visualBuilder/editors/TestFlowEditor'
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
-import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
 import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
+import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+
+import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import CustomEdge from './CustomEdge'
+import AnalyticsNode from './nodes/AnalyticsNode'
 import ChannelTriggerNode from './nodes/ChannelTriggerNode'
 import EndNode from './nodes/EndNode'
 
-import CustomEdge from './CustomEdge'
-
 import css from './WorkflowVisualBuilder.less'
-import AnalyticsNode from './nodes/AnalyticsNode'
 
 const nodeTypes = {
     channel_trigger: ChannelTriggerNode,

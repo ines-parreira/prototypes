@@ -1,8 +1,8 @@
 import {useEffect, useMemo, useRef} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import useAppSelector from 'hooks/useAppSelector'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import usePrevious from 'hooks/usePrevious'
 import {ViewType} from 'models/view/types'
 import {getActiveView} from 'state/views/selectors'

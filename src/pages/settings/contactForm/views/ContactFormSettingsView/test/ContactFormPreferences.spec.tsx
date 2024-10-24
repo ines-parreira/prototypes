@@ -1,29 +1,31 @@
+import {screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {screen, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React from 'react'
-import {fromJS} from 'immutable'
-import {createMemoryHistory} from 'history'
-import userEvent from '@testing-library/user-event'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-import ContactFormPreferences from '../ContactFormPreferences'
-import {renderWithRouter} from '../../../../../../utils/testing'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {integrationsStateWithShopify} from '../../../../../../fixtures/integrations'
+import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+
 import {account} from '../../../../../../fixtures/account'
+import {billingState} from '../../../../../../fixtures/billing'
+import {integrationsStateWithShopify} from '../../../../../../fixtures/integrations'
+import {ContactForm} from '../../../../../../models/contactForm/types'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {renderWithRouter} from '../../../../../../utils/testing'
+import {getLocalesResponseFixture} from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from '../../../../helpCenter/providers/SupportedLocales'
+import {CONTACT_FORM_PREFERENCES_PATH} from '../../../constants'
 import {ContactFormFixture} from '../../../fixtures/contacForm'
 import {insertContactFormIdParam} from '../../../utils/navigation'
-import {CONTACT_FORM_PREFERENCES_PATH} from '../../../constants'
-import {billingState} from '../../../../../../fixtures/billing'
-import {useSupportedLocales} from '../../../../helpCenter/providers/SupportedLocales'
-import {getLocalesResponseFixture} from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
-import {ContactForm} from '../../../../../../models/contactForm/types'
+import ContactFormPreferences from '../ContactFormPreferences'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi')

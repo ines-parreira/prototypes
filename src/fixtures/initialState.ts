@@ -1,17 +1,17 @@
+import {TicketChannel} from 'business/types/ticket'
+import {OrderDirection} from 'models/api/types'
+import {IntegrationType} from 'models/integration/constants'
 import {
     ViewCategory,
     ViewField,
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
-import {OrderDirection} from 'models/api/types'
-import {IntegrationType} from 'models/integration/constants'
-import {TicketChannel} from 'business/types/ticket'
 import {GorgiasInitialState} from 'types'
 
-import {user} from './users'
 import {account} from './account'
 import {products} from './productPrices'
+import {user} from './users'
 
 export const initialState: GorgiasInitialState = {
     agents: {

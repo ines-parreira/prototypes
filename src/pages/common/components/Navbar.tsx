@@ -1,3 +1,10 @@
+import * as Sentry from '@sentry/react'
+import classnames from 'classnames'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import _capitalize from 'lodash/capitalize'
+import _kebabCase from 'lodash/kebabCase'
+import PropTypes from 'prop-types'
 import React, {
     Component,
     ComponentProps,
@@ -7,28 +14,30 @@ import React, {
     TouchEvent as TouchEventReact,
     RefObject,
 } from 'react'
-import PropTypes from 'prop-types'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
-import classnames from 'classnames'
-import _capitalize from 'lodash/capitalize'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import * as Sentry from '@sentry/react'
-import _kebabCase from 'lodash/kebabCase'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
 import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {UserRole} from 'config/types/user'
+import {AGENT_ROLE, ADMIN_ROLE} from 'config/user'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import {
+    ActivityEvents,
+    clearActivityTrackerSession,
+    logActivityEvent,
+    unregisterAppActivityTrackerHooks,
+} from 'services/activityTracker'
 import {tryLocalStorage} from 'services/common/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
@@ -43,29 +52,20 @@ import {
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
+import {Theme, ThemeProps, withTheme} from 'theme'
+import {Themes} from 'theme/types'
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
-import {Theme, ThemeProps, withTheme} from 'theme'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE, ADMIN_ROLE} from 'config/user'
-import {UserRole} from 'config/types/user'
-import {Themes} from 'theme/types'
-import {
-    ActivityEvents,
-    clearActivityTrackerSession,
-    logActivityEvent,
-    unregisterAppActivityTrackerHooks,
-} from 'services/activityTracker'
 import Avatar from './Avatar/Avatar'
+import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
 import DropdownBody from './dropdown/DropdownBody'
 import DropdownHeader from './dropdown/DropdownHeader'
 import DropdownItemLabel from './dropdown/DropdownItemLabel'
-import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
-import Screens from './screens/Screens'
-import Screen from './screens/Screen'
 import css from './Navbar.less'
 import PlaceCallNavbarButton from './PlaceCallNavbarButton'
+import Screen from './screens/Screen'
+import Screens from './screens/Screens'
 
 const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 

@@ -1,44 +1,46 @@
-import React, {ComponentProps, ReactPortal} from 'react'
-import userEvent from '@testing-library/user-event'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import ReactDOM from 'react-dom'
+import userEvent from '@testing-library/user-event'
+import {createBrowserHistory} from 'history'
+import {fromJS} from 'immutable'
 import {stringify} from 'qs'
+import React, {ComponentProps, ReactPortal} from 'react'
+import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {createBrowserHistory} from 'history'
-import {fromJS} from 'immutable'
+
+// eslint-disable-next-line import/order
+import mockedVirtuoso from 'tests/mockedVirtuoso'
+import {logEvent, SegmentEvent} from 'common/segment'
+import {customer} from 'fixtures/customer'
+import {mockSearchRank} from 'fixtures/searchRank'
+import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
+import {RecentItems} from 'hooks/useRecentItems/constants'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import useSelectedIndex from 'hooks/useSelectedIndex'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
+import {SearchEngine} from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import {RecentItems} from 'hooks/useRecentItems/constants'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import history from 'pages/history'
-import {customer} from 'fixtures/customer'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import {mockSearchRank} from 'fixtures/searchRank'
-import {SearchEngine} from 'models/search/types'
-import mockedVirtuoso from 'tests/mockedVirtuoso'
-
-import useSelectedIndex from 'hooks/useSelectedIndex'
-import * as platform from 'utils/platform'
+import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import SpotlightModal, {
     CUSTOMERS_ADVANCED_SEARCH_PATH,
     FEDERATED_SEARCH_TAB_LABEL,
     TICKETS_ADVANCED_SEARCH_PATH,
 } from 'pages/common/components/Spotlight/SpotlightModal'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
+import history from 'pages/history'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
+import * as platform from 'utils/platform'
+import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'

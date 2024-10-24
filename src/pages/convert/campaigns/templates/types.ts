@@ -1,4 +1,5 @@
 import {Map} from 'immutable'
+
 import {CampaignCreatePayload} from 'pages/convert/campaigns/types/Campaign'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 

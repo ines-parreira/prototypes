@@ -1,6 +1,7 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
+
 import migrationCompleteIcon from 'assets/img/integrations/email-migration-complete.svg'
 import Button from 'pages/common/components/button/Button'
 

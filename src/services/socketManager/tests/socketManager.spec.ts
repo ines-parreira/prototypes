@@ -1,14 +1,15 @@
 import _noop from 'lodash/noop'
 import * as reapop from 'reapop'
 
+import * as segment from 'common/segment'
 import * as actions from 'state/notifications/actions'
 
-import * as segment from 'common/segment'
 import {
     RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
     SHARED_WORKER_NAME,
 } from '../constants'
+import {SocketManager} from '../socketManager'
 import {
     BroadcastChannelEvent,
     MessagePortEvent,
@@ -18,7 +19,6 @@ import {
     SendEvent,
     ServerMessage,
 } from '../types'
-import {SocketManager} from '../socketManager'
 
 const logEventSpy = jest.spyOn(segment, 'logEvent')
 

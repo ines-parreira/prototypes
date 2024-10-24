@@ -2,6 +2,7 @@
 import styled from '@emotion/styled'
 
 import React from 'react'
+
 import IconButton from 'gorgias-design-system/Buttons/IconButton'
 
 import TextArea from './TextArea'

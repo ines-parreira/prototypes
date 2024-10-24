@@ -1,14 +1,14 @@
 import {
-    Button as ButtonType,
-    TemplateContext,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {
     SHOW_MORE_WIDTH,
     NB_MIN_BUTTON_DISPLAYED,
     FONT_SIZE,
     BUTTON_SPACING,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
 import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import {
+    Button as ButtonType,
+    TemplateContext,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 export function computeNbButtonDisplayed(
     buttons: ButtonType[],

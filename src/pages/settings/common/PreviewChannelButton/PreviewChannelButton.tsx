@@ -1,11 +1,12 @@
-import React, {useMemo} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useMemo} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import styles from './PreviewChannelButton.less'
 
 const DEFAULT_CHANNEL_TYPE = 'unknown'

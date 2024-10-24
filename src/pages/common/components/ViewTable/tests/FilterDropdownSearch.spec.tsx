@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, act} from '@testing-library/react'
 import {fromJS, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
-import {fieldEnumSearch} from 'state/views/actions'
-import {flushPromises} from 'utils/testing'
 import {getTicketViewField} from 'config/views'
 import {ViewField} from 'models/view/types'
 import Search from 'pages/common/components/Search'
+import {fieldEnumSearch} from 'state/views/actions'
+import {flushPromises} from 'utils/testing'
 
 import FilterDropdownSearch from '../FilterDropdownSearch'
 

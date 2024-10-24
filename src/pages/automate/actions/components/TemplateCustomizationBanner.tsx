@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
+
 import Alert from 'pages/common/components/Alert/Alert'
+
 import css from './TemplateCustomizationBanner.less'
 
 export default function TemplateCustomizationBanner() {

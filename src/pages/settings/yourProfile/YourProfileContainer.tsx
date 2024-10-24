@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect, ConnectedProps} from 'react-redux'
 import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {bindActionCreators} from 'redux'
 
-import {StoreDispatch, StoreState} from 'state/types'
 import {EditableUserProfile, User, UserSetting} from 'config/types/user'
 import {submitSetting, updateCurrentUser} from 'state/currentUser/actions'
 import {getPreferences} from 'state/currentUser/selectors'
+import {StoreDispatch, StoreState} from 'state/types'
 
 import YourProfileView from './components/YourProfileView'
 

@@ -1,7 +1,9 @@
 import {ComponentProps} from 'react'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
+
 import {VoiceCallTableColumnName} from './constants'
 
 export const getVoiceDrillDownColumns = (

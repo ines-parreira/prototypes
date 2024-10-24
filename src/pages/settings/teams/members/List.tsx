@@ -1,9 +1,9 @@
+import classnames from 'classnames'
+import {Set} from 'immutable'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
 import {NavLink, RouteComponentProps} from 'react-router-dom'
-import {Set} from 'immutable'
-import classnames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
 
 import {CursorDirection, OrderDirection} from 'models/api/types'
 import {
@@ -27,6 +27,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import CheckBox from 'pages/common/forms/CheckBox'
+import withRouter from 'pages/common/utils/withRouter'
 import settingsCss from 'pages/settings/settings.less'
 import css from 'pages/settings/teams/List.less'
 import {notify} from 'state/notifications/actions'
@@ -38,7 +39,6 @@ import {
     updateTeamSuccess,
 } from 'state/teams/actions'
 import {RootState} from 'state/types'
-import withRouter from 'pages/common/utils/withRouter'
 
 import AddMember from './AddMember'
 import Row from './Row'

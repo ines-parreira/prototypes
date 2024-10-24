@@ -1,4 +1,5 @@
 import {CustomFieldValue} from 'custom-fields/types'
+
 import {isOutdatedValue} from '../isOutdatedValue'
 
 describe('isOutdatedValue', () => {

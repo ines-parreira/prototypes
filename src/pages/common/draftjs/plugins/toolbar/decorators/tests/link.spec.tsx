@@ -1,12 +1,12 @@
 import {render} from '@testing-library/react'
+import {ContentState} from 'draft-js'
 import * as React from 'react'
 
-import {ContentState} from 'draft-js'
-import {convertFromHTML} from 'utils/editor'
-
+import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
 import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
 import {DecoratorComponentProps} from 'pages/common/draftjs/plugins/types'
-import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
+import {convertFromHTML} from 'utils/editor'
+
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/components/LinkPopover')

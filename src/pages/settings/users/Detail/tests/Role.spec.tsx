@@ -1,9 +1,10 @@
-import React from 'react'
-import userEvent from '@testing-library/user-event'
 import {screen, render, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {UserRole} from 'config/types/user'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'
+
 import {Role} from '../Role'
 import {AgentState} from '../types'
 

@@ -1,19 +1,19 @@
 import React, {Dispatch, SetStateAction, useMemo, useRef} from 'react'
+
+import useEffectOnce from 'hooks/useEffectOnce'
+import useKey from 'hooks/useKey'
 import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
 
 import Button from 'pages/common/components/button/Button'
-import useKey from 'hooks/useKey'
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
-import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
-
-import css from './AIArticlesLibraryList.less'
 import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'
 import AIArticleList from './AIArticleList'
+import css from './AIArticlesLibraryList.less'
+import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
 
 type AIArticlesLibraryListProps = {
     helpCenterId: number

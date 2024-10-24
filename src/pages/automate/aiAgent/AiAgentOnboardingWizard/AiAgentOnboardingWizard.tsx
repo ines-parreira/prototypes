@@ -1,22 +1,24 @@
-import React, {useMemo} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AiAgentOnboardingWizardStep,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import Loader from 'pages/common/components/Loader/Loader'
-import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
+
 import {isAiAgentOnboardingWizardStep} from '../components/StoreConfigForm/StoreConfigForm.utils'
-import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
-import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
-import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
 import css from './AiAgentOnboardingWizard.less'
+import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
+import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
+import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
 
 export type AiAgentOnboardingWizardProps = {
     shopType: string

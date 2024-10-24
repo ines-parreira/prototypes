@@ -1,7 +1,8 @@
-import React, {ReactNode} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
+import React, {ReactNode} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useAIAgentGetOtherResources,

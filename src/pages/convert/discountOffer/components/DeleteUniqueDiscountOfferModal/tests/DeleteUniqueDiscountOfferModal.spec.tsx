@@ -1,16 +1,17 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, render, screen, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore, {MockStore} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {useDeleteDiscountOffer} from 'models/convert/discountOffer/queries'
-import {assumeMock} from 'utils/testing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
+import {useDeleteDiscountOffer} from 'models/convert/discountOffer/queries'
 import {deleteAttachment} from 'state/newMessage/actions'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {DeleteUniqueDiscountOfferModal} from '../DeleteUniqueDiscountOfferModal'
 
 jest.mock('models/convert/discountOffer/queries')

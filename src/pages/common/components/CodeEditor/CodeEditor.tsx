@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useState} from 'react'
 
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'

@@ -1,5 +1,5 @@
-import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('facebookAds reducer', () => {
     it('should return initial state', () => {

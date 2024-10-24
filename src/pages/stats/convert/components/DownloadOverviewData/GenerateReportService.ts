@@ -1,13 +1,15 @@
 import moment from 'moment'
+
 import {CampaignPreview} from 'models/convert/campaign/types'
 
+import {formatPercentage} from 'pages/common/utils/numbers'
 import {CAMPAIGN_TABLE_CELLS} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 
-import {formatPercentage} from 'pages/common/utils/numbers'
 import {createCsv, saveZippedFiles} from 'utils/file'
+
 import {CampaignTableValueFormat} from '../../types/enums/CampaignTableValueFormat.enum'
 
 export interface CampaignPerformanceReportData {

@@ -1,8 +1,10 @@
 import _omit from 'lodash/omit'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+
 import {campaign, campaignId} from 'fixtures/campaign'
 import {channelConnectionId} from 'fixtures/channelConnection'
 import {CampaignCreatePayload} from 'models/convert/campaign/types'
+import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+
 import * as resources from '../resources'
 
 jest.mock('rest_api/revenue_addon_api/client')

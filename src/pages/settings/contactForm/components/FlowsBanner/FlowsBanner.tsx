@@ -1,12 +1,12 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {assetsUrl} from 'utils'
-import Button from 'pages/common/components/button/Button'
 import {logEvent} from 'common/segment'
+import Button from 'pages/common/components/button/Button'
+import {assetsUrl} from 'utils'
 
-import {getBannerDetails} from './utils'
 import css from './FlowsBanner.less'
+import {getBannerDetails} from './utils'
 
 export type FlowsBannerProps = {
     isSubscribedToAutomation: boolean

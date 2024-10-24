@@ -1,22 +1,24 @@
-import React, {ReactNode, useMemo, useRef, useState} from 'react'
-import _keyBy from 'lodash/keyBy'
-import _isEqual from 'lodash/isEqual'
-import _uniq from 'lodash/uniq'
-import {Link} from 'react-router-dom'
 import {Label} from '@gorgias/ui-kit'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import Button from 'pages/common/components/button/Button'
-import {FeatureFlagKey} from 'config/featureFlags'
+import _isEqual from 'lodash/isEqual'
+import _keyBy from 'lodash/keyBy'
+import _uniq from 'lodash/uniq'
+import React, {ReactNode, useMemo, useRef, useState} from 'react'
+import {Link} from 'react-router-dom'
+
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ListWfConfigurationsResponseDto} from 'pages/automate/workflows/types'
+import Button from 'pages/common/components/button/Button'
+
+import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from '../../workflows/hooks/useWorkflowChannelSupport'
 import {SelfServiceChannelType} from '../hooks/useSelfServiceChannels'
-import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {ChannelLanguage} from '../types'
 
 import WorkflowItem from './WorkflowItem'

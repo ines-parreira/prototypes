@@ -1,8 +1,8 @@
-import React from 'react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
-import {TicketMessage} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+import {TicketMessage} from '../../../../../models/ticket/types'
 
 import Error from './Error'
 

@@ -1,5 +1,6 @@
-import UAParser from 'ua-parser-js'
 import {Device} from '@twilio/voice-sdk'
+import UAParser from 'ua-parser-js'
+
 import {isDesktopDevice} from 'utils/device'
 
 import * as utils from '../device'

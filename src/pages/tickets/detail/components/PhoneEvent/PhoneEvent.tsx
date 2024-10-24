@@ -1,10 +1,10 @@
-import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React, {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import css from '../Event.less'
 import callAnsweredIcon from './icons/call-answered.svg'

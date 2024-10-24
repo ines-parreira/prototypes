@@ -1,6 +1,7 @@
 import _isEmpty from 'lodash/isEmpty'
 import React, {MouseEvent, RefObject, useEffect, useRef} from 'react'
 import {GroupedVirtuosoHandle, VirtuosoHandle} from 'react-virtuoso'
+
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import {
     isCustomer,

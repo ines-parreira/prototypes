@@ -1,18 +1,19 @@
-import React, {ReactNode, useCallback, useState} from 'react'
 import {AxiosError} from 'axios'
-import useAppDispatch from 'hooks/useAppDispatch'
+import React, {ReactNode, useCallback, useState} from 'react'
+
 import {User} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
-import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
-import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {update2FAEnabled} from 'state/currentUser/actions'
 import {hasPassword as hasPasswordSelector} from 'state/currentUser/selectors'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import InputField from 'pages/common/forms/DEPRECATED_InputField'
-import useAppSelector from 'hooks/useAppSelector'
 
 export type OwnProps = {
     user?: User

@@ -1,27 +1,24 @@
+import {CSM_CAMPAIGN_TEMPLATES} from './csmOnly'
+import {CONNECT_CUSTOMER_ON_CART_WITH_TEAM} from './library/connectCustomerOnCartWithTeam'
+import {DISCOUNT_HIGH_VALUE_CARTS} from './library/discountForVisitorswithHighValueCart'
+import {FREE_SHIPPING_BENEFITS} from './library/freeShippingBenefits'
+import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from './library/linkValuableResourcesToHelpVisitors'
+import {OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT} from './library/offerChatWithTeamToFindBestFit'
+import {PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE} from './library/promoteNewProductReleaseOnCollectionPage'
+import {PROMOTE_NEWSLETTER_FOR_NEW_VISITORS} from './library/promoteNewsletterForNewVisitors'
+import {PROMOTE_QUIZZES_TO_HELP_VISIOTOR} from './library/promoteQuizzesToChooseProduct'
+import {PROMOTE_SALE_COLLECTION} from './library/promoteSaleCollectionForReturning'
+import {SCHEDULE_LIMITED_TIME_OFFER} from './library/scheduledLimitedTimeOffer'
+import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from './library/suggestBundlesWhenSingleItemInCart'
+import {SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT} from './library/suggestSimilarProduct'
+import {CART_ABANDONMENT} from './onboarding/cartAbandonment'
+import {DISCOUNT_NEW_VISITORS} from './onboarding/discountNewVisitors'
+import {PRODUCT_CARD_SHOWCASE} from './onboarding/productCards'
 import {CampaignTemplate, CampaignTemplateSectionType} from './types'
 
 // Onboarding Templates
-import {DISCOUNT_NEW_VISITORS} from './onboarding/discountNewVisitors'
-import {CART_ABANDONMENT} from './onboarding/cartAbandonment'
-import {PRODUCT_CARD_SHOWCASE} from './onboarding/productCards'
 
 // Library Templates
-import {PROMOTE_NEWSLETTER_FOR_NEW_VISITORS} from './library/promoteNewsletterForNewVisitors'
-import {CONNECT_CUSTOMER_ON_CART_WITH_TEAM} from './library/connectCustomerOnCartWithTeam'
-import {PROMOTE_SALE_COLLECTION} from './library/promoteSaleCollectionForReturning'
-
-import {DISCOUNT_HIGH_VALUE_CARTS} from './library/discountForVisitorswithHighValueCart'
-import {FREE_SHIPPING_BENEFITS} from './library/freeShippingBenefits'
-import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from './library/suggestBundlesWhenSingleItemInCart'
-
-import {PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE} from './library/promoteNewProductReleaseOnCollectionPage'
-import {SCHEDULE_LIMITED_TIME_OFFER} from './library/scheduledLimitedTimeOffer'
-import {SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT} from './library/suggestSimilarProduct'
-
-import {OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT} from './library/offerChatWithTeamToFindBestFit'
-import {PROMOTE_QUIZZES_TO_HELP_VISIOTOR} from './library/promoteQuizzesToChooseProduct'
-import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from './library/linkValuableResourcesToHelpVisitors'
-import {CSM_CAMPAIGN_TEMPLATES} from './csmOnly'
 
 export const CAMPAIGN_TEMPLATES: Record<
     CampaignTemplate['slug'],

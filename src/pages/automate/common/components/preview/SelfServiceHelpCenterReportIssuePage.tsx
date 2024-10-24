@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {HelpCenter} from 'models/helpCenter/types'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
+import {HelpCenter} from 'models/helpCenter/types'
 
+import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import css from './SelfServiceHelpCenterReportIssuePage.less'
 import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
-
-import css from './SelfServiceHelpCenterReportIssuePage.less'
 
 type Props = {
     helpCenter: HelpCenter

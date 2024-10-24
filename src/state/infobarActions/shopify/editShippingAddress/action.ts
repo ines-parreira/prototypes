@@ -1,5 +1,5 @@
-import type {Map} from 'immutable'
 import axios from 'axios'
+import type {Map} from 'immutable'
 
 import _debounce from 'lodash/debounce'
 

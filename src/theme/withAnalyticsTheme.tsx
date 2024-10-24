@@ -1,9 +1,10 @@
 import React, {ComponentType, useContext} from 'react'
+
+import analyticsColorsDark from 'assets/css/new/stats/dark.json'
+import analyticsColorsLight from 'assets/css/new/stats/light.json'
+import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import ThemeContext from 'theme/ThemeContext'
 import {Theme} from 'theme/types'
-import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import analyticsColorsLight from 'assets/css/new/stats/light.json'
-import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 
 interface ThemeColorValue {
     value: string

@@ -1,5 +1,6 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import Core from '../Core' // Adjust the import path as necessary
 
 jest.mock('common/notifications', () => ({

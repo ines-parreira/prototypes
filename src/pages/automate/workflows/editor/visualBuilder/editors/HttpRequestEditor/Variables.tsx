@@ -1,15 +1,16 @@
+import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 
-import classNames from 'classnames'
-import TextInput from 'pages/common/forms/input/TextInput'
-import IconButton from 'pages/common/components/button/IconButton'
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+
 import css from '../NodeEditor.less'
 
 type Props = {

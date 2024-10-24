@@ -1,25 +1,26 @@
-import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
+import React, {useMemo} from 'react'
 
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 import {StoreIntegration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {getShopUrlFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
+import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {TicketChannel} from 'business/types/ticket'
 import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
 import {getHelpCentersAutomationSettings} from 'state/entities/helpCenter/helpCentersAutomationSettings'
+
+import {PREVIEW_MODE_QUERY_PARAM} from '../../../constants/preview-mode'
+import {HELP_CENTER_DEFAULT_LOCALE} from '../../settings/helpCenter/constants'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from '../../settings/helpCenter/utils/helpCenter.utils'
-import {PREVIEW_MODE_QUERY_PARAM} from '../../../constants/preview-mode'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../settings/helpCenter/constants'
 
 type Props = {
     channel?: SelfServiceChannel

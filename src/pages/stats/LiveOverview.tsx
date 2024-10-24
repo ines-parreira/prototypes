@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
+
 import {
     LIVE_OVERVIEW_METRICS,
     OPEN_TICKETS_ASSIGNMENT_STATUSES,
@@ -19,6 +20,7 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {LiveOverviewFilters} from 'pages/stats/LiveOverviewFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import LineStat from './common/components/charts/LineStat'
 import StatCurrentDate from './common/components/StatCurrentDate'

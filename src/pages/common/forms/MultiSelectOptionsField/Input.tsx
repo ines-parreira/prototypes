@@ -1,5 +1,5 @@
-import React, {Component, FocusEvent, KeyboardEvent, ChangeEvent} from 'react'
 import classnames from 'classnames'
+import React, {Component, FocusEvent, KeyboardEvent, ChangeEvent} from 'react'
 
 import css from 'pages/common/forms/MultiSelectOptionsField/Input.less'
 

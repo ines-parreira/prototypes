@@ -1,41 +1,42 @@
+import classNames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {useEffect, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
 import {useParams} from 'react-router-dom'
-import classNames from 'classnames'
 import {Navbar} from 'reactstrap'
 
 import {TicketStatus} from 'business/types/ticket'
 import {useFlag} from 'common/flags'
+import {SegmentEvent} from 'common/segment'
+import {logEventWithSampling} from 'common/segment/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    changeActiveTab,
-    changeTicketMessage,
-    getActiveTab,
-} from 'state/ui/ticketAIAgentFeedback'
-import * as layoutSelectors from 'state/layout/selectors'
-import {RootState} from 'state/types'
-import * as actions from 'state/widgets/actions'
-import {getAIAgentMessages, getTicket} from 'state/ticket/selectors'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import TicketFeedback, {
     useHasAIAgent,
 } from 'pages/tickets/detail/components/TicketFeedback'
 
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {logEventWithSampling} from 'common/segment/segment'
-import {SegmentEvent} from 'common/segment'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import * as layoutSelectors from 'state/layout/selectors'
+import {getAIAgentMessages, getTicket} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {
+    changeActiveTab,
+    changeTicketMessage,
+    getActiveTab,
+} from 'state/ui/ticketAIAgentFeedback'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import * as actions from 'state/widgets/actions'
+import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
+import {WidgetEnvironment} from 'state/widgets/types'
 import {isTeamLead} from 'utils'
+
 import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
 
-import css from './TicketInfobarContainer.less'
 import {isTrialMessageFromAIAgent} from './components/AIAgentFeedbackBar/utils'
+import css from './TicketInfobarContainer.less'
 
 type OwnProps = {
     isEditingWidgets?: boolean

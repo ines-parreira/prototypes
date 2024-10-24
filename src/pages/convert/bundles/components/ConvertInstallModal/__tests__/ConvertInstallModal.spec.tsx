@@ -1,20 +1,22 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
+
 import {
     convertBundle,
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
+import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import ConvertInstallModal from '../ConvertInstallModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

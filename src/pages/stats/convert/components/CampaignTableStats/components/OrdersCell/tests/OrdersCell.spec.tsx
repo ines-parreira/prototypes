@@ -1,16 +1,17 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {assumeMock} from 'utils/testing'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {ConvertMetric} from 'state/ui/stats/types'
-import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {setMetricData} from 'state/ui/stats/drillDownSlice'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {ConvertMetric} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
+
 import {OrdersCell} from '../OrdersCell'
 
 jest.mock('hooks/useAppDispatch')

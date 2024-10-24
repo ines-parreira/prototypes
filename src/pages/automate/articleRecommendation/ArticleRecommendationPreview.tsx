@@ -1,15 +1,14 @@
+import {createMemoryHistory} from 'history'
 import React, {useMemo} from 'react'
 
-import {createMemoryHistory} from 'history'
-
-import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
-import UncontrolledSelfServicePreviewContainer from 'pages/automate/common/components/preview/UncontrolledSelfServicePreviewContainer'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
+import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import UncontrolledSelfServicePreviewContainer from 'pages/automate/common/components/preview/UncontrolledSelfServicePreviewContainer'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 type Props = {
     channels: SelfServiceChatChannel[]

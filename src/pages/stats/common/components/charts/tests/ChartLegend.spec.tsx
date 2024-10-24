@@ -1,6 +1,7 @@
-import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import {Chart} from 'chart.js'
+import React from 'react'
+
 import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
 
 jest.mock('chart.js')

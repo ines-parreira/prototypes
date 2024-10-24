@@ -1,10 +1,11 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+
 import {PlaygroundFormValues} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {DEFAULT_PLAYGROUND_CUSTOMER} from '../constants'
+import {useAiAgentNavigation} from './useAiAgentNavigation'
 import {usePublicResources} from './usePublicResources'
 import {usePublicResourcesPooling} from './usePublicResourcesPooling'
-import {useAiAgentNavigation} from './useAiAgentNavigation'
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',

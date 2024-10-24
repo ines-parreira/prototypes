@@ -1,15 +1,15 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import useCallbackRef from 'hooks/useCallbackRef'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-
 import {FeatureFlagKey} from 'config/featureFlags'
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import useCallbackRef from 'hooks/useCallbackRef'
 
-import StatsPage from 'pages/stats/StatsPage'
 import {StatsFilters} from 'models/stat/types'
-import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/AutomateLandingPageDashboardV2'
+import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
+import StatsPage from 'pages/stats/StatsPage'
+
 import {AutomateLandingPageTopQuestions} from './TopQuestions/AutomateLandingPageTopQuestions'
 
 const AutomateLandingPage = () => {

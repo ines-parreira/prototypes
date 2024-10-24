@@ -1,5 +1,5 @@
-import {waitFor} from '@testing-library/react'
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
+import {waitFor} from '@testing-library/react'
 
 import {AGENT_ACTIVITY_HEALTHCHECK_INTERVAL, ActivityEvents} from '../constants'
 

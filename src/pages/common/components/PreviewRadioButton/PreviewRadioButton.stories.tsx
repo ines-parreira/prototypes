@@ -1,8 +1,9 @@
-import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useState} from 'react'
 
-import previewLight from 'assets/img/help-center/preview-light.svg'
 import previewDark from 'assets/img/help-center/preview-dark.svg'
+import previewLight from 'assets/img/help-center/preview-light.svg'
+
 import {PreviewRadioButton} from './PreviewRadioButton'
 
 const storyConfig: Meta = {

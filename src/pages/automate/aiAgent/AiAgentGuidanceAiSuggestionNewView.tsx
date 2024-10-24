@@ -1,13 +1,15 @@
 import React, {useMemo, useState} from 'react'
 import {Redirect} from 'react-router-dom'
+
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
+
 import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {GuidanceFormFields} from './types'
 import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 type Props = {
     shopName: string

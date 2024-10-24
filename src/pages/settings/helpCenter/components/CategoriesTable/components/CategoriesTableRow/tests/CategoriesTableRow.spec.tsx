@@ -1,27 +1,26 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {Provider as ReduxProvider} from 'react-redux'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React from 'react'
 import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {Provider as ReduxProvider} from 'react-redux'
 import {DeepPartial} from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-
 import {Category} from 'models/helpCenter/types'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {CategoriesTableBasicRow} from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 
 import {
     CATEGORY_ROW_ACTIONS,
     CATEGORY_TREE_MAX_LEVEL,
 } from 'pages/settings/helpCenter/constants'
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {CategoriesTableRow} from '../CategoriesTableRow'
 

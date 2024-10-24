@@ -9,12 +9,12 @@ import React, {
     useState,
 } from 'react'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
 import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import useUnmount from 'hooks/useUnmount'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import {DropdownContext} from './Dropdown'
 

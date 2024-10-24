@@ -1,20 +1,21 @@
 import {useMemo} from 'react'
+
+import {usePostReporting} from 'models/reporting/queries'
+import {ReportingGranularity} from 'models/reporting/types'
 import {AggregationWindow} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {getRevenueShareGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     CubeData,
     CubeFilterParams,
     CubeMetric,
 } from 'pages/stats/convert/clients/types'
-import {getRevenueShareGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     backFillGraphData,
     getDataFromResult,
     transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {RevenueGraphDataPoint} from 'pages/stats/convert/services/types'
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const OVERRIDES = {
     select: getDataFromResult,

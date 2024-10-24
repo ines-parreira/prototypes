@@ -1,14 +1,15 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
-import {fromJS} from 'immutable'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {initialState} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
+
 import AgentsFilter from './AgentsFilter'
 import {extendedAgents} from './tests/fixtures/agents'
 import {extendedTeams} from './tests/fixtures/teams'

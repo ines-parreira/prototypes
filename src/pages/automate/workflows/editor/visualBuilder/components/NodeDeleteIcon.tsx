@@ -1,10 +1,10 @@
 import React, {useRef, useState, useCallback} from 'react'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import css from './NodeDeleteIcon.less'
 

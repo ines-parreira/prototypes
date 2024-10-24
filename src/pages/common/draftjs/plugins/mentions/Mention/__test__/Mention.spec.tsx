@@ -1,6 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {ContentState} from 'draft-js'
+import React from 'react'
 
 import Mention from '../index'
 

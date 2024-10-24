@@ -3,16 +3,16 @@ import React from 'react'
 import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    AccountFeature,
-    AccountFeatureMetadata,
-} from 'state/currentAccount/types'
-import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
     getIsCurrentHelpdeskLegacy,
     getIsCurrentHelpdeskCustom,
     getCurrentHelpdeskPlanName,
 } from 'state/billing/selectors'
+import {
+    AccountFeature,
+    AccountFeatureMetadata,
+} from 'state/currentAccount/types'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 
 import Paywall, {PaywallTheme, UpgradeType} from '../Paywall/Paywall'

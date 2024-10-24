@@ -1,9 +1,9 @@
+import {render, fireEvent, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'

@@ -1,11 +1,5 @@
 import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import {stringify} from 'qs'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
-import {
-    PickedTicketWithHighlights,
-    TicketSearchOptions,
-    TicketWithHighlightsResponse,
-} from 'models/search/types'
 
 import client from 'models/api/resources'
 import {
@@ -13,6 +7,12 @@ import {
     ApiListResponseCursorPagination,
 } from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import {
+    PickedTicketWithHighlights,
+    TicketSearchOptions,
+    TicketWithHighlightsResponse,
+} from 'models/search/types'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 import {Ticket} from 'models/ticket/types'
 
 export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {

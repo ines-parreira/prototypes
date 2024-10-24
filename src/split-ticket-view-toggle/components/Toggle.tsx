@@ -1,14 +1,14 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
 import React, {useCallback} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useId from 'hooks/useId'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'
 
-import useIsToggleEnabled from './useIsToggleEnabled'
 import css from './Toggle.less'
+import useIsToggleEnabled from './useIsToggleEnabled'
 
 export default function Toggle() {
     const {isEnabled, setIsEnabled} = useSplitTicketView()

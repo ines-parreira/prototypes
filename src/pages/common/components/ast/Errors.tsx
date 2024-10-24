@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {
     useRef,
     useContext,
@@ -9,7 +10,7 @@ import React, {
     useState,
     useCallback,
 } from 'react'
-import classnames from 'classnames'
+
 import useId from 'hooks/useId'
 
 export const ErrorsCollector: React.FC = ({children}) => {

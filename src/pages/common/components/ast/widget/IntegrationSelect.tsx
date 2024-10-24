@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import _isNumber from 'lodash/isNumber'
+import React, {useEffect} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {RenderLabel} from 'pages/common/utils/labels'
 import {RuleItemActions} from 'pages/settings/rules/types'
-import {RootState} from 'state/types'
-import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
 import {fetchIntegrations} from 'state/integrations/actions'
+import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 
 type OwnProps = {
     onChange: (value: number) => ReturnType<RuleItemActions['modifyCodeAST']>

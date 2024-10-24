@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import {fireEvent, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import {fireEvent, screen} from '@testing-library/react'
 import {Router} from 'react-router-dom'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {billingState} from 'fixtures/billing'
-import {RootState} from 'state/types'
-import history from 'pages/history'
+import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
-import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import history from 'pages/history'
+import {RootState} from 'state/types'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {ConnectedChannelsEmailView} from '../components/ConnectedChannelsEmailView'
 
 jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')

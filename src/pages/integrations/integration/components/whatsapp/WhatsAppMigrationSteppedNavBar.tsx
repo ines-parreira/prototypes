@@ -4,6 +4,7 @@ import useWhatsAppMigration, {
     getStepFromStatus,
     WhatsAppMigrationStatus,
 } from 'hooks/useWhatsAppMigration'
+
 import SteppedNavBar from '../email/SteppedNavBar/SteppedNavBar'
 
 import css from './WhatsAppMigrationSteppedNavBar.less'

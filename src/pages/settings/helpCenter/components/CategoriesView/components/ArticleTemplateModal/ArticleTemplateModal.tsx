@@ -1,13 +1,12 @@
 import React from 'react'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {ArticleTemplate} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-
-import {ArticleTemplate} from 'models/helpCenter/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './ArticleTemplateModal.less'
 

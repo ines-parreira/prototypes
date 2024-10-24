@@ -4,8 +4,8 @@ import {TicketChannel} from 'business/types/ticket'
 import {customer} from 'fixtures/customer'
 import {RootState} from 'state/types'
 
-import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 describe('customers selectors', () => {
     let state: RootState

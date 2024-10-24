@@ -1,13 +1,13 @@
-import React, {ReactNode, Component} from 'react'
 import classNames from 'classnames'
-import _isEqual from 'lodash/isEqual'
+import _compact from 'lodash/compact'
 import _find from 'lodash/find'
 import _findIndex from 'lodash/findIndex'
 import _forEach from 'lodash/forEach'
-import _pick from 'lodash/pick'
-import _compact from 'lodash/compact'
+import _isEqual from 'lodash/isEqual'
 import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
+import _pick from 'lodash/pick'
+import React, {ReactNode, Component} from 'react'
 import {FormGroup} from 'reactstrap'
 
 import {

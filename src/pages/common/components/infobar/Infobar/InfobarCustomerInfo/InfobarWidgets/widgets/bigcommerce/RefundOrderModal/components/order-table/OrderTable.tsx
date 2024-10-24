@@ -11,10 +11,11 @@ import {
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
+
 import {BIGCOMMERCE_REFUND_ACTION_TYPE} from '../../types'
 import {OrderLineItemRow} from './OrderLineItemRow'
-import {TotalsSummaryComponent} from './TotalsSummaryComponent'
 import bigcommerceTableCss from './OrderTable.less'
+import {TotalsSummaryComponent} from './TotalsSummaryComponent'
 
 type Props = {
     orderLevelRefundData: OrderLevelRefundData

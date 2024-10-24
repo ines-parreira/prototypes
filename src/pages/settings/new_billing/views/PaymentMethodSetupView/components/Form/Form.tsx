@@ -1,29 +1,31 @@
 import React, {FormEventHandler, HTMLProps, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
 import {useStore} from 'react-redux'
-import Button from 'pages/common/components/button/Button'
-import {BillingContact} from 'state/billing/types'
-import Caption from 'pages/common/forms/Caption/Caption'
+import {useHistory} from 'react-router-dom'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {
-    getCurrentAccountState,
-    getIsCurrentSubscriptionTrialingOrCanceled,
-} from 'state/currentAccount/selectors'
+import Button from 'pages/common/components/button/Button'
+import Caption from 'pages/common/forms/Caption/Caption'
+import Card from 'pages/settings/new_billing/components/Card'
+import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
+import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
 import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
-import {useStripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/useStripeAddressElement'
-import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
 import {useStripePaymentElement} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentElement/useStripePaymentElement'
 import {
     ISubscriptionSummaryProps,
     SubscriptionSummary,
 } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
 import {useSubmitPaymentMethodWithBillingContact} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
-import Card from 'pages/settings/new_billing/components/Card'
+import {BillingContact} from 'state/billing/types'
+import {
+    getCurrentAccountState,
+    getIsCurrentSubscriptionTrialingOrCanceled,
+} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+
 import css from './Form.less'
 
 export type IFormProps = Omit<HTMLProps<HTMLFormElement>, 'onSubmit' | 'ref'> &

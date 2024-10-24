@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -18,7 +19,6 @@ import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTi
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
 jest.mock(

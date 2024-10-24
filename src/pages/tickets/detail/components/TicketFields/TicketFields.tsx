@@ -1,5 +1,5 @@
-import React, {memo, useEffect, useState} from 'react'
 import classNames from 'classnames'
+import React, {memo, useEffect, useState} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,9 +13,9 @@ import {
     getTicketFieldState,
 } from 'state/ticket/selectors'
 
+import useHeight from './hooks/useHeight'
 import TicketField from './TicketField'
 import css from './TicketFields.less'
-import useHeight from './hooks/useHeight'
 
 function TicketFields() {
     const dispatch = useAppDispatch()

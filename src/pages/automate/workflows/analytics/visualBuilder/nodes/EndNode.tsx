@@ -1,23 +1,24 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, NodeProps, Position, useNodeId} from 'reactflow'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {
-    VisualBuilderNodeProps,
-    useVisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
+import {
+    VisualBuilderNodeProps,
+    useVisualBuilderNodeProps,
+} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import EdgeBlock from '../components/EdgeBlock'
 
 import {

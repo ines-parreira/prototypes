@@ -1,4 +1,5 @@
 import {isEmpty} from 'lodash'
+
 import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
@@ -7,6 +8,7 @@ import {
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
 import {VerificationStatus} from 'models/singleSenderVerification/types'
+
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
 export const computeMigrationInboundVerificationStatus = (

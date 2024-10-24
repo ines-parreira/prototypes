@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
@@ -20,9 +21,10 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import {Tooltip} from '@gorgias/ui-kit'
 
+import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -83,8 +85,6 @@ import {
 import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'

@@ -1,8 +1,10 @@
 import {cleanup, render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React from 'react'
-import {mockStore} from 'utils/testing'
+import {Provider} from 'react-redux'
+
 import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
+import {mockStore} from 'utils/testing'
+
 import WhatsAppMessageTemplateDetailsDrawer from '../WhatsAppMessageTemplateDetailsDrawer'
 
 describe('WhatsAppMessageTemplateDetailsDrawer', () => {

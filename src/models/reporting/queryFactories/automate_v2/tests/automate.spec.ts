@@ -1,12 +1,13 @@
 import moment from 'moment/moment'
 
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
 import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {ReportingFilterOperator} from 'models/reporting/types'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+
 import {automationDatasetQueryFactory} from '../metrics'
 
 describe('Automate', () => {

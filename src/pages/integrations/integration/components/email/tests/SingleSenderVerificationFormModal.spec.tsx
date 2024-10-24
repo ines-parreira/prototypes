@@ -1,5 +1,6 @@
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import SingleSenderVerificationFormModal from '../EmailMigration/SingleSenderVerificationFormModal'
 import VerificationForm, {
     FORM_ID,

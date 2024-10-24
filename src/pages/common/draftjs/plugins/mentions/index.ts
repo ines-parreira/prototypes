@@ -2,17 +2,17 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import {KeyboardEvent} from 'react'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
+import {Map} from 'immutable'
+import {KeyboardEvent} from 'react'
 
 import Mention from './Mention'
+import styles from './Mention.less'
+import mentionStrategy from './mentionStrategy'
 import MentionSuggestions from './MentionSuggestions'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'
-import mentionStrategy from './mentionStrategy'
 import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'
-import {defaultSuggestionsFilter, positionSuggestions} from './utils'
 import {
     MentionPluginTheme,
     MentionPluginStore,
@@ -20,8 +20,7 @@ import {
     GetSetEditorState,
     MentionSuggestionCallbacks,
 } from './types'
-
-import styles from './Mention.less'
+import {defaultSuggestionsFilter, positionSuggestions} from './utils'
 
 const letterRegExp =
     '[' +

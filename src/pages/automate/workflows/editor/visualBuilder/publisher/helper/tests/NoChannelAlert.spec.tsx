@@ -1,7 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
 import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+
 import NoChannelsAlert from '../NoChannelAlert'
 import {ChannelConfig} from '../utils'
 

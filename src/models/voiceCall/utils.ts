@@ -1,6 +1,8 @@
 import moment from 'moment'
-import {getMoment, stringToDatetime} from 'utils/date'
+
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {getMoment, stringToDatetime} from 'utils/date'
+
 import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from './types'
 
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {

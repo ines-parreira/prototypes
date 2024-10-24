@@ -1,20 +1,21 @@
+import _isEqual from 'lodash/isEqual'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import _isEqual from 'lodash/isEqual'
 
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import useTrackOrderFlow from './hooks/useTrackOrderFlow'
+
 import TrackOrderUnfulfilledMessage from './components/TrackOrderUnfulfilledMessage'
+import {DEFAULT_UNFULFILLED_MESSAGE} from './constants'
+import useTrackOrderFlow from './hooks/useTrackOrderFlow'
 import TrackOrderFlowPreview from './TrackOrderFlowPreviewTrack'
 import TrackOrderFlowViewContext, {
     TrackOrderFlowViewContextType,
 } from './TrackOrderFlowViewContext'
-import {DEFAULT_UNFULFILLED_MESSAGE} from './constants'
 
 export default function TrackOrderFlowView() {
     const {shopName} = useParams<{shopName: string}>()

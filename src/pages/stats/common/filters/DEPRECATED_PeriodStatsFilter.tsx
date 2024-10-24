@@ -1,17 +1,17 @@
+import {Options as InitialSettings} from 'daterangepicker'
 import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
-import {Options as InitialSettings} from 'daterangepicker'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {LegacyStatsFilters} from 'models/stat/types'
 
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import {getNewSetOfRanges} from 'pages/stats/constants'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 const MAX_SPAN = 90
 

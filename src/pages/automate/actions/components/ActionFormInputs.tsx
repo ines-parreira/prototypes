@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import _noop from 'lodash/noop'
+import React, {useMemo} from 'react'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {Input} from '../types'
 import ActionFormInput from './ActionFormInput'

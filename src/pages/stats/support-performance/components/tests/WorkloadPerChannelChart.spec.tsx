@@ -5,9 +5,9 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import {TicketChannel} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {
@@ -15,6 +15,8 @@ import {
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import GaugeChart from 'pages/stats/GaugeChart'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -25,7 +27,6 @@ import {
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
-import GaugeChart from 'pages/stats/GaugeChart'
 
 jest.mock('pages/stats/GaugeChart')
 const gaugeChartMock = assumeMock(GaugeChart)

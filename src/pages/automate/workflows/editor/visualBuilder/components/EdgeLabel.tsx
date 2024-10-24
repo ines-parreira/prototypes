@@ -1,5 +1,5 @@
-import React, {MouseEvent, ReactNode} from 'react'
 import classnames from 'classnames'
+import React, {MouseEvent, ReactNode} from 'react'
 
 import css from './EdgeLabel.less'
 

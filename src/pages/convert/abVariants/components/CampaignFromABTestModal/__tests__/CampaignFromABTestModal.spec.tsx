@@ -1,14 +1,15 @@
-import React from 'react'
 import {act, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {campaign, campaignVariant} from 'fixtures/campaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {channelConnection} from 'fixtures/channelConnection'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
+import {assumeMock, renderWithStore} from 'utils/testing'
+
 import CampaignFromABTestModal from '../CampaignFromABTestModal'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

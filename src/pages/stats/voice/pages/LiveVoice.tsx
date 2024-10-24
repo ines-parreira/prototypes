@@ -1,23 +1,24 @@
-import React from 'react'
 import {useListLiveCallQueueVoiceCalls} from '@gorgias/api-queries'
+import React from 'react'
+
+import {PaywallConfig, paywallConfigs} from 'config/paywalls'
+import useAppSelector from 'hooks/useAppSelector'
+import {ProductType} from 'models/billing/types'
+import {FilterKey} from 'models/stat/types'
+import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
-import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoice/LiveVoiceFilters'
 import LiveVoiceAgentsSection from 'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection'
 import LiveVoiceCallTable from 'pages/stats/voice/components/LiveVoice/LiveVoiceCallTable'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
-import {FilterKey} from 'models/stat/types'
-
-import {ProductType} from 'models/billing/types'
+import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoice/LiveVoiceFilters'
 import {AccountFeature} from 'state/currentAccount/types'
-import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import {PaywallConfig, paywallConfigs} from 'config/paywalls'
+import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+
+import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import {
     LIVE_VOICE_PAGE_TITLE,
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
 } from '../constants/liveVoice'
-import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import css from './LiveVoice.less'
 
 function LiveVoice() {

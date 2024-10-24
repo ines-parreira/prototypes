@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-import Button from 'pages/common/components/button/Button'
-import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Loader from 'pages/common/components/Loader/Loader'
+import classnames from 'classnames'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {
     BigCommerceCart,
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
-import css from './OrderTotals.less'
+import Button from 'pages/common/components/button/Button'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import Loader from 'pages/common/components/Loader/Loader'
+import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
+
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
+import css from './OrderTotals.less'
 
 export const useShippingMethods = ({
     consignment,

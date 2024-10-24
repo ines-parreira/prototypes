@@ -1,33 +1,33 @@
+import {UseQueryResult} from '@tanstack/react-query'
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {UseQueryResult} from '@tanstack/react-query'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {
-    useBreachedSlaTicketsTrend,
-    useSatisfiedSlaTicketsTrend,
-} from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import {
+    useBreachedSlaTicketsTrend,
+    useSatisfiedSlaTicketsTrend,
+} from 'hooks/reporting/sla/useSLAsTicketsTrends'
+import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {LegacyStatsFilters} from 'models/stat/types'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
+import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
+import {saveReport} from 'services/reporting/SLAsReportingService'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock} from 'utils/testing'
-import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
-import {saveReport} from 'services/reporting/SLAsReportingService'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 jest.mock('models/reporting/queries')
 

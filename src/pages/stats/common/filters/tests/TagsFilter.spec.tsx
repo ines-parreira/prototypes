@@ -1,10 +1,14 @@
+import {Tag} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {Tag} from '@gorgias/api-queries'
 
+import {SegmentEvent, logEvent} from 'common/segment'
+import {tags} from 'fixtures/tag'
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -12,18 +16,14 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {tags} from 'fixtures/tag'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {stateToProps, TagsFilter} from 'pages/stats/common/filters/TagsFilter'
 import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
 import {statFiltersClean} from 'state/ui/stats/actions'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)

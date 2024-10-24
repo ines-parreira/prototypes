@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {TicketChannel} from 'business/types/ticket'
 import {
     SATISFACTION_SURVEY_MAX_SCORE,

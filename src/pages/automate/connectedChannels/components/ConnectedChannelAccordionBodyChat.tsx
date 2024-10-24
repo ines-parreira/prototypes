@@ -1,31 +1,32 @@
+import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import Button from 'pages/common/components/button/Button'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ChannelLanguage} from 'pages/automate/common/types'
 import {TicketChannel} from 'business/types/ticket'
 
-import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import useAppSelector from 'hooks/useAppSelector'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import {ChannelLanguage} from 'pages/automate/common/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getHasAutomate} from 'state/billing/selectors'
+
 import {
     ARTICLE_RECOMMENDATION,
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
+import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 
 import css from './ConnectedChannelAccordionBodyChat.less'
+import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
 type Props = {
     channel: SelfServiceChatChannel

@@ -1,23 +1,24 @@
 import _partial from 'lodash/partial'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {StatsFilters} from 'models/stat/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {StatsFilters} from 'models/stat/types'
 import {
     NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
 } from 'pages/stats/common/utils'
+import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 export interface ShoutoutConfig {
     useQuery: (

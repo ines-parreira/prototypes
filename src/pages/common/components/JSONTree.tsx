@@ -1,5 +1,5 @@
-import React, {ReactElement, FC} from 'react'
 import {Map, List} from 'immutable'
+import React, {ReactElement, FC} from 'react'
 
 type DataType = Map<any, any> | List<any> | string | number | boolean | null
 

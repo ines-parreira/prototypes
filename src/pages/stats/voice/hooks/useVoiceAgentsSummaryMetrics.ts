@@ -1,11 +1,8 @@
-import {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useMemo} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,
@@ -14,7 +11,10 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
+} from 'state/ui/stats/selectors'
 
 export function useVoiceAgentsSummaryMetrics() {
     const isVoiceAgentsNewFilters =

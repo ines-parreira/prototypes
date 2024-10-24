@@ -1,7 +1,6 @@
-import React, {HTMLAttributes} from 'react'
-
-import styled from '@emotion/styled'
 import {useTheme} from '@emotion/react'
+import styled from '@emotion/styled'
+import React, {HTMLAttributes} from 'react'
 
 import {gorgiasColors} from 'gorgias-design-system/styles'
 import {setLightness} from 'gorgias-design-system/utils'

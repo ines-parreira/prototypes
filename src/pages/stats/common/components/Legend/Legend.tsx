@@ -1,5 +1,5 @@
-import React from 'react'
 import _isArray from 'lodash/isArray'
+import React from 'react'
 
 import css from './Legend.less'
 

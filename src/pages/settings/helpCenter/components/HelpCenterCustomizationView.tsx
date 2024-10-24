@@ -1,43 +1,45 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {FormGroup} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {Tooltip} from '@gorgias/ui-kit'
+import React, {useEffect, useMemo, useState} from 'react'
+import {FormGroup} from 'reactstrap'
 
 import isURL, {IsURLOptions} from 'validator/lib/isURL'
-import Button from 'pages/common/components/button/Button'
 
-import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ExtraHTMLDto,
     LocalSocialNavigationLink,
     NavigationLink,
 } from 'models/helpCenter/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import Button from 'pages/common/components/button/Button'
+
 import InputField from 'pages/common/forms/input/InputField'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {reportError} from 'utils/errors'
+
+import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
+import ToggleInput from '../../../common/forms/ToggleInput'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
-import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
-import ToggleInput from '../../../common/forms/ToggleInput'
-
 import {getAbsoluteUrl} from '../utils/helpCenter.utils'
+import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
+
+import css from './HelpCenterCustomizationView.less'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {LinkList} from './LinkList'
-import css from './HelpCenterCustomizationView.less'
 import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterCustomizationView = () => {

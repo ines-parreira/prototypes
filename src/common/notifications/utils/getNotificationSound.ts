@@ -1,6 +1,6 @@
+import {ticketMessageCreatedChannelWorkflowMap} from 'common/notifications/data'
 import {Notification} from 'common/notifications/types'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
-import {ticketMessageCreatedChannelWorkflowMap} from 'common/notifications/data'
 
 export default function getNotificationSound(
     notification: Notification,

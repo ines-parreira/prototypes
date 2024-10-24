@@ -10,9 +10,10 @@ import {Popover} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import {ModalContext} from 'pages/common/components/modal/Modal'
-import TourTooltip from './TourTooltip'
+
 import Button from './Button'
 import css from './ButtonPopover.less'
+import TourTooltip from './TourTooltip'
 
 type TourType = {
     text: string

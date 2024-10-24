@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react'
 
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import TextInput from 'pages/common/forms/input/TextInput'
 import InputGroup from 'pages/common/forms/input/InputGroup'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './EmojiTextInput.less'
 

@@ -1,8 +1,3 @@
-import React from 'react'
-import {fromJS, Map, List, Seq} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
-import _get from 'lodash/get'
-import _pickBy from 'lodash/pickBy'
 import {
     Expression,
     CallExpression as ESCallExpression,
@@ -10,6 +5,11 @@ import {
     Identifier,
     LogicalOperator,
 } from 'estree'
+import {fromJS, Map, List, Seq} from 'immutable'
+import _get from 'lodash/get'
+import _pickBy from 'lodash/pickBy'
+import React from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from 'config'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'

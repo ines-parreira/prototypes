@@ -1,6 +1,7 @@
+import {act, renderHook} from '@testing-library/react-hooks'
 import writeText from 'copy-to-clipboard'
 import noop from 'lodash/noop'
-import {act, renderHook} from '@testing-library/react-hooks'
+
 import useCopyToClipboard from '../useCopyToClipboard'
 
 const valueToRaiseMockException =

@@ -1,7 +1,7 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import ReactPlayer from 'react-player'
 import {EditorState} from 'draft-js'
+import React from 'react'
+import ReactPlayer from 'react-player'
 
 import * as utils from 'utils'
 

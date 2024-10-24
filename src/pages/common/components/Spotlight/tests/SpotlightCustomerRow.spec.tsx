@@ -6,9 +6,10 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {user} from 'fixtures/users'
-import {customer} from 'fixtures/customer'
+
 import {TicketChannel} from 'business/types/ticket'
+import {customer} from 'fixtures/customer'
+import {user} from 'fixtures/users'
 
 import SpotlightCustomerRow from '../SpotlightCustomerRow'
 

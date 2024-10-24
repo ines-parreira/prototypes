@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
 
-import * as helpers from '../helpers'
-import {CustomerChannel} from '../../../models/customerChannel/types'
 import {TicketChannel} from '../../../business/types/ticket'
+import {CustomerChannel} from '../../../models/customerChannel/types'
+import * as helpers from '../helpers'
 
 describe('customers helpers', () => {
     it('getDisplayName', () => {

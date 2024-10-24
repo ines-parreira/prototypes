@@ -1,3 +1,4 @@
+import moment, {Moment} from 'moment-timezone'
 import React, {
     useEffect,
     useCallback,
@@ -6,12 +7,11 @@ import React, {
     useState,
     ComponentProps,
 } from 'react'
-import {connect} from 'react-redux'
-import moment, {Moment} from 'moment-timezone'
 import DateRangePicker, {
     EventHandler,
     Props as DateRangeProps,
 } from 'react-bootstrap-daterangepicker'
+import {connect} from 'react-redux'
 import {Tooltip} from 'reactstrap'
 
 import {
@@ -20,17 +20,16 @@ import {
     DateTimeResultFormatType,
 } from 'constants/datetime'
 import Button from 'pages/common/components/button/Button'
-import {getTimezone} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
-import {useTheme} from 'theme'
-
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import css from 'pages/stats/common/PeriodPicker.less'
 import {
     periodPickerMaxSpanDays,
     getDateRangePickerLabel,
 } from 'pages/stats/common/utils'
-import css from 'pages/stats/common/PeriodPicker.less'
 import {getDefaultSetOfRanges} from 'pages/stats/constants'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {useTheme} from 'theme'
 
 export type Props = {
     endDatetime: Moment

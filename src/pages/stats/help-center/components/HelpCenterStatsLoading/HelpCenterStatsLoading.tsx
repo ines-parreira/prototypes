@@ -1,6 +1,8 @@
 import React from 'react'
-import StatsPage from 'pages/stats/StatsPage'
+
 import Loader from 'pages/common/components/Loader/Loader'
+import StatsPage from 'pages/stats/StatsPage'
+
 import {HELP_CENTER_STATS_TEST_IDS} from '../../pages/tests/constants'
 
 type HelpCenterStatsLoadingProps = {

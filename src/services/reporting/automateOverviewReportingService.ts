@@ -1,7 +1,18 @@
 import moment from 'moment/moment'
+
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {Period} from 'models/stat/types'
 
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {
+    DECREASE_IN_FIRST_RESPONSE,
+    DECREASE_IN_RESOLUTION_TIME,
+} from 'pages/automate/automate-metrics/constants'
+import {
+    AUTOMATED_INTERACTIONS_LABEL,
+    AUTOMATION_RATE_LABEL,
+} from 'pages/stats/self-service/constants'
+import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {
     CURRENT_PERIOD_LABEL,
     DATE_TIME_FORMAT,
@@ -9,17 +20,6 @@ import {
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
 import {createCsv, saveZippedFiles} from 'utils/file'
-import {
-    AUTOMATED_INTERACTIONS_LABEL,
-    AUTOMATION_RATE_LABEL,
-} from 'pages/stats/self-service/constants'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-
-import {AutomatedInteractionByFeatures} from 'pages/stats/types'
-import {
-    DECREASE_IN_FIRST_RESPONSE,
-    DECREASE_IN_RESOLUTION_TIME,
-} from 'pages/automate/automate-metrics/constants'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'

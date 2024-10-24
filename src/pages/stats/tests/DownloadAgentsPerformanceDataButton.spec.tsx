@@ -1,16 +1,17 @@
-import React from 'react'
 import {render, screen, fireEvent, act} from '@testing-library/react'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import React from 'react'
 
-import {agents} from 'fixtures/agents'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
-import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
-import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
+import {agents} from 'fixtures/agents'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+
+import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
+import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useAgentsMetrics')
 jest.mock('hooks/reporting/useAgentsSummaryMetrics')

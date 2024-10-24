@@ -1,8 +1,8 @@
-import React, {ComponentProps, useContext} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps, useContext} from 'react'
 
-import {assumeMock} from 'utils/testing'
 import {LeafTemplate} from 'models/widget/types'
+import {assumeMock} from 'utils/testing'
 
 import Template, {CustomizationContext} from 'Widgets/modules/Template'
 import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'

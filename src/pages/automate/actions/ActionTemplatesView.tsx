@@ -1,17 +1,16 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {logEvent, SegmentEvent} from 'common/segment'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
-import ActionsTemplatesCards from './components/ActionsTemplatesCards'
-import CreateCustomActionButton from './components/CreateCustomActionButton'
-import BackToActionButton from './components/BackToActionButton'
-
 import css from './ActionTemplatesView.less'
+import ActionsTemplatesCards from './components/ActionsTemplatesCards'
+import BackToActionButton from './components/BackToActionButton'
+import CreateCustomActionButton from './components/CreateCustomActionButton'
 
 const ActionTemplatesView = () => {
     const {shopName} = useParams<{shopName: string}>()

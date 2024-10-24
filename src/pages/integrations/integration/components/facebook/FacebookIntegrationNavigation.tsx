@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {NavLink} from 'react-router-dom'
 
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

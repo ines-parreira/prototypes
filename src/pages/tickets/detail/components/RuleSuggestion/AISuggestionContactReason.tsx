@@ -1,16 +1,17 @@
 import React, {useState, useMemo, useEffect} from 'react'
 import {Collapse} from 'reactstrap'
-import {updateCustomFieldState} from 'state/ticket/actions'
-import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
-import {Ticket} from 'models/ticket/types'
+
 import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {Ticket} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useAppDispatch from 'hooks/useAppDispatch'
-import InTicketSuggestionContainer from './InTicketSuggestionContainer'
-import SuggestionHeader from './SuggestionHeader'
+import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
+import {updateCustomFieldState} from 'state/ticket/actions'
 
 import css from './AISuggestionContactReason.less'
+import InTicketSuggestionContainer from './InTicketSuggestionContainer'
+import SuggestionHeader from './SuggestionHeader'
 
 type Props = {
     ticket: Ticket

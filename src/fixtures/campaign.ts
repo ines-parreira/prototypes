@@ -9,12 +9,12 @@ import {
     CampaignProductRecommendation,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
+import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
 import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import {Components} from 'rest_api/revenue_addon_api/client.generated'
 

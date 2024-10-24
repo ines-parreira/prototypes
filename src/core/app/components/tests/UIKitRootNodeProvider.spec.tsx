@@ -1,6 +1,6 @@
-import React from 'react'
-import {render} from '@testing-library/react'
 import {RootNodeProvider} from '@gorgias/ui-kit'
+import {render} from '@testing-library/react'
+import React from 'react'
 
 import {useAppNode} from 'appNode'
 import {assumeMock} from 'utils/testing'

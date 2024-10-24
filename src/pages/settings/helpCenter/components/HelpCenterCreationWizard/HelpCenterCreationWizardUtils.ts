@@ -1,6 +1,7 @@
+import {chain, differenceBy, map, orderBy} from 'lodash'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
-import {chain, differenceBy, map, orderBy} from 'lodash'
+
 import {
     AIArticle,
     ArticleTemplate,
@@ -12,6 +13,10 @@ import {
     Locale,
     LocaleCode,
 } from 'models/helpCenter/types'
+import {validLocaleCode} from 'models/helpCenter/utils'
+import {IntegrationFromType, IntegrationType} from 'models/integration/types'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {
     DEFAULT_ARTICLE_GROUP,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -19,17 +24,14 @@ import {
     HelpCenterCreationWizard,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
-import {IntegrationFromType, IntegrationType} from 'models/integration/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
-import {StoreDispatch} from 'state/types'
+import {Components} from 'rest_api/help_center_api/client.generated'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
 import {reportError} from 'utils/errors'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+
 import {HelpCenterLayout} from '../../types/layout.enum'
+import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)

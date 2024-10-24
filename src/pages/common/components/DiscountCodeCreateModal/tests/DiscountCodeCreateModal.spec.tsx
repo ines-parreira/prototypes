@@ -1,23 +1,24 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {Provider} from 'react-redux'
+import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import userEvent from '@testing-library/user-event'
-import {QueryClientProvider} from '@tanstack/react-query'
-import MockAdapter from 'axios-mock-adapter'
 import {integrationsState} from 'fixtures/integrations'
 
-import {assumeMock} from 'utils/testing'
+import client from 'models/api/resources'
 import {
     useCollectionsFromShopifyIntegration,
     useListShopifyCustomerSegments,
     useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import client from 'models/api/resources'
+import {assumeMock} from 'utils/testing'
+
 import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
 import {setupValidModalParameters} from '../utils'
 

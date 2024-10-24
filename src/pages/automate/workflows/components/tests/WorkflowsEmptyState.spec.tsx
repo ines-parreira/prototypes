@@ -1,5 +1,6 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import WorkflowsEmptyState from '../WorkflowsEmptyState'
 
 jest.mock('launchdarkly-react-client-sdk')

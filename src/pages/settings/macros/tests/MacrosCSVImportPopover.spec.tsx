@@ -1,14 +1,15 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {uploadFiles} from 'common/utils'
-import {createJob} from 'models/job/resources'
 import client from 'models/api/resources'
+import {createJob} from 'models/job/resources'
 import {saveFileAsDownloaded} from 'utils/file'
+
 import {MacrosCSVImportPopover} from '../MacrosCSVImportPopover'
 
 jest.mock('utils/file')

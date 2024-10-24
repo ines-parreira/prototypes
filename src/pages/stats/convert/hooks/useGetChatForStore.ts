@@ -2,9 +2,8 @@ import {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getIntegrationsByType} from 'state/integrations/selectors'
-
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 export function useGetChatForStore(shopIntegrationId: number) {
     const chatIntegrations = useAppSelector(

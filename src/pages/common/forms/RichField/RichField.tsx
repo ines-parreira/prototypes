@@ -1,6 +1,6 @@
-import React, {Component, ComponentProps} from 'react'
 import {ContentState, EditorState} from 'draft-js'
 import _isEqual from 'lodash/isEqual'
+import React, {Component, ComponentProps} from 'react'
 import 'draft-js/dist/Draft.css'
 
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'

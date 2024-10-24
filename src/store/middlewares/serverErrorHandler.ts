@@ -1,15 +1,15 @@
-import _some from 'lodash/some'
 import _get from 'lodash/get'
+import _some from 'lodash/some'
 import {Middleware} from 'redux'
 
-import {errorToChildren, stripErrorMessage} from '../../utils'
-import {notify} from '../../state/notifications/actions'
 import {
     GorgiasApiError,
     GorgiasApiResponseDataError,
 } from '../../models/api/types'
+import {notify} from '../../state/notifications/actions'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../state/types'
+import {errorToChildren, stripErrorMessage} from '../../utils'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 

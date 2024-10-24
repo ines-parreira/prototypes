@@ -1,16 +1,17 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {useMemo, useState} from 'react'
 
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
-import CheckBox from 'pages/common/forms/CheckBox'
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import CheckBox from 'pages/common/forms/CheckBox'
+
 import {ARTICLE_TEMPLATE_CATEGORIES} from '../../../CategoriesView/components/ArticleTemplateCard/constants'
 
 import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'

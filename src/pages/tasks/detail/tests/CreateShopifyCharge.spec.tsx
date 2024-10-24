@@ -1,10 +1,11 @@
+import {fireEvent, render, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
-import MockAdapter from 'axios-mock-adapter'
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
+
 import client from 'models/api/resources'
 import {RootState, StoreDispatch} from 'state/types'
 

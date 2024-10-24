@@ -1,14 +1,14 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {getActionTemplate} from 'utils'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {ActionTemplate} from 'config'
+import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {
     getValuePropFromSourceType,
     isPhoneBasedSource,
 } from 'tickets/common/utils'
+import {getActionTemplate} from 'utils'
 
 /**
  * Return the label of the given person

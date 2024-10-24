@@ -1,21 +1,23 @@
-import React, {FC} from 'react'
 import {render} from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
+import React, {FC} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _keyBy from 'lodash/keyBy'
+
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import PhoneContactInfoSection from '../PhoneContactInfoSection'
-import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
+
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
+import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
+import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
+import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
+import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
+import PhoneContactInfoSection from '../PhoneContactInfoSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,

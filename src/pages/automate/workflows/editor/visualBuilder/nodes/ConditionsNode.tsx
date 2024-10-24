@@ -1,18 +1,19 @@
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React, {memo, useMemo} from 'react'
 import {Handle, NodeProps, Position} from 'reactflow'
-import {Label} from '@gorgias/ui-kit'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
+import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 
 import {ConditionsNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
+
 import EdgeBlock from '../components/EdgeBlock'
+import NodeDeleteIcon from '../components/NodeDeleteIcon'
 
 import css from './Node.less'
 

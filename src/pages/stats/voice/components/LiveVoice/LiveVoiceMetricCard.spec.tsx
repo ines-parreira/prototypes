@@ -1,11 +1,12 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import LiveVoiceMetricCard from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
-import * as utils from 'pages/stats/common/utils'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
+
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import MetricCard from 'pages/stats/MetricCard'
+import * as utils from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import MetricCard from 'pages/stats/MetricCard'
+import LiveVoiceMetricCard from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/BigNumberMetric')
 jest.mock('pages/stats/MetricCard')

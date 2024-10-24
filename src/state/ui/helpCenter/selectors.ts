@@ -1,5 +1,7 @@
 import {createSelector} from 'reselect'
+
 import {StoreState} from 'state/types'
+
 import {HelpCenterState} from './types'
 
 const getHelpCenterStore = (state: StoreState): HelpCenterState =>

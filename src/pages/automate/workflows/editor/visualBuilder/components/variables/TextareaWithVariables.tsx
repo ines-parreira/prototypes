@@ -1,31 +1,31 @@
 import 'draft-js/dist/Draft.css'
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import classnames from 'classnames'
 import {ContentState, EditorState, Modifier} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import classnames from 'classnames'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {Popover} from 'reactstrap'
 
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {
-    contentStateFromTextOrHTML,
-    EditorHandledNotHandled,
-    getEntitySelectionState,
-} from 'utils/editor'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
-import {insertText} from 'utils'
-import {
-    WorkflowVariable,
-    WorkflowVariableList,
-    WorkflowVariableType,
-} from 'pages/automate/workflows/models/variables.types'
-import TextInput from 'pages/common/forms/input/TextInput'
 import {
     extractVariablesFromText,
     parseWorkflowVariable,
     toLiquidSyntax,
 } from 'pages/automate/workflows/models/variables.model'
+import {
+    WorkflowVariable,
+    WorkflowVariableList,
+    WorkflowVariableType,
+} from 'pages/automate/workflows/models/variables.types'
+import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {insertText} from 'utils'
+import {
+    contentStateFromTextOrHTML,
+    EditorHandledNotHandled,
+    getEntitySelectionState,
+} from 'utils/editor'
 
 import css from './TextareaWithVariables.less'
 

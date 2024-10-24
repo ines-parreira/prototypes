@@ -1,13 +1,14 @@
 import React, {PropsWithRef} from 'react'
 import {Link} from 'react-router-dom'
+
+import {User} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {User} from 'config/types/user'
 import css from 'pages/stats/AgentCellContent.less'
 import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export type AgentNameCellContentProps = {
     agent: User

@@ -1,6 +1,8 @@
-import {createContext, ComponentType} from 'react'
 import {Map, List} from 'immutable'
+import {createContext, ComponentType} from 'react'
+
 import {RuleItemActions} from 'pages/settings/rules/types'
+
 import {BlockStatementItemProps} from '../../components/ast/types'
 
 export type ExpressionProps = {

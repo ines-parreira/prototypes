@@ -1,15 +1,15 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
-import {IntegrationType} from 'models/integration/types'
 import {useFlag} from 'common/flags'
-
+import {IntegrationType} from 'models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
+
 import {IntegrationDetail} from '../Integration'
 import {Tab} from '../types'
 

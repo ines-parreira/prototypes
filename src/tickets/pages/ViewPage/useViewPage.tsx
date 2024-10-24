@@ -4,9 +4,9 @@ import {useIsOnboardingHidden} from 'common/onboarding'
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
 import App from 'pages/App'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
+import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
 import TicketList from 'pages/tickets/list/TicketList'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
-import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
 import {
     DEFAULT_NAVBAR_WIDTH,
     DEFAULT_INFOBAR_WIDTH,

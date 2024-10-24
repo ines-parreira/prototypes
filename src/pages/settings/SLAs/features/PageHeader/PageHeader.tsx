@@ -2,9 +2,9 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {SectionPageHeader} from 'config/pages'
 import Button from 'pages/common/components/button/Button'
 import Header from 'pages/common/components/PageHeader'
-import {SectionPageHeader} from 'config/pages'
 
 import css from './PageHeader.less'
 

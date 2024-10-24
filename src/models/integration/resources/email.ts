@@ -1,12 +1,14 @@
 import {stringify} from 'qs'
+
 import client from 'models/api/resources'
+
+import {EmailProvider} from '../constants'
 import {
     EmailMigrationInboundVerification,
     EmailMigrationBannerStatus,
     EmailMigrationOutboundVerification,
     EmailDomain,
 } from '../types'
-import {EmailProvider} from '../constants'
 
 type StartMigrationResponse = {
     forwarding_email_address: string

@@ -1,4 +1,5 @@
 import {ShopifyMetafieldType} from '@gorgias/api-types'
+
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 
 export function extractGid(url: string) {

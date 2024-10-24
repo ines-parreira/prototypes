@@ -1,5 +1,5 @@
 import moment from 'moment'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -14,6 +14,7 @@ import {
     closedTicketsPerChannelQueryFactory,
     closedTicketsPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {

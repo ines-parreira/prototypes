@@ -1,9 +1,10 @@
 import _omit from 'lodash/omit'
-import {createTrigger} from '../createTrigger'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+
+import {CampaignTrigger} from '../../types/CampaignTrigger'
 import {CampaignTriggerBusinessHoursValuesEnum} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {CampaignTrigger} from '../../types/CampaignTrigger'
+import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import {createTrigger} from '../createTrigger'
 
 const removeId = (trigger: CampaignTrigger) => _omit(trigger, 'id')
 

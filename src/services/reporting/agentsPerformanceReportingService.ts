@@ -1,5 +1,5 @@
 import moment from 'moment/moment'
-import {Period} from 'models/stat/types'
+
 import {User} from 'config/types/user'
 import {Metric} from 'hooks/reporting/metrics'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
@@ -24,17 +24,18 @@ import {
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {
-    AgentsColumnConfig,
-    TableLabels,
-} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {Period} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {
+    AgentsColumnConfig,
+    TableLabels,
+} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 

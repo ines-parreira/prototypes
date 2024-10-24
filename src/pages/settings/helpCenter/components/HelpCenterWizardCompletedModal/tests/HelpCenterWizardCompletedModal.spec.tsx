@@ -1,9 +1,11 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {useSearchParam} from 'hooks/useSearchParam'
-import HelpCenterWizardCompletedModal from '../HelpCenterWizardCompletedModal'
+
 import {HELP_CENTER_WIZARD_COMPLETED_STATE} from '../../../constants'
+import HelpCenterWizardCompletedModal from '../HelpCenterWizardCompletedModal'
 
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(() => []),

@@ -1,9 +1,9 @@
 // g/integrations/gorgias_chat/schemas.py
 import {LanguageItem} from 'config/integrations/gorgias_chat'
-import {IntegrationType} from '../constants'
-import type {IntegrationBase, IntegrationDecoration} from './base'
 
+import {IntegrationType} from '../constants'
 import type {Integration} from './'
+import type {IntegrationBase, IntegrationDecoration} from './base'
 
 export type GorgiasChatIntegration = IntegrationBase & {
     type: IntegrationType.GorgiasChat

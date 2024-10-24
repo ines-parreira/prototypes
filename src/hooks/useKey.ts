@@ -1,5 +1,6 @@
-import {DependencyList, useMemo} from 'react'
 import noop from 'lodash/noop'
+import {DependencyList, useMemo} from 'react'
+
 import useEvent from './useEvent'
 
 type KeyPredicate = (event: KeyboardEvent) => boolean

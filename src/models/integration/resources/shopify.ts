@@ -7,6 +7,7 @@ import {
     ShopifyCollectionResponse,
     ShopifyCollection,
 } from 'models/integration/types'
+
 import client from '../../api/resources'
 
 export const fetchShopTags = async (

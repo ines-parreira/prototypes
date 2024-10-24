@@ -1,30 +1,32 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import _keyBy from 'lodash/keyBy'
+import React from 'react'
+import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
-import {QueryClientProvider} from '@tanstack/react-query'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {billingState} from 'fixtures/billing'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import {
     useListWorkflowEntryPoints,
     useGetWorkflowConfigurations,
 } from 'models/workflows/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {Components} from 'rest_api/help_center_api/client.generated'
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,
 } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import ConnectedChannelsView from '../DEPRECATED_ConnectedChannelsView'
+import {Components} from 'rest_api/help_center_api/client.generated'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {IntegrationType} from '../../../../models/integration/constants'
-import {ContactFormFixture} from '../../../settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from '../../../settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {ShopType} from '../../../../models/selfServiceConfiguration/types'
 import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
 import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
-import {ShopType} from '../../../../models/selfServiceConfiguration/types'
+import {ContactFormFixture} from '../../../settings/contactForm/fixtures/contacForm'
+import {getSingleHelpCenterResponseFixture} from '../../../settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import ConnectedChannelsView from '../DEPRECATED_ConnectedChannelsView'
 
 const mockHistoryPush = jest.fn()
 

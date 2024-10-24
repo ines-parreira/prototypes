@@ -1,8 +1,10 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ContactForm, ContactFormPageEmbedment} from 'models/contactForm/types'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ContactForm, ContactFormPageEmbedment} from 'models/contactForm/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
 
 export type ContactFormAutoEmbedPublishSectionProps = {

@@ -1,20 +1,22 @@
-import React, {useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
+import React, {useMemo, useState} from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 
-import Button from 'pages/common/components/button/Button'
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {TicketMessage} from 'models/ticket/types'
+import Button from 'pages/common/components/button/Button'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {
     applyMacro,
     applyMacroAction,
     updateTicketMessage,
 } from 'state/ticket/actions'
-import {TicketMessage} from 'models/ticket/types'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {SegmentEvent, logEvent} from 'common/segment'
-import useAppSelector from 'hooks/useAppSelector'
+
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
 
 import css from './AIAgentDraftMessage.less'

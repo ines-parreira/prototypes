@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {fromJS, Map, List} from 'immutable'
 import React, {
     MouseEvent,
     useCallback,
@@ -7,7 +9,6 @@ import React, {
     FormEvent,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
 import {
     Button,
     Form,
@@ -19,30 +20,28 @@ import {
     Label,
 } from 'reactstrap'
 
-import classnames from 'classnames'
-
 import {logEvent, SegmentEvent} from 'common/segment'
+import {states} from 'fixtures/states'
+import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Spinner from 'pages/common/components/Spinner'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     onInit,
     onReset,
 } from 'state/infobarActions/shopify/editShippingAddress/action'
 import {getShippingAddressState} from 'state/infobarActions/shopify/editShippingAddress/selectors'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {RootState} from 'state/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {states} from 'fixtures/states'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import Spinner from 'pages/common/components/Spinner'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import {RootState} from 'state/types'
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 

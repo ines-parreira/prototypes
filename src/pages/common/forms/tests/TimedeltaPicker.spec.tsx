@@ -1,5 +1,5 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
 import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY} from 'config'
 

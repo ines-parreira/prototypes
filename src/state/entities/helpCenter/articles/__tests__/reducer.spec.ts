@@ -1,13 +1,11 @@
-import _keyBy from 'lodash/keyBy'
 import {produce} from 'immer'
+import _keyBy from 'lodash/keyBy'
 
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {
     getArticlesResponseFixture,
     getSingleArticleEnglish as singleArticle,
 } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-
-import reducer, {initialState} from '../reducer'
 
 import {
     saveArticles,
@@ -17,6 +15,7 @@ import {
     pushArticleSupportedLocales,
     removeLocaleFromArticle,
 } from '../actions'
+import reducer, {initialState} from '../reducer'
 
 import {ArticlesAction} from '../types'
 

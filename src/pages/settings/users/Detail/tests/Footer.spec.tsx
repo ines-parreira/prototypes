@@ -1,12 +1,12 @@
-import React from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 import {User, UserRole} from 'config/types/user'
 import {assumeMock} from 'utils/testing'
 
-import {Footer} from '../Footer'
 import {DeleteModal} from '../DeleteModal'
+import {Footer} from '../Footer'
 
 jest.mock('../DeleteModal', () => ({
     DeleteModal: jest.fn(() => <div>DeleteModal</div>),

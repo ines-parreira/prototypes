@@ -1,19 +1,18 @@
+import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
-import {RootState} from 'state/types'
-
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+// eslint-disable-next-line import/order
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {channels as mockChannels} from 'fixtures/channels'
-import {Channel} from 'services/channels'
 import {TicketChannel} from 'business/types/ticket'
-
+import {channels as mockChannels} from 'fixtures/channels'
+import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
+import {Channel} from 'services/channels'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

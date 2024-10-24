@@ -5,12 +5,14 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
-import {mockStore} from 'utils/testing'
+import {Provider} from 'react-redux'
+
 import {migrationOutboundVerificationUnverifiedSingleSender} from 'fixtures/emailMigration'
-import {VerificationStatus} from 'models/singleSenderVerification/types'
 import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
+import {VerificationStatus} from 'models/singleSenderVerification/types'
+import {mockStore} from 'utils/testing'
+
 import SingleSenderVerificationTableRow from '../EmailMigration/SingleSenderVerificationTableRow'
 
 const mockCreateVerification = jest.fn()

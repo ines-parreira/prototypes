@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
-import {fromJS, List, Map} from 'immutable'
-import {Collapse} from 'reactstrap'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-
-import {MacroActionName} from 'models/macroAction/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {getActionTemplate} from 'utils'
+import classNames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import React, {useState} from 'react'
+import {Collapse} from 'reactstrap'
 
 import {ActionTemplateExecution} from 'config'
 import useAppSelector from 'hooks/useAppSelector'
+import {MacroActionName} from 'models/macroAction/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {hasContent} from 'state/newMessage/selectors'
+import {getActionTemplate} from 'utils'
+
 import TicketReplyAction from './TicketReplyAction'
 import css from './TicketReplyActions.less'
 

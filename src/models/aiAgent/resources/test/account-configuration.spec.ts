@@ -1,10 +1,11 @@
 import MockAdapter from 'axios-mock-adapter'
+
+import authClient from '../../../../models/api/resources'
 import {
     apiClient,
     createWelcomePageAcknowledged,
     getWelcomePageAcknowledged,
 } from '../account-configuration'
-import authClient from '../../../../models/api/resources'
 
 describe('Account Configuration', () => {
     const storeName = 'myStore'

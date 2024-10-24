@@ -1,6 +1,6 @@
+import {fireEvent, render, screen} from '@testing-library/react'
 import React, {ComponentProps, PropsWithChildren, useRef} from 'react'
 
-import {fireEvent, render, screen} from '@testing-library/react'
 import {PopoverContainer} from './PopoverContainer'
 
 // We don't care about internals of `Dropdown`, just want to render out the children that we pass

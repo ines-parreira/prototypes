@@ -1,12 +1,13 @@
-import React from 'react'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as actions from 'state/widgets/actions'
 import {actionFixture} from 'fixtures/infobarCustomActions'
+import * as actions from 'state/widgets/actions'
+
 import {Editor} from '../Editor'
 
 jest.spyOn(actions, 'startWidgetEdition')

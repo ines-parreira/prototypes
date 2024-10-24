@@ -1,12 +1,13 @@
 import React from 'react'
+
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import {
     formatMetricValue,
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import MetricCard from 'pages/stats/MetricCard'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import MetricCard from 'pages/stats/MetricCard'
 import {VoiceMetric} from 'state/ui/stats/types'
 
 type Props = {

@@ -1,31 +1,33 @@
 import React from 'react'
 
 import {Form} from 'reactstrap'
-import InputField from 'pages/common/forms/input/InputField'
-import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
-import {TicketPurpose} from 'state/billing/types'
+
 import useAppSelector from 'hooks/useAppSelector'
 import useSessionStorage from 'hooks/useSessionStorage'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import InputField from 'pages/common/forms/input/InputField'
+import {TicketPurpose} from 'state/billing/types'
 import {isTrialing as useIsTrialing} from 'state/currentAccount/selectors'
-import BackLink from '../../components/BackLink/BackLink'
-import {useCreditCard} from '../../hooks/useCreditCard'
-import AddressForm from '../../components/AddressForm/AddressForm'
-import {emailError} from '../../utils/validations'
-import Card from '../../components/Card'
-import SummaryItem from '../../components/SummaryItem'
+
 import {ProductType} from '../../../../../models/billing/types'
-import SummaryTotal from '../../components/SummaryTotal'
+import AddressForm from '../../components/AddressForm/AddressForm'
+import BackLink from '../../components/BackLink/BackLink'
+import Card from '../../components/Card'
 import SummaryFooter from '../../components/SummaryFooter'
-import {useBillingPlans} from '../../hooks/useBillingPlan'
+import SummaryItem from '../../components/SummaryItem'
+import SummaryTotal from '../../components/SummaryTotal'
 import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from '../../constants'
+import {useBillingPlans} from '../../hooks/useBillingPlan'
+import {useCreditCard} from '../../hooks/useCreditCard'
+import {emailError} from '../../utils/validations'
 import {SelectedPlans} from '../BillingProcessView/BillingProcessView'
+import css from './PaymentMethodView.less'
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
     creditCardNormalizer,
 } from './utils'
-import css from './PaymentMethodView.less'
 
 type PaymentMethodViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void

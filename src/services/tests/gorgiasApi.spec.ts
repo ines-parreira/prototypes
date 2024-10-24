@@ -1,7 +1,8 @@
 import querystring from 'querystring'
 import url from 'url'
-import MockAdapter from 'axios-mock-adapter'
+
 import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS, List} from 'immutable'
 
 import {

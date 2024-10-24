@@ -1,7 +1,9 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
-import {reportError} from 'utils/errors'
+import {StoreConfiguration} from 'models/aiAgent/types'
 import {
     MessageType,
     PlaygroundPromptMessage,
@@ -9,23 +11,23 @@ import {
     PlaygroundTextMessage,
     isApiEligiblePlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {reportError} from 'utils/errors'
+
+import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {PLAYGROUND_CUSTOMER_MOCK} from '../constants'
-import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
+import {PlaygroundCustomer} from '../types'
+import {handleAiAgentResponse} from '../utils/playground-handler.utils'
 import {
     getPlaygroundInitialMessage,
     getPlaygroundMessageMeta,
     mapPlaygroundMessagesToServerMessages,
     shouldDisplayActions,
 } from '../utils/playground-messages.utils'
-import {handleAiAgentResponse} from '../utils/playground-handler.utils'
-import {PlaygroundCustomer} from '../types'
 import {getTicketCustomer} from '../utils/playground-ticket.util'
 
 export const usePlaygroundMessages = ({

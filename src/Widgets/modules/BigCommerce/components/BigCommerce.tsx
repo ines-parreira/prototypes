@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {shippingCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Shipping'
-import {orderCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget'
 import {customerCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Customer'
+import {orderCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget'
+import {shippingCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Shipping'
 
+import Template from 'Widgets/modules/Template'
 import {CustomizationContext} from 'Widgets/modules/Template/contexts/CustomizationContext'
 import {TemplateCustomization} from 'Widgets/modules/Template/types'
-import Template from 'Widgets/modules/Template'
 import {WidgetProps} from 'Widgets/modules/Widget'
 
 export const customization: TemplateCustomization = {

@@ -1,26 +1,26 @@
-import React, {useCallback, useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
-import Filter from 'pages/stats/common/components/Filter/Filter'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {DropdownOption} from 'pages/stats/types'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {
-    FilterLabels,
-    helpCenterLanguageFilterLogicalOperators,
-} from 'pages/stats/common/filters/constants'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
+import Filter from 'pages/stats/common/components/Filter/Filter'
+import {
+    FilterLabels,
+    helpCenterLanguageFilterLogicalOperators,
+} from 'pages/stats/common/filters/constants'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {DropdownOption} from 'pages/stats/types'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
 type Props = {

@@ -4,6 +4,7 @@ import React, {ComponentProps} from 'react'
 
 import {rule} from 'fixtures/rule'
 import {IDENTIFIER_VARIABLES_BY_CATEGORY} from 'models/rule/constants'
+
 import {MemberExpressionContainer} from '../MemberExpression'
 
 describe('<MemberExpression/>', () => {

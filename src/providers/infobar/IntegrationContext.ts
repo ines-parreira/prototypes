@@ -1,5 +1,5 @@
-import {createContext} from 'react'
 import {fromJS, Map} from 'immutable'
+import {createContext} from 'react'
 
 export type IntegrationContextType = {
     integration: Map<string, unknown>

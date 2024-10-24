@@ -1,18 +1,20 @@
+import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
+import LD, {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import LD, {useFlags} from 'launchdarkly-react-client-sdk'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {integrationsState} from 'fixtures/integrations'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
@@ -20,16 +22,15 @@ import {
     CONTACT_FORM_PUBLISH_PATH,
     CONTACT_FORM_SETTINGS_PATH,
 } from 'pages/settings/contactForm/constants'
-import {integrationsState} from 'fixtures/integrations'
-import {account} from 'fixtures/account'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {billingState} from 'fixtures/billing'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getHasAutomate} from 'state/billing/selectors'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

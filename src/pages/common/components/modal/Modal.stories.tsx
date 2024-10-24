@@ -1,15 +1,14 @@
-import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
+import React, {ComponentProps, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
 import Modal from './Modal'
-import ModalHeader from './ModalHeader'
-import ModalBody from './ModalBody'
-import ModalActionsFooter from './ModalActionsFooter'
-import ModalFooter from './ModalFooter'
-
 import css from './Modal.stories.less'
+import ModalActionsFooter from './ModalActionsFooter'
+import ModalBody from './ModalBody'
+import ModalFooter from './ModalFooter'
+import ModalHeader from './ModalHeader'
 
 const storyConfig: Meta = {
     title: 'General/Modal',

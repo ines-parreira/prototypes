@@ -1,4 +1,3 @@
-import {isDevelopment} from 'utils/environment'
 import {
     AIArticle,
     ARTICLE_TEMPLATES_KEYS,
@@ -13,6 +12,8 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import {StoreIntegration} from 'models/integration/types'
+import {isDevelopment} from 'utils/environment'
+
 import {
     HELP_CENTER_DOMAIN,
     EMOJI_REGEX,
@@ -20,8 +21,8 @@ import {
     CATEGORY_HASH_PREFIX,
     ARTICLE_HASH_PREFIX,
 } from '../constants'
-import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
 import {ArticleOrigin} from '../types/articleOrigin.enum'
+import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto

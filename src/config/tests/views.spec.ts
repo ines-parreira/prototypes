@@ -2,15 +2,14 @@ import {render, screen} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 import {ReactComponentElement} from 'react'
-import {defaultTicketView} from 'config/views'
-import {TicketHighlights} from 'models/search/types'
 
 import {isImmutable} from 'common/utils'
+import {defaultTicketView} from 'config/views'
 import * as viewsConfig from 'config/views'
 
-import * as ticketFixtures from 'fixtures/ticket'
 import {customer} from 'fixtures/customer'
-import {getAST} from 'utils'
+import * as ticketFixtures from 'fixtures/ticket'
+import {TicketHighlights} from 'models/search/types'
 import {
     ViewType,
     View,
@@ -18,6 +17,7 @@ import {
     ViewVisibility,
     EntityType,
 } from 'models/view/types'
+import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
 jest.mock('utils/launchDarkly')

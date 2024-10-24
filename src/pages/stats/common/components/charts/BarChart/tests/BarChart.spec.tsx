@@ -1,16 +1,16 @@
-import React from 'react'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {render, waitFor, fireEvent} from '@testing-library/react'
 import * as chartjs from 'chart.js'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {assumeMock} from 'utils/testing'
+import React from 'react'
 
-import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
-import {ThemeProvider} from 'theme'
+import {ticketsCreatedDataItem} from 'fixtures/chart'
 import BarChart, {
     CHART_TOOLTIP_TARGET,
     BarChart as BarChartWithoutTheme,
 } from 'pages/stats/common/components/charts/BarChart/BarChart'
+import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {ThemeProvider} from 'theme'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />

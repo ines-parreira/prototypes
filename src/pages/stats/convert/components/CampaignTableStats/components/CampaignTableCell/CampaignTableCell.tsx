@@ -1,33 +1,29 @@
+import classNames from 'classnames'
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import classNames from 'classnames'
-
-import {formatPercentage} from 'pages/common/utils/numbers'
-
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
-
-import {formatNumber} from 'pages/stats/common/utils'
 
 import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
-
-import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
 import IconButton from 'pages/common/components/button/IconButton'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import {formatPercentage} from 'pages/common/utils/numbers'
+
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
-import {TicketsCreatedCell} from '../TicketsCreatedCell'
+import {formatNumber} from 'pages/stats/common/utils'
+import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
+import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
 
 import css from '../../CampaignTableStats.less'
+import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
 type Props = {
     column: CampaignTableColumn

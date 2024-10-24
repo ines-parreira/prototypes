@@ -1,11 +1,12 @@
 import React from 'react'
-import DashboardSection from 'pages/stats/DashboardSection'
-import useAppSelector from 'hooks/useAppSelector'
+
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 export default function LiveVoiceFilters() {
     const pageStatsFilters = useAppSelector(

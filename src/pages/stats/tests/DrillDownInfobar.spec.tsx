@@ -1,6 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
+import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
+import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
@@ -9,9 +11,8 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
-import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
-import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 import {assumeMock} from 'utils/testing'
+
 import {DrillDownDownloadButton} from '../DrillDownDownloadButton'
 
 jest.mock('pages/stats/DrillDownDownloadButton')

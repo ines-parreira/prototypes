@@ -1,10 +1,11 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
+
 import SetStatusAction from '../SetStatusAction'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

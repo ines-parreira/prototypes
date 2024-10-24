@@ -1,26 +1,28 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {
-    HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
-    HELP_CENTER_WIZARD_COMPLETED_STATE,
-    NEXT_ACTION,
-} from 'pages/settings/helpCenter/constants'
-import history from 'pages/history'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import history from 'pages/history'
+import {
+    HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
+    HELP_CENTER_WIZARD_COMPLETED_STATE,
+    NEXT_ACTION,
+} from 'pages/settings/helpCenter/constants'
 import {
     EmptyHelpCenterUiFixture,
     HelpCenterApiBasicsFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import useAppSelector from 'hooks/useAppSelector'
-import {StoreState} from 'state/types'
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import {StoreState} from 'state/types'
+
 import {useHelpCenterCreationWizard} from '../useHelpCenterCreationWizard'
 
 jest.mock(

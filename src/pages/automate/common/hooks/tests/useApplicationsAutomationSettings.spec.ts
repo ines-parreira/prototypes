@@ -1,13 +1,15 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
 import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
+import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
 import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
+
 import useApplicationsAutomationSettings from '../useApplicationsAutomationSettings'
 
 // Mock necessary hooks and modules

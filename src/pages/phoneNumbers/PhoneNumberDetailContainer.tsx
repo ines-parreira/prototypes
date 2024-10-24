@@ -1,18 +1,18 @@
 import React, {useEffect} from 'react'
 
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {Link, useParams} from 'react-router-dom'
 import {ReactCountryFlag} from 'react-country-flag'
+import {Link, useParams} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {fetchNewPhoneNumber} from 'models/phoneNumber/resources'
-import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 import css from 'pages/settings/settings.less'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 
 import {countryCode, isNewPhoneNumber} from './utils'
 

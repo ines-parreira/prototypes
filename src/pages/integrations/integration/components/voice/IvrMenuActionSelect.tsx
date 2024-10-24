@@ -1,16 +1,18 @@
 import React, {useCallback, useRef, useState} from 'react'
+
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     IvrMenuActionType,
 } from 'models/integration/constants'
 import {IvrForwardCallMenuAction, IvrMenuAction} from 'models/integration/types'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+
 import css from './IvrMenuActionField.less'
 
 const ACTION_NAMES: Record<IvrMenuActionType, string> = {

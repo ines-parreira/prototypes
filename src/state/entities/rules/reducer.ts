@@ -2,7 +2,6 @@ import {createReducer} from '@reduxjs/toolkit'
 
 import {Rule, RulePriority} from '../../../models/rule/types'
 
-import {RulesState} from './types'
 import {
     ruleCreated,
     ruleDeleted,
@@ -11,6 +10,7 @@ import {
     rulesFetched,
     rulesReordered,
 } from './actions'
+import {RulesState} from './types'
 
 const initialState: RulesState = {}
 

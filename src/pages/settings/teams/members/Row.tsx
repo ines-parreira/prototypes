@@ -1,5 +1,5 @@
-import React, {Component, SyntheticEvent} from 'react'
 import classnames from 'classnames'
+import React, {Component, SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 
 import {Member} from 'models/team/types'

@@ -1,6 +1,6 @@
-import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {produce} from 'immer'
+import React, {useCallback, useState} from 'react'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'

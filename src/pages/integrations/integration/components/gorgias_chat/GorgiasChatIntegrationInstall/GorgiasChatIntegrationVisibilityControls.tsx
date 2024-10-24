@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+import {Map} from 'immutable'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -5,15 +7,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classNames from 'classnames'
-import {Map} from 'immutable'
 import {v4 as uuidv4} from 'uuid'
-
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import {
     GorgiasChatInstallationVisibility,
@@ -23,12 +17,15 @@ import {
     GorgiasChatInstallationVisibilityConditionOperator,
     GorgiasChatMetaInstallation,
 } from 'models/integration/types'
-
-import validateUrl, {UrlValidationResult} from './utils/validateUrl'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Collapse from 'pages/common/components/Collapse/Collapse'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import GorgiasChatIntegrationVisibilityCondition from './GorgiasChatIntegrationVisibilityCondition'
-
 import css from './GorgiasChatIntegrationVisibilityControls.less'
+import validateUrl, {UrlValidationResult} from './utils/validateUrl'
 
 const visibilityMethodCaptions: Record<
     GorgiasChatInstallationVisibilityMethod,

@@ -1,16 +1,16 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import React from 'react'
 import {renderHook, act} from '@testing-library/react-hooks'
+import React from 'react'
+
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
 import {channelConnectionId} from 'fixtures/channelConnection'
+import * as queries from 'models/convert/settings/queries'
 import {
     updateSettings,
     getSettingsList,
 } from 'models/convert/settings/resources'
-
-import * as queries from 'models/convert/settings/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(() => ({

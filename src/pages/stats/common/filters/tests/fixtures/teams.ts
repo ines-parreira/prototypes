@@ -1,5 +1,5 @@
-import {Team} from 'models/team/types'
 import {teams} from 'fixtures/teams'
+import {Team} from 'models/team/types'
 
 const testTeamWithMembers: Team = {
     ...(teams.find((t) => t.id === 36) as Team),

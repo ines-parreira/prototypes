@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {Link, useParams} from 'react-router-dom'
+
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 
 export default function BackToActionFormButton() {
     const {shopName, id} = useParams<{

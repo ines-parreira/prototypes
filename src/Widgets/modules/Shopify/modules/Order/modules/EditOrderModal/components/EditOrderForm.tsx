@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from 'react'
-import {Col, Container, FormText, Row} from 'reactstrap'
 import {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
+import React, {ChangeEvent} from 'react'
+import {Col, Container, FormText, Row} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'

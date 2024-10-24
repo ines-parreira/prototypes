@@ -1,7 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
-import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
+
 import {CHURN_MITIGATION_OFFER_ZAPIER_URL} from '../constants'
+import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
 
 const mockServer = new MockAdapter(client)
 

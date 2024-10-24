@@ -1,5 +1,5 @@
-import {List, Map} from 'immutable'
 import esprima from 'esprima'
+import {List, Map} from 'immutable'
 
 import {RuleOperation} from 'state/rules/types'
 

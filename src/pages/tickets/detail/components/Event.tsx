@@ -1,16 +1,15 @@
-import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import {Card, CardBody} from 'reactstrap'
+import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
+import React from 'react'
 import JSONPretty from 'react-json-pretty'
+import {connect, ConnectedProps} from 'react-redux'
+import {Card, CardBody} from 'reactstrap'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import {IntegrationType} from 'models/integration/constants'
-import {RootState} from 'state/types'
 import {getActionByName} from 'config/actions'
+import {IntegrationType} from 'models/integration/constants'
+import IconButton from 'pages/common/components/button/IconButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {AgentLabel} from 'pages/common/utils/labels'
 import {getIntegrationById} from 'state/integrations/selectors'
@@ -18,6 +17,7 @@ import {
     getAppDataByAppId,
     getIntegrationDataByIntegrationId,
 } from 'state/ticket/selectors'
+import {RootState} from 'state/types'
 import {humanizeString, stripErrorMessage} from 'utils'
 
 import css from './Event.less'

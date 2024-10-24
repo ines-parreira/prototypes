@@ -1,11 +1,11 @@
-import React, {useRef} from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React, {useRef} from 'react'
 
+import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import CheckBox from 'pages/common/forms/CheckBox'
 import {MerchantInput} from '../types'
 
 import css from './ActionFormMerchantInputValue.less'

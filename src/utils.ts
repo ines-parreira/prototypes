@@ -1,10 +1,5 @@
 import crypto from 'crypto'
 
-import {
-    MouseEvent as MouseEventReact,
-    SyntheticEvent,
-    TouchEvent as TouchEventReact,
-} from 'react'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import * as esprima from 'esprima'
@@ -18,40 +13,45 @@ import _isNumber from 'lodash/isNumber'
 import _isString from 'lodash/isString'
 import _isUndefined from 'lodash/isUndefined'
 import _last from 'lodash/last'
+import _startCase from 'lodash/startCase'
 import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
-import _startCase from 'lodash/startCase'
 import md5 from 'md5'
 import moment, {Moment} from 'moment-timezone'
 import {isMoment} from 'moment/moment'
+import {
+    MouseEvent as MouseEventReact,
+    SyntheticEvent,
+    TouchEvent as TouchEventReact,
+} from 'react'
+import {Route} from 'react-router-dom'
 import {
     createSelector,
     createSelectorCreator,
     defaultMemoize,
     Selector,
 } from 'reselect'
-import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
 import {fromAST, isImmutable, isPrivateAsset} from 'common/utils'
 import {TicketEvent} from 'models/ticket/types'
 import {VoiceCall} from 'models/voiceCall/types'
 
-import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
+import {TicketChannel} from './business/types/ticket'
 import {ACTION_TEMPLATES} from './config'
+import {UserRole} from './config/types/user'
+import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
+import {DateTimeResultFormatType} from './constants/datetime'
+import {GorgiasApiResponseDataError} from './models/api/types'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
+import {RootState} from './state/types'
 import {ViewsState} from './state/views/types'
 import {NonEmptyArray, Schemas} from './types'
-import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
-import {UserRole} from './config/types/user'
-import {RootState} from './state/types'
-import {sanitizeHtmlDefault} from './utils/html'
 import {envVars, isProduction, isStaging} from './utils/environment'
+import {sanitizeHtmlDefault} from './utils/html'
 import {linkify} from './utils/linkify'
-import {GorgiasApiResponseDataError} from './models/api/types'
-import {DateTimeResultFormatType} from './constants/datetime'
 
 export type Message = {
     id: number

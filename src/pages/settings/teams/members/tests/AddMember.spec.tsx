@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS, List} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {AddMemberContainer} from '../AddMember'
 

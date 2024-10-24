@@ -1,23 +1,25 @@
 import {render, screen} from '@testing-library/react'
-import React from 'react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {useSearchCustomer} from 'models/aiAgent/queries'
 import {
     MessageType,
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {useSearchCustomer} from 'models/aiAgent/queries'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
-import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
-import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
+
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
+import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
+import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
 import {PlaygroundChat} from './PlaygroundChat'
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({

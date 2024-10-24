@@ -1,6 +1,7 @@
 import {fromJS, List, Map} from 'immutable'
 
 import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
+
 import {Language} from '../../constants/languages'
 import {
     GorgiasChatIntegrationMeta,

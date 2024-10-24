@@ -1,10 +1,10 @@
-import React, {ComponentProps, useMemo, useState} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
 import {flatMap} from 'lodash'
+import React, {ComponentProps, useMemo, useState} from 'react'
 
-import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
-import Filter from 'pages/stats/common/components/Filter/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import Filter from 'pages/stats/common/components/Filter/Filter'
+import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
 
 const storyConfig: Meta = {
     title: 'Stats/Filter',

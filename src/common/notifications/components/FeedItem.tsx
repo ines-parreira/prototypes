@@ -1,13 +1,13 @@
-import React from 'react'
 import cn from 'classnames'
+import React from 'react'
 
-import RelativeTime from 'pages/common/components/RelativeTime'
 import IconButton from 'pages/common/components/button/IconButton'
+import RelativeTime from 'pages/common/components/RelativeTime'
 
 import {Notification} from '../types'
 
-import NotificationContent from './NotificationContent'
 import css from './FeedItem.less'
+import NotificationContent from './NotificationContent'
 
 export type Props = {
     notification: Notification

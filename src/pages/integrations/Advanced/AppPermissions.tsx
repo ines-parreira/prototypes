@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 
 import {AppOAuthPermission} from 'config/oauthPermissions'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import AppPermission from './AppPermission'
 
 interface Props {

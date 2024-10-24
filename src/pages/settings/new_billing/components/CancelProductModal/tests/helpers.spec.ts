@@ -1,4 +1,5 @@
 import {ProductType} from 'models/billing/types'
+
 import {findCancellationScenarioByProductType} from '../helpers'
 import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
 

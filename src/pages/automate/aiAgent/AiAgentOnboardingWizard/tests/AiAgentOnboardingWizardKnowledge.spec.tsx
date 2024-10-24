@@ -1,16 +1,18 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, {ComponentProps} from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {act, fireEvent, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {createMemoryHistory} from 'history'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
-import userEvent from '@testing-library/user-event'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {createMemoryHistory} from 'history'
-import {Router} from 'react-router-dom'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
@@ -18,16 +20,16 @@ import {
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {logEvent, SegmentEvent} from 'common/segment'
-import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
-import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import {
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../../constants'
+import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
+import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
+import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'

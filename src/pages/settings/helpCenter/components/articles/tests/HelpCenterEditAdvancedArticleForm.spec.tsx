@@ -1,17 +1,18 @@
-import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import {DeepPartial} from 'redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
+import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 

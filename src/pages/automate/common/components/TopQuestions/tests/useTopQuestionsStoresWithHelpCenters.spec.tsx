@@ -1,19 +1,21 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
 import {renderHook} from '@testing-library/react-hooks'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import {assumeMock} from 'utils/testing'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {RootState} from 'state/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {HelpCenter} from 'models/helpCenter/types'
 import {
     IntegrationType,
     ShopifyIntegration,
     ShopifyIntegrationMeta,
 } from 'models/integration/types'
-import {HelpCenter} from 'models/helpCenter/types'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {RootState} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {useTopQuestionsStoresWithHelpCenters} from '../useTopQuestionsStoresWithHelpCenters'
 
 const defaultState = {

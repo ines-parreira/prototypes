@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, {HTMLAttributes} from 'react'
 
 import {useTheme} from '@emotion/react'
 import styled from '@emotion/styled'
+import React, {HTMLAttributes} from 'react'
 
+import {gorgiasColors} from 'gorgias-design-system/styles'
 import {
     relativeDarken,
     relativeLighten,
     getContrastColor,
 } from 'gorgias-design-system/utils'
-import {gorgiasColors} from 'gorgias-design-system/styles'
 import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+
 import SpinnerIcon from './icons/SpinnerIcon'
 
 const getButtonStylesByVariant = ({

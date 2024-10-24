@@ -1,6 +1,6 @@
+import classnames from 'classnames'
 import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {Popover, PopoverHeader, PopoverBody, PopoverProps} from 'reactstrap'
-import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'

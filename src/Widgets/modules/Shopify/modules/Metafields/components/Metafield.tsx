@@ -1,5 +1,3 @@
-import React, {createRef, useContext} from 'react'
-import {isArray, map, startCase, truncate} from 'lodash'
 import {
     DimensionShopifyMetafieldData,
     MoneyShopifyMetafield,
@@ -8,14 +6,16 @@ import {
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
 } from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/ui-kit'
 import {ShopifyMetafieldType} from '@gorgias/api-types'
+import {Tooltip} from '@gorgias/ui-kit'
+import {isArray, map, startCase, truncate} from 'lodash'
+import React, {createRef, useContext} from 'react'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import {Badge} from 'gorgias-design-system/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {StaticField, CopyButton} from 'Widgets/modules/Template/modules/Field'
 

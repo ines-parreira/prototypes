@@ -1,7 +1,7 @@
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import {ValidationError} from '../validationError'
 import {validateCurrentUrl} from '../currentUrlValidator'
+import {ValidationError} from '../validationError'
 
 describe('validationErrors', () => {
     describe('validateCurrentUrl', () => {

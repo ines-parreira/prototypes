@@ -1,14 +1,16 @@
 import {renderHook} from '@testing-library/react-hooks'
 import Promise from 'promise-polyfill'
-import {IntegrationType} from 'models/integration/constants'
-import {ChannelLanguage} from 'pages/automate/common/types'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+
 import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
+import {IntegrationType} from 'models/integration/constants'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {ChannelLanguage} from 'pages/automate/common/types'
+import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {useHelpCenterFlows} from '../useHelpCenterFlows'
 
 jest.mock('models/workflows/queries', () => ({

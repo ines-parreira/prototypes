@@ -1,24 +1,23 @@
-import React from 'react'
-import {createMemoryHistory} from 'history'
 import {screen, waitFor} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
+import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useGetActionsApp,
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {shopifyIntegration} from 'fixtures/integrations'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
-
-import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
-import useAddStoreApp from '../hooks/useAddStoreApp'
-import useUpsertAction from '../hooks/useUpsertAction'
-import useDeleteAction from '../hooks/useDeleteAction'
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import {renderWithRouter} from 'utils/testing'
 
 import CreateActionFormView from '../CreateActionFormView'
+import useAddStoreApp from '../hooks/useAddStoreApp'
+import useDeleteAction from '../hooks/useDeleteAction'
+import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import useUpsertAction from '../hooks/useUpsertAction'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')

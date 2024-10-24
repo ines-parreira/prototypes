@@ -1,5 +1,5 @@
-import {createAction} from '@reduxjs/toolkit'
 import {Tag} from '@gorgias/api-queries'
+import {createAction} from '@reduxjs/toolkit'
 
 import {
     TAG_CREATED,

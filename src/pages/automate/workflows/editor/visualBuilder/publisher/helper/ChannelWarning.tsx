@@ -1,12 +1,13 @@
-import React, {ReactNode, useMemo} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {ReactNode, useMemo} from 'react'
 
-import {getChannelName} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {getChannelName} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+
 import css from '../WorkflowsPublisher.less'
 import ChannelsLink from './ChannelLink'
 

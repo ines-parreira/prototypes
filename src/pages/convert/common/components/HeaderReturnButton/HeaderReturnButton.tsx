@@ -1,7 +1,6 @@
+import classNames from 'classnames'
 import React from 'react'
 import {Link} from 'react-router-dom'
-
-import classNames from 'classnames'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 

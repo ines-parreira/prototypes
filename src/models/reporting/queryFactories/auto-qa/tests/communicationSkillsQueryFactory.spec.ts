@@ -1,9 +1,6 @@
 import moment from 'moment'
+
 import {TicketStatus} from 'business/types/ticket'
-import {
-    communicationSkillsDrillDownQueryFactory,
-    communicationSkillsQueryFactory,
-} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {OrderDirection} from 'models/api/types'
 import {
     TicketQAScoreDimension,
@@ -11,6 +8,10 @@ import {
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {
+    communicationSkillsDrillDownQueryFactory,
+    communicationSkillsQueryFactory,
+} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {

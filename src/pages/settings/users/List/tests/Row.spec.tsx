@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import {getInitials} from 'gorgias-design-system/Avatar/utils'
+import React from 'react'
 
 import {agents} from 'fixtures/agents'
+import {getInitials} from 'gorgias-design-system/Avatar/utils'
+
 import Row from '../Row'
 
 describe('<Row />', () => {

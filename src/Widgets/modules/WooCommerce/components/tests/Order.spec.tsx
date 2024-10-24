@@ -1,8 +1,10 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
+import React from 'react'
+
 import {EcommerceStore} from 'models/customerEcommerceData/types'
+
 import {orderCustomization} from '../Order'
 
 const ecomStore: EcommerceStore = {

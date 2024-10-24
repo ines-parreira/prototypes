@@ -1,20 +1,22 @@
-import React, {ComponentProps, useMemo} from 'react'
 import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
-import DashboardSection from 'pages/stats/DashboardSection'
-import * as constants from 'pages/stats/voice/constants/liveVoice'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import React, {ComponentProps, useMemo} from 'react'
+
+import {useMetric} from 'hooks/reporting/useMetric'
 import useAppSelector from 'hooks/useAppSelector'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {useMetric} from 'hooks/reporting/useMetric'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import * as constants from 'pages/stats/voice/constants/liveVoice'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {VoiceMetric} from 'state/ui/stats/types'
-import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
+
 import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
+import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
-import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
 import {LiveVoiceStatusFilterOption} from './types'
+import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
 
 const CARD_SIZE = 4
 

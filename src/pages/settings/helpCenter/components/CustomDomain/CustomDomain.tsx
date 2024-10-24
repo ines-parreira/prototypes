@@ -1,25 +1,24 @@
-import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
-
-import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/input/InputField'
+import React, {useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {CustomDomain as CustomDomainEntity} from 'models/helpCenter/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import Loader from 'pages/common/components/Loader/Loader'
-
-import settingsCss from 'pages/settings/settings.less'
-
-import {StatusCheck} from 'pages/common/components/StatusCheck'
+import Button from 'pages/common/components/button/Button'
 import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
-import {reportError} from 'utils/errors'
+import Loader from 'pages/common/components/Loader/Loader'
+import {StatusCheck} from 'pages/common/components/StatusCheck'
+import InputField from 'pages/common/forms/input/InputField'
+
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import settingsCss from 'pages/settings/settings.less'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
+import {reportError} from 'utils/errors'
 
 import {HelpText} from './components/HelpText'
 

@@ -1,16 +1,16 @@
-import React, {ComponentProps} from 'react'
 import {EmailDomain} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
-import thunk from 'redux-thunk'
+import {render, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {render, screen, waitFor} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {UserRole} from 'config/types/user'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import * as helpers from '../../helpers'
 import EmailDomainVerification from '../EmailDomainVerification'

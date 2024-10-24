@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {VoiceCall, isOutboundVoiceCall} from 'models/voiceCall/types'
+
 import TicketVoiceCallInbound from './TicketVoiceCallInbound'
 import TicketVoiceCallOutbound from './TicketVoiceCallOutbound'
 

@@ -1,6 +1,6 @@
-import React, {Children, ReactNode} from 'react'
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
+import React, {Children, ReactNode} from 'react'
 
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 

@@ -1,11 +1,11 @@
 import React, {useMemo} from 'react'
 
+import GorgiasButton from 'gorgias-design-system/Buttons/Button'
+import {getContrastColor} from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {getContrastColor} from 'gorgias-design-system/utils'
-import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'

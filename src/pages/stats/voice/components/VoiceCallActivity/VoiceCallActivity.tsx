@@ -1,10 +1,12 @@
-import React from 'react'
 import classNames from 'classnames'
-import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
+import React from 'react'
+
 import {VoiceCallStatus} from 'models/voiceCall/types'
+import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
+
 import {isInboundVoiceCallSummary, VoiceCallSummary} from '../../models/types'
 
 import {isLiveCallRinging} from '../LiveVoice/utils'

@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

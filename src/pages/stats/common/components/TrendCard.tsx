@@ -1,7 +1,9 @@
 import React, {ReactNode} from 'react'
+
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import useAppSelector from 'hooks/useAppSelector'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
     formatMetricValue,
     MetricTrendFormat,
@@ -9,7 +11,6 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {

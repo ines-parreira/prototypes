@@ -1,5 +1,5 @@
-import React, {forwardRef, HTMLProps} from 'react'
 import classNames from 'classnames'
+import React, {forwardRef, HTMLProps} from 'react'
 
 import css from './StatsHelpIcon.less'
 

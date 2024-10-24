@@ -1,13 +1,13 @@
+import {Map, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {Map, List} from 'immutable'
+import {bindActionCreators} from 'redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'

@@ -1,8 +1,10 @@
-import React from 'react'
-import {render, screen} from '@testing-library/react'
 import {VoiceCallDirection} from '@gorgias/api-queries'
-import {assumeMock} from 'utils/testing'
+import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {VoiceCallStatus} from 'models/voiceCall/types'
+import {assumeMock} from 'utils/testing'
+
 import {VoiceCallSummary} from '../../models/types'
 import LiveVoiceCallStatusLabel from './LiveVoiceCallStatusLabel'
 import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'

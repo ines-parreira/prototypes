@@ -1,16 +1,16 @@
-import {StatsFilters} from 'models/stat/types'
-import {
-    automationDatasetAdditionalFilters,
-    automationDatasetDefaultFilters,
-    billableTicketDatasetDefaultFilters,
-} from 'models/reporting/queryFactories/automate_v2/filters'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     BillableTicketDatasetCube,
     BillableTicketDatasetDimension,
     BillableTicketDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {
+    automationDatasetAdditionalFilters,
+    automationDatasetDefaultFilters,
+    billableTicketDatasetDefaultFilters,
+} from 'models/reporting/queryFactories/automate_v2/filters'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 
 export const automationDatasetQueryFactory = (
     filters: StatsFilters,

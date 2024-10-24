@@ -1,6 +1,6 @@
-import React, {useRef} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {useRef} from 'react'
 
 import {VisibilityStatus} from 'models/helpCenter/types'
 

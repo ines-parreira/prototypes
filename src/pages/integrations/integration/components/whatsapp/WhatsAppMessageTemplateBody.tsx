@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+
 import WhatsAppMessageTemplateLine from './WhatsAppMessageTemplateLine'
 
 import css from './WhatsAppMessageTemplateMessage.less'

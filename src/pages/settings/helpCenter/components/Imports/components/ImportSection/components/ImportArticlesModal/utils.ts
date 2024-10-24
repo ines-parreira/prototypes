@@ -1,4 +1,5 @@
 import {isDevelopment} from 'utils/environment'
+
 import {HELP_CENTER_BASE_PATH} from '../../../../../../constants'
 
 export const MAXIMUM_FILE_SIZE_MB = isDevelopment() ? 1 : 10

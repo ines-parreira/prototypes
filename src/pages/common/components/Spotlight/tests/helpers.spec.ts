@@ -1,5 +1,8 @@
 import _pick from 'lodash/pick'
+
+import {TicketChannel} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
+import {Customer} from 'models/customer/types'
 import {
     TicketHighlights,
     CustomerHighlights,
@@ -11,8 +14,6 @@ import {
     trimWithEllipsisBeforeTheHighlight,
     HIGHLIGHT_TAG,
 } from 'pages/common/components/Spotlight/helpers'
-import {Customer} from 'models/customer/types'
-import {TicketChannel} from 'business/types/ticket'
 
 describe('ticketHighlightsTransform', () => {
     const highlightedTicketId = '<em>12345</em>'

@@ -1,11 +1,11 @@
+import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks/dom'
 import {fromJS} from 'immutable'
-import {waitFor} from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {user} from 'fixtures/users'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {user} from 'fixtures/users'
+import useAppSelector from 'hooks/useAppSelector'
+import LocalForageManager from 'services/localForageManager/localForageManager'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 

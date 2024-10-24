@@ -1,27 +1,28 @@
-import {useParams} from 'react-router-dom'
-import {useCallback, useMemo, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import {useCallback, useMemo, useState} from 'react'
+import {useParams} from 'react-router-dom'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import history from 'pages/history'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {logEvent, SegmentEvent} from 'common/segment'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {FormValues, UpdateValue, WizardFormValues} from '../../types'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import history from 'pages/history'
+import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+
 import {getFormValuesFromStoreConfiguration} from '../../components/StoreConfigForm/StoreConfigForm.utils'
 import {
     DEFAULT_FORM_VALUES_WITH_WIZARD,
@@ -31,6 +32,7 @@ import {
     WIZARD_POST_COMPLETION_STATE,
     WIZARD_UPDATE_QUERY_KEY,
 } from '../../constants'
+import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 
 type handleSaveParams = {
     publicUrls?: string[]

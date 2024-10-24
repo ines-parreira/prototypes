@@ -1,5 +1,6 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {Moment} from 'moment'
+
 import {TicketChannel} from 'business/types/ticket'
 import {
     endOfLastMonth,

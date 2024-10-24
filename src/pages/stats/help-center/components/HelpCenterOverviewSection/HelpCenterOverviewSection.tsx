@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
-import {StatsFilters} from 'models/stat/types'
+
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {StatsFilters} from 'models/stat/types'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
+
 // import TipsToggle from 'pages/stats/TipsToggle'
 import {useHelpCenterTrend} from '../../hooks/useHelpCenterTrend'
 import OverviewCard from '../OverviewCard/OverviewCard'

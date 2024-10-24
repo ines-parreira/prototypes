@@ -1,11 +1,12 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
 
 import {Locale} from 'models/helpCenter/types'
+
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
-import {LanguageBadgeTags} from './LanguageBadgeTags'
 import css from './AvailableLanguagesTags.less'
+import {LanguageBadgeTags} from './LanguageBadgeTags'
 
 type Props = {
     availableLocales: Locale[]

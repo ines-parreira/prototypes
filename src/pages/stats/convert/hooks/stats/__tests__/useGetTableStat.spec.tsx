@@ -1,5 +1,8 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+
+import {usePostReporting} from 'models/reporting/queries'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -9,12 +12,10 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
-import {assumeMock} from 'utils/testing'
-import {usePostReporting} from 'models/reporting/queries'
+import {GroupDimension} from 'pages/stats/convert/clients/types'
 import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
 import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {GroupDimension} from 'pages/stats/convert/clients/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

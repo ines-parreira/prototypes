@@ -1,6 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
 import _capitalize from 'lodash/capitalize'
+import {createSelector} from 'reselect'
 
 import {createImmutableSelector, makeGetPlainJS} from '../../utils'
 import {RootState} from '../types'

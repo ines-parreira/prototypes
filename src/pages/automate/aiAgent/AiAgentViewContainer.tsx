@@ -1,16 +1,17 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+
 import {FeatureFlagKey} from '../../../config/featureFlags'
-import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 import {AiAgentConfigurationView} from './AiAgentConfigurationView/AiAgentConfigurationView'
-import {useWelcomePageAcknowledged} from './hooks/useWelcomePageAcknowledged'
-import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
+import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import {useWelcomePageAcknowledged} from './hooks/useWelcomePageAcknowledged'
+import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 
 type WelcomePageFeatureFlag =
     | undefined

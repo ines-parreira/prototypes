@@ -1,7 +1,9 @@
-import React from 'react'
-import {Map} from 'immutable'
 import {render} from '@testing-library/react'
+import {Map} from 'immutable'
+import React from 'react'
+
 import {LIVE_OVERVIEW_METRICS, stats} from 'config/stats'
+
 import {NO_VALUE_PLACEHOLDER, renderValue} from '../KeyMetricStat/KeyMetricCell'
 
 const MockDonutKeyMetricStat = jest.fn()

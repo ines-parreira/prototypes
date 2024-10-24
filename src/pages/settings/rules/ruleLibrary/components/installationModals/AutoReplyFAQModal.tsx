@@ -1,14 +1,14 @@
 import classnames from 'classnames'
 import React, {useEffect} from 'react'
 
-import {assetsUrl} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {FakeFAQArticlePreview} from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import {getActiveHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import useAppSelector from 'hooks/useAppSelector'
+import {assetsUrl} from 'utils'
 
-import type {ManagedRuleModalProps} from '../InstallRuleModalBody'
 import {InstallationError} from '../../constants'
+import type {ManagedRuleModalProps} from '../InstallRuleModalBody'
 
 import defaultModalCss from '../RuleRecipeModal.less'
 

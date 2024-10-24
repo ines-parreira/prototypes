@@ -1,6 +1,8 @@
 import {UseQueryOptions, useQuery, useMutation} from '@tanstack/react-query'
+
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {MutationOverrides} from 'types/query'
+
 import {
     fetchSelfServiceConfigurationSSP,
     updateSelfServiceConfigurationSSP,

@@ -1,11 +1,23 @@
+import classnames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
 import React, {useCallback, useContext, useMemo, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button} from 'reactstrap'
-import {fromJS, List, Map} from 'immutable'
-import classnames from 'classnames'
 import {Link} from 'react-router-dom'
+import {Button} from 'reactstrap'
 
-import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
+import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Spinner from 'pages/common/components/Spinner'
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
     addRow,
@@ -16,25 +28,13 @@ import {
     onNotifyChange,
     onReset,
 } from 'state/infobarActions/shopify/editOrder/actions'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import Spinner from 'pages/common/components/Spinner'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
-import Modal from 'pages/common/components/modal/Modal'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import DraftOrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
 import EditOrderForm from './EditOrderForm'
 

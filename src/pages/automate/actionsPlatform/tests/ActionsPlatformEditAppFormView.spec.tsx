@@ -1,13 +1,14 @@
-import React from 'react'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
+import React from 'react'
+
 import {useGetActionsApp} from 'models/workflows/queries'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 
-import useEditActionsApp from '../hooks/useEditActionsApp'
-import useApps from '../hooks/useApps'
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
+import useApps from '../hooks/useApps'
+import useEditActionsApp from '../hooks/useEditActionsApp'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionsApp')

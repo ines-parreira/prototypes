@@ -1,4 +1,8 @@
+import classNames from 'classnames'
+import {Map} from 'immutable'
 import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -6,33 +10,30 @@ import {
     Form,
     Button as ReactstrapButton,
 } from 'reactstrap'
-import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
-import classNames from 'classnames'
-import {Map} from 'immutable'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import history from 'pages/history'
+import css from 'pages/settings/settings.less'
 import socketManager from 'services/socketManager/socketManager'
+import {JoinEventType} from 'services/socketManager/types'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {
     sendVerificationEmail,
     verifyEmailIntegrationManually,
     deleteIntegration,
 } from 'state/integrations/actions'
-import {notify} from 'state/notifications/actions'
 import {
     getForwardingEmailAddress,
     getEmailForwardingActivated,
 } from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
-import {JoinEventType} from 'services/socketManager/types'
-import history from 'pages/history'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import PageHeader from 'pages/common/components/PageHeader'
-import css from 'pages/settings/settings.less'
-import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import {isBaseEmailAddress, isSendgridEmailIntegration} from '../helpers'
 
 type OwnProps = {

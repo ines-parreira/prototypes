@@ -1,12 +1,12 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {ComplexActionPreview} from '../ComplexActionPreview'
 import {
     httpAction,
     shopifyAction,
     addInternalNoteAction,
 } from '../../../../../../../../fixtures/macro'
+import {ComplexActionPreview} from '../ComplexActionPreview'
 
 describe('<ComplexActionPreview />', () => {
     it('should render http actions', () => {

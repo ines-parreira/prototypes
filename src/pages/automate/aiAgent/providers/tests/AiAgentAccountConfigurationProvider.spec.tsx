@@ -1,15 +1,17 @@
-import React from 'react'
-import {screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {IntegrationType} from '@gorgias/api-queries'
-import thunk from 'redux-thunk'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import {getHasAutomate} from 'state/billing/selectors'
 import {renderWithRouter} from 'utils/testing'
+
 import {AiAgentAccountConfigurationProvider} from '../AiAgentAccountConfigurationProvider'
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')

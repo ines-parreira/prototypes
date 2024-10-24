@@ -1,11 +1,12 @@
-import React, {PropsWithChildren, useMemo} from 'react'
 import {Map} from 'immutable'
+import React, {PropsWithChildren, useMemo} from 'react'
 
-import {getNewMessageType} from 'state/newMessage/selectors'
-import {hasIntegrationOfTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
+import {hasIntegrationOfTypes} from 'state/integrations/selectors'
+import {getNewMessageType} from 'state/newMessage/selectors'
+
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 
 const ReplyForm = ({children}: PropsWithChildren<unknown>) => {

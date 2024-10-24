@@ -1,8 +1,9 @@
-import React from 'react'
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {useListLiveCallQueueAgents} from '@gorgias/api-queries'
-import {assumeMock} from 'utils/testing'
+import {cleanup, fireEvent, render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 import LiveVoiceAgentsSection from './LiveVoiceAgentsSection'
 

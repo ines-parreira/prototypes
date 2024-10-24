@@ -1,6 +1,7 @@
-import userEvent from '@testing-library/user-event'
 import {act, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import {BusiestTimesOfDaysMetricSelect} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 

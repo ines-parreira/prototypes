@@ -2,8 +2,9 @@ import {fromJS, Map, List} from 'immutable'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
+import {appQueryClient} from 'api/queryClient'
+import {humanize} from 'business/format'
 import {
     TicketVia,
     TicketMessageSourceType,
@@ -11,11 +12,19 @@ import {
 } from 'business/types/ticket'
 import {isImmutable, toImmutable} from 'common/utils'
 import {MacroActionName} from 'models/macroAction/types'
+import {
+    isGorgiasContactFormTicketMeta,
+    isTicketMessageSourceType,
+} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
+import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {ChannelIdentifier, ChannelLike, toChannel} from 'services/channels'
 import {tryLocalStorage} from 'services/common/utils'
-import * as responseUtils from 'state/newMessage/responseUtils'
 import {AccountSettingDefaultIntegration} from 'state/currentAccount/types'
+import * as responseUtils from 'state/newMessage/responseUtils'
 import {RootState} from 'state/types'
 import {
     getValuePropFromSourceType,
@@ -29,16 +38,8 @@ import {
 } from 'tickets/common/utils'
 import {generateTicketMessagesId, getActionTemplate} from 'utils'
 
-import {ChannelIdentifier, ChannelLike, toChannel} from 'services/channels'
-import {humanize} from 'business/format'
-import {
-    isGorgiasContactFormTicketMeta,
-    isTicketMessageSourceType,
-} from 'models/ticket/predicates'
-import {appQueryClient} from 'api/queryClient'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {getProperty} from './selectors'
 import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
+import {getProperty} from './selectors'
 
 export type Receiver = {
     name: string | null

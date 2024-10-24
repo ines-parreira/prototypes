@@ -1,12 +1,14 @@
-import React from 'react'
-import {screen, render} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import {screen, render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import PreviewSection from '../PreviewSection'
 
 const queryClient = mockQueryClient()

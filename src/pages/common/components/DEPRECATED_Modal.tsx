@@ -1,3 +1,4 @@
+import _noop from 'lodash/noop'
 import React, {ReactNode, useCallback} from 'react'
 import {
     Modal as BootstrapModal,
@@ -6,7 +7,6 @@ import {
     ModalFooter,
     ModalProps,
 } from 'reactstrap'
-import _noop from 'lodash/noop'
 
 import {useAppNode} from 'appNode'
 

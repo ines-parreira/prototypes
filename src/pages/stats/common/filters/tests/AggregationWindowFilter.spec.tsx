@@ -1,7 +1,7 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {ReportingGranularityLabels} from 'pages/stats/common/filters/constants'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ReportingGranularity} from 'models/reporting/types'
 import {FilterKey} from 'models/stat/types'
@@ -10,6 +10,7 @@ import {
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
 import {AggregationWindowFilter} from 'pages/stats/common/filters/AggregationWindowFilter'
+import {ReportingGranularityLabels} from 'pages/stats/common/filters/constants'
 import {
     defaultStatsFilters,
     mergeStatsFiltersWithLogicalOperator,

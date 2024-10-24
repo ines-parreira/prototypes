@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
 import {
     getFinalRefundOrderPayload,

@@ -4,21 +4,22 @@ import moment from 'moment'
 import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {CustomFieldState} from 'custom-fields/types'
+import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {Ticket} from 'models/ticket/types'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import {GorgiasAction} from 'state/types'
-import {compare} from 'utils'
-import {Ticket} from 'models/ticket/types'
 
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
 import {parseTimeDelta} from 'tickets/common/utils'
-import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
+import {compare} from 'utils'
+
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,

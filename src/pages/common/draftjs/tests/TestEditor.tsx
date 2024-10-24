@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
-import Editor from 'draft-js-plugins-editor'
 import {EditorState} from 'draft-js'
+import Editor from 'draft-js-plugins-editor'
+import React, {useState} from 'react'
 
 import {Plugin} from '../plugins/types'
 

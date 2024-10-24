@@ -1,6 +1,7 @@
 import {act, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
 

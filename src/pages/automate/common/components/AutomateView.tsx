@@ -1,10 +1,12 @@
-import React, {ReactNode} from 'react'
 import classnames from 'classnames'
-import {Container} from 'reactstrap'
+import React, {ReactNode} from 'react'
 import {NavLink} from 'react-router-dom'
+import {Container} from 'reactstrap'
+
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+
 import css from './AutomateView.less'
 
 type NavbarItem = {

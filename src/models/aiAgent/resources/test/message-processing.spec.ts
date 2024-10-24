@@ -1,11 +1,13 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
+
+import authClient from '../../../../models/api/resources'
 import {
     apiClient,
     createBaseUrl,
     createContextAndSubmitPlaygroundTicket,
 } from '../message-processing'
-import authClient from '../../../../models/api/resources'
 
 describe('message-processing', () => {
     describe('createBaseUrl', () => {

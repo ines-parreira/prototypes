@@ -1,7 +1,9 @@
 import {act, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     PERCENTAGE_LABEL,
     TOTAL_COUNT_LABEL,
@@ -10,7 +12,6 @@ import {TicketInsightsValueModeSwitch} from 'pages/stats/ticket-insights/ticket-
 import {toggleValueMode} from 'state/ui/stats/ticketInsightsSlice'
 import {ValueMode} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import useAppSelector from 'hooks/useAppSelector'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('state/ui/stats/ticketInsightsSlice')

@@ -1,5 +1,5 @@
-import React, {MutableRefObject} from 'react'
 import {render} from '@testing-library/react'
+import React, {MutableRefObject} from 'react'
 
 import useStatefulRef from '../useStatefulRef'
 

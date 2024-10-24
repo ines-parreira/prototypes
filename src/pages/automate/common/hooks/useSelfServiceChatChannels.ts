@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
 
+import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, GorgiasChatIntegration} from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {TicketChannel} from 'business/types/ticket'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 

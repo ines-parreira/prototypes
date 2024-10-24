@@ -1,17 +1,19 @@
-import React, {useState} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classNames from 'classnames'
+import React, {useState} from 'react'
+
 import useLocalStorage from 'hooks/useLocalStorage'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import {ShopifyIntegration} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
-import {ShopifyIntegration} from 'models/integration/types'
 import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+
 import css from './ContactFormMailtoReplacementSection.less'
 import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
 import {useContactFormMailtoReplacementConfig} from './useContactFormMailtoReplacementConfig'

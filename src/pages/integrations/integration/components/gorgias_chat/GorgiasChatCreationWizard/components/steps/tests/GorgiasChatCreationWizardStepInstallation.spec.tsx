@@ -1,20 +1,18 @@
-import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
-import {Provider} from 'react-redux'
-import {fromJS, Map} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-
-import * as actions from 'state/integrations/actions'
+import thunk from 'redux-thunk'
 
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-
 import Wizard from 'pages/common/components/wizard/Wizard'
+import * as actions from 'state/integrations/actions'
 
 import GorgiasChatCreationWizardStepInstallation from '../GorgiasChatCreationWizardStepInstallation'
 

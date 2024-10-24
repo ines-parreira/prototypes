@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+import {EmojiData, BaseEmoji} from 'emoji-mart'
 import React, {
     ComponentProps,
     MouseEvent,
@@ -6,8 +8,6 @@ import React, {
     useState,
 } from 'react'
 import {Popover} from 'reactstrap'
-import {EmojiData, BaseEmoji} from 'emoji-mart'
-import classNames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'

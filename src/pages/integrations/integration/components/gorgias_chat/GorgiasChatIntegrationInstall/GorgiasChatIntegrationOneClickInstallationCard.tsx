@@ -1,33 +1,34 @@
-import React, {useRef, useState} from 'react'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useRef, useState} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {IntegrationType} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
 import {
     getStoreIntegrations,
     makeGetPreRedirectUri,
 } from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
+
 import useShopifyThemeAppExtension from '../hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from '../hooks/useThemeAppExtensionInstallation'
+import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 import GorgiasChatIntegrationVisibilityControls, {
     GorgiasChatIntegrationVisibilityControlsHandle,
 } from './GorgiasChatIntegrationVisibilityControls'
-import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 
 type Props = {
     integration: Map<any, any>

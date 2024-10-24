@@ -4,22 +4,32 @@ import React, {FunctionComponent} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {campaign, campaignId} from 'fixtures/campaign'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {
+    TicketSLADimension,
+    TicketSLAStatus,
+} from 'models/reporting/cubes/sla/TicketSLACube'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {
+    ConvertDrillDownRowData,
+    TicketDrillDownRowData,
+} from 'pages/stats/DrillDownFormatters'
+import {DrillDownTable} from 'pages/stats/DrillDownTable'
+import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {
     COMMUNICATION_SKILLS_LABEL,
     COMPLETENESS_STATUS_COMPLETE,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
-import {
-    TicketSLADimension,
-    TicketSLAStatus,
-} from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
-import {NumberedPagination} from 'pages/common/components/Paginations'
-import {DrillDownTable} from 'pages/stats/DrillDownTable'
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {SlaStatusLabel} from 'services/reporting/constants'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -35,16 +45,6 @@ import {
     SlaMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-
-import {
-    ConvertDrillDownRowData,
-    TicketDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {campaign, campaignId} from 'fixtures/campaign'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

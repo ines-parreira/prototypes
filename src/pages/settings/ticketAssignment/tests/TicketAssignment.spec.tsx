@@ -1,24 +1,24 @@
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState} from 'state/types'
+import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 import {teams} from 'fixtures/teams'
 import {user} from 'fixtures/users'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {fetchChats} from 'state/chats/actions'
+import {submitSetting} from 'state/currentAccount/actions'
 import {
     AccountSettingTicketAssignment,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {TicketChannel} from 'business/types/ticket'
-import {submitSetting} from 'state/currentAccount/actions'
-import {fetchChats} from 'state/chats/actions'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {RootState} from 'state/types'
 
 import TicketAssignment from '../TicketAssignment'
 

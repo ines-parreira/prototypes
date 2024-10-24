@@ -1,16 +1,16 @@
-import React, {ComponentProps} from 'react'
 import {render, waitFor, fireEvent} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {fetchTags, createTag} from 'models/tag/resources'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {RootState, StoreDispatch} from 'state/types'
-import history from 'pages/history'
-
-import {RuleRecipe} from 'models/ruleRecipe/types'
 import {view} from 'fixtures/views'
+import {RuleRecipe} from 'models/ruleRecipe/types'
+import {fetchTags, createTag} from 'models/tag/resources'
+import history from 'pages/history'
+import {RootState, StoreDispatch} from 'state/types'
+
 import AutoresponderViewButton from '../AutoresponderViewButton'
 
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>

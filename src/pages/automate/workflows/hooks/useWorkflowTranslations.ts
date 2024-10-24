@@ -7,28 +7,29 @@
  * Note that on first load, the workflows API already returns the workflow configuration with translated texts,
  * even if text are emptied on save and saved in a translation dictionary instead.
  */
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import _isEqual from 'lodash/isEqual'
 import _get from 'lodash/get'
-import _omit from 'lodash/omit'
-import _keys from 'lodash/keys'
-import _isObject from 'lodash/isObject'
 import _isArray from 'lodash/isArray'
+import _isEqual from 'lodash/isEqual'
+import _isObject from 'lodash/isObject'
+import _keys from 'lodash/keys'
 import _mapValues from 'lodash/mapValues'
+import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {
     useFetchWorkflowConfigurationTranslations,
     useDeleteWorkflowConfigurationTranslations,
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
-import {LanguageCode} from '../models/workflowConfiguration.types'
+
+import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
+import {LanguageCode} from '../models/workflowConfiguration.types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
 } from '../utils/payloadSize'
-import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
 
 type TranslationsByLang = Record<string, Record<string, string>>
 

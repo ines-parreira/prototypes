@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-import Clipboard from 'clipboard'
 import classnames from 'classnames'
+import Clipboard from 'clipboard'
+import {Map} from 'immutable'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -11,22 +12,22 @@ import {
     InputGroupAddon,
     Input,
 } from 'reactstrap'
-import {Map} from 'immutable'
-import outlook from 'assets/img/integrations/outlook.svg'
-import office from 'assets/img/integrations/office.svg'
-import zoho from 'assets/img/integrations/zoho.svg'
+
 import exchange from 'assets/img/integrations/exchange.svg'
 import groups from 'assets/img/integrations/google-groups.svg'
+import office from 'assets/img/integrations/office.svg'
+import outlook from 'assets/img/integrations/outlook.svg'
+import zoho from 'assets/img/integrations/zoho.svg'
 
 import Button from 'pages/common/components/button/Button'
 
+import {IntegrationType} from '../../../../../../models/integration/types'
+import {sendVerificationEmail} from '../../../../../../state/integrations/actions'
 import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
 import {notify} from '../../../../../../state/notifications/actions'
-import {sendVerificationEmail} from '../../../../../../state/integrations/actions'
+import {RootState} from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 import history from '../../../../../history'
-import {RootState} from '../../../../../../state/types'
-import {IntegrationType} from '../../../../../../models/integration/types'
 import settingsCss from '../../../../../settings/settings.less'
 
 import css from './EmailIntegrationCreateForwarding.less'

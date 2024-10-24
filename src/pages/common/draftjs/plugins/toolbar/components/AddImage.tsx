@@ -1,5 +1,5 @@
-import React, {Component, createRef, KeyboardEvent, RefObject} from 'react'
 import classnames from 'classnames'
+import React, {Component, createRef, KeyboardEvent, RefObject} from 'react'
 
 import {UploadType} from 'common/types'
 import Button from 'pages/common/components/button/Button'

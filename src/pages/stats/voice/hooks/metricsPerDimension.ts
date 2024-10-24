@@ -1,11 +1,11 @@
-import {StatsFilters} from 'models/stat/types'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {declinedVoiceCallsCountPerAgentQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import {StatsFilters} from 'models/stat/types'
 
 export const useTotalCallsMetricPerAgent = (
     statsFilters: StatsFilters,

@@ -7,8 +7,8 @@ import {
     DROPDOWN_NESTING_FANCY_DELIMITER,
 } from '../constants'
 import {getFullValueFromCurrentPath} from '../helpers/getFullValueFromCurrentPath'
-import {ChoicesTree, SearchResults} from '../types'
 import {getLabel} from '../helpers/getLabels'
+import {ChoicesTree, SearchResults} from '../types'
 
 export function useSearch({
     choices,

@@ -1,28 +1,28 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {FilterComponentKey} from 'models/stat/types'
 import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {RootState} from 'state/types'
-import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
-import {renderWithStore} from 'utils/testing'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterComponentKey} from 'models/stat/types'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {SegmentEvent, logEvent} from 'common/segment'
+import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()

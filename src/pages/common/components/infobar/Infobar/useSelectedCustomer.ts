@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {useState} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import {ApiListResponsePagination} from 'models/api/types'

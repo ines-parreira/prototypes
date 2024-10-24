@@ -1,12 +1,12 @@
-import React, {ComponentProps, useContext, useMemo} from 'react'
-import {fromJS, Map} from 'immutable'
 import {parseToHsla} from 'color2k'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps, useContext, useMemo} from 'react'
 
+import {useFlag} from 'common/flags'
 import Tag from 'components/Tag'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Theme, ThemeContext} from 'theme'
 import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
-import {useFlag} from 'common/flags'
 
 type Props = {
     className?: string

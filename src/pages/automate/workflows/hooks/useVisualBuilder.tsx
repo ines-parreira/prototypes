@@ -1,3 +1,4 @@
+import _noop from 'lodash/noop'
 import React, {
     createContext,
     Dispatch,
@@ -5,14 +6,7 @@ import React, {
     useContext,
     useMemo,
 } from 'react'
-import _noop from 'lodash/noop'
 
-import {
-    VisualBuilderGraph,
-    VisualBuilderNode,
-} from '../models/visualBuilderGraph.types'
-import {WorkflowVariable} from '../models/variables.types'
-import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
 import {
     buildWorkflowVariableFromNode,
     extractVariablesFromNode,
@@ -21,9 +15,15 @@ import {
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
 } from '../models/variables.model'
+import {WorkflowVariable} from '../models/variables.types'
+import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
+import {
+    VisualBuilderGraph,
+    VisualBuilderNode,
+} from '../models/visualBuilderGraph.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import {validateConditionSteps} from './useWorkflowEditor'
 import {VisualBuilderGraphAction} from './useVisualBuilderGraphReducer'
+import {validateConditionSteps} from './useWorkflowEditor'
 
 export type VisualBuilderContext = {
     visualBuilderGraph: VisualBuilderGraph

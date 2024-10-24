@@ -1,12 +1,13 @@
-import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 import classnames from 'classnames'
+import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 
 import {useAppNode} from 'appNode'
 import {MacrosProperties} from 'models/macro/types'
+import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import OnbordingMacroPopover from 'pages/tickets/common/macros/components/OnbordingMacroPopover'
+
 import css from './TicketMacrosSearch.less'
 
 type Props = {

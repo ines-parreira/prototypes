@@ -1,15 +1,16 @@
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
-import {ProductType} from 'models/billing/types'
-import {convertAvailablePlans} from 'fixtures/productPrices'
-import {mockStore} from 'utils/testing'
+
 import {UserRole} from 'config/types/user'
-import {RootState} from 'state/types'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
+import {convertAvailablePlans} from 'fixtures/productPrices'
+import {ProductType} from 'models/billing/types'
+import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
+import {RootState} from 'state/types'
+import {mockStore} from 'utils/testing'
 
 describe('SubscriptionModal', () => {
     const canduId = 'my-test-candu-id'

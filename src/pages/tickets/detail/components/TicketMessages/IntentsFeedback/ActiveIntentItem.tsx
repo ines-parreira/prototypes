@@ -3,9 +3,9 @@ import React from 'react'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
 
-import {DropdownOptionItem} from './DropdownOptionItem'
 import css from './ActiveIntentItem.less'
 import {DropdownOptionButton} from './DropdownOptionButton'
+import {DropdownOptionItem} from './DropdownOptionItem'
 
 type Props = {
     option: Option

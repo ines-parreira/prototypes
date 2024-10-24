@@ -1,7 +1,7 @@
-import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
-import {Card, CardBody} from 'reactstrap'
 import {Map} from 'immutable'
+import React, {Component, MouseEvent} from 'react'
+import {Card, CardBody} from 'reactstrap'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {StatusLabel, AgentLabel} from 'pages/common/utils/labels'

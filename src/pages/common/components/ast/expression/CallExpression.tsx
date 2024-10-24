@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
+import React, {ComponentProps} from 'react'
 
-import {ObjectExpressionPropertyKey} from 'state/rules/types'
-import {OBJECT_DEFINITIONS} from 'state/rules/constants'
-import {RuleItemActions} from 'pages/settings/rules/types'
 import Action from 'pages/common/components/ast/actions/Action'
 import {
     actionsConfig,
     isValidActionKey,
 } from 'pages/common/components/ast/actions/config'
+import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
 import DeleteBinaryExpression from 'pages/common/components/ast/operations/DeleteBinaryExpression'
 
 import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
 
 import useHoverable from 'pages/common/hooks/useHoverable'
 import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {OBJECT_DEFINITIONS} from 'state/rules/constants'
+import {ObjectExpressionPropertyKey} from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>

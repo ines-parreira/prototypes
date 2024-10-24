@@ -1,6 +1,6 @@
+import useAppSelector from 'hooks/useAppSelector'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import {useGetShopifyPages} from 'pages/settings/contactForm/queries'
-import useAppSelector from 'hooks/useAppSelector'
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 
 // It's used to be type safe when contact form is missing the shop name

@@ -1,4 +1,5 @@
 import {ContentType} from 'models/api/types'
+
 import {Action} from '../../../types'
 import {
     prepareDropdownValue,

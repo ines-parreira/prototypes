@@ -1,15 +1,16 @@
 import React, {useCallback, useRef, useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
+import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     metricLabels,
     metrics,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
     getSelectedMetric,
     setSelectedMetric,

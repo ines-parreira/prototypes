@@ -1,9 +1,10 @@
-import React, {ComponentProps} from 'react'
-import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
 import {act} from '@testing-library/react-hooks'
-import {RefundOrderFooter} from '../RefundOrderFooter'
+import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+
 import {BigCommerceRefundActionType} from '../../types'
+import {RefundOrderFooter} from '../RefundOrderFooter'
 
 type Props = ComponentProps<typeof RefundOrderFooter>
 

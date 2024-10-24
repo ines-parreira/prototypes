@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {PhoneCountry, PhoneType} from 'models/phoneNumber/types'
-import {countryName} from 'pages/phoneNumbers/utils'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {usePhoneNumberCapabilities} from 'hooks/integrations/phone/usePhoneNumberCapabilities'
+import {PhoneCountry, PhoneType} from 'models/phoneNumber/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {countryName} from 'pages/phoneNumbers/utils'
 
 type Props = {
     country: PhoneCountry

@@ -1,13 +1,14 @@
-import React, {useMemo} from 'react'
 import {Scale} from 'chart.js'
 import moment from 'moment/moment'
-import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import ChartCard from 'pages/stats/ChartCard'
-import {formatTimeSeriesData, SHORT_FORMAT} from 'pages/stats/common/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import React, {useMemo} from 'react'
+
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import ChartCard from 'pages/stats/ChartCard'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {formatTimeSeriesData, SHORT_FORMAT} from 'pages/stats/common/utils'
+import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
 
 type ArticleViewsGraphComponentProps = {
     isLoading: boolean

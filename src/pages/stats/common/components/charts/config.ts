@@ -1,7 +1,9 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {fromJS} from 'immutable'
+
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import {AnalyticsTheme} from 'theme/withAnalyticsTheme'
+
 import {ChartColors} from './types'
 
 export const chartColorsFallbackTokens = {

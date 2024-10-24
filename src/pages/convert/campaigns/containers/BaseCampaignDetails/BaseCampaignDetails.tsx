@@ -1,6 +1,6 @@
+import {Map} from 'immutable'
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import {Map} from 'immutable'
 
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 

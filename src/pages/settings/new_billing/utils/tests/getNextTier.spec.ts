@@ -6,6 +6,7 @@ import {
     convertPlan5,
     convertProduct,
 } from 'fixtures/productPrices'
+
 import {getNextTier} from '../getNextTier'
 
 describe('getNextTier', () => {

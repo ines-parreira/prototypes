@@ -1,7 +1,7 @@
+import {CustomFieldObjectType} from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import moment from 'moment'
 
-import {CustomFieldObjectType} from '@gorgias/api-queries'
 import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,

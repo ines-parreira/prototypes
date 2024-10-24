@@ -1,5 +1,6 @@
 import {render} from '@testing-library/react'
 import React from 'react'
+
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
 
 describe('CanduActionInfobar', () => {

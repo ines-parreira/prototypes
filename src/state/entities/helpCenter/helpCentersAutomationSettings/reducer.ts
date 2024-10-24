@@ -1,9 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit'
+
 import {
     helpCenterAutomationSettingsFetched,
     helpCenterAutomationSettingsUpdated,
     helpCentersAutomationSettingsFetched,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings/actions'
+
 import {HelpCentersAutomationSettingsState} from './types'
 
 export const initialState: HelpCentersAutomationSettingsState = {

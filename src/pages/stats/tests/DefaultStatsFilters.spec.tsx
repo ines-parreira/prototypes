@@ -1,15 +1,14 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
 
+import {user} from 'fixtures/users'
+import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
-import {user} from 'fixtures/users'
-
-import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

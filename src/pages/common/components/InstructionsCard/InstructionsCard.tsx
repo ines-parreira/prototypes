@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, {useState} from 'react'
 import {CardHeader, Card, Collapse, CardBody} from 'reactstrap'
+
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 

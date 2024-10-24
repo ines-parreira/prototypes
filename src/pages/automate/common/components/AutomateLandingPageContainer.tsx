@@ -1,14 +1,15 @@
 import React from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getHasAutomate} from 'state/billing/selectors'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getHasAutomate} from 'state/billing/selectors'
 
-import {AutomateFeatures} from '../types'
 import useStoreIntegrations from '../hooks/useStoreIntegrations'
-import StoreIntegrationView from './StoreIntegrationView'
-import AutomatePaywallView from './AutomatePaywallView'
+import {AutomateFeatures} from '../types'
 import AutomateLandingPage from './AutomateLandingPage'
+import AutomatePaywallView from './AutomatePaywallView'
+import StoreIntegrationView from './StoreIntegrationView'
 
 const AutomateLandingPageContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)

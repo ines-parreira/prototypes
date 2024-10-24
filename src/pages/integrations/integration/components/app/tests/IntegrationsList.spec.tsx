@@ -1,12 +1,13 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
 import {getAllByRole, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
 
 import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {Integration as IntegrationType} from 'models/integration/types'
 import IntegrationsList from 'pages/integrations/integration/components/app/IntegrationsList'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

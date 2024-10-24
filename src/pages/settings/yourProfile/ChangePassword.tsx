@@ -1,8 +1,8 @@
+import {AxiosError} from 'axios'
+import classnames from 'classnames'
 import React, {useMemo, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 import {Form} from 'reactstrap'
-import {AxiosError} from 'axios'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'

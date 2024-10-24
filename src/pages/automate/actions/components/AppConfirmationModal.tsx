@@ -1,18 +1,17 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import InputField from 'pages/common/forms/input/InputField'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {logEvent, SegmentEvent} from 'common/segment'
 
 import {ActionAppConfiguration, ActionAppConnected} from '../types'
-import TemplateActionBanner from './TemplateActionBanner'
-
 import css from './AppConfirmationModal.less'
+import TemplateActionBanner from './TemplateActionBanner'
 
 type Props = {
     actionAppConnected?: ActionAppConnected

@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {Component} from 'react'
 import {Badge} from 'reactstrap'
 
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
-import FileField from 'pages/common/forms/FileField'
 import {Attachment} from 'models/ticket/types'
+import FileField from 'pages/common/forms/FileField'
+import {fileIconFromContentType} from 'pages/tickets/common/utils'
 
 type Props = {
     index: number

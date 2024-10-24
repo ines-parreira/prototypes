@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
 import Clipboard from 'clipboard'
+import {useEffect, useState} from 'react'
 
 export default function useClipboard(selector: string) {
     const [isCopied, setIsCopied] = useState(false)

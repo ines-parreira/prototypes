@@ -1,10 +1,9 @@
+import classNames from 'classnames'
 import React, {HTMLAttributes, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import classNames from 'classnames'
-
-import {ViewFilter} from 'state/views/types'
 
 import css from 'pages/stats/common/ViewLink.less'
+import {ViewFilter} from 'state/views/types'
 
 type Props = {
     viewName: string

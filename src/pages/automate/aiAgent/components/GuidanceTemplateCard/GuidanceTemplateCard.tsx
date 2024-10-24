@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {TemplateCard} from 'pages/common/components/TemplateCard'
+
 import {GuidanceTemplate} from '../../types'
 import css from './GuidanceTemplateCard.less'
 

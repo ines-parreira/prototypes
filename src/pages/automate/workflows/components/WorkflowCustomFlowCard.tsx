@@ -1,7 +1,7 @@
 import React from 'react'
 
-import templateCss from './WorkflowTemplateCard.less'
 import css from './WorkflowCustomFlowCard.less'
+import templateCss from './WorkflowTemplateCard.less'
 
 type Props = {
     goToNewWorkflowPage: () => void

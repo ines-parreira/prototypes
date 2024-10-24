@@ -1,13 +1,15 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {fireEvent, screen, render, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {fireEvent, screen, render, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {QueryClientProvider} from '@tanstack/react-query'
+import thunk from 'redux-thunk'
+
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import AISuggestionContactReason from '../AISuggestionContactReason'
 
 const queryClient = mockQueryClient()

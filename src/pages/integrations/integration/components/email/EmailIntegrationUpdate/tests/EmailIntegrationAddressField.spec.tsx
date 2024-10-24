@@ -1,16 +1,17 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
+
 import {useFlag} from 'common/flags'
-import {assumeMock} from 'utils/testing'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {RootState, StoreDispatch} from 'state/types'
+import {EmailIntegration} from 'models/integration/types'
 import {submitSetting} from 'state/currentAccount/actions'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {EmailIntegration} from 'models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 

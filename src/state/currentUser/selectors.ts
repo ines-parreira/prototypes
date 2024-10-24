@@ -3,13 +3,14 @@ import {createSelector} from 'reselect'
 
 import {DEFAULT_PREFERENCES} from 'config'
 import {UserSetting, UserSettingType} from 'config/types/user'
-import {createImmutableSelector} from 'utils'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     TimeFormatType,
 } from 'constants/datetime'
+import {createImmutableSelector} from 'utils'
 import {getDateAndTimeFormat} from 'utils/datetime'
+
 import {RootState} from '../types'
 
 import {CurrentUserState} from './types'

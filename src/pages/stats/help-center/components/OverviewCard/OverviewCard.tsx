@@ -1,15 +1,17 @@
 import React, {ReactNode} from 'react'
+
+import {DateAndTimeFormatting} from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import MetricCard from 'pages/stats/MetricCard'
+import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {formatMetricValue} from 'pages/stats/common/utils'
+import MetricCard from 'pages/stats/MetricCard'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import PerformanceTip from 'pages/stats/PerformanceTip'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
+import {formatReportingQueryDate} from 'utils/reporting'
+
 import css from './OverviewCard.less'
 
 export type OverviewCardProps = {

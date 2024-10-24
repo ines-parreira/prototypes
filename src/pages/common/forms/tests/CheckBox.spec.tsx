@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
 
 import CheckBox from '../CheckBox'
 

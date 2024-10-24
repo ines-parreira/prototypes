@@ -1,31 +1,33 @@
+import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useQueryClient} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {CreateContactFormDto} from 'models/contactForm/types'
+import {LocaleCode} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import settingsCss from 'pages/settings/settings.less'
+import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
     CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE,
 } from 'pages/settings/contactForm/constants'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {CreateContactFormDto} from 'models/contactForm/types'
-import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
-import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import {FeatureFlagKey} from 'config/featureFlags'
-import contactFormCss from '../../contactForm.less'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import settingsCss from 'pages/settings/settings.less'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {ConnectContactFormToShopSection} from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
+import contactFormCss from '../../contactForm.less'
 import {contactFormKeys, useCreateContactForm} from '../../queries'
 
 const ContactFormCreateView = ({

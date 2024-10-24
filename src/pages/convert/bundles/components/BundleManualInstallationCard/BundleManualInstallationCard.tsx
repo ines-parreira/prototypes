@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
+import React, {useEffect, useState} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
-import ManualInstallationShopifyWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 import ManualInstallationOtherWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
+import ManualInstallationShopifyWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 
 import css from './BundleManualInstallationCard.less'
 

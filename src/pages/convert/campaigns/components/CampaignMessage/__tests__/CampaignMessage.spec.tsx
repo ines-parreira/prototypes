@@ -1,27 +1,27 @@
-import React from 'react'
+import {render, act, fireEvent, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render, act, fireEvent, screen} from '@testing-library/react'
 
 import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
+import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
 import {ShopifyIntegration} from 'models/integration/types'
 
-import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import * as integrationHelpers from 'state/integrations/helpers'
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises} from 'utils/testing'
 
-import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
-import * as integrationHelpers from 'state/integrations/helpers'
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignMessage} from '../CampaignMessage'
 import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
+import {CampaignMessage} from '../CampaignMessage'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')

@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import classNames from 'classnames'
-import PageHeader from 'pages/common/components/PageHeader'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import Button from 'pages/common/components/button/Button'
-import useEffectOnce from 'hooks/useEffectOnce'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useState} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {AutomateFeatures} from '../types'
+import useEffectOnce from 'hooks/useEffectOnce'
+import Button from 'pages/common/components/button/Button'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import PageHeader from 'pages/common/components/PageHeader'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+
 import {usePaywallConfig} from '../hooks/usePaywallConfig'
+import {AutomateFeatures} from '../types'
 import css from './AutomatePaywallView.less'
 
 const AutomatePaywallView = ({

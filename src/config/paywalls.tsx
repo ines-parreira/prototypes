@@ -1,12 +1,10 @@
 import React, {ReactElement, ReactNode} from 'react'
 
-import {assetsUrl} from 'utils'
+import Button from 'pages/common/components/button/Button'
 import {
     PaywallTheme,
     UpgradeType,
 } from 'pages/common/components/Paywall/Paywall'
-import Button from 'pages/common/components/button/Button'
-import {AccountFeature} from 'state/currentAccount/types'
 import {
     GORGIAS_AUTOMATE_BADGE,
     PAGE_TITLE_AUTOMATE_PAYWALL,
@@ -15,6 +13,8 @@ import {
     VOICE_LEARN_MORE_URL,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {AccountFeature} from 'state/currentAccount/types'
+import {assetsUrl} from 'utils'
 
 export type PaywallConfig = {
     pageHeader?: ReactNode

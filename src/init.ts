@@ -1,5 +1,4 @@
-import moment from 'moment-timezone'
-import {Store} from 'redux'
+import {setDefaultConfig} from '@gorgias/api-queries'
 import {
     Chart,
     BarController,
@@ -14,22 +13,28 @@ import {
     Filler,
     ArcElement,
 } from 'chart.js'
-import {setDefaultConfig} from '@gorgias/api-queries'
+import moment from 'moment-timezone'
+import {Store} from 'redux'
 
 import './polyfills'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store} from 'common/store'
 import {EditableUserProfile} from 'config/types/user'
+import {initializeNewReleaseHandler} from 'models/api/resources'
+import GreyArea from 'pages/stats/ChartPluginGreyArea'
+import {
+    getCurrentAutomatePlan,
+    getCurrentHelpdeskPlan,
+} from 'state/billing/selectors'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {getBaseEmailIntegration} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
-import {transformSystemMessagesToNotifications} from 'utils'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {transformSystemMessagesToNotifications} from 'utils'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
-import {initializeNewReleaseHandler} from 'models/api/resources'
-import {initLaunchDarkly} from 'utils/launchDarkly'
 import {
     envVars,
     getEnvironment,
@@ -38,12 +43,7 @@ import {
 } from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {identifyUser as identifyHotjarUser} from 'utils/hotjar'
-import {
-    getCurrentAutomatePlan,
-    getCurrentHelpdeskPlan,
-} from 'state/billing/selectors'
-import {RootState} from 'state/types'
-import GreyArea from 'pages/stats/ChartPluginGreyArea'
+import {initLaunchDarkly} from 'utils/launchDarkly'
 
 import {getCurrentAccountState} from './state/currentAccount/selectors'
 

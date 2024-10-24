@@ -1,14 +1,16 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {RootState, StoreDispatch} from 'state/types'
-import {integrationsState} from 'fixtures/integrations'
-import {billingState} from 'fixtures/billing'
+
 import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {integrationsState} from 'fixtures/integrations'
+import {RootState, StoreDispatch} from 'state/types'
+
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
 
 jest.mock(

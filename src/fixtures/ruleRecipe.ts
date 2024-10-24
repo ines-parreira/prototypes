@@ -1,11 +1,11 @@
 import {RuleRecipe, RuleRecipeTag} from 'models/ruleRecipe/types'
 import {TagDraft} from 'models/tag/types'
-import {RuleDraft} from 'state/rules/types'
 import {ViewDraft} from 'models/view/types'
+import {RuleDraft} from 'state/rules/types'
 
 import {emptyRule} from './rule'
-import {view} from './views'
 import {tags} from './tag'
+import {view} from './views'
 
 export const emptyRuleRecipeFixture: RuleRecipe = {
     slug: 'rule-recipe-fixture',

@@ -1,11 +1,11 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {deleteIntegration} from 'state/integrations/actions'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {deleteIntegration} from 'state/integrations/actions'
 
 type Props = {
     integration: Map<string, any>

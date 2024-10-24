@@ -6,9 +6,8 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
-import {WorkflowTemplateModal} from './WorkflowTemplateModal'
-
 import css from './WorkflowTemplateCard.less'
+import {WorkflowTemplateModal} from './WorkflowTemplateModal'
 
 const workflowLabelStyles: Record<
     WorkflowTemplateLabelType,

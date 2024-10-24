@@ -1,21 +1,23 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {Tooltip} from '@gorgias/ui-kit'
+import {fromJS} from 'immutable'
+import React from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     EcommerceIntegrationMeta,
     Integration,
     isAppIntegration,
 } from 'models/integration/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentDomain} from 'state/currentAccount/selectors'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/integrations/integration/components/app/IntegrationRow.less'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {deleteIntegration} from 'state/integrations/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {getIntegrationsLoading} from 'state/integrations/selectors'
 import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import css from 'pages/integrations/integration/components/app/IntegrationRow.less'
+import {getCurrentDomain} from 'state/currentAccount/selectors'
+import {deleteIntegration} from 'state/integrations/actions'
+import {getIntegrationsLoading} from 'state/integrations/selectors'
+
 import {getReconnectUrl} from './helpers'
 
 type Props = {

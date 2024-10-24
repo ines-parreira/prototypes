@@ -1,20 +1,22 @@
-import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import {chain as _chain} from 'lodash'
+import _noop from 'lodash/noop'
 import _sortBy from 'lodash/sortBy'
 
-import _noop from 'lodash/noop'
+import React, {useEffect, useState} from 'react'
+
 import {Article} from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+
 import {ArticleRowActionTypes} from '../../constants'
 
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {ArticleRow} from './components/ArticleRow'
 
 import css from './ArticlesTable.less'
+import {ArticleRow} from './components/ArticleRow'
 
 type Props = {
     isNested?: boolean

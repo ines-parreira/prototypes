@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import {QueryClientProvider} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
 
 import React from 'react'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {fetchChatsApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {useGetChatsApplicationAutomationSettings} from '../queries'
 
 const queryClient = mockQueryClient()

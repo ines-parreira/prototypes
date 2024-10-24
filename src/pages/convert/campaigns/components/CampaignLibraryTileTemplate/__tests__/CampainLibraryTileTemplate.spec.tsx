@@ -1,9 +1,11 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
+
 import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'
 
 describe('CampaignLibraryTileTemplate', () => {

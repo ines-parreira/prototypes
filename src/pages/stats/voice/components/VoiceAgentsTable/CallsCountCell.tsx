@@ -1,6 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -9,16 +10,15 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
+import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
+import {VoiceAgentsMetrics} from 'state/ui/stats/drillDownSlice'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {VoiceAgentsMetrics} from 'state/ui/stats/drillDownSlice'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './VoiceAgentsTable.less'
 

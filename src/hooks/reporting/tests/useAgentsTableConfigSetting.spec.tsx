@@ -4,13 +4,14 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {account} from 'fixtures/account'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {
     AgentsTableViews,
     agentPerformanceTableActiveView,
     TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {account} from 'fixtures/account'
 import {submitSetting} from 'state/currentAccount/actions'
 import {
     AccountSettingAgentsTableConfig,

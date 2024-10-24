@@ -1,4 +1,5 @@
 import {ulid} from 'ulidx'
+
 import {TRIGGERS_CONFIG} from '../constants/triggers'
 
 import {CampaignTrigger} from '../types/CampaignTrigger'

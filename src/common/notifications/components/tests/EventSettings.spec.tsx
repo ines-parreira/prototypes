@@ -1,12 +1,12 @@
-import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import React from 'react'
 
-import {Settings} from 'common/notifications/types'
+import {useFlag} from 'common/flags'
 import {
     enabledEvents,
     ticketMessageCreatedEvents,
 } from 'common/notifications/data'
-import {useFlag} from 'common/flags'
+import {Settings} from 'common/notifications/types'
 
 import EventSettings from '../EventSettings'
 

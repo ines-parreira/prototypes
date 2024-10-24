@@ -1,4 +1,5 @@
 import {Map} from 'immutable'
+
 import {Ticket} from 'models/ticket/types'
 
 export type TicketState = Map<any, any>

@@ -1,29 +1,30 @@
 import React, {useMemo} from 'react'
 
 import {useParams} from 'react-router-dom'
+
+import {TicketChannel} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/constants'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {getHasAutomate} from 'state/billing/selectors'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {getHasAutomate} from 'state/billing/selectors'
-import {TicketChannel} from 'business/types/ticket'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationType} from 'models/integration/constants'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
+import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
+import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
 type Props = {
     channel: SelfServiceHelpCenterChannel

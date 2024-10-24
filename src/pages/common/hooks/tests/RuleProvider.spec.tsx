@@ -1,5 +1,6 @@
-import React, {ComponentType} from 'react'
 import {render, screen} from '@testing-library/react'
+import React, {ComponentType} from 'react'
+
 import {
     ExpressionProps,
     StatementProps,

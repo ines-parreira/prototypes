@@ -1,12 +1,13 @@
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {fromJS, List, Map} from 'immutable'
-import {StyleSheetTestUtils} from 'aphrodite'
-
 import {act, render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {StyleSheetTestUtils} from 'aphrodite'
+import {fromJS, List, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
+
+import {AttachmentEnum} from 'common/types'
 import {Account} from 'state/currentAccount/types'
 import {replaceAttachmentURL} from 'utils'
-import {AttachmentEnum} from 'common/types'
+
 import TicketAttachments from '../TicketAttachments'
 
 describe('TicketAttachments component', () => {

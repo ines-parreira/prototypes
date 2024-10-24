@@ -1,13 +1,15 @@
 import {screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock, mockStore} from 'utils/testing'
+
 import {PhoneIntegration} from 'models/integration/types'
 import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {assumeMock, mockStore} from 'utils/testing'
+
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
-import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
+import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
 
 jest.mock(

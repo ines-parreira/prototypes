@@ -1,18 +1,20 @@
-import React from 'react'
-import {act, render} from '@testing-library/react'
 import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
+import {act, render} from '@testing-library/react'
+import React from 'react'
+
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {assumeMock} from 'utils/testing'
-import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
+
 import {VoiceCallSummary} from '../../models/types'
 import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
+import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
+import LiveVoiceCallTable from './LiveVoiceCallTable'
+import {LiveVoiceStatusFilterOption} from './types'
 import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
     orderLiveVoiceCallsByOngoingTime,
 } from './utils'
-import LiveVoiceCallTable from './LiveVoiceCallTable'
-import {LiveVoiceStatusFilterOption} from './types'
 
 const renderComponent = () => {
     return render(<LiveVoiceCallTable voiceCalls={[]} isLoading={false} />)

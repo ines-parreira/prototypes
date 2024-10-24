@@ -2,17 +2,17 @@
 // because when draft-js/lib/generateRandomKey is mocked
 // draft-convert removes newlines in convertFromHTML and convertFromText
 // resulting html and text.
-import {fromJS, Map} from 'immutable'
 import {ContentState} from 'draft-js'
+import {fromJS, Map} from 'immutable'
 
-import reducer, {initialState} from '../reducers'
+import {ticket} from '../../../fixtures/ticket'
 import {
     convertToHTML,
     getContentStateBlocksSnapshot,
 } from '../../../utils/editor'
-import {ticket} from '../../../fixtures/ticket'
-import {ReplyThreadMessage} from '../emailExtraUtils'
 import {addEmailExtra} from '../actions'
+import {ReplyThreadMessage} from '../emailExtraUtils'
+import reducer, {initialState} from '../reducers'
 
 describe('new message reducer', () => {
     describe('NEW_MESSAGE_ADD_EMAIL_EXTRA action', () => {

@@ -1,8 +1,9 @@
-import {WidgetEnvironment} from 'state/widgets/types'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
 } from 'state/widgets/constants'
+import {WidgetEnvironment} from 'state/widgets/types'
+
 import {getSourcePathFromContext} from '../utils'
 
 describe('getSourcePathFromContext()', () => {

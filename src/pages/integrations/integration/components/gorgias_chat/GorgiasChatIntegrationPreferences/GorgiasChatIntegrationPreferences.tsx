@@ -1,22 +1,24 @@
 /* eslint-disable no-console */
-import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import moment from 'moment'
-import _isUndefined from 'lodash/isUndefined'
-import _omitBy from 'lodash/omitBy'
-import {fromJS, Map} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
+import {EditorState} from 'draft-js'
+import {produce} from 'immer'
+import {fromJS, Map} from 'immutable'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {get, set} from 'lodash'
-import {produce} from 'immer'
-import {Tooltip} from '@gorgias/ui-kit'
+import _isUndefined from 'lodash/isUndefined'
+import _omitBy from 'lodash/omitBy'
+import moment from 'moment'
+import React from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 
-import {EditorState} from 'draft-js'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {LanguageChat} from 'constants/languages'
 import {IntegrationType} from 'models/integration/constants'
 import {
     GorgiasChatAvatarSettings,
@@ -25,30 +27,28 @@ import {
     GorgiasChatBackgroundColorStyle,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import * as IntegrationsActions from 'state/integrations/actions'
-
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-
-import {getCurrentConvertPlan} from 'state/billing/selectors'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,
     Translations,
 } from 'rest_api/gorgias_chat_protected_api/types'
-import {LanguageChat} from 'constants/languages'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import {getCurrentConvertPlan} from 'state/billing/selectors'
+import * as IntegrationsActions from 'state/integrations/actions'
+
 import {convertToHTML} from 'utils/editor'
 import {sanitizeHtmlDefault} from 'utils/html'
+
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -71,27 +71,27 @@ import {
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import {RootState} from '../../../../../../state/types'
-import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
-import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
-import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import DisabledEmailCaptureMessagePreview from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
-import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
-import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
-import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
-import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import {isGenericEmailIntegration} from '../../email/helpers'
-import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
 import {multiLanguageInitialTextsEmptyData} from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import translationsAvailableKeys from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
+import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
+import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
+import DisabledEmailCaptureMessagePreview from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
+import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
+import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
+import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
+import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ControlTicketVolumeControls from './ControlTicketVolumeControls'
 import css from './GorgiasChatIntegrationPreferences.less'
 

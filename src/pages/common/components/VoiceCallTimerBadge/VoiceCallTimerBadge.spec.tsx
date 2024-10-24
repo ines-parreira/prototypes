@@ -1,8 +1,9 @@
-import React from 'react'
 import {act, render} from '@testing-library/react'
-import {assumeMock} from 'utils/testing'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import React from 'react'
+
 import useInterval from 'hooks/useInterval'
+import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import {assumeMock} from 'utils/testing'
 
 import VoiceCallTimerBadge from './VoiceCallTimerBadge'
 

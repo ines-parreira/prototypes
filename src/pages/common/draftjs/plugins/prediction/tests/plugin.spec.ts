@@ -1,14 +1,14 @@
-import {fromJS, Map} from 'immutable'
 import {ContentState, EditorState, SelectionState} from 'draft-js'
+import {fromJS, Map} from 'immutable'
 
-import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
-import {assumeMock, flushPromises} from 'utils/testing'
-import {getLDClient} from 'utils/launchDarkly'
 import {Plugin, PluginMethods} from 'pages/common/draftjs/plugins/types'
+import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
+import {getLDClient} from 'utils/launchDarkly'
+import {assumeMock, flushPromises} from 'utils/testing'
 
+import client from '../client'
 import createPredictionPlugin, {clearCache} from '../index'
 import {cachedSelection, predictionKey} from '../state'
-import client from '../client'
 
 jest.mock('utils/errors')
 jest.mock('utils/launchDarkly', () => ({getLDClient: jest.fn()}))

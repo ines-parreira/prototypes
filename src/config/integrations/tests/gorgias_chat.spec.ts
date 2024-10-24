@@ -1,5 +1,5 @@
-import {GorgiasChatIntegrationMeta} from 'models/integration/types'
 import {Language} from 'constants/languages'
+import {GorgiasChatIntegrationMeta} from 'models/integration/types'
 
 import {
     getLanguagesFromChatConfig,

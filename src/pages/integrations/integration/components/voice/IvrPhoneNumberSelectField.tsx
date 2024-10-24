@@ -1,20 +1,20 @@
 import React, {useCallback, useRef, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     PhoneIntegration,
     IntegrationType,
     IvrForwardCall,
 } from 'models/integration/types'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 type Props = {
     value: IvrForwardCall

@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, {ChangeEvent, useRef} from 'react'
 
 import FileSelectedArea from 'pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/components/FileSelectedArea'
+
 import css from './DropdownCSVImportDropZone.less'
 
 type Props = {

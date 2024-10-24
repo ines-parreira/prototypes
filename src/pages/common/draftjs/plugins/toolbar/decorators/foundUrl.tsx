@@ -1,6 +1,6 @@
-import * as React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
 import {Map} from 'immutable'
+import * as React from 'react'
 
 import {
     DecoratorStrategyCallback,

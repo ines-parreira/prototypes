@@ -1,12 +1,14 @@
 import React from 'react'
-import {getIconFromType} from 'state/integrations/helpers'
-import {Locale} from 'models/helpCenter/types'
-import {ContactForm} from 'models/contactForm/types'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
+import {ContactForm} from 'models/contactForm/types'
+import {Locale} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+
+import {getIconFromType} from 'state/integrations/helpers'
+
 import css from './ContactFormTableRow.less'
 
 export type ContactFormTableRowProps = {

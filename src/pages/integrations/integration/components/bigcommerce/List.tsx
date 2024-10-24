@@ -1,5 +1,5 @@
-import React from 'react'
 import {List as ImmutableList, Map} from 'immutable'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/types'

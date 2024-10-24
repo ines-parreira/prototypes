@@ -4,15 +4,15 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     getHelpCentersAutomationSettings,
     helpCenterAutomationSettingsUpdated,
     helpCentersAutomationSettingsFetched,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings'
-import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 const useHelpCentersAutomationSettings = (helpCenterIds: number[]) => {
     const dispatch = useAppDispatch()

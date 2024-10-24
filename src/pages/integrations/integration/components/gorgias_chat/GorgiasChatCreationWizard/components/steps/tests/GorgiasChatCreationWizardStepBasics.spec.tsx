@@ -1,23 +1,21 @@
+import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
-import {fromJS} from 'immutable'
-import {fireEvent, render} from '@testing-library/react'
 
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
-import * as actions from 'state/integrations/actions'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-
 import Wizard from 'pages/common/components/wizard/Wizard'
+import * as actions from 'state/integrations/actions'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasChatCreationWizardStepBasics from '../GorgiasChatCreationWizardStepBasics'
 
 jest.mock(

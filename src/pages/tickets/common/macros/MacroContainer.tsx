@@ -1,13 +1,13 @@
-import React, {useCallback, useState} from 'react'
 import {CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {CursorMeta, OrderDirection} from 'models/api/types'
 import {
     FetchMacrosOptions,

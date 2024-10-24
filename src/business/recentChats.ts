@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {TicketStatus} from './types/ticket'
 import {RecentChatTicket} from './types/recentChats'
+import {TicketStatus} from './types/ticket'
 
 /**
  * Return whether or not a ticket update received via websockets should be displayed in the current user's recent chats.

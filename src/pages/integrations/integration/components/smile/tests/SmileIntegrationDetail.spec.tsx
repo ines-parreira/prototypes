@@ -1,10 +1,10 @@
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
-import {match} from 'react-router-dom'
-import {History, Location} from 'history'
-
 import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {History, Location} from 'history'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {match} from 'react-router-dom'
+
 import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,

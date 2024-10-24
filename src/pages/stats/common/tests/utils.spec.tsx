@@ -1,19 +1,16 @@
+import {renderHook} from '@testing-library/react-hooks'
+import _keyBy from 'lodash/keyBy'
+import moment from 'moment/moment'
 import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _keyBy from 'lodash/keyBy'
-import {renderHook} from '@testing-library/react-hooks'
 
-import moment from 'moment/moment'
-import {tags} from 'fixtures/tag'
-import {RootState} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
-import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {ReportingGranularity} from 'models/reporting/types'
-
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
+import {tags} from 'fixtures/tag'
+import {ReportingGranularity} from 'models/reporting/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     formatDuration,
     formatMetricTrend,
@@ -38,6 +35,8 @@ import {
     StartDayOfWeek,
     getDateRangePickerLabel,
 } from 'pages/stats/common/utils'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

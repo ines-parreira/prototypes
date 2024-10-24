@@ -1,4 +1,6 @@
+import type {Map} from 'immutable'
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,8 +12,6 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-import {Link} from 'react-router-dom'
-import type {Map} from 'immutable'
 
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
@@ -19,8 +19,8 @@ import {
 } from 'config/integrations/klaviyo'
 import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'

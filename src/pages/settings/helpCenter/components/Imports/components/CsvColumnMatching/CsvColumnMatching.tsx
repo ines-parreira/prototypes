@@ -1,5 +1,5 @@
-import React, {Fragment, ReactNode, useState} from 'react'
 import classNames from 'classnames'
+import React, {Fragment, ReactNode, useState} from 'react'
 import {FormGroup, UncontrolledTooltip} from 'reactstrap'
 
 import {
@@ -10,32 +10,31 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
+import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import {FlagLanguageItem} from 'pages/common/components/LanguageBulletList'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {FlagLanguageItem} from 'pages/common/components/LanguageBulletList'
-import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import settingsCss from 'pages/settings/settings.less'
 
 import {ImportedLanguagesTags} from '../ImportedLanguagesTags'
 
+import {FieldRow} from './components/FieldRow'
+import css from './CsvColumnMatching.less'
 import {
     CsvColumnsByName,
     GorgiasFields,
     GorgiasFieldsMappingsLocalized,
 } from './types'
 
-import {FieldRow} from './components/FieldRow'
 import {
     initialMappings,
     mappingsComplete,
     previewField,
     updateGorgiasFieldsMappingsLocalized,
 } from './utils'
-
-import css from './CsvColumnMatching.less'
 
 const localeFieldRows: {
     field: GorgiasFields

@@ -1,7 +1,8 @@
-import React from 'react'
 import classNames from 'classnames'
-import {ImageUpload} from '../../../ImageUpload'
+import React from 'react'
+
 import {FileUpload} from '../../../../hooks/useFileUpload'
+import {ImageUpload} from '../../../ImageUpload'
 import css from './CategoryImageEdit.less'
 
 export type CategoryImageEditProps = {

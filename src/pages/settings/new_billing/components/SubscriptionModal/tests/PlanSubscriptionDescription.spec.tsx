@@ -1,13 +1,14 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
+
+import {convertProduct} from 'fixtures/productPrices'
+import {ProductType} from 'models/billing/types'
 import PlanSubscriptionDescription, {
     PlanSubscriptionDescriptionProps,
 } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {ProductType} from 'models/billing/types'
-import {convertProduct} from 'fixtures/productPrices'
-import {mockStore} from 'utils/testing'
 import {PRODUCT_SUBSCRIPTION_DESCRIPTION} from 'pages/settings/new_billing/constants'
+import {mockStore} from 'utils/testing'
 
 describe('PlanSubscriptionDescription', () => {
     const setSelectedPriceMock = jest.fn()

@@ -1,21 +1,22 @@
-import React, {ReactElement} from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ReactElement} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {channels as mockChannels} from 'fixtures/channels'
 
-import * as Avatar from 'pages/common/components/Avatar/Avatar'
-import {IntegrationType} from 'models/integration/types'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import {channels as mockChannels} from 'fixtures/channels'
+
+import {IntegrationType} from 'models/integration/types'
+import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import * as channelsService from 'services/channels'
 
-import * as labels from '../labels'
 import DatetimeLabel from '../DatetimeLabel'
+import * as labels from '../labels'
 
 const integrationJsObject = {
     type: 'email',

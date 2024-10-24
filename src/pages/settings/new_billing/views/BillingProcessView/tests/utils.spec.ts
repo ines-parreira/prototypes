@@ -3,6 +3,7 @@ import {
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {PlanInterval} from 'models/billing/types'
+
 import {setHelpdeskNotification, setAutomationNotification} from '../utils'
 
 describe('setHelpdeskNotification', () => {

@@ -1,20 +1,20 @@
-import React from 'react'
-import Immutable from 'immutable'
 import {Label} from '@gorgias/ui-kit'
+import Immutable from 'immutable'
+import React from 'react'
 
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import useAppSelector from 'hooks/useAppSelector'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {Drawer} from 'pages/common/components/Drawer'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
+import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import {getHumanAgents} from 'state/agents/selectors'
 import {getTeams} from 'state/teams/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import {Drawer} from 'pages/common/components/Drawer'
 
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import css from '../NodeEditor.less'
-import WasThisHelpfulCard from './WasThisHelpfulCard'
 import EndNodeTypeSelect from './EndNodeTypeSelect'
+import WasThisHelpfulCard from './WasThisHelpfulCard'
 
 type EndNodeEditorProps = {
     nodeInEdition: EndNodeType

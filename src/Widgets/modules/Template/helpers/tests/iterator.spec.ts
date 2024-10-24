@@ -1,4 +1,5 @@
 import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
+
 import {seekNextValues} from '../iterator'
 
 const childTemplate1: CardTemplate = {

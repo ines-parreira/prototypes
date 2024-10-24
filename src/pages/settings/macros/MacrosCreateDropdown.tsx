@@ -8,14 +8,15 @@ import {
 } from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {createJob} from 'models/job/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {createJob} from 'models/job/resources'
 import {JobType} from 'models/job/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+
 import history from '../../history'
 
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'

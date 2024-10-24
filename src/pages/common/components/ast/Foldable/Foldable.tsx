@@ -1,5 +1,5 @@
-import React, {ReactNode, useState} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode, useState} from 'react'
 
 import css from './Foldable.less'
 

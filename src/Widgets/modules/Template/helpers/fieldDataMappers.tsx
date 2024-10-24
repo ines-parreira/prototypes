@@ -1,20 +1,19 @@
-import React from 'react'
-
-import _isUndefined from 'lodash/isUndefined'
-import _isNull from 'lodash/isNull'
-import _isString from 'lodash/isString'
+import _isArray from 'lodash/isArray'
 import _isBoolean from 'lodash/isBoolean'
 import _isInteger from 'lodash/isInteger'
-import _isArray from 'lodash/isArray'
+import _isNull from 'lodash/isNull'
 import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment'
+import React from 'react'
 
 import {isImmutable} from 'common/utils'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
-import {isUrl, isEmail} from 'utils'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import StarRating from 'pages/common/components/StarRating'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {isUrl, isEmail} from 'utils'
 
 import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
 

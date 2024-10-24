@@ -1,12 +1,17 @@
-import React, {useState, useEffect} from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
 import {fromJS, Set, Map, List} from 'immutable'
+import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {IntegrationType} from 'models/integration/types/'
-import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import {
+    areSourcesReady,
+    jsonToWidgets,
+} from 'pages/common/components/infobar/utils'
 import history from 'pages/history'
+import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
@@ -15,12 +20,7 @@ import {
     STANDALONE_WIDGET_TYPE,
     CUSTOMER_ECOMMERCE_DATA_KEY,
 } from 'state/widgets/constants'
-import {
-    areSourcesReady,
-    jsonToWidgets,
-} from 'pages/common/components/infobar/utils'
 
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import css from './SourceWrapper.less'
 import Widgets from './Widgets'
 

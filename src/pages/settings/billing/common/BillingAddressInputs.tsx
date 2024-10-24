@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react'
-import {produce} from 'immer'
 import classnames from 'classnames'
+import {produce} from 'immer'
+import React, {useMemo} from 'react'
 
 import {
     countriesRequiringState,

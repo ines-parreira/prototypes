@@ -5,9 +5,9 @@ import {Route, Switch, useRouteMatch} from 'react-router-dom'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 
-import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
 import ImportData from 'pages/settings/importData/ImportData'
 import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
+import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
 
 import {renderAppSettings} from './helpers/settingsRenderer'
 

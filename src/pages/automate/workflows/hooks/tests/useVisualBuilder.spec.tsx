@@ -1,6 +1,6 @@
-import _noop from 'lodash/noop'
 import {renderHook} from '@testing-library/react-hooks'
 import {produce} from 'immer'
+import _noop from 'lodash/noop'
 
 import {visualBuilderGraphSimpleChoicesFixture} from '../../tests/visualBuilderGraph.fixtures'
 

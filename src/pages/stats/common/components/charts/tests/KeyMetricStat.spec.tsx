@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {
     OVERVIEW,
@@ -8,6 +8,7 @@ import {
     SATISFACTION_SURVEYS,
     stats as statsConfig,
 } from 'config/stats'
+
 import KeyMetricStat from '../KeyMetricStat'
 
 describe('KeyMetricStat', () => {

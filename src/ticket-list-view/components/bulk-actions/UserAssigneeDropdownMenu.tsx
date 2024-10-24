@@ -6,16 +6,16 @@ import React, {
     useState,
 } from 'react'
 
-import {User} from 'config/types/user'
-import Button from 'pages/common/components/button/Button'
 import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
+import {User} from 'config/types/user'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import useSearch from 'search/useSearch'
+import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
+import useSearch from 'search/useSearch'
 import useListUsers from 'users/useListUsers'
 
-import UserDropdownItem from './UserDropdownItem'
 import css from './style.less'
+import UserDropdownItem from './UserDropdownItem'
 
 type Props = {
     onClick: (item: Item | null) => void

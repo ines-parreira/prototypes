@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import useWindowSize from 'hooks/useWindowSize'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+import useWindowSize from 'hooks/useWindowSize'
 
 jest.mock('hooks/useWindowSize')
 const mockUseWindowSize = useWindowSize as jest.Mock

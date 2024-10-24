@@ -1,12 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import * as newMessageTypes from 'state/newMessage/constants'
-import * as customerTypes from 'state/customers/constants'
-import {EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
-import {GorgiasAction} from 'state/types'
-import * as ticketFixtures from 'fixtures/ticket'
-
 import {
     addInternalNoteAction,
     addTagsAction,
@@ -16,15 +10,7 @@ import {
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
-import {
-    CUSTOMER_ECOMMERCE_DATA_KEY,
-    CUSTOMER_EXTERNAL_DATA_KEY,
-} from 'state/widgets/constants'
-import {
-    mergeCustomerEcommerceDataOrder,
-    mergeCustomerEcommerceDataShopper,
-    mergeCustomerEcommerceDataShopperAddress,
-} from 'state/ticket/actions'
+import * as ticketFixtures from 'fixtures/ticket'
 import {
     ecommerceStoreFixture,
     shopperAddressFixture,
@@ -32,8 +18,23 @@ import {
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
 import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
-import reducer, {initialState} from '../reducers'
+import {EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import * as customerTypes from 'state/customers/constants'
+import * as newMessageTypes from 'state/newMessage/constants'
+import {
+    mergeCustomerEcommerceDataOrder,
+    mergeCustomerEcommerceDataShopper,
+    mergeCustomerEcommerceDataShopperAddress,
+} from 'state/ticket/actions'
+import {GorgiasAction} from 'state/types'
+
+import {
+    CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+} from 'state/widgets/constants'
+
 import * as types from '../constants'
+import reducer, {initialState} from '../reducers'
 
 jest.mock('state/newMessage/ticketReplyCache', () => {
     const Immutable: {fromJS: typeof fromJS} = jest.requireActual('immutable')

@@ -1,32 +1,30 @@
-import React, {memo, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
 
 import objectHash from 'object-hash'
-import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import React, {memo, useEffect, useMemo, useState} from 'react'
+
 import {UploadType} from 'common/types'
 import {User} from 'config/types/user'
-import {AgentLabel} from 'pages/common/utils/labels'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
-
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import {Option, Value} from 'pages/common/forms/SelectField/types'
-
-import RichField from 'pages/common/forms/RichField/RichField'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-
-import {toJS} from 'utils'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Option, Value} from 'pages/common/forms/SelectField/types'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {AICopyAssistant} from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
+import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
+import {handleContactFormSubmitted} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
+import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {
     attachmentIsDiscountOffer,
     attachmentIsProduct,
@@ -34,16 +32,19 @@ import {
     AttachmentType,
     CampaignFormExtra,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+
+import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
+import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
-import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
-import {handleContactFormSubmitted} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+
 import {getTicketState} from 'state/ticket/selectors'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {AICopyAssistant} from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
+import {toJS} from 'utils'
+
 import css from './CampaignMessage.less'
 
 type Props = {

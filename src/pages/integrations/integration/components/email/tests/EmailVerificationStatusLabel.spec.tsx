@@ -1,5 +1,6 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'

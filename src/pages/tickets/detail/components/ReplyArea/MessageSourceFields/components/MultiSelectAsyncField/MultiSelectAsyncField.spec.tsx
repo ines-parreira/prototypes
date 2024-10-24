@@ -1,8 +1,8 @@
-import userEvent from '@testing-library/user-event'
-import React from 'react'
-import _debounce from 'lodash/debounce'
-
 import {act, render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _debounce from 'lodash/debounce'
+import React from 'react'
+
 import {ReceiverValue} from 'state/ticket/utils'
 import {isEmail} from 'utils'
 

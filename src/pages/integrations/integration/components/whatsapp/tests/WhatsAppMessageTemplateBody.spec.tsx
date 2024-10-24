@@ -5,10 +5,12 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import {Provider} from 'react-redux'
 import React, {ComponentProps} from 'react'
-import {mockStore} from 'utils/testing'
+import {Provider} from 'react-redux'
+
 import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
+import {mockStore} from 'utils/testing'
+
 import WhatsAppMessageTemplateBody from '../WhatsAppMessageTemplateBody'
 
 describe('WhatsAppMessageTemplateBody', () => {

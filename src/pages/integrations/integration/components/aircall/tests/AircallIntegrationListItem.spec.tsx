@@ -1,12 +1,12 @@
-import React from 'react'
 import {render, fireEvent, screen, act} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {IntegrationType} from 'models/integration/constants'
-import {RootState, StoreDispatch} from 'state/types'
 import {AircallIntegration} from 'models/integration/types'
 import {deleteIntegration} from 'state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
 
 import AircallIntegrationListItem from '../AircallIntegrationListItem'
 

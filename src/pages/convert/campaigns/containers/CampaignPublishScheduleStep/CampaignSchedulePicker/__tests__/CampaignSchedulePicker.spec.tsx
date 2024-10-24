@@ -1,13 +1,13 @@
-import React from 'react'
-import moment from 'moment-timezone'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {act, fireEvent, render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import moment from 'moment-timezone'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 import CampaignSchedulePicker from '../CampaignSchedulePicker'
 

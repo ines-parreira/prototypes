@@ -1,9 +1,8 @@
-import React from 'react'
-import {noop} from 'lodash'
-import {Map} from 'immutable'
-
-import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {Map} from 'immutable'
+import {noop} from 'lodash'
+import React from 'react'
 
 import {migrationProviders} from '../../fixtures/migration-providers'
 import MigrationCredentialsModal from './MigrationCredentialsModal'

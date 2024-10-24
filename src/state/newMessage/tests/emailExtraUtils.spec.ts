@@ -1,14 +1,14 @@
-import {fromJS} from 'immutable'
 import {ContentBlock, ContentState, SelectionState} from 'draft-js'
+import {fromJS} from 'immutable'
 import _omit from 'lodash/omit'
 
+import {TicketChannel} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import {TicketMessage, TicketSatisfactionSurvey} from 'models/ticket/types'
 import {
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
 } from 'utils/editor'
-import {TicketChannel} from 'business/types/ticket'
 
 import {
     addEmailExtraContent,

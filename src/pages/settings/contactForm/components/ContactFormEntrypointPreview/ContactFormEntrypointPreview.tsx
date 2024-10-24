@@ -1,13 +1,15 @@
 import React from 'react'
-import {ContactForm} from 'models/contactForm/types'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+
 import useAppSelector from 'hooks/useAppSelector'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import {ContactForm} from 'models/contactForm/types'
 import {Integration, IntegrationType} from 'models/integration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
+import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {getHasAutomate} from 'state/billing/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+
 import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
 
 export type ContactFormEntrypointPreviewProps = {

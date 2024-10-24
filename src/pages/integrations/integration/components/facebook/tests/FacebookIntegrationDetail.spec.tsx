@@ -1,21 +1,21 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {Provider} from 'react-redux'
+import {fromJS, Map} from 'immutable'
 import {merge} from 'lodash'
-import {RootState, StoreDispatch} from 'state/types'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
 import {Language} from 'constants/languages'
+import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import {IntegrationType} from 'models/integration/constants'
 import {
     FacebookIntegrationSettings,
     FacebookIntegration,
 } from 'models/integration/types'
-import {IntegrationType} from 'models/integration/constants'
-import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {AccountFeature} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
 import {

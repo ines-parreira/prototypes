@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import ReactStar from 'react-rating-stars-component'
-import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
 

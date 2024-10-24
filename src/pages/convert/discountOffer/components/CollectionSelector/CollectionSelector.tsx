@@ -1,15 +1,15 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
 import _debounce from 'lodash/debounce'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 
 import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
 
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 
 import css from './CollectionSelector.less'
 

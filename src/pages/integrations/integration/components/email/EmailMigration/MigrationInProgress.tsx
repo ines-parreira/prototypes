@@ -1,21 +1,23 @@
+import {AxiosError} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {Col, Container} from 'reactstrap'
-import {AxiosError} from 'axios'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import settingsCss from 'pages/settings/settings.less'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchMigrations} from 'models/integration/resources/email'
 import Loader from 'pages/common/components/Loader/Loader'
+import settingsCss from 'pages/settings/settings.less'
 import {SET_EMAIL_PROVIDER_MIGRATIONS} from 'state/integrations/constants'
-import useAppSelector from 'hooks/useAppSelector'
-import useEffectOnce from 'hooks/useEffectOnce'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {getEmailMigrations} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
-import {getInboundUnverifiedMigrations} from './utils'
 import MigrationOutboundVerification from './MigrationOutboundVerification'
+import {getInboundUnverifiedMigrations} from './utils'
 
 enum VerificationStep {
     InboundVerification = 0,

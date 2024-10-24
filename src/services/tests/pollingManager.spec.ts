@@ -1,5 +1,5 @@
-import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import pollingManager from '../pollingManager'

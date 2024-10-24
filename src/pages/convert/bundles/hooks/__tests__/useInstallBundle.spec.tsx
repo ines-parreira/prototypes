@@ -1,15 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
-import React from 'react'
+import {renderHook} from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+
 import {convertBundleActionResponse} from 'fixtures/convertBundle'
-import {assumeMock} from 'utils/testing'
+import useAppDispatch from 'hooks/useAppDispatch'
+import client from 'models/api/resources'
 import {BundleInstallationMethod} from 'models/convert/bundle/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
+
 import {useInstallBundle} from '../useInstallBundle'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

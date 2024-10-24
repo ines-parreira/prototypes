@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {assumeMock, renderWithRouter} from 'utils/testing'
 import useAppSelector from 'hooks/useAppSelector'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import VoiceStatsNavbarItem from './VoiceStatsNavbarItem'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

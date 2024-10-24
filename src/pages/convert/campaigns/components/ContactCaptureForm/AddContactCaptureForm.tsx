@@ -8,21 +8,22 @@ import React, {
 } from 'react'
 
 import {Button} from 'reactstrap'
-import {
-    transformAttachmentToTransitory,
-    transformTransitoryToAttachment,
-} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
+
+import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
+import {Drawer} from 'pages/common/components/Drawer'
 import Wizard, {
     WizardContext,
     WizardContextState,
 } from 'pages/common/components/wizard/Wizard'
-import {Drawer} from 'pages/common/components/Drawer'
-import {STEPS} from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
+import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
+import {STEPS} from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
+import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import {
+    transformAttachmentToTransitory,
+    transformTransitoryToAttachment,
+} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {
     CampaignContactFormAttachment,
     CampaignFormExtra,

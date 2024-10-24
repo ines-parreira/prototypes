@@ -1,4 +1,5 @@
 import {MacroAction} from 'models/macroAction/types'
+
 import {ReportIssueOption} from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null

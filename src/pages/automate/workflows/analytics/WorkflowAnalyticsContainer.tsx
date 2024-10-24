@@ -1,18 +1,19 @@
 import React, {useCallback} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {SegmentEvent, logEvent} from 'common/segment'
-import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
 import WorkflowAnalytics from './WorkflowAnalytics'
+import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
 
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 

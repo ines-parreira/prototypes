@@ -1,18 +1,19 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
+import {applications as mockApplications} from 'fixtures/applications'
+import {dummyAppListIntegrationItem, dummyAppListItem} from 'fixtures/apps'
 import {IntegrationType} from 'models/integration/constants'
 import {Category} from 'models/integration/types/app'
-import {dummyAppListIntegrationItem, dummyAppListItem} from 'fixtures/apps'
 
-import {applications as mockApplications} from 'fixtures/applications'
 import {Application, getApplicationById} from 'services/applications'
+
 import Card, {Pills, CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 jest.mock('services/applications', () => ({

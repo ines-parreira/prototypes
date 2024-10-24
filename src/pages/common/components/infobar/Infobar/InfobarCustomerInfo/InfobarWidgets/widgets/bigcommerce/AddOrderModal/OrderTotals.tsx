@@ -1,5 +1,6 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
+
 import {
     BigCommerceConsignment,
     BigCommerceCart,
@@ -8,12 +9,12 @@ import {
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
+
+import {Coupon} from './Coupon'
+import {Discount} from './Discount'
+import css from './OrderTotals.less'
 import {ShippingMethod} from './ShippingMethod'
 import {buildTaxExtraInfo} from './utils'
-
-import css from './OrderTotals.less'
-import {Discount} from './Discount'
-import {Coupon} from './Coupon'
 
 type Props = {
     cart: Maybe<BigCommerceCart>

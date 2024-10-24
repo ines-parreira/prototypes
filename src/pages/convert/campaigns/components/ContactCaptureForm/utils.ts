@@ -1,4 +1,5 @@
 import {fromJS, List} from 'immutable'
+
 import {AttachmentEnum} from 'common/types'
 import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {

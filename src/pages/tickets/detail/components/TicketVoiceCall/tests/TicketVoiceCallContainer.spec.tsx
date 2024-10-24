@@ -1,7 +1,8 @@
-import React, {ComponentProps} from 'react'
 import {render, fireEvent, RenderResult} from '@testing-library/react'
-import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
+import React, {ComponentProps} from 'react'
+
 import {User} from 'config/types/user'
+import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
 import {assumeMock} from 'utils/testing'
 

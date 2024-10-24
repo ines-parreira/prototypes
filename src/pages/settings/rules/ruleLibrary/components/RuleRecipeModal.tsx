@@ -1,30 +1,30 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import _flatten from 'lodash/flatten'
+import pluralize from 'pluralize'
 import React, {useCallback, useState} from 'react'
 import {Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-import classnames from 'classnames'
-import pluralize from 'pluralize'
-import _flatten from 'lodash/flatten'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import {RuleRecipe} from 'models/ruleRecipe/types'
+import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
+import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {
     AnyManagedRuleSettings,
     ManagedRulesSlugs,
     RuleLimitStatus,
     RuleType,
 } from 'state/rules/types'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {RuleItemActions} from '../../types'
 
 import {

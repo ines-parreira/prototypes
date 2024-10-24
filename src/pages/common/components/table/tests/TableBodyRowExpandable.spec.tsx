@@ -1,6 +1,7 @@
-import React from 'react'
 import {act, render, screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
     TableBodyRowExpandable,

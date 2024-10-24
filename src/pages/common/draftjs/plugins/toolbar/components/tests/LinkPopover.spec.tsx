@@ -1,11 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
 
 import Modal from 'pages/common/components/modal/Modal'
+
 import LinkPopover from '../LinkPopover'
 
 jest.mock('hooks/useId', () => () => 1)

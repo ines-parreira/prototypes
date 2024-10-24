@@ -1,11 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
+import React, {ComponentProps} from 'react'
+
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 
 import {AnalyticsTheme} from 'theme/withAnalyticsTheme'
+
 import {ChartColors} from '../types'
 import {BarChart} from './BarChart'
 

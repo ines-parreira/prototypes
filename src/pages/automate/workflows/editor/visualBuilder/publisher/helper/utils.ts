@@ -1,4 +1,5 @@
 import {TicketChannel} from '@gorgias/api-queries'
+
 import {assetsUrl} from 'utils'
 
 export const ChannelConfig = {

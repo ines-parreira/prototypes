@@ -1,6 +1,7 @@
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
-import {render} from '@testing-library/react'
+
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {customerCustomization} from 'Widgets/modules/Yotpo/components/Customer'

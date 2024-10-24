@@ -1,10 +1,9 @@
-import React, {MouseEventHandler} from 'react'
 import _kebabCase from 'lodash/kebabCase'
-
-import history from 'pages/history'
-import {formatNumber} from 'pages/stats/common/utils'
+import React, {MouseEventHandler} from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import history from 'pages/history'
+import {formatNumber} from 'pages/stats/common/utils'
 
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 

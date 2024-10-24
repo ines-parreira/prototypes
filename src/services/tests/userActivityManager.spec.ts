@@ -1,11 +1,11 @@
-import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {SocketEventType} from 'services/socketManager/types'
 
-import userActivityManager from '../userActivityManager'
 import socketManager from '../socketManager/socketManager'
+import userActivityManager from '../userActivityManager'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

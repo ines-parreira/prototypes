@@ -1,8 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {assumeMock} from 'utils/testing'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {useListChannelConnections} from 'models/convert/channelConnection/queries'
+
 import useAppDispatch from 'hooks/useAppDispatch'
+import {useListChannelConnections} from 'models/convert/channelConnection/queries'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {assumeMock} from 'utils/testing'
+
 import {useGetOnboardingStatusMap} from '../useGetOnboardingStatusMap'
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber', () => ({

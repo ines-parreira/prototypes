@@ -1,22 +1,29 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import {StoreState} from 'state/types'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {bigCommerceIntegration, shopifyIntegration} from 'fixtures/integrations'
-import {Integration} from 'models/integration/types'
 import {proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
+import {
+    useGetHelpCenterArticleList,
+    useGetHelpCenterList,
+} from 'models/helpCenter/queries'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {Integration} from 'models/integration/types'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -24,18 +31,13 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {
-    useGetHelpCenterArticleList,
-    useGetHelpCenterList,
-} from 'models/helpCenter/queries'
-import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {StoreState} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
+
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),

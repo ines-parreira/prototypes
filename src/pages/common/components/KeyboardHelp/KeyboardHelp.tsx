@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
 import classnames from 'classnames'
+import React, {useState} from 'react'
 
 import keymap from 'config/shortcuts'
 import useShortcuts from 'hooks/useShortcuts'

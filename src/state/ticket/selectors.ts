@@ -1,10 +1,6 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {createImmutableSelector} from 'utils'
-import {RootState} from 'state/types'
 import {TicketVia} from 'business/types/ticket'
 import {MacroActionName} from 'models/macroAction/types'
 import {
@@ -20,8 +16,13 @@ import {
 
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
-import {getQueryData} from 'state/queries/selectors'
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+import {InTicketSuggestionState} from 'state/entities/rules/types'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {getQueryData} from 'state/queries/selectors'
+import {RootState} from 'state/types'
+import {createImmutableSelector} from 'utils'
+
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>

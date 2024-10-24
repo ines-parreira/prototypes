@@ -1,10 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {PickedCustomer} from 'models/search/types'
+import React, {ComponentProps} from 'react'
 
-import {Customer} from 'models/customer/types'
+// eslint-disable-next-line import/order
 import mockedVirtuoso from 'tests/mockedVirtuoso'
+import {Customer} from 'models/customer/types'
+import {PickedCustomer} from 'models/search/types'
 
 import SpotlightScrollArea, {MAX_HEIGHT} from '../SpotlightScrollArea'
 

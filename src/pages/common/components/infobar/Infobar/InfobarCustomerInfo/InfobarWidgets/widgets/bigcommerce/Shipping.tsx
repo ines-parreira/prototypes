@@ -1,11 +1,11 @@
-import React, {useContext} from 'react'
 import {Map} from 'immutable'
+import React, {useContext} from 'react'
 
 import {getTrackingLink} from 'common/tracking'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 export const shippingCustomization: CardCustomization = {
     AfterTitle,

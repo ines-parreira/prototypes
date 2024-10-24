@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react'
 
-import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import InputField from 'pages/common/forms/input/InputField'
+
 import css from './PublicSourcesItem.less'
 import {SourceItem} from './types'
 

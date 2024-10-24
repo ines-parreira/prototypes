@@ -1,5 +1,5 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
 

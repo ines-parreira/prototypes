@@ -1,6 +1,7 @@
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+
 import DonutChart from '../DonutChart'
 
 const mockDoughnutProps = jest.fn()

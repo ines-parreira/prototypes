@@ -1,7 +1,6 @@
-import React, {forwardRef} from 'react'
-
 import {act} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {forwardRef} from 'react'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'

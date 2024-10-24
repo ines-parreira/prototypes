@@ -1,12 +1,12 @@
-import React, {useMemo, useRef} from 'react'
-import _omit from 'lodash/omit'
 import {Tooltip} from '@gorgias/ui-kit'
+import _omit from 'lodash/omit'
+import React, {useMemo, useRef} from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
-import IconButton from 'pages/common/components/button/IconButton'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
+import IconButton from 'pages/common/components/button/IconButton'
+import TextInput from 'pages/common/forms/input/TextInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option} from 'pages/common/forms/SelectField/types'
 
 import {Input} from '../types'

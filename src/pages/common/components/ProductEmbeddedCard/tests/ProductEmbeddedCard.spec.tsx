@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 
-import {render} from '@testing-library/react'
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 
 jest.mock('react-rating-stars-component', () => () => null)

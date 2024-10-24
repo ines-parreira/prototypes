@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {Language} from 'constants/languages'
+
 import {ContactFormDisplayMode} from './types/formDisplayMode.enum'
 
 export const CONTACT_FORM_EMBEDMENTS_LIMIT = 50

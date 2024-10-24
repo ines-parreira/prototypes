@@ -1,6 +1,6 @@
+import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import {render} from '@testing-library/react'
 import DonutKeyMetricStat from '../KeyMetricStat/DonutKeyMetricStat'
 
 describe('DonutKeyMetricStat', () => {

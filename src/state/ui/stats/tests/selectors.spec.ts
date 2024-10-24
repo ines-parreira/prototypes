@@ -1,18 +1,20 @@
 import {fromJS} from 'immutable'
+
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
+import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
 import {RootState, StoreState} from 'state/types'
 import {initialState} from 'state/ui/stats/filtersSlice'
@@ -23,7 +25,6 @@ import {
     getCleanStatsFiltersWithTimezone,
     isCleanStatsDirty,
 } from 'state/ui/stats/selectors'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 const store = {
     ui: {

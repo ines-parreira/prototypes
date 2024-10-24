@@ -1,13 +1,14 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import {createStore} from 'redux'
-import {Provider} from 'react-redux'
 import {render, fireEvent, screen, act, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import * as types from 'state/ticket/constants'
 import {RootState} from 'state/types'
 
-import * as types from 'state/ticket/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerTimelineButton} from '../CustomerTimelineButton'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

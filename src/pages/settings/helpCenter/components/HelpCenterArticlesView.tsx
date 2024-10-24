@@ -1,15 +1,16 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 import {useLocation} from 'react-router-dom'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import {useSearchParam} from 'hooks/useSearchParam'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {Event, useModalManager} from 'hooks/useModalManager'
 import usePrevious from 'hooks/usePrevious'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {
     Article,
     ArticleTemplate,
@@ -22,11 +23,11 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {resetArticles} from 'state/entities/helpCenter/articles'
 import {resetCategories} from 'state/entities/helpCenter/categories'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {unreachable} from 'utils'
+import {reportError} from 'utils/errors'
 
 import {
     ArticleRowActionTypes,
@@ -38,9 +39,16 @@ import {
     HELP_CENTER_DEFAULT_LAYOUT,
 } from '../constants'
 import {useArticlesActions} from '../hooks/useArticlesActions'
+import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+
+import {useEditionManager} from '../providers/EditionManagerContext'
+import {useSearchContext} from '../providers/SearchContext'
+
+import {useGetArticleTemplate, useUpsertArticleTemplateReview} from '../queries'
+import {ArticleMode, getArticleMode} from '../types/articleMode'
+import {getGenericMessageFromError} from '../utils'
 import {
     articleRequiredFields,
     getHomePageItemHashUrl,
@@ -51,29 +59,22 @@ import {
     isExistingArticle,
     slugify,
 } from '../utils/helpCenter.utils'
-import {ArticleMode, getArticleMode} from '../types/articleMode'
-
-import {useEditionManager} from '../providers/EditionManagerContext'
-import {useSearchContext} from '../providers/SearchContext'
-
-import {getGenericMessageFromError} from '../utils'
-import {useGetArticleTemplate, useUpsertArticleTemplateReview} from '../queries'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
+
+import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
+import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
+import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
 import {ArticlesTable} from './ArticlesTable'
-import {CategoryDrawer} from './CategoryDrawer'
 import {CategoriesViews} from './CategoriesView'
+import {CategoryDrawer} from './CategoryDrawer'
 import {ConfirmationModal} from './ConfirmationModal'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import MaxArticleBanner from './Paywalls/MaxArticleBanner'
-
 import css from './HelpCenterArticlesView.less'
-import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
-import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
-import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
-import {SearchView} from './SearchView'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import HelpCenterWizardCompletedModal from './HelpCenterWizardCompletedModal/HelpCenterWizardCompletedModal'
+import MaxArticleBanner from './Paywalls/MaxArticleBanner'
+import {SearchView} from './SearchView'
 
 export const HelpCenterArticlesView: React.FC = () => {
     const dispatch = useAppDispatch()

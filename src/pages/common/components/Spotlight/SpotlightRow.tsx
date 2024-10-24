@@ -1,14 +1,14 @@
+import classnames from 'classnames'
 import React, {ReactNode, MouseEvent, useContext, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import classnames from 'classnames'
+
 import {EntityType} from 'hooks/useSearchRankScenario'
 
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {isMacOs} from 'utils/platform'
-
-import {sanitizeHtmlDefault} from 'utils/html'
 import css from 'pages/common/components/Spotlight/SpotlightRow.less'
+import {sanitizeHtmlDefault} from 'utils/html'
+import {isMacOs} from 'utils/platform'
 
 type SpotlightRowProps = {
     icon?: ReactNode

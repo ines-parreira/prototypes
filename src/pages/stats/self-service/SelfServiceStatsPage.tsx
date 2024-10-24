@@ -1,8 +1,9 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
@@ -18,8 +19,10 @@ import {
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -37,14 +40,12 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assetsUrl} from 'utils'
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import {DEFAULT_LOCALE} from '../common/utils'
+import AIBanner from '../help-center/components/AIBanner'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
-import AIBanner from '../help-center/components/AIBanner'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,

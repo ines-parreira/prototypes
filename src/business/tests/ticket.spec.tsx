@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+
 import {NotificationStatus} from 'state/notifications/types'
+
 import {canAddAttachments, canReply} from '../ticket'
 import {TicketMessageSourceType} from '../types/ticket'
 

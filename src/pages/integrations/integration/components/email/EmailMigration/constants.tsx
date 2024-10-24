@@ -1,7 +1,8 @@
 import React from 'react'
-import outlookIcon from 'assets/img/integrations/outlook.svg'
-import googleGroupsIcon from 'assets/img/integrations/google-groups.svg'
+
 import exchangeIcon from 'assets/img/integrations/exchange.svg'
+import googleGroupsIcon from 'assets/img/integrations/google-groups.svg'
+import outlookIcon from 'assets/img/integrations/outlook.svg'
 import zohoIcon from 'assets/img/integrations/zoho.svg'
 
 export const providerTutorials = [

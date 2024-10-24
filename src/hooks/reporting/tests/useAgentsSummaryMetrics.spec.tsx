@@ -1,7 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -12,13 +10,16 @@ import {
     useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
+import useAppSelector from 'hooks/useAppSelector'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 
 import {assumeMock} from 'utils/testing'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
 jest.mock('hooks/reporting/metrics')
 const useCustomerSatisfactionMetricMock = assumeMock(

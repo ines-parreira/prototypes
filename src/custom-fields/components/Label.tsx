@@ -1,5 +1,5 @@
-import React, {ForwardedRef, ReactNode, forwardRef} from 'react'
 import classNames from 'classnames'
+import React, {ForwardedRef, ReactNode, forwardRef} from 'react'
 
 import css from './Label.less'
 

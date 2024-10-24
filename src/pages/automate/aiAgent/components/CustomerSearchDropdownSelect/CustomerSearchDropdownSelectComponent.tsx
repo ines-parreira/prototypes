@@ -1,10 +1,12 @@
-import React, {useCallback, useEffect} from 'react'
 import classnames from 'classnames'
+import React, {useCallback, useEffect} from 'react'
+
 import {CustomerList} from 'models/aiAgentPlayground/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {Value} from 'pages/common/forms/SelectField/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {Value} from 'pages/common/forms/SelectField/types'
+
 import css from './CustomerSearchDropdownSelectComponent.less'
 
 type Props = {

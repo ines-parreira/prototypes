@@ -1,17 +1,17 @@
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import HTTP from '../HTTP'
 import {
     EVENTS_PATH,
     INTEGRATIONS_LIST_PATH,
     NEW_INTEGRATION_PATH,
 } from '../constants'
+import HTTP from '../HTTP'
 
 jest.mock('react-router', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router'),

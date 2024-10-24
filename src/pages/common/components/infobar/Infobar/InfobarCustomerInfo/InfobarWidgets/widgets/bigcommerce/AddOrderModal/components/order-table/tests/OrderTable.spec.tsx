@@ -1,9 +1,11 @@
 import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
+
 import OrderTable from '../OrderTable'
 
 const lineItems = [bigCommerceLineItemFixture()]

@@ -9,12 +9,14 @@ import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
-import {IntegrationType} from 'models/integration/constants'
+
 import {integrationsState} from 'fixtures/integrations'
+import {IntegrationType} from 'models/integration/constants'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {mockStore} from 'utils/testing'
-import VoiceIntegrationPreferences from '../VoiceIntegrationPreferences'
+
 import {isValueInRange} from '../utils'
+import VoiceIntegrationPreferences from '../VoiceIntegrationPreferences'
 
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone

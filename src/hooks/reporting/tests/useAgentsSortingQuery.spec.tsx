@@ -3,14 +3,16 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {opposite, OrderDirection} from 'models/api/types'
 import {
     TicketMessagesCube,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {getQuery} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {opposite, OrderDirection} from 'models/api/types'
-import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
+import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     DEFAULT_SORTING_DIRECTION,
@@ -19,7 +21,6 @@ import {
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'

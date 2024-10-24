@@ -1,9 +1,6 @@
 import moment from 'moment/moment'
-import {StatsFilters} from 'models/stat/types'
-import {
-    formatReportingQueryDate,
-    statsFiltersToReportingFilters,
-} from 'utils/reporting'
+
+import {OrderDirection} from 'models/api/types'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -13,13 +10,18 @@ import {
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {OrderDirection} from 'models/api/types'
-import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
+import {StatsFilters} from 'models/stat/types'
 import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
+import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import {
+    formatReportingQueryDate,
+    statsFiltersToReportingFilters,
+} from 'utils/reporting'
+
 import {TicketMember} from '../../cubes/TicketCube'
 
 const getAccountBusinessHoursTimezone = () =>

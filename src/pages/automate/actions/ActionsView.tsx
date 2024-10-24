@@ -1,24 +1,23 @@
 import React, {useEffect} from 'react'
 import {useParams, Link} from 'react-router-dom'
 
+import emptyState from 'assets/img/actions/empty-state.png'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import emptyState from 'assets/img/actions/empty-state.png'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
-import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
-import ActionsTemplatesCards from './components/ActionsTemplatesCards'
-import CreateCustomActionButton from './components/CreateCustomActionButton'
-import BrowseAllActionsButton from './components/BrowseAllActionsButton'
-import ActionsList from './components/ActionsList'
-import {handleError} from './hooks/errorHandler'
-import {ACTIONS_DESCRIPTION} from './constants'
-
 import css from './ActionsView.less'
+import ActionsList from './components/ActionsList'
+import ActionsTemplatesCards from './components/ActionsTemplatesCards'
+import BrowseAllActionsButton from './components/BrowseAllActionsButton'
+import CreateCustomActionButton from './components/CreateCustomActionButton'
+import {ACTIONS_DESCRIPTION} from './constants'
+import {handleError} from './hooks/errorHandler'
 
 const MAX_TEMPLATES = 7
 

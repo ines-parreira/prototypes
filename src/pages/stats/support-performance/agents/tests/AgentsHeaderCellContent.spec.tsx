@@ -1,6 +1,7 @@
 import {act, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+
 import {OrderDirection} from 'models/api/types'
 import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {AgentsTableColumn} from 'state/ui/stats/types'

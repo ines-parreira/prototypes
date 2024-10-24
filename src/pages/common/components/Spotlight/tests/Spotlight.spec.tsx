@@ -1,12 +1,13 @@
-import React, {ReactNode} from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import React, {ReactNode} from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
+import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {
     SpotlightContext,
     SpotlightContextType,
 } from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {SegmentEvent, logEvent} from 'common/segment'
-import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({

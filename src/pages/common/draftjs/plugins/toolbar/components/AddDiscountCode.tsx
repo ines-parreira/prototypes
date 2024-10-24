@@ -1,10 +1,13 @@
-import React, {useCallback, useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
-import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
+import React, {useCallback, useEffect, useState, useMemo} from 'react'
+import {ListGroup, ListGroupItem} from 'reactstrap'
 
+import {AttachmentEnum} from 'common/types'
+import {useModalManager} from 'hooks/useModalManager'
+import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNT_MODAL_NAME,
@@ -15,22 +18,18 @@ import {
     discountCodeIsGeneric,
     discountCodeIsUnique,
 } from 'models/discountCodes/types'
-import {insertText} from 'utils'
+import {DiscountCodeResultsWrapper} from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
+import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import shortcutManager from 'services/shortcutManager'
 import {getIconFromType} from 'state/integrations/helpers'
-import {useModalManager} from 'hooks/useModalManager'
+import {insertText} from 'utils'
 
-import {DiscountCodeResultsWrapper} from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {AttachmentEnum} from 'common/types'
-import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {ActionInjectedProps, ActionName} from '../types'
-import {useToolbarContext} from '../ToolbarContext'
-import {getTooltipTourConfiguration} from '../utils'
 import {addDiscountCodeLink} from '../../utils'
-import Popover from './ButtonPopover'
-
+import {useToolbarContext} from '../ToolbarContext'
+import {ActionInjectedProps, ActionName} from '../types'
+import {getTooltipTourConfiguration} from '../utils'
 import css from './AddDiscountCode.less'
+import Popover from './ButtonPopover'
 
 type Props = ActionInjectedProps
 

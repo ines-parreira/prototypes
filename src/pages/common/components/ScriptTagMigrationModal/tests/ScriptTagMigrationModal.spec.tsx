@@ -1,9 +1,9 @@
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
-import LD from 'launchdarkly-react-client-sdk'
-import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

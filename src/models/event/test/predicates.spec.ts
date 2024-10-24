@@ -1,7 +1,7 @@
 import {fromJS, Map} from 'immutable'
 
-import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {SYSTEM_RULE_TYPE} from 'models/event/constants'
+import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
 
 import {
     isRuleExecutedType,

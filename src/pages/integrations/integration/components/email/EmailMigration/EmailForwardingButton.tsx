@@ -1,17 +1,19 @@
-import React, {useEffect, useState} from 'react'
 import {AxiosError} from 'axios'
+import React, {useEffect, useState} from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import {verifyMigrationIntegration} from 'models/integration/resources/email'
 import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
-import {verifyMigrationIntegration} from 'models/integration/resources/email'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
 import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
-import {computeMigrationInboundVerificationStatus} from './utils'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import EmailVerificationButton from './EmailVerificationButton'
+import {computeMigrationInboundVerificationStatus} from './utils'
 
 type Props = {
     migration: EmailMigrationInboundVerification

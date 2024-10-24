@@ -1,10 +1,12 @@
 import {Label} from '@gorgias/ui-kit'
-import React, {useEffect, useMemo} from 'react'
 import classnames from 'classnames'
+import React, {useEffect, useMemo} from 'react'
+
 import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {ChatIntegrationListSelection} from '../../ChatIntegrationListSelection/ChatIntegrationListSelection'
+
 import {INITIAL_FORM_VALUES} from '../../../constants'
 import {FormValues, UpdateValue} from '../../../types'
+import {ChatIntegrationListSelection} from '../../ChatIntegrationListSelection/ChatIntegrationListSelection'
 import css from './ChatSettingsFormComponent.less'
 
 type EmailFormComponentProps = {

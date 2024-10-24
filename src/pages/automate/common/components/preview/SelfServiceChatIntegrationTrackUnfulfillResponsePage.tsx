@@ -1,17 +1,17 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
+import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
-import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import useOrderDates from './hooks/useOrderDates'
 
 import css from './SelfServiceChatIntegrationTrackUnfulfillResponsePage.less'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration

@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
-import {assetsUrl} from 'utils'
 
 import Button from 'pages/common/components/button/Button'
 
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import {assetsUrl} from 'utils'
+
 import css from './ConvertUpsellBanner.less'
 
 const ConvertUpsellBanner = () => {

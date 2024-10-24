@@ -1,17 +1,18 @@
+import {Tag} from '@gorgias/api-queries'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 import {useMemo} from 'react'
-import {Tag} from '@gorgias/api-queries'
-import {MetricPerDimensionTrend} from 'hooks/reporting/useMetricPerDimension'
+
+import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import {MetricPerDimensionTrend} from 'hooks/reporting/useMetricPerDimension'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 
-import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
 import {TicketTagsEnrichedMember} from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 const DATASET_VISIBILITY_ITEMS = 3
 

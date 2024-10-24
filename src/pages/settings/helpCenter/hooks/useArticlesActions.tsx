@@ -1,16 +1,15 @@
-import {useCallback, useState, useMemo} from 'react'
 import {chain as _chain} from 'lodash'
+import {useCallback, useState, useMemo} from 'react'
 
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
 import {createArticleFromDto} from 'models/helpCenter/utils'
+import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {
     deleteArticle as deleteArticleAction,
     getArticlesById,
@@ -20,16 +19,16 @@ import {
     updateArticle as updateArticleAction,
     updateArticlesOrder,
 } from 'state/entities/helpCenter/articles'
-import {getViewLanguage} from 'state/ui/helpCenter'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
 import {ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE} from '../constants'
 import {ArticleTemplateKey} from '../types/articleTemplates'
+import {useCategoriesActions} from './useCategoriesActions'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
-import {useCategoriesActions} from './useCategoriesActions'
 
 function updatePositionRequest(
     client: HelpCenterClient,

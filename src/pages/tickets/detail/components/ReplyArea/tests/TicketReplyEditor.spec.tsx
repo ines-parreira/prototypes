@@ -1,18 +1,18 @@
-import React, {ComponentProps} from 'react'
 import {createEvent, fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import {ContentState} from 'draft-js'
-import _noop from 'lodash/noop'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
-import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import * as channelsService from 'services/channels'
+import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
+import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 
 import {TicketReplyEditorContainer} from '../TicketReplyEditor'
 

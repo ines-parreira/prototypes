@@ -5,8 +5,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import LinkAlert, {
     Props as LinkAlertProps,
 } from 'pages/common/components/Alert/LinkAlert'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {tryLocalStorage} from 'services/common/utils'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
 type Props = {
     storageKey: string

@@ -1,4 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
+
 import {
     ContactFormListFixtures,
     ContactFormGeneric500ErrorFixture,
@@ -6,16 +7,16 @@ import {
     ContactFormEmptyListFixture,
 } from '../fixtures/contacForm'
 import {
-    ShopifyPagesEmptyListFixture,
-    ShopifyPagesGeneric500ErrorFixture,
-    ShopifyPagesListFixture,
-} from '../fixtures/shopifyPage'
-import {
     PageEmbedmentsListFixture,
     PageEmbedmentsEmptyListFixture,
     PageEmbedmentsGeneric500ErrorFixture,
     PageEmbedmentFixture,
 } from '../fixtures/pageEmbedment'
+import {
+    ShopifyPagesEmptyListFixture,
+    ShopifyPagesGeneric500ErrorFixture,
+    ShopifyPagesListFixture,
+} from '../fixtures/shopifyPage'
 import * as contactFormResourceMethods from '../resources'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'

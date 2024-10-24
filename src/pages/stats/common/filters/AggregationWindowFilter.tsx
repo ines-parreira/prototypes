@@ -1,6 +1,7 @@
 import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AggregationWindow,

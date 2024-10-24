@@ -1,8 +1,9 @@
 // g/integrations/zendesk/schemas.py
 import {ImportStatus} from 'pages/settings/importData/zendesk/types'
+
 import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
 import type {Integration} from './'
+import type {IntegrationBase} from './base'
 
 export type ZendeskIntegration = IntegrationBase & {
     type: IntegrationType.Zendesk

@@ -1,9 +1,11 @@
-import React from 'react'
 import classnames from 'classnames'
-import {TicketOutcome} from 'models/aiAgentPlayground/types'
-import timer from 'assets/img/icons/timer_empty.svg'
-import person_add from 'assets/img/icons/person_add.svg'
+import React from 'react'
+
 import check from 'assets/img/icons/check.svg'
+import person_add from 'assets/img/icons/person_add.svg'
+import timer from 'assets/img/icons/timer_empty.svg'
+import {TicketOutcome} from 'models/aiAgentPlayground/types'
+
 import css from './TicketEvent.less'
 
 type Props = {

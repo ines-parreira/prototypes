@@ -10,20 +10,20 @@ import {DiscountCode} from 'models/discountCodes/types'
 import {convertToRawWithoutPredictions} from 'pages/common/draftjs/plugins/prediction/utils'
 import {renderTemplate} from 'pages/common/utils/template'
 import {isRichType} from 'tickets/common/utils'
+import {toJS} from 'utils'
 import {convertFromHTML, convertToHTML} from 'utils/editor'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
-import {toJS} from 'utils'
 
 import {CurrentUser, StoreState} from '../types'
 
-import * as selectors from './selectors'
-import ticketReplyCache, {TopRankMacroState} from './ticketReplyCache'
 import {
     deleteEmailExtraContent,
     hasEmailExtraContent,
     hasOnlySignatureText,
     Signature,
 } from './emailExtraUtils'
+import * as selectors from './selectors'
+import ticketReplyCache, {TopRankMacroState} from './ticketReplyCache'
 import {NewMessage, ReplyAreaState} from './types'
 
 export type MessageContext = {

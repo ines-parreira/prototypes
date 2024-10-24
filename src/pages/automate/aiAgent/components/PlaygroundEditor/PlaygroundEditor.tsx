@@ -1,11 +1,12 @@
 import React from 'react'
-import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'
-import {FROALA_KEY} from 'config'
 
-import {PlaygroundPredefinedMessages} from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
+import {FROALA_KEY} from 'config'
+import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'
+
 import {PlaygroundTemplateMessage} from '../../types'
-import {PlaygroundAction} from '../PlaygroundActions/types'
 import {PlaygroundActions} from '../PlaygroundActions/PlaygroundActions'
+import {PlaygroundAction} from '../PlaygroundActions/types'
+import {PlaygroundPredefinedMessages} from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
 import css from './PlaygroundEditor.less'
 
 const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'

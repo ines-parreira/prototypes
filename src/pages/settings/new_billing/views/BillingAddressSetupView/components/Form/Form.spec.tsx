@@ -1,17 +1,19 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React from 'react'
 import {useElements} from '@stripe/react-stripe-js'
 import {
     StripeAddressElementChangeEvent,
     StripeElements,
 } from '@stripe/stripe-js'
-import {useHistory} from 'react-router-dom'
-import MockAdapter from 'axios-mock-adapter'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {AxiosError} from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import React from 'react'
+import {useHistory} from 'react-router-dom'
+
+import client from 'models/api/resources'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {reportError} from 'utils/errors'
 import {assumeMock} from 'utils/testing'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import client from 'models/api/resources'
+
 import {Form} from './Form'
 
 jest.mock('react-redux', () => ({

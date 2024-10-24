@@ -1,9 +1,10 @@
 import React, {useRef, useState} from 'react'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 export const ADD_FILTER_BUTTON_LABEL = 'Add Filter'
 

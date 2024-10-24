@@ -1,7 +1,9 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+
 import {useSearchCustomer} from 'models/aiAgent/queries'
+
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,

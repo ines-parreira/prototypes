@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {integrationsState} from 'fixtures/integrations'
-import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
 import {Integration} from 'models/integration/types'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+
+import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
 
 const defaultState = {}
 

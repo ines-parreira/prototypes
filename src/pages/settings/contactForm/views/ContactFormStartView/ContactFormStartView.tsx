@@ -1,4 +1,6 @@
+import _flatten from 'lodash/flatten'
 import React, {useEffect, useMemo} from 'react'
+import {ConnectedProps, connect} from 'react-redux'
 import {
     Link,
     NavLink,
@@ -7,25 +9,25 @@ import {
     Switch,
     useHistory,
 } from 'react-router-dom'
-import _flatten from 'lodash/flatten'
-import {ConnectedProps, connect} from 'react-redux'
-import {notify as notifyAction} from 'state/notifications/actions'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/common/components/ProductDetail'
+
 import Button from 'pages/common/components/button/Button'
-import {reportError} from 'utils/errors'
+import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_PAGE_TITLE,
 } from 'pages/settings/contactForm/constants'
-import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
+import {notify as notifyAction} from 'state/notifications/actions'
 import {notEmpty} from 'utils'
-import {useGetContactFormList} from '../../queries'
+import {reportError} from 'utils/errors'
+
 import {NotificationStatus} from '../../../../../state/notifications/types'
+import {useGetContactFormList} from '../../queries'
 
 const CONTACT_FORM_HOME_ROUTES = {
     About: CONTACT_FORM_ABOUT_PATH,

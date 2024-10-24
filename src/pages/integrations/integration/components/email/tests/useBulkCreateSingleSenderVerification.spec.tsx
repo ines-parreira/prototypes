@@ -1,8 +1,10 @@
-import {Provider} from 'react-redux'
-import React from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
-import {mockStore} from 'utils/testing'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {createVerification} from 'models/singleSenderVerification/resources'
+import {mockStore} from 'utils/testing'
+
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')

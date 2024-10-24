@@ -1,14 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {render, fireEvent, RenderResult} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import {ContentState, EditorState} from 'draft-js'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
+import {TicketChannel} from '../../../../../business/types/ticket'
+import {ticket} from '../../../../../fixtures/ticket'
+import {addEmailExtra} from '../../../../../state/newMessage/actions'
 import {ReplyThreadMessage} from '../../../../../state/newMessage/emailExtraUtils'
 
 import {EmailExtraButtonContainer} from '../EmailExtraButton'
-import {ticket} from '../../../../../fixtures/ticket'
-import {addEmailExtra} from '../../../../../state/newMessage/actions'
-import {TicketChannel} from '../../../../../business/types/ticket'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

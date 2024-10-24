@@ -1,29 +1,28 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ulid} from 'ulidx'
 import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {ulid} from 'ulidx'
 
 import {useFlag} from 'common/flags'
+import {shopifyIntegration} from 'fixtures/integrations'
+import {useGetStoreApps} from 'models/workflows/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
-import {shopifyIntegration} from 'fixtures/integrations'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {useGetStoreApps} from 'models/workflows/queries'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import useAddStoreApp from '../../hooks/useAddStoreApp'
-import useUpsertAction from '../../hooks/useUpsertAction'
 import useDeleteAction from '../../hooks/useDeleteAction'
-
-import TemplateActionForm from '../TemplateActionForm'
+import useUpsertAction from '../../hooks/useUpsertAction'
 
 import {TemplateConfiguration} from '../../types'
+import TemplateActionForm from '../TemplateActionForm'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('common/flags', () => ({

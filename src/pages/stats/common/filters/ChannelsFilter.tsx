@@ -1,7 +1,7 @@
 import isString from 'lodash/isString'
-import {connect} from 'react-redux'
 import React, {useCallback} from 'react'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {connect} from 'react-redux'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
@@ -20,6 +20,7 @@ import {
     filterChannels,
     logSegmentEvent,
 } from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
 import {
     Channel,

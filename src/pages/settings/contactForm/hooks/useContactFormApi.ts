@@ -1,14 +1,16 @@
-import {useCallback, useState, useEffect} from 'react'
 import axios from 'axios'
 import {get} from 'lodash'
+import {useCallback, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContactForm,
     CreateContactFormDto,
     UpdateContactFormDto,
     UpsertContactFormAutomationSettingsDto,
 } from 'models/contactForm/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     contactFormsFetched,
     contactFormDeleted,
@@ -18,8 +20,8 @@ import {
     contactFormAutomationSettingsFetched,
     contactFormAutomationSettingsUpdated,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {reportError} from 'utils/errors'
+
 import {
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,

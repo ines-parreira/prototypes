@@ -4,17 +4,18 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
+
+import {agents} from 'fixtures/agents'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
+import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
 import {
     TableColumnsOrderWithOnlineTime,
     getColumnWidth,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {agents} from 'fixtures/agents'
+import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -24,8 +25,8 @@ import {
     isSortingMetricLoading,
     getHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {assumeMock} from 'utils/testing'
 import {AgentsTableColumn} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

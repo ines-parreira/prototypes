@@ -1,21 +1,21 @@
-import React, {ComponentType, createContext, useContext} from 'react'
-import _noop from 'lodash/noop'
 import {List} from 'immutable'
+import _noop from 'lodash/noop'
+import React, {ComponentType, createContext, useContext} from 'react'
 
+import {DiscountCode} from 'models/discountCodes/types'
+import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
 import {
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
-import {DiscountCode} from 'models/discountCodes/types'
-import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
+import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 import {
     AttachmentType,
     DiscountOfferAttachment,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
-import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'
+import {TooltipTourConfigurationType} from './types'
 
 export type ToolbarContextType = {
     placementType: RichFieldEditorPlacement | undefined

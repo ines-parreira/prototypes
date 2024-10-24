@@ -1,6 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {mockRequestAnimationFrame, triggerWidthResize} from 'utils/testing'
+
 import {useGridSize} from 'hooks/useGridSize'
+import {mockRequestAnimationFrame, triggerWidthResize} from 'utils/testing'
 
 const rafControl = mockRequestAnimationFrame()
 

@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ChangeEvent,
     useContext,
@@ -5,20 +7,19 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {getActiveCustomerId} from 'state/customers/selectors'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCurrentDomain} from 'state/currentAccount/selectors'
-import {isEditing} from 'state/widgets/selectors'
+import {getActiveCustomerId} from 'state/customers/selectors'
 import {executeAction} from 'state/infobar/actions'
+import {isEditing} from 'state/widgets/selectors'
 
 import {FieldCustomization} from 'Widgets/modules/Template/types'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import useAppSelector from 'hooks/useAppSelector'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ShopifyContext} from '../contexts/ShopifyContext'
 import {ShopifyActionType} from '../types'
 import css from './OrderNotesField.less'

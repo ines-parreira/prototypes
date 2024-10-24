@@ -7,10 +7,9 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Form, FormGroup} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {DEFAULT_ACTIONS} from 'config'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
     createMacro,
     deleteMacro,
@@ -18,6 +17,15 @@ import {
     updateMacro,
 } from 'models/macro/resources'
 import {MacroDraft} from 'models/macro/types'
+import {MacroActionName} from 'models/macroAction/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
+import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
 import {getHumanAgents} from 'state/agents/selectors'
 import {
     macroCreated,
@@ -25,20 +33,12 @@ import {
     macroFetched,
     macroUpdated,
 } from 'state/entities/macros/actions'
+import {MacroApiError} from 'state/macro/types'
 import {getDefaultMacro, getErrorReason} from 'state/macro/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
-import history from 'pages/history'
 import {errorToChildren} from 'utils'
-import settingsCss from 'pages/settings/settings.less'
-import {MacroApiError} from 'state/macro/types'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {MacroActionName} from 'models/macroAction/types'
-import useAsyncFn from 'hooks/useAsyncFn'
 
 import css from './MacrosSettingsForm.less'
 

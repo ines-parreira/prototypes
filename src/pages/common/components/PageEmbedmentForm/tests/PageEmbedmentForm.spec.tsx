@@ -1,7 +1,9 @@
-import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
+
 import PageEmbedmentForm, {PageEmbedmentFormProps} from '../PageEmbedmentForm'
 import {DEFAULT_VALUES} from '../usePageEmbedmentForm'
 

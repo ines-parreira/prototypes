@@ -1,7 +1,7 @@
-import React from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {Button} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
+import React from 'react'
+import {Button} from 'reactstrap'
 
 import * as viewsConfig from 'config/views'
 import {humanizeString} from 'utils'

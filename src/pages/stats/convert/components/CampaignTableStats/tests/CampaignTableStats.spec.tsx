@@ -1,20 +1,19 @@
+import {fireEvent} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {fromJS} from 'immutable'
-
-import {fireEvent} from '@testing-library/react'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {CampaignPreview} from 'models/convert/campaign/types'
 import {campaign, campaignVariant} from 'fixtures/campaign'
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {ConvertMetric, TableView} from 'state/ui/stats/types'
 import {integrationsState} from 'fixtures/integrations'
+import {CampaignPreview} from 'models/convert/campaign/types'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats'
 import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
 import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {ConvertMetric, TableView} from 'state/ui/stats/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const chatIntegration = {
     type: 'gorgias_chat',

@@ -1,8 +1,8 @@
-import _words from 'lodash/words'
-import _max from 'lodash/max'
-import _isEqual from 'lodash/isEqual'
-import _omit from 'lodash/omit'
 import _functions from 'lodash/functions'
+import _isEqual from 'lodash/isEqual'
+import _max from 'lodash/max'
+import _omit from 'lodash/omit'
+import _words from 'lodash/words'
 
 import {
     notify as addNotification,

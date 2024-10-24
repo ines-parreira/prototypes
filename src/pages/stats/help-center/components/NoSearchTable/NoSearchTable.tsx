@@ -1,11 +1,13 @@
 import React from 'react'
-import ChartCard from 'pages/stats/ChartCard'
+
 import {StatsFilters} from 'models/stat/types'
+import ChartCard from 'pages/stats/ChartCard'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+
+import {useNoSearchResultsMetrics} from '../../hooks/useNoSearchResultsMetrics'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
-import {useNoSearchResultsMetrics} from '../../hooks/useNoSearchResultsMetrics'
 
 const ITEMS_PER_PAGE = 20
 

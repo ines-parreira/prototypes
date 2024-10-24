@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {firstResponseTime} from '../../../fixtures/stats'
 import {FIRST_RESPONSE_TIME} from '../../../config/stats'
+import {firstResponseTime} from '../../../fixtures/stats'
 import client from '../../api/resources'
 import {fetchStat, downloadStat} from '../resources'
 

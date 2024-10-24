@@ -1,11 +1,11 @@
-import React, {ComponentProps, ReactNode} from 'react'
 import {fireEvent} from '@testing-library/react'
+import decorateComponentWithProps from 'decorate-component-with-props'
 import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
+import React, {ComponentProps, ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import decorateComponentWithProps from 'decorate-component-with-props'
 
 import {view as fixtureView} from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,10 +13,10 @@ import {EntityType} from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import TicketList from 'pages/tickets/list/TicketList'
 import {fetchTags} from 'state/tags/actions'
 import {updateSelectedItemsIds} from 'state/views/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import TicketList from 'pages/tickets/list/TicketList'
 
 jest.mock('decorate-component-with-props')
 const decorateComponentWithPropsMock = assumeMock(decorateComponentWithProps)

@@ -1,4 +1,5 @@
 import {getHelpCenterAuthApiBaseUrl} from 'utils/environment'
+
 import {helpCenterAPI, HelpCenterClient} from './help_center_api/client'
 
 export function isValidAccessToken(token: string | null): boolean {

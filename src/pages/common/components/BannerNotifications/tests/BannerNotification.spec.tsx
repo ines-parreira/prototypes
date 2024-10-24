@@ -1,8 +1,8 @@
 import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import BannerNotification from '../BannerNotification'
 import {NotificationStatus} from '../../../../../state/notifications/types'
+import BannerNotification from '../BannerNotification'
 
 describe('<BannerNotification/>', () => {
     const minProps = {

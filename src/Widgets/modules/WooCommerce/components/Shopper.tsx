@@ -1,12 +1,12 @@
+import {Map} from 'immutable'
 import React, {ReactNode} from 'react'
 
-import {Map} from 'immutable'
 import logo from 'assets/img/infobar/woocommerce.svg'
 
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 import {useStore} from '../hooks/useStore'
 

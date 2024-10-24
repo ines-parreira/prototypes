@@ -1,8 +1,8 @@
-import React from 'react'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
 
 import {
     HELPDESK_PRODUCT_ID,

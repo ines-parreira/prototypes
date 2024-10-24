@@ -2,17 +2,16 @@ import React, {useMemo, useRef} from 'react'
 import {useParams, useLocation} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
+import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import useEffectOnce from 'hooks/useEffectOnce'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
+import css from './ActionsView.less'
 import CustomActionForm from './components/CustomActionForm'
 import TemplateActionForm from './components/TemplateActionForm'
 import {TemplateConfiguration} from './types'
 import {getInitialConfiguration} from './utils'
-
-import css from './ActionsView.less'
 
 const CreateActionFormView = () => {
     const {search, state: initialState} = useLocation<

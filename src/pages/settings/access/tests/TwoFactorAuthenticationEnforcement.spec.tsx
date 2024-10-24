@@ -1,15 +1,16 @@
-import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import {screen, render, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import moment from 'moment'
-import {RootState, StoreDispatch} from 'state/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import {OwnProps} from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
+import {RootState, StoreDispatch} from 'state/types'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',

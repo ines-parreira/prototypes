@@ -1,30 +1,31 @@
 import classnames from 'classnames'
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
-import {Channel} from 'models/channel/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {Channel} from 'models/channel/types'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import css from 'pages/stats/AnalyticsTable.less'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/AnalyticsTable.less'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import heatmapCss from 'pages/stats/heatmap.less'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
+import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     ChannelColumnConfig,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {getHeatmapMode} from 'state/ui/stats/channelsSlice'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 export const ChannelsCellContent = ({

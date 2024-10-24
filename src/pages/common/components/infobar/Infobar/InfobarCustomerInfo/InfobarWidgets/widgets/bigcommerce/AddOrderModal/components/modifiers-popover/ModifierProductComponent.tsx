@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
-import {BigCommerceProduct} from 'models/integration/types'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
+import {BigCommerceProduct} from 'models/integration/types'
 
 import css from './ModifierProductComponent.less'
 

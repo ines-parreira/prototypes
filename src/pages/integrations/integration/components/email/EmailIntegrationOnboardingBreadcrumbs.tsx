@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {EmailIntegration} from 'models/integration/types'
+
 import css from './EmailIntegrationOnboardingBreadcrumbs.less'
 
 type Props = {

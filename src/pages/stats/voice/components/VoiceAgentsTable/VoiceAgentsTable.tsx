@@ -1,27 +1,19 @@
-import React, {UIEventHandler, useState} from 'react'
 import classNames from 'classnames'
+import React, {UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import useMeasure from 'hooks/useMeasure'
 import useAppSelector from 'hooks/useAppSelector'
+import useMeasure from 'hooks/useMeasure'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {NumberedPagination} from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {getPaginatedAgents, pageSet} from 'state/ui/stats/agentPerformanceSlice'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {NumberedPagination} from 'pages/common/components/Paginations'
 import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
-import {
-    useAnsweredCallsMetricPerAgent,
-    useMissedCallsMetricPerAgent,
-    useOutboundCallsMetricPerAgent,
-    useTotalCallsMetricPerAgent,
-    useDeclinedCallsMetricPerAgent,
-} from 'pages/stats/voice/hooks/metricsPerDimension'
 import {
     useAnsweredCallsMetric,
     useDeclinedCallsMetric,
@@ -29,9 +21,17 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
+import {
+    useAnsweredCallsMetricPerAgent,
+    useMissedCallsMetricPerAgent,
+    useOutboundCallsMetricPerAgent,
+    useTotalCallsMetricPerAgent,
+    useDeclinedCallsMetricPerAgent,
+} from 'pages/stats/voice/hooks/metricsPerDimension'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import {getPaginatedAgents, pageSet} from 'state/ui/stats/agentPerformanceSlice'
 import {VoiceAgentsMetric} from 'state/ui/stats/types'
 
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import AverageTalkTimeCell from './AverageTalkTimeCell'
 import CallsCountCell from './CallsCountCell'
 import TeamAverageCallsCountCell from './TeamAverageCallsCountCell'

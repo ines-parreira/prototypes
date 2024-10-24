@@ -1,9 +1,9 @@
-import React from 'react'
 import {EmailDomain} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
-import * as hook from '../../useDomainVerification'
 import * as helpers from '../../../helpers'
+import * as hook from '../../useDomainVerification'
 
 import RecordsTable from '../RecordsTable'
 

@@ -1,9 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {useQueryClient} from '@tanstack/react-query'
+import {renderHook} from '@testing-library/react-hooks'
+
 import {
     getWelcomePageAcknowledgedKey,
     useCreateWelcomePageAcknowledged,
 } from 'models/aiAgent/queries'
+
 import {useWelcomePageAcknowledgedMutation} from '../useWelcomePageAcknowledgedMutation'
 
 jest.mock('@tanstack/react-query', () => ({

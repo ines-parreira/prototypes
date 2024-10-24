@@ -1,10 +1,9 @@
 import {createReducer} from '@reduxjs/toolkit'
 import _uniq from 'lodash/uniq'
 
-import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
+import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import {reportError} from 'utils/errors'
-import {HelpCenterCategoriesState} from './types'
 
 import {
     saveCategories,
@@ -17,6 +16,7 @@ import {
     removeLocaleFromCategory,
     updateCategoriesArticleCount,
 } from './actions'
+import {HelpCenterCategoriesState} from './types'
 
 export const initialState: HelpCenterCategoriesState = {
     categoriesById: {

@@ -1,11 +1,10 @@
 import React from 'react'
 
-import {assetsUrl} from 'utils'
-
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {assetsUrl} from 'utils'
 
 import css from './SuccessModal.less'
 

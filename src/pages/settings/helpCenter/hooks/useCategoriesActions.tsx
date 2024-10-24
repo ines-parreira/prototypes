@@ -1,14 +1,15 @@
 import {useCallback, useState, useMemo} from 'react'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     CreateCategoryDto,
     CreateCategoryTranslationDto,
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {flattenCategories} from 'models/helpCenter/utils'
+import * as articleActions from 'state/entities/helpCenter/articles/actions'
 import {
     deleteCategory as deleteCategoryAction,
     getCategoriesById,
@@ -19,15 +20,15 @@ import {
     updateCategoriesArticleCount,
     updateCategoryTranslation as updateCategoryTranslationAction,
 } from 'state/entities/helpCenter/categories'
-import * as articleActions from 'state/entities/helpCenter/articles/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
-import useAppSelector from 'hooks/useAppSelector'
-import {flattenCategories} from 'models/helpCenter/utils'
 
 import {reportError} from 'utils/errors'
+
 import {CategoriesPositionsType} from '../components/CategoriesTable'
-import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
 import {HELP_CENTER_ROOT_CATEGORY_ID} from '../constants'
+import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 

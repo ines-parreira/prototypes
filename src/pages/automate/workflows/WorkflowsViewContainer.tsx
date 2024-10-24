@@ -1,12 +1,12 @@
 import React, {useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {getHasAutomate} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 import AutomatePaywallView from '../common/components/AutomatePaywallView'
 import {AutomateFeatures} from '../common/types'

@@ -1,6 +1,3 @@
-import React from 'react'
-import linkifyhtml from 'linkifyjs/html'
-import _kebabeCase from 'lodash/kebabCase'
 import {
     convertToHTML as _convertToHTML,
     convertFromHTML as _convertFromHTML,
@@ -15,6 +12,9 @@ import {
     Modifier,
 } from 'draft-js'
 import {Map} from 'immutable'
+import linkifyhtml from 'linkifyjs/html'
+import _kebabeCase from 'lodash/kebabCase'
+import React from 'react'
 
 import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
 import {
@@ -26,10 +26,10 @@ import {replaceAttachmentURLToExternalSource} from 'utils'
 import {DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
 
-import {countWords, truncateWords} from './string'
-import {ComposedElements} from './react'
 import {parseHtml} from './html'
 import {linkify} from './linkify'
+import {ComposedElements} from './react'
+import {countWords, truncateWords} from './string'
 
 const QUOTE_CLASS_NAME = 'gorgias_quote'
 const QUOTE_DEPTH_DATASET_KEY = 'gorgiasQuoteDepth'

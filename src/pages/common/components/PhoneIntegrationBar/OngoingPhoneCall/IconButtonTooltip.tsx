@@ -1,6 +1,6 @@
-import React, {ComponentProps, ReactNode, Ref, forwardRef} from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React, {ComponentProps, ReactNode, Ref, forwardRef} from 'react'
 
 import useId from 'hooks/useId'
 

@@ -1,14 +1,14 @@
+import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {tryLocalStorage} from 'services/common/utils'
 import * as layoutSelectors from 'state/layout/selectors'
 import {RootState} from 'state/types'
 
-import {getInfobarMinWidth, getInfobarWidth} from './utils'
 import css from './Infobar.less'
+import {getInfobarMinWidth, getInfobarWidth} from './utils'
 
 type Props = {
     children?: ReactNode

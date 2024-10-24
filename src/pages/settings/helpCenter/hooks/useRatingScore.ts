@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+
 import {Rating} from 'models/helpCenter/types'
 
 export function calculateRatingScore(rating: Rating | undefined) {

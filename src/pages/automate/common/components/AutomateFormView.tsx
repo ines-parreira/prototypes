@@ -1,7 +1,7 @@
-import React, {ReactNode} from 'react'
-import {Container} from 'reactstrap'
-import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
+import React, {ReactNode} from 'react'
+import {NavLink} from 'react-router-dom'
+import {Container} from 'reactstrap'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

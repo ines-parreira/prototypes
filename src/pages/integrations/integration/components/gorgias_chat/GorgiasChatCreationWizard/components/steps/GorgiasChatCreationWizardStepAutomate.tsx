@@ -1,43 +1,43 @@
-import React, {useMemo, useState} from 'react'
-import {Map, fromJS} from 'immutable'
 import {Label} from '@gorgias/ui-kit'
+import {Map, fromJS} from 'immutable'
+import React, {useMemo, useState} from 'react'
 
-import history from 'pages/history'
+import {SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {SegmentEvent} from 'common/segment'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
+import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
+import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatIntegration,
     IntegrationFromType,
     IntegrationType,
 } from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
-import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import Button from 'pages/common/components/button/Button'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
-import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
-
 import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
+import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import {NotificationStatus} from 'state/notifications/types'
+import Button from 'pages/common/components/button/Button'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
+import history from 'pages/history'
+import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
+import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
+import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
 

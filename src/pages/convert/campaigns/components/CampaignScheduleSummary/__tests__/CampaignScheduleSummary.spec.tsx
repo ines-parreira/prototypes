@@ -1,19 +1,18 @@
-import React from 'react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
-import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
-import {render} from '@testing-library/react'
+import thunk from 'redux-thunk'
 
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {SCHEDULE_RULE_LABELS} from '../constants'
 import CampaignScheduleSummary from '../CampaignScheduleSummary'
+import {SCHEDULE_RULE_LABELS} from '../constants'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 

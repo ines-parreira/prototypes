@@ -1,22 +1,23 @@
 import {act, renderHook} from '@testing-library/react-hooks'
-import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
 import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
-import {RootState, StoreDispatch} from 'state/types'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import {HelpCenter} from 'models/helpCenter/types'
 import {getContactFormForHelpCenterFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getSingleHelpCenterResponseFixtureWithTranslation} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
-import {initialState as uiState} from 'state/ui/helpCenter'
+import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     HelpCenterTranslationProvider,
     useHelpCenterTranslation,
 } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter'
 import {flushPromises} from 'utils/testing'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,

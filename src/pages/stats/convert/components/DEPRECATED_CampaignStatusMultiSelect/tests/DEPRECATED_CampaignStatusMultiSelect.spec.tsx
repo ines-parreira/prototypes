@@ -1,5 +1,6 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {DEPRECATED_CampaignStatusMultiSelect} from 'pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect'

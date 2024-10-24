@@ -2,8 +2,9 @@ import {produce} from 'immer'
 import _get from 'lodash/get'
 
 import {Option} from 'pages/common/forms/SelectField/types'
-import {Action, Parameter, ParameterTypes} from '../../types'
+
 import {ACTION_PARAMETER_PATHS, DROPDOWN_VALUES_LIMIT} from '../../constants'
+import {Action, Parameter, ParameterTypes} from '../../types'
 
 export function splitDropdownValue(value?: string) {
     let values: string[] = []

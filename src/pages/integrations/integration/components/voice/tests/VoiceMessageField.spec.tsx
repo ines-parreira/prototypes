@@ -1,11 +1,11 @@
-import React from 'react'
 import {render, fireEvent, waitFor} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {VoiceMessageType, VoiceMessage} from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
 import {Account} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import VoiceMessageField from '../VoiceMessageField'
 

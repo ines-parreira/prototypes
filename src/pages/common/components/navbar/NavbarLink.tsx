@@ -1,11 +1,10 @@
-import React, {useCallback, useMemo, useRef} from 'react'
-import {NavLink, NavLinkProps, useRouteMatch, match} from 'react-router-dom'
 import classnames from 'classnames'
 import {LocationDescriptorObject} from 'history'
-
-import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
+import React, {useCallback, useMemo, useRef} from 'react'
+import {NavLink, NavLinkProps, useRouteMatch, match} from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
+import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 
 export type NavbarLinkProps = Pick<
     NavLinkProps,

@@ -1,48 +1,49 @@
-import React, {useEffect, useMemo, useState} from 'react'
 import moment from 'moment'
-import useAppSelector from 'hooks/useAppSelector'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import StatsPage from 'pages/stats/StatsPage'
-import DashboardSection from 'pages/stats/DashboardSection'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import ChartCard from 'pages/stats/ChartCard'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
-import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {
-    AUTOMATED_INTERACTION_TOOLTIP,
-    AutomatedInteractionsMetric,
-} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import React, {useEffect, useMemo, useState} from 'react'
+
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     useAutomateMetricsTimeseriesV2,
     useAutomateMetricsTrendV2,
 } from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
-import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import useAppSelector from 'hooks/useAppSelector'
+import {useGridSize} from 'hooks/useGridSize'
+import {FilterKey} from 'models/stat/types'
+import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
+import {
+    AUTOMATED_INTERACTION_TOOLTIP,
+    AutomatedInteractionsMetric,
+} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
 import {
     getGreyAreaHint,
     useTimeSeriesFormattedData,
 } from 'pages/stats/AutomateOverviewContent'
+import ChartCard from 'pages/stats/ChartCard'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {useGridSize} from 'hooks/useGridSize'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
+import StatsPage from 'pages/stats/StatsPage'
+import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
+import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
 import {
     activeParams,
     CustomFieldSelect,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {FilterKey} from 'models/stat/types'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
-import {isAiAgentCustomField} from 'pages/automate/aiAgent/util'
+import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 export default function AutomateAiAgentStats() {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)

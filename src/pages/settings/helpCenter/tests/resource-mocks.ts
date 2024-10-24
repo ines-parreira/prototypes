@@ -1,10 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {
-    ShopifyPagesEmptyListFixture,
-    ShopifyPagesGeneric500ErrorFixture,
-    ShopifyPagesListFixture,
-} from '../fixtures/shopifyPage'
+    AIArticlesListFixture,
+    AIArticlesEmptyListFixture,
+    AIArticlesGeneric500ErrorFixture,
+} from '../fixtures/aiArticles.fixture'
+import {
+    ArticleTemplatesListFixture,
+    ArticleTemplatesEmptyListFixture,
+    ArticleTemplatesGeneric500ErrorFixture,
+} from '../fixtures/articleTemplate.fixture'
 import {
     PageEmbedmentsListFixture,
     PageEmbedmentsEmptyListFixture,
@@ -12,15 +17,10 @@ import {
     PageEmbedmentFixture,
 } from '../fixtures/pageEmbedment'
 import {
-    ArticleTemplatesListFixture,
-    ArticleTemplatesEmptyListFixture,
-    ArticleTemplatesGeneric500ErrorFixture,
-} from '../fixtures/articleTemplate.fixture'
-import {
-    AIArticlesListFixture,
-    AIArticlesEmptyListFixture,
-    AIArticlesGeneric500ErrorFixture,
-} from '../fixtures/aiArticles.fixture'
+    ShopifyPagesEmptyListFixture,
+    ShopifyPagesGeneric500ErrorFixture,
+    ShopifyPagesListFixture,
+} from '../fixtures/shopifyPage'
 
 import * as helpCenterResourceMethods from '../resources'
 

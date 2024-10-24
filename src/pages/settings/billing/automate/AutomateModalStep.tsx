@@ -1,8 +1,7 @@
+import classNames from 'classnames'
 import React from 'react'
 import {ModalFooter, ModalHeader, ModalBody} from 'reactstrap'
-import classNames from 'classnames'
 
-import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {
     AutomatePlan,
     PlanInterval,
@@ -10,6 +9,7 @@ import {
     ProductType,
 } from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
+import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
 import css from './AutomateSubscriptionModal.less'
 

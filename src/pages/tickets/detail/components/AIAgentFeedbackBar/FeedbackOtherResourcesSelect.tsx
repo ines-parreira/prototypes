@@ -1,5 +1,5 @@
-import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
 import {Label, Tooltip} from '@gorgias/ui-kit'
+import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
 
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
@@ -13,9 +13,9 @@ import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import {addTags, removeTag} from 'state/ticket/actions'
 
+import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
 import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 
-import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
 import css from './FeedbackOtherResourcesSelect.less'
 import InfoIconWithTooltip from './InfoIconWithTooltip'
 

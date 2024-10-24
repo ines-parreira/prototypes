@@ -1,5 +1,5 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'

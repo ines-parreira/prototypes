@@ -5,17 +5,19 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppSelector from 'hooks/useAppSelector'
-
-import {ApiListResponseCursorPagination} from 'models/api/types'
 import {CustomField} from 'custom-fields/types'
-import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import useAppSelector from 'hooks/useAppSelector'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {
     SupportPerformanceTicketInsights,
     TICKET_INSIGHTS_PAGE_TITLE,
@@ -31,7 +33,6 @@ import {
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
-import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)

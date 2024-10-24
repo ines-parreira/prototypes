@@ -1,15 +1,6 @@
-import React, {useMemo, useState} from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
-
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
-
-import {
-    GorgiasChatAvatarImageType,
-    GorgiasChatAvatarNameType,
-    GorgiasChatLauncherType,
-} from 'models/integration/types'
+import {Map} from 'immutable'
+import React, {useMemo, useState} from 'react'
 
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -20,12 +11,19 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import useAppSelector from 'hooks/useAppSelector'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatLauncherType,
+} from 'models/integration/types'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
-import ConversationTimestamp from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
 import ChatIntegrationPreview from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import ChatIntegrationPreviewContent from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import ConversationTimestamp from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
 
 import MessageContent from '../../GorgiasChatIntegrationPreview/MessageContent'
 import OfflineMessages from '../../GorgiasChatIntegrationPreview/OfflineMessages'

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
 import axios from 'axios'
+import React, {useEffect, useState} from 'react'
 
 import imagePlaceholder from 'assets/img/icons/insert-photo.svg'
 

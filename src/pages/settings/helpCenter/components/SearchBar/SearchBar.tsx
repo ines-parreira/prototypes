@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 
-import TextInput from 'pages/common/forms/input/TextInput'
 import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import {useSearchContext} from '../../providers/SearchContext'
 

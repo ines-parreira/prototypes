@@ -1,5 +1,6 @@
 import {fromJS, Map} from 'immutable'
 import React, {useMemo} from 'react'
+
 import {
     INTENTS_BREAKDOWN_PER_DAY,
     INTENTS_OCCURRENCE,
@@ -17,6 +18,7 @@ import {
 } from 'models/stat/types'
 import {AutomateIntentsFilters} from 'pages/stats/AutomateIntentsFilters'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+
 import {BarStat} from './common/components/charts/BarStat'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'

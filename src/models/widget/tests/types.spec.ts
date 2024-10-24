@@ -1,3 +1,4 @@
+import {LEAF_TYPES} from '../constants'
 import {
     isSourceRecord,
     isSourceArray,
@@ -9,7 +10,6 @@ import {
     isLeafTemplate,
     Template,
 } from '../types'
-import {LEAF_TYPES} from '../constants'
 
 describe('isSourceRecord', () => {
     it.each([

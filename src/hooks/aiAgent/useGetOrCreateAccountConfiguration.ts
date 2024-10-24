@@ -1,7 +1,7 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import axios from 'axios'
 
-import {notify} from 'state/notifications/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CACHE_TIME_MS,
     STALE_TIME_MS,
@@ -11,8 +11,8 @@ import {
     getAccountConfiguration,
     createAccountConfiguration,
 } from 'models/aiAgent/resources/account-configuration'
+import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 
 export function useGetOrCreateAccountConfiguration(
     params: {

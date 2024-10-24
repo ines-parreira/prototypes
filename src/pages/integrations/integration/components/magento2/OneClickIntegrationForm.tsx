@@ -1,16 +1,16 @@
+import {Label} from '@gorgias/ui-kit'
+import {fromJS, Map} from 'immutable'
 import React, {FormEvent, useState} from 'react'
 import {Form} from 'reactstrap'
-import {fromJS, Map} from 'immutable'
-import {Label} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getMagento2IntegrationByStoreUrl} from 'state/integrations/selectors'
-import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
+import Caption from 'pages/common/forms/Caption/Caption'
+import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import Caption from 'pages/common/forms/Caption/Caption'
+import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
+import {getMagento2IntegrationByStoreUrl} from 'state/integrations/selectors'
 
 import IntegrationActionButtons from './IntegrationActionButtons'
 import {

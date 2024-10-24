@@ -1,6 +1,8 @@
 import {fireEvent, render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
+
 import {SegmentEvent, logEvent} from 'common/segment'
+
 import {ChannelToggleInput} from '../FormComponents/ChannelToggleInput'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

@@ -1,32 +1,29 @@
-import React, {MouseEvent, useEffect, useMemo} from 'react'
-import {Map} from 'immutable'
 import Fuse from 'fuse.js'
+import {Map} from 'immutable'
+import React, {MouseEvent, useEffect, useMemo} from 'react'
 
 import {Container} from 'reactstrap'
 
 import Segmented from 'pages/common/components/Segmented'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
+import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import {QuickFilters} from '../QuickFilters'
-
-import {QUICK_FILTERS} from '../../constants/filters'
-
-import {quickFiltersInvoke} from '../../utils/filters'
-
-import {CampaignsTable} from '../../components/CampaignsTable'
-import {CampaignsSearch} from '../../components/CampaignsSearch'
 import {CampaignChatHiddenWarning} from '../../components/CampaignChatHiddenWarning'
+import {CampaignsSearch} from '../../components/CampaignsSearch'
+import {CampaignsTable} from '../../components/CampaignsTable'
+import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
+import {QUICK_FILTERS} from '../../constants/filters'
 
 import {useCampaignListOptions} from '../../hooks/useCampaignListOptions'
 
 import {Campaign} from '../../types/Campaign'
 
-import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
+import {quickFiltersInvoke} from '../../utils/filters'
+import {QuickFilters} from '../QuickFilters'
 import css from './CampaignsList.less'
 
 type Props = {

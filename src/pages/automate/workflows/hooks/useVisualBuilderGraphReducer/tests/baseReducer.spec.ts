@@ -1,13 +1,13 @@
 import {
-    visualBuilderGraphLlmPromptTriggerFixture,
-    visualBuilderGraphSimpleChoicesFixture,
-} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {
     AutomatedMessageNodeType,
     ChannelTriggerNodeType,
     FileUploadNodeType,
     TextReplyNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {
+    visualBuilderGraphLlmPromptTriggerFixture,
+    visualBuilderGraphSimpleChoicesFixture,
+} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
 import {baseReducer} from '../baseReducer'
 

@@ -1,8 +1,9 @@
 import {TicketMessage} from 'models/ticket/types'
-import reducer, {initialState} from '../reducer'
+
 import {changeActiveTab, changeTicketMessage} from '../actions'
-import {ChangeActiveTabAction} from '../types'
 import {TicketAIAgentFeedbackTab} from '../constants'
+import reducer, {initialState} from '../reducer'
+import {ChangeActiveTabAction} from '../types'
 
 describe('ticketAIAgentFeedback reducer', () => {
     it('should return the initial state', () => {

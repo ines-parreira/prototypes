@@ -1,10 +1,12 @@
-import React, {Component, FormEvent, ReactNode} from 'react'
-import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
-import _capitalize from 'lodash/capitalize'
+import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import copy from 'copy-to-clipboard'
 import {EditorState} from 'draft-js'
+import {fromJS, Map} from 'immutable'
+import _capitalize from 'lodash/capitalize'
+import React, {Component, FormEvent, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {
     Col,
     Container,
@@ -14,21 +16,26 @@ import {
     InputGroup,
     InputGroupAddon,
 } from 'reactstrap'
-import copy from 'copy-to-clipboard'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UploadType} from 'common/types'
-import Button from 'pages/common/components/button/Button'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from 'config'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
+import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
+import InputField from 'pages/common/forms/input/InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     importEmails,
@@ -41,18 +48,11 @@ import {
 import {RootState} from 'state/types'
 import {displayRestrictedSymbols, isGorgiasSupportAddress} from 'utils'
 import {convertToHTML} from 'utils/editor'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import settingsCss from 'pages/settings/settings.less'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import InputField from 'pages/common/forms/input/InputField'
-import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 
-import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
-import css from './EmailIntegrationUpdate.less'
-import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
 import EmailIntegrationAddressField from './EmailIntegrationAddressField'
+import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
+import css from './EmailIntegrationUpdate.less'
 
 type Props = {
     integration: Map<any, any>

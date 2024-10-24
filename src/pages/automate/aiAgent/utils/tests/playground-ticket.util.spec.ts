@@ -1,15 +1,17 @@
 import {AxiosResponse} from 'axios'
+
 import {getAiAgentCustomer} from 'models/aiAgentPlayground/resources'
 import {GetPlaygroundCustomerResponse} from 'models/aiAgentPlayground/types'
-import {
-    createMockHttpIntegrationPayload,
-    getTicketCustomer,
-} from '../playground-ticket.util'
+
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,
 } from '../../constants'
+import {
+    createMockHttpIntegrationPayload,
+    getTicketCustomer,
+} from '../playground-ticket.util'
 
 jest.mock('models/aiAgentPlayground/resources', () => ({
     getAiAgentCustomer: jest.fn(),

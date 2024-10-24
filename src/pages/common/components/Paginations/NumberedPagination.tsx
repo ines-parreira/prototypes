@@ -4,10 +4,9 @@ import {PaginationItem} from './components/PaginationItem'
 
 import {usePaginatedItems} from './hooks/usePaginatedItems'
 
-import {UiListItem} from './types/UiListItem'
-import {NavigationSize} from './types/NavigationSize'
-
 import css from './style.less'
+import {NavigationSize} from './types/NavigationSize'
+import {UiListItem} from './types/UiListItem'
 
 type Props = {
     /**

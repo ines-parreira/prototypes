@@ -1,15 +1,15 @@
+import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import * as channelsService from 'services/channels'
+
 import {channels} from 'fixtures/channels'
+import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
+import * as channelsService from 'services/channels'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
-
-import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 

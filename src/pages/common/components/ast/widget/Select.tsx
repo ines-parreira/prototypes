@@ -1,5 +1,5 @@
-import React from 'react'
 import {List, Map, fromJS} from 'immutable'
+import React from 'react'
 
 import DEPRECATED_InputField from '../../../forms/DEPRECATED_InputField'
 import {SelectableOption as SelectOption} from '../../../forms/SelectField/types'

@@ -1,18 +1,18 @@
 import {useKnockClient} from '@knocklabs/react'
 import {useCallback, useMemo, useState} from 'react'
 
+import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {UserSettingType} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'common/flags'
-import useAsyncFn from 'hooks/useAsyncFn'
 import {getLDClient} from 'utils/launchDarkly'
-import useEffectOnce from 'hooks/useEffectOnce'
 
 import {
     channels,

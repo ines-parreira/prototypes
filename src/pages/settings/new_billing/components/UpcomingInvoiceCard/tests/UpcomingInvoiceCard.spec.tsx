@@ -1,17 +1,19 @@
-import React from 'react'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {render, screen, waitFor} from '@testing-library/react'
 import user from '@testing-library/user-event'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import React from 'react'
+
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CouponSummary,
     ProductUsages,
     SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import {assumeMock} from 'utils/testing'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import {assumeMock} from 'utils/testing'
+
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
 

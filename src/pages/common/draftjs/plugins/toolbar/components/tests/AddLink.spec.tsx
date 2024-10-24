@@ -1,22 +1,22 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen, waitFor, act} from '@testing-library/react'
-import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
+import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
-import {assumeMock} from 'utils/testing'
+import React, {ComponentProps} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-
-import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
-import * as editorUtils from 'utils/editor'
 import * as flagUtils from 'common/flags'
+import {utmConfiguration} from 'fixtures/utmConfiguration'
+import Button from 'pages/common/components/button/Button'
+import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
 
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {CampaignFormConfigurationType} from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
 import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
-import {AddLinkContainer} from '../AddLink'
+import * as editorUtils from 'utils/editor'
+import {assumeMock} from 'utils/testing'
+
 import ToolbarProvider from '../../ToolbarProvider'
+import {AddLinkContainer} from '../AddLink'
 
 jest.mock('pages/convert/campaigns/utils/attachUtmParams')
 jest.mock('pages/convert/campaigns/hooks/useCampaignFormContext')

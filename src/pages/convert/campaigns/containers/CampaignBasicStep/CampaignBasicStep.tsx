@@ -1,23 +1,22 @@
-import React, {useMemo} from 'react'
 import {Label} from '@gorgias/ui-kit'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     getGorgiasChatLanguageByCode,
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
-import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {Language as LanguageEnum} from 'constants/languages'
-
-import {useStepState} from '../../hooks/useStepState'
-import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
+import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
 import {StatefulAccordion} from '../../components/StatefulAccordion'
+import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
+import {useStepState} from '../../hooks/useStepState'
 
 import {CampaignStepsKeys} from '../../types/CampaignSteps'
 

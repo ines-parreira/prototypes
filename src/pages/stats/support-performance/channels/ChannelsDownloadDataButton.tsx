@@ -1,7 +1,8 @@
 import React from 'react'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
-import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
+import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'

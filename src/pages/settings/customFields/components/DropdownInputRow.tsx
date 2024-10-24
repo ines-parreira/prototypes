@@ -1,13 +1,13 @@
+import classnames from 'classnames'
 import React, {memo, useCallback, useEffect, useRef} from 'react'
 
-import classnames from 'classnames'
+import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {CustomField, CustomFieldInput} from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import css from './DropdownInputRow.less'
 
 interface DropdownInputRowProps {

@@ -1,9 +1,11 @@
-import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
 import {AddressElement} from '@stripe/react-stripe-js'
+import {render, screen, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import React from 'react'
+
 import client from 'models/api/resources'
+import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import {StripeAddressElement} from '../StripeAddressElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({

@@ -3,12 +3,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ReportingGranularity} from 'models/reporting/types'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {LegacyStatsFilters} from 'models/stat/types'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -16,6 +14,11 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/components/charts/BarChart/BarChart'
+import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 
@@ -27,8 +30,6 @@ import {
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
-import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 jest.mock('hooks/reporting/timeSeries')
 const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)

@@ -1,28 +1,28 @@
+import classnames from 'classnames'
+import {fromJS, List} from 'immutable'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Col, Form, Label, Row} from 'reactstrap'
-import classnames from 'classnames'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader'
-import {getMomentTimezoneNames} from 'utils/date'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {submitSetting} from 'state/currentAccount/actions'
 import {DEPRECATED_getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {RootState} from 'state/types'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {RootState} from 'state/types'
+import {getMomentTimezoneNames} from 'utils/date'
 
 import settingsCss from '../settings.less'
 
-import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
-import BusinessHoursForm from './BusinessHoursForm'
 import css from './BusinessHours.less'
+import BusinessHoursForm from './BusinessHoursForm'
+import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 
 type Props = ConnectedProps<typeof connector>
 

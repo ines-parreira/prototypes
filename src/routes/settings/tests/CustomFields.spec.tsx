@@ -1,19 +1,19 @@
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {Redirect, Route, useRouteMatch} from 'react-router-dom'
-import {render, screen} from '@testing-library/react'
 
+import {useFlag} from 'common/flags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import {useFlag} from 'common/flags'
 import {CustomFieldObjectTypes} from 'custom-fields/types'
-import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
+import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
-import {assumeMock} from 'utils/testing'
 import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import {assumeMock} from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
 import {CustomFields} from '../CustomFields'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Redirect: jest.fn(() => <div>Redirect</div>),

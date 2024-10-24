@@ -1,8 +1,10 @@
 import React from 'react'
+
 import {ConnectedChannelsHelpCenterView} from 'pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView'
+
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import css from './HelpCenterAutomateView.less'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 
 export const HelpCenterAutomateView = () => {
     const helpCenter = useCurrentHelpCenter()

@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
+
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
@@ -16,14 +17,14 @@ import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRow
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
+import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import {
     CustomFieldsTicketCountDataRowContent,
     DataRowProps,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
-import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 import {formatDates} from 'pages/stats/utils'
+import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'

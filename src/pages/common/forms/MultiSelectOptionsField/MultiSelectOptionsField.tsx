@@ -3,6 +3,7 @@ import _isEqual from 'lodash/isEqual'
 import React, {Component, ComponentType, CSSProperties} from 'react'
 
 import {TAGS_LIMIT} from 'models/integration/constants'
+
 import Dropdown from './Dropdown'
 import css from './MultiSelectOptionsField.less'
 import OptionTag from './Tag'

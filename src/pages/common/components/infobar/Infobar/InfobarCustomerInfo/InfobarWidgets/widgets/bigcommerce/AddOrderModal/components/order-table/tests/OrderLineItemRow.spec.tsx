@@ -1,11 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {produce} from 'immer'
+import React, {ComponentProps} from 'react'
+
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
+
 import OrderLineItemRow from '../OrderLineItemRow'
 
 const lineItem = bigCommerceLineItemFixture()

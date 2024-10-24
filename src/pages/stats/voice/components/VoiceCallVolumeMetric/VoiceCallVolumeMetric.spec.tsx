@@ -1,10 +1,12 @@
-import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
-import {StatsFilters} from 'models/stat/types'
+import React from 'react'
+
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {assumeMock} from 'utils/testing'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {StatsFilters} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
+import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import {assumeMock} from 'utils/testing'
+
 import VoiceCallVolumeMetric from './VoiceCallVolumeMetric'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')

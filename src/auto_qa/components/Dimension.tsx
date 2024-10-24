@@ -1,7 +1,7 @@
 import {TicketQAScoreDimension} from '@gorgias/api-queries'
+import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -14,9 +14,8 @@ import SelectInputBox, {
 import TextArea from 'pages/common/forms/TextArea'
 
 import type {DimensionConfig} from '../types'
-import DimensionUser from './DimensionUser'
-
 import css from './Dimension.less'
+import DimensionUser from './DimensionUser'
 
 type Props = {
     config: DimensionConfig

@@ -1,5 +1,5 @@
-import React from 'react'
 import HTTPStatus from 'httpstatus'
+import React from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 

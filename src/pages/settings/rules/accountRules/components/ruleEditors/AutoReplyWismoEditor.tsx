@@ -1,19 +1,19 @@
+import classnames from 'classnames'
+import {fromJS, Map} from 'immutable'
 import React, {useMemo} from 'react'
-
 import {Link} from 'react-router-dom'
 
-import {fromJS, Map} from 'immutable'
-import classnames from 'classnames'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import {AutoReplyWismoSettings} from 'state/rules/types'
-import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {AutoReplyWismoSettings} from 'state/rules/types'
+
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'

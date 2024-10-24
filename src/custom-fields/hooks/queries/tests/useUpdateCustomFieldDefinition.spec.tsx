@@ -5,17 +5,17 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useUpdateCustomField,
 } from 'custom-fields/hooks/queries/queries'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useUpdateCustomFieldDefinition} from '../useUpdateCustomFieldDefinition'
 
 const queryClient = mockQueryClient()

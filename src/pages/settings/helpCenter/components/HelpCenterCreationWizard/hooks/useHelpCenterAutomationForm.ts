@@ -1,7 +1,8 @@
 import {useCallback, useReducer} from 'react'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
-import {logEvent} from 'common/segment/segment'
+
 import {SegmentEvent} from 'common/segment'
+import {logEvent} from 'common/segment/segment'
+import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 
 export type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean

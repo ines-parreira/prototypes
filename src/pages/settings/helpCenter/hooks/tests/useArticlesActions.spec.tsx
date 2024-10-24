@@ -1,11 +1,15 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {CreateArticleTranslationDto} from 'models/helpCenter/types'
+import {
+    getArticlesResponseFixture,
+    getSingleArticleEnglish,
+} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
     deleteArticle,
     pushArticleSupportedLocales,
@@ -16,12 +20,9 @@ import {
 } from 'state/entities/helpCenter/articles'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    getArticlesResponseFixture,
-    getSingleArticleEnglish,
-} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+
 import {useArticlesActions} from '../useArticlesActions'
 
 const articles = getArticlesResponseFixture.data

@@ -1,5 +1,5 @@
-import {act, renderHook} from '@testing-library/react-hooks'
 import {fireEvent} from '@testing-library/react'
+import {act, renderHook} from '@testing-library/react-hooks'
 
 import useEvent from '../useEvent'
 

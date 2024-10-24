@@ -1,6 +1,6 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'

@@ -1,5 +1,6 @@
 import {produce} from 'immer'
 import {ulid} from 'ulidx'
+
 import {buildConditionSchemaByVariableType} from '../../editor/visualBuilder/editors/ConditionsNodeEditor/utils'
 import {ConditionSchema} from '../../models/conditions.types'
 import {

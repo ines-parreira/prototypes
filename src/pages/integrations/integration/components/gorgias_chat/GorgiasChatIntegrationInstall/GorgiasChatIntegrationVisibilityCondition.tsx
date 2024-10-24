@@ -1,6 +1,6 @@
-import React, {useRef} from 'react'
-import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useRef} from 'react'
 
 import {
     GorgiasChatInstallationVisibilityCondition,
@@ -8,14 +8,13 @@ import {
 } from 'models/integration/types'
 
 import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import InputField from 'pages/common/forms/input/InputField'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-
-import {UrlValidationResult} from './utils/validateUrl'
+import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import css from './GorgiasChatIntegrationVisibilityCondition.less'
+import {UrlValidationResult} from './utils/validateUrl'
 
 const visibilityConditionOperatorCaptions: Record<
     GorgiasChatInstallationVisibilityConditionOperator,

@@ -1,12 +1,14 @@
-import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
+import React from 'react'
+
 import {
     ALL_CALLS_FILTER_LABEL,
     INBOUND_CALLS_FILTER_LABEL,
     MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
+
 import VoiceCallDirectionFilter from './VoiceCallDirectionFilter'
 
 describe('VoiceCallDirectionFilter', () => {

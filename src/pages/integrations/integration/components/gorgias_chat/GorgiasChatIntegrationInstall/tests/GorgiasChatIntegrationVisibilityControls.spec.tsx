@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
-import {Map, fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {Map, fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {
     GorgiasChatInstallationVisibility,

@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import React, {
     ChangeEvent,
     useCallback,
@@ -5,11 +6,11 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import styled from '@emotion/styled'
+
 import {gorgiasColors} from 'gorgias-design-system/styles'
 
-import Label from './Label'
 import Caption from './Caption'
+import Label from './Label'
 
 export interface TextAreaProps
     extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {

@@ -3,6 +3,7 @@ import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
+
 import {replaceNewLinesWithBr} from '../HelpCenterCreationWizard/HelpCenterCreationWizardUtils'
 
 export const sortAIArticlesByTicketsCount = (

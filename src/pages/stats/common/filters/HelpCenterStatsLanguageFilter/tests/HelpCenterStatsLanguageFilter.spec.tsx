@@ -1,10 +1,11 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
 import userEvent from '@testing-library/user-event'
-import {mockStore} from 'utils/testing'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
+import {mockStore} from 'utils/testing'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: jest.fn(),

@@ -1,7 +1,7 @@
 import client from '../../../../../models/api/resources'
 
-import {EmailDomain} from '../../../../../models/integration/types'
 import {ApiListResponsePagination} from '../../../../../models/api/types'
+import {EmailDomain} from '../../../../../models/integration/types'
 
 export async function fetchEmailDomains(): Promise<EmailDomain[]> {
     const response = await client.get<ApiListResponsePagination<EmailDomain[]>>(

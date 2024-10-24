@@ -1,8 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {SubdomainSection} from '../SubdomainSection'
 import {HELP_CENTER_DOMAIN} from '../../../constants'
+import {SubdomainSection} from '../SubdomainSection'
 
 function getSubdomainInput(component: JSX.Element): HTMLInputElement {
     const {getByRole} = render(component)

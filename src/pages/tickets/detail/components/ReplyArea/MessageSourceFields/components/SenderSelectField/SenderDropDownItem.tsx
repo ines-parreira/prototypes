@@ -1,10 +1,10 @@
 import React from 'react'
 
 import {useFlag} from 'common/flags'
-import {Sender} from 'hooks/useOutboundChannels'
-import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {Sender} from 'hooks/useOutboundChannels'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
 
 import ReconnectButton from './ReconnectButton'
 import css from './SenderDropDownItem.less'

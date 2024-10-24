@@ -1,7 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
-import client from 'models/api/resources'
 
 import {voiceCall} from 'fixtures/voiceCalls'
+import client from 'models/api/resources'
+
 import {
     listVoiceCalls,
     listVoiceCallRecordings,

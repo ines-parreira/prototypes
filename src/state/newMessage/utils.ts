@@ -1,20 +1,21 @@
 import {convertToRaw, ContentState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
+import {omit} from 'lodash'
 import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
-import {omit} from 'lodash'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {AttachmentEnum} from 'common/types'
 import {isImmutable} from 'common/utils'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
-import {EMPTY_SENDER} from 'state/ticket/constants'
 import {ApplyExternalTemplateAction} from 'models/whatsAppMessageTemplates/types'
 import {
     whatsAppMessageTemplateToHtml,
     WHATSAPP_VARIABLE_REGEX,
 } from 'pages/integrations/integration/components/whatsapp/utils'
+import {EMPTY_SENDER} from 'state/ticket/constants'
 import {canLeaveInternalNote} from 'tickets/common/utils'
-import {AttachmentEnum} from 'common/types'
+
 import {MacroActions, NewMessage} from './types'
 
 export function transformToInternalNote(

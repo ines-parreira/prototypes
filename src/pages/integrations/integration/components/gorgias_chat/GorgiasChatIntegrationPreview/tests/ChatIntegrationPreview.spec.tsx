@@ -4,6 +4,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 
 import configureMockStore from 'redux-mock-store'
+
 import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -11,18 +12,18 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
 } from 'config/integrations'
-import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
-import {RootState, StoreDispatch} from 'state/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
+import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
+import {RootState, StoreDispatch} from 'state/types'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'

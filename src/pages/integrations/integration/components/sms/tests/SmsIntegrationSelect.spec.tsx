@@ -1,7 +1,9 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {SmsIntegration} from 'models/integration/types'
+
 import SmsIntegrationSelect from '../SmsIntegrationSelect'
 
 describe('<SmsIntegrationSelect />', () => {

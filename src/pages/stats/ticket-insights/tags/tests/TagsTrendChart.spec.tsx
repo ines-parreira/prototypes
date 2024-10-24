@@ -1,10 +1,10 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
-import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
+import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />

@@ -1,7 +1,9 @@
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
+
 import {Sender} from 'hooks/useOutboundChannels'
 import {getReconnectUrl} from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
+
 import {NotificationStatus} from '../state/notifications/types'
 
 import {humanize} from './format'

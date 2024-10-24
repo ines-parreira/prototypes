@@ -1,13 +1,13 @@
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import {updatePhoneVoicemailConfiguration} from '../actions'
 import client from '../../../../../../models/api/resources'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
+import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 
-import * as integrationActions from '../../../../../../state/integrations/actions'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {updatePhoneVoicemailConfiguration} from '../actions'
 
 describe('updatePhoneVoicemailConfiguration', () => {
     const mockedServer = new MockAdapter(client)

@@ -1,7 +1,7 @@
-import React from 'react'
-import _get from 'lodash/get'
-import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _get from 'lodash/get'
+import React from 'react'
 
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import {Theme, Themes} from 'theme/types'

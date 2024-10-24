@@ -1,13 +1,13 @@
 import {produce} from 'immer'
 
+import {ConditionsSchema} from '../../models/conditions.types'
+import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
 import {
     ConditionsNodeType,
     isTriggerNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
-import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
-import {ConditionsSchema} from '../../models/conditions.types'
 import {
     buildConditionsNode,
     buildEndNode,

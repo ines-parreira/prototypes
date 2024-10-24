@@ -1,10 +1,12 @@
-import React from 'react'
-import {screen} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {renderWithRouter} from 'utils/testing'
+import {screen} from '@testing-library/react'
+import React from 'react'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import ActionEventSidePanel from '../ActionEventSidePanel'
+import {renderWithRouter} from 'utils/testing'
+
 import {LlmTriggeredExecution} from '../../types'
+import ActionEventSidePanel from '../ActionEventSidePanel'
 
 const queryClient = mockQueryClient()
 

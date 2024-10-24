@@ -1,5 +1,5 @@
-import React, {HTMLAttributes, ReactNode} from 'react'
 import classnames from 'classnames'
+import React, {HTMLAttributes, ReactNode} from 'react'
 
 import css from './Caption.less'
 

@@ -1,16 +1,17 @@
 import _snakeCase from 'lodash/snakeCase'
+
 import {IntegrationType} from 'models/integration/constants'
+import {Integration} from 'models/integration/types'
+import {isSourceRecord, Source, Template} from 'models/widget/types'
+import {renderTemplate} from 'pages/common/utils/template'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
 } from 'state/widgets/constants'
-import {humanizeString} from 'utils'
-import {Integration} from 'models/integration/types'
 import {WidgetType} from 'state/widgets/types'
-import {renderTemplate} from 'pages/common/utils/template'
-import {isSourceRecord, Source, Template} from 'models/widget/types'
+import {humanizeString} from 'utils'
 
 export const LABELS: {[key: string]: string} = {
     // not sure this one is needed

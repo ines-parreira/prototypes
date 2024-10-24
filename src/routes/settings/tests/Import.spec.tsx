@@ -1,12 +1,12 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
 import ImportData from 'pages/settings/importData/ImportData'
 import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
+import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
 import {assumeMock} from 'utils/testing'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'

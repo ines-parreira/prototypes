@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react'
 import moment from 'moment'
+import React, {useEffect, useState} from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
-
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import {MinimumTimeBetweenCampaigns} from 'pages/convert/campaigns/types/CampaignMeta'
+
 import {
     SELECT_OPTIONS,
     DEFAULT_TIME,

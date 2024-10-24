@@ -1,10 +1,10 @@
-import React from 'react'
 import _get from 'lodash/get'
+import React from 'react'
 
-import {Theme, Themes, useSavedTheme} from 'theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
+import {Theme, Themes, useSavedTheme} from 'theme'
 
 type Props = {
     savedTheme: ReturnType<typeof useSavedTheme>

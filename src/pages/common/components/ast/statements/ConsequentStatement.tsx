@@ -1,10 +1,11 @@
 import React from 'react'
 
-import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
+import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
+import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+
 import {ConsequentStatementProps} from '../types'
 
 export const ConsequentStatement = ({

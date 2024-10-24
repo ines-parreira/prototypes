@@ -1,13 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
-import {assumeMock} from 'utils/testing'
+import * as widgetsFixtures from 'fixtures/widgets'
 import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
+import {assumeMock} from 'utils/testing'
 
-import UIList from '../views/List'
 import List from '../List'
+import UIList from '../views/List'
 
 const CHILDREN_TEST_ID = 'childrennnn'
 

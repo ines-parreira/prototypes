@@ -1,7 +1,9 @@
-import {renderHook, act} from '@testing-library/react-hooks'
 import {useElements} from '@stripe/react-stripe-js'
 import {StripePaymentElementChangeEvent} from '@stripe/stripe-js'
+import {renderHook, act} from '@testing-library/react-hooks'
+
 import {assumeMock} from 'utils/testing'
+
 import {useStripePaymentElement} from '../useStripePaymentElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({

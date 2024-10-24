@@ -1,14 +1,14 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {integrationsState} from 'fixtures/integrations'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {ManagedRulesSlugs} from 'state/rules/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import AutoReplyReturnEditor from '../AutoReplyReturnEditor'
 

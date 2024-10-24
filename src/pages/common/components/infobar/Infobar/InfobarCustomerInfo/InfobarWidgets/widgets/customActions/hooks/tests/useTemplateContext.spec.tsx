@@ -1,17 +1,17 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import {Customer} from 'models/customer/types'
+import {Ticket} from 'models/ticket/types'
+import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
-import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
-import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
-import {Customer} from 'models/customer/types'
-import {Ticket} from 'models/ticket/types'
+import {getTicket} from 'state/ticket/selectors'
+import {assumeMock} from 'utils/testing'
 
 import {useTemplateContext} from '../useTemplateContext'
 

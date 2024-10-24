@@ -1,7 +1,9 @@
 import {useState, useEffect, useCallback} from 'react'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
 import {useHelpCenterApi} from './useHelpCenterApi'
 
 const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {

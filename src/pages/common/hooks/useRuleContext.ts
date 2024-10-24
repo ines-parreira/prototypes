@@ -1,4 +1,5 @@
 import {useContext} from 'react'
+
 import {RuleContext} from './rule/RuleProvider'
 
 export const useRuleContext = () => {

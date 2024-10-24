@@ -1,14 +1,11 @@
+import _upperFirst from 'lodash/upperFirst'
 import React, {useCallback, useState, useRef} from 'react'
 
 import {UncontrolledTooltip} from 'reactstrap'
 
-import _upperFirst from 'lodash/upperFirst'
-
-import type {Receiver} from 'state/ticket/utils'
-
 import {TicketMessageSourceType} from 'business/types/ticket'
-
 import ReceiversSelectField from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField'
+import type {Receiver} from 'state/ticket/utils'
 
 import css from './MacroReplyActionControls.less'
 

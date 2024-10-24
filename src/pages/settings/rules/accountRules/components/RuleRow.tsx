@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {
     MouseEvent,
     useCallback,
@@ -5,33 +7,35 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import {Popover, PopoverBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 
-import useAppSelector from 'hooks/useAppSelector'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
-import {getHasAutomate} from 'state/billing/selectors'
 
 import {deactivateRule, createRule, deleteRule} from 'models/rule/resources'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {ManagedRuleDisplayName} from 'state/rules/constants'
+import {getHasAutomate} from 'state/billing/selectors'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {
     ruleCreated,
     ruleUpdated,
     ruleDeleted,
 } from 'state/entities/rules/actions'
-import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
-import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {
     AnyManagedRuleSettings,
     AutoReplyFAQSettings,
@@ -42,13 +46,9 @@ import {
     RuleType,
 } from 'state/rules/types'
 import {formatDatetime} from 'utils'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {DateAndTimeFormatting} from 'constants/datetime'
 
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
+import css from './RuleRow.less'
 
 type Props = {
     rule: Rule | ManagedRule<AnyManagedRuleSettings>

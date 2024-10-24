@@ -6,6 +6,7 @@ import {
     CATEGORY_TREE_MAX_LEVEL,
     HELP_CENTER_ROOT_CATEGORY_ID,
 } from 'pages/settings/helpCenter/constants'
+
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
 import {isNonRootCategory} from './types'

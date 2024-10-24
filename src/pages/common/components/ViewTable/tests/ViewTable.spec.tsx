@@ -1,9 +1,9 @@
 import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {fromJS, Map} from 'immutable'
 import {Location} from 'history'
+import {fromJS, Map} from 'immutable'
 import _identity from 'lodash/identity'
 import {stringify} from 'qs'
+import React, {ComponentProps} from 'react'
 
 import {defaultTicketView} from 'config/views'
 import {mockSearchRank} from 'fixtures/searchRank'

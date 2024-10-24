@@ -1,19 +1,21 @@
 import React from 'react'
+
+import useAppSelector from 'hooks/useAppSelector'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import BigNumberMetric from 'pages/stats/BigNumberMetric'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import {METRICS} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
-import MetricCard from 'pages/stats/MetricCard'
-import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
-import useAppSelector from 'hooks/useAppSelector'
-import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {ConvertMetric} from 'state/ui/stats/types'
-import {METRICS} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import MetricCard from 'pages/stats/MetricCard'
+import {getTimezone} from 'state/currentUser/selectors'
+
+import {ConvertMetric} from 'state/ui/stats/types'
+
 import css from './CampaignTotalsStat.less'
 
 const FIRST_ROW_SIZE = 6

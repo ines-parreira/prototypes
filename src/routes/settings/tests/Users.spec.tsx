@@ -1,11 +1,11 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
-import AgentList from 'pages/settings/users/List'
 import AgentDetail from 'pages/settings/users/Detail'
+import AgentList from 'pages/settings/users/List'
 import {assumeMock} from 'utils/testing'
 
 import {renderAppSettings} from '../helpers/settingsRenderer'

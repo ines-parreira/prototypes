@@ -1,6 +1,7 @@
-import React from 'react'
-import {truncate} from 'lodash'
 import classNames from 'classnames'
+import {truncate} from 'lodash'
+import React from 'react'
+
 import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 import css from './FacebookIntegrationDetailSummary.less'

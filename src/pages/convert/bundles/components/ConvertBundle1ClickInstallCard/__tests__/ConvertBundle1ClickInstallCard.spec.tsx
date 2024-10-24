@@ -1,18 +1,19 @@
-import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import MockAdapter from 'axios-mock-adapter'
 
-import {IntegrationType} from 'models/integration/constants'
-import client from 'models/api/resources'
 import {convertBundle} from 'fixtures/convertBundle'
+import client from 'models/api/resources'
 import {
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
+import {IntegrationType} from 'models/integration/constants'
+
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 
 const mockStore = configureMockStore([thunk])

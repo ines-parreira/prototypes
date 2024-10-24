@@ -1,16 +1,18 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {billingState} from 'fixtures/billing'
-import {RootState} from 'state/types'
-import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
-import * as segment from 'common/segment'
+
 import {TicketChannel} from 'business/types/ticket'
+import * as segment from 'common/segment'
+import {billingState} from 'fixtures/billing'
+import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
 import {getHasAutomate} from 'state/billing/selectors'
+import {RootState} from 'state/types'
+
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

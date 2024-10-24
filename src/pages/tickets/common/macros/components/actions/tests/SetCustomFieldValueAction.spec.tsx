@@ -1,10 +1,11 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
+import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import {assumeMock} from 'utils/testing'
+
 import SetCustomFieldAction from '../SetCustomFieldValueAction'
 
 jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () =>

@@ -1,4 +1,5 @@
 import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
+
 import {BillableTicketCube} from './BillableTicketCube'
 
 export enum AutomationBillingEventMeasure {

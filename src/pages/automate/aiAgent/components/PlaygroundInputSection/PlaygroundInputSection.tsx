@@ -1,25 +1,26 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
 import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
 
-import classnames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
-import {
-    PlaygroundChannels,
-    PlaygroundFormValues,
-} from '../PlaygroundChat/PlaygroundChat.types'
-import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
-import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
-import {PlaygroundAction} from '../PlaygroundActions/types'
+
 import {
     PLAYGROUND_PROMPT_CONTENT,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
 import {PlaygroundCustomer} from '../../types'
+import {PlaygroundAction} from '../PlaygroundActions/types'
+import {
+    PlaygroundChannels,
+    PlaygroundFormValues,
+} from '../PlaygroundChat/PlaygroundChat.types'
+import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
+import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
+import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 import css from './PlaygroundInputSection.less'
 
 type Props = {

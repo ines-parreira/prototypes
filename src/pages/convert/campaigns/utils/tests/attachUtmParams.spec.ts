@@ -1,5 +1,5 @@
-import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {CampaignProduct} from '../../types/CampaignProduct'
 

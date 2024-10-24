@@ -1,16 +1,18 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {ProductType} from 'models/billing/types'
+
+import {billingState} from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     convertPlan1,
     convertPlan5,
     convertProduct,
 } from 'fixtures/productPrices'
-import {billingState} from 'fixtures/billing'
+import {ProductType} from 'models/billing/types'
+
 import AutoUpgradeToggle, {AutoUpgradeToggleProps} from '../AutoUpgradeToggle'
 
 const mockStore = configureMockStore()

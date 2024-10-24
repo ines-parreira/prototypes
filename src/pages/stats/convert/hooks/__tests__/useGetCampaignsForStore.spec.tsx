@@ -1,20 +1,18 @@
-import React, {ComponentType} from 'react'
-import {createStore} from 'redux'
-import {Provider} from 'react-redux'
-
-import {fromJS} from 'immutable'
-
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
 
+import {campaign} from 'fixtures/campaign'
+import {channelConnection} from 'fixtures/channelConnection'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import {IntegrationType} from 'models/integration/types'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {RootState} from 'state/types'
 
-import {IntegrationType} from 'models/integration/types'
-
 import {assumeMock} from 'utils/testing'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {channelConnection} from 'fixtures/channelConnection'
-import {campaign} from 'fixtures/campaign'
+
 import {useGetCampaignsForStore} from '../useGetCampaignsForStore'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

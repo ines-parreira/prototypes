@@ -1,18 +1,19 @@
 import {useMemo} from 'react'
 
-import {
-    performanceByArticleCountQueryFactory,
-    performanceByArticleQueryFactory,
-} from 'models/reporting/queryFactories/help-center/performanceByArticle'
+import {useMetric} from 'hooks/reporting/useMetric'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {useMetric} from 'hooks/reporting/useMetric'
+import {
+    performanceByArticleCountQueryFactory,
+    performanceByArticleQueryFactory,
+} from 'models/reporting/queryFactories/help-center/performanceByArticle'
 import {StatsFilters} from 'models/stat/types'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {notEmpty} from 'utils'
+
 import {
     HelpCenterTableCell,
     TableCellType,

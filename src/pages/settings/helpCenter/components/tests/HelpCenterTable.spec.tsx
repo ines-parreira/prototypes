@@ -1,15 +1,17 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import _keyBy from 'lodash/keyBy'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {Locale} from 'models/helpCenter/types'
+import React, {ComponentProps} from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import {Locale} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
-import {HelpCenterTable} from '../HelpCenterTable'
+
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useStoreIntegrationByShopName} from '../../hooks/useStoreIntegrationByShopName'
+import {HelpCenterTable} from '../HelpCenterTable'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({isPassingRulesCheck: () => true}),

@@ -1,7 +1,7 @@
+import _throttle from 'lodash/throttle'
 import {RefObject, useEffect} from 'react'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import getScrollParent from 'scrollparent'
-import _throttle from 'lodash/throttle'
 
 const useScrollActiveItemIntoView = (
     elementRef: RefObject<HTMLElement>,

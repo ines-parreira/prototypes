@@ -1,14 +1,14 @@
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import thunk from 'redux-thunk'
 
-import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
-import {RootState, StoreDispatch} from 'state/types'
 import {agents} from 'fixtures/agents'
+import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState, StoreDispatch} from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

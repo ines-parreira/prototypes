@@ -1,3 +1,5 @@
+import {Location} from 'history'
+import _noop from 'lodash/noop'
 import React, {
     useState,
     useRef,
@@ -5,13 +7,10 @@ import React, {
     useEffect,
     createContext,
 } from 'react'
-import {Location} from 'history'
 import {Prompt} from 'react-router-dom'
-import _noop from 'lodash/noop'
-
-import history from 'pages/history'
 
 import Modal from 'pages/common/components/modal/Modal'
+import history from 'pages/history'
 
 type PromptModalContextType = {
     redirectToOriginalLocation: () => void

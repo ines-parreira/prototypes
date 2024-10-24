@@ -1,3 +1,6 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import {EditorState} from 'draft-js'
 import React, {Component, ComponentProps} from 'react'
 import {
     DropdownItem,
@@ -6,15 +9,12 @@ import {
     Label,
     UncontrolledDropdown,
 } from 'reactstrap'
-import {EditorState} from 'draft-js'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
 
-import {insertText} from 'utils'
 import Button from 'pages/common/components/button/Button'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {getVariables} from 'tickets/common/utils'
+import {insertText} from 'utils'
 
 import RichField from './RichField/RichField'
 import TicketRichField from './RichField/TicketRichField'

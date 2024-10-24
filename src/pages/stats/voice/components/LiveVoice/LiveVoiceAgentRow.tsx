@@ -1,14 +1,15 @@
-import React, {useState} from 'react'
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
 } from '@gorgias/api-queries'
 import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import AgentCard from 'pages/common/components/AgentCard/AgentCard'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import React, {useState} from 'react'
+
 import useInterval from 'hooks/useInterval'
+import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import AgentCard from 'pages/common/components/AgentCard/AgentCard'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 import css from './LiveVoiceAgentsList.less'
 import {getOldestCall, isAgentAvailable, isAgentBusy} from './utils'

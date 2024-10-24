@@ -1,13 +1,14 @@
+import classnames from 'classnames'
 import React from 'react'
 import {FormGroup} from 'reactstrap'
-import classnames from 'classnames'
 
 import {CallForwardingCountries} from 'business/twilio'
 import CheckBox from 'pages/common/forms/CheckBox'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import settingsCss from 'pages/settings/settings.less'
+
 import css from './ForwardingCallsPreferences.less'
 
 type Props = {

@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 import React, {useState, useRef, useCallback, useMemo} from 'react'
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
 import {useDrag} from 'react-dnd'
+import {connect, ConnectedProps} from 'react-redux'
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import {UserRole} from 'config/types/user'
 import {ViewVisibility} from 'models/view/types'
@@ -12,9 +12,9 @@ import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {hasRole} from 'utils'
 
 import {TicketNavbarSectionElement} from './TicketNavbarContent'
+import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 import css from './TicketNavbarSection.less'
 import TicketNavbarView from './TicketNavbarView'
-import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 
 type OwnProps = {
     isExpanded: boolean

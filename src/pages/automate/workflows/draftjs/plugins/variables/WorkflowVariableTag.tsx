@@ -1,3 +1,5 @@
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import React, {
     MouseEvent,
     useLayoutEffect,
@@ -7,15 +9,14 @@ import React, {
     useMemo,
     useRef,
 } from 'react'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
+
 import useId from 'hooks/useId'
 
-import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import {
     extractVariablesFromText,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
+import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
 import css from './WorkflowVariableTag.less'
 

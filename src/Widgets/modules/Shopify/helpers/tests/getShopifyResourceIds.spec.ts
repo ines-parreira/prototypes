@@ -1,5 +1,5 @@
-import {Source} from 'models/widget/types'
 import {SegmentEvent, logEvent} from 'common/segment'
+import {Source} from 'models/widget/types'
 import {assumeMock} from 'utils/testing'
 
 import {getShopifyResourceIds} from '../getShopifyResourceIds'

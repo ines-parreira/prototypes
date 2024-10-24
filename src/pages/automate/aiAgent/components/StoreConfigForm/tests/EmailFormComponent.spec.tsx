@@ -1,8 +1,10 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import useAppSelector from 'hooks/useAppSelector'
+import React from 'react'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+
 import {EmailFormComponent} from '../FormComponents/EmailFormComponent'
 
 // Mock dependencies

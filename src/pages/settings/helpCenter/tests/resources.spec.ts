@@ -1,3 +1,12 @@
+import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import {
+    AIArticlesGeneric500ErrorFixture,
+    AIArticlesListFixture,
+} from '../fixtures/aiArticles.fixture'
+import {
+    ArticleTemplatesListFixture,
+    ArticleTemplatesGeneric500ErrorFixture,
+} from '../fixtures/articleTemplate.fixture'
 import {
     PageEmbedmentFixture,
     PageEmbedmentsListFixture,
@@ -6,16 +15,7 @@ import {
     ShopifyPagesListFixture,
     ShopifyPagesGeneric500ErrorFixture,
 } from '../fixtures/shopifyPage'
-import {
-    ArticleTemplatesListFixture,
-    ArticleTemplatesGeneric500ErrorFixture,
-} from '../fixtures/articleTemplate.fixture'
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import * as helpCenterResourceMethods from '../resources'
-import {
-    AIArticlesGeneric500ErrorFixture,
-    AIArticlesListFixture,
-} from '../fixtures/aiArticles.fixture'
 import {mockResourceServerReplies} from './resource-mocks'
 
 describe('getShopifyPages', () => {

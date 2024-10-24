@@ -1,17 +1,18 @@
 import React from 'react'
-import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
 
-import useSessionStorage from 'hooks/useSessionStorage'
-import {TicketPurpose} from 'state/billing/types'
-import {ProductType} from 'models/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
+import useSessionStorage from 'hooks/useSessionStorage'
+import {ProductType} from 'models/billing/types'
+import Card from 'pages/settings/new_billing/components/Card'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter'
 import SummaryItem from 'pages/settings/new_billing/components/SummaryItem'
 import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
 import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
 import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import Card from 'pages/settings/new_billing/components/Card'
+import {TicketPurpose} from 'state/billing/types'
+import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
+
 import css from './SubscriptionSummary.less'
 
 export type ISubscriptionSummaryProps = {

@@ -1,20 +1,22 @@
+import {QueryClientProvider} from '@tanstack/react-query'
+import {screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {QueryClientProvider} from '@tanstack/react-query'
+import {Provider} from 'react-redux'
 import routerDom, {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {screen, waitFor} from '@testing-library/react'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import history from 'pages/history'
-import {convertBundle} from 'fixtures/convertBundle'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+
 import {channelConnection} from 'fixtures/channelConnection'
+import {convertBundle} from 'fixtures/convertBundle'
 import {useListBundles} from 'models/convert/bundle/queries'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import history from 'pages/history'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
 import ConvertOnboardingView from '../ConvertOnboardingView'
 
 const queryClient = mockQueryClient()

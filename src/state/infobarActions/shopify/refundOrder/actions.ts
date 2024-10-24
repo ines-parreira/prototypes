@@ -1,6 +1,6 @@
+import axios from 'axios'
 import {List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios from 'axios'
 
 import {
     initRefundOrderLineItems,

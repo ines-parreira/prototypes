@@ -1,14 +1,14 @@
 import {useQueryClient} from '@tanstack/react-query'
 
-import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {isGorgiasApiError} from 'models/api/types'
 import {
     useUpdateArticleRecommendationPredictions,
     articleRecommendationdDefinitionKeys,
 } from 'models/articleRecommendationPrediction/queries'
-import {isGorgiasApiError} from 'models/api/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {errorToChildren} from 'utils'
 
 type Props = {
     page: number

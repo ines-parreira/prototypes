@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
-import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import history from 'pages/history'
-import {EmailIntegration} from 'models/integration/types'
+import React, {useState} from 'react'
+
 import {EmailProvider} from 'models/integration/constants'
+import {EmailIntegration} from 'models/integration/types'
+import Alert from 'pages/common/components/Alert/Alert'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
+
 import {
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
@@ -14,8 +16,8 @@ import {
     isSingleSenderVerified as checkIsSingleSenderVerified,
 } from '../helpers'
 import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
-import VerificationCardFooter from './VerificationCard/VerificationCardFooter'
 import VerificationCard from './VerificationCard/VerificationCard'
+import VerificationCardFooter from './VerificationCard/VerificationCardFooter'
 
 export type Props = {
     baseURL: string

@@ -1,7 +1,7 @@
 import React, {ComponentProps, ForwardedRef, forwardRef} from 'react'
 
-import NumberInput from 'pages/common/forms/input/NumberInput'
 import Caption from 'pages/common/forms/Caption/Caption'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 
 type NumberInputFieldProps = ComponentProps<typeof NumberInput> & {
     error?: string

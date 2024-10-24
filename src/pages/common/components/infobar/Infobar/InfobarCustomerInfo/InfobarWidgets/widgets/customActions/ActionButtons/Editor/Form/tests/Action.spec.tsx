@@ -1,8 +1,8 @@
-import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
+import React from 'react'
 
-import {HttpMethod} from 'models/api/types'
 import {actionFixture} from 'fixtures/infobarCustomActions'
+import {HttpMethod} from 'models/api/types'
 
 import Action from '../Action'
 

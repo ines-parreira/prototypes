@@ -1,14 +1,14 @@
+import {Label} from '@gorgias/ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
-import {Label} from '@gorgias/ui-kit'
 
-import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import css from './Node.less'
 

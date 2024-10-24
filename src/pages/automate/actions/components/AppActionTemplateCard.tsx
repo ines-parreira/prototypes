@@ -1,15 +1,14 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {TemplateCard} from 'pages/common/components/TemplateCard'
-import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {useGetActionsApp} from 'models/workflows/queries'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
+import {TemplateCard} from 'pages/common/components/TemplateCard'
 
-import {ActionAppConfiguration, TemplateConfiguration} from '../types'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import AppConfirmationModal from './AppConfirmationModal'
-
+import {ActionAppConfiguration, TemplateConfiguration} from '../types'
 import css from './ActionsTemplatesCards.less'
+import AppConfirmationModal from './AppConfirmationModal'
 
 type Props = {
     app: Extract<ActionAppConfiguration, {type: 'app'}>

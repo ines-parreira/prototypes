@@ -1,30 +1,18 @@
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import {Scale, TooltipItem} from 'chart.js'
 import flatMap from 'lodash/flatMap'
-import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
+import map from 'lodash/map'
 import mapValues from 'lodash/mapValues'
 
 import moment, {Moment} from 'moment'
-import {Scale, TooltipItem} from 'chart.js'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+
 import {
-    AutomationBillingEventCubeWithJoins,
-    AutomationBillingEventMeasure,
-} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {
-    AutomatedInteractionByFeatures,
-    TwoDimensionalDataItem,
-} from 'pages/stats/types'
-import {Period, StatsFilters} from 'models/stat/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {SHORT_FORMAT} from 'pages/stats/common/utils'
-import {Cubes} from 'models/reporting/cubes'
-import {
-    WorkflowDatasetDimension,
-    WorkflowDatasetMeasure,
-} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
-import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
+    calculateRate,
+    workflowEndStepAutomatedInteractions,
+    workflowEndStepDropoff,
+} from 'hooks/reporting/automate/automateStatsFormulae'
 import {
     DEFAULT_WORKFLOW_ANALYTICS_DATA,
     FLOW_ENDED_WITH_TICKET_HANDOVER,
@@ -36,12 +24,26 @@ import {
     GreyArea,
     WorkflowTrendMetrics,
 } from 'hooks/reporting/automate/types'
+import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {Cubes} from 'models/reporting/cubes'
 import {
-    calculateRate,
-    workflowEndStepAutomatedInteractions,
-    workflowEndStepDropoff,
-} from 'hooks/reporting/automate/automateStatsFormulae'
+    AutomationBillingEventCubeWithJoins,
+    AutomationBillingEventMeasure,
+} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {
+    WorkflowDatasetDimension,
+    WorkflowDatasetMeasure,
+} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {Period, StatsFilters} from 'models/stat/types'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import {
+    AutomatedInteractionByFeatures,
+    TwoDimensionalDataItem,
+} from 'pages/stats/types'
+
 import {MetricTrend} from '../useMetricTrend'
 import {DisplayEventType} from './useAutomateStatsMeasureLabelMap'
 

@@ -1,27 +1,25 @@
-import React, {Component, SyntheticEvent} from 'react'
 import {Map, fromJS} from 'immutable'
+import {parse} from 'qs'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
-import {parse} from 'qs'
-import {connect, ConnectedProps} from 'react-redux'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button from 'pages/common/components/button/Button'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import withRouter from 'pages/common/utils/withRouter'
+import css from 'pages/settings/settings.less'
 import {
     fetchIntegration,
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import withRouter from 'pages/common/utils/withRouter'
-
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-
-import css from 'pages/settings/settings.less'
 
 type Props = {
     integration: Map<any, any>

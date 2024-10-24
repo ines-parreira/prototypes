@@ -1,9 +1,9 @@
 import {useMemo} from 'react'
 
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 import {HttpIntegration} from 'models/integration/types'
-import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import {LOOP_RETURNS_API_URL} from '../constants'
 

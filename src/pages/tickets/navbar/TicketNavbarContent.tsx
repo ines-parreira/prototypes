@@ -1,11 +1,13 @@
-import React, {useCallback} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {DropTargetMonitor} from 'react-dnd'
 import {produce} from 'immer'
+import React, {useCallback} from 'react'
+import {DropTargetMonitor} from 'react-dnd'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {UserViewsOrderingSettingData} from 'config/types/user'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {Section} from 'models/section/types'
 import {View, ViewVisibility} from 'models/view/types'
+import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import {SectionsState} from 'state/entities/sections/types'
 import {viewUpdated} from 'state/entities/views/actions'
 import {ViewsState} from 'state/entities/views/types'
@@ -16,8 +18,8 @@ import {
     optimisticUserSettingsSet,
 } from 'state/ui/ticketNavbar/actions'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
-import useLocalStorage from 'hooks/useLocalStorage'
+
+import css from './TicketNavbarContent.less'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
     TicketNavbarDropResult,
@@ -25,7 +27,6 @@ import TicketNavbarDropTarget, {
 } from './TicketNavbarDropTarget'
 import TicketNavbarSection from './TicketNavbarSection'
 import TicketNavbarView from './TicketNavbarView'
-import css from './TicketNavbarContent.less'
 
 export type TicketNavbarSectionElement = {
     data: Section

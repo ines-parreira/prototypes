@@ -2,6 +2,7 @@ import {
     convertStatusLimitReachedNotInstalled,
     convertStatusOkWarning,
 } from 'fixtures/convert'
+
 import {isExceedingPlanLimit} from '../isExceedingPlanLimit'
 
 describe('isExceedingPlanLimit', () => {

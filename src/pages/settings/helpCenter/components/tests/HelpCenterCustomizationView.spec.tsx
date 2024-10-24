@@ -1,21 +1,22 @@
+import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {billingState} from 'fixtures/billing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {renderWithRouter} from 'utils/testing'
-import {billingState} from 'fixtures/billing'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
+
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
+import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import * as helpCenterApi from '../../hooks/useHelpCenterApi'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

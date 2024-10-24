@@ -1,3 +1,5 @@
+import classnames from 'classnames'
+import FocusTrap from 'focus-trap-react'
 import React, {
     createContext,
     ForwardedRef,
@@ -12,9 +14,7 @@ import React, {
     useState,
 } from 'react'
 import {createPortal} from 'react-dom'
-import classnames from 'classnames'
 import {CSSTransition} from 'react-transition-group'
-import FocusTrap from 'focus-trap-react'
 
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'

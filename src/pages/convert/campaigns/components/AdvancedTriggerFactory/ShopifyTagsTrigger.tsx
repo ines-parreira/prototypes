@@ -1,21 +1,20 @@
 import React, {useEffect, useMemo, useState} from 'react'
 
-import Button from 'pages/common/components/button/Button'
-import {Value} from 'pages/common/forms/SelectField/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-
 import {useShopifyTags} from 'models/integration/queries'
 import {ShopifyTags} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
 
 import {useIntegrationContext} from '../../containers/IntegrationProvider'
 
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
 
+import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps

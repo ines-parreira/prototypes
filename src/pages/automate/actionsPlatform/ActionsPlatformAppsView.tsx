@@ -1,20 +1,19 @@
 import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
+import {IntegrationType} from 'models/integration/constants'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
+import Button from 'pages/common/components/button/Button'
 import Search from 'pages/common/components/Search'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
-import Button from 'pages/common/components/button/Button'
-import {IntegrationType} from 'models/integration/constants'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import css from './ActionsPlatformAppsView.less'
 import ActionsPlatformAppsTableRow from './components/ActionsPlatformAppsTableRow'
 import useApps from './hooks/useApps'
 import useGetAppFromActionsApp from './hooks/useGetAppFromActionsApp'
-
-import css from './ActionsPlatformAppsView.less'
 
 const ActionsPlatformAppsView = () => {
     const {

@@ -1,12 +1,13 @@
 import {render, screen} from '@testing-library/react'
-import React from 'react'
 import userEvent from '@testing-library/user-event'
-import {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
-import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import React from 'react'
+
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
+import {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import * as autoQAReportingService from 'services/reporting/autoQAReportingService'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/auto-qa/useAutoQAMetrics')
 const useAutoQAMetricsMock = assumeMock(useAutoQAMetrics)

@@ -1,12 +1,13 @@
-import React, {ReactNode} from 'react'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
+import React, {ReactNode} from 'react'
 
 import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,
     initCancelOrderPayload,
 } from 'business/shopify/order'
+import {TransactionKind} from 'constants/integrations/types/shopify'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {
     shopifyLineItemFixture,
@@ -16,7 +17,6 @@ import {
 } from 'fixtures/shopify'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {TransactionKind} from 'constants/integrations/types/shopify'
 
 import {CancelOrderModalContainer} from '../CancelOrderModal'
 

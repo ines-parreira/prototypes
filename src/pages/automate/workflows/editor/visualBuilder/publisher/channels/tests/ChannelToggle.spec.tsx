@@ -1,10 +1,12 @@
-import React from 'react'
-import {render, screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen} from '@testing-library/react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import ChannelToggle from '../ChannelToggle'
 
 jest.mock('launchdarkly-react-client-sdk')

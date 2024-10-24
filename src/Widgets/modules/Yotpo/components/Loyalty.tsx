@@ -1,5 +1,5 @@
-import React from 'react'
 import type {Map} from 'immutable'
+import React from 'react'
 
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 

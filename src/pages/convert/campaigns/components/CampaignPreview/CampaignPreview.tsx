@@ -1,5 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import {
     GorgiasChatLauncherType,
@@ -7,13 +7,14 @@ import {
     GorgiasChatPosition,
 } from 'models/integration/types'
 
-import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
+import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
+
 import {CampaignProduct} from '../../types/CampaignProduct'
-import {ChatCampaign} from './components/ChatCampaign'
 import css from './CampaignPreview.less'
+import {ChatCampaign} from './components/ChatCampaign'
 
 type Props = {
     html: string

@@ -9,17 +9,17 @@ import cn from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {logEvent, SegmentEvent} from 'common/segment'
 
 import useCount from '../hooks/useCount'
-import transformKnockNotification from '../utils/transformKnockNotification'
 import {RawNotification} from '../types'
+import transformKnockNotification from '../utils/transformKnockNotification'
 
+import css from './Button.less'
 import FeedHeader from './FeedHeader'
 import FeedItemComponent from './FeedItem'
-import css from './Button.less'
 import './Feed.less'
 
 export default function NotificationsButton() {

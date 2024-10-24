@@ -1,7 +1,8 @@
-import React from 'react'
 import {render} from '@testing-library/react'
-import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import React from 'react'
+
 import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
+import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 
 describe('DrillDownTableContentSkeleton', () => {
     it('renders correctly', () => {

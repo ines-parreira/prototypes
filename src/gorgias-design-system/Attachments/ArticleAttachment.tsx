@@ -1,6 +1,7 @@
-import React from 'react'
-import styled from '@emotion/styled'
 import {useTheme} from '@emotion/react'
+import styled from '@emotion/styled'
+import React from 'react'
+
 import {gorgiasColors} from 'gorgias-design-system/styles'
 import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 

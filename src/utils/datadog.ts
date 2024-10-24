@@ -1,13 +1,14 @@
 import {datadogLogs} from '@datadog/browser-logs'
 import {datadogRum} from '@datadog/browser-rum'
 
-import {Account} from 'state/currentAccount/types'
-import {User} from 'config/types/user'
 import {
     DATADOG_CLIENT_TOKEN,
     DATADOG_RUM_APPLICATION_ID,
     DATADOG_RUM_CLIENT_TOKEN,
 } from 'config'
+import {User} from 'config/types/user'
+import {Account} from 'state/currentAccount/types'
+
 import {GorgiasUIEnv} from './environment'
 
 export const DATADOG_SITE = 'datadoghq.com'

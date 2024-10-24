@@ -1,8 +1,10 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
-import {renderWithRouter} from 'utils/testing'
+import React from 'react'
+
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {renderWithRouter} from 'utils/testing'
+
 import CreateReportOrderIssueFlowScenarioView from '../CreateReportOrderIssueFlowScenarioView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

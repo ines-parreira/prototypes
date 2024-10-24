@@ -1,5 +1,5 @@
-import React, {Fragment, ReactNode} from 'react'
 import hash from 'object-hash'
+import React, {Fragment, ReactNode} from 'react'
 
 import {renderTemplate} from './template'
 

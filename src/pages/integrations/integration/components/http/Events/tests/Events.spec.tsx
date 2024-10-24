@@ -1,17 +1,18 @@
-import React from 'react'
 import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
-
-import {assumeMock} from 'utils/testing'
-import {HttpMethod} from 'models/api/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {HTTPIntegrationEvent} from 'models/integration/types'
-import {useGetHTTPEvents} from 'models/integration/queries/http'
+import React from 'react'
 
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
+import {HttpMethod} from 'models/api/types'
+import {useGetHTTPEvents} from 'models/integration/queries/http'
+import {HTTPIntegrationEvent} from 'models/integration/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {assumeMock} from 'utils/testing'
+
 import Events from '../Events'
 
 jest.mock('models/integration/queries/http')

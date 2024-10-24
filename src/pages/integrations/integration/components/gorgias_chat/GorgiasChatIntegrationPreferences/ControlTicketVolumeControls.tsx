@@ -1,19 +1,18 @@
-import React, {useRef} from 'react'
-import {Link} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import classnames from 'classnames'
-
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import React, {useRef} from 'react'
+import {Link} from 'react-router-dom'
 
 import {TicketChannel} from 'business/types/ticket'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {ARTICLE_RECOMMENDATION} from 'pages/automate/common/components/constants'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import css from './GorgiasChatIntegrationPreferences.less'
 
 type Props = {

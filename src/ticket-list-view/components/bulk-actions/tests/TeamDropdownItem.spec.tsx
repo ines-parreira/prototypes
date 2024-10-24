@@ -1,6 +1,6 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {Emoji} from 'emoji-mart'
+import React from 'react'
 
 import {assumeMock} from 'utils/testing'
 

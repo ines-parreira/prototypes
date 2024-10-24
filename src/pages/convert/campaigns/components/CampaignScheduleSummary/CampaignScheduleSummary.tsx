@@ -1,15 +1,14 @@
 import React, {useMemo} from 'react'
 
+import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
 import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {formatDatetime, Datetime} from 'utils'
 
-import {SCHEDULE_RULE_LABELS} from './constants'
-
 import css from './CampaignScheduleSummary.less'
+import {SCHEDULE_RULE_LABELS} from './constants'
 
 type Props = {
     scheduleConfiguration: ScheduleSchema

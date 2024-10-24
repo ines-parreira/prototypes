@@ -1,10 +1,11 @@
 import React from 'react'
+
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 export default function SupportedChannelsWarning({
     nodeType,

@@ -1,6 +1,8 @@
 import React from 'react'
-import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
+
 import {Language} from 'constants/languages'
+import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
+
 import {
     HelpCenterArticleItem,
     HelpCenterCreationWizardStep,
@@ -8,10 +10,10 @@ import {
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
 import {isProduction, isStaging} from '../../../utils/environment'
-import {emojiRegex} from './utils/emojiRegex'
 
 import {HelpCenterTheme} from './types'
 import {HelpCenterLayout} from './types/layout.enum'
+import {emojiRegex} from './utils/emojiRegex'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 

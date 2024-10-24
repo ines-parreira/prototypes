@@ -1,23 +1,24 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
+import {ContactForm} from 'models/contactForm/types'
+import Button from 'pages/common/components/button/Button'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Button from 'pages/common/components/button/Button'
-import settingsCss from 'pages/settings/settings.less'
 import {
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_CUSTOMIZATION_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {ContactForm} from 'models/contactForm/types'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import css from './ManageContactForms.less'
+import settingsCss from 'pages/settings/settings.less'
+
 import {ContactFormTableRow} from './ContactFormTableRow'
+import css from './ManageContactForms.less'
 
 export type Props = {
     contactForms: ContactForm[]

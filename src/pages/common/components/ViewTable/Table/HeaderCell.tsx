@@ -1,14 +1,15 @@
-import React, {ComponentType, useCallback, useMemo} from 'react'
-import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
+import {fromJS, Map, List} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ComponentType, useCallback, useMemo} from 'react'
 
-import {TicketSearchSortableProperties} from 'models/search/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
+import {TicketSearchSortableProperties} from 'models/search/types'
+import {EntityType} from 'models/view/types'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import {fetchViewItems, setOrderDirection} from 'state/views/actions'
 import {
@@ -18,7 +19,6 @@ import {
     getSelectedItemsIds,
 } from 'state/views/selectors'
 import {fieldPath as getFieldPath} from 'utils'
-import {EntityType} from 'models/view/types'
 
 import css from './HeaderCell.less'
 

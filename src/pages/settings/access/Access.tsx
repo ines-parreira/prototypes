@@ -1,28 +1,29 @@
-import React, {FormEvent, useCallback, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 import classnames from 'classnames'
+import {List} from 'immutable'
+import React, {FormEvent, useCallback, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form} from 'reactstrap'
-import {Label} from '@gorgias/ui-kit'
-import {List} from 'immutable'
 
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'
+import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import {submitSetting} from 'state/currentAccount/actions'
 import {
     getAccessSettings,
     getTwoFAEnforcedDatetime,
 } from 'state/currentAccount/selectors'
-import {RootState} from 'state/types'
 import {
     AccountSettingAccess,
     AccountSettingAccessSignupMode as SignupMode,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
-import useAppSelector from 'hooks/useAppSelector'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {RootState} from 'state/types'
+
 import css from '../settings.less'
 import SsoToggleButton from './SsoToggleButton'
 

@@ -1,31 +1,31 @@
+import _get from 'lodash/get'
 import React, {memo, useCallback, useContext, useEffect, useState} from 'react'
 import {DropdownItem} from 'reactstrap'
-import _get from 'lodash/get'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {executeAction} from 'state/infobar/actions'
-import {getPendingActionCallbacks} from 'state/infobar/selectors'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {AppContext} from 'providers/infobar/AppContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'
+import {mapActionToActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
 import {
     Action,
     ParameterTypes,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {mapActionToActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
 import Modal from 'pages/common/components/modal/Modal'
+import {AppContext} from 'providers/infobar/AppContext'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import {executeAction} from 'state/infobar/actions'
+import {getPendingActionCallbacks} from 'state/infobar/selectors'
 
 import {ACTION_PARAMETER_PATHS} from '../../constants'
-import css from './Button.less'
 import ActionEditor from './ActionEditor'
+import css from './Button.less'
 
 type Props = {
     label: string

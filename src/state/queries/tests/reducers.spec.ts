@@ -1,6 +1,7 @@
 import {GorgiasAction} from 'state/types'
-import reducer, {initialState} from '../reducers'
+
 import * as constants from '../constants'
+import reducer, {initialState} from '../reducers'
 
 jest.mock('utils/date', () => ({
     getMoment: () => ({

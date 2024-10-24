@@ -1,13 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
 import {LEAF_TYPES} from 'models/widget/constants'
+import {assumeMock, getLastMockCall} from 'utils/testing'
 
 import {FieldEditFormData} from '../../../types'
 import CopyButton from '../../CopyButton'
-import FieldEditForm from '../FieldEditForm'
 import Field, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../Field'
+import FieldEditForm from '../FieldEditForm'
 
 const COPY_BUTTON_TEST_ID = 'copy-button'
 jest.mock('../../CopyButton', () =>

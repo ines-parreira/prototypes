@@ -1,26 +1,27 @@
-import {Link} from 'react-router-dom'
-import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
-import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
-import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import React, {ComponentProps} from 'react'
+import {Link} from 'react-router-dom'
+
 import {getFormattedDurationEndedCall} from 'models/voiceCall/utils'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
+import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
+import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import VoiceCallActivity from 'pages/stats/voice/components/VoiceCallActivity/VoiceCallActivity'
+import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {
     isInboundVoiceCallSummary,
     VoiceCallSummary,
 } from 'pages/stats/voice/models/types'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
-import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
-import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import LiveVoiceCallStatusLabel from '../LiveVoice/LiveVoiceCallStatusLabel'
 import {VoiceCallTableColumnName} from './constants'
 
-import css from './VoiceCallTable.less'
 import {filterAndOrderCells} from './utils'
+import css from './VoiceCallTable.less'
 
 export const getOrderedHeaderCells = ({
     isTableScrolled,

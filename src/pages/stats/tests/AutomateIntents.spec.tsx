@@ -1,23 +1,22 @@
+import _noop from 'lodash/noop'
 import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import _noop from 'lodash/noop'
 
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
+import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 import {
     intentsBreakdownPerDay,
     intentsOccurrence,
     intentsOverview,
 } from 'fixtures/stats'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {renderWithRouter} from 'utils/testing'
-import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
-
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateIntents from 'pages/stats/AutomateIntents'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {renderWithRouter} from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))

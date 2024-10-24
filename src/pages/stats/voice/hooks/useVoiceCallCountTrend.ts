@@ -1,8 +1,8 @@
-import {StatsFilters} from 'models/stat/types'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {getPreviousPeriod} from 'utils/reporting'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {StatsFilters} from 'models/stat/types'
+import {getPreviousPeriod} from 'utils/reporting'
 
 export const useVoiceCallCountTrend = (
     filters: StatsFilters,

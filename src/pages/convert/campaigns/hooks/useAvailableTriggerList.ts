@@ -1,8 +1,9 @@
+import _pickBy from 'lodash/pickBy'
 import {useMemo} from 'react'
 
-import _pickBy from 'lodash/pickBy'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
+
 import {CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG} from '../constants/triggers'
 import {TriggerConfigValue} from '../types/TriggerConfig'
 

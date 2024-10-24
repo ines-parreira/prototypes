@@ -1,11 +1,12 @@
-import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
 import {act} from 'react-dom/test-utils'
+
+import * as logout from '../logoutUser'
 import SessionChangeDetection, {
     LOGOUT_EXPLANATION,
     USER_CHANGE_EXPLANATION,
 } from '../SessionChangeDetection'
-import * as logout from '../logoutUser'
 
 describe('<SessionChangeDetection />', () => {
     describe('Logout event', () => {

@@ -1,11 +1,12 @@
-import React, {useRef, useState} from 'react'
 import {Tooltip} from '@gorgias/ui-kit'
+import React, {useRef, useState} from 'react'
+
+import {PhoneIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import {PhoneIntegration} from 'models/integration/types'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './PhoneDevice.less'
 import usePhoneNumbers from './usePhoneNumbers'

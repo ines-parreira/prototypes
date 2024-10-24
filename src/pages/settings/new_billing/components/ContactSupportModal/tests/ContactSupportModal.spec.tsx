@@ -1,17 +1,19 @@
-import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {RootState, StoreDispatch} from 'state/types'
-import client from 'models/api/resources'
-import * as actions from 'state/notifications/actions'
+
 import {
     HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
+import client from 'models/api/resources'
+import * as actions from 'state/notifications/actions'
+import {RootState, StoreDispatch} from 'state/types'
+
 import ContactSupportModal from '../ContactSupportModal'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()

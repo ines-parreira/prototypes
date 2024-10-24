@@ -1,20 +1,21 @@
-import React from 'react'
-import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {AgentLabel} from 'pages/common/utils/labels'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 
-import PrivateReplyEvent from '../PrivateReplyEvent'
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
     FACEBOOK_PRIVATE_REPLY_ACTION,
     INSTAGRAM_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from '../constants'
+import PrivateReplyEvent from '../PrivateReplyEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

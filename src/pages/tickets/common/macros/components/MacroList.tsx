@@ -1,7 +1,7 @@
-import React from 'react'
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import {List, Map} from 'immutable'
+import _noop from 'lodash/noop'
+import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

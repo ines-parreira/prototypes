@@ -1,12 +1,12 @@
 import copy from 'copy-to-clipboard'
 import React, {MouseEvent} from 'react'
 
-import IconButton from 'pages/common/components/button/IconButton'
 import useAppDispatch from 'hooks/useAppDispatch'
+import IconButton from 'pages/common/components/button/IconButton'
 import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 
-import {NotificationStatus} from 'state/notifications/types'
 import css from './CopyButton.less'
 
 export default function CopyButton({

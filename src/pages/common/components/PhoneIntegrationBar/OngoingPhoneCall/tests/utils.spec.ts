@@ -1,4 +1,5 @@
 import {AvailabilityStatusTag} from 'config/types/user'
+
 import {mergeAgentData, getAvailabilityBadgeColor} from '../utils'
 
 describe('utils', () => {

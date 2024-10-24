@@ -3,9 +3,8 @@ import React, {useState} from 'react'
 import type {Macro} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 
-import {PreviewPopover} from './PreviewPopover'
-
 import css from './MacroButton.less'
+import {PreviewPopover} from './PreviewPopover'
 
 type Props = {
     macro: Macro

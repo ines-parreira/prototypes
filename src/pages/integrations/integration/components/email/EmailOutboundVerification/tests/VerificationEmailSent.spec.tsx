@@ -9,10 +9,12 @@ import {
 import React from 'react'
 import {Provider} from 'react-redux'
 import createMockStore from 'redux-mock-store'
-import {SenderVerification} from 'models/singleSenderVerification/types'
-import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
-import {RootState, StoreDispatch} from 'state/types'
+
 import {EmailProvider} from 'models/integration/constants'
+import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
+import {SenderVerification} from 'models/singleSenderVerification/types'
+import {RootState, StoreDispatch} from 'state/types'
+
 import VerificationEmailSent from '../SingleSenderVerification/VerificationEmailSent'
 
 jest.mock('models/singleSenderVerification/resources')

@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
 
 type Props = {
     children: ReactNode

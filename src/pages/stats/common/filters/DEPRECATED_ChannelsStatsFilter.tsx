@@ -1,6 +1,12 @@
+import isString from 'lodash/isString'
 import React, {useCallback} from 'react'
 
-import isString from 'lodash/isString'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {LegacyStatsFilters} from 'models/stat/types'
+
+import {filterChannels} from 'pages/stats/common/filters/helpers'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 import {
     ChannelIdentifier,
     Channel,
@@ -8,12 +14,6 @@ import {
     toChannel,
 } from 'services/channels'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import SelectFilter from 'pages/stats/common/SelectFilter'
-import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
-import {filterChannels} from 'pages/stats/common/filters/helpers'
 
 type Props = {
     value: LegacyStatsFilters['channels']

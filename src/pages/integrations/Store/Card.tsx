@@ -1,19 +1,20 @@
-import React, {ReactNode} from 'react'
-import {Link} from 'react-router-dom'
-import Skeleton from 'react-loading-skeleton'
 import classnames from 'classnames'
+import React, {ReactNode} from 'react'
+import Skeleton from 'react-loading-skeleton'
+import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import {IntegrationType} from 'models/integration/types'
-import {IntegrationListItem} from 'state/integrations/types'
+import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
 import {getApplicationById} from 'services/applications'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {IntegrationListItem} from 'state/integrations/types'
+import {assetsUrl} from 'utils'
+
 import css from './Card.less'
 
 export const LOADING_TEST_ID = 'card-loading'

@@ -1,9 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {assumeMock} from 'utils/testing'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreState} from 'state/types'
 import {IntegrationType} from 'models/integration/constants'
+import {StoreState} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import {useHasAccessToAILibrary} from '../useHasAccessToAILibrary'
 
 jest.mock('hooks/useAppSelector')

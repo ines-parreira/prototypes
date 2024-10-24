@@ -1,9 +1,25 @@
-import React, {ChangeEvent, useCallback, useContext, useMemo} from 'react'
 import classnames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import React, {ChangeEvent, useCallback, useContext, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form} from 'reactstrap'
-import {fromJS, List, Map} from 'immutable'
 
+import {
+    getFinalRefundOrderPayload,
+    getFormattedRefundAmount,
+} from 'business/shopify/order'
+import {getRefundAmount} from 'business/shopify/refund'
+import usePrevious from 'hooks/usePrevious'
+import useUpdateEffect from 'hooks/useUpdateEffect'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Spinner from 'pages/common/components/Spinner'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     onCancel,
     onInit,
@@ -15,22 +31,6 @@ import {
 import {getRefundOrderState} from 'state/infobarActions/shopify/refundOrder/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {
-    getFinalRefundOrderPayload,
-    getFormattedRefundAmount,
-} from 'business/shopify/order'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import Spinner from 'pages/common/components/Spinner'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {getRefundAmount} from 'business/shopify/refund'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
 import OrderForm from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
 

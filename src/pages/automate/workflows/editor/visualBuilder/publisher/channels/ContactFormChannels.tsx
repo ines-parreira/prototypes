@@ -1,10 +1,12 @@
 import React, {useCallback, useMemo} from 'react'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+
 import {TicketChannel} from 'business/types/ticket'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
 import ChannelToggle from './ChannelToggle'

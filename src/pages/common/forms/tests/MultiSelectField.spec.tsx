@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 
 import MultiSelectField from '../MultiSelectField'
 

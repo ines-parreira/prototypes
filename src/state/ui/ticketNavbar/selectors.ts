@@ -7,6 +7,7 @@ import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
 import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
+
 import {TicketNavbarElementType} from './types'
 
 const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {

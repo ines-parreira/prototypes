@@ -1,9 +1,10 @@
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
 import {
     GetInstallationSnippetParams,
     GetInstallationSnippetResponse,
     GetApplicationsResponse,
 } from 'models/integration/types'
+import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+
 import {
     Texts,
     Translations,

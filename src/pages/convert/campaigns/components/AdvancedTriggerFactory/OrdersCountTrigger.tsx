@@ -1,17 +1,18 @@
+import toInteger from 'lodash/toInteger'
 import React, {useEffect, useState} from 'react'
 
-import toInteger from 'lodash/toInteger'
 import Button from 'pages/common/components/button/Button'
-import {Value} from 'pages/common/forms/SelectField/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
 
 import {isTriggerValueNonNegative} from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
+
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
 
+import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
 import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps

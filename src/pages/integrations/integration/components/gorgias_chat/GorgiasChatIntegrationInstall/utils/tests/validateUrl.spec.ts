@@ -1,4 +1,5 @@
 import {GorgiasChatInstallationVisibilityConditionOperator} from 'models/integration/types'
+
 import validateUrl from '../validateUrl'
 
 describe('validateUrl()', () => {

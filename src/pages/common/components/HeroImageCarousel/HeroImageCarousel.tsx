@@ -1,8 +1,8 @@
+import classNames from 'classnames'
+import _isString from 'lodash/isString'
 import React, {useRef, useState} from 'react'
 import Slider from 'react-slick'
-import classNames from 'classnames'
 
-import _isString from 'lodash/isString'
 import Button from '../button/Button'
 import css from './HeroImageCarousel.less'
 

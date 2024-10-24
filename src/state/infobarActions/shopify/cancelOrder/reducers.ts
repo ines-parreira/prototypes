@@ -2,7 +2,6 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../../../types'
 
-import {CancelOrderState} from './types'
 import {
     SET_INITIAL_STATE,
     SET_LINE_ITEMS,
@@ -13,6 +12,7 @@ import {
     SET_TRANSACTIONS,
     SET_RESTOCK,
 } from './constants'
+import {CancelOrderState} from './types'
 
 export const initialState: CancelOrderState = fromJS({
     loading: false,

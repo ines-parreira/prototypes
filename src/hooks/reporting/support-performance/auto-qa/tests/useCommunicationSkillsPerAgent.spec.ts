@@ -1,11 +1,12 @@
-import moment from 'moment'
 import {renderHook} from '@testing-library/react-hooks'
+import moment from 'moment'
+
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import {communicationSkillsPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
-import {communicationSkillsPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')

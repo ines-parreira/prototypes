@@ -1,6 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {useGetWelcomePageAcknowledged} from 'models/aiAgent/queries'
 import {WelcomePageAcknowledgedResponse} from 'models/aiAgent/types'
+
 import {useWelcomePageAcknowledged} from '../useWelcomePageAcknowledged'
 
 jest.mock('models/aiAgent/queries')

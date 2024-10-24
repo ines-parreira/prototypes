@@ -1,15 +1,15 @@
-import React, {ComponentProps, SyntheticEvent} from 'react'
 import {mount, shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 
+import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
 } from '../../../../../../config/integrations/index'
-import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
 

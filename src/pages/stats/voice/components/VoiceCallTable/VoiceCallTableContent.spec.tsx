@@ -1,14 +1,16 @@
-import React, {ComponentProps} from 'react'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {VoiceCallDirection} from '@gorgias/api-queries'
-import {assumeMock} from 'utils/testing'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {VoiceCallStatus} from 'models/voiceCall/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
 import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
+import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
+
 import VoiceCallTableContent from './VoiceCallTableContent'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallList')

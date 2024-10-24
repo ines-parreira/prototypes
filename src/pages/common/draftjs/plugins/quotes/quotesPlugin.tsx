@@ -1,18 +1,18 @@
-import React from 'react'
 import {
     ContentBlock,
     DefaultDraftBlockRenderMap,
     DraftBlockRenderConfig,
     DraftBlockType,
 } from 'draft-js'
+import React from 'react'
 
 import {EditorBlockType} from '../../../../../utils/editor'
 
+import styles from './quotesBlockStyle.less'
+import {getQuoteDepth} from './quotesEditorUtils'
 import QuotesWrapper, {
     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX,
 } from './QuotesWrapper'
-import {getQuoteDepth} from './quotesEditorUtils'
-import styles from './quotesBlockStyle.less'
 
 export const WRAPPABLE_BLOCK_TYPES = [
     EditorBlockType.HeaderOne,

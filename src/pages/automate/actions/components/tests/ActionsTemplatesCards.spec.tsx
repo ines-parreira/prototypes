@@ -1,12 +1,14 @@
-import React from 'react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {screen} from '@testing-library/react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
+
 import ActionsTemplatesCards from '../ActionsTemplatesCards'
 
 const mockStore = configureMockStore([thunk])

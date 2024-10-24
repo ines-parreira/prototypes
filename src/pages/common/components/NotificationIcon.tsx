@@ -2,11 +2,11 @@ import React, {ComponentProps, useMemo} from 'react'
 import {STATUSES} from 'reapop'
 import ReapopNotificationIcon from 'reapop/dist/components/NotificationIcon'
 
+import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
+import loadingIcon from 'assets/img/icons/loading.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
-import errorIcon from 'assets/img/icons/error.svg'
-import loadingIcon from 'assets/img/icons/loading.svg'
 
 const icon = {
     [STATUSES.info]: infoIcon,

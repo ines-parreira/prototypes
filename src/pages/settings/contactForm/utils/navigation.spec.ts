@@ -1,4 +1,5 @@
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+
 import {CONTACT_FORM_ID_PARAM} from '../constants'
 
 describe('navigation', () => {

@@ -2,8 +2,8 @@ import {Map, List} from 'immutable'
 
 import {DiscountType} from '../../constants/integrations/types/shopify'
 
-import {formatPrice} from './number'
 import {getDraftOrderTotalLineItemsPrice} from './lineItem'
+import {formatPrice} from './number'
 
 export function getDiscountAmount(
     price: number,

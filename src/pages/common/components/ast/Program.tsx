@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
-
-import {RuleItemActions} from 'pages/settings/rules/types'
+import React, {ComponentProps} from 'react'
 
 import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
-import Statement from './statements/Statement'
-import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
+import {RuleItemActions} from 'pages/settings/rules/types'
+
 import Expression from './expression/Expression'
+import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
+import Statement from './statements/Statement'
 
 type Props = {
     rule: Map<any, any>

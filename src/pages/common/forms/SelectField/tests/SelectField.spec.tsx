@@ -1,5 +1,5 @@
-import React, {ChangeEvent, ComponentProps, SyntheticEvent} from 'react'
 import {shallow, mount} from 'enzyme'
+import React, {ChangeEvent, ComponentProps, SyntheticEvent} from 'react'
 
 // refs are not passed by enzyme to popper.js
 // https://github.com/facebook/react/issues/9244

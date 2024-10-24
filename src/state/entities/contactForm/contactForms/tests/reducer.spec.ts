@@ -1,4 +1,5 @@
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+
 import {
     contactFormUpdated,
     contactFormDeleted,

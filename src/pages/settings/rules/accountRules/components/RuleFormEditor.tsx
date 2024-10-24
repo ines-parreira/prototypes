@@ -2,6 +2,26 @@ import classnames from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Navbar, Nav} from 'reactstrap'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAsyncFn from 'hooks/useAsyncFn'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import {createRule, deleteRule, updateRule} from 'models/rule/resources'
+import {ErrorsCollector} from 'pages/common/components/ast/Errors'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
+import {
+    ruleCreated,
+    ruleDeleted,
+    ruleUpdated,
+} from 'state/entities/rules/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
+import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {
     ManagedRule,
     ManagedRuleEmptySettings,
@@ -9,37 +29,17 @@ import {
     RuleDraft,
     RuleType,
 } from 'state/rules/types'
-import settingsCss from 'pages/settings/settings.less'
 
-import {ErrorsCollector} from 'pages/common/components/ast/Errors'
-import Button from 'pages/common/components/button/Button'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import PageHeader from 'pages/common/components/PageHeader'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {
-    ruleCreated,
-    ruleDeleted,
-    ruleUpdated,
-} from 'state/entities/rules/actions'
-import {notify} from 'state/notifications/actions'
-import {createRule, deleteRule, updateRule} from 'models/rule/resources'
-import history from 'pages/history'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {ManagedRuleDisplayName} from 'state/rules/constants'
-
+import AutoresponderViewButton from '../../components/AutoresponderViewButton'
 import TrackedRuleLibraryLink, {
     Source,
 } from '../../components/TrackedRuleLibraryLink'
-import AutoresponderViewButton from '../../components/AutoresponderViewButton'
 
-import {RuleTicketList} from './RuleTicketList'
-import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
 import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
+import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
 
 import css from './RuleFormEditor.less'
+import {RuleTicketList} from './RuleTicketList'
 
 type Props = {
     rule?: Rule | ManagedRule

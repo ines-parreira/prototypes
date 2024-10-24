@@ -1,7 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 
 import {produce} from 'immer'
+import React from 'react'
+
 import {
     bigCommerceCustomLineItemFixture,
     bigCommerceLineItemFixture,

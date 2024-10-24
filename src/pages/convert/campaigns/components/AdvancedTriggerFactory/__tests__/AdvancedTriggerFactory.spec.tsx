@@ -1,17 +1,17 @@
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
-import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/AdvancedTriggerFactory'
-import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {
     useProductsFromShopifyIntegration,
     useShopifyTags,
 } from 'models/integration/queries'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/AdvancedTriggerFactory'
+import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/convert/campaigns/containers/TriggersProvider')
 const useTriggersMock = assumeMock(useTriggers)

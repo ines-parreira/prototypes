@@ -1,17 +1,18 @@
-import React, {useEffect, useState} from 'react'
 import _noop from 'lodash/noop'
 import moment from 'moment'
+import React, {useEffect, useState} from 'react'
 import {useDispatch} from 'react-redux'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {DropdownOption} from 'pages/stats/types'
+import useEffectOnce from 'hooks/useEffectOnce'
 import Filter from 'pages/stats/common/components/Filter'
 import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
+import {DropdownOption} from 'pages/stats/types'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {setStatsFilters} from 'state/stats/statsSlice'
-import useEffectOnce from 'hooks/useEffectOnce'
-import BackToActionFormButton from './BackToActionFormButton'
 
 import css from './ActionEventsHeader.less'
+import BackToActionFormButton from './BackToActionFormButton'
 
 type Props = {
     initialStartDate: Date

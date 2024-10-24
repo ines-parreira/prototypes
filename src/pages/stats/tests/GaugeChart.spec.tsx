@@ -1,13 +1,15 @@
-import React from 'react'
 import {act, render, screen} from '@testing-library/react'
 
 import userEvent from '@testing-library/user-event'
+import React from 'react'
+
 import {
     ChatWorkload,
     EmailWorkload,
     InstagramWorkload,
     PhoneWorkload,
 } from 'fixtures/chart'
+
 import GaugeChart from '../GaugeChart'
 
 describe('<GaugeChart />', () => {

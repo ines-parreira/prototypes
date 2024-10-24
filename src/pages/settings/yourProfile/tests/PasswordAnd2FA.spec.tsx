@@ -1,16 +1,17 @@
-import React from 'react'
+import {fireEvent, screen} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fireEvent, screen} from '@testing-library/react'
 
 import {useFlag} from 'common/flags'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import PasswordAnd2FA from '../PasswordAnd2FA'
+
 import ChangePasswordContainer from '../ChangePassword'
+import PasswordAnd2FA from '../PasswordAnd2FA'
 
 jest.mock('../ChangePassword', () => ({
     __esModule: true,

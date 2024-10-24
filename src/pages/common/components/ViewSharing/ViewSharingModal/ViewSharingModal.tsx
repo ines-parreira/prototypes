@@ -1,3 +1,5 @@
+import {AxiosError} from 'axios'
+import {fromJS, Map, List} from 'immutable'
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {
     Modal,
@@ -6,8 +8,6 @@ import {
     ModalHeader,
     UncontrolledTooltip,
 } from 'reactstrap'
-import {fromJS, Map, List} from 'immutable'
-import {AxiosError} from 'axios'
 
 import {useAppNode} from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,8 +19,8 @@ import {viewUpdated} from 'state/entities/views/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
+import ViewSharingModalBody from './ViewSharingModalBody'
 
 type Props = {
     view: Map<any, any>

@@ -1,6 +1,6 @@
-import React from 'react'
-import classnames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'

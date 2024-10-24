@@ -1,22 +1,23 @@
-import React from 'react'
-import classnames from 'classnames'
-import {Link, useHistory} from 'react-router-dom'
-import _noop from 'lodash/noop'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
+import React from 'react'
+import {Link, useHistory} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
+import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
+import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
 import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
 
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
-import {useGetShopifyPages} from '../../queries'
+import {getCurrentUser} from 'state/currentUser/selectors'
+
 import {HELP_CENTER_BASE_PATH} from '../../constants'
+import {useGetShopifyPages} from '../../queries'
+import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 import {
     HELP_CENTER_AUTO_EMBED_CARD_TEST_ID,
     HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,

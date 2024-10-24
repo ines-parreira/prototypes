@@ -1,23 +1,22 @@
+import {useQueryClient} from '@tanstack/react-query'
 import React, {useMemo} from 'react'
 import {useParams, useHistory, Redirect} from 'react-router-dom'
-import {useQueryClient} from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {handleError} from 'pages/automate/actions/hooks/errorHandler'
-import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {
     useGetWorkflowConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {handleError} from 'pages/automate/actions/hooks/errorHandler'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import {StoresWorkflowConfiguration} from './types'
+import css from './ActionsView.less'
 import CustomActionForm from './components/CustomActionForm'
 import TemplateActionForm from './components/TemplateActionForm'
-
-import css from './ActionsView.less'
+import {StoresWorkflowConfiguration} from './types'
 
 const EditActionFormView = () => {
     const queryClient = useQueryClient()

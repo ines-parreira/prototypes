@@ -1,18 +1,19 @@
 import {useCallback, useEffect, useMemo, useState} from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {HelpCenter} from 'models/helpCenter/types'
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {HelpCenter} from 'models/helpCenter/types'
 import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
-import useAppSelector from 'hooks/useAppSelector'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {reportError} from 'utils/errors'
+
 import {useHelpCenterApi} from './useHelpCenterApi'
 
 type HelpCenterListHook = {

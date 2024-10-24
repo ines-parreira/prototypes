@@ -1,11 +1,16 @@
+import classNames from 'classnames'
+import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {isEmpty, isEqual} from 'lodash'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {fromJS} from 'immutable'
 import {Form, Label} from 'reactstrap'
 
-import classNames from 'classnames'
-import {isEmpty, isEqual} from 'lodash'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {PhoneFunction} from 'business/twilio'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {
     PhoneIntegration,
     PhoneIntegrationMeta,
@@ -13,32 +18,23 @@ import {
     PhoneRingingBehaviour,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import CheckBox from 'pages/common/forms/CheckBox'
 import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import CheckBox from 'pages/common/forms/CheckBox'
+import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+
+import settingsCss from 'pages/settings/settings.less'
+
+import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {PhoneFunction} from 'business/twilio'
-import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 
-import settingsCss from 'pages/settings/settings.less'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
-import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPreferencesCallRecordings'
-import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
-import css from './VoiceIntegrationPreferences.less'
-import {isValueInRange} from './utils'
 import {
     RING_TIME_DEFAULT_VALUE,
     RING_TIME_MAX_VALUE,
@@ -48,6 +44,11 @@ import {
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
 } from './constants'
+import {isValueInRange} from './utils'
+import css from './VoiceIntegrationPreferences.less'
+import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPreferencesCallRecordings'
+import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
+import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
 
 type Props = {
     integration: PhoneIntegration

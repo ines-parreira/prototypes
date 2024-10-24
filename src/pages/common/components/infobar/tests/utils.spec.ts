@@ -1,10 +1,7 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
-import {WidgetEnvironment} from 'state/widgets/types'
 
-import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
-import {getDateAndTimeFormat} from 'utils/datetime'
 import {
     DateTimeResultFormatType,
     DateFormatType,
@@ -12,6 +9,11 @@ import {
     DateAndTimeFormatting,
 } from 'constants/datetime'
 import {Template, Source} from 'models/widget/types'
+import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
+import {WidgetEnvironment} from 'state/widgets/types'
+
+import {getDateAndTimeFormat} from 'utils/datetime'
+
 import * as utils from '../utils'
 
 describe('widgets infobar utils', () => {

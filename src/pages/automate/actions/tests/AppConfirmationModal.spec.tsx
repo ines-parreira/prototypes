@@ -1,5 +1,5 @@
-import React from 'react'
 import {render, screen, act, fireEvent} from '@testing-library/react'
+import React from 'react'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 

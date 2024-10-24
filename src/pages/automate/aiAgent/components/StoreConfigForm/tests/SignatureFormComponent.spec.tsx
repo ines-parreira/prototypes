@@ -1,8 +1,9 @@
-import React from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
+
 import '@testing-library/jest-dom'
-import {SignatureFormComponent} from '../FormComponents/SignatureFormComponent'
 import {INITIAL_FORM_VALUES} from '../../../constants'
+import {SignatureFormComponent} from '../FormComponents/SignatureFormComponent'
 
 describe('SignatureFormComponent', () => {
     const mockUpdateValue = jest.fn()

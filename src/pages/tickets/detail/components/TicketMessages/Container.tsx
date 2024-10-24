@@ -1,20 +1,21 @@
-import React, {Component, ReactNode} from 'react'
-import _memoize from 'lodash/memoize'
 import classNamesBind from 'classnames/bind'
-import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
+import _memoize from 'lodash/memoize'
+import moment, {Moment} from 'moment'
+import React, {Component, ReactNode} from 'react'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
-import {scrollToReactNode} from 'pages/common/utils/keyboard'
 import {IntegrationType} from 'models/integration/constants'
 import {isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
-import css from './Container.less'
-import Header from './Header'
-import Footer from './Footer'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
+import {scrollToReactNode} from 'pages/common/utils/keyboard'
+
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
+import css from './Container.less'
+import Footer from './Footer'
+import Header from './Header'
 
 const classNames = classNamesBind.bind(css)
 

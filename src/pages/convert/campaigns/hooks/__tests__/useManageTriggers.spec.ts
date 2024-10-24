@@ -1,14 +1,14 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
 import _omit from 'lodash/omit'
+
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
+import {CampaignTrigger} from '../../types/CampaignTrigger'
+import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {createTrigger} from '../../utils/createTrigger'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-
 import {useManageTriggers} from '../useManageTriggers'
-import {CampaignTrigger} from '../../types/CampaignTrigger'
 
 const removeIds = (triggers: CampaignTrigger[]) =>
     triggers.map((trigger: CampaignTrigger) => _omit(trigger, 'id'))

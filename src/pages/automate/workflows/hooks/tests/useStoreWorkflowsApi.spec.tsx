@@ -1,14 +1,12 @@
-import React, {ComponentType, ReactChildren} from 'react'
-import {act, renderHook} from '@testing-library/react-hooks'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
 import {waitFor} from '@testing-library/react'
+import {act, renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import React, {ComponentType, ReactChildren} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {
@@ -16,12 +14,15 @@ import {
     useDuplicateWorkflowConfiguration,
     useDeleteWorkflowConfiguration,
 } from 'models/workflows/queries'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import {useStoreWorkflowsApi} from '../useStoreWorkflowsApi'
+import {useSelfServiceConfigurationUpdateMockSetter} from './fixtures/mockBuilders'
 import {
     getIntegration,
     mockWorkflowConfigurationShallow,
 } from './fixtures/utils'
-import {useSelfServiceConfigurationUpdateMockSetter} from './fixtures/mockBuilders'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfigurationUpdate')
 

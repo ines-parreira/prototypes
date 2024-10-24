@@ -1,5 +1,6 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
+
 import {Paths} from '../../../../rest_api/help_center_api/client.generated'
 import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
 import css from './MessageCard.less'

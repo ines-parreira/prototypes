@@ -1,35 +1,36 @@
-import React, {Component, ReactNode} from 'react'
-import classnames from 'classnames'
-import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, List, Map} from 'immutable'
-import _truncate from 'lodash/truncate'
-import _omit from 'lodash/omit'
 import {Tooltip} from '@gorgias/ui-kit'
+import classnames from 'classnames'
+import {fromJS, List, Map} from 'immutable'
+import _omit from 'lodash/omit'
+import _truncate from 'lodash/truncate'
+import React, {Component, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {Link} from 'react-router-dom'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
-import TicketTag from 'pages/common/components/TicketTag'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
+
+import {eventNameToLabel} from 'config/rules'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
+import {
+    isRuleExecutedType,
+    isSystemRuleEvent,
+    isViaRuleEvent,
+} from 'models/event/predicates'
 import {
     TicketEventType,
     TICKET_EVENT_TYPES,
     rulesActionsFailures,
     EventType,
 } from 'models/event/types'
-import {
-    isRuleExecutedType,
-    isSystemRuleEvent,
-    isViaRuleEvent,
-} from 'models/event/predicates'
+import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
+import TicketTag from 'pages/common/components/TicketTag'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 import {getHumanAgents} from 'state/agents/selectors'
+import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {getTeams} from 'state/teams/selectors'
 import {getEvents} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
-import {eventNameToLabel} from 'config/rules'
 
-import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import css from './Event.less'
 
 type Props = {

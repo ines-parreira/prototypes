@@ -1,4 +1,10 @@
 import {
+    RatingShopifyMetafield,
+    VolumeShopifyMetafield,
+    WeightShopifyMetafield,
+    MoneyShopifyMetafield,
+} from '@gorgias/api-queries'
+import {
     BooleanShopifyMetafield,
     CollectionReferenceShopifyMetafield,
     ColorShopifyMetafield,
@@ -38,12 +44,7 @@ import {
     DimensionListShopifyMetafield,
     RatingListShopifyMetafield,
 } from '@gorgias/api-types'
-import {
-    RatingShopifyMetafield,
-    VolumeShopifyMetafield,
-    WeightShopifyMetafield,
-    MoneyShopifyMetafield,
-} from '@gorgias/api-queries'
+
 import {
     Image,
     Variant,

@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Badge} from 'reactstrap'
 
 import {getIconFromActionType} from 'models/macroAction/helpers'

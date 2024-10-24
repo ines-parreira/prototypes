@@ -2,15 +2,15 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
 import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
+import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useOneTouchTicketsMetricPerAgentMock = assumeMock(

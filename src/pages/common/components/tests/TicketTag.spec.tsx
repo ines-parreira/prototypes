@@ -1,12 +1,12 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {Theme, ThemeContext, useThemeContext} from 'theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import TicketTag from '../TicketTag'
 
 jest.mock('common/flags', () => ({

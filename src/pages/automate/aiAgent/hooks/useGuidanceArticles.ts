@@ -1,8 +1,10 @@
 import {useMemo} from 'react'
+
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {mapArticleApiToGuidanceArticle} from '../utils/guidance.utils'
+
 import {Paths} from '../../../../rest_api/help_center_api/client.generated'
 import {GUIDANCE_ARTICLE_LIMIT} from '../constants'
+import {mapArticleApiToGuidanceArticle} from '../utils/guidance.utils'
 
 export const GUIDANCE_ARTICLES_QUERY_PARAMS: Paths.ListArticles.QueryParameters =
     {

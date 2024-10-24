@@ -1,10 +1,10 @@
+import * as bigcommerce from './bigcommerce'
 import CHAT_AUTO_RESPONDER_TEXTS_IMPORT from './chat_auto_responder_texts.json'
 import * as facebook from './facebook'
 import * as magento2 from './magento2'
 import * as recharge from './recharge'
 import * as shopify from './shopify'
 import * as smile from './smile'
-import * as bigcommerce from './bigcommerce'
 
 const allIntegrations = [
     facebook,

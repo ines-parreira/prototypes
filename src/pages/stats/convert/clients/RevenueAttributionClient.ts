@@ -1,6 +1,6 @@
-import {Stat, LegacyStatsFilters} from 'models/stat/types'
-import {fetchStat} from 'models/stat/resources'
 import {REVENUE_PER_DAY} from 'config/stats'
+import {fetchStat} from 'models/stat/resources'
+import {Stat, LegacyStatsFilters} from 'models/stat/types'
 import {RevenueAttributionFilterParams} from 'pages/stats/convert/clients/types'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
 

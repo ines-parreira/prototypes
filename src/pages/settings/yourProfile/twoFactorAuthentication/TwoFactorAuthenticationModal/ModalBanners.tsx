@@ -1,9 +1,11 @@
-import React, {ReactNode} from 'react'
 import classnames from 'classnames'
+import React, {ReactNode} from 'react'
+
 import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
+
 import css from './ModalBanners.less'
 
 type BannerType = 'info' | 'warning' | 'error' | 'success'

@@ -1,15 +1,15 @@
 import {fromJS, Map, List} from 'immutable'
 
+import {initRefundOrderLineItems} from 'business/shopify/order'
 import {
     shopifyRefundOrderPayloadFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-import {initRefundOrderLineItems} from 'business/shopify/order'
 
-import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_LOADING', () => {

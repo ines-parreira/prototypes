@@ -1,15 +1,16 @@
-import React from 'react'
-import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
-import {Provider} from 'react-redux'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {user} from 'fixtures/users'
 import {createJob} from 'models/job/resources'
 import {RootState} from 'state/types'
-import {user} from 'fixtures/users'
-import {MacrosCreateDropdown} from '../MacrosCreateDropdown'
+
 import history from '../../../history'
+import {MacrosCreateDropdown} from '../MacrosCreateDropdown'
 
 jest.mock('models/job/resources', () => ({
     createJob: jest.fn(() => Promise.resolve()),

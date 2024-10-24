@@ -1,12 +1,11 @@
-import React from 'react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import React from 'react'
 
-import {render} from '@testing-library/react'
 import {TicketChannel} from 'business/types/ticket'
-import {mergeCustomers} from 'state/customers/actions'
-
 import MergeCustomersModal from 'pages/common/components/MergeCustomers/MergeCustomersModal'
+import {mergeCustomers} from 'state/customers/actions'
 
 const address1 = 'pierre@gorgias.io'
 const address2 = 'Pierre@gorgias.io'

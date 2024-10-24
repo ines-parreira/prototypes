@@ -1,42 +1,42 @@
-import React, {useCallback, useState, useEffect, useRef} from 'react'
+import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {Call} from '@twilio/voice-sdk'
-import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
+import React, {useCallback, useState, useEffect, useRef} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {TwilioSocketEventType} from 'business/twilio'
 import {
     sendTwilioSocketEvent,
     gatherCallContext,
     getCallSid,
 } from 'hooks/integrations/phone/utils'
+import client from 'models/api/resources'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import IconButton from 'pages/common/components/button/IconButton'
+import {
+    CallRecordingStatus,
+    TWILIO_CURRENT_ITEM,
+} from 'pages/common/components/PhoneIntegrationBar/constants'
+import {useConnectionParameters} from 'pages/common/components/PhoneIntegrationBar/hooks'
+import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
+import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 import socketManager from 'services/socketManager'
 import {
     SocketEventType,
     VoiceCallTransferFailedEvent,
     ServerMessage,
 } from 'services/socketManager/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
-import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
-import {useConnectionParameters} from 'pages/common/components/PhoneIntegrationBar/hooks'
-import {
-    CallRecordingStatus,
-    TWILIO_CURRENT_ITEM,
-} from 'pages/common/components/PhoneIntegrationBar/constants'
-import client from 'models/api/resources'
-import {RootState} from 'state/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
-import InCallDialPad from './InCallDialPad/InCallDialPad'
-import IconButtonTooltip from './IconButtonTooltip'
 import CallTransferDropdown from './CallTransferDropdown'
+import IconButtonTooltip from './IconButtonTooltip'
+import InCallDialPad from './InCallDialPad/InCallDialPad'
 import css from './OngoingPhoneCall.less'
 
 type OwnProps = {

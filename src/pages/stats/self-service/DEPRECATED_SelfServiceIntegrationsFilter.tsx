@@ -1,11 +1,11 @@
 import React from 'react'
 
-import css from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter.less'
-import {Value} from 'pages/common/forms/SelectField/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {getIconFromType} from 'state/integrations/helpers'
-import SelectFilter from 'pages/stats/common/SelectFilter'
 import {LegacyStatsFilters} from 'models/stat/types'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import {Value} from 'pages/common/forms/SelectField/types'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import css from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter.less'
+import {getIconFromType} from 'state/integrations/helpers'
 
 type Props = {
     value: LegacyStatsFilters['integrations']

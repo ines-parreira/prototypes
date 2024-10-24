@@ -1,16 +1,16 @@
-import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {fromJS} from 'immutable'
+import React from 'react'
 
 import {campaign} from 'fixtures/campaign'
 import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithStore} from 'utils/testing'
 
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 import CampaignPerformanceCharts from '../CampaignPerformanceCharts'
 

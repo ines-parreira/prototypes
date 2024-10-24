@@ -1,8 +1,8 @@
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {reportError} from 'utils/errors'
-import {BillingContact} from 'state/billing/types'
 import {useUpdateBillingContactWithSideEffects} from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
 import {useSubmitPaymentMethod} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
+import {BillingContact} from 'state/billing/types'
+import {reportError} from 'utils/errors'
 
 export const useSubmitPaymentMethodWithBillingContact = (
     overrides?: Parameters<typeof useSubmitPaymentMethod>['0']

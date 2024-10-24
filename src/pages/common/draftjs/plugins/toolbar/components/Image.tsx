@@ -1,4 +1,3 @@
-import React, {ImgHTMLAttributes} from 'react'
 import classnames from 'classnames'
 import {
     ContentBlock,
@@ -8,6 +7,7 @@ import {
     SelectionState,
 } from 'draft-js'
 import _omit from 'lodash/omit'
+import React, {ImgHTMLAttributes} from 'react'
 
 import {replaceAttachmentURL} from 'utils'
 

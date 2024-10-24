@@ -1,21 +1,22 @@
-import {useCallback, useEffect, useState} from 'react'
 import {useQueryClient} from '@tanstack/react-query'
+import {useCallback, useEffect, useState} from 'react'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AIArticle,
     ArticleTemplateReviewAction,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
 import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
 export const useTopQuestionsArticles = (
     storeIntegrationId: number,

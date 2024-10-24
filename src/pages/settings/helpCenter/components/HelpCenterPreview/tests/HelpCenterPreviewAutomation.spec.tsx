@@ -1,5 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+
 import HelpCenterPreviewAutomation from '../HelpCenterPreviewAutomation'
 
 const renderComponent = (

@@ -1,10 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
+import React from 'react'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
+import {assetsUrl} from 'utils'
+
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
 
 import defaultModalCss from '../RuleRecipeModal.less'

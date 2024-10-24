@@ -1,9 +1,11 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+
 import {RootState, StoreDispatch} from 'state/types'
+
 import {useShopifyIntegrationAndScope} from '../useShopifyIntegrationAndScope'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()

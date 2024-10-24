@@ -1,13 +1,13 @@
-import React, {FormEvent, useState} from 'react'
-import classnames from 'classnames'
 import {AxiosError} from 'axios'
+import classnames from 'classnames'
+import React, {FormEvent, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import client from 'models/api/resources'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import cssSettings from 'pages/settings/settings.less'
 import {notify} from 'state/notifications/actions'
-import client from 'models/api/resources'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 const RemoveShopifyBilling = () => {

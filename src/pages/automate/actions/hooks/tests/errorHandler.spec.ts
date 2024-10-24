@@ -1,5 +1,6 @@
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
 import {handleError} from '../errorHandler'
 
 const mockedDispatch = jest.fn()

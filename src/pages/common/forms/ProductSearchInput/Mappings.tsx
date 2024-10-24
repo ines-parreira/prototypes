@@ -1,16 +1,17 @@
 import {
+    Product as ShopifyProduct,
+    Variant as ShopifyVariant,
+    InventoryPolicy as ShipifyInventoryPolicy,
+} from 'constants/integrations/types/shopify'
+import {
     IntegrationType,
     IntegrationDataItem,
     BigCommerceProductVariant,
     BigCommerceProduct,
 } from 'models/integration/types'
-import {
-    Product as ShopifyProduct,
-    Variant as ShopifyVariant,
-    InventoryPolicy as ShipifyInventoryPolicy,
-} from 'constants/integrations/types/shopify'
 
 import {supportedBigCommerceModifierTypes} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
+
 import {Props as ResultProps} from './Result'
 
 export const shopifyDataMappers = {

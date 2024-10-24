@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS, List, Map} from 'immutable'
 import {fireEvent, render, screen} from '@testing-library/react'
+import {fromJS, List, Map} from 'immutable'
+import React from 'react'
 
 import {FulfillmentStatus} from 'constants/integrations/types/shopify'
 import {

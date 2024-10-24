@@ -1,3 +1,4 @@
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceProductCheckboxModifier,
     bigCommerceProductCheckboxModifierTypes,
@@ -7,7 +8,7 @@ import {
     BigCommerceProductSwatchModifier,
     bigCommerceProductSwatchModifierTypes,
 } from 'models/integration/types'
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+
 import {ModifierValues} from './types'
 
 export const isSelectModifier = (

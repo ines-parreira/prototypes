@@ -1,6 +1,6 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
 
 import DistributionKeyMetricStat from '../KeyMetricStat/DistributionKeyMetricStat'
 

@@ -1,8 +1,7 @@
 import moment from 'moment'
 
-import * as files from 'utils/file'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {saveReport} from 'services/reporting/voiceAgentsReportingService'
+import {User, UserRole, UserSettingType} from 'config/types/user'
+import {Metric} from 'hooks/reporting/metrics'
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -12,13 +11,14 @@ import {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {User, UserRole, UserSettingType} from 'config/types/user'
 import {
     VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {Metric} from 'hooks/reporting/metrics'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import {saveReport} from 'services/reporting/voiceAgentsReportingService'
+import * as files from 'utils/file'
 
 jest.mock('utils/file')
 

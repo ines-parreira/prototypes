@@ -1,6 +1,7 @@
+import classnames from 'classnames'
 import React, {ReactNode, useMemo, useRef, useState} from 'react'
 import {Transition} from 'react-transition-group'
-import classnames from 'classnames'
+
 import usePrevious from 'hooks/usePrevious'
 
 import css from './Collapse.less'

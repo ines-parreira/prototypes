@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 
 import {emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {SYSTEM_RULE_TYPE, TAGS_ADDED_KEY} from 'models/event/constants'

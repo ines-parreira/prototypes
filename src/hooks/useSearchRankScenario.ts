@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
 import {SearchEngine} from 'models/search/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 export enum SearchRankSource {
     CustomerProfile = 'customer_profile',

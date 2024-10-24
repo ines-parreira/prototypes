@@ -5,6 +5,7 @@ import {ContactForm} from 'models/contactForm/types'
 import StandaloneContactFormPreview from 'pages/settings/contactForm/components/StandaloneContactFormPreview/StandaloneContactFormPreview'
 
 import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
+
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 import SelfServiceStandaloneContactFormHomePage from './SelfServiceStandaloneContactFormHomePage'
 

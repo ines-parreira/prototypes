@@ -1,15 +1,16 @@
 import {Map} from 'immutable'
-import {formatDatetime} from 'utils'
-import {StoreState} from 'state/types'
-import {IntegrationType} from 'models/integration/types'
+
+import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
 import {
     DateAndTimeFormatting,
     DateTimeFormatMapper,
     DateTimeFormatType,
 } from 'constants/datetime'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
+import {IntegrationType} from 'models/integration/types'
 import {momentToLDMLFormat} from 'pages/common/utils/template'
+import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {StoreState} from 'state/types'
+import {formatDatetime} from 'utils'
 
 /**
  * Format last Recharge subscription datetime according to user's date and time formatting settings.

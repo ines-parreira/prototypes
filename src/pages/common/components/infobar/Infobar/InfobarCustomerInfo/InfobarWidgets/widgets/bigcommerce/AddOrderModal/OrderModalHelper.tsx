@@ -1,5 +1,10 @@
-import {useCallback, useEffect, useMemo, useReducer, useState} from 'react'
 import {produce} from 'immer'
+import {useCallback, useEffect, useMemo, useReducer, useState} from 'react'
+
+import {
+    deleteBigCommerceCoupon,
+    updateBigCommerceCoupon,
+} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceActionType,
     BigCommerceCart,
@@ -15,10 +20,7 @@ import {
     BigCommerceProductsListType,
     CreateOrderValidationResult,
 } from 'models/integration/types'
-import {
-    deleteBigCommerceCoupon,
-    updateBigCommerceCoupon,
-} from 'models/integration/resources/bigcommerce'
+
 import {
     addCheckoutBillingAddress,
     checkAddressValidity,

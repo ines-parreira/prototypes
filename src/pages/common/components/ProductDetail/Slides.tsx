@@ -1,14 +1,14 @@
-import React, {ReactNode, useState, useRef} from 'react'
-import {Modal} from 'reactstrap'
 import classNames from 'classnames'
+import React, {ReactNode, useState, useRef} from 'react'
 import Slider from 'react-slick'
+import {Modal} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import IconButton from 'pages/common/components/button/IconButton'
 import {assetsUrl} from 'utils'
 
-import {ProductDetail} from './types'
 import css from './Detail.less'
+import {ProductDetail} from './types'
 
 export default function Slides(props: Pick<ProductDetail, 'screenshots'>) {
     const {screenshots = []} = props

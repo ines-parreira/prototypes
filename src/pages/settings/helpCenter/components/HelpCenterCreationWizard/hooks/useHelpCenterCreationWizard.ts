@@ -1,16 +1,21 @@
-import {useCallback, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useCallback, useState} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
-import {
-    helpCenterCreated,
-    helpCenterUpdated,
-} from 'state/entities/helpCenter/helpCenters'
-import useAppDispatch from 'hooks/useAppDispatch'
+import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {IntegrationType} from 'models/integration/constants'
+import {Integration} from 'models/integration/types'
+import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import history from 'pages/history'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
@@ -19,19 +24,16 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import {useEnableArticleRecommendation} from 'pages/settings/helpCenter/hooks/useEnableArticleRecommendation'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
-import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import useEffectOnce from 'hooks/useEffectOnce'
-import {getCurrentDomain} from 'state/currentAccount/selectors'
 import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {getCurrentDomain} from 'state/currentAccount/selectors'
+import {
+    helpCenterCreated,
+    helpCenterUpdated,
+} from 'state/entities/helpCenter/helpCenters'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+
 import {
     getHelpCenterWizardInitialData,
     getUpdatedFields,

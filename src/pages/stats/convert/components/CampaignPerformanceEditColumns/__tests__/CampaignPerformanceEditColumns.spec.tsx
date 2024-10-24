@@ -1,19 +1,19 @@
+import {render, screen} from '@testing-library/react'
+import {createDragDropManager} from 'dnd-core'
+import {fromJS} from 'immutable'
 import React from 'react'
 
-import {createDragDropManager} from 'dnd-core'
 import {DndProvider} from 'react-dnd'
-import {render, screen} from '@testing-library/react'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import thunk from 'redux-thunk'
 
+import {UserRole} from 'config/types/user'
 import {EditTableColumns} from 'pages/stats/common/components/Table/EditTableColumns'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
-import {UserRole} from 'config/types/user'
 
 import {CampaignPerformanceEditColumns} from '../CampaignPerformanceEditColumns'
 

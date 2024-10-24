@@ -1,9 +1,11 @@
 import React from 'react'
 import {Redirect, useParams} from 'react-router-dom'
+
 import Loader from 'pages/common/components/Loader/Loader'
+
+import {AiAgentGuidanceDetailView} from './AiAgentGuidanceDetailView'
 import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {AiAgentGuidanceDetailView} from './AiAgentGuidanceDetailView'
 
 export const AiAgentGuidanceDetailContainer = () => {
     const {shopName, articleId} = useParams<{

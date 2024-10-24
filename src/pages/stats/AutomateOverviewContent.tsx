@@ -1,35 +1,17 @@
 import classnames from 'classnames'
-import React, {useMemo, useState} from 'react'
-import moment from 'moment'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {saveReport} from 'services/reporting/automateOverviewReportingService'
+import moment from 'moment'
+import React, {useMemo, useState} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-
-import {FilterKey} from 'models/stat/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-
-import {
-    AutomatedInteractionsMetric,
-    AutomationRateMetric,
-    DecreaseInResolutionTimeMetric,
-    AutomationDecreaseInFirstResponseTimeMetric,
-    AutomationCostSavedMetric,
-} from 'pages/automate/automate-metrics'
-
-import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
-
-import useLocalStorage from 'hooks/useLocalStorage'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
-import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
-import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
+import {
+    AutomateTimeseries,
+    AutomateTrendMetrics,
+    GreyArea,
+} from 'hooks/reporting/automate/types'
+import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
+import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
 import {
     addZeroValueTimeSeriesForGreyArea,
     automatePercentLabel,
@@ -39,40 +21,50 @@ import {
     renderAutomateXTickLabel,
     sortByAutomateFeatureLabels,
 } from 'hooks/reporting/automate/utils'
-import {
-    AutomateTimeseries,
-    AutomateTrendMetrics,
-    GreyArea,
-} from 'hooks/reporting/automate/types'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {ReportingGranularity} from 'models/reporting/types'
+import {FilterKey} from 'models/stat/types'
+import {
+    AutomatedInteractionsMetric,
+    AutomationRateMetric,
+    DecreaseInResolutionTimeMetric,
+    AutomationDecreaseInFirstResponseTimeMetric,
+    AutomationCostSavedMetric,
+} from 'pages/automate/automate-metrics'
+import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
+import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
 import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
+import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
+import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import css from 'pages/stats/AutomateOverview.less'
+import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
+import ChartCard from 'pages/stats/ChartCard'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
     formatTimeSeriesData,
 } from 'pages/stats/common/utils'
-
-import ChartCard from 'pages/stats/ChartCard'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-
-import StatsPage from 'pages/stats/StatsPage'
-import css from 'pages/stats/AutomateOverview.less'
-
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
     PAGE_TITLE_AUTOMATE_PAYWALL,
 } from 'pages/stats/self-service/constants'
-
+import StatsPage from 'pages/stats/StatsPage'
+import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {useAutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 

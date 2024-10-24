@@ -1,11 +1,13 @@
-import {ModalHeader} from 'reactstrap'
 import React, {useState} from 'react'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import {ModalHeader} from 'reactstrap'
+
 import {StatsFilters} from 'models/stat/types'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+
+import {useSearchQueryMetrics} from '../../hooks/useSearchQueryMetrics'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
-import {useSearchQueryMetrics} from '../../hooks/useSearchQueryMetrics'
 
 const ITEMS_PER_PAGE = 10
 

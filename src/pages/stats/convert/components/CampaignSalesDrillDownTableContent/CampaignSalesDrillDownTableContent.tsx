@@ -1,23 +1,24 @@
 import React from 'react'
-import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
 import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {EnrichmentFields} from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import {
     formatCurrency,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
+import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownFormatters'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
-import {EnrichmentFields} from 'models/reporting/types'
 import css from './CampaignSalesDrillDownTableContent.less'
 
 // should add up to table width from CSS

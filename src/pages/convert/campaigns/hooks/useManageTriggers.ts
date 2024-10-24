@@ -1,19 +1,20 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
 import {produce} from 'immer'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {ulid} from 'ulidx'
+
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {getDefaultTriggers} from 'pages/convert/campaigns/utils/getDefaultTriggers'
-import {createTrigger} from '../utils/createTrigger'
-import {isAllowedToUpdateTrigger} from '../utils/isAllowedToUpdateTrigger'
 
-import {CampaignTriggerMap} from '../types/CampaignTriggerMap'
 import {
     CreateTriggerFn,
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from '../types/AdvancedTriggerBaseProps'
 import {CampaignTrigger} from '../types/CampaignTrigger'
+import {CampaignTriggerMap} from '../types/CampaignTriggerMap'
+import {createTrigger} from '../utils/createTrigger'
+import {isAllowedToUpdateTrigger} from '../utils/isAllowedToUpdateTrigger'
 
 export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
     const isConvertSubscriber = useIsConvertSubscriber()

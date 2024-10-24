@@ -1,6 +1,7 @@
-import React from 'react'
 import {getByText, render} from '@testing-library/react'
 import _noop from 'lodash/noop'
+import React from 'react'
+
 import Tag from '../Tag'
 import {Option} from '../types'
 

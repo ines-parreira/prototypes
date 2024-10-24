@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import CheckBox from 'pages/common/forms/CheckBox'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import {Paths} from 'rest_api/ssp_api/client.generated'
+
 import SelectInputBox, {
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'

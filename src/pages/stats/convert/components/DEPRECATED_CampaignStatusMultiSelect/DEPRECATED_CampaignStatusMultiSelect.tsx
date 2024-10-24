@@ -1,10 +1,10 @@
+import _upperFirst from 'lodash/upperFirst'
 import React, {ComponentProps} from 'react'
 
-import _upperFirst from 'lodash/upperFirst'
+import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
-import {InferredCampaignStatus} from 'models/convert/campaign/types'
 
 type Props = {
     selected: Value[]

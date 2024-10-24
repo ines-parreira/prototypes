@@ -1,12 +1,13 @@
-import React from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import {createMemoryHistory} from 'history'
+import React from 'react'
+
 import {IntegrationType} from 'models/integration/constants'
 import {renderWithRouter} from 'utils/testing'
 
-import useApps from '../hooks/useApps'
 import ActionsPlatformAppsView from '../ActionsPlatformAppsView'
+import useApps from '../hooks/useApps'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')

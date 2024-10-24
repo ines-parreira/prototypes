@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
+import React, {ComponentProps} from 'react'
 
 import IntentsSentimentsSelect from '../IntentsSentimentsSelect'
 

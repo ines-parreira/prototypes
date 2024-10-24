@@ -1,17 +1,18 @@
 import React from 'react'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+
+import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {useGetRevenueShareChart} from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
 } from 'pages/stats/utils'
-import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 
 const title = 'Total store revenue share influenced by campaigns'
 const yAxisLabel = 'Revenue share influenced by campaigns'

@@ -1,11 +1,13 @@
-import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {BigCommerceRefundType} from 'models/integration/types'
+import React, {ComponentProps} from 'react'
+
 import {bigCommerceAvailablePaymentOptionsDataResponseFixture} from 'fixtures/bigcommerce'
-import {RefundMethodPickerSection} from '../RefundMethodPickerSection'
+import {BigCommerceRefundType} from 'models/integration/types'
+
 import {defaultBigCommerceRefundType} from '../../consts'
 import {BigCommerceRefundActionType} from '../../types'
+import {RefundMethodPickerSection} from '../RefundMethodPickerSection'
 
 type Props = ComponentProps<typeof RefundMethodPickerSection>
 

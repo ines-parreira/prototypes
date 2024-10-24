@@ -1,4 +1,5 @@
 import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+
 import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
 import {UpdateGuidanceArticle} from '../../types'
 import {

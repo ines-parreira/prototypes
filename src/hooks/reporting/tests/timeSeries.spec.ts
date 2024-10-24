@@ -2,21 +2,6 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel} from 'business/types/ticket'
 
-import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
-
-import {
-    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
-    interactionsByEventTypeTimeSeriesQueryFactory,
-    interactionsTimeSeriesQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/timeseries'
 import {
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
@@ -32,6 +17,20 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import {
+    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
+    interactionsByEventTypeTimeSeriesQueryFactory,
+    interactionsTimeSeriesQueryFactory,
+} from 'models/reporting/queryFactories/automate_v2/timeseries'
+import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)

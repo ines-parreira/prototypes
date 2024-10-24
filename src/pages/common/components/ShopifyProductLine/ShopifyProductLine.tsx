@@ -1,34 +1,35 @@
+import classnames from 'classnames'
+import {Map} from 'immutable'
 import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
-import {Map} from 'immutable'
-import classnames from 'classnames'
 
-import {getIconFromUrl} from 'utils'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
 } from 'constants/integration'
-import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
-import GorgiasApi from 'services/gorgiasApi'
-import {notify} from 'state/notifications/actions'
-import {getIconFromType} from 'state/integrations/helpers'
-import {NotificationStatus} from 'state/notifications/types'
+import {Product, Variant} from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {IntegrationType} from 'models/integration/constants'
-import {Product, Variant} from 'constants/integrations/types/shopify'
+import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
+import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
+import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import Result, {
     Props as ResultProps,
 } from 'pages/common/forms/ProductSearchInput/Result'
-
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
-import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
-import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
 import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {ConvertShopifyProductLineHeader} from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
+import GorgiasApi from 'services/gorgiasApi'
+import {getIconFromType} from 'state/integrations/helpers'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getIconFromUrl} from 'utils'
+
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {

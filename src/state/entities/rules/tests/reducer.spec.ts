@@ -1,3 +1,4 @@
+import {rules as rulesFixtures} from '../../../../fixtures/rule'
 import {
     ruleCreated,
     ruleDeleted,
@@ -7,8 +8,6 @@ import {
     rulesReordered,
 } from '../actions'
 import reducer from '../reducer'
-
-import {rules as rulesFixtures} from '../../../../fixtures/rule'
 
 describe('rule reducer', () => {
     describe('createRule action', () => {

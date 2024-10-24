@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useMemo} from 'react'
 
-import {DropdownOption} from 'pages/stats/types'
-import Filter from 'pages/stats/common/components/Filter'
 import Search from 'pages/common/components/Search'
+import Filter from 'pages/stats/common/components/Filter'
+import {DropdownOption} from 'pages/stats/types'
 
 import {App} from '../types'
 

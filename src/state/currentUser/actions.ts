@@ -1,13 +1,10 @@
-import {AxiosError} from 'axios'
-import _isUndefined from 'lodash/isUndefined'
-import _get from 'lodash/get'
 import {createAction} from '@reduxjs/toolkit'
+import {AxiosError} from 'axios'
+import _get from 'lodash/get'
+import _isUndefined from 'lodash/isUndefined'
 
 import moment from 'moment-timezone'
-import {notify} from 'state/notifications/actions'
 
-import {fetchChats} from 'state/chats/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {
     User,
     EditableUserProfile,
@@ -15,21 +12,26 @@ import {
     UserPreferences,
     UserSettingType,
 } from 'config/types/user'
+import {DateAndTimeFormatting} from 'constants/datetime'
 import client from 'models/api/resources'
-
 import history from 'pages/history'
-import {formatDatetime} from 'utils'
+import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import {fetchChats} from 'state/chats/actions'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import {
     OPEN_TWO_FA_MODAL_URL,
     TWO_FA_REQUIRED_NOTIFICATION_ID,
 } from 'state/currentUser/constants'
-import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
-import * as currentAccountSelectors from 'state/currentAccount/selectors'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import {notify} from 'state/notifications/actions'
+
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+
+import {formatDatetime} from 'utils'
 import {getDateAndTimeFormat} from 'utils/datetime'
+
 import type {StoreDispatch, RootState} from '../types'
-import * as currentUserSelectors from './selectors'
 import * as constants from './constants'
+import * as currentUserSelectors from './selectors'
 
 export const changePassword =
     (oldPassword: string, newPassword: string, twoFACode?: string) =>

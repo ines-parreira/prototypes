@@ -1,19 +1,19 @@
+import {render} from '@testing-library/react'
 import React from 'react'
 import {Route, useRouteMatch} from 'react-router-dom'
-import {render} from '@testing-library/react'
 
 import {useFlag} from 'common/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
-import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {assumeMock} from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
 import {HelpCenter} from '../HelpCenter'
+import {renderAppSettings} from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),

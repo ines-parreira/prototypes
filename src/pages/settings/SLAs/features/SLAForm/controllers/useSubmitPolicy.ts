@@ -1,17 +1,17 @@
-import {useCallback} from 'react'
 import {
     queryKeys,
     useCreateSlaPolicy,
     useUpdateSlaPolicy,
 } from '@gorgias/api-queries'
-import {useParams} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
+import {useCallback} from 'react'
+import {useParams} from 'react-router-dom'
 
-import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
 import useAppDispatch from 'hooks/useAppDispatch'
+import history from 'pages/history'
+import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import history from 'pages/history'
 
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import {SLAFormValues} from './useFormValues'

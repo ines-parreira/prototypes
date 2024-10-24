@@ -1,8 +1,10 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
+import {SegmentEvent, logEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
-import {SegmentEvent, logEvent} from 'common/segment'
+
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import css from './SeeAllSuggestionsCard.less'
 

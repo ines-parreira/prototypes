@@ -1,3 +1,5 @@
+import {JobType} from '@gorgias/api-queries'
+import cn from 'classnames'
 import React, {
     ComponentProps,
     useCallback,
@@ -5,16 +7,15 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {JobType} from '@gorgias/api-queries'
-import cn from 'classnames'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {Item} from 'components/Dropdown'
 import {Popover} from 'components/Popover'
+import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {Update} from 'jobs'
-import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -25,10 +26,9 @@ import {TagDropdownMenu} from 'tags'
 import {hasRole} from 'utils'
 import {getMoment} from 'utils/date'
 
-import {UserRole} from 'config/types/user'
-import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
-import css from './style.less'
 import ApplyMacro from './ApplyMacro'
+import css from './style.less'
+import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
 import {Action, Job} from './types'
 
 const getActions = (

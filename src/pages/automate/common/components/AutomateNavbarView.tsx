@@ -1,14 +1,15 @@
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {compare} from 'utils'
 import navbarCss from 'assets/css/navbar.less'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
+import {ShopType} from 'models/selfServiceConfiguration/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import {compare} from 'utils'
+
 import AutomateNavbarSectionBlock from './AutomateNavbarSectionBlock'
 
 import {

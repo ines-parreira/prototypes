@@ -1,19 +1,20 @@
-import React, {useMemo} from 'react'
 import _noop from 'lodash/noop'
+import React, {useMemo} from 'react'
 import {useDispatch} from 'react-redux'
+
 import useAppSelector from 'hooks/useAppSelector'
+import {FilterComponentKey} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {DropdownOption} from 'pages/stats/types'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {
     metricLabels,
     metrics,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {DropdownOption} from 'pages/stats/types'
 import {
     getSelectedMetric,
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
-import {FilterComponentKey} from 'models/stat/types'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
 export const BUSIEST_TIMES_METRIC_SELECT_FILTER_NAME = 'Report on'
 

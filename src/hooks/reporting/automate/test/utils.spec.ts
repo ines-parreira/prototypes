@@ -1,11 +1,14 @@
-import moment from 'moment'
-import {TooltipItem} from 'chart.js'
 import {renderHook} from '@testing-library/react-hooks'
-import {ReportingGranularity} from 'models/reporting/types'
-import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import {TooltipItem} from 'chart.js'
+import moment from 'moment'
+
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {SHORT_FORMAT} from 'pages/stats/common/utils'
+
+import {useAutomateStatsMeasureLabelMap} from '../useAutomateStatsMeasureLabelMap'
 import {
     addZeroValueTimeSeriesForGreyArea,
     mergeAutomateDataByEventType,
@@ -18,7 +21,6 @@ import {
     addNonExistingEventTypesForGraph,
     calculateGreyArea,
 } from '../utils'
-import {useAutomateStatsMeasureLabelMap} from '../useAutomateStatsMeasureLabelMap'
 
 describe('mergeAutomateDataByEventType', () => {
     it('should merge interactions data by event type correctly', () => {

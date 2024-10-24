@@ -1,23 +1,10 @@
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
-import {getIntegrationIcon} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
-import {
-    getPageStatsFiltersWithLogicalOperators,
-    getStatsMessagingAndAppIntegrations,
-} from 'state/stats/selectors'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Integration} from 'models/integration/types'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
 import Filter from 'pages/stats/common/components/Filter'
-import {DropdownOption} from 'pages/stats/types'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
@@ -26,6 +13,20 @@ import {
     integrationsFilterLogicalOperators,
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
+import {getIntegrationIcon} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {DropdownOption} from 'pages/stats/types'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getStatsMessagingAndAppIntegrations,
+} from 'state/stats/selectors'
+
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+
+import {RootState} from 'state/types'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]

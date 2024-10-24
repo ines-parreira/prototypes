@@ -2,6 +2,7 @@ import {render, fireEvent} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
+
 import SelectInputBox, {SelectInputBoxContext} from '../SelectInputBox'
 
 describe('<SelectInputBox />', () => {

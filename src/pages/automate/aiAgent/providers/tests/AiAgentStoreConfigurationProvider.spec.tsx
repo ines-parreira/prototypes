@@ -1,18 +1,20 @@
-import React from 'react'
+import {act, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-import {act, render} from '@testing-library/react'
-import {Provider} from 'react-redux'
+
 import {account} from 'fixtures/account'
+import {StoreConfiguration} from 'models/aiAgent/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, createContextConsumer} from 'utils/testing'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvider'
-import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
-import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
-import {useStoreConfiguration} from '../../hooks/useStoreConfiguration'
+
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useStoreConfiguration} from '../../hooks/useStoreConfiguration'
+import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
+import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
+import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvider'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

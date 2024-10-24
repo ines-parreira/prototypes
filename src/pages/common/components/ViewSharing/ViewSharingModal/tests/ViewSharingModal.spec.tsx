@@ -1,9 +1,9 @@
-import React from 'react'
-import {fromJS} from 'immutable'
 import {render, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {user as currentUserFixture} from 'fixtures/users'

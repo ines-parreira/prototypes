@@ -1,6 +1,8 @@
-import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
+import React from 'react'
+
 import {TicketOutcome} from 'models/aiAgentPlayground/types'
+
 import TicketEvent from './TicketEvent'
 
 const meta: Meta<typeof TicketEvent> = {

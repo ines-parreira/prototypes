@@ -6,9 +6,8 @@ import React, {
     useState,
 } from 'react'
 
-import AccordionContext, {AccordionContextType} from './AccordionContext'
-
 import css from './Accordion.less'
+import AccordionContext, {AccordionContextType} from './AccordionContext'
 
 export type AccordionProps<T = string | string[] | null> = {
     defaultExpandedItem?: T

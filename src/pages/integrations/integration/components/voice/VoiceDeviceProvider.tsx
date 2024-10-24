@@ -1,19 +1,21 @@
-import React, {useEffect, useMemo, useReducer} from 'react'
-import {Device} from '@twilio/voice-sdk'
 import {Dispatch, bindActionCreators} from '@reduxjs/toolkit'
+import {Device} from '@twilio/voice-sdk'
+import React, {useEffect, useMemo, useReducer} from 'react'
+
+import useHasPhone from 'core/app/hooks/useHasPhone'
 import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
-import useAppSelector from 'hooks/useAppSelector'
-import {isDesktopDevice} from 'utils/device'
 import {
     connectDevice,
     disconnectDevice,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
-import {isActive} from 'state/currentUser/selectors'
-import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useHasPhone from 'core/app/hooks/useHasPhone'
+import useAppSelector from 'hooks/useAppSelector'
+import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import {isActive} from 'state/currentUser/selectors'
 import {initialState} from 'state/twilio/voiceDevice'
+import {isDesktopDevice} from 'utils/device'
+
 import {Context} from './VoiceDeviceContext'
 
 const {actions: contextActions, reducer} = slice

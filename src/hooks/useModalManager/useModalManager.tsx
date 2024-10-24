@@ -1,5 +1,5 @@
-import {useEffect, useState, useMemo} from 'react'
 import _defaultsDeep from 'lodash/defaultsDeep'
+import {useEffect, useState, useMemo} from 'react'
 
 import {ModalManager} from './Manager'
 

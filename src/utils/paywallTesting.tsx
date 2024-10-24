@@ -1,16 +1,17 @@
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import {HelpdeskPlan} from 'models/billing/types'
+
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
+import {HelpdeskPlan} from 'models/billing/types'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
 
 export const getStateWithHelpdeskPlan = (
     helpdeskPlan: HelpdeskPlan = basicMonthlyHelpdeskPlan

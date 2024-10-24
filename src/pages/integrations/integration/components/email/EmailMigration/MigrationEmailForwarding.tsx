@@ -1,19 +1,20 @@
 import React from 'react'
-import {Col} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
+import {Col} from 'reactstrap'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {EmailMigrationInboundVerification} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {EmailMigrationInboundVerification} from 'models/integration/types'
-import useAppSelector from 'hooks/useAppSelector'
 import {getForwardingEmailAddress} from 'state/integrations/selectors'
-import EmailForwardingTable from './EmailForwardingTable'
-import MigrationTutorialList from './MigrationTutorialList'
-import {providerTutorials} from './constants'
 
+import {providerTutorials} from './constants'
+import EmailForwardingTable from './EmailForwardingTable'
 import css from './MigrationEmailForwarding.less'
+import MigrationTutorialList from './MigrationTutorialList'
 
 type Props = {
     migrations: EmailMigrationInboundVerification[]

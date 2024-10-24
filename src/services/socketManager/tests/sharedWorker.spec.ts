@@ -9,14 +9,14 @@ import {
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
     INCREMENTAL_RECONNECT_BACKOFF,
 } from '../constants'
+import IncrementalBackoff from '../incrementalBackoff'
+import {WebsocketSharedWorker} from '../sharedWorker'
 import {
     BroadcastChannelEvent,
     MessagePortEvent,
     SocketEvent,
     WSMessage,
 } from '../types'
-import IncrementalBackoff from '../incrementalBackoff'
-import {WebsocketSharedWorker} from '../sharedWorker'
 
 jest.mock('socket.io-client', () => {
     return jest.fn(() => {

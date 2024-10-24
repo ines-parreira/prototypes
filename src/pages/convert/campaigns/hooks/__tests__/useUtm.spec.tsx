@@ -1,8 +1,10 @@
 import {act, renderHook} from '@testing-library/react-hooks'
-import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
-import {assumeMock} from 'utils/testing'
-import {ChannelConnection} from 'models/convert/channelConnection/types'
+
 import * as segment from 'common/segment'
+import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
+import {ChannelConnection} from 'models/convert/channelConnection/types'
+import {assumeMock} from 'utils/testing'
+
 import {useUtm} from '../useUtm'
 
 jest.mock('models/convert/channelConnection/queries')

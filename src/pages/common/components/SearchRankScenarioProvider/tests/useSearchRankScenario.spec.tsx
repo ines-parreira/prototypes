@@ -1,5 +1,5 @@
-import React, {ComponentType} from 'react'
 import {renderHook} from '@testing-library/react-hooks'
+import React, {ComponentType} from 'react'
 
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'

@@ -1,10 +1,10 @@
 import React, {ReactNode, useRef} from 'react'
-import {DropdownItem} from 'reactstrap'
 import {useDrag, useDrop} from 'react-dnd'
-import CheckBox from 'pages/common/forms/CheckBox'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {DropdownItem} from 'reactstrap'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import css from 'pages/stats/common/components/Table/EditColumns.less'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 type Props = {
     title: string

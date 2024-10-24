@@ -1,11 +1,11 @@
+import {AxiosError} from 'axios'
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
 import React, {useState, useMemo, useEffect, useRef} from 'react'
-import {AxiosError} from 'axios'
 
-import useAsyncFn from 'hooks/useAsyncFn'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
 import type {TicketMessage, TicketMessageIntent} from 'models/ticket/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -16,10 +16,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import {sendIntentFeedbackSuccess} from 'state/ticket/actions'
 import {humanizeString} from 'utils'
 
-import {Messages} from './constants'
-import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'
 import {ActiveIntentItem} from './ActiveIntentItem'
 import {AvailableIntentItem} from './AvailableIntentItem'
+import {Messages} from './constants'
+import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'
 import {
     UserSubmissionSubEventProps,
     UserSubmissionSubEventType,

@@ -1,17 +1,16 @@
+import {Label} from '@gorgias/ui-kit'
 import React, {
     ComponentProps,
     createContext,
     forwardRef,
     ReactNode,
 } from 'react'
-import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
 
-import TextInput from './TextInput'
-
 import css from './InputField.less'
+import TextInput from './TextInput'
 
 type Props = {
     caption?: ReactNode

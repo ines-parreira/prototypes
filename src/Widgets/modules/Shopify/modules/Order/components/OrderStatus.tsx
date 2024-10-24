@@ -1,11 +1,11 @@
 import React from 'react'
 
-import {humanizeString} from 'utils'
 import {
     FinancialStatus,
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {humanizeString} from 'utils'
 
 type FulfillmentBadgeProps = {
     fulfillmentStatus: FulfillmentStatus

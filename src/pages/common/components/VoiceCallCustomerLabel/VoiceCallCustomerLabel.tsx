@@ -1,12 +1,13 @@
-import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import {isEmpty} from 'lodash'
-import classNames from 'classnames'
-import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
+
+import useId from 'hooks/useId'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {useCustomerDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
-import useId from 'hooks/useId'
 import {CustomerLabel} from '../../utils/labels'
 import css from './VoiceCallCustomerLabel.less'
 

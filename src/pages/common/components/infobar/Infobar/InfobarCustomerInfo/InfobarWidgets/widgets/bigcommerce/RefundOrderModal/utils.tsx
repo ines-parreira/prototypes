@@ -1,8 +1,12 @@
-import React, {Dispatch, Fragment, ReactNode} from 'react'
-import _debounce from 'lodash/debounce'
 import {List as ImmutableList, Map as ImmutableMap} from 'immutable'
+import _debounce from 'lodash/debounce'
+import React, {Dispatch, Fragment, ReactNode} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {
+    getBigCommerceAvailablePaymentOptionsData,
+    getBigCommerceOrderRefundData,
+} from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceActionType,
     BigCommerceAvailablePaymentOptionsData,
@@ -18,14 +22,11 @@ import {
     GiftWrappingItemRefundData,
     ProductItemRefundData,
 } from 'models/integration/types'
-import {
-    getBigCommerceAvailablePaymentOptionsData,
-    getBigCommerceOrderRefundData,
-} from 'models/integration/resources/bigcommerce'
-import {StoreDispatch} from 'state/types'
-import {ActionDataPayload} from 'state/infobar/utils'
 import {executeAction} from 'state/infobar/actions'
+import {ActionDataPayload} from 'state/infobar/utils'
 import {fetchIntegrationProducts} from 'state/integrations/helpers'
+import {StoreDispatch} from 'state/types'
+
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,

@@ -1,18 +1,19 @@
 import {ContentState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
-import {isAccountActive} from 'state/currentAccount/selectors'
-import {hasContentlessAction} from 'state/ticket/selectors'
 
 import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
 import {isImmutable} from 'common/utils'
 import {IntegrationType} from 'models/integration/types'
+import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import {isAccountActive} from 'state/currentAccount/selectors'
 import {getChannelSignature} from 'state/integrations/selectors'
+import {hasContentlessAction} from 'state/ticket/selectors'
+
 import {RootState} from 'state/types'
 import {isForwardedMessage} from 'tickets/common/utils'
 import {createImmutableSelector} from 'utils'
 
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import {NewMessageState, ReceiverProperty} from './types'
 
 export const getReceiversProperties = () => Object.values(ReceiverProperty)

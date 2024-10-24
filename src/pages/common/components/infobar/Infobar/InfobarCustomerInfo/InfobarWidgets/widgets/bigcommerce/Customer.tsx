@@ -1,26 +1,27 @@
-import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ReactNode, useContext} from 'react'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     BigCommerceActionType,
     BigCommerceCustomer,
 } from 'models/integration/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
 import OrderModal from './AddOrderModal/OrderModal'

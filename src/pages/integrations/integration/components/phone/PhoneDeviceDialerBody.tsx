@@ -1,10 +1,11 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+
 import {UserSearchResult} from 'models/search/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import css from './PhoneDevice.less'
 import DialPad from './DialPad'
+import css from './PhoneDevice.less'
 import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
 
 type Props = {

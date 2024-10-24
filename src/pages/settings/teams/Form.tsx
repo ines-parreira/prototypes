@@ -1,6 +1,8 @@
-import React, {Component, SyntheticEvent} from 'react'
+import classnames from 'classnames'
 import {Emoji, EmojiData} from 'emoji-mart'
+import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+import {NavLink, RouteComponentProps} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,8 +14,6 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
-import {NavLink, RouteComponentProps} from 'react-router-dom'
-import classnames from 'classnames'
 
 import {WithAppNodeProps, withAppNode} from 'appNode'
 import {GorgiasApiError} from 'models/api/types'
@@ -28,6 +28,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import InputField from 'pages/common/forms/input/InputField'
+import withRouter from 'pages/common/utils/withRouter'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import {notify} from 'state/notifications/actions'
@@ -37,7 +38,6 @@ import {
     fetchTeamSuccess,
     updateTeamSuccess,
 } from 'state/teams/actions'
-import withRouter from 'pages/common/utils/withRouter'
 
 import css from './Form.less'
 

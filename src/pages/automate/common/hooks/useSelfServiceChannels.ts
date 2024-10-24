@@ -2,12 +2,12 @@ import {useMemo} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
 
-import useSelfServiceHelpCenterChannels, {
-    SelfServiceHelpCenterChannel,
-} from './useSelfServiceHelpCenterChannels'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from './useSelfServiceChatChannels'
+import useSelfServiceHelpCenterChannels, {
+    SelfServiceHelpCenterChannel,
+} from './useSelfServiceHelpCenterChannels'
 import useSelfServiceStandaloneContactFormChannels, {
     SelfServiceStandaloneContactFormChannel,
 } from './useSelfServiceStandaloneContactFormChannels'

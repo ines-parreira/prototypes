@@ -1,8 +1,8 @@
 import {parse} from 'qs'
-import {attachSearchParamsToUrl} from 'utils/url'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
+import {attachSearchParamsToUrl} from 'utils/url'
 
 import {CampaignProduct} from '../types/CampaignProduct'
 

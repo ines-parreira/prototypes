@@ -1,4 +1,5 @@
 import {TicketMessage} from 'models/ticket/types'
+
 import {changeActiveTab, changeTicketMessage} from '../actions'
 import {TicketAIAgentFeedbackTab} from '../constants'
 import {UIActions} from '../types'

@@ -1,12 +1,12 @@
-import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {EntityType} from 'models/view/types'
 
 import {defaultCell, getConfigByName} from 'config/views'
-import {RenderLabel} from 'pages/common/utils/labels'
+import {EntityType} from 'models/view/types'
 
 import css from 'pages/common/components/ViewTable/Table.less'
+import {RenderLabel} from 'pages/common/utils/labels'
 
 type Props = {
     field: Map<any, any>

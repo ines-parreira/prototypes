@@ -1,3 +1,6 @@
+import classnames from 'classnames'
+import {Map} from 'immutable'
+import parsePhoneNumber from 'libphonenumber-js'
 import React, {
     SyntheticEvent,
     useCallback,
@@ -5,18 +8,15 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import parsePhoneNumber from 'libphonenumber-js'
 
+import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Button from 'pages/common/components/button/Button'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {getNewMessageSource} from 'state/newMessage/selectors'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import {isDeviceReady} from 'utils/device'
 
 import css from './PhoneTicketSubmitButtons.less'

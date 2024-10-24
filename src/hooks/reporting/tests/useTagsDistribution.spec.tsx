@@ -1,14 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
-import {initialState} from 'state/stats/statsSlice'
-import {assumeMock} from 'utils/testing'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import useAppSelector from 'hooks/useAppSelector'
+import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
+import {initialState} from 'state/stats/statsSlice'
+import {assumeMock} from 'utils/testing'
 
 const firstTagID = '255148'
 const secondTagID = '487270'

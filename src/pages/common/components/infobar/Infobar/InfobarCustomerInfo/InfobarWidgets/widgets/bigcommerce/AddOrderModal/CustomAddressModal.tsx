@@ -1,24 +1,26 @@
-import React, {useState} from 'react'
-import {Form} from 'reactstrap'
 import classNames from 'classnames'
 import {CountryCode} from 'libphonenumber-js'
-import Modal from 'pages/common/components/modal/Modal'
-import InputField from 'pages/common/forms/input/InputField'
-import Button from 'pages/common/components/button/Button'
+import React, {useState} from 'react'
+import {Form} from 'reactstrap'
+
 import {
     BigCommerceCustomerAddress,
     BigCommerceCustomerAddressType,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import {getCountryLabel} from 'pages/common/forms/CountryInput/utils'
+import InputField from 'pages/common/forms/input/InputField'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
+
 import cssAddressesDropdown from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
 import {createCustomAddress} from './utils'

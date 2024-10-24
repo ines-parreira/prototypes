@@ -1,18 +1,18 @@
-import React, {ContextType, ReactNode} from 'react'
 import type {Map} from 'immutable'
+import React, {ContextType, ReactNode} from 'react'
 
 import logo from 'assets/img/infobar/magento.svg'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import {
     ExpandAllButton,
     CardCustomization,
 } from 'Widgets/modules/Template/modules/Card/'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 type AfterTitleProps = {
     source: Map<string, any>

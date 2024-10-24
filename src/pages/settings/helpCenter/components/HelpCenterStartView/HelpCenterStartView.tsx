@@ -1,31 +1,30 @@
+import {Tooltip} from '@gorgias/ui-kit'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
-import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {NotificationStatus} from 'state/notifications/types'
 import {changeHelpCenterId} from 'state/ui/helpCenter'
-import PageHeader from 'pages/common/components/PageHeader'
-import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
 
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/common/components/ProductDetail'
-import Button from 'pages/common/components/button/Button'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     HELP_CENTER_MAX_CREATION,
     HELP_CENTER_BASE_PATH,
     HELP_CENTERS_PER_PAGE,
 } from '../../constants'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterList} from '../../hooks/useHelpCenterList'
 import {useStandaloneHelpCenterAfterDismiss} from '../../hooks/useStandaloneHelpCenterAfterDismiss'
 
 import {ABOUT_PAGE} from './constants'
-import ManageHelpCenters from './ManageHelpCenters'
-
 import css from './HelpCenterStartView.less'
+import ManageHelpCenters from './ManageHelpCenters'
 
 const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()

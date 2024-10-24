@@ -1,15 +1,15 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import React from 'react'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {AccountFeature} from 'state/currentAccount/types'
-import {billingState} from 'fixtures/billing'
-import {RootState, StoreDispatch} from 'state/types'
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
 import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {AccountFeature} from 'state/currentAccount/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {withFeaturePaywall} from '../withFeaturePaywall'
 

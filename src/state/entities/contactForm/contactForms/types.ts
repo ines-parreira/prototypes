@@ -1,4 +1,5 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
+
 import {ContactForm} from 'models/contactForm/types'
 
 export enum ContactFormsActions {

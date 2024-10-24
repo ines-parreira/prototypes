@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
+
 import {HelpCenterAutoEmbedReadinessStatus} from '../HelpCenterAutoEmbedPublishSection/types'
 
 export type HelpCenterAutoEmbedWarningBannerProps = {

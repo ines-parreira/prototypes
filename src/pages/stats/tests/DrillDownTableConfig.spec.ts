@@ -1,10 +1,22 @@
 import moment from 'moment/moment'
-import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    connectedCallsListQueryFactory,
+    liveDashBoardVoiceCallListQueryFactory,
+    voiceCallListQueryFactory,
+    waitingTimeCallsListQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
 import {
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
@@ -28,17 +40,6 @@ import {
     ChannelsTableColumns,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {
-    connectedCallsListQueryFactory,
-    liveDashBoardVoiceCallListQueryFactory,
-    voiceCallListQueryFactory,
-    waitingTimeCallsListQueryFactory,
-} from 'models/reporting/queryFactories/voice/voiceCall'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'

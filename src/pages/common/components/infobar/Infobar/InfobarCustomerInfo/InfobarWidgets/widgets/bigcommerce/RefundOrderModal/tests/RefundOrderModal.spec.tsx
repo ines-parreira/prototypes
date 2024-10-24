@@ -1,11 +1,21 @@
-import React, {ComponentProps} from 'react'
-import {fromJS, Map as ImmutableMap} from 'immutable'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
+import {fromJS, Map as ImmutableMap} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
-import userEvent from '@testing-library/user-event'
+
+import {
+    bigCommerceAvailablePaymentOptionsDataResponseFixture,
+    bigCommerceCalculateOrderRefundDataResponseApiFixture,
+    bigCommerceIntegrationFixture,
+    bigCommerceOrderFixture,
+} from 'fixtures/bigcommerce'
+import {integrationsState} from 'fixtures/integrations'
+import client from 'models/api/resources'
+import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceActionType,
     BigCommerceGeneralErrorMessage,
@@ -14,24 +24,16 @@ import {
     BigCommerceRefundType,
     CalculateOrderRefundDataNestedResponse,
 } from 'models/integration/types'
-import {integrationsState} from 'fixtures/integrations'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
 import {
     CustomerContext,
     CustomerContextType,
 } from 'providers/infobar/CustomerContext'
 import {
-    bigCommerceAvailablePaymentOptionsDataResponseFixture,
-    bigCommerceCalculateOrderRefundDataResponseApiFixture,
-    bigCommerceIntegrationFixture,
-    bigCommerceOrderFixture,
-} from 'fixtures/bigcommerce'
-import client from 'models/api/resources'
-import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
 import * as integrationHelpers from 'state/integrations/helpers'
+
 import RefundOrderModalRenderWrapper, {
     RefundOrderModal,
 } from '../RefundOrderModal'

@@ -1,4 +1,5 @@
 import {campaignTrigger} from 'fixtures/campaign'
+
 import {areTriggersEqual} from '../areTriggersEqual'
 
 describe('areTriggersEqual', () => {

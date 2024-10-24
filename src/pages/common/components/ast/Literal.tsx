@@ -1,8 +1,8 @@
-import React from 'react'
 import {Map, List} from 'immutable'
+import React from 'react'
 
-import {RuleItemActions} from '../../../settings/rules/types'
 import {UNARY_OPERATORS} from '../../../../config'
+import {RuleItemActions} from '../../../settings/rules/types'
 
 import Errors from './Errors'
 import Widget from './Widget'

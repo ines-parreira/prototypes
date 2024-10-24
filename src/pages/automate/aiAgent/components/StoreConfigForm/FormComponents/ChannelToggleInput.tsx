@@ -1,6 +1,7 @@
 import React from 'react'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+
 import {SegmentEvent, logEvent} from 'common/segment'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 type Props = {
     isToggled: boolean

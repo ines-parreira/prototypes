@@ -1,13 +1,14 @@
 import React from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Button from 'pages/common/components/button/Button'
+
 import {useAppNode} from 'appNode'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {assetsUrl} from 'utils'
+import Button from 'pages/common/components/button/Button'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
 import {getRecommendedTriggerForScenario} from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
+import {assetsUrl} from 'utils'
 
 import css from './ProductRecommendationModal.less'
 

@@ -1,48 +1,45 @@
-import React, {useCallback, useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {useCallback, useMemo} from 'react'
 
 import {useParams} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getHumanAgentsJS} from 'state/agents/selectors'
-import {
-    getIntegrationById,
-    getIntegrationByIdAndType,
-} from 'state/integrations/selectors'
-
-import {useCreateABGroup} from 'pages/convert/abVariants/hooks/useCreateABGroup'
-import {abVariantAddUrl, abVariantsUrl} from 'pages/convert/abVariants/urls'
 import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {toJS} from 'utils'
-import history from 'pages/history'
 import {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {IntegrationType} from 'models/integration/constants'
+import {useCreateABGroup} from 'pages/convert/abVariants/hooks/useCreateABGroup'
+import {abVariantAddUrl, abVariantsUrl} from 'pages/convert/abVariants/urls'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
-import {IntegrationType} from 'models/integration/constants'
-import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import history from 'pages/history'
+import {getHumanAgentsJS} from 'state/agents/selectors'
+import {
+    getIntegrationById,
+    getIntegrationByIdAndType,
+} from 'state/integrations/selectors'
+import {toJS} from 'utils'
 
-import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
-
-import {Campaign} from '../../types/Campaign'
-
-import {BaseCampaignDetails} from '../BaseCampaignDetails'
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
 } from '../../../common/constants'
 import {ConvertRouteCampaignDetailParams} from '../../../common/types'
 
-import {useUpdateCampaign} from '../../hooks/useUpdateCampaign'
 import {useCreateCampaign} from '../../hooks/useCreateCampaign'
 import {useDeleteCampaign} from '../../hooks/useDeleteCampaign'
+import {useUpdateCampaign} from '../../hooks/useUpdateCampaign'
+import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
+import {Campaign} from '../../types/Campaign'
+import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
 import {duplicateCampaign} from '../../utils/duplicateCampaign'
+import {BaseCampaignDetails} from '../BaseCampaignDetails'
 
 const CampaignDetailsFactory = (): JSX.Element => {
     const {

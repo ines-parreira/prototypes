@@ -1,47 +1,48 @@
-import React, {useState, useEffect} from 'react'
+import {useQueryClient} from '@tanstack/react-query'
 import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import {useQueryClient} from '@tanstack/react-query'
+import React, {useState, useEffect} from 'react'
 import {useHistory, Link} from 'react-router-dom'
 
 import {SegmentEvent, logEvent} from 'common/segment'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {ContactFormPageEmbedment} from 'models/contactForm/types'
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import IconButton from 'pages/common/components/button/IconButton'
 import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import settingsCss from 'pages/settings/settings.less'
+import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ContactFormAutoEmbedModalAssistant from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant'
+import {
+    CONTACT_FORM_EMBEDMENTS_LIMIT,
+    CONTACT_FORM_PUBLISH_PATH,
+} from 'pages/settings/contactForm/constants'
+import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import {
     contactFormPageEmbedmentsKeys,
     useUpdatePageEmbedment,
     useDeletePageEmbedment,
     useGetShopifyPages,
 } from 'pages/settings/contactForm/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import ContactFormAutoEmbedModalAssistant from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant'
-import {
-    CONTACT_FORM_EMBEDMENTS_LIMIT,
-    CONTACT_FORM_PUBLISH_PATH,
-} from 'pages/settings/contactForm/constants'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
-import useAppSelector from 'hooks/useAppSelector'
+import settingsCss from 'pages/settings/settings.less'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {

@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
 import {Map, fromJS} from 'immutable'
+import React, {useState} from 'react'
 
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
 

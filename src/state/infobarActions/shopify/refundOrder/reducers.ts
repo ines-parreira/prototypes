@@ -2,7 +2,6 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../../../types'
 
-import {RefundOrderState} from './types'
 import {
     SET_INITIAL_STATE,
     SET_LINE_ITEMS,
@@ -13,6 +12,7 @@ import {
     SET_TRANSACTIONS,
     SET_RESTOCK,
 } from './constants'
+import {RefundOrderState} from './types'
 
 export const initialState: RefundOrderState = fromJS({
     loading: false,

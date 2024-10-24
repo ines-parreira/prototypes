@@ -1,11 +1,17 @@
-import React, {ComponentProps} from 'react'
-import * as ReactRouterDom from 'react-router-dom'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import * as ReactRouterDom from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {billingState} from 'fixtures/billing'
+import {emptyRule, rules} from 'fixtures/rule'
+import {user} from 'fixtures/users'
+import {ApiListResponsePagination} from 'models/api/types'
+import {fetchRules} from 'models/rule/resources'
+import history from 'pages/history'
 import {
     ruleUpdated,
     ruleDeleted,
@@ -13,14 +19,8 @@ import {
     rulesFetched,
 } from 'state/entities/rules/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {fetchRules} from 'models/rule/resources'
-import {emptyRule, rules} from 'fixtures/rule'
-import {getEmptyRule} from 'state/rules/utils'
 import {Rule} from 'state/rules/types'
-import {ApiListResponsePagination} from 'models/api/types'
-import history from 'pages/history'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
+import {getEmptyRule} from 'state/rules/utils'
 
 import {RootState} from 'state/types'
 

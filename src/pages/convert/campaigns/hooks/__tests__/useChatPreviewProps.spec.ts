@@ -1,7 +1,5 @@
-import {fromJS} from 'immutable'
 import {renderHook} from '@testing-library/react-hooks'
-
-import {Language} from 'constants/languages'
+import {fromJS} from 'immutable'
 
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -9,6 +7,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import {Language} from 'constants/languages'
 
 import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 

@@ -1,15 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
-import {ShopifyIntegration} from 'models/integration/types'
+import {renderHook} from '@testing-library/react-hooks'
+
 import {HelpCenter} from 'models/helpCenter/types'
-import {assumeMock} from 'utils/testing'
+import {ShopifyIntegration} from 'models/integration/types'
 import {NonEmptyArray} from 'types'
+import {assumeMock} from 'utils/testing'
+
+import {useFirstStoreAndHelpCenterWithTopQuestions} from '../useFirstStoreAndHelpCenterWithTopQuestions'
 import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
 import {
     StoreWithHelpCenters,
     useTopQuestionsStoresWithHelpCenters,
 } from '../useTopQuestionsStoresWithHelpCenters'
-import {useFirstStoreAndHelpCenterWithTopQuestions} from '../useFirstStoreAndHelpCenterWithTopQuestions'
 
 const storesWithHelpCentersFixture: StoreWithHelpCenters[] = [
     {

@@ -1,34 +1,34 @@
-import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import {fromJS, List, Set, Map} from 'immutable'
-import {Form} from 'reactstrap'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
-import {Tooltip} from '@gorgias/ui-kit'
+import React from 'react'
+import {Form} from 'reactstrap'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {
-    isCustomerDataPresent,
-    isCustomerDataValid,
-} from 'pages/common/components/infobar/utils'
-
-import SourceIcon from 'pages/common/components/SourceIcon'
-import {JSONTree} from 'pages/common/components/JSONTree'
-import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
-import MultiSelectBinaryChoiceField from 'pages/common/components/MultiSelectBinaryChoiceField'
+import {Customer} from 'models/customer/types'
 import {
     CustomerChannel,
     MultiSelectBinaryChoiceFieldOption,
 } from 'models/customerChannel/types'
 import {SourceType} from 'models/ticket/types'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {Customer} from 'models/customer/types'
+import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
+import Button from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {
+    isCustomerDataPresent,
+    isCustomerDataValid,
+} from 'pages/common/components/infobar/utils'
+import {JSONTree} from 'pages/common/components/JSONTree'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
+import MultiSelectBinaryChoiceField from 'pages/common/components/MultiSelectBinaryChoiceField'
+import SourceIcon from 'pages/common/components/SourceIcon'
 
 const defaultContent = {
     name: '',

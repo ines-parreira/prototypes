@@ -1,18 +1,11 @@
-import React, {useMemo} from 'react'
-import classNames from 'classnames'
-import {useHistory} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React, {useMemo} from 'react'
+import {useHistory} from 'react-router-dom'
+
+import useAppSelector from 'hooks/useAppSelector'
 import {Plan, ProductType} from 'models/billing/types'
 
-import Button from 'pages/common/components/button/Button'
-import useAppSelector from 'hooks/useAppSelector'
-import {
-    getCheapestProductPrices,
-    getCurrentHelpdeskInterval,
-} from 'state/billing/selectors'
-import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
-
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {
     isLegacyAutomate,
     isEnterprise,
@@ -21,9 +14,17 @@ import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
 } from 'models/billing/utils'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import {
+    getCheapestProductPrices,
+    getCurrentHelpdeskInterval,
+} from 'state/billing/selectors'
+import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
+
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
-import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
+import Badge, {BadgeType} from '../Badge/Badge'
 import css from './ProductCard.less'
 
 export type ProductCardProps = {

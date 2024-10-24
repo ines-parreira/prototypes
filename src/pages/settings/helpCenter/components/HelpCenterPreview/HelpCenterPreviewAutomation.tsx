@@ -1,12 +1,13 @@
+import classnames from 'classnames'
 import React from 'react'
 
-import classnames from 'classnames'
-import trackIcon from 'assets/img/self-service/track.svg'
-import returnIcon from 'assets/img/self-service/return.svg'
 import cancelIcon from 'assets/img/self-service/cancel.svg'
 import reportIssueIcon from 'assets/img/self-service/report-issue.svg'
+import returnIcon from 'assets/img/self-service/return.svg'
+import trackIcon from 'assets/img/self-service/track.svg'
 
 import {PolicyKey} from 'models/selfServiceConfiguration/types'
+
 import css from './HelpCenterPreviewAutomation.less'
 
 const getOrderManagementIcon = (orderManagement: PolicyKey) => {

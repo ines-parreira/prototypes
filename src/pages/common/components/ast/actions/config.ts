@@ -1,11 +1,11 @@
 import {Map} from 'immutable'
 
 import {UploadType} from 'common/types'
+import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import {ACTION_TYPES, ActionType} from 'models/rule/types'
 import {templateRegex} from 'pages/common/utils/template'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {isEmailList, findProperty} from 'utils'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {ACTION_TYPES, ActionType} from 'models/rule/types'
 
 type Email = {
     body_text?: Maybe<string>

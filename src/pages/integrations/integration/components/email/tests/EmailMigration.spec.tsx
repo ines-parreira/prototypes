@@ -1,12 +1,14 @@
 import {cleanup, screen} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import React from 'react'
 import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+
 import {
     EmailMigrationBannerStatus,
     EmailMigrationStatus,
 } from 'models/integration/types'
 import {mockStore, renderWithRouter} from 'utils/testing'
+
 import EmailMigration from '../EmailMigration/EmailMigration'
 
 jest.mock('react-router-dom', () => {

@@ -1,11 +1,8 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-
 import classNames from 'classnames'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {isAdmin} from 'utils'
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -14,8 +11,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
 
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {NotificationStatus} from 'state/notifications/types'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
+import {NotificationStatus} from 'state/notifications/types'
+import {isAdmin} from 'utils'
 
 import BannerNotification from '../BannerNotifications/BannerNotification'
 

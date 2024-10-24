@@ -1,14 +1,15 @@
 import React, {useCallback} from 'react'
+
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_SelfServiceIntegrationsFilter from 'pages/stats/self-service/DEPRECATED_SelfServiceIntegrationsFilter'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {
     getStatsFilters,
     getStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export const DEPRECATED_SelfServiceStatsPageFilters = () => {
     const dispatch = useAppDispatch()

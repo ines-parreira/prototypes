@@ -1,8 +1,8 @@
-import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
+import {fromJS, List, Map} from 'immutable'
+import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {clearMacroBeforeApply} from 'business/macro'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -13,6 +13,7 @@ import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
+import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
 import shortcutManager from 'services/shortcutManager/index'
 import {getPreferences} from 'state/currentUser/selectors'
 import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
@@ -27,12 +28,11 @@ import {
 } from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 
-import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
 import {nestedReplace} from 'tickets/common/utils'
 
 import TicketMacros from './TicketMacros'
-import TicketReply from './TicketReply'
 import TicketMacrosSearch from './TicketMacrosSearch'
+import TicketReply from './TicketReply'
 import css from './TicketReplyArea.less'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']

@@ -1,10 +1,10 @@
+import cn from 'classnames'
 import React, {RefObject, useCallback, useRef, useState} from 'react'
 import {Popover, PopoverBody, Input} from 'reactstrap'
-import cn from 'classnames'
 
 import useId from 'hooks/useId'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import Button from 'pages/common/components/button/Button'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 
 import css from './ColorPicker.less'
 

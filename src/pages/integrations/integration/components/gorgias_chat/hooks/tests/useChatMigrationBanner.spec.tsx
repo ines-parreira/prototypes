@@ -1,17 +1,17 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {Map, fromJS} from 'immutable'
-import {Provider} from 'react-redux'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {ShopifyIntegrationMeta} from 'models/integration/types/shopify'
-import {RootState} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import {ShopifyIntegrationMeta} from 'models/integration/types/shopify'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {getStoreIntegrations} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 
 import useChatMigrationBanner from '../useChatMigrationBanner'
 

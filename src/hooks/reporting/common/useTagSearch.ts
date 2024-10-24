@@ -1,6 +1,6 @@
+import {ListTagsOrderBy, ListTagsParams, Tag} from '@gorgias/api-queries'
 import {CancelToken} from 'axios'
 import {useCallback, useState} from 'react'
-import {ListTagsOrderBy, ListTagsParams, Tag} from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

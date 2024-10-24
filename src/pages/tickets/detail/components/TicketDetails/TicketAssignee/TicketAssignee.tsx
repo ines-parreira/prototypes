@@ -1,3 +1,6 @@
+import classnames from 'classnames'
+import {Map, List} from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 import React, {
     ComponentProps,
     KeyboardEvent,
@@ -7,12 +10,10 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import _isUndefined from 'lodash/isUndefined'
 import {Direction} from 'reactstrap/lib/Dropdown'
 
+import useAppSelector from 'hooks/useAppSelector'
 import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
 import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
 import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
@@ -22,7 +23,6 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {getTeams} from 'state/teams/selectors'
 import {setAgent, setTeam} from 'state/ticket/actions'
 
-import useAppSelector from 'hooks/useAppSelector'
 import css from './TicketAssignee.less'
 
 type Props = {

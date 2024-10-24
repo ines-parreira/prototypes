@@ -1,10 +1,11 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
-import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
-import {assumeMock} from 'utils/testing'
 import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useCreatedVsClosedTicketsTimeSeries')
 const createdVsClosedTicketsTimeSeriesMock = assumeMock(

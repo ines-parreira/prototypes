@@ -1,8 +1,8 @@
+import {Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import scrollIntoView, {
     StandardBehaviorOptions,
 } from 'scroll-into-view-if-needed'
-import {Component} from 'react'
 
 /**
  * Scroll DOM node into view

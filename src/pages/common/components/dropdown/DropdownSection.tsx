@@ -12,8 +12,8 @@ import React, {
     useState,
 } from 'react'
 
-import usePrevious from 'hooks/usePrevious'
 import useEffectOnce from 'hooks/useEffectOnce'
+import usePrevious from 'hooks/usePrevious'
 
 import {DropdownContext} from './Dropdown'
 

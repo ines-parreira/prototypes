@@ -7,15 +7,15 @@ import {
 import Button from 'pages/common/components/button/Button'
 
 import {PopoverContainerBody} from '../popover-container/PopoverContainer'
-import {ModifierProductComponent} from './ModifierProductComponent'
-import {ModifierSelect} from './fields/ModifierSelect'
-import {isCheckboxModifier, isSelectModifier, isSwatchModifier} from './utils'
-import {ModifierSwatch} from './fields/ModifierSwatch'
 import {ModifierCheckbox} from './fields/ModifierCheckbox'
+import {ModifierSelect} from './fields/ModifierSelect'
+import {ModifierSwatch} from './fields/ModifierSwatch'
 
-import css from './ModifiersPopoverComponent.less'
 import {useModifierValues} from './hooks'
+import {ModifierProductComponent} from './ModifierProductComponent'
+import css from './ModifiersPopoverComponent.less'
 import {ModifierErrors, ModifierValues} from './types'
+import {isCheckboxModifier, isSelectModifier, isSwatchModifier} from './utils'
 
 export type ModifierPopoverBodyProps = {
     product: BigCommerceProduct

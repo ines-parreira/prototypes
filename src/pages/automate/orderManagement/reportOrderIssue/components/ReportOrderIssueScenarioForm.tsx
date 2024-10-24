@@ -1,21 +1,20 @@
-import React from 'react'
 import {Label} from '@gorgias/ui-kit'
+import React from 'react'
 
-import InputField from 'pages/common/forms/input/InputField'
 import {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
+import InputField from 'pages/common/forms/input/InputField'
 
 import {
     SCENARIO_DESCRIPTION_MAX_LENGTH,
     SCENARIO_NAME_MAX_LENGTH,
 } from '../constants'
 import ReportOrderIssueScenarioConditions from './ReportOrderIssueScenarioConditions'
-import ReportOrderIssueScenarioReasons from './ReportOrderIssueScenarioReasons'
-import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
-
 import css from './ReportOrderIssueScenarioForm.less'
+import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueScenarioReasons from './ReportOrderIssueScenarioReasons'
 
 type Props = {
     value: SelfServiceReportIssueCase

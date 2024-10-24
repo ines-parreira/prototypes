@@ -1,44 +1,22 @@
-import {fromJS, List, Map} from 'immutable'
-import _find from 'lodash/find'
 import * as Sentry from '@sentry/react'
-
+import {fromJS, List, Map} from 'immutable'
 import {cloneDeep} from 'lodash'
+import _find from 'lodash/find'
+
+import {appQueryClient} from 'api/queryClient'
+import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store as reduxStore} from 'common/store'
 import {isSpecificTicketPath} from 'common/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
-import {appQueryClient} from 'api/queryClient'
-import {setIsAvailable} from 'state/currentUser/actions'
-import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
-import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
-import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
-import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
-import {getEmailMigrations} from 'state/integrations/selectors'
 import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
+import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
+import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-
-import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 import {isVoiceCall} from 'models/voiceCall/types'
-
-import * as agentsActions from 'state/agents/actions'
-import * as chatsActions from 'state/chats/actions'
-import {viewsCountFetched} from 'state/entities/viewsCount/actions'
-import * as infobarActions from 'state/infobar/actions'
-import * as integrationsActions from 'state/integrations/actions'
-import * as notificationsActions from 'state/notifications/actions'
-import * as ticketActions from 'state/ticket/actions'
-import * as viewsActions from 'state/views/actions'
-
-import * as viewsConstants from 'state/views/constants'
-import * as currentAccountConstants from 'state/currentAccount/constants'
-
-import * as currentAccountSelectors from 'state/currentAccount/selectors'
-import * as currentBillingSelectors from 'state/billing/selectors'
-import * as currentUserSelectors from 'state/currentUser/selectors'
-import {getTeams} from 'state/teams/selectors'
-
-import {isCurrentlyOnTicket} from 'utils'
-import {isViewSharedWithUser} from 'state/views/utils'
+import history from 'pages/history'
+import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 import {SocketManager} from 'services/socketManager/socketManager'
 import {
     AccountUpdatedEvent,
@@ -78,8 +56,14 @@ import {
     WhatsAppOnboardingFailedEvent,
     WhatsAppOnboardingSucceededEvent,
 } from 'services/socketManager/types'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
+import * as agentsActions from 'state/agents/actions'
+import * as currentBillingSelectors from 'state/billing/selectors'
+import * as chatsActions from 'state/chats/actions'
+import * as currentAccountConstants from 'state/currentAccount/constants'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import {setIsAvailable} from 'state/currentUser/actions'
+import * as currentUserSelectors from 'state/currentUser/selectors'
+import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {
     sectionCreated,
     sectionDeleted,
@@ -90,10 +74,24 @@ import {
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
-import history from 'pages/history'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import * as infobarActions from 'state/infobar/actions'
+import * as integrationsActions from 'state/integrations/actions'
+import {getEmailMigrations} from 'state/integrations/selectors'
+import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
+
+import * as notificationsActions from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getTeams} from 'state/teams/selectors'
+import * as ticketActions from 'state/ticket/actions'
+import {RootState} from 'state/types'
+import * as viewsActions from 'state/views/actions'
+
+import * as viewsConstants from 'state/views/constants'
+
+import {isViewSharedWithUser} from 'state/views/utils'
+import {isCurrentlyOnTicket} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 /**
  * Events that can be received from server via socket

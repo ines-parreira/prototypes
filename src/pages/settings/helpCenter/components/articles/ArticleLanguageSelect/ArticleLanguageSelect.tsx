@@ -1,12 +1,11 @@
-import React, {createRef, useMemo} from 'react'
 import classnames from 'classnames'
+import React, {createRef, useMemo} from 'react'
 
 import {LocaleCode} from 'models/helpCenter/types'
 import {useOpenToggle} from 'pages/common/hooks/useOpenToggle'
 
-import {ActionButton} from './components/ActionButton'
-
 import css from './ArticleLanguageSelect.less'
+import {ActionButton} from './components/ActionButton'
 
 export type ActionType = 'delete' | 'view' | 'create'
 

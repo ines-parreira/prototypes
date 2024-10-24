@@ -1,11 +1,11 @@
+import {fromJS, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {fromJS, List} from 'immutable'
 
-import {RootState} from 'state/types'
 import * as userActions from 'state/agents/actions'
 import * as agentSelectors from 'state/agents/selectors'
+import {RootState} from 'state/types'
 
 import Select from './ReactSelect'
 

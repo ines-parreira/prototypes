@@ -2,6 +2,7 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 import {ContentBlock, ContentState, CharacterMetadata} from 'draft-js'
+
 import {getTypeByTrigger} from './utils'
 
 const findMention =

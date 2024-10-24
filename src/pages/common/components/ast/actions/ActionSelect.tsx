@@ -1,5 +1,5 @@
-import React from 'react'
 import {Map, List} from 'immutable'
+import React from 'react'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,

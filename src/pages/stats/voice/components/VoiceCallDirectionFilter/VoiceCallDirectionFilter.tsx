@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
+
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
 import {
     ALL_CALLS_FILTER_LABEL,
     INBOUND_CALLS_FILTER_LABEL,
     MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
 
 import css from './VoiceCallDirectionFilter.less'
 

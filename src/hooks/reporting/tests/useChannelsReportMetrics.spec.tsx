@@ -1,16 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import moment from 'moment'
 import React from 'react'
 import {Provider} from 'react-redux'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {TagFilterInstanceId} from 'models/stat/types'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {channels} from 'fixtures/channels'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
-import {RootState} from 'state/types'
-import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, mockStore} from 'utils/testing'
 import {
     useClosedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
@@ -21,9 +16,15 @@ import {
     useTicketAverageHandleTimePerChannel,
     useTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/metricsPerChannel'
+import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
+import {useChannelsReportMetrics} from 'hooks/reporting/useChannelsReportMetrics'
 import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {TagFilterInstanceId} from 'models/stat/types'
+import {RootState} from 'state/types'
+import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
+import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannels')
 

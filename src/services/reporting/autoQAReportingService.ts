@@ -1,12 +1,14 @@
 import moment from 'moment/moment'
+
+import {User} from 'config/types/user'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {User} from 'config/types/user'
-import {Period} from 'models/stat/types'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {Period} from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -17,10 +19,9 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {AutoQAMetric} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export type AutoQAReportMetrics =

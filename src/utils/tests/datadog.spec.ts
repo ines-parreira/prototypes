@@ -2,6 +2,13 @@ import {datadogLogs} from '@datadog/browser-logs'
 import {datadogRum} from '@datadog/browser-rum'
 
 import {
+    DATADOG_CLIENT_TOKEN,
+    DATADOG_RUM_APPLICATION_ID,
+    DATADOG_RUM_CLIENT_TOKEN,
+} from 'config'
+import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
+import {
     DATADOG_LOGS_SESSION_SAMPLE_RATE,
     DATADOG_LOGS_SERVICE,
     DATADOG_RUM_SESSION_SAMPLE_RATE,
@@ -13,13 +20,6 @@ import {
     initDatadogLogger,
     initDatadogRum,
 } from 'utils/datadog'
-import {user} from 'fixtures/users'
-import {account} from 'fixtures/account'
-import {
-    DATADOG_CLIENT_TOKEN,
-    DATADOG_RUM_APPLICATION_ID,
-    DATADOG_RUM_CLIENT_TOKEN,
-} from 'config'
 import {GorgiasUIEnv} from 'utils/environment'
 
 jest.mock('@datadog/browser-logs')

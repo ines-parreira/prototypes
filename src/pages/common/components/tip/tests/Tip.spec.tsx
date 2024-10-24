@@ -1,8 +1,8 @@
+import {fireEvent, render, screen} from '@testing-library/react'
+import {Map} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {Map} from 'immutable'
-import {fireEvent, render, screen} from '@testing-library/react'
 
 import {RootState, StoreDispatch} from 'state/types'
 

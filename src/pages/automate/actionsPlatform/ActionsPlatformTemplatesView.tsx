@@ -1,21 +1,20 @@
+import _keyBy from 'lodash/keyBy'
 import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import _keyBy from 'lodash/keyBy'
 
+import useOrderBy from 'hooks/useOrderBy'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
-import useOrderBy from 'hooks/useOrderBy'
 
+import css from './ActionsPlatformTemplatesView.less'
 import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
 import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
 import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTemplatesTableRow'
 import useApps from './hooks/useApps'
-import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
+import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
 import {ActionTemplate, App} from './types'
-
-import css from './ActionsPlatformTemplatesView.less'
 
 const ActionsPlatformTemplatesView = () => {
     const {

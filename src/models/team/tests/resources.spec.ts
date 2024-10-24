@@ -1,11 +1,12 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import _pick from 'lodash/pick'
 import {Set} from 'immutable'
+import _pick from 'lodash/pick'
 
 import {teams as teamsFixtures} from 'fixtures/teams'
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
+
 import {
     createTeam,
     deleteTeam,

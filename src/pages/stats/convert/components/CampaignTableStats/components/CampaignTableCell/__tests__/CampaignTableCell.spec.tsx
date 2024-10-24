@@ -1,23 +1,23 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
 
-import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
-import {CampaignTableCell} from 'pages/stats/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-
-import {GorgiasChatIntegration} from 'models/integration/types'
+import {campaign} from 'fixtures/campaign'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CampaignPreview,
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
+import {GorgiasChatIntegration} from 'models/integration/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {CampaignTableCell} from 'pages/stats/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell'
+import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
+import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
+
+import {setMetricData} from 'state/ui/stats/drillDownSlice'
 import {ConvertMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {setMetricData} from 'state/ui/stats/drillDownSlice'
-import {campaign} from 'fixtures/campaign'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()

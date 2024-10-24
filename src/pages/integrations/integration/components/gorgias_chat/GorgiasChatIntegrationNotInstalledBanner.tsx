@@ -1,13 +1,12 @@
-import React from 'react'
 import {Map} from 'immutable'
+import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/types'
 
-import {NotificationStatus} from 'state/notifications/types'
-
-import {Tab} from 'pages/integrations/integration/types'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {Tab} from 'pages/integrations/integration/types'
+import {NotificationStatus} from 'state/notifications/types'
 
 type Props = {
     integration: Map<any, any>

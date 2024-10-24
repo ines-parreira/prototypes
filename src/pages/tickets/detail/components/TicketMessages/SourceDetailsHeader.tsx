@@ -8,8 +8,8 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
-import SourceDetailsContext from './SourceDetailsContext'
 import css from './SourceDetails.less'
+import SourceDetailsContext from './SourceDetailsContext'
 
 type Props = {
     className?: string

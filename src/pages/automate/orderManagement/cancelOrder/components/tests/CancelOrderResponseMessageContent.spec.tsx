@@ -1,11 +1,13 @@
-import React from 'react'
 import {screen, render} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
 import {ShopifyIntegration} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
-import CancelOrderResponseMessageContent from '../CancelOrderResponseMessageContent'
+
 import CancelOrderFlowViewContext from '../../CancelOrderFlowViewContext'
+import CancelOrderResponseMessageContent from '../CancelOrderResponseMessageContent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

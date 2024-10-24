@@ -1,17 +1,15 @@
-import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-
 import LD from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
-import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
 import {
     GorgiasChatCreationWizardStatus,
@@ -19,6 +17,7 @@ import {
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../../models/integration/types'
+import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

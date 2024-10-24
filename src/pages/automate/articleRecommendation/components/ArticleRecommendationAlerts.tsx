@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useLocalStorage from 'hooks/useLocalStorage'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
 

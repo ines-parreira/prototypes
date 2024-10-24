@@ -1,7 +1,7 @@
-import React from 'react'
-import {List, Map} from 'immutable'
-import {ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
+import {List, Map} from 'immutable'
+import React from 'react'
+import {ListGroup, ListGroupItem} from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import UncontrolledPeopleSearchInput from 'pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput'

@@ -1,10 +1,10 @@
 import {useCallback, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import useAsyncFn from 'hooks/useAsyncFn'
 import {IntegrationType} from 'models/integration/constants'
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
-import useAsyncFn from 'hooks/useAsyncFn'
+import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 const useReportOrderIssueFlowScenarios = (shopName: string) => {
     const history = useHistory()

@@ -1,15 +1,15 @@
-import moment from 'moment'
-import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
+import moment from 'moment'
+import {dismissNotification} from 'reapop'
 
-import {notify} from 'state/notifications/actions'
+import {store as reduxStore} from 'common/store'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
 import {getHelpCenters} from 'state/entities/helpCenter/helpCenters'
 import {getActiveIntegrations} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {store as reduxStore} from 'common/store'
 
 import {tryLocalStorage} from '../common/utils'
 

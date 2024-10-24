@@ -1,10 +1,11 @@
+import {Meta, StoryFn} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Meta, StoryFn} from '@storybook/react'
 
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+
 import {ScoreFilter} from './ScoreFilter'
 
 const storyConfig: Meta = {

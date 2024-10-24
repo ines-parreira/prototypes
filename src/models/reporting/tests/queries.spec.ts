@@ -1,7 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
+
 import {useEnrichedPostReporting, usePostReporting} from '../queries'
 import {postEnrichedReporting, postReporting} from '../resources'
 

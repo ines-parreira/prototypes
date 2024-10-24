@@ -1,5 +1,7 @@
 import React from 'react'
+
 import {NumberedPagination} from 'pages/common/components/Paginations'
+
 import css from './RecommendationPagination.less'
 
 interface Props {

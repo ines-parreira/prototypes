@@ -1,5 +1,5 @@
-import React, {MouseEvent, ReactNode} from 'react'
 import classnames from 'classnames'
+import React, {MouseEvent, ReactNode} from 'react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 

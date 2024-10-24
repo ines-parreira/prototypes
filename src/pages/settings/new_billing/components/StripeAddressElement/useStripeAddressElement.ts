@@ -1,6 +1,7 @@
 import {useElements} from '@stripe/react-stripe-js'
-import {useEffect, useRef, useState} from 'react'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import {useEffect, useRef, useState} from 'react'
+
 import {validatePostalCode} from '../../utils/validations'
 
 export const useStripeAddressElement = () => {

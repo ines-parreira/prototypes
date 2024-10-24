@@ -1,6 +1,6 @@
 import {Map, List} from 'immutable'
-import React from 'react'
 import _isEqual from 'lodash/isEqual'
+import React from 'react'
 import {Bar} from 'react-chartjs-2'
 
 import {colors as colorsConfig, chartMaxHeight} from 'config/stats'

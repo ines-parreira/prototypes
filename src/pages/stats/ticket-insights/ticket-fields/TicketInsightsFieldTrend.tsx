@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
-import {LINES_COLORS} from 'pages/stats/constants'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
+import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
+import {LINES_COLORS} from 'pages/stats/constants'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend.less'
 
 export function TicketInsightsFieldTrend() {

@@ -1,9 +1,11 @@
-import React from 'react'
 import {render} from '@testing-library/react'
+import React from 'react'
+
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {createContextConsumer} from 'utils/testing'
+
 import SearchRankScenarioContext from '../SearchRankScenarioContext'
 import SearchRankScenarioProvider from '../SearchRankScenarioProvider'
 

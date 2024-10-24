@@ -1,14 +1,14 @@
-import React, {useCallback} from 'react'
-import {isEmpty} from 'lodash'
-import copy from 'copy-to-clipboard'
 import {Label} from '@gorgias/ui-kit'
+import copy from 'copy-to-clipboard'
+import {isEmpty} from 'lodash'
+import React, {useCallback} from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Button from 'pages/common/components/button/Button'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 

@@ -1,17 +1,17 @@
-import React from 'react'
-import {fromJS, Map} from 'immutable'
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
+import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
+import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
+import {newViews} from 'models/view/mocks'
 import {EntityType} from 'models/view/types'
+import {HeaderContainer} from 'pages/common/components/ViewTable/Header'
 import {fetchViewItems} from 'state/views/actions'
 
-import {newViews} from 'models/view/mocks'
 import {systemViewIcons} from 'utils/views'
-import {HeaderContainer} from 'pages/common/components/ViewTable/Header'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 

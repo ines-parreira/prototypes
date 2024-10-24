@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, {
     KeyboardEvent,
     ReactNode,
@@ -5,7 +6,6 @@ import React, {
     useContext,
     useRef,
 } from 'react'
-import cn from 'classnames'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'

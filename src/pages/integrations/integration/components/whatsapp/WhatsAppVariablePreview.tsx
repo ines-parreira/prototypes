@@ -1,4 +1,5 @@
 import React from 'react'
+
 import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
 
 import css from './WhatsAppVariablePreview.less'

@@ -1,12 +1,28 @@
-import {Edge, Node} from 'reactflow'
-import {ulid} from 'ulidx'
 import _cloneDeep from 'lodash/cloneDeep'
-import _omit from 'lodash/omit'
+import _groupBy from 'lodash/groupBy'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
-import _groupBy from 'lodash/groupBy'
+import _omit from 'lodash/omit'
 import _omitBy from 'lodash/omitBy'
+import {Edge, Node} from 'reactflow'
+import {ulid} from 'ulidx'
 
+import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
+import {
+    extractVariablesFromNode,
+    getWorkflowVariableListForNode,
+    parseWorkflowVariable,
+    unescapeUrlEncodedVariables,
+} from './variables.model'
+import {WorkflowVariableList} from './variables.types'
+import {
+    VisualBuilderEdge,
+    VisualBuilderGraph,
+    VisualBuilderNode,
+    isMultipleChoicesNodeType,
+    isConditionsNodeType,
+    isHttpRequestNodeType,
+} from './visualBuilderGraph.types'
 import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
@@ -29,22 +45,6 @@ import {
     WorkflowStepTextInput,
     WorkflowStepUpdateShippingAddress,
 } from './workflowConfiguration.types'
-import {
-    VisualBuilderEdge,
-    VisualBuilderGraph,
-    VisualBuilderNode,
-    isMultipleChoicesNodeType,
-    isConditionsNodeType,
-    isHttpRequestNodeType,
-} from './visualBuilderGraph.types'
-import {
-    extractVariablesFromNode,
-    getWorkflowVariableListForNode,
-    parseWorkflowVariable,
-    unescapeUrlEncodedVariables,
-} from './variables.model'
-import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
-import {WorkflowVariableList} from './variables.types'
 
 export const buildEdgeCommonProperties: () => Pick<
     Edge,

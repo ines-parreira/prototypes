@@ -1,12 +1,12 @@
 import {fromJS, Map, List} from 'immutable'
 
+import {initRefundOrderLineItems} from 'business/shopify/order'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-import {initRefundOrderLineItems} from 'business/shopify/order'
 
 import * as constants from '../constants'
 import reducer, {initialState} from '../reducers'

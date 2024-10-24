@@ -1,5 +1,5 @@
-import React from 'react'
 import {List, Map} from 'immutable'
+import React from 'react'
 
 import {RuleItemActions} from 'pages/settings/rules/types'
 

@@ -1,5 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
+import React from 'react'
 
 import radioChecked from 'assets/img/icons/radio-checked.svg'
 import radioUnchecked from 'assets/img/icons/radio-unchecked.svg'

@@ -1,16 +1,16 @@
-import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {UserRole} from 'config/types/user'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
-import {SegmentEvent, logEvent} from 'common/segment'
 
 import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
 

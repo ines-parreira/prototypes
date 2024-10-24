@@ -1,9 +1,9 @@
+import {fireEvent, screen} from '@testing-library/react'
+import uniqueId from 'lodash/uniqueId'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fireEvent, screen} from '@testing-library/react'
-import uniqueId from 'lodash/uniqueId'
 
 import {
     OBJECT_TYPES,
@@ -12,8 +12,8 @@ import {
 import {ticketDropdownFieldDefinition} from 'fixtures/customField'
 import {renderWithDnD} from 'utils/testing'
 
-import DropdownInputRow from '../DropdownInputRow'
 import DropdownInput from '../DropdownInput'
+import DropdownInputRow from '../DropdownInputRow'
 
 let idCount = 1
 jest.mock('lodash/uniqueId')

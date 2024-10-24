@@ -1,7 +1,9 @@
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
+
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
+
 import LightCampaignModal from '../LightCampaignModal'
 
 describe('<LightCampaignModal />', () => {

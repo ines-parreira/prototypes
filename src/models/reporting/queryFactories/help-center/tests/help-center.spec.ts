@@ -1,14 +1,16 @@
 import moment from 'moment'
+
 import {OrderDirection} from 'models/api/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {StatsFilters} from 'models/stat/types'
-import {ReportingFilterOperator} from 'models/reporting/types'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {ReportingFilterOperator} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+
 import {
     noSearchResultsCountQueryFactory,
     noSearchResultsQueryFactory,

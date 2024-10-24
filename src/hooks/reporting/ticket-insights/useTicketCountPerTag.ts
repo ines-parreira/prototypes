@@ -1,12 +1,13 @@
 import {Tag} from '@gorgias/api-queries'
 import {orderBy} from 'lodash'
-import useAppDispatch from 'hooks/useAppDispatch'
+
 import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'

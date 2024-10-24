@@ -1,12 +1,13 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Filter from 'pages/stats/common/components/Filter/Filter'
+import React from 'react'
+
 import {
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
+import Filter from 'pages/stats/common/components/Filter/Filter'
 
 describe('Filter', () => {
     const filterName = 'Test Filter'

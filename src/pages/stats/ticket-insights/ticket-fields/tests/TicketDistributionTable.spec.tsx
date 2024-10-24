@@ -4,18 +4,19 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {
-    OUTSIDE_TOP_DATA,
-    TicketDistributionTable,
-} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+
+import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {
+    OUTSIDE_TOP_DATA,
+    TicketDistributionTable,
+} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

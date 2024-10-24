@@ -6,13 +6,14 @@ import {
     PlaygroundMessage,
     isApiEligiblePlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
+
+import {DEFAULT_PLAYGROUND_CUSTOMER} from '../../constants'
+import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundMessagesToServerMessages,
     shouldDisplayActions,
 } from '../playground-messages.utils'
-import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
-import {DEFAULT_PLAYGROUND_CUSTOMER} from '../../constants'
 
 describe('playground-message utils', () => {
     describe('isPlaygroundMessageSupportedByServer', () => {

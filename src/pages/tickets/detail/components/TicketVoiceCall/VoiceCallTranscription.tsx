@@ -1,15 +1,17 @@
-import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     VoiceCallRecording,
     VoiceCallRecordingType,
     VoiceCallRecordingTranscriptionStatus,
 } from 'models/voiceCall/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
-import TranscriptionData from './TranscriptionData'
+
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
+import TranscriptionData from './TranscriptionData'
 import css from './TranscriptionData.less'
 
 type Props = {

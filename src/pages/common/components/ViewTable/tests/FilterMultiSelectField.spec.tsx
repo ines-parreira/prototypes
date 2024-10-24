@@ -4,10 +4,10 @@ import _noop from 'lodash/noop'
 import React from 'react'
 import {InferThunkActionCreatorType} from 'react-redux'
 
-import MultiSelectOptionsField from '../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {FilterMultiSelectField} from '../FilterMultiSelectField'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
+import MultiSelectOptionsField from '../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../../forms/MultiSelectOptionsField/types'
+import {FilterMultiSelectField} from '../FilterMultiSelectField'
 
 describe('FilterMultiSelectField', () => {
     const defaultProps = {
