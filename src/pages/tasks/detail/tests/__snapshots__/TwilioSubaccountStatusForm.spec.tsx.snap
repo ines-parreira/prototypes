@@ -117,41 +117,6 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
           </div>
         </div>
         <div
-          class="form-group"
-        >
-          <div>
-            <div>
-              <label
-                aria-checked="false"
-                class="Label--label--QAnfT label"
-                for="toggle-button-1"
-                role="switch"
-              >
-                <input
-                  class="input"
-                  disabled=""
-                  id="toggle-button-1"
-                  name="toggle-button-1"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-                <span
-                  style="color: green;"
-                >
-                  SMS Enabled
-                </span>
-              </label>
-              <div
-                class="caption caption"
-              >
-                Enable/Disable SMS for this account
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
           class="mt-4 form-group"
         >
           <button

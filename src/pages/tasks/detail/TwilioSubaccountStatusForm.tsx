@@ -7,7 +7,6 @@ import client from 'models/api/resources'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {errorToChildren} from 'utils'
@@ -20,7 +19,6 @@ export enum TwilioSubaccountStatus {
 type StatusData = {
     status: TwilioSubaccountStatus
     sub_account_sid: string
-    is_sms_enabled: boolean | null
 }
 
 const TwilioSubaccountStatusForm = (): JSX.Element => {
@@ -100,17 +98,6 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
         }
     }
 
-    const handleSmsToggle = (isToggled: boolean) => {
-        setFormData((prevData) => {
-            if (!prevData) return prevData
-            return {
-                ...prevData,
-                is_sms_enabled: isToggled,
-            }
-        })
-        setFormChanged(true)
-    }
-
     return (
         <div className="full-width">
             <PageHeader title="Twilio Subaccount Status" />
@@ -159,32 +146,6 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                                 }}
                                 fullWidth
                             />
-                        </FormGroup>
-                        <FormGroup>
-                            <div>
-                                <ToggleInput
-                                    isToggled={
-                                        formData.is_sms_enabled === true ||
-                                        formData.is_sms_enabled === null
-                                    }
-                                    onClick={handleSmsToggle}
-                                    caption="Enable/Disable SMS for this account"
-                                >
-                                    <span
-                                        style={{
-                                            color:
-                                                formData.is_sms_enabled ===
-                                                false
-                                                    ? 'red'
-                                                    : 'green',
-                                        }}
-                                    >
-                                        {formData.is_sms_enabled === false
-                                            ? 'SMS Disabled'
-                                            : 'SMS Enabled'}
-                                    </span>
-                                </ToggleInput>
-                            </div>
                         </FormGroup>
                         <FormGroup className="mt-4">
                             <Button
