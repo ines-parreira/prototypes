@@ -12,7 +12,14 @@ import {logPageChange} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
 import {account} from 'fixtures/account'
+import * as billingFixtures from 'fixtures/billing'
 import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
 import LiveOverview from 'pages/stats/LiveOverview'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
@@ -21,9 +28,10 @@ import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsR
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import Routes from 'routes/Routes'
+import {initialState} from 'state/billing/reducers'
 import {RootState} from 'state/types'
 
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter, renderWithStore} from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
@@ -150,6 +158,14 @@ const mockUseFlag = useFlag as jest.Mock
 window.loadGorgiasChat = jest.fn()
 
 describe('<Routes/>', () => {
+    const defaultState = {
+        currentAccount: fromJS({
+            current_subscription: {
+                products: {},
+            },
+        }),
+        billing: initialState.mergeDeep(billingFixtures.billingState),
+    }
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         mockHistory.replace('/app')
@@ -178,7 +194,7 @@ describe('<Routes/>', () => {
 
     it('should not log page change after location change', () => {
         renderWithRouter(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <Routes />
             </Provider>,
             {
@@ -252,7 +268,7 @@ describe('<Routes/>', () => {
         'should log page change after location change to a tracked page',
         (path) => {
             renderWithRouter(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <Routes />
                 </Provider>,
                 {
@@ -452,25 +468,34 @@ describe('<Routes/>', () => {
     })
 
     describe('StatsRoutes', () => {
+        const state = {
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                    },
+                },
+            }),
+            billing: initialState.mergeDeep(billingFixtures.billingState),
+        }
         it('should render Channels page', () => {
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/channels']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/channels']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(ChannelsReportMock).toHaveBeenCalled()
         })
 
         it('should render SLAs page', () => {
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/slas']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/slas']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(ServiceLevelAgreementsMock).toHaveBeenCalled()
@@ -483,17 +508,27 @@ describe('<Routes/>', () => {
                     currentUser: fromJS({
                         role: {name: role},
                     }) as Map<any, any>,
+                    currentAccount: fromJS({
+                        current_subscription: {
+                            products: {
+                                [AUTOMATION_PRODUCT_ID]:
+                                    basicMonthlyAutomationPlan.price_id,
+                            },
+                        },
+                    }),
+                    billing: initialState.mergeDeep(
+                        billingFixtures.billingState
+                    ),
                 }
                 mockFlags({
                     [FeatureFlagKey.AnalyticsAutoQA]: true,
                 })
 
-                render(
-                    <Provider store={mockStore(state)}>
-                        <MemoryRouter initialEntries={['/app/stats/auto-qa']}>
-                            <Routes />
-                        </MemoryRouter>
-                    </Provider>
+                renderWithStore(
+                    <MemoryRouter initialEntries={['/app/stats/auto-qa']}>
+                        <Routes />
+                    </MemoryRouter>,
+                    state
                 )
 
                 expect(AutoQAMock).toHaveBeenCalled()
@@ -505,12 +540,11 @@ describe('<Routes/>', () => {
                 [FeatureFlagKey.NewTagsReport]: true,
             })
 
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/tags']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/tags']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(TagsMock).toHaveBeenCalled()
@@ -522,12 +556,11 @@ describe('<Routes/>', () => {
                 [FeatureFlagKey.NewTagsReport]: false,
             })
 
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/tags']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/tags']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(OldTagsMock).toHaveBeenCalled()
@@ -539,14 +572,11 @@ describe('<Routes/>', () => {
                 [FeatureFlagKey.AIAgentStatsPage]: true,
             })
 
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter
-                        initialEntries={['/app/stats/automate-ai-agent']}
-                    >
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/automate-ai-agent']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(
@@ -556,12 +586,11 @@ describe('<Routes/>', () => {
         })
 
         it('should render Live Voice page', () => {
-            render(
-                <Provider store={mockStore({})}>
-                    <MemoryRouter initialEntries={['/app/stats/live-voice']}>
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/live-voice']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
             )
 
             expect(screen.getByText('LiveVoice')).toBeInTheDocument()

@@ -9,9 +9,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import * as billingFixtures from 'fixtures/billing'
+
 import {user} from 'fixtures/users'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
 import {StatsRoutes} from 'routes/Routes'
+import {initialState} from 'state/billing/reducers'
 import {RootState} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
@@ -41,6 +44,7 @@ const mockHistory = createBrowserHistory()
 
 describe('<StatsRoutes/>', () => {
     const defaultState = {
+        billing: initialState.mergeDeep(billingFixtures.billingState),
         currentAccount: fromJS({
             ...user,
             timezone: 'America/Los_Angeles',

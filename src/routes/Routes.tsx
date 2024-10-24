@@ -147,6 +147,7 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
+import {getHasAutomate} from 'state/billing/selectors'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
@@ -451,6 +452,7 @@ export function StatsRoutes() {
 
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const isNewTagsReportEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewTagsReport]
@@ -576,7 +578,7 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {!!isAutoQAEnabled && (
+                {!!isAutoQAEnabled && hasAutomate && (
                     <Route
                         exact
                         path={`${path}/auto-qa`}

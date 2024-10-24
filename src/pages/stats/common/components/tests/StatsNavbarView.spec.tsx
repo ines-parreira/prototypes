@@ -13,6 +13,10 @@ import {UserRole} from 'config/types/user'
 
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
+} from 'fixtures/productPrices'
 
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
@@ -170,6 +174,14 @@ describe('StatsNavbarView', () => {
                 currentUser: fromJS({
                     role: {name: role},
                 }) as Map<any, any>,
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.price_id,
+                        },
+                    },
+                }),
             }
             mockFlags({
                 [FeatureFlagKey.AnalyticsAutoQA]: true,
