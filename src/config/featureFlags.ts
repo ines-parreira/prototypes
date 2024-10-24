@@ -119,6 +119,5 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
-    WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

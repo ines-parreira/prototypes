@@ -6,12 +6,10 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 
 type Props = {
     integration?: WhatsAppIntegration
-    enableTemplates: boolean
 }
 
 export default function WhatsAppIntegrationSecondaryNavigation({
     integration,
-    enableTemplates,
 }: Props): JSX.Element | null {
     const {pathname} = useLocation()
     if (pathname.endsWith('/migration')) {
@@ -45,11 +43,9 @@ export default function WhatsAppIntegrationSecondaryNavigation({
             <NavLink to={`${baseURL}/preferences`} exact>
                 Preferences
             </NavLink>
-            {enableTemplates && (
-                <NavLink to={`${baseURL}/templates`} exact>
-                    Templates
-                </NavLink>
-            )}
+            <NavLink to={`${baseURL}/templates`} exact>
+                Templates
+            </NavLink>
         </SecondaryNavbar>
     )
 }

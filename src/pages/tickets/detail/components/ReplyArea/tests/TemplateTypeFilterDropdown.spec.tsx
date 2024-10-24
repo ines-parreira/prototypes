@@ -1,11 +1,9 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {mockStore} from 'utils/testing'
 
@@ -18,10 +16,6 @@ jest.mock(
 )
 
 const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
-
-mockFlags({
-    [FeatureFlagKey.WhatsAppMessageTemplates]: true,
-})
 
 describe('TemplateTypeFilterDropdown', () => {
     const renderComponent = (

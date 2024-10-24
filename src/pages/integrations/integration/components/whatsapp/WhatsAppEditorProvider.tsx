@@ -1,10 +1,8 @@
 import {EditorState} from 'draft-js'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
@@ -45,9 +43,6 @@ export default function WhatsAppEditorProvider({
 
     const channel = useAppSelector(getNewMessageChannel)
     const isPublicNewMessage = useAppSelector(isNewMessagePublic)
-
-    const whatsAppMessageTemplatesEnabled =
-        useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
     const customerMessagesList = useAppSelector(getCustomerMessages)
     const currentActions = useAppSelector(getNewMessageActions)
@@ -101,7 +96,6 @@ export default function WhatsAppEditorProvider({
     }
 
     const showWhatsAppTemplateEditor =
-        whatsAppMessageTemplatesEnabled &&
         channel === TicketChannel.WhatsApp &&
         isPublicNewMessage &&
         selectedTemplateType === TemplateTypeFilterOption.Templates
@@ -112,7 +106,6 @@ export default function WhatsAppEditorProvider({
                 selectedTemplateType,
                 setSelectedTemplateType,
                 showWhatsAppTemplateEditor,
-                whatsAppMessageTemplatesEnabled,
                 isTemplateListVisible,
                 setIsTemplateListVisible,
                 selectNewTemplate,

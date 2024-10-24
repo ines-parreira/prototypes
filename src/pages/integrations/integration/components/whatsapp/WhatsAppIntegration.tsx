@@ -23,7 +23,6 @@ import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
 export default function WhatsAppIntegration() {
     const {integrationId} = useParams<{integrationId: string}>()
     const enableMigration = useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
-    const enableTemplates = useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -58,7 +57,6 @@ export default function WhatsAppIntegration() {
 
             <WhatsAppIntegrationSecondaryNavigation
                 integration={currentIntegration}
-                enableTemplates={enableTemplates}
             />
 
             <Switch>
@@ -72,18 +70,16 @@ export default function WhatsAppIntegration() {
                                 integration={currentIntegration}
                             />
                         </Route>
-                        {enableTemplates && (
-                            <Route
-                                path={`${baseURL}/:integrationId/templates`}
-                                exact
-                            >
-                                <WhatsAppMessageTemplatesList
-                                    phoneNumberId={
-                                        currentIntegration.meta.phone_number_id
-                                    }
-                                />
-                            </Route>
-                        )}
+                        <Route
+                            path={`${baseURL}/:integrationId/templates`}
+                            exact
+                        >
+                            <WhatsAppMessageTemplatesList
+                                phoneNumberId={
+                                    currentIntegration.meta.phone_number_id
+                                }
+                            />
+                        </Route>
                     </>
                 )}
                 <Route path={`${baseURL}/integrations`} exact>

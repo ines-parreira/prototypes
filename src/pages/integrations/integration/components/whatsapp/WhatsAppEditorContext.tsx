@@ -15,7 +15,6 @@ export type WhatsAppEditorContextState = {
     ) => void
     cleanupEditorState: () => void
     showWhatsAppTemplateEditor: boolean
-    whatsAppMessageTemplatesEnabled: boolean
     isTemplateListVisible: boolean
     selectedTemplate?: WhatsAppMessageTemplate
     isWhatsAppWindowOpen: boolean
@@ -40,7 +39,6 @@ export const Context = createContext<WhatsAppEditorContextState>({
         return
     },
     showWhatsAppTemplateEditor: false,
-    whatsAppMessageTemplatesEnabled: false,
     isTemplateListVisible: false,
     selectedTemplate: undefined,
     isWhatsAppWindowOpen: false,

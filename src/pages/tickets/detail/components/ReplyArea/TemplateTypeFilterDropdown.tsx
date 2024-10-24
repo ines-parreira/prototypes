@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {
     DropdownItem,
@@ -9,7 +8,6 @@ import {
 } from 'reactstrap'
 
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {
@@ -27,17 +25,12 @@ type Props = {
 export default function TemplateTypeFilterDropdown({value}: Props) {
     const {setSelectedTemplateType} = useWhatsAppEditor()
 
-    const whatsAppMessageTemplatesEnabled =
-        useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
-
     const channel = useAppSelector(getNewMessageChannel)
     const isPublicNewMessage = useAppSelector(isNewMessagePublic)
 
-    if (
-        !(channel === TicketChannel.WhatsApp && isPublicNewMessage) ||
-        !whatsAppMessageTemplatesEnabled
-    )
+    if (!(channel === TicketChannel.WhatsApp && isPublicNewMessage)) {
         return null
+    }
 
     return (
         <UncontrolledDropdown size="sm" className={css.container}>

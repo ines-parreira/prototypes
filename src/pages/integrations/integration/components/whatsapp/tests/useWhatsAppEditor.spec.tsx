@@ -1,11 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroAction} from 'models/macroAction/types'
 import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
 import {mockStore} from 'utils/testing'
@@ -45,7 +43,6 @@ const createStore = ({
 describe('useWhatsAppEditor', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        resetLDMocks()
     })
 
     const renderHookWithStore = (store: any) =>
@@ -57,10 +54,7 @@ describe('useWhatsAppEditor', () => {
             ),
         })
 
-    it('WhatsApp template editor should be visible when flag is enabled, channel is WhatsApp, template search is selected and new message is public', () => {
-        mockFlags({
-            [FeatureFlagKey.WhatsAppMessageTemplates]: true,
-        })
+    it('WhatsApp template editor should be visible when channel is WhatsApp, template search is selected and new message is public', () => {
         const {result} = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
@@ -70,9 +64,6 @@ describe('useWhatsAppEditor', () => {
     })
 
     it('WhatsApp template editor should not be visible after selecting Macro search', () => {
-        mockFlags({
-            [FeatureFlagKey.WhatsAppMessageTemplates]: true,
-        })
         const {result} = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
@@ -84,18 +75,6 @@ describe('useWhatsAppEditor', () => {
         expect(result.current.showWhatsAppTemplateEditor).toBe(false)
     })
 
-    it('WhatsApp template editor should not be visible when flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.WhatsAppMessageTemplates]: false,
-        })
-        const {result} = renderHookWithStore({
-            channel: TicketChannel.WhatsApp,
-            actions: null,
-            isPublic: true,
-        })
-        expect(result.current.showWhatsAppTemplateEditor).toBe(false)
-    })
-
     it.each([
         TicketChannel.Email,
         TicketChannel.InternalNote,
@@ -103,9 +82,6 @@ describe('useWhatsAppEditor', () => {
     ])(
         'WhatsApp template editor should not be visible when channel is not WhatsApp',
         (sourceType) => {
-            mockFlags({
-                [FeatureFlagKey.WhatsAppMessageTemplates]: true,
-            })
             const {result} = renderHookWithStore({
                 channel: sourceType,
                 actions: null,
@@ -116,9 +92,6 @@ describe('useWhatsAppEditor', () => {
     )
 
     it('should display Macro search by default when WhatsApp window is open', () => {
-        mockFlags({
-            [FeatureFlagKey.WhatsAppMessageTemplates]: true,
-        })
         isWhatsAppWindowOpenSpy.mockReturnValue(true)
         const {result} = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
