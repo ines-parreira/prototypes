@@ -622,14 +622,20 @@ export function getNewMessageSender(
         // we only select this sender if it's available in the integrations
     }
 
+    const defaultIntegration =
+        defaultSettings?.data?.[sourceTypeToChannel(newMessageSourceType)]
+
+    const defaultChannel: Map<any, any> | undefined = channels.find(
+        (c: Map<any, any>) => c.get('id') === defaultIntegration
+    )
+
     const preferredChannel =
+        defaultChannel ??
         getPreferredChannel(
             sourceTypeToChannel(newMessageSourceType),
             channels
-        ) || fromJS({})
-
-    const defaultIntegration =
-        defaultSettings?.data?.[sourceTypeToChannel(newMessageSourceType)]
+        ) ??
+        fromJS({})
 
     const lastMessage: Map<any, any> | undefined = (
         ticket.get('messages') as List<any>
@@ -718,15 +724,8 @@ export function getNewMessageSender(
 
     // new ticket
     if (!lastMessage) {
-        if (defaultIntegration) {
-            const matchingDefaultSender: Map<any, any> | undefined =
-                channels.find(
-                    (c: Map<any, any>) => c.get('id') === defaultIntegration
-                )
-
-            if (matchingDefaultSender) {
-                return matchingDefaultSender
-            }
+        if (defaultChannel) {
+            return defaultChannel
         }
 
         const lastSender = getLastSenderChannel()

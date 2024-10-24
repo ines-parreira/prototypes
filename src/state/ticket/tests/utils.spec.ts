@@ -28,7 +28,10 @@ import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import * as channelsService from 'services/channels'
-import {AccountSettingType} from 'state/currentAccount/types'
+import {
+    AccountSettingDefaultIntegration,
+    AccountSettingType,
+} from 'state/currentAccount/types'
 import {getEmailChannels} from 'state/integrations/selectors'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {RootState} from 'state/types'
@@ -496,6 +499,14 @@ describe('ticket utils', () => {
                     },
                 ],
             })
+
+            const defaultIntegrationSetting: AccountSettingDefaultIntegration =
+                {
+                    id: 1,
+                    type: AccountSettingType.DefaultIntegration,
+                    data: {email: 15},
+                }
+
             it('should return `to` field from first message from shopper (help center contact form - via email)', () => {
                 const expected = helpCenterContactFormTicketViaSengrid.getIn([
                     'messages',
@@ -596,22 +607,20 @@ describe('ticket utils', () => {
                             ticket,
                             TicketMessageSourceType.ContactForm,
                             channels,
-                            integrationsWithSelectedEmail
+                            integrationsWithSelectedEmail,
+                            defaultIntegrationSetting
                         )
                     ).toEqual(
                         fromJS({
                             preferred: true,
                             isDeactivated: false,
                             verified: true,
-                            name: 'Acme Support',
-                            address: 'support@acme.gorgias.io',
+                            name: 'Acme Contact',
+                            address: 'contact@acme.com',
                             isDefault: false,
-                            signature: {
-                                text: 'cheers, ',
-                                html: 'cheers, <strong></strong>',
-                            },
+                            signature: undefined,
                             type: 'email',
-                            id: 1,
+                            id: 15,
                         })
                     )
                 }
@@ -628,22 +637,20 @@ describe('ticket utils', () => {
                             ticket,
                             TicketMessageSourceType.ContactForm,
                             channels,
-                            integrationsWithSelectedEmail
+                            integrationsWithSelectedEmail,
+                            defaultIntegrationSetting
                         )
                     ).toEqual(
                         fromJS({
                             preferred: true,
                             isDeactivated: false,
                             verified: true,
-                            name: 'Acme Support',
-                            address: 'support@acme.gorgias.io',
+                            name: 'Acme Contact',
+                            address: 'contact@acme.com',
                             isDefault: false,
-                            signature: {
-                                text: 'cheers, ',
-                                html: 'cheers, <strong></strong>',
-                            },
+                            signature: undefined,
                             type: 'email',
-                            id: 1,
+                            id: 15,
                         })
                     )
                 }
