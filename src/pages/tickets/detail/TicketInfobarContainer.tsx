@@ -16,6 +16,7 @@ import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import TicketFeedback, {
     useHasAIAgent,
 } from 'pages/tickets/detail/components/TicketFeedback'
+import {getHasAutomate} from 'state/billing/selectors'
 
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -63,10 +64,11 @@ export const TicketInfobarContainer = ({
     const currentUser = useAppSelector(getCurrentUser)
     const ticket = useAppSelector(getTicket)
     const activeTab = useAppSelector(getActiveTab)
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const hasAIAgent = useHasAIAgent()
     const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
-    const hasTicketFeedback = hasAIAgent || hasAutoQA
+    const hasTicketFeedback = hasAutomate && (hasAIAgent || hasAutoQA)
 
     useEffect(() => {
         dispatch(actions.selectContext())

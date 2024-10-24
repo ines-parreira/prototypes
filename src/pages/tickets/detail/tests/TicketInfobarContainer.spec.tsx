@@ -13,6 +13,7 @@ import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
 import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
 import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {RootState, StoreState} from 'state/types'
@@ -42,7 +43,9 @@ jest.mock('common/flags', () => ({useFlag: jest.fn()}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors')
-const getCurrentUserMock = getCurrentUser as unknown as jest.Mock
+const getCurrentUserMock = assumeMock(getCurrentUser)
+jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('state/widgets/actions')
 
@@ -128,6 +131,7 @@ describe('<TicketInfobarContainer />', () => {
             })
         )
         useFlagMock.mockReturnValue(false)
+        getHasAutomateMock.mockReturnValue(true)
         useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
             {
@@ -153,6 +157,23 @@ describe('<TicketInfobarContainer />', () => {
         expect(mockedFetchWidgets).toHaveBeenCalled()
         expect(container.firstChild).toHaveTextContent(CUSTOMER_DETAILS_TAB)
         expect(container.firstChild).toHaveTextContent('sources: {')
+    })
+
+    it('should not show the AI Feedback tab when Automate feature not enabled', () => {
+        getHasAutomateMock.mockReturnValue(false)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB)
+
+        expect(aiAgentTab).not.toBeInTheDocument()
     })
 
     it('should call changeActive tab when AI Agent tab is clicked', () => {
