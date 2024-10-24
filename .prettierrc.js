@@ -1,7 +1,4 @@
-const {
-    tabWidth,
-    ...gorgiasConfig
-} = require('@gorgias/javascript-shared-config/.prettierrc')
+const gorgiasConfig = require('@gorgias/config/prettier')
 
 module.exports = {
     ...gorgiasConfig,

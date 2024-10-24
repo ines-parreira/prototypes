@@ -5,12 +5,21 @@ It's built using ReactJS + Redux + many other smaller tools.
 
 ## Table of Contents
 
--   [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
--   [Installation](#installation)
--   [Development](#development)
--   [Testing](#testing)
--   [Contributing](#contributing)
--   [FAQ / Troubleshooting](#faq--troubleshooting)
+- [Gorgias JavaScript Application](#gorgias-javascript-application)
+  - [Table of Contents](#table-of-contents)
+  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+  - [Installation](#installation)
+  - [Development](#development)
+    - [Storybook](#storybook)
+    - [Design tokens](#design-tokens)
+  - [Testing](#testing)
+  - [Contributing](#contributing)
+  - [FAQ / Troubleshooting](#faq--troubleshooting)
+    - [yarn dependencies installation error](#yarn-dependencies-installation-error)
+      - [Possible solution](#possible-solution)
+    - [ERR\_OSSL\_EVP\_UNSUPPORTED](#err_ossl_evp_unsupported)
+      - [Possible solution](#possible-solution-1)
+    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -72,15 +81,15 @@ yarn jest   # Only unit tests
 Running `yarn install` leads to error
 
 ```bash
-➤ YN0035: │ @gorgias/javascript-shared-config@npm:0.1.0: The remote server failed to provide the requested resource
+➤ YN0035: │ @gorgias/config@npm:0.1.0: The remote server failed to provide the requested resource
 ➤ YN0035: │   Response Code: 404 (Not Found)
 ➤ YN0035: │   Request Method: GET
-➤ YN0035: │   Request URL: https://registry.yarnpkg.com/@gorgias%2fjavascript-shared-config
+➤ YN0035: │   Request URL: https://registry.yarnpkg.com/@gorgias%2fconfig
 ➤ YN0000: └ Completed in 11s 814ms
 ➤ YN0000: Failed with errors in 11s 817ms
 ```
 
-This is because the is no registry configured with access to the package @gorgias/javascript-shared-config.
+This is because there is no registry configured with access to the package @gorgias/config.
 
 #### Possible solution
 

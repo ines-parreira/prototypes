@@ -113,8 +113,8 @@ module.exports = {
         '@typescript-eslint/no-base-to-string': ['off'],
     },
     extends: [
-        require.resolve('@gorgias/javascript-shared-config/eslint-base'),
-        require.resolve('@gorgias/javascript-shared-config/eslint-react'),
+        require.resolve('@gorgias/config/eslint-base'),
+        require.resolve('@gorgias/config/eslint-react'),
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',

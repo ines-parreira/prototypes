@@ -3048,6 +3048,11 @@
     ajv-formats "^3.0.1"
     immer "^10.1"
 
+"@gorgias/config@0.2.0":
+  version "0.2.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/config/0.2.0/d69dc876136d32495cf21fef9c3eb5955845ea39#d69dc876136d32495cf21fef9c3eb5955845ea39"
+  integrity sha512-QBO7KRcX6WoGLVUuXLMWr4LwT5dXFvd0hdqVpNyG4P03HRDSOnqMHYL+zGZwfp00ZpoAEs/P3KHzOEhSpaMxSw==
+
 "@gorgias/design-tokens@^0.2.9":
   version "0.2.9"
   resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.9/dca31d3644846d90d406ae4d6625fe5990acfacf#dca31d3644846d90d406ae4d6625fe5990acfacf"
@@ -3084,11 +3089,6 @@
   version "1.0.1"
   resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7#25a551ebe4ce428f03e1157f60263b2ef049d5c7"
   integrity sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==
-
-"@gorgias/javascript-shared-config@0.1.1":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/javascript-shared-config/0.1.1/810a034a94a1f4d05b33b8a675470c96af2d2932#810a034a94a1f4d05b33b8a675470c96af2d2932"
-  integrity sha512-omLoySBmbLnYSx0LU2w3aXV6hswDL/S0vvSh4T/wC8yfhsThnR5x1oe521C5uJ4wUeIFZHuaS/U7BuniqQSB/Q==
 
 "@gorgias/javascript-shared-config@^0.1.0":
   version "0.1.0"
