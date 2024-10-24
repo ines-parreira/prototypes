@@ -143,4 +143,36 @@ describe('PaymentMethodSetupView', () => {
             expect(screen.queryByText('Email')).not.toBeInTheDocument()
         })
     })
+
+    it("should'nt render Stripe elements if the setup intent's client secret isn't available", async () => {
+        mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
+            data: {id: 'id'},
+        } as any)
+
+        renderWithStoreAndQueryClientProvider(
+            <PaymentMethodSetupView
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+            />,
+            mockInitialStoreState
+        )
+
+        await waitFor(() => {
+            expect(screen.getByTestId('loader')).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
+        })
+
+        expect(screen.queryByTestId('stripe-elements')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('stripe-payment-element')
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('stripe-address-element')
+        ).not.toBeInTheDocument()
+    })
 })

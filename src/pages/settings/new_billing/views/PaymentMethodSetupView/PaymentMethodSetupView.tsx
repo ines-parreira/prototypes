@@ -38,6 +38,10 @@ export const PaymentMethodSetupView: React.FC<IPaymentMethodSetupViewProps> = ({
         return <Loader />
     }
 
+    if (!setupIntent.clientSecret) {
+        return null
+    }
+
     return (
         <StripeElementsProvider clientSecret={setupIntent.clientSecret}>
             <div className={css.container}>
