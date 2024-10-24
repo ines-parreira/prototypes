@@ -65,7 +65,6 @@ export function OrderNotesField({source}: Props) {
         const payload = {
             note: value,
             order_id: widget_resource_ids?.target_id,
-            tracking_event_name: action,
         }
 
         logEvent(SegmentEvent.ShopifyEditOrderNoteEditStarted, {

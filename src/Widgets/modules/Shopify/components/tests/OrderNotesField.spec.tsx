@@ -109,8 +109,6 @@ describe('OrderNotesField', () => {
                     payload: {
                         note: 'Updated note',
                         order_id: orderId,
-                        tracking_event_name:
-                            ShopifyActionType.ShopifyEditNoteOfOrder,
                     },
                 })
             )
