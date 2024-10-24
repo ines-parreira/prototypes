@@ -8,8 +8,6 @@ import React, {
     useState,
 } from 'react'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
@@ -25,8 +23,6 @@ type OwnProps = {
     setErrorText: Dispatch<SetStateAction<string>>
     setIsLoading: Dispatch<SetStateAction<boolean>>
     setVerificationCode: Dispatch<SetStateAction<string>>
-    setUserPassword: Dispatch<SetStateAction<string>>
-    hasPassword?: boolean
 }
 
 export default function QRCodeStep({
@@ -35,14 +31,7 @@ export default function QRCodeStep({
     setErrorText,
     setIsLoading,
     setVerificationCode,
-    setUserPassword,
-    hasPassword = false,
 }: OwnProps) {
-    const requireRecentLogin = useFlag(
-        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
-        false
-    )
-
     const [qrCodeImageUrl, setQrCodeImageUrl] = useState('')
 
     const generateQRCode = useCallback(async (text: string) => {
@@ -120,27 +109,6 @@ export default function QRCodeStep({
             >
                 Enter one-time code below
             </div>
-            {hasPassword && !requireRecentLogin && (
-                <>
-                    <div
-                        className={classnames(
-                            css.textSection,
-                            settingsCss.mb16
-                        )}
-                    >
-                        Enter your password.
-                    </div>
-                    <InputField
-                        type="password"
-                        name="userPassword"
-                        placeholder="Enter your password"
-                        onChange={(value) => {
-                            setUserPassword(value)
-                            setErrorText('')
-                        }}
-                    />
-                </>
-            )}
             <div
                 className={classnames(
                     modalStepsCss.textSection,

@@ -35,8 +35,6 @@ describe('<ModalStep />', () => {
                         setErrorText={jest.fn()}
                         setVerificationCode={jest.fn()}
                         setIsLoading={jest.fn()}
-                        setUserPassword={jest.fn()}
-                        userHasPassword={true}
                         recoveryCodes={recoveryCodesFixture}
                         setIsRecoveryCodesSaved={jest.fn()}
                     />

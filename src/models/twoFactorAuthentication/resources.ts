@@ -17,7 +17,6 @@ export const fetchAuthenticatorDataRenewed =
 
 export const validateVerificationCode = async (
     verificationCode: string,
-    userPassword?: string,
     existing = false
 ): Promise<void> => {
     const params: Record<string, any> = {}
@@ -27,9 +26,7 @@ export const validateVerificationCode = async (
 
     await client.post<void>(
         `/api/2fa/verification-code/${verificationCode}`,
-        {
-            user_password: userPassword,
-        },
+        {},
         {
             params,
         }

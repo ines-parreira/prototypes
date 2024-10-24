@@ -50,22 +50,16 @@ describe('twoFactorAuthentication resources', () => {
     describe('validateVerificationCode', () => {
         it('should resolve with a valid verification code', async () => {
             const code = '123456'
-            const password = 'abcde'
 
             mockedServer
-                .onPost(`/api/2fa/verification-code/${code}`, {
-                    user_password: password,
-                })
+                .onPost(`/api/2fa/verification-code/${code}`, {})
                 .reply(201, {})
 
-            await expect(
-                validateVerificationCode(code, password)
-            ).resolves.not.toThrow()
+            await expect(validateVerificationCode(code)).resolves.not.toThrow()
         })
 
         it('should resolve with an invalid verification code', async () => {
             const code = '123456'
-            const password = 'abcde'
 
             mockedServer
                 .onPost(`/api/2fa/verification-code/${code}`)
@@ -74,7 +68,7 @@ describe('twoFactorAuthentication resources', () => {
                 })
 
             try {
-                await validateVerificationCode(code, password)
+                await validateVerificationCode(code)
             } catch (error) {
                 const {response} = error as AxiosError<{error: {msg: string}}>
                 if (response) {
@@ -85,15 +79,14 @@ describe('twoFactorAuthentication resources', () => {
 
         it('should reject an error on fail', async () => {
             const code = '123456'
-            const password = 'abcde'
 
             mockedServer
                 .onPost(`/api/2fa/verification-code/${code}`)
                 .reply(503, {message: 'error'})
 
-            await expect(
-                validateVerificationCode(code, password)
-            ).rejects.toThrow('Request failed with status code 503')
+            await expect(validateVerificationCode(code)).rejects.toThrow(
+                'Request failed with status code 503'
+            )
         })
     })
 

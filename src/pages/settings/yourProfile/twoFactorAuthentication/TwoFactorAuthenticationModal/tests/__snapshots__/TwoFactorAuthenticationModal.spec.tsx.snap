@@ -520,25 +520,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-13"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -547,7 +528,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-15"
+                    id="input-text-9"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -722,25 +703,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-13"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -749,7 +711,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-15"
+                    id="input-text-9"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -939,25 +901,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-9"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -966,7 +909,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-7"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1141,25 +1084,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-9"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -1168,7 +1092,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-7"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -1924,25 +1848,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-5"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -1951,7 +1856,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 >
                   <input
                     class="input"
-                    id="input-text-7"
+                    id="input-text-5"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2535,25 +2440,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-41"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 The unique one-time code will appear that regenerates every 30 seconds.
               </div>
               <div>
@@ -2562,7 +2448,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 >
                   <input
                     class="input"
-                    id="input-text-43"
+                    id="input-text-25"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2715,25 +2601,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <div
                 class="textSection mb16"
               >
-                Enter your password.
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-31"
-                    name="userPassword"
-                    placeholder="Enter your password"
-                    type="password"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter a verification code from your authenticator app or a recovery code
               </div>
               <div>
@@ -2742,7 +2609,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-33"
+                    id="input-text-19"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -2894,7 +2761,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-35"
+                    id="input-text-21"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"
@@ -3046,7 +2913,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-35"
+                    id="input-text-21"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app or recovery code"
                     type="text"

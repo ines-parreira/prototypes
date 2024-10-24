@@ -76,7 +76,6 @@ const renderInitialModal = async (baseElement: HTMLElement) => {
 const validateInput = async (baseElement: HTMLElement) => {
     await renderInitialModal(baseElement)
     fillVerificationCode()
-    fillPassword()
     await continueToNextStep()
 }
 
@@ -85,13 +84,6 @@ const fillVerificationCode = () => {
         'Enter 6-digit verification code from app or recovery code'
     )
     fireEvent.change(inputField, {target: {value: '123456'}})
-}
-
-const fillPassword = () => {
-    const inputField = screen.getByPlaceholderText<HTMLInputElement>(
-        'Enter your password'
-    )
-    fireEvent.change(inputField, {target: {value: 'abcde'}})
 }
 
 const continueToNextStep = async () => {
@@ -538,7 +530,6 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
             await waitForModal(baseElement)
             fillVerificationCode()
-            fillPassword()
             await continueToNextStep()
             await continueToNextStep()
 

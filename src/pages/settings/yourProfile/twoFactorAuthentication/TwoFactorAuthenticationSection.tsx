@@ -1,8 +1,6 @@
 import classnames from 'classnames'
 import React, {useEffect, useMemo, useState} from 'react'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
@@ -30,11 +28,7 @@ export default function TwoFactorAuthenticationSection() {
             enforce_2fa_setup_modal?: string
         }>().enforce_2fa_setup_modal?.toLowerCase() === 'true'
 
-    const requireRecentLogin = useFlag(
-        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
-        false
-    )
-    const requireLogin = requireRecentLogin && !isRecentLogin()
+    const requireLogin = !isRecentLogin()
 
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
     const is2FAEnforced = useAppSelector(is2FAEnforcedSelector)

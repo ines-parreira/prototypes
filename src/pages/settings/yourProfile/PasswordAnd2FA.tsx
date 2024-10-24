@@ -1,8 +1,6 @@
 import React, {useCallback, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {useFlag} from 'common/flags'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -20,10 +18,6 @@ import {isRecentLogin} from './utils'
 
 export default function PasswordAnd2FA() {
     const currentUser = useAppSelector(getCurrentUserState)
-    const requireRecentLogin = useFlag(
-        FeatureFlagKey.Setup2FAWithRecentLoginInsteadOfPassword,
-        false
-    )
 
     const hasPassword = useMemo(() => {
         return !!currentUser.get('has_password')
@@ -33,7 +27,7 @@ export default function PasswordAnd2FA() {
         return buildPasswordAnd2FaText(hasPassword)
     }, [hasPassword])
 
-    const requireLogin = requireRecentLogin && !isRecentLogin()
+    const requireLogin = !isRecentLogin()
 
     const history = useHistory()
     const onModalBack = useCallback(() => {

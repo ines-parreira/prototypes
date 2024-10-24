@@ -15,10 +15,8 @@ type OwnProps = {
     errorText?: string
     setErrorText: Dispatch<SetStateAction<string>>
     setVerificationCode: Dispatch<SetStateAction<string>>
-    setUserPassword: Dispatch<SetStateAction<string>>
     setIsLoading: Dispatch<SetStateAction<boolean>>
     recoveryCodes: RecoveryCode[]
-    userHasPassword: boolean
     setIsRecoveryCodesSaved: Dispatch<SetStateAction<boolean>>
 }
 
@@ -28,10 +26,8 @@ export default function ModalStep({
     errorText,
     setErrorText,
     setVerificationCode,
-    setUserPassword,
     setIsLoading,
     recoveryCodes,
-    userHasPassword,
     setIsRecoveryCodesSaved,
 }: OwnProps) {
     switch (currentStep) {
@@ -39,10 +35,8 @@ export default function ModalStep({
             return (
                 <ValidateVerificationCodeStep
                     setVerificationCode={setVerificationCode}
-                    setUserPassword={setUserPassword}
                     setErrorText={setErrorText}
                     isUpdate={true}
-                    hasPassword={userHasPassword}
                 />
             )
         case 1:
@@ -52,11 +46,9 @@ export default function ModalStep({
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     setVerificationCode={setVerificationCode}
-                    setUserPassword={setUserPassword}
                     errorText={errorText}
                     setErrorText={setErrorText}
                     setIsLoading={setIsLoading}
-                    hasPassword={userHasPassword}
                 />
             )
         case 3:

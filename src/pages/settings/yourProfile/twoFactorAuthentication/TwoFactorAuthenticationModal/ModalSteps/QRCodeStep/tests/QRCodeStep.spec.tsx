@@ -1,7 +1,6 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {authenticatorData} from 'fixtures/authenticatorData'
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 
@@ -9,17 +8,9 @@ import QRCodeStep from '../QRCodeStep'
 
 jest.mock('../CantScanQRCode', () => () => <div>Can't scan QR code mocked</div>)
 
-jest.mock('common/flags', () => ({useFlag: jest.fn()}))
-const useFlagMock = useFlag as jest.Mock
-
 describe('<QRCodeStep />', () => {
     const setErrorTextMock = jest.fn()
     const setVerificationCodeMock = jest.fn()
-    const setPasswordMock = jest.fn()
-
-    beforeAll(() => {
-        useFlagMock.mockReturnValue(false)
-    })
 
     describe('render()', () => {
         const waitForLoadingToEnd = async () => {
@@ -43,7 +34,6 @@ describe('<QRCodeStep />', () => {
                     errorText={''}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
-                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -60,7 +50,6 @@ describe('<QRCodeStep />', () => {
                     errorText={''}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
-                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -80,7 +69,6 @@ describe('<QRCodeStep />', () => {
                     errorText={'foo error banner'}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
-                    setUserPassword={setPasswordMock}
                     setIsLoading={jest.fn()}
                 />
             )
@@ -95,7 +83,6 @@ describe('<QRCodeStep />', () => {
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     setVerificationCode={setVerificationCodeMock}
-                    setUserPassword={setPasswordMock}
                     setErrorText={setErrorTextMock}
                     setIsLoading={jest.fn()}
                 />

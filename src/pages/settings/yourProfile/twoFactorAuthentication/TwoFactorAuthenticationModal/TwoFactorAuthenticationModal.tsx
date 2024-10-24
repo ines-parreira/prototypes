@@ -30,10 +30,7 @@ import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthenticati
 import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
 import {update2FAEnabled} from 'state/currentUser/actions'
 import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
-import {
-    has2FaEnabled as has2FaEnabledSelector,
-    hasPassword as hasPasswordSelector,
-} from 'state/currentUser/selectors'
+import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
 
 import ModalBanners from './ModalBanners'
 import ModalContinueButton from './ModalContinueButton'
@@ -69,7 +66,6 @@ export default function TwoFactorAuthenticationModal({
 
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
-    const hasPassword = useAppSelector(hasPasswordSelector)
     const is2FARequired = useMemo(() => {
         return check2FARequired(twoFAEnforcedDatetime, has2FAEnabled)
     }, [twoFAEnforcedDatetime, has2FAEnabled])
@@ -80,7 +76,6 @@ export default function TwoFactorAuthenticationModal({
     )
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
-    const [userPassword, setUserPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [recoveryCodes, setRecoveryCodes] = useState([] as RecoveryCode[])
     const [isRecoveryCodesSaved, setIsRecoveryCodesSaved] = useState(false)
@@ -129,7 +124,6 @@ export default function TwoFactorAuthenticationModal({
 
                 await validateVerificationCodeResource(
                     verificationCode,
-                    userPassword || undefined,
                     useExistingSecret
                 )
 
@@ -144,7 +138,7 @@ export default function TwoFactorAuthenticationModal({
                 return
             }
         },
-        [verificationCode, userPassword]
+        [verificationCode]
     )
 
     const createRecoveryCodes = useCallback(async () => {
@@ -339,8 +333,6 @@ export default function TwoFactorAuthenticationModal({
                 errorText={errorText}
                 setErrorText={setErrorText}
                 setVerificationCode={setVerificationCode}
-                setUserPassword={setUserPassword}
-                userHasPassword={hasPassword}
                 setIsLoading={setIsLoading}
                 recoveryCodes={recoveryCodes}
                 setIsRecoveryCodesSaved={setIsRecoveryCodesSaved}

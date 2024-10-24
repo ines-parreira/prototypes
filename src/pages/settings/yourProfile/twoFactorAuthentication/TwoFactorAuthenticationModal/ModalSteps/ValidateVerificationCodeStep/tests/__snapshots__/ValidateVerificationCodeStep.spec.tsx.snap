@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ValidateVerificationCodeStep /> render() should render the component with the verification code validation and password if user has one set 1`] = `
+exports[`<ValidateVerificationCodeStep /> render() should render the component with the verification code validation 1`] = `
 <div>
   <div
     class="headingBold"
@@ -11,7 +11,7 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
   <div
     class="textSection mb16"
   >
-    Enter your password.
+    Enter a verification code from your authenticator app or a recovery code
   </div>
   <div>
     <div
@@ -20,55 +20,6 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
       <input
         class="input"
         id="input-text-1"
-        name="userPassword"
-        placeholder="Enter your password"
-        type="password"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="textSection mb16"
-  >
-    Enter a verification code from your authenticator app or a recovery code
-  </div>
-  <div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        id="input-text-3"
-        name="verificationCode"
-        placeholder="Enter 6-digit verification code from app or recovery code"
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<ValidateVerificationCodeStep /> render() should render the component with the verification code validation and without password none set 1`] = `
-<div>
-  <div
-    class="headingBold"
-  >
-    Step 3: 
-    Verify your code
-  </div>
-  <div
-    class="textSection mb16"
-  >
-    Enter a verification code from your authenticator app or a recovery code
-  </div>
-  <div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        id="input-text-7"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"
         type="text"
@@ -97,7 +48,7 @@ exports[`<ValidateVerificationCodeStep /> render() should show a different title
     >
       <input
         class="input"
-        id="input-text-11"
+        id="input-text-5"
         name="verificationCode"
         placeholder="Enter 6-digit verification code from app or recovery code"
         type="text"
