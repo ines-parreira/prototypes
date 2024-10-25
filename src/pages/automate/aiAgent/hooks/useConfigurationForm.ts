@@ -97,6 +97,7 @@ export const useConfigurationForm = ({
         payload,
         stepName,
         silentNotification,
+        onSuccess,
     }: {
         shopName: string
         publicUrls?: string[]
@@ -104,6 +105,7 @@ export const useConfigurationForm = ({
         payload?: Partial<FormValues>
         stepName?: AiAgentOnboardingWizardStep
         silentNotification?: boolean
+        onSuccess?: () => void
     }) => {
         const isUpdate = !!storeConfiguration
         const enrichedFormValues = {
@@ -188,6 +190,8 @@ export const useConfigurationForm = ({
                     store: shopName,
                 })
             }
+
+            onSuccess?.()
 
             if (isOnboardingWizardPage || silentNotification) {
                 return res

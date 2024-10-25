@@ -44,10 +44,18 @@ export const AiAgentLayout = ({
         isPendingCreateOrUpdate,
     } = useAiAgentStoreConfigurationContext()
 
-    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
-        storeConfiguration?.monitoredEmailIntegrations ?? [],
-        storeConfiguration?.monitoredChatIntegrations ?? []
-    )
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
+        monitoredEmailIntegrations:
+            storeConfiguration?.monitoredEmailIntegrations ?? [],
+        monitoredChatIntegrations:
+            storeConfiguration?.monitoredChatIntegrations ?? [],
+        isChatChanelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? storeConfiguration?.chatChannelDeactivatedDatetime === null
+            : storeConfiguration?.deactivatedDatetime === null,
+        isEmailChannelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? storeConfiguration?.emailChannelDeactivatedDatetime === null
+            : storeConfiguration?.deactivatedDatetime === null,
+    })
 
     const globalToggleAiAgentId = `global-toggle-ai-agent-${useId()}`
 

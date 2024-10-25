@@ -10,10 +10,17 @@ import {useRules} from 'state/entities/rules/hooks'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-export const useAiAgentEnabled = (
-    monitoredEmailIntegrations: {id: number; email: string}[],
+export const useAiAgentEnabled = ({
+    monitoredEmailIntegrations,
+    monitoredChatIntegrations,
+    isChatChanelEnabled,
+    isEmailChannelEnabled,
+}: {
+    monitoredEmailIntegrations: {id: number; email: string}[]
     monitoredChatIntegrations: number[]
-) => {
+    isChatChanelEnabled: boolean
+    isEmailChannelEnabled: boolean
+}) => {
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -52,34 +59,32 @@ export const useAiAgentEnabled = (
     }, [rules, isLoadingRules])
 
     const successNotification = useMemo(() => {
-        if (
-            monitoredEmailIntegrations.length === 0 &&
-            monitoredChatIntegrations.length === 0
-        ) {
+        const isAutorespondersTurnedOff =
+            isEmailChannelEnabled && monitoredEmailIntegrations.length > 0
+        const isArticleRecommendationsTurnedOff =
+            isChatChanelEnabled && monitoredChatIntegrations.length > 0
+
+        if (!isAutorespondersTurnedOff && !isArticleRecommendationsTurnedOff) {
             return ''
         }
 
-        if (
-            monitoredEmailIntegrations.length > 0 &&
-            monitoredChatIntegrations.length > 0
-        ) {
+        if (isAutorespondersTurnedOff && isArticleRecommendationsTurnedOff) {
             return 'AI Agent enabled. Autoresponders and Article Recommendations have been turned off to avoid conflicting responses.'
         }
 
-        if (
-            monitoredEmailIntegrations.length > 0 &&
-            monitoredChatIntegrations.length === 0
-        ) {
+        if (isAutorespondersTurnedOff) {
             return 'AI Agent enabled. Autoresponders have been turned off to avoid conflicting responses.'
         }
 
-        if (
-            monitoredEmailIntegrations.length === 0 &&
-            monitoredChatIntegrations.length > 0
-        ) {
+        if (isArticleRecommendationsTurnedOff) {
             return 'AI Agent enabled. Article Recommendations have been turned off to avoid conflicting responses.'
         }
-    }, [monitoredEmailIntegrations.length, monitoredChatIntegrations.length])
+    }, [
+        isEmailChannelEnabled,
+        monitoredEmailIntegrations.length,
+        isChatChanelEnabled,
+        monitoredChatIntegrations.length,
+    ])
 
     const updateSettingsAfterAiAgentEnabled = useCallback(() => {
         if (
@@ -92,21 +97,25 @@ export const useAiAgentEnabled = (
         const calls = []
 
         //turn off article recommendations for all monitored chat integrations
-        for (const chatApplicationId of chatApplicationsIds) {
-            const updateChatApplicationAutomationSettings =
-                handleChatApplicationAutomationSettingsUpdate(
-                    {
-                        ...applicationsAutomationSettings[chatApplicationId],
-                        articleRecommendation: {enabled: false},
-                    },
-                    undefined,
-                    true
-                )
-            calls.push(updateChatApplicationAutomationSettings)
+        if (isChatChanelEnabled) {
+            for (const chatApplicationId of chatApplicationsIds) {
+                const updateChatApplicationAutomationSettings =
+                    handleChatApplicationAutomationSettingsUpdate(
+                        {
+                            ...applicationsAutomationSettings[
+                                chatApplicationId
+                            ],
+                            articleRecommendation: {enabled: false},
+                        },
+                        undefined,
+                        true
+                    )
+                calls.push(updateChatApplicationAutomationSettings)
+            }
         }
 
         //turn off autoresponder for all managed rules
-        if (monitoredEmailIntegrations.length > 0) {
+        if (isEmailChannelEnabled && monitoredEmailIntegrations.length > 0) {
             for (const rule of managedRules) {
                 calls.push(
                     updateRule({
@@ -140,6 +149,8 @@ export const useAiAgentEnabled = (
         chatApplicationsIds,
         dispatch,
         handleChatApplicationAutomationSettingsUpdate,
+        isChatChanelEnabled,
+        isEmailChannelEnabled,
         managedRules,
         monitoredChatIntegrations.length,
         monitoredEmailIntegrations.length,

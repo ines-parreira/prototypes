@@ -204,6 +204,17 @@ export const StoreConfigForm = ({
     } = useConfigurationForm({initValues: defaultFormValues, shopName})
     const [publicUrls, setPublicUrls] = useState<string[]>([])
 
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
+        monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
+        monitoredChatIntegrations: formValues.monitoredChatIntegrations ?? [],
+        isChatChanelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? formValues.chatChannelDeactivatedDatetime === null
+            : formValues.deactivatedDatetime === null,
+        isEmailChannelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? formValues.emailChannelDeactivatedDatetime === null
+            : formValues.deactivatedDatetime === null,
+    })
+
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -239,11 +250,6 @@ export const StoreConfigForm = ({
 
         return 'disabled'
     }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
-
-    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
-        formValues.monitoredEmailIntegrations ?? [],
-        formValues.monitoredChatIntegrations ?? []
-    )
 
     const deactivateAiAgent = useCallback(
         async (silentUpdate?: boolean) => {
@@ -332,20 +338,33 @@ export const StoreConfigForm = ({
     )
 
     const onSubmit = () => {
+        const isAiAgentWasEnabled =
+            storeConfiguration?.deactivatedDatetime !== null &&
+            formValues.deactivatedDatetime === null
+        const isAiAgentWasEnabledForChat =
+            storeConfiguration?.chatChannelDeactivatedDatetime !== null &&
+            formValues.chatChannelDeactivatedDatetime === null
+        const isAiAgentWasEnabledForEmail =
+            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
+            formValues.emailChannelDeactivatedDatetime === null
+
         const shouldUpdateSettingsAfterAiAgentEnabled =
             isAiAgentOnboardingWizardEnabled &&
-            formValues.deactivatedDatetime === null
+            (isAiAgentWasEnabled ||
+                isAiAgentWasEnabledForChat ||
+                isAiAgentWasEnabledForEmail)
 
         void handleOnSave({
             publicUrls,
             shopName,
             aiAgentMode,
             silentNotification: shouldUpdateSettingsAfterAiAgentEnabled,
+            onSuccess: () => {
+                if (shouldUpdateSettingsAfterAiAgentEnabled) {
+                    updateSettingsAfterAiAgentEnabled()
+                }
+            },
         })
-
-        if (shouldUpdateSettingsAfterAiAgentEnabled) {
-            updateSettingsAfterAiAgentEnabled()
-        }
     }
 
     useEffect(() => {

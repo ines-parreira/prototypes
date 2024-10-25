@@ -21,6 +21,8 @@ import {FeatureSettings} from './FeatureSettings'
 export const ConnectedChannelsEmailView = () => {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
+    const isAiAgentMultichannelEnablementEnabled =
+        useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
 
     const {shopType, shopName} = useParams<{
         shopType: string
@@ -37,10 +39,18 @@ export const ConnectedChannelsEmailView = () => {
         accountDomain,
     })
 
-    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled(
-        storeConfiguration?.monitoredEmailIntegrations ?? [],
-        storeConfiguration?.monitoredChatIntegrations ?? []
-    )
+    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
+        monitoredEmailIntegrations:
+            storeConfiguration?.monitoredEmailIntegrations ?? [],
+        monitoredChatIntegrations:
+            storeConfiguration?.monitoredChatIntegrations ?? [],
+        isChatChanelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? storeConfiguration?.chatChannelDeactivatedDatetime === null
+            : storeConfiguration?.deactivatedDatetime === null,
+        isEmailChannelEnabled: isAiAgentMultichannelEnablementEnabled
+            ? storeConfiguration?.emailChannelDeactivatedDatetime === null
+            : storeConfiguration?.deactivatedDatetime === null,
+    })
 
     const {
         upsertStoreConfiguration,

@@ -90,6 +90,13 @@ const defaultRules = [
     },
 ] as unknown as RulesState
 
+const DEFAULT_PARAMS: Parameters<typeof useAiAgentEnabled>[0] = {
+    monitoredChatIntegrations: [],
+    monitoredEmailIntegrations: [],
+    isChatChanelEnabled: false,
+    isEmailChannelEnabled: false,
+}
+
 describe('useAiAgentEnabled', () => {
     const dispatchMock = jest.fn()
 
@@ -115,7 +122,9 @@ describe('useAiAgentEnabled', () => {
     })
 
     it('should return updateSettingsAfterAiAgentEnabled function', () => {
-        const {result} = renderHook(() => useAiAgentEnabled([], []), {wrapper})
+        const {result} = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
+            wrapper,
+        })
 
         expect(result.current.updateSettingsAfterAiAgentEnabled).toBeInstanceOf(
             Function
@@ -123,7 +132,9 @@ describe('useAiAgentEnabled', () => {
     })
 
     it('should not update anything when there are no integrations', () => {
-        const {result} = renderHook(() => useAiAgentEnabled([], []), {wrapper})
+        const {result} = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
+            wrapper,
+        })
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
@@ -146,7 +157,15 @@ describe('useAiAgentEnabled', () => {
             handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(() => useAiAgentEnabled([], [1]), {wrapper})
+        const {result} = renderHook(
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    monitoredChatIntegrations: [1],
+                    isChatChanelEnabled: true,
+                }),
+            {wrapper}
+        )
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
@@ -163,7 +182,14 @@ describe('useAiAgentEnabled', () => {
     it('should deactivate rules for email integrations', () => {
         useRulesMock.mockReturnValue([defaultRules, false])
         const {result} = renderHook(
-            () => useAiAgentEnabled([{id: 1, email: 'test@example.com'}], []),
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    isEmailChannelEnabled: true,
+                    monitoredEmailIntegrations: [
+                        {id: 1, email: 'test@example.com'},
+                    ],
+                }),
             {wrapper}
         )
 
@@ -178,7 +204,15 @@ describe('useAiAgentEnabled', () => {
         useSelfServiceChatChannelsMock.mockReturnValue(
             defaultSelfServeChatChannel
         )
-        const {result} = renderHook(() => useAiAgentEnabled([], [1]), {wrapper})
+        const {result} = renderHook(
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    monitoredChatIntegrations: [1],
+                    isChatChanelEnabled: true,
+                }),
+            {wrapper}
+        )
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
@@ -196,7 +230,14 @@ describe('useAiAgentEnabled', () => {
         useRulesMock.mockReturnValue([defaultRules, false])
 
         const {result} = renderHook(
-            () => useAiAgentEnabled([{id: 1, email: 'test@example/com'}], []),
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    isEmailChannelEnabled: true,
+                    monitoredEmailIntegrations: [
+                        {id: 1, email: 'test@example/com'},
+                    ],
+                }),
             {wrapper}
         )
 
@@ -230,7 +271,15 @@ describe('useAiAgentEnabled', () => {
             handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(() => useAiAgentEnabled([], [1]), {wrapper})
+        const {result} = renderHook(
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    isChatChanelEnabled: true,
+                    monitoredChatIntegrations: [1],
+                }),
+            {wrapper}
+        )
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
@@ -241,5 +290,41 @@ describe('useAiAgentEnabled', () => {
                 message: expect.stringContaining('There were some issues'),
             })
         })
+    })
+
+    it('should not update anything when email and chat channels disabled', () => {
+        const handleUpdateMock = jest.fn()
+        useSelfServiceChatChannelsMock.mockReturnValue(
+            defaultSelfServeChatChannel
+        )
+        useApplicationsAutomationSettingsMock.mockReturnValue({
+            ...defaultAutomationSettings,
+            applicationsAutomationSettings: {
+                app1: {
+                    ...defaultChatApplicationAutomationSettings,
+                    articleRecommendation: {enabled: true},
+                },
+            },
+            handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
+        })
+
+        const {result} = renderHook(
+            () =>
+                useAiAgentEnabled({
+                    ...DEFAULT_PARAMS,
+                    monitoredEmailIntegrations: [
+                        {id: 1, email: 'test@mail.com'},
+                    ],
+                    monitoredChatIntegrations: [1],
+                    isChatChanelEnabled: false,
+                    isEmailChannelEnabled: false,
+                }),
+            {wrapper}
+        )
+
+        result.current.updateSettingsAfterAiAgentEnabled()
+
+        expect(handleUpdateMock).not.toHaveBeenCalled()
+        expect(updateRule).not.toHaveBeenCalled()
     })
 })

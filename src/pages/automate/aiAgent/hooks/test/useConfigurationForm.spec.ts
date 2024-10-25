@@ -205,4 +205,31 @@ describe('useConfigurationForm', () => {
             })
         )
     })
+
+    it('should call onSuccess callback when provided and execution was without error', async () => {
+        const mockOnSuccess = jest.fn()
+        const {result} = renderHook(() =>
+            useConfigurationForm({
+                shopName,
+                initValues: {
+                    monitoredChatIntegrations: [],
+                    monitoredEmailIntegrations: [],
+                    deactivatedDatetime: '',
+                    emailChannelDeactivatedDatetime: '',
+                    chatChannelDeactivatedDatetime: '',
+                    signature: 'valid signature',
+                    helpCenterId: 1,
+                },
+            })
+        )
+
+        await act(async () => {
+            await result.current.handleOnSave({
+                onSuccess: mockOnSuccess,
+                shopName: 'test-shop',
+            })
+        })
+
+        expect(mockOnSuccess).toHaveBeenCalled()
+    })
 })
