@@ -16,6 +16,7 @@ type EmailFormComponentProps = {
     initialValue?: number
     isFieldDirty?: boolean
     isRequired?: boolean
+    isDisabled?: boolean
     shouldPrefillValue?: boolean
     setIsPristine?: (isPristine: boolean) => void
 }
@@ -28,6 +29,7 @@ export const ChatSettingsFormComponent = ({
     isRequired,
     shouldPrefillValue,
     setIsPristine,
+    isDisabled,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
@@ -76,6 +78,7 @@ export const ChatSettingsFormComponent = ({
                 onSelectionChange={handleSelectChatIntegration}
                 chatItems={chatChannels}
                 hasError={!isChatIntegrationsValid}
+                isDisabled={isDisabled}
             />
             <div
                 className={classnames(css.formInputFooterInfo, {
@@ -83,7 +86,7 @@ export const ChatSettingsFormComponent = ({
                 })}
             >
                 {!isChatIntegrationsValid
-                    ? 'One or more chats required.'
+                    ? 'One or more Chats required.'
                     : 'Select one or more Chats for AI Agent to use.'}
             </div>
         </div>

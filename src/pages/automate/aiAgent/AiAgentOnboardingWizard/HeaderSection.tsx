@@ -10,6 +10,7 @@ import css from './HeaderSection.less'
 type HeaderSectionProps = {
     title: AiAgentChannel
     isValid: boolean
+    shouldDisplayValidationIcon?: boolean
     wizard: WizardFormValues
     handleFormUpdate: (payload: Partial<FormValues>) => void
 }
@@ -19,6 +20,7 @@ export const HeaderSection = ({
     isValid,
     wizard,
     handleFormUpdate,
+    shouldDisplayValidationIcon,
 }: HeaderSectionProps) => {
     const enabledChannels = wizard?.enabledChannels
     const value = enabledChannels?.find((v) => v === title)
@@ -44,7 +46,7 @@ export const HeaderSection = ({
                 isChecked={!!value}
                 onChange={(nextValue) => updateValue(nextValue)}
             />
-            {value && (
+            {shouldDisplayValidationIcon && value && (
                 <i
                     className={classnames('material-icons', css.checkIcon, {
                         [css.valid]: isValid,

@@ -18,7 +18,6 @@ import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {
-    AI_AGENT_STEPS_DESCRIPTIONS,
     AiAgentChannel,
     DEFAULT_WIZARD_FORM_VALUES,
     ToneOfVoice,
@@ -134,13 +133,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         expect(
             screen.getAllByText('Personalize AI Agent')[1]
         ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                AI_AGENT_STEPS_DESCRIPTIONS[
-                    AiAgentOnboardingWizardStep.Personalize
-                ] as string
-            )
-        ).toBeInTheDocument()
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
         expect(screen.getByText('Save & Customize Later')).toBeInTheDocument
@@ -158,13 +150,6 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             .toBeInTheDocument
         expect(
             screen.getAllByText('Personalize AI Agent')[1]
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                AI_AGENT_STEPS_DESCRIPTIONS[
-                    AiAgentOnboardingWizardStep.Personalize
-                ] as string
-            )
         ).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()

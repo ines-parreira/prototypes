@@ -24,6 +24,7 @@ type Props = {
      */
     emailItems: EmailItem[]
     hasError?: boolean
+    isDisabled?: boolean
 }
 
 export const EmailIntegrationListSelection: FC<Props> = ({
@@ -31,6 +32,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     selectedIds,
     emailItems,
     hasError = false,
+    isDisabled,
 }) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -68,6 +70,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
             placeholder="Select one or more email addresses"
             hasError={hasError}
             ref={targetRef}
+            isDisabled={isDisabled}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

@@ -2,8 +2,21 @@
 @import '~css/typography';
 
 :local {
-    .subTitle {
+    .title {
         .heading-section-semibold();
+        padding-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .subtitle {
+        .heading-subsection-regular();
+        color: var(--neutral-grey-5);
         margin-bottom: @layout-spacing-m;
+    }
+
+    .channelsSection {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
     }
 }

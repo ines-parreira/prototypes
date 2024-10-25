@@ -10,7 +10,8 @@ describe('HeaderSection', () => {
 
     const renderComponent = (
         enabledChannels: AiAgentChannel[],
-        isValid: boolean
+        isValid: boolean,
+        shouldDisplayValidationIcon?: boolean
     ) => {
         const wizard: WizardFormValues = {
             ...DEFAULT_WIZARD_FORM_VALUES,
@@ -22,6 +23,7 @@ describe('HeaderSection', () => {
                 isValid={isValid}
                 wizard={wizard}
                 handleFormUpdate={mockHandleFormUpdate}
+                shouldDisplayValidationIcon={shouldDisplayValidationIcon}
             />
         )
     }
@@ -75,13 +77,13 @@ describe('HeaderSection', () => {
 
     it('should render correct validation icon based on isValid prop', () => {
         // Test when isValid is true
-        renderComponent([AiAgentChannel.Email], true)
+        renderComponent([AiAgentChannel.Email], true, true)
         const checkIcon = screen.getByText('check_circle')
         expect(checkIcon).toBeInTheDocument()
         expect(checkIcon).toHaveClass('valid')
 
         // Test when isValid is false
-        renderComponent([AiAgentChannel.Email], false)
+        renderComponent([AiAgentChannel.Email], false, true)
         const errorIcon = screen.getByText('error')
         expect(errorIcon).toBeInTheDocument()
         expect(errorIcon).toHaveClass('invalid')

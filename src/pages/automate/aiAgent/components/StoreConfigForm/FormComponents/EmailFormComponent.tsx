@@ -18,6 +18,7 @@ type EmailFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     monitoredEmailIntegrations: {id: number; email: string}[] | null
     isRequired?: boolean
+    isDisabled?: boolean
     shouldPrefillValue?: boolean
     setIsPristine?: (isPristine: boolean) => void
 }
@@ -27,6 +28,7 @@ export const EmailFormComponent = ({
     isRequired,
     shouldPrefillValue,
     setIsPristine,
+    isDisabled,
 }: EmailFormComponentProps) => {
     const useInitialValue = React.useRef(true)
     const isAiAgentChatEnabled: boolean | undefined =
@@ -98,6 +100,7 @@ export const EmailFormComponent = ({
                 onSelectionChange={handleSelectEmailIntegration}
                 emailItems={emailItems}
                 hasError={!isEmailIntegrationsValid}
+                isDisabled={isDisabled}
             />
             <div
                 className={classnames(css.formInputFooterInfo, {

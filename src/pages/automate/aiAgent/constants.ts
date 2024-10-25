@@ -103,8 +103,6 @@ export const AI_AGENT_STEPS_TITLES: Partial<
 export const AI_AGENT_STEPS_DESCRIPTIONS: Partial<
     Record<AiAgentOnboardingWizardStep, string>
 > = {
-    [AiAgentOnboardingWizardStep.Personalize]:
-        'Set up AI Agent on at least one channel you want it to respond to.',
     [AiAgentOnboardingWizardStep.Knowledge]:
         'At least one knowledge source is required for AI Agent to reference when replying to customers. You can always add more later.',
 }

@@ -25,6 +25,7 @@ type ChatIntegrationListSelectionProps = {
      */
     chatItems: SelfServiceChatChannel[]
     hasError?: boolean
+    isDisabled?: boolean
 }
 
 export const ChatIntegrationListSelection = ({
@@ -32,6 +33,7 @@ export const ChatIntegrationListSelection = ({
     selectedIds,
     chatItems,
     hasError = false,
+    isDisabled,
 }: ChatIntegrationListSelectionProps) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -71,6 +73,7 @@ export const ChatIntegrationListSelection = ({
             ref={targetRef}
             aria-expanded={isDropdownOpened}
             aria-controls="chat-integrations-list"
+            isDisabled={isDisabled}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

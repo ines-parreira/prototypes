@@ -4,10 +4,6 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import WizardFooter, {
     FOOTER_BUTTONS,
@@ -173,108 +169,100 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                 }
             >
                 <form>
-                    <div>
-                        <div className={css.subTitle}>General settings</div>
-                        <ToneOfVoiceFormComponent
-                            updateValue={updateValue}
-                            toneOfVoice={formValues.toneOfVoice}
-                            customToneOfVoiceGuidance={
-                                formValues.customToneOfVoiceGuidance
-                            }
-                            hasChat={isChatAvailable}
-                            setIsPristine={setIsPristine}
-                        />
+                    <ToneOfVoiceFormComponent
+                        updateValue={updateValue}
+                        toneOfVoice={formValues.toneOfVoice}
+                        customToneOfVoiceGuidance={
+                            formValues.customToneOfVoiceGuidance
+                        }
+                        hasChat={isChatAvailable}
+                        setIsPristine={setIsPristine}
+                    />
 
-                        <SignatureFormComponent
-                            signature={formValues.signature}
-                            updateValue={updateValue}
-                            setIsPristine={setIsPristine}
-                        />
+                    <SignatureFormComponent
+                        signature={formValues.signature}
+                        updateValue={updateValue}
+                        setIsPristine={setIsPristine}
+                    />
+
+                    <div className={css.title}>
+                        Choose which channels to use with AI Agent
                     </div>
-                    <div className={css.subTitle}>Connect channels</div>
 
-                    {formValues?.wizard && (
-                        <Accordion defaultExpandedItem="email">
-                            {!!formValues.monitoredEmailIntegrations && (
-                                <AccordionItem id="email">
-                                    <AccordionHeader>
-                                        <HeaderSection
-                                            title={AiAgentChannel.Email}
-                                            isValid={
-                                                !!formValues.monitoredEmailIntegrations &&
-                                                formValues
-                                                    .monitoredEmailIntegrations
-                                                    .length > 0
-                                            }
-                                            wizard={formValues.wizard}
-                                            handleFormUpdate={
-                                                handleChannelsUpdate
-                                            }
-                                        />
-                                    </AccordionHeader>
-                                    <AccordionBody>
-                                        <EmailFormComponent
-                                            monitoredEmailIntegrations={
-                                                formValues.monitoredEmailIntegrations
-                                            }
-                                            updateValue={updateValue}
-                                            isRequired={isChannelEnabled(
-                                                AiAgentChannel.Email
-                                            )}
-                                            shouldPrefillValue={
-                                                formValues.wizard
-                                                    .enabledChannels?.length ===
-                                                0
-                                            }
-                                            setIsPristine={setIsPristine}
-                                        />
-                                    </AccordionBody>
-                                </AccordionItem>
+                    <div className={css.subtitle}>
+                        Select at least one channel
+                    </div>
+
+                    <div className={css.channelsSection}>
+                        {!!formValues.monitoredEmailIntegrations && (
+                            <div>
+                                <HeaderSection
+                                    title={AiAgentChannel.Email}
+                                    isValid={
+                                        !!formValues.monitoredEmailIntegrations &&
+                                        formValues.monitoredEmailIntegrations
+                                            .length > 0
+                                    }
+                                    wizard={formValues.wizard!}
+                                    handleFormUpdate={handleChannelsUpdate}
+                                />
+                                <EmailFormComponent
+                                    monitoredEmailIntegrations={
+                                        formValues.monitoredEmailIntegrations
+                                    }
+                                    updateValue={updateValue}
+                                    isDisabled={
+                                        !isChannelEnabled(AiAgentChannel.Email)
+                                    }
+                                    isRequired={isChannelEnabled(
+                                        AiAgentChannel.Email
+                                    )}
+                                    shouldPrefillValue={
+                                        formValues.wizard?.enabledChannels
+                                            ?.length === 0
+                                    }
+                                    setIsPristine={setIsPristine}
+                                />
+                            </div>
+                        )}
+
+                        {isChatAvailable &&
+                            !!formValues.monitoredChatIntegrations && (
+                                <div>
+                                    <HeaderSection
+                                        title={AiAgentChannel.Chat}
+                                        isValid={
+                                            !!formValues.monitoredChatIntegrations &&
+                                            formValues.monitoredChatIntegrations
+                                                ?.length > 0
+                                        }
+                                        wizard={formValues.wizard!}
+                                        handleFormUpdate={handleChannelsUpdate}
+                                    />
+                                    <ChatSettingsFormComponent
+                                        monitoredChatIntegrations={
+                                            formValues.monitoredChatIntegrations
+                                        }
+                                        updateValue={updateValue}
+                                        chatChannels={chatChannels}
+                                        initialValue={initialValueForChat}
+                                        isDisabled={
+                                            !isChannelEnabled(
+                                                AiAgentChannel.Chat
+                                            )
+                                        }
+                                        isRequired={isChannelEnabled(
+                                            AiAgentChannel.Chat
+                                        )}
+                                        shouldPrefillValue={
+                                            formValues.wizard?.enabledChannels
+                                                ?.length === 0
+                                        }
+                                        setIsPristine={setIsPristine}
+                                    />
+                                </div>
                             )}
-
-                            {isChatAvailable &&
-                                !!formValues.monitoredChatIntegrations && (
-                                    <AccordionItem id="chat">
-                                        <AccordionHeader>
-                                            <HeaderSection
-                                                title={AiAgentChannel.Chat}
-                                                isValid={
-                                                    !!formValues.monitoredChatIntegrations &&
-                                                    formValues
-                                                        .monitoredChatIntegrations
-                                                        ?.length > 0
-                                                }
-                                                wizard={formValues.wizard}
-                                                handleFormUpdate={
-                                                    handleChannelsUpdate
-                                                }
-                                            />
-                                        </AccordionHeader>
-                                        <AccordionBody>
-                                            <ChatSettingsFormComponent
-                                                monitoredChatIntegrations={
-                                                    formValues.monitoredChatIntegrations
-                                                }
-                                                updateValue={updateValue}
-                                                chatChannels={chatChannels}
-                                                initialValue={
-                                                    initialValueForChat
-                                                }
-                                                isRequired={isChannelEnabled(
-                                                    AiAgentChannel.Chat
-                                                )}
-                                                shouldPrefillValue={
-                                                    formValues.wizard
-                                                        .enabledChannels
-                                                        ?.length === 0
-                                                }
-                                                setIsPristine={setIsPristine}
-                                            />
-                                        </AccordionBody>
-                                    </AccordionItem>
-                                )}
-                        </Accordion>
-                    )}
+                    </div>
                 </form>
             </WizardStepSkeleton>
         </>
