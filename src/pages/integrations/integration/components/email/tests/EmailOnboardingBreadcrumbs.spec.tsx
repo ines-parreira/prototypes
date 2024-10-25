@@ -15,7 +15,7 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
 
         // Check for static breadcrumb items
         expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Add an email address')).toBeInTheDocument()
+        expect(screen.getByText('Add email address')).toBeInTheDocument()
         expect(
             screen.getByText('Connect other email provider')
         ).toBeInTheDocument()
@@ -39,7 +39,7 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
 
         // Check for static breadcrumb items
         expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Add an email address')).toBeInTheDocument()
+        expect(screen.getByText('Add email address')).toBeInTheDocument()
 
         // Check if integration-specific items are rendered
         expect(screen.getByText(integration.name)).toBeInTheDocument()

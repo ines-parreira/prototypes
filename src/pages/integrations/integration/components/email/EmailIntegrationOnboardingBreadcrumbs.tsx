@@ -20,7 +20,7 @@ export default function EmailIntegrationOnboardingBreadcrumbs({
             </BreadcrumbItem>
             <BreadcrumbItem>
                 <Link to="/app/settings/channels/email/new">
-                    Add an email address
+                    Add email address
                 </Link>
             </BreadcrumbItem>
             <BreadcrumbItem active>

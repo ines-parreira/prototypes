@@ -1,16 +1,17 @@
-import classnames from 'classnames'
 import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import googleLogo from 'assets/img/integrations/google-icon.svg'
-import officeLogo from 'assets/img/integrations/office-transparent.png'
-import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from 'config'
+import gmailLogo from 'assets/img/integrations/gmail.svg'
+import officeLogo from 'assets/img/integrations/office.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
+import {TemplateCard} from 'pages/common/components/TemplateCard'
 import settingsCss from 'pages/settings/settings.less'
+import SettingsContent from 'pages/settings/SettingsContent'
+import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import {getRedirectUri} from 'state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
@@ -40,80 +41,80 @@ export default function EmailIntegrationCreate() {
                             <Link to="/app/settings/channels/email">Email</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            Add an email address
+                            Add email address
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
 
-            <Container fluid className={settingsCss.pageContainer}>
-                <p>Choose the type of email account you want to add.</p>
-
-                <div
-                    className={css.form}
-                    data-candu-id="email-integration-create-form"
-                >
-                    <Button
-                        type="submit"
-                        intent="primary"
-                        onClick={(e) => handleSubmit(e, gmailRedirectUri)}
-                        className={classnames(
-                            'mb-2',
-                            css.connectButton,
-                            css.gmailButton
-                        )}
-                    >
-                        <img alt="google logo" src={googleLogo} />
-                        <span>Connect Google email account</span>
-                    </Button>
-
-                    <p className="text-muted text-center">
-                        Improve email deliverability, keep your data on your
-                        Google account, import the last{' '}
-                        {GMAIL_IMPORTED_EMAILS_FOR_YEARS} years of emails
-                        (optional)
+            <SettingsPageContainer>
+                <SettingsContent>
+                    <h2 className={settingsCss.headingSection}>
+                        Integrate a new support email address
+                    </h2>
+                    <p>
+                        Integrate a new support email address to receive
+                        customer emails as tickets in Gorgias. Use one-click
+                        authentication for Gmail and Microsoft 365 or follow the
+                        step-by-step wizard for other providers.
                     </p>
-
-                    <div className="divider">OR</div>
-
-                    <Button
-                        type="submit"
-                        intent="secondary"
-                        onClick={(e) => handleSubmit(e, outlookRedirectUri)}
-                        className={classnames(
-                            'mb-2',
-                            css.connectButton,
-                            css.outlookButton
-                        )}
+                    <a
+                        href={
+                            'https://docs.gorgias.com/en-US/email-integrations-81753#find-out-who-your-provider-is'
+                        }
+                        rel="noopener noreferrer"
+                        target="_blank"
                     >
-                        <img alt="office logo" src={officeLogo} />
-                        <span>Connect Office365 email account</span>
-                    </Button>
+                        <i className="material-icons mr-2">menu_book</i>
+                        Learn which method is right for you
+                    </a>
 
-                    <p className="text-muted text-center">
-                        Improve email deliverability, keep your data on your
-                        Outlook.com account, import last 2 years of emails
-                        (optional)
-                    </p>
+                    <div className={css.connectCards}>
+                        <TemplateCard
+                            title="Connect Gmail account"
+                            description="Log into your Gmail or Google Workspace  account to allow Gorgias access to emails."
+                            icon={
+                                <img
+                                    className={css.logo}
+                                    src={gmailLogo}
+                                    alt="gmail logo"
+                                />
+                            }
+                            onClick={(e) => handleSubmit(e, gmailRedirectUri)}
+                        />
+                        <TemplateCard
+                            title="Connect Microsoft account"
+                            description="Log into your Microsoft365 account to allow Gorgias access to emails."
+                            icon={
+                                <img
+                                    className={css.logo}
+                                    src={officeLogo}
+                                    alt="microsoft logo"
+                                />
+                            }
+                            onClick={(e) => handleSubmit(e, outlookRedirectUri)}
+                        />
+                    </div>
 
-                    <div className="divider">OR</div>
+                    <div className={css.section}>
+                        <div className={css.sectionLabel}>
+                            Need to connect another provider?
+                        </div>
+                        <p className={css.sectionDescription}>
+                            Set up email forwarding from providers like Gmail
+                            Alias, Google Groups, MS Exchange, Outlook Alias,
+                            GoDaddy, or Zoho Mail using the setup wizard. Admin
+                            access is required for configuration.
+                        </p>
+                    </div>
 
                     <Link to="/app/settings/channels/email/new/onboarding">
-                        <Button
-                            type="submit"
-                            intent="secondary"
-                            className={classnames('mb-2', css.connectButton)}
-                        >
-                            <span>Connect other email provider</span>
+                        <Button type="submit" intent="secondary">
+                            Get started
                         </Button>
                     </Link>
-                    <p className="text-muted text-center">
-                        Alternatively connect another email provider. Note that
-                        the setup is a bit more complex compared to the above
-                        options.
-                    </p>
-                </div>
-            </Container>
+                </SettingsContent>
+            </SettingsPageContainer>
         </div>
     )
 }

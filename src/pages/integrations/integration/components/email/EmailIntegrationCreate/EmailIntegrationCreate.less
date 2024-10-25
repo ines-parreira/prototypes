@@ -1,72 +1,34 @@
-:local .form {
-    max-width: 400px !important;
-}
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
 
-:local .connectButton {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-    height: 50px;
-    width: 100%;
+:local {
+    .logo {
+        width: 32px;
+    }
 
-    &.gmailButton {
-        background: var(--google);
-        border-color: var(--google);
+    .section {
+        margin: @layout-spacing-s 0;
 
-        span {
-            color: var(--neutral-grey-0);
+        .sectionLabel {
+            .body-semibold();
+            margin-bottom: @layout-spacing-xxs;
         }
 
-        &:hover {
-            background-color: hsl(
-                var(--google-h),
-                var(--google-s),
-                calc(var(--google-l) - 5%)
-            ) !important;
-            border-color: hsl(
-                var(--google-h),
-                var(--google-s),
-                calc(var(--google-l) - 5%)
-            ) !important;
+        .sectionDescription {
+            margin-bottom: @layout-spacing-xl;
         }
     }
 
-    &.outlookButton {
-        background-color: var(--office365) !important;
-        border-color: var(--office365) !important;
+    .connectCards {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: @layout-spacing-xs;
+        margin-top: @layout-spacing-m;
+        margin-bottom: @layout-spacing-l;
 
-        span {
-            color: var(--neutral-grey-0);
-        }
-
-        &:hover {
-            background-color: hsl(
-                var(--office365-h),
-                var(--office365-s),
-                calc(var(--office365-l) - 5%)
-            ) !important;
-            border-color: hsl(
-                var(--office365-h),
-                var(--office365-s),
-                calc(var(--office365-l) - 5%)
-            ) !important;
+        & > * {
+            flex: 1;
         }
     }
-
-    img {
-        width: 46px;
-    }
-
-    span {
-        width: 100%;
-    }
-}
-
-:local .gmail-icon {
-    /* perfect alignment */
-    position: relative;
-    top: 5px;
-    right: 10px;
-    margin-top: -10px;
 }
