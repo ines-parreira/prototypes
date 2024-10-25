@@ -166,35 +166,37 @@ export const getValidStoreConfigurationFormValues = (
         }
     }
 
-    // we must have at least one channel selected in the wizard
-    if (
-        formValues.wizard &&
-        formValues.wizard.enabledChannels &&
-        formValues.wizard.enabledChannels.length === 0 &&
-        isWizardStepKnowledgeOrCompleted
-    ) {
-        throw new Error(StoreConfigurationValidationMessage.NoChannelError)
-    }
+    // Wizard related validations
+    if (opts.isOnboardingWizardPage && formValues.wizard) {
+        // we must have at least one channel selected in the wizard
+        if (
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.length === 0 &&
+            isWizardStepKnowledgeOrCompleted
+        ) {
+            throw new Error(StoreConfigurationValidationMessage.NoChannelError)
+        }
 
-    // we must have integration for selected channel
-    if (
-        formValues.wizard &&
-        formValues.wizard.enabledChannels &&
-        formValues.wizard.enabledChannels.includes(AiAgentChannel.Email) &&
-        formValues.monitoredEmailIntegrations?.length === 0 &&
-        isWizardStepKnowledgeOrCompleted
-    ) {
-        throw new Error(StoreConfigurationValidationMessage.FieldsMissing)
-    }
+        // we must have integration for selected channel
+        if (
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.includes(AiAgentChannel.Email) &&
+            formValues.monitoredEmailIntegrations?.length === 0 &&
+            formValues.wizard.completedDatetime === null &&
+            formValues.wizard.stepName === AiAgentOnboardingWizardStep.Knowledge
+        ) {
+            throw new Error(StoreConfigurationValidationMessage.FieldsMissing)
+        }
 
-    if (
-        formValues.wizard &&
-        formValues.wizard.enabledChannels &&
-        formValues.wizard.enabledChannels.includes(AiAgentChannel.Chat) &&
-        formValues.monitoredChatIntegrations?.length === 0 &&
-        isWizardStepKnowledgeOrCompleted
-    ) {
-        throw new Error(StoreConfigurationValidationMessage.FieldsMissing)
+        if (
+            formValues.wizard.enabledChannels &&
+            formValues.wizard.enabledChannels.includes(AiAgentChannel.Chat) &&
+            formValues.monitoredChatIntegrations?.length === 0 &&
+            formValues.wizard.completedDatetime === null &&
+            formValues.wizard.stepName === AiAgentOnboardingWizardStep.Knowledge
+        ) {
+            throw new Error(StoreConfigurationValidationMessage.FieldsMissing)
+        }
     }
 
     if (

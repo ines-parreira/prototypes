@@ -64,6 +64,29 @@ describe('store-configuration-validation', () => {
             expect(result).toEqual(VALID_FORM_VALUES)
         })
 
+        it('should rerun default values when no email and chat integrations and both channels disabled', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                emailChannelDeactivatedDatetime: '2021-01-01T00:00:00',
+                chatChannelDeactivatedDatetime: '2021-01-01T00:00:00',
+                monitoredEmailIntegrations: [],
+                monitoredChatIntegrations: [],
+            }
+            const expected: ValidFormValues = {
+                ...formValues,
+                signature: 'Signature',
+                monitoredChatIntegrations: [],
+                monitoredEmailIntegrations: [],
+            }
+            expect(
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    DEFAULT_OPTIONS
+                )
+            ).toEqual(expected)
+        })
+
         it('should return default values for signature and monitored integrations if wizard is not completed', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
@@ -202,7 +225,7 @@ describe('store-configuration-validation', () => {
             ).toThrowError(StoreConfigurationValidationMessage.TagsEmpty)
         })
 
-        it('should throw an error if tone of voice is selected and custome tone of voice is empty', () => {
+        it('should throw an error if tone of voice is selected and custom tone of voice is empty', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 toneOfVoice: ToneOfVoice.Custom,
@@ -219,7 +242,7 @@ describe('store-configuration-validation', () => {
             )
         })
 
-        it('should throw an error if tone of voice is selected and custome tone of voice is too long', () => {
+        it('should throw an error if tone of voice is selected and custom tone of voice is too long', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 toneOfVoice: ToneOfVoice.Custom,
@@ -236,100 +259,6 @@ describe('store-configuration-validation', () => {
             ).toThrowError(
                 StoreConfigurationValidationMessage.CustomToneOfVoiceLength
             )
-        })
-
-        it('should throw an error if no channel is selected in the completed wizard', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    completedDatetime: '2021-01-01T00:00:00',
-                    enabledChannels: [],
-                },
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    DEFAULT_OPTIONS
-                )
-            ).toThrowError(StoreConfigurationValidationMessage.NoChannelError)
-        })
-
-        it('should throw an error if no channel is selected in the knowledge step', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    stepName: AiAgentOnboardingWizardStep.Knowledge,
-                    enabledChannels: [],
-                },
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    DEFAULT_OPTIONS
-                )
-            ).toThrowError(StoreConfigurationValidationMessage.NoChannelError)
-        })
-
-        it('should throw an error if no email integration is selected in the completed wizard', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                monitoredEmailIntegrations: [],
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    completedDatetime: '2021-01-01T00:00:00',
-                    enabledChannels: [AiAgentChannel.Email],
-                },
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    DEFAULT_OPTIONS
-                )
-            ).toThrowError(StoreConfigurationValidationMessage.FieldsMissing)
-        })
-
-        it('should throw an error if no email integration is selected in the knowledge step', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                monitoredEmailIntegrations: [],
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    stepName: AiAgentOnboardingWizardStep.Knowledge,
-                    enabledChannels: [AiAgentChannel.Email],
-                },
-            }
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    DEFAULT_OPTIONS
-                )
-            ).toThrowError(StoreConfigurationValidationMessage.FieldsMissing)
-        })
-
-        it('should throw an error if email integration is selected and no email channel is selected', () => {
-            const formValues: FormValues = {
-                ...VALID_FORM_VALUES,
-                monitoredEmailIntegrations: [EMAIL_INTEGRATION],
-                wizard: {
-                    ...WIZARD_FORM_VALUES,
-                    stepName: AiAgentOnboardingWizardStep.Knowledge,
-                    enabledChannels: [AiAgentChannel.Chat],
-                },
-            }
-
-            expect(() =>
-                getValidStoreConfigurationFormValues(
-                    formValues,
-                    [],
-                    DEFAULT_OPTIONS
-                )
-            ).toThrowError(StoreConfigurationValidationMessage.FieldsMissing)
         })
 
         it('should throw an error if no help center selected and public urls is empty when wizard finished and this is onboarding page', () => {
@@ -381,6 +310,68 @@ describe('store-configuration-validation', () => {
             ).toThrowError(
                 StoreConfigurationValidationMessage.EmailIntegrationError
             )
+        })
+
+        describe('wizard page validation', () => {
+            it('should throw an error if no monitoredChatIntegrations selected and chat channel selected', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredChatIntegrations: [],
+                    wizard: {
+                        ...WIZARD_FORM_VALUES,
+                        stepName: AiAgentOnboardingWizardStep.Knowledge,
+                        enabledChannels: [AiAgentChannel.Chat],
+                    },
+                }
+
+                expect(() =>
+                    getValidStoreConfigurationFormValues(formValues, [], {
+                        ...DEFAULT_OPTIONS,
+                        isOnboardingWizardPage: true,
+                    })
+                ).toThrowError(
+                    StoreConfigurationValidationMessage.FieldsMissing
+                )
+            })
+
+            it('should throw an error if no monitoredEmailIntegrations selected and email channel selected', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredEmailIntegrations: [],
+                    wizard: {
+                        ...WIZARD_FORM_VALUES,
+                        stepName: AiAgentOnboardingWizardStep.Knowledge,
+                        enabledChannels: [AiAgentChannel.Email],
+                    },
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(formValues, [], {
+                        ...DEFAULT_OPTIONS,
+                        isOnboardingWizardPage: true,
+                    })
+                ).toThrowError(
+                    StoreConfigurationValidationMessage.FieldsMissing
+                )
+            })
+
+            it('should throw an error if no channel is selected in the knowledge step', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    wizard: {
+                        ...WIZARD_FORM_VALUES,
+                        stepName: AiAgentOnboardingWizardStep.Knowledge,
+                        enabledChannels: [],
+                    },
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(formValues, [], {
+                        ...DEFAULT_OPTIONS,
+                        isOnboardingWizardPage: true,
+                    })
+                ).toThrowError(
+                    StoreConfigurationValidationMessage.NoChannelError
+                )
+            })
         })
 
         describe('multi-channel enabled', () => {
