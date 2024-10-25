@@ -1,5 +1,5 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor, render, screen, fireEvent} from '@testing-library/react'
+import {waitFor, render, screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
 import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
@@ -17,6 +17,14 @@ const useCollectionsFromShopifyIntegrationMock = assumeMock(
 )
 
 describe('<CollectionSelector />', () => {
+    beforeEach(() => {
+        jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
     it('renders', () => {
         useCollectionsFromShopifyIntegrationMock.mockReturnValue({
             data: [
@@ -88,7 +96,12 @@ describe('<CollectionSelector />', () => {
         fireEvent.focus(element)
 
         const input = screen.getByRole('textbox')
-        fireEvent.change(input, {target: {value: 'product'}})
+
+        act(() => {
+            fireEvent.change(input, {target: {value: 'product'}})
+            // Make sure all debounced functions are called
+            jest.runAllTimers()
+        })
 
         await waitFor(() => {
             expect(
