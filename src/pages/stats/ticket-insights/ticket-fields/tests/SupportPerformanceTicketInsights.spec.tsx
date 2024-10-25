@@ -1,7 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -11,8 +11,8 @@ import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFi
 import {CustomField} from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {ApiListResponseCursorPagination} from 'models/api/types'
+import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
@@ -20,12 +20,12 @@ import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insight
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import {
     SupportPerformanceTicketInsights,
+    TICKET_INSIGHTS_OPTIONAL_FILTERS,
     TICKET_INSIGHTS_PAGE_TITLE,
 } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -36,8 +36,13 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel.tsx')
-const FiltersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 jest.mock('pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.tsx')
 const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
 jest.mock(
@@ -96,7 +101,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
 
     beforeEach(() => {
         SupportPerformanceFiltersMock.mockImplementation(componentMock)
-        FiltersPanelMock.mockImplementation(componentMock)
         CustomFieldSelectMock.mockImplementation(componentMock)
         TicketDistributionTableMock.mockImplementation(componentMock)
         TicketInsightsFieldTrendMock.mockImplementation(componentMock)
@@ -109,12 +113,12 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render the page title', () => {
-        render(
+        const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
             </Provider>
         )
-        const title = screen.getByText(TICKET_INSIGHTS_PAGE_TITLE)
+        const title = getByText(TICKET_INSIGHTS_PAGE_TITLE)
 
         expect(title).toBeInTheDocument()
     })
@@ -132,13 +136,36 @@ describe('<SupportPerformanceTicketInsights />', () => {
     it('should render the Filters Panel when behind the flag', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
 
-        render(
+        const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
             </Provider>
         )
 
-        expect(FiltersPanel).toHaveBeenCalled()
+        TICKET_INSIGHTS_OPTIONAL_FILTERS.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render the Filters Panel with default optional filters and a Score filter', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedTicketInsightsOptionalFilters = [
+            ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTicketInsights />
+            </Provider>
+        )
+
+        extendedTicketInsightsOptionalFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
     })
 
     it('should render the CustomFieldSelect', () => {

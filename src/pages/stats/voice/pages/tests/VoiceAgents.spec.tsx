@@ -1,7 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,7 +24,6 @@ import {
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import {AccountFeature} from 'state/currentAccount/types'
-
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
@@ -34,8 +33,6 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -101,9 +98,7 @@ const renderVoiceAgents = (featureEnabled = true) => {
 
 describe('VoiceAgents with the new filters', () => {
     beforeAll(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
-        })
+        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: true})
     })
 
     it('should render page when AnalyticsNewFiltersVoice is true', () => {
@@ -115,14 +110,43 @@ describe('VoiceAgents with the new filters', () => {
         expect(
             getByText(FilterLabels[FilterKey.Integrations])
         ).toBeInTheDocument()
-        expect(getAllByText(FilterLabels[FilterKey.Tags])).toHaveLength(2)
-        expect(getAllByText(FilterLabels[FilterKey.Agents])).toHaveLength(2)
+        expect(
+            getAllByText(FilterLabels[FilterKey.Tags])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Agents])[0]
+        ).toBeInTheDocument()
+    })
+
+    it('should render Filters Panel with Score filter', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+
+        const {getByText, getAllByText} = renderVoiceAgents()
+        expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+
+        fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
+
+        expect(
+            getByText(FilterLabels[FilterKey.Integrations])
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Tags])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Agents])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Score])[0]
+        ).toBeInTheDocument()
     })
 })
 
 describe('VoiceAgents', () => {
     beforeAll(() => {
-        mockUseFlags.mockReturnValue({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
         })
     })

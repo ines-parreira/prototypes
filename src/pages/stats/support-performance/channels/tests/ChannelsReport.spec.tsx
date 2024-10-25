@@ -2,17 +2,20 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {
     ChannelsReport,
     CHANNELS_REPORT_PAGE_TITLE,
+    CHANNEL_REPORT_OPTIONAL_FILTERS,
 } from 'pages/stats/support-performance/channels/ChannelsReport'
 import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
 import {renderWithStore} from 'utils/testing'
 
+const componentMock = () => <div />
 const defaultFiltersText = 'default_filters'
-const filtersPanelText = 'filters_panel'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -27,22 +30,26 @@ jest.mock('pages/stats/SupportPerformanceFilters', () => ({
         hidden ? null : <div>{defaultFiltersText}</div>,
 }))
 jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: () => <div>{filtersPanelText}</div>,
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
 }))
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsDownloadDataButton',
     () => ({
-        ChannelsDownloadDataButton: () => <div />,
+        ChannelsDownloadDataButton: componentMock,
     })
 )
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsHeaderCellContent',
     () => ({
-        ChannelsHeaderCellContent: () => <div />,
+        ChannelsHeaderCellContent: componentMock,
     })
 )
 jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
-    ChannelsTable: () => <div />,
+    ChannelsTable: componentMock,
 }))
 
 describe('ChannelsReport', () => {
@@ -71,7 +78,9 @@ describe('ChannelsReport', () => {
         )
 
         expect(getByText(defaultFiltersText)).toBeInTheDocument()
-        expect(queryByText(filtersPanelText)).not.toBeInTheDocument()
+        CHANNEL_REPORT_OPTIONAL_FILTERS.forEach((optionalFilter) => {
+            expect(queryByText(optionalFilter)).not.toBeInTheDocument()
+        })
     })
 
     it('should render channels report component with filters panel', () => {
@@ -84,6 +93,25 @@ describe('ChannelsReport', () => {
         )
 
         expect(queryByText(defaultFiltersText)).not.toBeInTheDocument()
-        expect(getByText(filtersPanelText)).toBeInTheDocument()
+        CHANNEL_REPORT_OPTIONAL_FILTERS.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render channels report component with filters panel, default optional filters and a Score filter', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedChannelsReportFilters = [
+            ...CHANNEL_REPORT_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
+
+        extendedChannelsReportFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
     })
 })

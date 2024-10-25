@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
@@ -26,6 +27,13 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'
+export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
 const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest times of the week'
 const TICKETS_CREATED_TOOLTIP = 'Tickets created per hour per day of the week'
 const TICKETS_CLOSED_TOOLTIP = 'Tickets closed per hour per day of the week'
@@ -63,6 +71,10 @@ const busiestHoursHeatmapLegend = {
 export const BusiestTimesOfDays = () => {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const busiestTimeOfDaysOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilter(
+            BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS
+        )
     const getGridCellSize = useGridSize()
 
     const selectedMetric = useAppSelector(getSelectedMetric)
@@ -95,13 +107,9 @@ export const BusiestTimesOfDays = () => {
                                     FilterKey.Period,
                                     FilterComponentKey.BusiestTimesMetricSelectFilter,
                                 ]}
-                                optionalFilters={[
-                                    FilterKey.Channels,
-                                    FilterKey.Integrations,
-                                    FilterKey.Tags,
-                                    FilterKey.Agents,
-                                    FilterKey.CustomFields,
-                                ]}
+                                optionalFilters={
+                                    busiestTimeOfDaysOptionalFilters
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

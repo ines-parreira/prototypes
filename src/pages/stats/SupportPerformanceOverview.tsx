@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -18,7 +18,6 @@ import {DownloadOverviewData} from 'pages/stats/support-performance/components/D
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
-
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {
     OverviewChartConfig,
@@ -27,7 +26,6 @@ import {
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {MetricName} from 'services/reporting/constants'
-
 import {
     currentAccountHasFeature,
     getSurveysSettingsJS,
@@ -37,10 +35,21 @@ import {OverviewMetric} from 'state/ui/stats/types'
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
+export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
 
 export default function SupportPerformanceOverview() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const supportPerformanceOverviewOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilter(
+            PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
+        )
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -85,13 +94,9 @@ export default function SupportPerformanceOverview() {
                                     FilterKey.Period,
                                     FilterKey.AggregationWindow,
                                 ]}
-                                optionalFilters={[
-                                    FilterKey.Channels,
-                                    FilterKey.Integrations,
-                                    FilterKey.Tags,
-                                    FilterKey.Agents,
-                                    FilterKey.CustomFields,
-                                ]}
+                                optionalFilters={
+                                    supportPerformanceOverviewOptionalFilters
+                                }
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

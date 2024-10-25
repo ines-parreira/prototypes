@@ -2,12 +2,12 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -18,14 +18,24 @@ import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
+export const TICKET_INSIGHTS_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
 
 export function SupportPerformanceTicketInsights() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const supportPerformanceTicketInsightsOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilter(
+            TICKET_INSIGHTS_OPTIONAL_FILTERS
+        )
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const getGridCellSize = useGridSize()
 
@@ -65,13 +75,9 @@ export function SupportPerformanceTicketInsights() {
                                 FilterComponentKey.CustomField,
                                 FilterKey.AggregationWindow,
                             ]}
-                            optionalFilters={[
-                                FilterKey.Channels,
-                                FilterKey.Integrations,
-                                FilterKey.Tags,
-                                FilterKey.Agents,
-                                FilterKey.CustomFields,
-                            ]}
+                            optionalFilters={
+                                supportPerformanceTicketInsightsOptionalFilters
+                            }
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {

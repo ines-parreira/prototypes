@@ -29,7 +29,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Campaigns]: 'Campaign',
     [FilterKey.CampaignStatuses]: 'Campaign Status',
     [FilterKey.CustomFields]: 'Custom Field',
-    [FilterKey.Score]: 'Score',
+    [FilterKey.Score]: 'Satisfaction score',
     [FilterKey.SlaPolicies]: 'Report on',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Report on',
     [FilterComponentKey.CustomField]: 'Report on',

@@ -4,6 +4,7 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -16,6 +17,7 @@ import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -34,6 +36,12 @@ import {
     getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 
+export const VOICE_AGENTS_OPTIONAL_FILTERS: OptionalFilter[] = [
+    FilterComponentKey.PhoneIntegrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+]
+
 function VoiceAgents() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const statsFilters = useAppSelector(getPageStatsFilters)
@@ -43,6 +51,10 @@ function VoiceAgents() {
 
     const isVoiceAgentsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+    const voiceAgentsOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilter(
+            VOICE_AGENTS_OPTIONAL_FILTERS
+        )
 
     useCleanStatsFiltersWithLogicalOperators(
         pageStatsFiltersWithLogicalOperators
@@ -107,11 +119,7 @@ function VoiceAgents() {
                                 },
                             }}
                             persistentFilters={[FilterKey.Period]}
-                            optionalFilters={[
-                                FilterComponentKey.PhoneIntegrations,
-                                FilterKey.Tags,
-                                FilterKey.Agents,
-                            ]}
+                            optionalFilters={voiceAgentsOptionalFilters}
                         />
                     </DashboardGridCell>
                 </DashboardSection>

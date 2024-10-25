@@ -22,6 +22,7 @@ export enum FeatureFlagKey {
     AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsCustomFieldsFilter = 'analytics-custom-fields-filter',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
+    AnalyticsNewCSATFilter = 'analytics-new-csat-filter',
     AnalyticsNewFilters = 'analytics-new-filters',
     AnalyticsNewFiltersAutomate = 'analytics-new-filters-automate',
     AnalyticsNewFiltersConvert = 'analytics-new-filters-convert',

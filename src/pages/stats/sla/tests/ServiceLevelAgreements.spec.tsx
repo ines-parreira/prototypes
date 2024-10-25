@@ -1,11 +1,12 @@
 import {render, screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps, PropsWithChildren} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
@@ -16,6 +17,7 @@ import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {
     ServiceLevelAgreements,
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
+    SERVICE_LEVEL_OPTIONAL_FILTERS,
 } from 'pages/stats/sla/ServiceLevelAgreements'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
@@ -52,10 +54,13 @@ jest.mock('pages/stats/sla/components/SLAPolicySelect')
 const SLAPolicySelectMock = assumeMock(SLAPolicySelect)
 jest.mock('pages/stats/sla/components/DownloadSLAsData')
 const DownloadSLAsDataMock = assumeMock(DownloadSLAsData)
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const FiltersPanelMock = assumeMock(FiltersPanel)
-
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
@@ -100,8 +105,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         AchievementRateTrendCardMock.mockImplementation(() => <div />)
         BreachedTicketsRateTrendCardMock.mockImplementation(() => <div />)
         DownloadSLAsDataMock.mockImplementation(() => <div />)
-        FiltersPanelMock.mockImplementation(() => <div />)
-        mockUseFlags.mockReturnValue({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
         })
     })
@@ -125,7 +129,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
 
     it('should render SLAPolicySelect', () => {
-        mockUseFlags.mockReturnValue({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
         })
 
@@ -136,5 +140,45 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         )
 
         expect(SLAPolicySelectMock).toHaveBeenCalled()
+    })
+
+    describe('FilterPanel', () => {
+        beforeEach(() => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            })
+        })
+
+        it('should show New Filters Panel and render expected filters', () => {
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <ServiceLevelAgreements />
+                </Provider>
+            )
+
+            SERVICE_LEVEL_OPTIONAL_FILTERS.forEach((filter) => {
+                expect(getByText(filter)).toBeInTheDocument()
+            })
+        })
+
+        it('should show New Filters Panel and render expected filters with score filter', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            })
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <ServiceLevelAgreements />
+                </Provider>
+            )
+            const filtersWithScore = [
+                ...SERVICE_LEVEL_OPTIONAL_FILTERS,
+                FilterKey.Score,
+            ]
+            filtersWithScore.forEach((filter) => {
+                expect(getByText(filter)).toBeInTheDocument()
+            })
+        })
     })
 })

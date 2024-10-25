@@ -1,11 +1,13 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {
+    BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
     BUSIEST_TIME_OF_DAY_PAGE_TITLE,
     BusiestTimesOfDays,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
@@ -20,8 +22,13 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters')
 const FiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const FiltersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -48,7 +55,6 @@ describe('BusiestTimesOfDays page', () => {
 
     beforeEach(() => {
         FiltersMock.mockImplementation(componentMock)
-        FiltersPanelMock.mockImplementation(componentMock)
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
@@ -74,11 +80,36 @@ describe('BusiestTimesOfDays page', () => {
         )
     })
 
-    it('should render FiltersPanel with New Filters flag', () => {
+    it('should render FiltersPanel with New Filters when flag is enabled', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
 
-        renderWithStore(<BusiestTimesOfDays />, defaultState)
+        const {getByText} = renderWithStore(
+            <BusiestTimesOfDays />,
+            defaultState
+        )
 
-        expect(FiltersPanelMock).toHaveBeenCalled()
+        BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render FiltersPanel with New Filters and Score filter', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedBusiestTimeOfDaysOptionalFilters = [
+            ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        const {getByText} = renderWithStore(
+            <BusiestTimesOfDays />,
+            defaultState
+        )
+
+        extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
     })
 })

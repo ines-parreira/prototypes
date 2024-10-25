@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -16,8 +17,18 @@ import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChar
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 
 export const TAGS_TITLE = 'Tags'
+export const TAGS_OPTIONAL_FILTERS = [
+    FilterKey.Agents,
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.CustomFields,
+]
 
 export function Tags() {
+    const tagsOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
+        TAGS_OPTIONAL_FILTERS
+    )
     const getGridCellSize = useGridSize()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     useCleanStatsFiltersWithLogicalOperators(statsFilters)
@@ -38,13 +49,7 @@ export function Tags() {
                                 FilterKey.Period,
                                 FilterKey.AggregationWindow,
                             ]}
-                            optionalFilters={[
-                                FilterKey.Agents,
-                                FilterKey.Channels,
-                                FilterKey.Integrations,
-                                FilterKey.Tags,
-                                FilterKey.CustomFields,
-                            ]}
+                            optionalFilters={tagsOptionalFilters}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {

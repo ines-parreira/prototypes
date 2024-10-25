@@ -2,7 +2,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -14,7 +14,8 @@ import {billingState} from 'fixtures/billing'
 import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
 import {user} from 'fixtures/users'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     ALL_CALLS_FILTER_LABEL,
@@ -31,10 +32,11 @@ import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
+import VoiceOverview, {
+    VOICE_OVERVIEW_OPTIONAL_FILTERS,
+} from 'pages/stats/voice/pages/VoiceOverview'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {AccountFeature} from 'state/currentAccount/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -55,7 +57,11 @@ jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 
 jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: () => <div>filter panel mock</div>,
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
 }))
 
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
@@ -176,16 +182,35 @@ describe('VoiceOverview', () => {
 
     it('should render with no default filters and with new filters panel when feature flag is enabled', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: true})
-        const {queryByText} = renderVoiceOverview()
+        const {queryByText, getByText} = renderVoiceOverview()
 
-        // filters
+        // filter buttons (default filters)
         expect(queryByText('All integrations')).not.toBeInTheDocument()
         expect(queryByText('1 tag')).not.toBeInTheDocument()
         expect(queryByText('1 agent')).not.toBeInTheDocument()
         expect(queryByText('Dec 11, 2023')).not.toBeInTheDocument()
 
         expect(queryByText('Download data')).toBeInTheDocument()
-        expect(queryByText('filter panel mock')).toBeInTheDocument()
+        VOICE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render new filters panel when feature flag is enabled and add Score filter', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedVoiceOverviewFilters = [
+            ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        const {getByText} = renderVoiceOverview()
+
+        extendedVoiceOverviewFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
     })
 
     it('should trigger save report when clicking on download data', async () => {

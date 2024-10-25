@@ -10,7 +10,6 @@ import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {AutomationBillingEventMember} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
@@ -62,6 +61,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
+    score: TicketMember.SurveyScore,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -84,6 +84,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
+    score: TicketMember.SurveyScore,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
@@ -164,6 +165,7 @@ export const statsFiltersToReportingFilters = (
         helpCenters,
         localeCodes,
         slaPolicies,
+        score,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -222,6 +224,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(slaPolicies) && members.slaPolicies) {
         filters = addOptionalFilter(filters, slaPolicies, {
             member: members.slaPolicies,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(score) && members.score) {
+        filters = addOptionalFilter(filters, score, {
+            member: members.score,
             operator: ReportingFilterOperator.Equals,
         })
     }

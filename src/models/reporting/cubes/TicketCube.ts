@@ -27,6 +27,7 @@ export enum TicketDimension {
     MessageSenderIdToExclude = 'TicketEnriched.messageSenderIdToExclude',
     IsTrashed = 'TicketEnriched.isTrashed',
     IsSpam = 'TicketEnriched.isSpam',
+    SurveyScore = 'TicketEnriched.surveyScore',
 }
 
 export enum TicketSegment {
@@ -52,6 +53,7 @@ export enum TicketMember {
     CustomField = 'TicketEnriched.customField',
     TotalCustomFieldIdsToMatch = 'TicketEnriched.totalCustomFieldIdsToMatch',
     CustomFieldToExclude = 'TicketEnriched.customFieldToExclude',
+    SurveyScore = 'TicketEnriched.surveyScore',
 }
 
 export type TicketTimeDimensions =

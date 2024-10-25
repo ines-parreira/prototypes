@@ -46,7 +46,7 @@ import css from 'pages/stats/AutomateOverview.less'
 import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,

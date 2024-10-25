@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -20,12 +21,22 @@ import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/au
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
+export const AUTO_QA_OPTIONAL_FILTERS = [
+    FilterKey.Integrations,
+    FilterKey.Channels,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    FilterKey.CustomFields,
+]
 
 export default function AutoQA() {
     const getGridCellSize = useGridSize()
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const autoQAOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
+        AUTO_QA_OPTIONAL_FILTERS
+    )
 
     return (
         <div className="full-width">
@@ -55,13 +66,7 @@ export default function AutoQA() {
                                     },
                                 }}
                                 persistentFilters={[FilterKey.Period]}
-                                optionalFilters={[
-                                    FilterKey.Integrations,
-                                    FilterKey.Channels,
-                                    FilterKey.Agents,
-                                    FilterKey.Tags,
-                                    FilterKey.CustomFields,
-                                ]}
+                                optionalFilters={autoQAOptionalFilters}
                             />
                         </DashboardGridCell>
                     </DashboardSection>

@@ -1,11 +1,12 @@
 import {fireEvent, render} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
@@ -14,9 +15,9 @@ import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/c
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
+    PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
 } from 'pages/stats/SupportPerformanceOverview'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-
 import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
@@ -62,8 +63,13 @@ const ticketsCreatedVsClosedChartCardMock = assumeMock(
 jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const filtersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 
 describe('<SupportPerformanceOverview />', () => {
     beforeEach(() => {
@@ -83,10 +89,10 @@ describe('<SupportPerformanceOverview />', () => {
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>
         ))
-        filtersPanelMock.mockImplementation(() => <div>FiltersHeaderMock</div>)
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
-        }))
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+        })
     })
 
     it.each([
@@ -174,19 +180,41 @@ describe('<SupportPerformanceOverview />', () => {
 
     describe('FiltersHeader', () => {
         beforeEach(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
-            }))
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            })
         })
 
-        it('should show New Filters Panel', () => {
-            render(
+        it('should show New Filters Panel and render expected filters', () => {
+            const {getByText} = render(
                 <Provider store={mockStore({})}>
                     <SupportPerformanceOverview />
                 </Provider>
             )
 
-            expect(filtersPanelMock).toHaveBeenCalled()
+            PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
+                expect(getByText(filter)).toBeInTheDocument()
+            })
+        })
+
+        it('should show New Filters Panel and render expected filters with score filter', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            })
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+            const filtersWithScore = [
+                ...PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
+                FilterKey.Score,
+            ]
+            filtersWithScore.forEach((filter) => {
+                expect(getByText(filter)).toBeInTheDocument()
+            })
         })
     })
 })

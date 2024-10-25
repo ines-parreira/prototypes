@@ -2,9 +2,9 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
-
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -16,16 +16,25 @@ import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
 import StatsPage from 'pages/stats/StatsPage'
-
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
+export const SERVICE_LEVEL_OPTIONAL_FILTERS = [
+    FilterKey.Integrations,
+    FilterKey.Channels,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    FilterKey.CustomFields,
+]
 const OVERVIEW_SECTION_LABEL = 'Overview'
 
 export function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const SLAsOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
+        SERVICE_LEVEL_OPTIONAL_FILTERS
+    )
     return (
         <WithSlaEmptyState>
             <div className="full-width">
@@ -52,13 +61,7 @@ export function ServiceLevelAgreements() {
                                         FilterKey.SlaPolicies,
                                         FilterKey.AggregationWindow,
                                     ]}
-                                    optionalFilters={[
-                                        FilterKey.Integrations,
-                                        FilterKey.Channels,
-                                        FilterKey.Agents,
-                                        FilterKey.Tags,
-                                        FilterKey.CustomFields,
-                                    ]}
+                                    optionalFilters={SLAsOptionalFilters}
                                     filterSettingsOverrides={{
                                         [FilterKey.Period]: {
                                             initialSettings: {

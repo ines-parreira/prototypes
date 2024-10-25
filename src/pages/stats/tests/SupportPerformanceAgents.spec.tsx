@@ -1,21 +1,22 @@
 import {render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
 import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
+    AGENTS_OPTIONAL_FILTERS,
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
@@ -28,8 +29,13 @@ jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
 const AgentsTableMock = assumeMock(AgentsTable)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel.tsx')
-const FiltersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 jest.mock(
     'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx'
 )
@@ -51,7 +57,6 @@ const componentMock = () => <div />
 
 describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
-    FiltersPanelMock.mockImplementation(componentMock)
     AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentsTableMock.mockImplementation(componentMock)
@@ -117,7 +122,7 @@ describe('SupportPerformanceAgents', () => {
     it('should render New FiltersPanel and hide legacy filters', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
 
-        render(
+        const {getByText, queryByText} = render(
             <MemoryRouter>
                 <SupportPerformanceAgents />
             </MemoryRouter>
@@ -127,6 +132,34 @@ describe('SupportPerformanceAgents', () => {
             expect.objectContaining({hidden: true}),
             {}
         )
-        expect(FiltersPanelMock).toHaveBeenCalled()
+        AGENTS_OPTIONAL_FILTERS.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+        expect(queryByText(FilterKey.Score)).not.toBeInTheDocument()
+    })
+
+    it('should render New FiltersPanel and score filter should be present in the FiltersPanel', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedOptionalFilters = [
+            ...AGENTS_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        const {getByText} = render(
+            <MemoryRouter>
+                <SupportPerformanceAgents />
+            </MemoryRouter>
+        )
+
+        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
+            expect.objectContaining({hidden: true}),
+            {}
+        )
+        extendedOptionalFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
     })
 })

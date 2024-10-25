@@ -1,9 +1,15 @@
-import {screen} from '@testing-library/react'
-import React from 'react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
-import {Tags, TAGS_TITLE} from 'pages/stats/ticket-insights/tags/Tags'
+import {
+    Tags,
+    TAGS_OPTIONAL_FILTERS,
+    TAGS_TITLE,
+} from 'pages/stats/ticket-insights/tags/Tags'
 import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
 import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
 import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
@@ -14,8 +20,13 @@ import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const filtersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 jest.mock('pages/stats/ticket-insights/tags/TagsTrendChart')
 const TagsTrendChartMock = assumeMock(TagsTrendChart)
 jest.mock('pages/stats/ticket-insights/tags/TopUsedTagsChart')
@@ -43,23 +54,39 @@ describe('<Tags>', () => {
     } as RootState
 
     beforeEach(() => {
-        filtersPanelMock.mockImplementation(componentMock)
-        allUsedTagsTableChartMock.mockImplementation(() => <div></div>)
+        allUsedTagsTableChartMock.mockImplementation(componentMock)
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
     })
 
     it('should render new tags page', () => {
-        renderWithStore(<Tags />, defaultState)
+        const {getByText} = renderWithStore(<Tags />, defaultState)
 
-        expect(screen.getByText(TAGS_TITLE)).toBeInTheDocument()
+        expect(getByText(TAGS_TITLE)).toBeInTheDocument()
     })
 
     it('should contain filters panel component', () => {
-        renderWithStore(<Tags />, defaultState)
+        const {getByText} = renderWithStore(<Tags />, defaultState)
 
-        expect(filtersPanelMock).toHaveBeenCalled()
+        TAGS_OPTIONAL_FILTERS.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should contain filters panel component and Score filter should be one of the optional filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedTagsOptionalFilters = [
+            ...TAGS_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+        const {getByText} = renderWithStore(<Tags />, defaultState)
+
+        extendedTagsOptionalFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
     })
 
     it('should render the TopUsedTagsChart', () => {

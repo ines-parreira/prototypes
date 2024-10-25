@@ -2,10 +2,9 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {act} from 'react-dom/test-utils'
-
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -33,7 +32,6 @@ import {
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
@@ -238,9 +236,8 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
-        }))
+        mockFlags({[FeatureFlagKey.AutomateOverviewChannelsFilter]: true})
+
         useAutomateMetricsTimeseriesV2Mock.mockReturnValue(
             automateMetricsTimeseriesV2
         )
@@ -302,10 +299,10 @@ describe('<AutomateOverview />', () => {
 
     describe('Filters Panel', () => {
         it('should display new filters panel when the feature flag is enabled', async () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            mockFlags({
                 [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
                 [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
-            }))
+            })
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
@@ -331,10 +328,10 @@ describe('<AutomateOverview />', () => {
         })
 
         it('should display new filters panel without Channels filter if feature flag is disabled', async () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            mockFlags({
                 [FeatureFlagKey.AutomateOverviewChannelsFilter]: false,
                 [FeatureFlagKey.AnalyticsNewFiltersAutomate]: true,
-            }))
+            })
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>

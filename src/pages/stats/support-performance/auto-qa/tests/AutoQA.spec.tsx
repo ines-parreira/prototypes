@@ -1,10 +1,12 @@
 import {screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React from 'react'
+import {mockFlags} from 'jest-launchdarkly-mock'
+import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import AutoQA, {
+    AUTO_QA_OPTIONAL_FILTERS,
     AUTO_QA_PAGE_TITLE,
 } from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
@@ -15,8 +17,10 @@ import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/a
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
+const componentMock = () => <div />
+
 jest.mock('pages/stats/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: () => <div />,
+    SupportPerformanceFilters: componentMock,
 }))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -51,23 +55,26 @@ const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
 jest.mock('pages/stats/support-performance/auto-qa/AutoQADownloadDataButton')
 const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
-
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const filtersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
+    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+        return props.optionalFilters?.map((optionalFilter) => (
+            <div key={optionalFilter}>{optionalFilter}</div>
+        ))
+    },
+}))
 
 describe('AutoQA', () => {
     beforeEach(() => {
-        NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(() => (
-            <div />
-        ))
-        ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
-        CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
-        AutoQAAgentsTableMock.mockImplementation(() => <div />)
-        AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(() => (
-            <div />
-        ))
-        AutoQADownloadButtonMock.mockImplementation(() => <div />)
+        NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(
+            componentMock
+        )
+        ResolutionCompletenessTrendCardMock.mockImplementation(componentMock)
+        CommunicationSkillsTrendCardMock.mockImplementation(componentMock)
+        AutoQAAgentsTableMock.mockImplementation(componentMock)
+        AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
+            componentMock
+        )
+        AutoQADownloadButtonMock.mockImplementation(componentMock)
     })
 
     it('should render page title', () => {
@@ -89,8 +96,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         ))
         ResolutionCompletenessTrendCardMock.mockImplementation(() => <div />)
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
-        filtersPanelMock.mockImplementation(() => <div>FiltersHeaderMock</div>)
-        mockUseFlags.mockReturnValue({
+        mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
         })
     })
@@ -104,6 +110,26 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
         expect(AutoQAAgentsTableMock).toHaveBeenCalled()
         expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
-        expect(screen.getByText('FiltersHeaderMock')).toBeTruthy()
+        AUTO_QA_OPTIONAL_FILTERS.forEach((optionalFilter) => {
+            expect(screen.getByText(optionalFilter)).toBeTruthy()
+        })
+    })
+
+    it('should render AutoQA page with optional filters and Score filter added', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+        })
+        const extendedAutoQAFilters = [
+            ...AUTO_QA_OPTIONAL_FILTERS,
+            FilterKey.Score,
+        ]
+
+        renderWithStore(<AutoQA />, {})
+
+        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
+        extendedAutoQAFilters.forEach((optionalFilter) => {
+            expect(screen.getByText(optionalFilter)).toBeTruthy()
+        })
     })
 })

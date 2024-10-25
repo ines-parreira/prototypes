@@ -4,6 +4,7 @@ import React, {useMemo, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
@@ -16,6 +17,7 @@ import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
@@ -61,12 +63,22 @@ import {
 } from 'state/ui/stats/selectors'
 import {VoiceMetric} from 'state/ui/stats/types'
 
+export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
+    FilterComponentKey.PhoneIntegrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+]
+
 function VoiceOverview() {
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
+    const voiceOverviewOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilter(
+            VOICE_OVERVIEW_OPTIONAL_FILTERS
+        )
 
     const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -203,11 +215,7 @@ function VoiceOverview() {
                     <DashboardGridCell size={12} className="pb-0">
                         <FiltersPanelWrapper
                             persistentFilters={[FilterKey.Period]}
-                            optionalFilters={[
-                                FilterComponentKey.PhoneIntegrations,
-                                FilterKey.Tags,
-                                FilterKey.Agents,
-                            ]}
+                            optionalFilters={voiceOverviewOptionalFilters}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {
