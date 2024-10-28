@@ -110,7 +110,6 @@ export enum FeatureFlagKey {
     OfficeHours = 'office-hours',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
-    RecordingTranscriptions = 'recording-transcriptions',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

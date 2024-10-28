@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {FormGroup, Label} from 'reactstrap'
+import {Label} from 'reactstrap'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -50,8 +50,6 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     integrationPreferences,
     errors,
 }: Props): JSX.Element {
-    const useCallRecordings: boolean | undefined =
-        useFlags()[FeatureFlagKey.RecordingTranscriptions]
     const showCustomizableAgentRingTime: boolean | undefined =
         useFlags()[FeatureFlagKey.CustomizableAgentRingTime]
     const showCustomizableWaitTime: boolean | undefined =
@@ -204,20 +202,6 @@ export default function VoiceIntegrationPreferencesInboundCalls({
             )}
             <div>
                 <Label className="control-label">Other settings</Label>
-                {!isIvr && !useCallRecordings && (
-                    <FormGroup>
-                        <CheckBox
-                            isChecked={preferences.record_inbound_calls}
-                            onChange={(value) =>
-                                onPreferencesChange({
-                                    record_inbound_calls: value,
-                                })
-                            }
-                        >
-                            Start recording automatically
-                        </CheckBox>
-                    </FormGroup>
-                )}
                 <CheckBox
                     isChecked={preferences.voicemail_outside_business_hours}
                     onChange={(value) =>

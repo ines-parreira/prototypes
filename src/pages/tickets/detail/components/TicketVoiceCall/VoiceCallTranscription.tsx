@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     VoiceCallRecording,
     VoiceCallRecordingType,
@@ -22,10 +20,8 @@ type Props = {
 export default function VoiceCallTranscription({audio, type}: Props) {
     const {isTranscriptionOpened, toggleTranscriptionOpened} =
         useVoiceRecordingsContext()
-    const useCallRecordings =
-        !!useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
-    if (!useCallRecordings || !!audio.deleted_datetime || !!audio.error_code) {
+    if (!!audio.deleted_datetime || !!audio.error_code) {
         return <></>
     }
 

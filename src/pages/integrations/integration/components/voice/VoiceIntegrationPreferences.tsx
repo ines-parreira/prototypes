@@ -1,13 +1,11 @@
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {isEmpty, isEqual} from 'lodash'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Form, Label} from 'reactstrap'
 
 import {PhoneFunction} from 'business/twilio'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -22,7 +20,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import CheckBox from 'pages/common/forms/CheckBox'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 
@@ -75,8 +72,6 @@ export default function VoiceIntegrationPreferences({
     const phoneNumberId = integration?.meta?.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
-    const useCallRecordings: boolean | undefined =
-        useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event?: React.FormEvent) => {
@@ -266,30 +261,7 @@ export default function VoiceIntegrationPreferences({
                     />
                 </div>
 
-                {!isIvr && !useCallRecordings && (
-                    <div className={css.formSection}>
-                        <h2
-                            className={classNames(
-                                settingsCss.headingSection,
-                                css.sectionHeader
-                            )}
-                        >
-                            Outbound calls
-                        </h2>
-                        <CheckBox
-                            isChecked={preferences.record_outbound_calls}
-                            onChange={(value) =>
-                                setPreferences((preferences) => ({
-                                    ...preferences,
-                                    record_outbound_calls: value,
-                                }))
-                            }
-                        >
-                            Start recording automatically
-                        </CheckBox>
-                    </div>
-                )}
-                {!!useCallRecordings && !isIvr && (
+                {!isIvr && (
                     <>
                         <VoiceIntegrationPreferencesCallRecordings
                             preferences={preferences}

@@ -1,5 +1,4 @@
 import {fireEvent, render} from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import _noop from 'lodash/noop'
 import React from 'react'
 
@@ -33,11 +32,6 @@ describe('VoiceCallTranscription', () => {
         toggleRecordingOpened: _noop,
     } as VoiceRecordingsContextState)
 
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({RecordingTranscriptions: true})
-    })
-
     const renderComponent = (
         transcriptionStatus: VoiceCallRecordingTranscriptionStatus | null,
         recordingType: VoiceCallRecordingType,
@@ -56,15 +50,6 @@ describe('VoiceCallTranscription', () => {
             <VoiceCallTranscription audio={audio} type={recordingType} />
         )
     }
-
-    it('should not render anything if feature flag is disabled', () => {
-        mockFlags({RecordingTranscriptions: false})
-        const {container} = renderComponent(
-            VoiceCallRecordingTranscriptionStatus.Completed,
-            VoiceCallRecordingType.Recording
-        )
-        expect(container).toBeEmptyDOMElement()
-    })
 
     it('should not render anything if the transcription was not requested', () => {
         const {container} = renderComponent(

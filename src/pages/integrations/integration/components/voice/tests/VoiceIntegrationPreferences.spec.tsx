@@ -5,7 +5,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
@@ -96,12 +95,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         )
     }
 
-    beforeEach(() => {
-        mockFlags({RecordingTranscriptions: true})
-    })
-
     afterEach(() => {
-        resetLDMocks()
         cleanup()
     })
 
@@ -110,7 +104,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         expect(screen.getByText('App title')).toBeInTheDocument()
     })
 
-    it('should render the component with transcription FF on', () => {
+    it('should render the component', () => {
         renderComponent(props)
 
         expect(screen.getByText('App title')).toBeInTheDocument()
@@ -129,72 +123,56 @@ describe('<VoiceIntegrationPreferences />', () => {
         expect(screen.getByText('Voicemail transcription')).toBeInTheDocument()
     })
 
-    it.each([true, false])(
-        'should display the submit button as disabled when the form is not dirty',
-        (useRecordingTranscriptions) => {
-            mockFlags({RecordingTranscriptions: useRecordingTranscriptions})
+    it('should display the submit button as disabled when the form is not dirty', () => {
+        renderComponent(props)
 
+        expect(
+            screen.getByRole('button', {name: 'Save changes'})
+        ).toBeAriaDisabled()
+    })
+
+    describe('when the form is dirty', () => {
+        it('should enable submit when integration root fields are changed', async () => {
             renderComponent(props)
 
-            expect(
-                screen.getByRole('button', {name: 'Save changes'})
-            ).toBeAriaDisabled()
-        }
-    )
+            const titleInput = screen.getByLabelText('App title')
+            fireEvent.change(titleInput, {target: {value: 'New title'}})
 
-    describe.each([true, false])(
-        'when the form is dirty',
-        (useRecordingTranscriptions) => {
-            beforeEach(() => {
-                mockFlags({RecordingTranscriptions: useRecordingTranscriptions})
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toBeAriaEnabled()
+            })
+        })
+
+        it('should enable submit when integration meta fields are changed', async () => {
+            renderComponent(props)
+
+            const teamIdSelection = screen.getByTestId('phoneTeamIdInput')
+            fireEvent.change(teamIdSelection, {target: {value: 2}})
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toBeAriaEnabled()
+            })
+        })
+
+        it('should enable submit when integration preferences fields are changed', async () => {
+            renderComponent(props)
+
+            const preferencesInput = screen.getByTestId('preferencesInput')
+            fireEvent.change(preferencesInput, {
+                target: {value: 'new value'},
             })
 
-            afterEach(() => {
-                resetLDMocks()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toBeAriaEnabled()
             })
-
-            it('should enable submit when integration root fields are changed', async () => {
-                renderComponent(props)
-
-                const titleInput = screen.getByLabelText('App title')
-                fireEvent.change(titleInput, {target: {value: 'New title'}})
-
-                await waitFor(() => {
-                    expect(
-                        screen.getByRole('button', {name: 'Save changes'})
-                    ).toBeAriaEnabled()
-                })
-            })
-
-            it('should enable submit when integration meta fields are changed', async () => {
-                renderComponent(props)
-
-                const teamIdSelection = screen.getByTestId('phoneTeamIdInput')
-                fireEvent.change(teamIdSelection, {target: {value: 2}})
-
-                await waitFor(() => {
-                    expect(
-                        screen.getByRole('button', {name: 'Save changes'})
-                    ).toBeAriaEnabled()
-                })
-            })
-
-            it('should enable submit when integration preferences fields are changed', async () => {
-                renderComponent(props)
-
-                const preferencesInput = screen.getByTestId('preferencesInput')
-                fireEvent.change(preferencesInput, {
-                    target: {value: 'new value'},
-                })
-
-                await waitFor(() => {
-                    expect(
-                        screen.getByRole('button', {name: 'Save changes'})
-                    ).toBeAriaEnabled()
-                })
-            })
-        }
-    )
+        })
+    })
 
     it.each([
         {

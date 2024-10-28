@@ -66,7 +66,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
     beforeEach(() => {
         mockFlags({
-            RecordingTranscriptions: false,
             CustomizableAgentRingTime: false,
         })
     })
@@ -83,9 +82,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         expect(screen.getByTestId('team-select')).toBeInTheDocument()
         expect(screen.getByText('Set ringing behaviour')).toBeInTheDocument()
-        expect(
-            screen.getByText('Start recording automatically')
-        ).toBeInTheDocument()
         expect(screen.getByText('Ring Time')).toBeInTheDocument()
         expect(screen.getByText('Wait Time')).toBeInTheDocument()
     })
@@ -122,16 +118,6 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         })
 
         expect(props.onPhoneTeamIdChange).toHaveBeenCalledWith('2')
-    })
-
-    it('should call onPreferencesChange when recording is changed', () => {
-        renderComponent(props)
-
-        fireEvent.click(screen.getByText('Start recording automatically'))
-
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            record_inbound_calls: true,
-        })
     })
 
     it('should not display recording setting when transcriptions FF is on', () => {

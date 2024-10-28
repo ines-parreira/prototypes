@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useCallback, useState} from 'react'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 
@@ -26,8 +25,6 @@ import css from 'pages/settings/settings.less'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
-import {FeatureFlagKey} from '../../../../../config/featureFlags'
-
 const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
 
 type Props = {
@@ -46,9 +43,6 @@ function VoiceIntegrationCreate({
     const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.Standard)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useAppDispatch()
-
-    const useCallRecordings: boolean | undefined =
-        useFlags()[FeatureFlagKey.RecordingTranscriptions]
 
     useEffect(() => {
         if (!selectedPhoneNumberId) {
@@ -82,14 +76,10 @@ function VoiceIntegrationCreate({
                         record_inbound_calls: false,
                         voicemail_outside_business_hours: true,
                         record_outbound_calls: false,
-                        ...(!!useCallRecordings
-                            ? {
-                                  transcribe: {
-                                      recordings: false,
-                                      voicemails: false,
-                                  },
-                              }
-                            : {}),
+                        transcribe: {
+                            recordings: false,
+                            voicemails: false,
+                        },
                     },
                     voicemail: {
                         ...DEFAULT_VOICE_MESSAGE,
@@ -112,7 +102,7 @@ function VoiceIntegrationCreate({
                 setIsLoading(false)
             }
         },
-        [useCallRecordings, title, emoji, phoneFunction, phoneNumber, dispatch]
+        [title, emoji, phoneFunction, phoneNumber, dispatch]
     )
 
     return (

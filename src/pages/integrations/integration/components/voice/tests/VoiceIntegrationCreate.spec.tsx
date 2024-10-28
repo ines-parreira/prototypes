@@ -1,6 +1,5 @@
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -36,31 +35,6 @@ const submittedPayload = {
             record_inbound_calls: false,
             voicemail_outside_business_hours: true,
             record_outbound_calls: false,
-        },
-        voicemail: {
-            voice_message_type: 'text_to_speech',
-            text_to_speech_content:
-                "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!",
-            allow_to_leave_voicemail: true,
-        },
-        greeting_message: {
-            voice_message_type: 'none',
-            text_to_speech_content: null,
-        },
-        ivr: undefined,
-    },
-}
-const submittedPayloadWithTranscribe = {
-    type: 'phone',
-    name: 'My Voice integration',
-    meta: {
-        emoji: null,
-        function: 'standard',
-        phone_number_id: 1,
-        preferences: {
-            record_inbound_calls: false,
-            voicemail_outside_business_hours: true,
-            record_outbound_calls: false,
             transcribe: {
                 recordings: false,
                 voicemails: false,
@@ -82,11 +56,6 @@ const submittedPayloadWithTranscribe = {
 
 describe('<VoiceIntegrationCreate/>', () => {
     describe('render()', () => {
-        beforeEach(() => {
-            resetLDMocks()
-            mockFlags({RecordingTranscriptions: false})
-        })
-
         it('should render', () => {
             const {container} = render(
                 <Provider store={store}>
@@ -117,8 +86,7 @@ describe('<VoiceIntegrationCreate/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should submit a valid payload with transcription FF on', () => {
-            mockFlags({RecordingTranscriptions: true})
+        it('should submit a valid payload', () => {
             const {getByText, getByLabelText} = render(
                 <Provider store={store}>
                     <VoiceIntegrationCreate selectedPhoneNumberId={1} />
@@ -132,7 +100,7 @@ describe('<VoiceIntegrationCreate/>', () => {
             fireEvent.click(getByText('Add Voice'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
-                fromJS(submittedPayloadWithTranscribe)
+                fromJS(submittedPayload)
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
         })
