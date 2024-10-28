@@ -681,7 +681,8 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        expect(updateValueMocked).toHaveBeenCalledTimes(2)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
@@ -713,7 +714,8 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        expect(updateValueMocked).toHaveBeenCalledTimes(2)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
@@ -737,7 +739,8 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        expect(updateValueMocked).toHaveBeenCalledTimes(2)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(4)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             expect.any(String)

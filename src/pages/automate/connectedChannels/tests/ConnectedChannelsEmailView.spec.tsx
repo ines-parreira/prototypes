@@ -116,6 +116,7 @@ describe('ConnectedChannelsEmailView', () => {
             ...storeConfiguration,
             trialModeActivatedDatetime: null,
             deactivatedDatetime: null,
+            emailChannelDeactivatedDatetime: null,
         })
     })
 
@@ -218,6 +219,7 @@ describe('ConnectedChannelsEmailView', () => {
             ...storeConfiguration,
             trialModeActivatedDatetime: null,
             deactivatedDatetime: null,
+            emailChannelDeactivatedDatetime: null,
         })
     })
 

@@ -96,6 +96,9 @@ export const ConnectedChannelsEmailView = () => {
                             await upsertStoreConfiguration({
                                 ...storeConfiguration,
                                 trialModeActivatedDatetime: null,
+                                emailChannelDeactivatedDatetime: value
+                                    ? null
+                                    : new Date().toISOString(),
                                 deactivatedDatetime: value
                                     ? null
                                     : new Date().toISOString(),

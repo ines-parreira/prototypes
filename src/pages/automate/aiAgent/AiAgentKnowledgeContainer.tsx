@@ -117,6 +117,8 @@ export const AiAgentKnowledgeContainer = () => {
         try {
             await updateStoreConfiguration({
                 ...storeConfiguration,
+                chatChannelDeactivatedDatetime: deactivatedDatetime,
+                emailChannelDeactivatedDatetime: deactivatedDatetime,
                 deactivatedDatetime,
                 trialModeActivatedDatetime: null,
             })

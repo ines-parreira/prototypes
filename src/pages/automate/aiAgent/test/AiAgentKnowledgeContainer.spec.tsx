@@ -304,6 +304,12 @@ describe('AiAgentKnowledgeContainer', () => {
             ...storeConfiguration,
             helpCenterId: null,
             deactivatedDatetime: new Date('2024-10-16').toISOString(),
+            chatChannelDeactivatedDatetime: new Date(
+                '2024-10-16'
+            ).toISOString(),
+            emailChannelDeactivatedDatetime: new Date(
+                '2024-10-16'
+            ).toISOString(),
             trialModeActivatedDatetime: null,
         })
 

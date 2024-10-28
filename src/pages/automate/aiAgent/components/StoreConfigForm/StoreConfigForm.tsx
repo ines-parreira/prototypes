@@ -379,22 +379,34 @@ export const StoreConfigForm = ({
     ])
 
     const handleAiAgentTrialModeChange = (value: string) => {
+        const date = new Date().toISOString()
         switch (value) {
             case 'enabled':
                 updateValue('deactivatedDatetime', null)
+                updateValue('chatChannelDeactivatedDatetime', null)
+                updateValue('emailChannelDeactivatedDatetime', null)
                 updateValue('trialModeActivatedDatetime', null)
                 break
 
             case 'trial':
                 updateValue('deactivatedDatetime', null)
-                updateValue(
-                    'trialModeActivatedDatetime',
-                    new Date().toISOString()
-                )
+                // We don't support trial mode in chat
+                updateValue('chatChannelDeactivatedDatetime', date)
+                updateValue('emailChannelDeactivatedDatetime', null)
+
+                updateValue('trialModeActivatedDatetime', date)
                 break
 
             case 'disabled':
-                updateValue('deactivatedDatetime', new Date().toISOString())
+                updateValue('deactivatedDatetime', date)
+                updateValue(
+                    'chatChannelDeactivatedDatetime',
+                    new Date().toISOString()
+                )
+                updateValue(
+                    'emailChannelDeactivatedDatetime',
+                    new Date().toISOString()
+                )
                 updateValue('trialModeActivatedDatetime', null)
                 break
         }
@@ -418,7 +430,8 @@ export const StoreConfigForm = ({
                         </h2>
                         <span>How should AI Agent send responses?</span>
                     </div>
-                    {!isAiAgentMultichannelEnablementEnabled ? (
+                    {!isAiAgentMultichannelEnablementEnabled ||
+                    trialModeAvailable ? (
                         <div className={css.formGroup}>
                             {trialModeAvailable ? (
                                 <RadioFieldSet
@@ -450,7 +463,7 @@ export const StoreConfigForm = ({
                                         handleAiAgentTrialModeChange(value)
                                     }}
                                 />
-                            ) : (
+                            ) : !isAiAgentMultichannelEnablementEnabled ? (
                                 <ToggleInput
                                     isToggled={isAIAgentToggled}
                                     onClick={() => {
@@ -473,7 +486,7 @@ export const StoreConfigForm = ({
                                 >
                                     Enable AI Agent
                                 </ToggleInput>
-                            )}
+                            ) : null}
                         </div>
                     ) : null}
 
