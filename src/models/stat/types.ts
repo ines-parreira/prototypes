@@ -110,6 +110,45 @@ export type AggregationWindow =
     | ReportingGranularity.Week
     | ReportingGranularity.Month
 
+export type SavedFilterWithLogicalOperator = {
+    member:
+        | FilterKey.Agents
+        | FilterKey.Campaigns
+        | FilterKey.CampaignStatuses
+        | FilterKey.Channels
+        | FilterKey.HelpCenters
+        | FilterKey.Integrations
+        | FilterKey.LocaleCodes
+        | FilterKey.Score
+        | FilterKey.SlaPolicies
+    operator: LogicalOperatorEnum
+    values: string[]
+}
+
+type CustomFieldSavedFilter = {
+    member: FilterKey.CustomFields
+    values: CustomFieldFilter[]
+}
+
+type TagsSavedFilter = {
+    member: FilterKey.Tags
+    values: WithLogicalOperator<string>[]
+}
+
+export type SavedFilter = {
+    id: number
+} & SavedFilterDraft
+
+export type SavedFilterSupportedFilters =
+    | SavedFilterWithLogicalOperator
+    | CustomFieldSavedFilter
+    | TagsSavedFilter
+
+export type SavedFilterDraft = {
+    name: string
+    filters: SavedFilterSupportedFilters[]
+}
+
 export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Agents]?: WithLogicalOperator<number>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>

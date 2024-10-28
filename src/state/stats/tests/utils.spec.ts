@@ -5,8 +5,10 @@ import {
 import {ReportingGranularity} from 'models/reporting/types'
 import {
     AggregationWindow,
+    FilterKey,
     LegacyStatsFilters,
     StatsFilters,
+    StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -16,6 +18,7 @@ import {
     fromPartialLegacyStatsFilters,
     getAdjustedAggregationWindow,
     getAllowedAggregationWindows,
+    savedFilterDraftFiltersFromFiltersWithLogicalOperators,
 } from 'state/stats/utils'
 
 const agents = [1, 2]
@@ -267,5 +270,87 @@ describe('getAdjustedAggregationWindow', () => {
         expect(getAdjustedAggregationWindow(statsFilters)).toEqual(
             getAllowedAggregationWindows(statsFilters.period)[0]
         )
+    })
+})
+
+describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
+    it.each([FilterKey.Tags, FilterKey.CustomFields, FilterKey.Agents])(
+        'should return nothing when filter empty',
+        (filterKey) => {
+            expect(
+                savedFilterDraftFiltersFromFiltersWithLogicalOperators({
+                    [FilterKey.Period]: {
+                        start_datetime: '2021-04-02T00:00:00.000Z',
+                        end_datetime: '2021-05-02T23:59:59.999Z',
+                    },
+                    [filterKey]: undefined,
+                })
+            ).toEqual([])
+        }
+    )
+
+    it('should return SavedFilter filters', () => {
+        const filters: StatsFiltersWithLogicalOperator = {
+            [FilterKey.Period]: {
+                start_datetime: '2021-04-02T00:00:00.000Z',
+                end_datetime: '2021-05-02T23:59:59.999Z',
+            },
+            [FilterKey.Tags]: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [123],
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
+            [FilterKey.CustomFields]: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['123'],
+                    customFieldId: 890,
+                },
+                {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                    customFieldId: 456,
+                },
+            ],
+            [FilterKey.Agents]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [123],
+            },
+        }
+
+        const result =
+            savedFilterDraftFiltersFromFiltersWithLogicalOperators(filters)
+
+        expect(result).toContainEqual({
+            member: FilterKey.Tags,
+            values: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['123'],
+                },
+            ],
+        })
+        expect(result).toContainEqual({
+            member: FilterKey.CustomFields,
+            values: [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['123'],
+                    customFieldId: 890,
+                },
+                {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                    customFieldId: 456,
+                },
+            ],
+        })
+        expect(result).toContainEqual({
+            member: FilterKey.Agents,
+            values: ['123'],
+            operator: LogicalOperatorEnum.ONE_OF,
+        })
     })
 })

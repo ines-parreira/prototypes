@@ -8,6 +8,7 @@ import {
     FilterKey,
     LegacyStatsFilters,
     Period,
+    SavedFilterDraft,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
@@ -210,6 +211,67 @@ export const fromFiltersWithLogicalOperators = (
         ),
     }
 }
+
+export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
+    statsFilters: StatsFiltersWithLogicalOperator
+): SavedFilterDraft['filters'] =>
+    Object.values(FilterKey).reduce<SavedFilterDraft['filters']>(
+        (acc, filter) => {
+            switch (filter) {
+                case FilterKey.Period:
+                case FilterKey.AggregationWindow:
+                    break
+                case FilterKey.Tags: {
+                    const currentFilter = statsFilters[filter]
+                    if (currentFilter !== undefined) {
+                        acc.push({
+                            member: filter,
+                            values: currentFilter.map((tagFilter) => ({
+                                operator: tagFilter.operator,
+                                values: tagFilter.values.map(String),
+                            })),
+                        })
+                    }
+                    break
+                }
+                case FilterKey.CustomFields: {
+                    const currentFilter = statsFilters[filter]
+                    if (
+                        currentFilter !== undefined &&
+                        currentFilter.length > 0
+                    ) {
+                        acc.push({
+                            member: filter,
+                            values: currentFilter.reduce<CustomFieldFilter[]>(
+                                (accumulator, value) => {
+                                    accumulator.push({
+                                        customFieldId: value.customFieldId,
+                                        values: value.values,
+                                        operator: value.operator,
+                                    })
+                                    return accumulator
+                                },
+                                []
+                            ),
+                        })
+                    }
+                    break
+                }
+                default: {
+                    const currentFilter = statsFilters[filter]
+                    if (currentFilter !== undefined) {
+                        acc.push({
+                            member: filter,
+                            operator: currentFilter.operator,
+                            values: currentFilter.values.map(String),
+                        })
+                    }
+                }
+            }
+            return acc
+        },
+        []
+    )
 
 export const getAllowedAggregationWindows = (
     period: Period
