@@ -1,14 +1,12 @@
-import {shallow} from 'enzyme'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React, {ComponentProps} from 'react'
-import {Button, Form, Popover} from 'reactstrap'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 
+import EmailInvoicePopover from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-
-import EmailInvoicePopover from '../EmailInvoicePopover'
 
 jest.mock('common/segment', () => {
     const SegmentTracker = jest.requireActual('common/segment')
@@ -30,7 +28,8 @@ describe('<EmailInvoicePopover/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const buttonText = 'Email invoice'
+            const {getByRole} = render(
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -39,11 +38,11 @@ describe('<EmailInvoicePopover/>', () => {
                     disabled={false}
                     onSubmit={onSubmit}
                 >
-                    Email invoice
+                    {buttonText}
                 </EmailInvoicePopover>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(getByRole('button', {name: buttonText})).toBeInTheDocument()
         })
     })
 
@@ -62,7 +61,7 @@ describe('<EmailInvoicePopover/>', () => {
         ])(
             'should call prop `onSubmit` with form values',
             (actionName, openEvent, submitEvent) => {
-                const component = shallow(
+                render(
                     <EmailInvoicePopover
                         id="email-invoice"
                         actionName={actionName}
@@ -76,24 +75,19 @@ describe('<EmailInvoicePopover/>', () => {
                 )
 
                 // Open popover
-                component.find(Button).at(0).simulate('click')
-                expect(component.find(Popover).props().isOpen).toBe(true)
+                userEvent.click(screen.getByRole('button'))
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
-
                 // Change form values
-                component
-                    .find({id: 'to'})
-                    .simulate('change', {target: {value: 'abc@foo.xyz'}})
-                component
-                    .find({id: 'custom-message'})
-                    .simulate('change', {target: {value: 'foo bar'}})
-
+                const emailField = screen.getByLabelText('Email address')
+                userEvent.clear(emailField)
+                userEvent.paste(emailField, 'abc@foo.xyz')
+                const messageField = screen.getByLabelText('Custom message')
+                userEvent.clear(messageField)
+                userEvent.paste(messageField, 'foo bar')
                 // Submit
-                component
-                    .find(Form)
-                    .dive()
-                    .find('form')
-                    .simulate('submit', {preventDefault: _noop})
+                userEvent.click(
+                    screen.getByRole('button', {name: 'Create Draft Order'})
+                )
 
                 expect(onSubmit).toHaveBeenCalledWith(
                     fromJS({
@@ -101,7 +95,6 @@ describe('<EmailInvoicePopover/>', () => {
                         custom_message: 'foo bar',
                     })
                 )
-
                 expect(logEvent).toHaveBeenCalledWith(submitEvent)
             }
         )
@@ -118,7 +111,7 @@ describe('<EmailInvoicePopover/>', () => {
                 SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverCancel,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow<EmailInvoicePopover>(
+            render(
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={actionName}
@@ -131,7 +124,9 @@ describe('<EmailInvoicePopover/>', () => {
                 </EmailInvoicePopover>
             )
 
-            component.instance()._onCancel()
+            // Open popover
+            userEvent.click(screen.getByRole('button'))
+            userEvent.click(screen.getByRole('button', {name: 'Cancel'}))
 
             expect(logEvent).toHaveBeenCalledWith(event)
         })
