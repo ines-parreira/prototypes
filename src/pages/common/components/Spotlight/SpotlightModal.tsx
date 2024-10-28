@@ -68,7 +68,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
-    const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
 
     const search = useSearch()
     const {
@@ -78,6 +77,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         isFooterClean,
         nextIndex,
         previousIndex,
+        reinitializeSearchQuery,
         resetSearch,
         searchCallback,
         searchQuery,
@@ -135,7 +135,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     }, [pathname])
 
     useUpdateEffect(() => {
-        if (!isOpen) {
+        if (isOpen) {
+            reinitializeSearchQuery()
+        } else {
             resetSearch()
         }
     }, [isOpen])
@@ -173,7 +175,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             if (!index) return
 
             setSelectedIndex(parseInt(index))
-            spotlightSearchInputRef.current?.focus()
         },
         [setSelectedIndex]
     )
@@ -211,8 +212,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 value={searchQuery}
                 onChange={handleSearchInput}
                 onKeyDown={handleKeyDown}
-                ref={spotlightSearchInputRef}
-                autoFocus
             />
             <TabNavigator
                 tabs={navigatorTabsWithFederatedSearch}

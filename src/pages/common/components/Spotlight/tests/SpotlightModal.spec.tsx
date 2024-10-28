@@ -127,6 +127,15 @@ jest.mock(
 jest.mock('hooks/useSelectedIndex')
 const mockUseSelectedIndex = assumeMock(useSelectedIndex)
 
+jest.mock('hooks/useLocalStorageWithExpiry', () => () => {
+    const {
+        useState,
+    }: {useState: (value: unknown) => [string, (value: string) => void]} =
+        jest.requireActual('react')
+    const [state, setState] = useState('')
+    return {state, setState, remove: jest.fn(), refreshTimestamp: jest.fn()}
+})
+
 const getCustomersTab = () => screen.getByRole('tab', {name: CUSTOMERS_LABEL})
 const getTicketsTab = () => screen.getByRole('tab', {name: TICKETS_LABEL})
 const getFederatedTab = () =>
@@ -197,18 +206,6 @@ describe('<SpotlightModal/>', () => {
             customersTab?.focus()
 
             expect(customersTab).toHaveClass('activeTab')
-        })
-
-        it('should focus the search input when opened', async () => {
-            const {rerender, getByPlaceholderText} = renderWithRouter(
-                <WrappedSpotlightModal {...minProps} isOpen={false} />
-            )
-            await act(flushPromises)
-            rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
-
-            const searchInput = getByPlaceholderText('Search...')
-
-            expect(searchInput).toEqual(document.activeElement)
         })
     })
 
@@ -767,10 +764,12 @@ describe('<SpotlightModal/>', () => {
     it('should reset search after closing and end previous searchRank scenario', async () => {
         const searchQuery = 'foo'
         jest.useFakeTimers()
+        searchTicketsWithHighlightsMock.mockResolvedValue({
+            data: {data: [ticket]},
+        } as any)
 
-        const {rerender, getByPlaceholderText} = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />
-        )
+        const {rerender, getByPlaceholderText, queryByTestId} =
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
         rerender(<WrappedSpotlightModal {...minProps} />)
 
@@ -787,7 +786,9 @@ describe('<SpotlightModal/>', () => {
         rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
 
         expect(mockSearchRank.endScenario).toHaveBeenCalled()
-        expect(searchInput).toHaveValue('')
+        expect(
+            queryByTestId(TICKET_SPOTLIGHT_ROW_TEST_ID)
+        ).not.toBeInTheDocument()
     })
 
     it('should close modal after pathname change', async () => {
@@ -1152,8 +1153,6 @@ describe('<SpotlightModal/>', () => {
             rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
 
             const searchInput = getByPlaceholderText('Search...')
-
-            expect(searchInput).toEqual(document.activeElement)
 
             fireEvent.keyDown(searchInput, {key: 'ArrowUp'})
             expect(

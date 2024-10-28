@@ -13,6 +13,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
+import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import usePrevious from 'hooks/usePrevious'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
@@ -34,7 +35,10 @@ import {
 } from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'
-import {FEDERATED_SEARCH_GROUP_SIZE} from 'pages/common/components/Spotlight/constants'
+import {
+    FEDERATED_SEARCH_GROUP_SIZE,
+    SEARCH_QUERY_EXPIRY_TIME,
+} from 'pages/common/components/Spotlight/constants'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -88,7 +92,15 @@ export const useSearch = () => {
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         defaultSearchItemsType
     )
-    const [searchQuery, setSearchQuery] = useState<string>()
+    const {state: recentSearchQuery, setState: setRecentSearchQuery} =
+        useLocalStorageWithExpiry<string>(
+            'recent-search-query',
+            SEARCH_QUERY_EXPIRY_TIME,
+            ''
+        )
+    const [searchQuery, setSearchQuery] = useState<string | undefined>(
+        recentSearchQuery
+    )
 
     const searchRank = useSearchRankScenario(
         searchRankScenarioSource[searchItemsType]
@@ -260,6 +272,7 @@ export const useSearch = () => {
                     query: searchTerm,
                     requestTime: Date.now(),
                 })
+                setRecentSearchQuery(searchTerm)
                 try {
                     let ticketPromise
                     let customerPromise
@@ -322,6 +335,7 @@ export const useSearch = () => {
                 }
             },
         [
+            setRecentSearchQuery,
             searchRank,
             handleCustomerSearchResult,
             handleTicketSearchResult,
@@ -352,8 +366,12 @@ export const useSearch = () => {
         cancellableFetchSearchItems,
         [cancellableFetchSearchItems]
     )
+
+    const reinitializeSearchQuery = () => {
+        setSearchQuery(recentSearchQuery)
+    }
+
     const resetSearch = () => {
-        searchQuery && setSearchQuery('')
         !_isEmpty(tickets) && setTickets([])
         !_isEmpty(customers) && setCustomers([])
         hasSearched && setHasSearched(false)
@@ -376,6 +394,7 @@ export const useSearch = () => {
             setCustomers([])
         }
         setSearchQuery(query)
+        setRecentSearchQuery(query)
         resetSelectedIndex()
     }
 
@@ -517,6 +536,7 @@ export const useSearch = () => {
         previousIndex,
         recentCustomers,
         recentTickets,
+        reinitializeSearchQuery,
         resetSearch,
         searchCallback,
         searchItemsType,

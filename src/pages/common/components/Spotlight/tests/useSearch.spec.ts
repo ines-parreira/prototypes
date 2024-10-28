@@ -3,6 +3,7 @@ import {KeyboardEvent} from 'react'
 
 import {customer} from 'fixtures/customer'
 import {ticket} from 'fixtures/ticket'
+import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'
@@ -28,6 +29,10 @@ jest.mock('hooks/useSearchRankScenario', () => ({
     }),
 }))
 
+jest.mock('hooks/useLocalStorageWithExpiry')
+
+const useLocalStorageWithExpiryMock = useLocalStorageWithExpiry as jest.Mock
+
 describe('useSearch', () => {
     const customerWithHighlightsResponse = {
         ...customer,
@@ -37,6 +42,22 @@ describe('useSearch', () => {
         ...ticket,
         highlights: {},
     }
+
+    beforeEach(() => {
+        useLocalStorageWithExpiryMock.mockImplementation(() => {
+            const {
+                useState,
+            }: {
+                useState: (value: unknown) => [string, (value: string) => void]
+            } = jest.requireActual('react')
+            const [state, setState] = useState('')
+            return {
+                state,
+                setState,
+                remove: jest.fn(),
+            }
+        })
+    })
 
     it('should return fetched customers with highlights callback', async () => {
         searchCustomersWithHighlightsMock.mockResolvedValue({
@@ -120,5 +141,30 @@ describe('useSearch', () => {
                 highlights: ticketWithHighlightsResponse.highlights,
             },
         ])
+    })
+
+    it('should use the stored query to set the search query on reset', async () => {
+        useLocalStorageWithExpiryMock.mockImplementation(() => {
+            const {
+                useState,
+            }: {
+                useState: (value: unknown) => [string, (value: string) => void]
+            } = jest.requireActual('react')
+            const [state, setState] = useState('foo')
+            return {
+                state,
+                setState,
+                remove: jest.fn(),
+            }
+        })
+
+        const {result, waitForNextUpdate} = renderHook(() => useSearch())
+
+        await act(async () => await waitForNextUpdate())
+        act(() => {
+            result.current.reinitializeSearchQuery()
+        })
+
+        expect(result.current.searchQuery).toBe('foo')
     })
 })
