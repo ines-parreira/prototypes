@@ -3,7 +3,7 @@ run-name: Check if new snapshot tests have been added to the repo
 on: [pull_request]
 jobs:
   Check-Snapshot-Tests:
-    runs-on: ubuntu-latest
+    runs-on: gh-actions-small-runner-set
     steps:
       - uses: actions/checkout@v2
         with:
