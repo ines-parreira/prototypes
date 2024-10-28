@@ -34,6 +34,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingStripeElementsPaymentIntegration = 'billing-stripe-elements-payment-integration',
+    BillingTaxIdField = 'billing-tax-id-field',
     BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
