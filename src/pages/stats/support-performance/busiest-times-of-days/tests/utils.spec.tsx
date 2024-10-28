@@ -171,7 +171,7 @@ const workingHours: AccountSettingBusinessHours = {
     id: 456,
     type: AccountSettingType.BusinessHours,
     data: {
-        timezone: 'US/Pacific',
+        timezone: 'America/Phoenix',
         business_hours: [
             {
                 days: '1,2,3,4,5',
@@ -264,7 +264,7 @@ describe('getWorkingHoursInTimeZone', () => {
 
 describe('changeBusinessHoursTimeZone', () => {
     it('should return Business Hours in different time zone', () => {
-        const newTimeZone = 'CET'
+        const newTimeZone = 'Africa/Johannesburg'
         const newBusinessHours = changeBusinessHoursTimeZone(
             workingHours.data.business_hours,
             workingHours.data.timezone,
