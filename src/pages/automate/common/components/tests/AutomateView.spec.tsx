@@ -1,6 +1,8 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
+import React from 'react'
+
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
 import AutomateView from '../AutomateView'
 
 // Mock components used within AutomateView

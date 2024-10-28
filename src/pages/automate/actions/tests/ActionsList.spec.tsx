@@ -1,13 +1,15 @@
-import React from 'react'
 import {fireEvent, screen} from '@testing-library/react'
-import {BrowserRouter as Router} from 'react-router-dom'
+import React from 'react'
 import {Provider} from 'react-redux'
+import {BrowserRouter as Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {StoresWorkflowConfiguration} from '../types'
+
 import ActionsList from '../components/ActionsList'
+import {StoresWorkflowConfiguration} from '../types'
 
 const mockActions: StoresWorkflowConfiguration = [
     {

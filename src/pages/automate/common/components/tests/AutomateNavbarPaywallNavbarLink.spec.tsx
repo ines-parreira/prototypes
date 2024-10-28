@@ -1,6 +1,7 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
+
 import AutomateNavbarPaywallNavbarLink from '../AutomateNavbarPaywallNavbarLink'
 
 describe('AutomateNavbarPaywallNavbarLink', () => {

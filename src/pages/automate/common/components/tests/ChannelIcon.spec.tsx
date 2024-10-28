@@ -1,6 +1,8 @@
-import React from 'react'
 import {render, screen} from '@testing-library/react'
+import React from 'react'
+
 import {TicketChannel} from 'business/types/ticket'
+
 import ChannelIcon from '../ChannelIcon'
 
 describe('ChannelIcon', () => {
