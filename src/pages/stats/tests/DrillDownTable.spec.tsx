@@ -246,7 +246,10 @@ describe('<DrillDownTable />', () => {
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatDrillDownTicketClicked,
-                {metric: autoQAMetricData.metricName}
+                {
+                    metric: autoQAMetricData.metricName,
+                    ticket_id: exampleRow.ticket.id,
+                }
             )
         })
 

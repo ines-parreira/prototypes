@@ -65,6 +65,7 @@ const getOnClickHandler =
     () => {
         logEvent(SegmentEvent.StatDrillDownTicketClicked, {
             metric: metricName,
+            ticket_id: ticketId,
         })
         window.open(`/app/ticket/${ticketId}`, '_blank')
     }
