@@ -1,5 +1,5 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {render, waitFor, screen} from '@testing-library/react'
+import {render, waitFor, screen, fireEvent} from '@testing-library/react'
 import {List, fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
@@ -9,17 +9,28 @@ import {MemoryRouter} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import history from 'pages/history'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
+import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
 import {fetchEmailDomains} from '../resources'
 
 const queryClient = mockQueryClient()
 
+jest.mock(
+    'pages/integrations/integration/components/email/EmailIntegrationListVerificationStatus'
+)
+
 jest.mock('../resources')
+jest.mock('pages/history')
+
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
+const EmailIntegrationListVerificationStatusMock = assumeMock(
+    EmailIntegrationListVerificationStatus
+)
 
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
@@ -92,6 +103,9 @@ describe('<EmailIntegrationList/>', () => {
             [FeatureFlagKey.EnableEmailToStoreMapping]: false,
             [FeatureFlagKey.DefaultEmailAddress]: false,
         }))
+        EmailIntegrationListVerificationStatusMock.mockImplementation(() => (
+            <div>EmailIntegrationListVerificationStatus</div>
+        ))
     })
 
     describe('render()', () => {
@@ -108,8 +122,13 @@ describe('<EmailIntegrationList/>', () => {
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             expect(
-                screen.getByText('Pending domain verification')
-            ).toBeVisible()
+                EmailIntegrationListVerificationStatusMock
+            ).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isDomainVerificationWarningVisible: true,
+                }),
+                {}
+            )
         })
 
         it('should render the page with an alert when there are unverified integrations', async () => {
@@ -349,8 +368,13 @@ describe('<EmailIntegrationList/>', () => {
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    screen.getByText('Pending domain verification')
-                ).toBeVisible()
+                    EmailIntegrationListVerificationStatusMock
+                ).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isDomainVerificationWarningGmailOutlookVisible: true,
+                    }),
+                    {}
+                )
             }
         )
 
@@ -379,38 +403,13 @@ describe('<EmailIntegrationList/>', () => {
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    screen.getByText('Pending domain verification')
-                ).toBeVisible()
-            }
-        )
-
-        it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
-            'should render the page with a warning when a GMail integration has sending enabled',
-            async (emailProvider: EmailProvider) => {
-                const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
-
-                renderWithRouter(
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={store}>
-                            <EmailIntegrationList
-                                {...commonProps}
-                                integrations={fromJS([
-                                    getGmailIntegration(
-                                        1,
-                                        false,
-                                        true,
-                                        emailProvider
-                                    ),
-                                ])}
-                            />
-                        </Provider>
-                    </QueryClientProvider>
+                    EmailIntegrationListVerificationStatusMock
+                ).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isDomainVerificationWarningGmailOutlookVisible: true,
+                    }),
+                    {}
                 )
-                await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
-                expect(
-                    screen.getByText('Pending domain verification')
-                ).toBeVisible()
             }
         )
 
@@ -439,8 +438,13 @@ describe('<EmailIntegrationList/>', () => {
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    screen.queryByText('Pending domain verification')
-                ).toBeNull()
+                    EmailIntegrationListVerificationStatusMock
+                ).not.toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isDomainVerificationWarningGmailOutlookVisible: true,
+                    }),
+                    {}
+                )
             }
         )
 
@@ -469,8 +473,13 @@ describe('<EmailIntegrationList/>', () => {
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    screen.queryByText('Pending domain verification')
-                ).toBeNull()
+                    EmailIntegrationListVerificationStatusMock
+                ).not.toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isDomainVerificationWarningGmailOutlookVisible: true,
+                    }),
+                    {}
+                )
             }
         )
 
@@ -489,10 +498,13 @@ describe('<EmailIntegrationList/>', () => {
                 </QueryClientProvider>
             )
 
-            await component.findByTestId('integration-link')
-            expect(
-                component.getByTestId('integration-link').getAttribute('to')
-            ).toBe(`/app/settings/channels/email/${integration.id}`)
+            await component.findByText(integration.meta.address)
+
+            fireEvent.click(component.getByText(integration.meta.address))
+
+            expect(history.push).toHaveBeenCalledWith(
+                `/app/settings/channels/email/${integration.id}`
+            )
         })
 
         it('should redirect to domain settings tab when provider is Sendgrid', async () => {
@@ -518,10 +530,11 @@ describe('<EmailIntegrationList/>', () => {
                 </QueryClientProvider>
             )
 
-            await component.findByTestId('integration-link')
-            expect(
-                component.getByTestId('integration-link').getAttribute('to')
-            ).toBe(
+            await component.findByText(integration.meta.address)
+
+            fireEvent.click(component.getByText(integration.meta.address))
+
+            expect(history.push).toHaveBeenCalledWith(
                 `/app/settings/channels/email/${integration.id}/outbound-verification`
             )
         })

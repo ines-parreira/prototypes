@@ -143,7 +143,9 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       class="table-integrations mt-3 table table-hover"
     >
       <tbody>
-        <tr>
+        <tr
+          class="row"
+        >
           <td
             class="smallest align-middle"
           >
@@ -154,11 +156,10 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             </i>
           </td>
           <td
-            class="link-full-td address"
+            class="align-middle"
           >
-            <a
-              data-testid="integration-link"
-              to="/app/settings/channels/email/1"
+            <div
+              class="address"
             >
               <div>
                 <b
@@ -167,30 +168,28 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
                   My Email Integration 1
                 </b>
                 <span
-                  class="text-faded"
+                  class="addressValue"
                 >
                   email@gorgias-test.com
                 </span>
               </div>
-            </a>
+            </div>
           </td>
           <td
             class="smallest align-middle text-right p-0"
           >
-            <div />
+            <div>
+              EmailIntegrationListVerificationStatus
+            </div>
           </td>
           <td
             class="smallest align-middle"
           >
-            <a
-              to="/app/settings/channels/email/1"
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
             >
-              <i
-                class="material-icons md-2 align-middle icon-go-forward"
-              >
-                keyboard_arrow_right
-              </i>
-            </a>
+              keyboard_arrow_right
+            </i>
           </td>
         </tr>
       </tbody>
