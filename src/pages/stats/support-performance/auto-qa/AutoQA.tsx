@@ -21,6 +21,8 @@ import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/au
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
+const AUTO_QA_TITLE_TOOLTIP =
+    "An agent receives the ticket's scores if they are the assigned agent at the end of the period"
 export const AUTO_QA_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Channels,
@@ -90,6 +92,7 @@ export default function AutoQA() {
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}
+                            hint={{title: AUTO_QA_TITLE_TOOLTIP}}
                             titleExtra={<AutoQAAgentsCardExtra />}
                             noPadding
                         >
