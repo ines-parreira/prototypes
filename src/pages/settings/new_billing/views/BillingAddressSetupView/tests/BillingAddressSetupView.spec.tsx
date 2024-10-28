@@ -1,60 +1,45 @@
-import {useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {StripeElements} from '@stripe/stripe-js/dist'
 import {render, fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
 import client from 'models/api/resources'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
 
 import {BillingAddressSetupView} from '../BillingAddressSetupView'
 
 jest.mock('react-redux')
-jest.mock('@stripe/react-stripe-js')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/billing/selectors')
 
-let addressElementChangeHandler: (
+type ChangeEventHandler = (event: StripeAddressElementChangeEvent) => any
+
+let changeEventHandler: ChangeEventHandler = () => {}
+
+const addressElementChangeHandler: (
     event: StripeAddressElementChangeEvent
-) => any = () => {}
+) => any = (event) => {
+    act(() => {
+        changeEventHandler(event)
+    })
+}
 
-assumeMock(useElements).mockReturnValue({
-    getElement: jest.fn().mockReturnValue({
-        on: jest
-            .fn()
-            .mockImplementation(
-                (
-                    _,
-                    handler: (event: StripeAddressElementChangeEvent) => any
-                ) => {
-                    addressElementChangeHandler = (event) =>
-                        act(() => {
-                            handler(event)
-                        })
+jest.mock('@stripe/react-stripe-js', () => ({
+    useElements: jest.fn(() => ({
+        getElement: jest.fn(() => ({
+            on: jest.fn((eventType, handler: ChangeEventHandler) => {
+                if (eventType === 'change') {
+                    changeEventHandler = handler
                 }
-            ),
-    }),
-} as unknown as StripeElements)
-
-jest.mock(
-    'pages/settings/new_billing/components/StripeAddressElement/StripeAddressElement',
-    () => ({
-        StripeAddressElement: () => (
-            <div data-testid="stripe-address-element" />
-        ),
-    })
-)
-
-jest.mock(
-    'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider',
-    () => ({
-        StripeElementsProvider: ({children}: any) => (
-            <div data-testid="stripe-elements-provider">{children}</div>
-        ),
-    })
-)
+            }),
+            getValue: jest.fn(),
+        })),
+    })),
+    AddressElement: () => <div data-testid="stripe-address-element" />,
+    Elements: ({children}: any) => (
+        <div data-testid="stripe-elements">{children}</div>
+    ),
+}))
 
 const mockedServer = new MockAdapter(client)
 

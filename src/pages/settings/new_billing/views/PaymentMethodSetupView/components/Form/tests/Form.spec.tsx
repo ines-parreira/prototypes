@@ -29,7 +29,7 @@ jest.mock('@stripe/react-stripe-js', () => ({
             .fn()
             .mockResolvedValue({setupIntent: {id: 'id'}} as SetupIntentResult),
     })),
-    useElements: jest.fn(() => ({getElement: jest.fn()})),
+    useElements: jest.fn(),
 }))
 
 jest.mock('@gorgias/api-client')
@@ -64,8 +64,10 @@ describe('Form', () => {
                 getElement: jest.fn((element) => {
                     if (element === 'payment') {
                         return {
-                            on: jest.fn((_event, handler) => {
-                                paymentChangeHandler = handler
+                            on: jest.fn((eventType, handler) => {
+                                if (eventType === 'change') {
+                                    paymentChangeHandler = handler
+                                }
                             }),
                         }
                     }
@@ -139,15 +141,19 @@ describe('Form', () => {
                 getElement: jest.fn((element) => {
                     if (element === 'payment') {
                         return {
-                            on: jest.fn((_event, handler) => {
-                                paymentChangeHandler = handler
+                            on: jest.fn((eventType, handler) => {
+                                if (eventType === 'change') {
+                                    paymentChangeHandler = handler
+                                }
                             }),
                         }
                     }
 
                     return {
-                        on: jest.fn((_event, handler) => {
-                            addressChangeHandler = handler
+                        on: jest.fn((eventType, handler) => {
+                            if (eventType === 'change') {
+                                addressChangeHandler = handler
+                            }
                         }),
                         getSelf: jest.fn().mockReturnValue(true),
                     }

@@ -36,12 +36,16 @@ assumeMock(useElements).mockReturnValue({
     getElement: jest.fn().mockReturnValue({
         on: jest
             .fn()
-            .mockImplementation((_, handler: (...args: any[]) => any) => {
-                addressElementChangeHandler = (...params) =>
-                    act(() => {
-                        handler(...params)
-                    })
-            }),
+            .mockImplementation(
+                (eventType, handler: (...args: any[]) => any) => {
+                    if (eventType === 'change') {
+                        addressElementChangeHandler = (...params) =>
+                            act(() => {
+                                handler(...params)
+                            })
+                    }
+                }
+            ),
     }),
 } as unknown as StripeElements)
 
