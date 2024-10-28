@@ -13,12 +13,14 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
+import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
 import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/automate/aiAgent/fixtures/applicationAutomationSettings.fixture'
 import {mockChatChannels} from 'pages/automate/aiAgent/fixtures/chatChannels.fixture'
+import {useAccountStoreConfiguration} from 'pages/automate/aiAgent/hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useConfigurationForm} from 'pages/automate/aiAgent/hooks/useConfigurationForm'
 import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -26,6 +28,7 @@ import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResource
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {FormValues} from 'pages/automate/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import history from 'pages/history'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {
     getHelpCentersResponseFixture,
@@ -59,6 +62,7 @@ jest.mock(
         useAiAgentStoreConfigurationContext: jest.fn(),
     })
 )
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration')
 jest.mock(
     'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter',
     () => ({
@@ -88,6 +92,11 @@ const mockSetSearchParam = jest.fn()
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext
 )
+
+const mockedUseAccountStoreConfiguration = jest.mocked(
+    useAccountStoreConfiguration
+)
+
 const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
     useGetOrCreateSnippetHelpCenter
 )
@@ -153,14 +162,24 @@ const mockedStore = mockStore({
 })
 
 const updateValueMocked = jest.fn()
-const mockHandleOnSave = jest.fn()
-
+const mockHandleOnSave = jest
+    .fn()
+    .mockImplementation((props: {onSuccess: () => void}) => {
+        props.onSuccess()
+    })
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
 const mockCreateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
+
+const useLocalStorageSpy = jest.spyOn(
+    useLocalStorageImports,
+    'default'
+) as jest.Mock
+
+useLocalStorageSpy.mockReturnValue([[], jest.fn()])
 
 const renderComponent = (
     props?: Partial<ComponentProps<typeof StoreConfigForm>>
@@ -275,6 +294,10 @@ describe('<StoreConfigForm />', () => {
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
+        })
+        mockedUseAccountStoreConfiguration.mockReturnValue({
+            accountConfiguration: undefined,
+            aiAgentTicketViewId: 1,
         })
     })
     it('should render the component', () => {
@@ -854,5 +877,193 @@ describe('<StoreConfigForm />', () => {
             'chatChannelDeactivatedDatetime',
             null
         )
+    })
+
+    describe('AI Agent ticket view modal', () => {
+        it('should not modal if AI Agent is enabled', async () => {
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: 1,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.queryByRole('button', {
+                    name: 'Show Me',
+                })
+                expect(ticketViewButton).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not display modal if there is no AI Agent view', async () => {
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: null,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.queryByRole('button', {
+                    name: 'Show Me',
+                })
+                expect(ticketViewButton).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not display modal if data persisted in localStorage', async () => {
+            useLocalStorageSpy.mockReturnValueOnce([['test-shop'], null])
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: 1,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.queryByRole('button', {
+                    name: 'Show Me',
+                })
+                expect(ticketViewButton).not.toBeInTheDocument()
+            })
+        })
+
+        it('should display ai agent configuration modal', async () => {
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: 1,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.getByRole('button', {
+                    name: 'Show Me',
+                })
+                ticketViewButton.click()
+                expect(history.push).toHaveBeenCalledWith('/app/views/1')
+            })
+        })
     })
 })

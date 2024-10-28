@@ -10,6 +10,7 @@ export type AccountConfiguration = {
     httpIntegration?: {
         id: number
     }
+    views?: {[key: string]: {id: number}}
     helpdeskOAuth: {accessToken: string} | null
 }
 

@@ -29,6 +29,12 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 jest.mock('pages/history')
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceTemplates = jest.mocked(useGuidanceTemplates)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)

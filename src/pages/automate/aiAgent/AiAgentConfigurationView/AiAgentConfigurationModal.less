@@ -1,0 +1,18 @@
+@import (reference) '~css/typography.less';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .header {
+        height: 52px;
+        border-bottom: none;
+    }
+
+    .body {
+        padding: 0 @layout-spacing-l @layout-spacing-l @layout-spacing-l;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: @layout-spacing-m;
+    }
+}

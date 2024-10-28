@@ -3,6 +3,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
 
 import {AiAgentLayout} from '../AiAgentLayout'
@@ -15,6 +16,13 @@ jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({
         isPendingCreateOrUpdate: false,
     }),
 }))
+
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 jest.mock('../../../hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: () => ({
         updateSettingsAfterAiAgentEnabled: jest.fn(),
@@ -43,5 +51,14 @@ describe('<AiAgentLayout />', () => {
         renderComponent({})
 
         expect(screen.queryByRole('switcher')).not.toBeInTheDocument()
+    })
+
+    it('should render ai agent ticket view button and redirect to ticket view on click', () => {
+        renderComponent({})
+        const ticketViewButton = screen.getByRole('button', {
+            name: 'View AI Agent Tickets',
+        })
+        ticketViewButton.click()
+        expect(history.push).toHaveBeenCalledWith('/app/views/1')
     })
 })

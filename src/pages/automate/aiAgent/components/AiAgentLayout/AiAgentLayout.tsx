@@ -7,8 +7,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useId from 'hooks/useId'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import {AI_AGENT} from 'pages/automate/common/components/constants'
+import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
+import history from 'pages/history'
+
+import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
@@ -44,6 +48,10 @@ export const AiAgentLayout = ({
         isPendingCreateOrUpdate,
     } = useAiAgentStoreConfigurationContext()
 
+    const {aiAgentTicketViewId} = useAccountStoreConfiguration({
+        storeNames: [shopName],
+    })
+
     const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
         monitoredEmailIntegrations:
             storeConfiguration?.monitoredEmailIntegrations ?? [],
@@ -58,6 +66,28 @@ export const AiAgentLayout = ({
     })
 
     const globalToggleAiAgentId = `global-toggle-ai-agent-${useId()}`
+
+    const AiAgentTitle = useMemo(() => {
+        return (
+            <div className={css.customAiAgentTitle}>
+                <h1 className="d-flex align-items-center">
+                    {title ?? AI_AGENT}
+                </h1>
+                {aiAgentTicketViewId && (
+                    <Button
+                        size="small"
+                        intent="secondary"
+                        onClick={() => {
+                            logEvent(SegmentEvent.AiAgentViewTicketsClicked)
+                            history.push(`/app/views/${aiAgentTicketViewId}`)
+                        }}
+                    >
+                        View AI Agent Tickets
+                    </Button>
+                )}
+            </div>
+        )
+    }, [aiAgentTicketViewId, title])
 
     const globalToggleAction = useMemo(() => {
         if (isAiAgentMultichannelEnablementEnabled) {
@@ -117,7 +147,7 @@ export const AiAgentLayout = ({
     return (
         <AutomateView
             isLoading={isLoading}
-            title={title ?? AI_AGENT}
+            title={AiAgentTitle}
             headerNavbarItems={headerNavbarItems}
             action={globalToggleAction}
             className={classnames(css.container, className)}

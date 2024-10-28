@@ -20,6 +20,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {Tag} from 'models/aiAgent/types'
 import {HelpCenter} from 'models/helpCenter/types'
@@ -34,6 +35,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import history from 'pages/history'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
@@ -42,6 +44,7 @@ import {reportError} from 'utils/errors'
 
 // Relative Imports
 
+import {AiAgentConfigurationModal} from '../../AiAgentConfigurationView/AiAgentConfigurationModal'
 import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import {
     EXCLUDED_TOPIC_MAX_LENGTH,
@@ -50,6 +53,7 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
+import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 import {usePublicResources} from '../../hooks/usePublicResources'
@@ -70,6 +74,9 @@ import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
 import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
 import css from './StoreConfigForm.less'
 import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
+
+const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
+    'ai-settings-ticket-view-modal-viewed'
 
 type Props = {
     shopName: string
@@ -101,6 +108,20 @@ export const StoreConfigForm = ({
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
         WIZARD_POST_COMPLETION_QUERY_KEY
     )
+
+    const {aiAgentTicketViewId} = useAccountStoreConfiguration({
+        storeNames: [shopName],
+    })
+
+    const [ticketModalViewed, setTicketModalViewed] = useLocalStorage<string[]>(
+        AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED,
+        []
+    )
+
+    const [
+        isAiAgentConfigurationModalOpen,
+        setIsAiAgentConfigurationModalOpen,
+    ] = useState(false)
 
     const knowledgeSectionRef = useRef<HTMLDivElement>(null)
     const emailSectionRef = useRef<HTMLDivElement>(null)
@@ -354,14 +375,36 @@ export const StoreConfigForm = ({
                 isAiAgentWasEnabledForChat ||
                 isAiAgentWasEnabledForEmail)
 
+        const shouldDisplayAiAgentConfigurationModal =
+            !ticketModalViewed?.includes(shopName) &&
+            storeConfiguration?.deactivatedDatetime !== null &&
+            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
+            storeConfiguration?.chatChannelDeactivatedDatetime !== null &&
+            (formValues.deactivatedDatetime === null ||
+                formValues.emailChannelDeactivatedDatetime === null ||
+                formValues.chatChannelDeactivatedDatetime === null)
+
         void handleOnSave({
             publicUrls,
             shopName,
             aiAgentMode,
-            silentNotification: shouldUpdateSettingsAfterAiAgentEnabled,
+            silentNotification:
+                shouldUpdateSettingsAfterAiAgentEnabled ||
+                shouldDisplayAiAgentConfigurationModal,
             onSuccess: () => {
                 if (shouldUpdateSettingsAfterAiAgentEnabled) {
                     updateSettingsAfterAiAgentEnabled()
+                }
+
+                if (
+                    shouldDisplayAiAgentConfigurationModal &&
+                    aiAgentTicketViewId
+                ) {
+                    setIsAiAgentConfigurationModalOpen(true)
+                    setTicketModalViewed([
+                        ...(ticketModalViewed ?? []),
+                        shopName,
+                    ])
                 }
             },
         })
@@ -409,6 +452,17 @@ export const StoreConfigForm = ({
                 )
                 updateValue('trialModeActivatedDatetime', null)
                 break
+        }
+    }
+
+    const onCloseAiAgentConfigurationModal = () => {
+        setIsAiAgentConfigurationModalOpen(false)
+    }
+
+    const onShowMeAiAgentConfigurationModal = () => {
+        setIsAiAgentConfigurationModalOpen(false)
+        if (aiAgentTicketViewId) {
+            history.push(`/app/views/${aiAgentTicketViewId}`)
         }
     }
 
@@ -757,6 +811,12 @@ export const StoreConfigForm = ({
                 </section>
             </form>
             <PostCompletionWizardModal />
+
+            <AiAgentConfigurationModal
+                isOpen={isAiAgentConfigurationModalOpen}
+                onClose={onCloseAiAgentConfigurationModal}
+                onShowMe={onShowMeAiAgentConfigurationModal}
+            />
         </>
     )
 }

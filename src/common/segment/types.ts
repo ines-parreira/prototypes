@@ -30,6 +30,7 @@ export enum SegmentEvent {
     AiAgentOnboardingWizardHelpCenterConnected = 'ai-agent-onboarding-wizard-help-center-connected',
     AiAgentOnboardingWizardPublicUrlIngested = 'ai-agent-onboarding-wizard-public-url-ingested',
     AiAgentTicketViewed = 'ai-agent-ticket-viewed',
+    AiAgentViewTicketsClicked = 'ai-agent-view-tickets-clicked',
     AiAgentWelcomePageViewed = 'ai-agent-welcome-page-viewed',
     AiAgentWelcomePageCtaClicked = 'ai-agent-welcome-page-cta-clicked',
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',

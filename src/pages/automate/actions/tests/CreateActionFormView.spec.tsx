@@ -31,6 +31,12 @@ jest.mock('common/flags', () => ({
 }))
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates
 )

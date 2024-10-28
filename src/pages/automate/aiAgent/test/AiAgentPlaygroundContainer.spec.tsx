@@ -66,6 +66,12 @@ const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 const storeConfiguration = getStoreConfigurationFixture({})
 
 const accountConfiguration = getAccountConfigurationWithHttpIntegrationFixture(

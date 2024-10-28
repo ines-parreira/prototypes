@@ -31,6 +31,12 @@ jest.mock(
 )
 jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticle = jest.mocked(useGuidanceArticle)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)

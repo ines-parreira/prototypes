@@ -25,6 +25,12 @@ const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceTemplates = jest.mocked(useGuidanceTemplates)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
+jest.mock('pages/automate/aiAgent/hooks/useAccountStoreConfiguration', () => ({
+    useAccountStoreConfiguration: () => ({
+        aiAgentTicketViewId: 1,
+    }),
+}))
+
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
 const renderComponent = () => {
