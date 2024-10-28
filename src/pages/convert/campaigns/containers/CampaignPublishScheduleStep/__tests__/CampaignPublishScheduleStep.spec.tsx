@@ -25,7 +25,10 @@ import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignT
 import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
 import {RootState, StoreDispatch} from 'state/types'
 
-import CampaignPublishScheduleStep from '../CampaignPublishScheduleStep'
+import {
+    CampaignPublishScheduleStep,
+    DURING_BH_TRIGGER_CAPTION_TEXT,
+} from '../CampaignPublishScheduleStep'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
@@ -282,6 +285,9 @@ describe('CampaignPublishScheduleStep', () => {
         expect(screen.getByLabelText('Scheduled duration').textContent).toEqual(
             'Business hours'
         )
+        expect(
+            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT)
+        ).toBeInTheDocument()
     })
 
     it('user is able to select `during` option when mode is schedule', () => {
@@ -306,6 +312,9 @@ describe('CampaignPublishScheduleStep', () => {
             schedule_rule: 'during',
             start_datetime: expect.any(String),
         })
+        expect(
+            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT)
+        ).not.toBeInTheDocument()
     })
 
     it('user is able to selects dates', () => {

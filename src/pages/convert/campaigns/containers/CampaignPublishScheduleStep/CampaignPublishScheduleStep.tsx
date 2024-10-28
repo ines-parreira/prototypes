@@ -5,6 +5,7 @@ import moment, {Moment} from 'moment-timezone'
 
 import React, {useState, useMemo} from 'react'
 
+import {Caption} from 'gorgias-design-system/Input/Caption'
 import useAppSelector from 'hooks/useAppSelector'
 import {useModalManager} from 'hooks/useModalManager'
 import useUpdateEffect from 'hooks/useUpdateEffect'
@@ -38,6 +39,8 @@ import CampaignSchedulePicker from './CampaignSchedulePicker'
 const DEFAULT_TIMEZONE = 'UTC'
 // Note: In convert we store all dates in UTC format (without timezone info)
 const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'
+export const DURING_BH_TRIGGER_CAPTION_TEXT =
+    "The campaign will follow the set 'business hours' trigger. To customize the timing further, remove the trigger."
 
 type Props = {
     count: number
@@ -267,6 +270,11 @@ export const CampaignPublishScheduleStep = ({
                                 options={DURATION_VALUES}
                                 disabled={!!businessHourTrigger}
                             />
+                            {!!businessHourTrigger && (
+                                <Caption className={css.caption} isValid>
+                                    {DURING_BH_TRIGGER_CAPTION_TEXT}
+                                </Caption>
+                            )}
                         </div>
 
                         {scheduleInnerConfiguration.schedule_rule ===
