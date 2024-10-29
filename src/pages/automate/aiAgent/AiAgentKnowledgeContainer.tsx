@@ -113,6 +113,7 @@ export const AiAgentKnowledgeContainer = () => {
         updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
         updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
         updateValue('trialModeActivatedDatetime', null)
+        updateValue('previewModeActivatedDatetime', null)
 
         try {
             await updateStoreConfiguration({
@@ -121,6 +122,7 @@ export const AiAgentKnowledgeContainer = () => {
                 emailChannelDeactivatedDatetime: deactivatedDatetime,
                 deactivatedDatetime,
                 trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
             })
 
             void dispatch(

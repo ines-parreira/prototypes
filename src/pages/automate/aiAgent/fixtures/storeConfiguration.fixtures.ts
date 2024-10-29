@@ -13,6 +13,7 @@ export const getStoreConfigurationFixture = (
     emailChannelDeactivatedDatetime: null,
     chatChannelDeactivatedDatetime: null,
     trialModeActivatedDatetime: null,
+    previewModeActivatedDatetime: null,
     storeName: 'test-store',
     helpCenterId: 1,
     guidanceHelpCenterId: 102,

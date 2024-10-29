@@ -94,6 +94,7 @@ describe('AutomateNavbarSectionBlock', () => {
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                    previewModeActivatedDatetime: '2024-10-01T00:00:00Z',
                 },
                 isLoading: false,
             })
@@ -255,6 +256,7 @@ describe('AutomateNavbarSectionBlock', () => {
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                    previewModeActivatedDatetime: '2024-10-01T00:00:00Z',
                 },
                 isLoading: false,
             })

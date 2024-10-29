@@ -311,6 +311,7 @@ describe('AiAgentKnowledgeContainer', () => {
                 '2024-10-16'
             ).toISOString(),
             trialModeActivatedDatetime: null,
+            previewModeActivatedDatetime: null,
         })
 
         jest.useRealTimers()

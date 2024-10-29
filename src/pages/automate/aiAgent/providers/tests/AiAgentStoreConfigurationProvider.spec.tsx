@@ -136,6 +136,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
             emailChannelDeactivatedDatetime: null,
             chatChannelDeactivatedDatetime: null,
             trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+            previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
             storeName: 'test-shop',
             helpCenterId: 1,
             customToneOfVoiceGuidance:

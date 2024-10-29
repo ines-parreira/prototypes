@@ -99,6 +99,7 @@ export const ConnectedChannelsEmailView = () => {
                                 emailChannelDeactivatedDatetime: value
                                     ? null
                                     : new Date().toISOString(),
+                                previewModeActivatedDatetime: null,
                                 deactivatedDatetime: value
                                     ? null
                                     : new Date().toISOString(),

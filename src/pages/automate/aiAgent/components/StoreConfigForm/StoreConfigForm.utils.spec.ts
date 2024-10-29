@@ -18,6 +18,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         chatChannelDeactivatedDatetime: '2024-01-01',
         emailChannelDeactivatedDatetime: '2024-01-01',
         trialModeActivatedDatetime: '2024-02-01',
+        previewModeActivatedDatetime: '2024-02-01',
         monitoredEmailIntegrations: [
             {id: 1, email: 'email1@example.com'},
             {id: 2, email: 'email2@example.com'},

@@ -209,6 +209,7 @@ describe('<StoreConfigForm />', () => {
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+        previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
         storeName: 'test-shop',
         helpCenterId: 1,
         snippetHelpCenterId: 1,
@@ -242,6 +243,7 @@ describe('<StoreConfigForm />', () => {
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
+        previewModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         ticketSampleRate: null,
         silentHandover: false,
         tags: [],
@@ -324,6 +326,7 @@ describe('<StoreConfigForm />', () => {
             emailChannelDeactivatedDatetime: expect.any(String),
             chatChannelDeactivatedDatetime: expect.any(String),
             trialModeActivatedDatetime: null,
+            previewModeActivatedDatetime: null,
         })
 
         const actualDeactivatedDatetime =
@@ -350,6 +353,7 @@ describe('<StoreConfigForm />', () => {
             chatChannelDeactivatedDatetime: expect.any(String),
             emailChannelDeactivatedDatetime: expect.any(String),
             trialModeActivatedDatetime: null,
+            previewModeActivatedDatetime: null,
         })
 
         const actualDeactivatedDatetime =
@@ -440,6 +444,7 @@ describe('<StoreConfigForm />', () => {
                 chatChannelDeactivatedDatetime: expect.any(String),
                 emailChannelDeactivatedDatetime: expect.any(String),
                 trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
             })
 
             expect(mockDispatch).toHaveBeenCalled()
@@ -704,14 +709,18 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
+            null
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'previewModeActivatedDatetime',
             null
         )
     })
@@ -726,6 +735,7 @@ describe('<StoreConfigForm />', () => {
             formValues: {
                 ...initialFormValues,
                 trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
             },
         })
 
@@ -737,14 +747,18 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             null
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
+            expect.any(String)
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'previewModeActivatedDatetime',
             expect.any(String)
         )
     })
@@ -762,14 +776,18 @@ describe('<StoreConfigForm />', () => {
         userEvent.click(radioButton)
 
         // Check that updateValue was called with the correct arguments
-        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime
-        expect(updateValueMocked).toHaveBeenCalledTimes(4)
+        // deactivatedDatetime + emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
+        expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
             expect.any(String)
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
+            null
+        )
+        expect(updateValueMocked).toHaveBeenCalledWith(
+            'previewModeActivatedDatetime',
             null
         )
     })
@@ -862,6 +880,7 @@ describe('<StoreConfigForm />', () => {
             formValues: {
                 ...initialFormValues,
                 trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
                 chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
             },
         })

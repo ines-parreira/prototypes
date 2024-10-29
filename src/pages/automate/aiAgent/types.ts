@@ -25,6 +25,7 @@ export type FormValues = {
     chatChannelDeactivatedDatetime: string | null | undefined
     emailChannelDeactivatedDatetime: string | null | undefined
     trialModeActivatedDatetime: string | null
+    previewModeActivatedDatetime: string | null
     ticketSampleRate: number | null
     silentHandover: boolean | null
     monitoredEmailIntegrations: {id: number; email: string}[] | null

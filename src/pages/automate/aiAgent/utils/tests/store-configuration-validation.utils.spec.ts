@@ -19,6 +19,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
+    previewModeActivatedDatetime: null,
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: [],

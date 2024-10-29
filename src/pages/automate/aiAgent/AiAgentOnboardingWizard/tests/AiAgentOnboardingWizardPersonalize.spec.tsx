@@ -87,6 +87,7 @@ const stormFormValues = {
     monitoredEmailIntegrations: [],
     monitoredChatIntegrations: [],
     trialModeActivatedDatetime: null,
+    previewModeActivatedDatetime: null,
     deactivatedDatetime: new Date().toISOString(),
     silentHandover: false,
     tags: [],

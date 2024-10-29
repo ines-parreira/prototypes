@@ -10,6 +10,7 @@ export const getStoreConfigurationFormValuesFixture = (
     emailChannelDeactivatedDatetime: '2024-06-05T11:27:06.939Z',
     deactivatedDatetime: '2024-06-05T11:27:06.939Z',
     trialModeActivatedDatetime: null,
+    previewModeActivatedDatetime: null,
     ticketSampleRate: null,
     silentHandover: false,
     monitoredEmailIntegrations: [],

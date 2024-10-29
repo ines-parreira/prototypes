@@ -281,6 +281,7 @@ export const StoreConfigForm = ({
             updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('trialModeActivatedDatetime', null)
+            updateValue('previewModeActivatedDatetime', null)
 
             try {
                 await updateStoreConfiguration({
@@ -289,6 +290,7 @@ export const StoreConfigForm = ({
                     chatChannelDeactivatedDatetime: deactivatedDatetime,
                     emailChannelDeactivatedDatetime: deactivatedDatetime,
                     trialModeActivatedDatetime: null,
+                    previewModeActivatedDatetime: null,
                 })
                 if (!silentUpdate) {
                     void dispatch(
@@ -419,6 +421,7 @@ export const StoreConfigForm = ({
         deactivateAiAgent,
         trialModeAvailable,
         formValues.trialModeActivatedDatetime,
+        formValues.previewModeActivatedDatetime,
     ])
 
     const handleAiAgentTrialModeChange = (value: string) => {
@@ -429,6 +432,7 @@ export const StoreConfigForm = ({
                 updateValue('chatChannelDeactivatedDatetime', null)
                 updateValue('emailChannelDeactivatedDatetime', null)
                 updateValue('trialModeActivatedDatetime', null)
+                updateValue('previewModeActivatedDatetime', null)
                 break
 
             case 'trial':
@@ -438,6 +442,7 @@ export const StoreConfigForm = ({
                 updateValue('emailChannelDeactivatedDatetime', null)
 
                 updateValue('trialModeActivatedDatetime', date)
+                updateValue('previewModeActivatedDatetime', date)
                 break
 
             case 'disabled':
@@ -451,6 +456,7 @@ export const StoreConfigForm = ({
                     new Date().toISOString()
                 )
                 updateValue('trialModeActivatedDatetime', null)
+                updateValue('previewModeActivatedDatetime', null)
                 break
         }
     }
