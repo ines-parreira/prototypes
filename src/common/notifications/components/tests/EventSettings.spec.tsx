@@ -1,7 +1,6 @@
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'common/flags'
 import {
     enabledEvents,
     ticketMessageCreatedEvents,
@@ -24,11 +23,6 @@ jest.mock(
             </select>
         )
 )
-
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
 
 const mockOnChangeChannel = jest.fn()
 const mockOnChangeSound = jest.fn()
@@ -64,10 +58,6 @@ const settings: Settings = {
 }
 
 describe('<EventSettings/>', () => {
-    beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
-    })
-
     it.each(enabledEvents.map((event) => [event.type, event.label]))(
         'should render event %s',
         (_, label) => {
@@ -158,20 +148,15 @@ describe('<EventSettings/>', () => {
 
     it.each(
         ticketMessageCreatedEvents.map((event) => [event.type, event.label])
-    )(
-        'should render ticket %s event if NotificationsTicketMessageCreated FF is enabled',
-        (_, label) => {
-            mockUseFlag.mockReturnValue(true)
+    )('should render ticket %s event', (_, label) => {
+        const {getByText} = render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={mockOnChangeChannel}
+                onChangeSound={mockOnChangeSound}
+            />
+        )
 
-            const {getByText} = render(
-                <EventSettings
-                    settings={settings}
-                    onChangeChannel={mockOnChangeChannel}
-                    onChangeSound={mockOnChangeSound}
-                />
-            )
-
-            expect(getByText(label as string)).toBeInTheDocument()
-        }
-    )
+        expect(getByText(label as string)).toBeInTheDocument()
+    })
 })

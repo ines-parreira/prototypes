@@ -74,7 +74,6 @@ import {isCurrentlyOnTicket} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
 import * as types from './constants'
-import notifyOnNewMessage from './notifyOnNewMessage'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -95,10 +94,6 @@ export const mergeTicket =
         if (ticketRecord.get('id') !== ticketState.get('id')) {
             return Promise.resolve()
         }
-
-        const {ticket: previousTicket} = getState()
-
-        void notifyOnNewMessage(previousTicket, ticketRecord)
 
         const currentMessages = ticketState.get(
             'messages',

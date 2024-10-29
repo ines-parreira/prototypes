@@ -8,7 +8,6 @@ import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {store as reduxStore} from 'common/store'
 import {isSpecificTicketPath} from 'common/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {MAX_RECENT_CHATS} from 'config/recentChats'
 import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
 import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
@@ -91,7 +90,6 @@ import * as viewsConstants from 'state/views/constants'
 
 import {isViewSharedWithUser} from 'state/views/utils'
 import {isCurrentlyOnTicket} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
 
 /**
  * Events that can be received from server via socket
@@ -410,18 +408,12 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             const state = reduxStore.getState() as RootState
             const currentUserId = currentUserSelectors.getCurrentUserId(state)
-            const isTicketMessageCreatedEnabled = !!getLDClient().variation(
-                FeatureFlagKey.NotificationsTicketMessageCreated,
-                false
-            )
             const ticket = (json as TicketMessageChatCreatedEvent).data
 
             // send browser notifications only for new customer messages
             const shouldNotify =
                 !ticket.last_message_from_agent &&
-                (isTicketMessageCreatedEnabled
-                    ? ticket.assignee_user_id !== currentUserId
-                    : true)
+                ticket.assignee_user_id !== currentUserId
 
             const playSoundNotification = (
                 json as TicketMessageChatCreatedEvent

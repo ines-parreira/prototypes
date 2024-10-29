@@ -102,7 +102,6 @@ export enum FeatureFlagKey {
     NewSenderSelect = 'new-sender-select',
     NewTagsReport = 'new-tags-report',
     NotificationsTicketAssigned = 'notifications-ticket-assigned',
-    NotificationsTicketMessageCreated = 'notifications-ticket-message-created',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAutomateTopQuestions = 'observability-automate-top-questions',

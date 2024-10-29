@@ -35,7 +35,6 @@ import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
-import notifyOnNewMessage from 'state/ticket/notifyOnNewMessage'
 import {StoreDispatch} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -99,9 +98,6 @@ jest.mock('pages/history')
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
 
-jest.mock('../notifyOnNewMessage')
-const notifyMock = notifyOnNewMessage as jest.Mock
-
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     let mockServer: MockAdapter
@@ -160,11 +156,6 @@ describe('ticket actions', () => {
             return testStore
                 .dispatch(actions.mergeTicket(ticket))
                 .then(() => expect(testStore.getActions()).toMatchSnapshot())
-        })
-
-        it('should not notify when feature flag is enabled', async () => {
-            await testStore.dispatch(actions.mergeTicket(ticket))
-            expect(notifyMock).toHaveBeenCalled()
         })
     })
 

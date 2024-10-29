@@ -1,9 +1,7 @@
 import {useKnockClient} from '@knocklabs/react'
 import {useCallback, useMemo, useState} from 'react'
 
-import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {UserSettingType} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,7 +10,6 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {
     channels,
@@ -28,8 +25,6 @@ import {
     Event,
 } from '../types'
 
-const client = getLDClient()
-
 const baseEvents = [legacyEvent, ...events]
 
 export default function useSettings() {
@@ -37,23 +32,9 @@ export default function useSettings() {
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
 
-    const [{loading: isInitializingLD}, initializeLD] = useAsyncFn(async () => {
-        try {
-            await client.waitForInitialization(3)
-        } catch (e) {}
-    })
-
-    const isTicketMessageCreatedEnabled = useFlag(
-        FeatureFlagKey.NotificationsTicketMessageCreated,
-        false
-    )
-
     const allEvents = useMemo(
-        () =>
-            isTicketMessageCreatedEnabled
-                ? [...baseEvents, ...ticketMessageCreatedEvents]
-                : baseEvents,
-        [isTicketMessageCreatedEnabled]
+        () => [...baseEvents, ...ticketMessageCreatedEvents],
+        []
     )
 
     const [{loading: isFetchingKnockPreferences}, getKnockPreferences] =
@@ -68,17 +49,9 @@ export default function useSettings() {
     })
 
     const initializeSettings = useCallback(async () => {
-        await initializeLD()
         const preferences = await getKnockPreferences()
 
-        const isTicketMessageCreatedEnabled = !!client.variation(
-            FeatureFlagKey.NotificationsTicketMessageCreated,
-            false
-        )
-
-        const allEvents = isTicketMessageCreatedEnabled
-            ? [...baseEvents, ...ticketMessageCreatedEvents]
-            : baseEvents
+        const allEvents = [...baseEvents, ...ticketMessageCreatedEvents]
 
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
@@ -131,7 +104,7 @@ export default function useSettings() {
         }
 
         setSettings(setting)
-    }, [initializeLD, getKnockPreferences, allSettings])
+    }, [getKnockPreferences, allSettings])
 
     useEffectOnce(() => {
         void initializeSettings()
@@ -272,7 +245,7 @@ export default function useSettings() {
             onChangeChannel: handleChangeChannel,
             onChangeSound: handleChangeSound,
             onChangeVolume: handleChangeVolume,
-            isLoading: isInitializingLD || isFetchingKnockPreferences,
+            isLoading: isFetchingKnockPreferences,
         }),
         [
             save,
@@ -280,7 +253,6 @@ export default function useSettings() {
             handleChangeChannel,
             handleChangeSound,
             handleChangeVolume,
-            isInitializingLD,
             isFetchingKnockPreferences,
         ]
     )
