@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -28,6 +29,10 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('useAgentsSortingQuery', () => {
+    const statsFiltersWithTimezone = {
+        cleanStatsFilters: filtersInitialState.filters,
+        userTimezone: 'UTC',
+    }
     const defaultState = {
         stats: filtersInitialState,
         ui: {
@@ -56,7 +61,12 @@ describe('useAgentsSortingQuery', () => {
             const column = AutoQAAgentsTableColumn.ResolutionCompleteness
 
             const {result} = renderHook(
-                () => useAutoQAAgentsSortingQuery(column, queryHook),
+                () =>
+                    useAutoQAAgentsSortingQuery(
+                        column,
+                        queryHook,
+                        statsFiltersWithTimezone
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -79,7 +89,12 @@ describe('useAgentsSortingQuery', () => {
             const column = autoQAInitialState.sorting.field
 
             const {result} = renderHook(
-                () => useAutoQAAgentsSortingQuery(column, queryHook),
+                () =>
+                    useAutoQAAgentsSortingQuery(
+                        column,
+                        queryHook,
+                        statsFiltersWithTimezone
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -131,11 +146,19 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () =>
+                useAutoQAAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFiltersWithTimezone
+                ),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).toContainEqual(
             sortingLoaded(metricData.allData)
@@ -170,11 +193,19 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () =>
+                useAutoQAAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFiltersWithTimezone
+                ),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).not.toContainEqual(
             sortingLoaded(metricData.allData)
@@ -206,7 +237,8 @@ describe('useAgentsSortingQuery', () => {
             () =>
                 useAutoQAAgentsSortingQuery(
                     agentNameColumn,
-                    getQuery(agentNameColumn)
+                    getQuery(agentNameColumn),
+                    statsFiltersWithTimezone
                 ),
             {
                 wrapper: ({children}) => (
@@ -242,11 +274,19 @@ describe('useAgentsSortingQuery', () => {
             isFetching: true,
         })
 
-        renderHook(() => useAutoQAAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () =>
+                useAutoQAAgentsSortingQuery(
+                    column,
+                    queryHook,
+                    statsFiltersWithTimezone
+                ),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).toContainEqual(sortingLoading())
     })

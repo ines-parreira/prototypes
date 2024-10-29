@@ -76,8 +76,8 @@ jest.mock(
     })
 )
 
-jest.mock('pages/stats/support-performance/agents/AgentsTable', () => ({
-    AgentsTable: () => <div>agents-table</div>,
+jest.mock('pages/stats/automate/ai-agent/AiAgentTable', () => ({
+    AiAgentTable: () => <div>ai-agent-table</div>,
 }))
 
 jest.mock(
@@ -206,7 +206,7 @@ describe('AutomateAiAgentStats', () => {
         expect(
             screen.queryByText('agents-performance-card-extra')
         ).toBeInTheDocument()
-        expect(screen.queryByText('agents-table')).toBeInTheDocument()
+        expect(screen.queryByText('ai-agent-table')).toBeInTheDocument()
 
         expect(screen.queryByText('custom-field-select')).toBeInTheDocument()
         expect(

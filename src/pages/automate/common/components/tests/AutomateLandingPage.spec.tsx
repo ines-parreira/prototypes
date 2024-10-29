@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
-import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import AutomateLandingPage from '../AutomateLandingPage'
@@ -26,9 +25,6 @@ jest.mock('pages/stats/DrillDownModal', () => ({
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const store = mockStore({
     billing: fromJS(billingState),
-    ui: {
-        [drillDownSlice.name]: initialState,
-    },
 } as unknown as RootState)
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 

@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 import React, {useEffect, useMemo, useState} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -19,6 +20,7 @@ import {
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
+import {AiAgentTable} from 'pages/stats/automate/ai-agent/AiAgentTable'
 import {
     getGreyAreaHint,
     useTimeSeriesFormattedData,
@@ -33,7 +35,6 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
 import {
     activeParams,
@@ -152,7 +153,7 @@ export default function AutomateAiAgentStats() {
                         titleExtra={<AgentsPerformanceCardExtra />}
                         noPadding
                     >
-                        <AgentsTable />
+                        <AiAgentTable />
                     </ChartCard>
                 </DashboardGridCell>
             </DashboardSection>

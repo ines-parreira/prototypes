@@ -1,8 +1,9 @@
 import classNames from 'classnames'
+
 import React, {PropsWithRef} from 'react'
 
 import {User} from 'config/types/user'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {StatsFilters} from 'models/stat/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
     Props as BodyCellProps,
@@ -24,6 +25,11 @@ export type AgentsCellContentProps = {
     agent: User
     bodyCellProps?: PropsWithRef<BodyCellProps>
     useMetricPerAgentQueryHook: MetricQueryPerAgentQuery
+    statsFilters: {
+        isAnalyticsNewFilters: boolean
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    }
     metricFormat: MetricValueFormat
     drillDownMetricData: DrillDownMetric | null
     isHeatmapMode: boolean
@@ -34,13 +40,14 @@ export const AgentsCellContent = ({
     agent,
     bodyCellProps,
     useMetricPerAgentQueryHook,
+    statsFilters,
     metricFormat,
     drillDownMetricData,
     isHeatmapMode,
     isSortingMetricLoading,
 }: AgentsCellContentProps) => {
     const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
-        useNewStatsFilters()
+        statsFilters
     const {data, isFetching} = useMetricPerAgentQueryHook(
         cleanStatsFilters,
         userTimezone,

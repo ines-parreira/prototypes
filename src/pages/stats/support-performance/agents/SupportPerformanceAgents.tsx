@@ -14,7 +14,7 @@ import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPer
 import StatsPage from 'pages/stats/StatsPage'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
+import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
@@ -81,7 +81,7 @@ export default function SupportPerformanceAgents() {
                             titleExtra={<AgentsPerformanceCardExtra />}
                             noPadding
                         >
-                            <AgentsTable />
+                            <AgentsTableWithDefaultState />
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>

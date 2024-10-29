@@ -1,10 +1,14 @@
 import classNames from 'classnames'
+
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
+import {StatsFilters} from 'models/stat/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -43,10 +47,16 @@ export const getTableCell = (
     return AgentsCellContent
 }
 
-const getSortingQuery = (column: AutoQAAgentsTableColumn) => {
+const getSortingQuery = (
+    column: AutoQAAgentsTableColumn,
+    statsFilters: {
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    }
+) => {
     const query = getQuery(column)
 
-    return () => useAutoQAAgentsSortingQuery(column, query)
+    return () => useAutoQAAgentsSortingQuery(column, query, statsFilters)
 }
 
 export const AutoQAAgentsTable = () => {
@@ -57,6 +67,7 @@ export const AutoQAAgentsTable = () => {
         agents: paginatedAgents,
         allAgents: agents,
     } = useAppSelector(getPaginatedAutoQAAgents)
+    const statsFilters = useNewStatsFilters()
     const isHeatmapMode = useAppSelector(getHeatmapMode)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
     const onPageChangeCallback = (page: number) => {
@@ -84,7 +95,10 @@ export const AutoQAAgentsTable = () => {
                                     key={`header-cell-${column}`}
                                     title={TableLabels[column]}
                                     hint={AutoQAAgentsColumnConfig[column].hint}
-                                    useSortingQuery={getSortingQuery(column)}
+                                    useSortingQuery={getSortingQuery(
+                                        column,
+                                        statsFilters
+                                    )}
                                     width={getColumnWidth(column)}
                                     justifyContent={getColumnAlignment(column)}
                                     className={classNames(css.BodyCell, {
@@ -116,6 +130,7 @@ export const AutoQAAgentsTable = () => {
                                                             column,
                                                             agent
                                                         ),
+                                                    statsFilters: statsFilters,
                                                     isHeatmapMode:
                                                         isHeatmapMode,
                                                     isSortingMetricLoading:

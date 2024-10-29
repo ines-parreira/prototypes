@@ -12,7 +12,7 @@ import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
+import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
 import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import SupportPerformanceAgents, {
     AGENT_PERFORMANCE_SECTION_TITLE,
@@ -26,7 +26,7 @@ jest.unmock('react-router-dom')
 
 jest.mock('state/ui/stats/agentPerformanceSlice')
 jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
-const AgentsTableMock = assumeMock(AgentsTable)
+const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
@@ -59,7 +59,7 @@ describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
     AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
-    AgentsTableMock.mockImplementation(componentMock)
+    AgentTableWithDefaultStateMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
         reportData: {

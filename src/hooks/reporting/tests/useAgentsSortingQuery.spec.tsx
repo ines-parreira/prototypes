@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -28,6 +29,10 @@ import {AgentsTableColumn} from 'state/ui/stats/types'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('useAgentsSortingQuery', () => {
+    const statsFilters = {
+        cleanStatsFilters: filtersInitialState.filters,
+        userTimezone: 'UTC',
+    }
     const defaultState = {
         stats: filtersInitialState,
         ui: {
@@ -56,7 +61,7 @@ describe('useAgentsSortingQuery', () => {
             const column = AgentsTableColumn.MedianFirstResponseTime
 
             const {result} = renderHook(
-                () => useAgentsSortingQuery(column, queryHook),
+                () => useAgentsSortingQuery(column, queryHook, statsFilters),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -79,7 +84,7 @@ describe('useAgentsSortingQuery', () => {
             const column = initialState.sorting.field
 
             const {result} = renderHook(
-                () => useAgentsSortingQuery(column, queryHook),
+                () => useAgentsSortingQuery(column, queryHook, statsFilters),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -132,11 +137,14 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).toContainEqual(
             sortingLoaded(metricData.allData)
@@ -172,11 +180,14 @@ describe('useAgentsSortingQuery', () => {
             isError: false,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).not.toContainEqual(
             sortingLoaded(metricData.allData)
@@ -208,7 +219,8 @@ describe('useAgentsSortingQuery', () => {
             () =>
                 useAgentsSortingQuery(
                     AgentsTableColumn.AgentName,
-                    getQuery(column)
+                    getQuery(column),
+                    statsFilters
                 ),
             {
                 wrapper: ({children}) => (
@@ -245,11 +257,14 @@ describe('useAgentsSortingQuery', () => {
             isFetching: true,
         })
 
-        renderHook(() => useAgentsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
-                <Provider store={store}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () => useAgentsSortingQuery(column, queryHook, statsFilters),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={store}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(store.getActions()).toContainEqual(sortingLoading())
     })

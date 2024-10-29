@@ -24,10 +24,14 @@ export const useAutoQAAgentsSortingQuery = (
         timezone: string,
         sorting?: OrderDirection,
         agentAssigneeId?: string
-    ) => MetricWithDecile
+    ) => MetricWithDecile,
+    statsFilters: {
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    }
 ) => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const {cleanStatsFilters, userTimezone} = statsFilters
     useResetPageOnQueryUpdate(pageSet)
 
     const sorting = useAppSelector(getAgentSorting)

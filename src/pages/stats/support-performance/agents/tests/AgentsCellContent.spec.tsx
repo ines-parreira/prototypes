@@ -9,7 +9,7 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {initialState} from 'state/stats/statsSlice'
+import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
@@ -34,9 +34,11 @@ describe('<AgentsCellContent />', () => {
         name: 'User',
     } as User
     const closedTicketsValue = 1234
+    const userTimezone = 'UTC'
+    const statsFilters = defaultStatsFilters
 
     const defaultState = {
-        stats: initialState,
+        stats: {filters: statsFilters},
         ui: {
             stats: {filters: uiStatsInitialState},
         },
@@ -77,6 +79,11 @@ describe('<AgentsCellContent />', () => {
                 drillDownMetricData={null}
                 isHeatmapMode={false}
                 isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                    isAnalyticsNewFilters: true,
+                }}
             />,
             defaultState
         )
@@ -116,6 +123,11 @@ describe('<AgentsCellContent />', () => {
                 drillDownMetricData={null}
                 isHeatmapMode={true}
                 isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                    isAnalyticsNewFilters: true,
+                }}
             />,
             defaultState
         )
@@ -148,6 +160,11 @@ describe('<AgentsCellContent />', () => {
                 drillDownMetricData={null}
                 isHeatmapMode={false}
                 isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                    isAnalyticsNewFilters: true,
+                }}
             />,
             defaultState
         )
@@ -173,6 +190,11 @@ describe('<AgentsCellContent />', () => {
                 drillDownMetricData={drillDownMetricData}
                 isHeatmapMode={false}
                 isSortingMetricLoading={false}
+                statsFilters={{
+                    cleanStatsFilters: statsFilters,
+                    userTimezone,
+                    isAnalyticsNewFilters: true,
+                }}
             />,
             defaultState
         )

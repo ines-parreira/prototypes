@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,6 +9,7 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {AgentsColumnConfig} from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
@@ -25,17 +27,20 @@ import {AgentsTableColumn} from 'state/ui/stats/types'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentsTableSummaryCell', () => {
+    const userTimezone = 'UTC'
+    const statsFilters: StatsFiltersWithLogicalOperator =
+        fromLegacyStatsFilters({
+            period: {
+                start_datetime: '2021-02-03T00:00:00.000Z',
+                end_datetime: '2021-02-03T23:59:59.999Z',
+            },
+            channels: [TicketChannel.Chat],
+            tags: [1],
+            integrations: [integrationsState.integrations[0].id],
+        })
     const defaultState = {
         stats: {
-            filters: fromLegacyStatsFilters({
-                period: {
-                    start_datetime: '2021-02-03T00:00:00.000Z',
-                    end_datetime: '2021-02-03T23:59:59.999Z',
-                },
-                channels: [TicketChannel.Chat],
-                tags: [1],
-                integrations: [integrationsState.integrations[0].id],
-            }),
+            filters: statsFilters,
         },
         ui: {
             stats: {
@@ -64,6 +69,10 @@ describe('<AgentsTableSummaryCell', () => {
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
                     column={AgentsTableColumn.AgentName}
+                    statsFilters={{
+                        cleanStatsFilters: statsFilters,
+                        userTimezone,
+                    }}
                 />
             </Provider>
         )
@@ -83,6 +92,10 @@ describe('<AgentsTableSummaryCell', () => {
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
                     column={AgentsTableColumn.CustomerSatisfaction}
+                    statsFilters={{
+                        cleanStatsFilters: statsFilters,
+                        userTimezone,
+                    }}
                 />
             </Provider>
         )
@@ -98,6 +111,10 @@ describe('<AgentsTableSummaryCell', () => {
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
                     column={simpleMetric}
+                    statsFilters={{
+                        cleanStatsFilters: statsFilters,
+                        userTimezone,
+                    }}
                 />
             </Provider>
         )
@@ -126,6 +143,10 @@ describe('<AgentsTableSummaryCell', () => {
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
                     column={simpleMetric}
+                    statsFilters={{
+                        cleanStatsFilters: statsFilters,
+                        userTimezone,
+                    }}
                 />
             </Provider>
         )

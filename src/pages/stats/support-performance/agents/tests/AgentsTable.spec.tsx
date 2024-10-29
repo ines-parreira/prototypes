@@ -1,22 +1,27 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {agents} from 'fixtures/agents'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {ReportingGranularity} from 'models/reporting/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
 import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
+import {
+    AgentsTable,
+    AgentsTableWithDefaultState,
+} from 'pages/stats/support-performance/agents/AgentsTable'
 import {
     TableColumnsOrderWithOnlineTime,
     getColumnWidth,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     getPaginatedAgents,
@@ -26,7 +31,7 @@ import {
     getHeatmapMode,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -56,9 +61,11 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
 }))
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 const getPaginatedAgentsMock = assumeMock(getPaginatedAgents)
-const getPageStatsFiltersMock = assumeMock(getPageStatsFilters)
 const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
+
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 jest.mock('pages/stats/support-performance/agents/AgentsCellContent')
 const AgentsCellContentMock = assumeMock(AgentsCellContent)
@@ -71,82 +78,101 @@ const AgentsTableSummaryCellMock = assumeMock(AgentsTableSummaryCell)
 
 const cellMock = () => <div />
 
-describe('<AgentTable>', () => {
+describe('<AgentsTable>', () => {
     const currentPage = 2
     getSortedAgentsMock.mockReturnValue(agents)
-    const paginatedAgents = agents.slice(1)
-    getPaginatedAgentsMock.mockReturnValue({
-        agents: paginatedAgents,
+    const filteredAgents = agents.slice(1)
+    const paginatedAgents = {
+        agents: filteredAgents,
         allAgents: agents,
         currentPage,
         perPage: 1,
-    })
-    getPageStatsFiltersMock.mockReturnValue({
+    }
+    const statsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-    } as any)
+    }
+    const statsFiltersWithTimeZone = {
+        cleanStatsFilters: statsFilters,
+        userTimezone: 'UTC',
+        isAnalyticsNewFilters: false,
+        granularity: ReportingGranularity.Day,
+    }
     isSortingMetricLoadingMock.mockReturnValue(false)
     getHeatmapModeMock.mockReturnValue(false)
     AgentsCellContentMock.mockImplementation(cellMock)
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
 
-    it('should render the table title, table header and rows', () => {
-        render(
-            <Provider store={mockStore({})}>
-                <AgentsTable />
-            </Provider>
-        )
+    describe('AgentsTable component', () => {
+        it('should render the table title, table header and rows', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
+                </Provider>
+            )
 
-        expect(screen.getByRole('table')).toBeInTheDocument()
-        TableColumnsOrderWithOnlineTime.forEach((column) => {
-            expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            TableColumnsOrderWithOnlineTime.forEach((column) => {
+                expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        title: TableLabels[column],
+                    }),
+                    {}
+                )
+            })
+
+            expect(AgentsCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    title: TableLabels[column],
+                    agent: filteredAgents[0],
                 }),
                 {}
             )
         })
 
-        expect(AgentsCellContentMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                agent: paginatedAgents[0],
-            }),
-            {}
-        )
-    })
+        it('should handle table scrolling', async () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
+                </Provider>
+            )
+            act(() => {
+                const tableRow = document.getElementsByClassName('container')[0]
+                fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            })
 
-    it('should handle table scrolling', async () => {
-        render(
-            <Provider store={mockStore({})}>
-                <AgentsTable />
-            </Provider>
-        )
-        act(() => {
-            const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            await waitFor(() => {
+                expect(screen.getAllByRole('cell')[0]).toHaveClass('withShadow')
+            })
         })
 
-        await waitFor(() => {
-            expect(screen.getAllByRole('cell')[0]).toHaveClass('withShadow')
-        })
-    })
+        it('should handle table scrolling to the left border', async () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
+                </Provider>
+            )
+            act(() => {
+                const tableRow = document.getElementsByClassName('container')[0]
+                fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            })
 
-    it('should handle table scrolling to the left border', async () => {
-        render(
-            <Provider store={mockStore({})}>
-                <AgentsTable />
-            </Provider>
-        )
-        act(() => {
-            const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
-        })
-
-        await waitFor(() => {
-            expect(screen.getAllByRole('cell')[0]).not.toHaveClass('withShadow')
+            await waitFor(() => {
+                expect(screen.getAllByRole('cell')[0]).not.toHaveClass(
+                    'withShadow'
+                )
+            })
         })
     })
 
@@ -154,7 +180,10 @@ describe('<AgentTable>', () => {
         it('should render if there are more agents then perPage', () => {
             render(
                 <Provider store={mockStore({})}>
-                    <AgentsTable />
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
                 </Provider>
             )
 
@@ -162,16 +191,19 @@ describe('<AgentTable>', () => {
         })
 
         it('should not render if less agent then perPage', () => {
-            getPaginatedAgentsMock.mockReturnValue({
+            const notManyPaginatedAgentsMock = {
                 agents,
                 allAgents: agents,
                 currentPage: 1,
                 perPage: agents.length + 1,
-            })
+            }
 
             render(
                 <Provider store={mockStore({})}>
-                    <AgentsTable />
+                    <AgentsTable
+                        paginatedAgents={notManyPaginatedAgentsMock}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
                 </Provider>
             )
 
@@ -190,7 +222,10 @@ describe('<AgentTable>', () => {
 
             render(
                 <Provider store={store}>
-                    <AgentsTable />
+                    <AgentsTable
+                        paginatedAgents={paginatedAgents}
+                        statsFilters={statsFiltersWithTimeZone}
+                    />
                 </Provider>
             )
             act(() => {
@@ -230,5 +265,26 @@ describe('<AgentTable>', () => {
                 ).toEqual(expectedOtherColumnsWidth)
             }
         )
+    })
+
+    describe('AgentsTableWithDefaultState', () => {
+        const filteredAgents = agents.slice(1)
+        beforeEach(() => {
+            useNewStatsFiltersMock.mockReturnValue(
+                statsFiltersWithTimeZone as any
+            )
+            getPaginatedAgentsMock.mockReturnValue({
+                agents: filteredAgents,
+                allAgents: agents,
+                currentPage: 1,
+                perPage: 1,
+            })
+        })
+
+        it('should pass getPaginatedAgents selector and new statsFilters to the AgentsTable component', () => {
+            renderWithStore(<AgentsTableWithDefaultState />, {})
+
+            expect(getPaginatedAgentsMock).toHaveBeenCalled()
+        })
     })
 })

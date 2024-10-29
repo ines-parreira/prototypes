@@ -1,11 +1,14 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {agents} from 'fixtures/agents'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {ReportingGranularity} from 'models/reporting/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
 import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
@@ -60,6 +63,9 @@ const getPageStatsFiltersMock = assumeMock(getPageStatsFilters)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
 const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
+
 jest.mock('pages/stats/support-performance/agents/AgentsCellContent')
 const AgentsCellContentMock = assumeMock(AgentsCellContent)
 
@@ -81,12 +87,19 @@ describe('<AutoQAAgentsTable />', () => {
         currentPage,
         perPage: 1,
     })
-    getPageStatsFiltersMock.mockReturnValue({
+    const filters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
-    } as any)
+    }
+    getPageStatsFiltersMock.mockReturnValue(filters as any)
+    useNewStatsFiltersMock.mockReturnValue({
+        cleanStatsFilters: filters,
+        userTimezone: 'UTC',
+        isAnalyticsNewFilters: false,
+        granularity: ReportingGranularity.Day,
+    })
     getHeatmapModeMock.mockReturnValue(false)
     isSortingMetricLoadingMock.mockReturnValue(false)
     AgentsCellContentMock.mockImplementation(cellMock)

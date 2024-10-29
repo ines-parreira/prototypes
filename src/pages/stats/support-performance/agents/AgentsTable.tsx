@@ -1,11 +1,16 @@
 import classNames from 'classnames'
+
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
+
+import {User} from 'config/types/user'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
+import {StatsFilters} from 'models/stat/types'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -46,21 +51,36 @@ export const getTableCell = (
     return AgentsCellContent
 }
 
-const getSortingQuery = (column: AgentsTableColumn) => {
+const getSortingQuery = (
+    column: AgentsTableColumn,
+    statsFilters: {
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    }
+) => {
     const query = getQuery(column)
 
-    return () => useAgentsSortingQuery(column, query)
+    return () => useAgentsSortingQuery(column, query, statsFilters)
 }
 
-export const AgentsTable = () => {
+type Props = {
+    paginatedAgents: {
+        currentPage: number
+        perPage: number
+        agents: User[]
+        allAgents: User[]
+    }
+    statsFilters: {
+        isAnalyticsNewFilters: boolean
+        cleanStatsFilters: StatsFilters
+        userTimezone: string
+    }
+}
+
+export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
     const dispatch = useDispatch()
     const {columnsOrder} = useAgentsTableConfigSetting()
-    const {
-        currentPage,
-        perPage,
-        agents: paginatedAgents,
-        allAgents: agents,
-    } = useAppSelector(getPaginatedAgents)
+    const {currentPage, perPage, agents, allAgents} = paginatedAgents
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
     }
@@ -87,7 +107,10 @@ export const AgentsTable = () => {
                                 key={`header-cell-${column}`}
                                 title={TableLabels[column]}
                                 hint={AgentsColumnConfig[column].hint}
-                                useSortingQuery={getSortingQuery(column)}
+                                useSortingQuery={getSortingQuery(
+                                    column,
+                                    statsFilters
+                                )}
                                 width={getColumnWidth(column)} //TODO: consider introducing common props per cell type (header, average, body)
                                 justifyContent={getColumnAlignment(column)}
                                 className={classNames(css.BodyCell, {
@@ -116,12 +139,13 @@ export const AgentsTable = () => {
                                 >
                                     <AgentsTableSummaryCell
                                         useMetric={getSummaryQuery(column)}
+                                        statsFilters={statsFilters}
                                         column={column}
                                     />
                                 </BodyCell>
                             ))}
                         </TableBodyRow>
-                        {paginatedAgents.map((agent) => (
+                        {agents.map((agent) => (
                             <TableBodyRow key={agent.id}>
                                 {columnsOrder.map((column) => (
                                     <React.Fragment key={column}>
@@ -131,6 +155,7 @@ export const AgentsTable = () => {
                                                 agent,
                                                 useMetricPerAgentQueryHook:
                                                     getQuery(column),
+                                                statsFilters,
                                                 metricFormat:
                                                     AgentsColumnConfig[column]
                                                         .format,
@@ -172,9 +197,9 @@ export const AgentsTable = () => {
                 </TableWrapper>
             </div>
             <div>
-                {agents.length >= perPage && (
+                {allAgents.length > perPage && (
                     <NumberedPagination
-                        count={Math.ceil(agents.length / perPage)}
+                        count={Math.ceil(allAgents.length / perPage)}
                         page={currentPage}
                         onChange={onPageChangeCallback}
                         className={css.pagination}
@@ -182,5 +207,17 @@ export const AgentsTable = () => {
                 )}
             </div>
         </>
+    )
+}
+
+export const AgentsTableWithDefaultState = () => {
+    const paginatedAgents = useAppSelector(getPaginatedAgents)
+    const statsFilters = useNewStatsFilters()
+
+    return (
+        <AgentsTable
+            paginatedAgents={paginatedAgents}
+            statsFilters={statsFilters}
+        />
     )
 }
