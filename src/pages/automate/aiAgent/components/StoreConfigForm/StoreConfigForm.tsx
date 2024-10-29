@@ -680,6 +680,9 @@ export const StoreConfigForm = ({
                         }
                     />
                     <SignatureFormComponent
+                        isRequired={
+                            formValues.emailChannelDeactivatedDatetime === null
+                        }
                         updateValue={updateValue}
                         signature={formValues.signature}
                     />

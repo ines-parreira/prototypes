@@ -8,9 +8,10 @@ import {SignatureFormComponent} from '../FormComponents/SignatureFormComponent'
 describe('SignatureFormComponent', () => {
     const mockUpdateValue = jest.fn()
 
-    const renderComponent = (signature: string | null) => {
+    const renderComponent = (signature: string | null, isRequired = true) => {
         render(
             <SignatureFormComponent
+                isRequired={isRequired}
                 signature={signature}
                 updateValue={mockUpdateValue}
             />
@@ -115,5 +116,13 @@ describe('SignatureFormComponent', () => {
 
         // Error message should disappear
         expect(screen.queryByText('Email signature is required.')).toBeNull()
+    })
+
+    test('does not show error if signature is not required', () => {
+        renderComponent('', false)
+
+        expect(
+            screen.queryByText('Email signature is required.')
+        ).not.toBeInTheDocument()
     })
 })

@@ -549,6 +549,26 @@ describe('<StoreConfigForm />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should not render error when email channel is disabled and multichannel enabled', () => {
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                signature: '',
+            },
+        })
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.queryByText('Email signature is required.')
+        ).not.toBeInTheDocument()
+    })
+
     it('should render error email signature caption when signature is empty', () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1084,6 +1104,7 @@ describe('<StoreConfigForm />', () => {
                 expect(history.push).toHaveBeenCalledWith('/app/views/1')
             })
         })
+
         it('should show error when chat or email enabled but no integrations selected', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,

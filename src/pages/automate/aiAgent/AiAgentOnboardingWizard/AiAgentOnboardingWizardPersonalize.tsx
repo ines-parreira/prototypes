@@ -180,6 +180,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                     />
 
                     <SignatureFormComponent
+                        isRequired={false}
                         signature={formValues.signature}
                         updateValue={updateValue}
                         setIsPristine={setIsPristine}

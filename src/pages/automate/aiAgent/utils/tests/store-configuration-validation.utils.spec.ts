@@ -126,7 +126,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(StoreConfigurationValidationMessage.SignatureLength)
+            ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
         })
 
         it('should throw an error if signature is empty and wizard is not completed', () => {
@@ -141,7 +141,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(StoreConfigurationValidationMessage.SignatureEmpty)
+            ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
         })
 
         it('should throw an error if signature empty and wizard completed', () => {
@@ -159,7 +159,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(StoreConfigurationValidationMessage.FieldsMissing)
+            ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
         })
 
         it('should throw an error if excluded topics have empty fields', () => {
@@ -173,9 +173,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(
-                StoreConfigurationValidationMessage.ExcludedTopicEmpty
-            )
+            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicEmpty)
         })
 
         it('should throw an error if excluded topics are too big', () => {
@@ -191,9 +189,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(
-                StoreConfigurationValidationMessage.ExcludedTopicsLength
-            )
+            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicsLength)
         })
 
         it('should throw an error if excluded topic is too big', () => {
@@ -207,9 +203,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(
-                StoreConfigurationValidationMessage.ExcludedTopicLength
-            )
+            ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicLength)
         })
 
         it('should throw an error if tags have empty fields', () => {
@@ -223,7 +217,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(StoreConfigurationValidationMessage.TagsEmpty)
+            ).toThrow(StoreConfigurationValidationMessage.TagsEmpty)
         })
 
         it('should throw an error if tone of voice is selected and custom tone of voice is empty', () => {
@@ -238,7 +232,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(
+            ).toThrow(
                 StoreConfigurationValidationMessage.CustomToneOfVoiceEmpty
             )
         })
@@ -257,7 +251,7 @@ describe('store-configuration-validation', () => {
                     [],
                     DEFAULT_OPTIONS
                 )
-            ).toThrowError(
+            ).toThrow(
                 StoreConfigurationValidationMessage.CustomToneOfVoiceLength
             )
         })
@@ -276,7 +270,7 @@ describe('store-configuration-validation', () => {
                     ...DEFAULT_OPTIONS,
                     isOnboardingWizardPage: true,
                 })
-            ).toThrowError(StoreConfigurationValidationMessage.HelpCenterError)
+            ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
         it('should throw an error if no help center selected and public urls is empty when wizard finished and this is not onboarding page', () => {
@@ -293,7 +287,7 @@ describe('store-configuration-validation', () => {
                     ...DEFAULT_OPTIONS,
                     isOnboardingWizardPage: false,
                 })
-            ).toThrowError(StoreConfigurationValidationMessage.HelpCenterEmpty)
+            ).toThrow(StoreConfigurationValidationMessage.HelpCenterEmpty)
         })
 
         it('should throw an error if monitored email integrations is empty and email ai agent is active', () => {
@@ -308,9 +302,7 @@ describe('store-configuration-validation', () => {
                     ...DEFAULT_OPTIONS,
                     isMultiChannelEnabled: false,
                 })
-            ).toThrowError(
-                StoreConfigurationValidationMessage.EmailIntegrationError
-            )
+            ).toThrow(StoreConfigurationValidationMessage.EmailIntegrationError)
         })
 
         describe('wizard page validation', () => {
@@ -330,9 +322,7 @@ describe('store-configuration-validation', () => {
                         ...DEFAULT_OPTIONS,
                         isOnboardingWizardPage: true,
                     })
-                ).toThrowError(
-                    StoreConfigurationValidationMessage.FieldsMissing
-                )
+                ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
             })
 
             it('should throw an error if no monitoredEmailIntegrations selected and email channel selected', () => {
@@ -350,9 +340,7 @@ describe('store-configuration-validation', () => {
                         ...DEFAULT_OPTIONS,
                         isOnboardingWizardPage: true,
                     })
-                ).toThrowError(
-                    StoreConfigurationValidationMessage.FieldsMissing
-                )
+                ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
             })
 
             it('should throw an error if no channel is selected in the knowledge step', () => {
@@ -369,13 +357,39 @@ describe('store-configuration-validation', () => {
                         ...DEFAULT_OPTIONS,
                         isOnboardingWizardPage: true,
                     })
-                ).toThrowError(
-                    StoreConfigurationValidationMessage.NoChannelError
-                )
+                ).toThrow(StoreConfigurationValidationMessage.NoChannelError)
             })
         })
 
         describe('multi-channel enabled', () => {
+            it('should throw an error if signature empty and email channel is enabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    signature: '',
+                    emailChannelDeactivatedDatetime: null,
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(formValues, [], {
+                        ...DEFAULT_OPTIONS,
+                        isMultiChannelEnabled: true,
+                    })
+                ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
+            })
+
+            it('should throw an error if signature length is too big and email channel is enabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    signature: 'a'.repeat(SIGNATURE_MAX_LENGTH + 1),
+                    emailChannelDeactivatedDatetime: null,
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(formValues, [], {
+                        ...DEFAULT_OPTIONS,
+                        isMultiChannelEnabled: true,
+                    })
+                ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
+            })
+
             it('should throw an error if no email integration is selected and email channel is enabled', () => {
                 const formValues: FormValues = {
                     ...VALID_FORM_VALUES,
@@ -387,7 +401,7 @@ describe('store-configuration-validation', () => {
                         ...DEFAULT_OPTIONS,
                         isMultiChannelEnabled: true,
                     })
-                ).toThrowError(
+                ).toThrow(
                     StoreConfigurationValidationMessage.EmailIntegrationError
                 )
             })
@@ -405,7 +419,7 @@ describe('store-configuration-validation', () => {
                         isMultiChannelEnabled: true,
                         isAiAgentChatEnabled: true,
                     })
-                ).toThrowError(
+                ).toThrow(
                     StoreConfigurationValidationMessage.ChatIntegrationError
                 )
             })

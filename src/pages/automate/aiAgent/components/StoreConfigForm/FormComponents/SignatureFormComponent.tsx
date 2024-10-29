@@ -11,6 +11,7 @@ import css from './SignatureFormComponent.less'
 type SignatureFormComponentProps = {
     signature: string | null
     updateValue: UpdateValue<FormValues>
+    isRequired: boolean
     setIsPristine?: (isPristine: boolean) => void
 }
 
@@ -18,11 +19,13 @@ export const SignatureFormComponent = ({
     signature,
     updateValue,
     setIsPristine,
+    isRequired,
 }: SignatureFormComponentProps) => {
     const initialValue =
         signature !== null ? signature : INITIAL_FORM_VALUES.signature
     const [isBlurred, setIsBlurred] = useState<boolean | null>(null)
     const isSignatureValid =
+        !isRequired ||
         isBlurred === false ||
         (signature && signature.trim() && signature.length > 0)
 
@@ -35,7 +38,7 @@ export const SignatureFormComponent = ({
 
     return (
         <div className={css.formGroup}>
-            <Label isRequired={true} className={css.subsectionHeader}>
+            <Label isRequired={isRequired} className={css.subsectionHeader}>
                 Signature
                 <IconTooltip className={css.icon}>
                     This will override the current email signature in your email

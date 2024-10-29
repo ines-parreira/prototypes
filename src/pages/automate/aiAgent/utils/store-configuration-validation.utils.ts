@@ -56,23 +56,31 @@ export const getValidStoreConfigurationFormValues = (
     const isWizardNotFinished =
         !formValues.wizard || isWizardStepKnowledgeOrCompleted
 
-    if (formValues.signature !== null) {
-        if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
-            throw new Error(StoreConfigurationValidationMessage.SignatureLength)
-        }
-    }
-
+    // Validate signature only when email channel is not deactivated
     if (
-        (formValues.signature === null ||
-            formValues.signature.trim().length === 0) &&
-        isWizardNotFinished
+        formValues.emailChannelDeactivatedDatetime === null ||
+        !opts.isMultiChannelEnabled
     ) {
-        throw new Error(
-            simplifyWizardErrors(
-                formValues,
-                StoreConfigurationValidationMessage.SignatureEmpty
+        if (formValues.signature !== null) {
+            if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
+                throw new Error(
+                    StoreConfigurationValidationMessage.SignatureLength
+                )
+            }
+        }
+
+        if (
+            (formValues.signature === null ||
+                formValues.signature.trim().length === 0) &&
+            isWizardNotFinished
+        ) {
+            throw new Error(
+                simplifyWizardErrors(
+                    formValues,
+                    StoreConfigurationValidationMessage.SignatureEmpty
+                )
             )
-        )
+        }
     }
 
     if (
