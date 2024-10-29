@@ -1,70 +1,83 @@
-import React, {ComponentProps} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
+import classNames from 'classnames'
+import React from 'react'
 
+import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
-import Status, {StatusType} from 'pages/common/components/Status/Status'
 
 type Props = {
     active: boolean
+    isGmail: boolean
+    isOutlook: boolean
     isVerified: boolean
     isRowSubmitting: boolean
     redirectURI?: string
     isDomainVerificationWarningVisible: boolean
-    isForwardEmail: boolean
+    isDomainVerificationWarningGmailOutlookVisible: boolean
+    isOutboundVerificationWarningVisible: boolean
 }
 
 export default function EmailIntegrationListVerificationStatus({
     active,
+    isGmail,
+    isOutlook,
     isVerified,
     isRowSubmitting,
     redirectURI,
     isDomainVerificationWarningVisible,
-    isForwardEmail,
+    isDomainVerificationWarningGmailOutlookVisible,
+    isOutboundVerificationWarningVisible,
 }: Props) {
-    const commonButtonProps: Partial<ComponentProps<typeof Button>> = {
-        isLoading: isRowSubmitting,
-        fillStyle: 'ghost',
-        intent: 'secondary',
-    }
-
-    if (isForwardEmail && !isVerified) {
-        return (
-            <Button {...commonButtonProps}>
-                <Status type={StatusType.Error}>
-                    Action Required: Verify Email
-                </Status>
-            </Button>
-        )
-    }
-
-    if (!active && !isForwardEmail) {
-        return (
-            <Button
-                {...commonButtonProps}
-                onClick={(e) => {
-                    e.preventDefault()
-                    window.open(redirectURI)
-                }}
-            >
-                <Status type={StatusType.Error}>
-                    Action Required: Reconnect Email
-                </Status>
-            </Button>
-        )
-    }
-
-    if (isDomainVerificationWarningVisible) {
-        return (
-            <Button {...commonButtonProps}>
-                <Status type={StatusType.Error}>
-                    Action Required: Verify Domain
-                </Status>
-            </Button>
-        )
-    }
+    const id = useId()
+    const buttonId = `reconnect-button-${id}`
 
     return (
-        <Button {...commonButtonProps}>
-            <Status type={StatusType.Success}>Verified</Status>
-        </Button>
+        <div>
+            {!active && (isGmail || isOutlook) && (
+                <>
+                    <Button
+                        id={buttonId}
+                        type="submit"
+                        color="ghost"
+                        fillStyle="ghost"
+                        isLoading={isRowSubmitting}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            window.open(redirectURI)
+                        }}
+                    >
+                        Reconnect
+                    </Button>
+                    <Tooltip placement="top-end" target={buttonId}>
+                        Login credentials required to reconnect email
+                    </Tooltip>
+                </>
+            )}
+            {!isGmail && !isOutlook && !isVerified && (
+                <div>
+                    <i className={classNames('material-icons mr-2 red')}>
+                        cancel
+                    </i>
+                    Not verified
+                </div>
+            )}
+            {(isDomainVerificationWarningVisible ||
+                isDomainVerificationWarningGmailOutlookVisible) && (
+                <div>
+                    <i className={classNames('material-icons mr-2 orange')}>
+                        warning
+                    </i>
+                    Pending domain verification
+                </div>
+            )}
+            {isOutboundVerificationWarningVisible && (
+                <div>
+                    <i className={classNames('material-icons mr-2 orange')}>
+                        warning
+                    </i>
+                    Pending outbound verification
+                </div>
+            )}
+        </div>
     )
 }

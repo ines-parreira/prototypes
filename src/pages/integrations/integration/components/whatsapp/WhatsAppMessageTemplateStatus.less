@@ -1,0 +1,26 @@
+:local {
+    .statusLabel {
+        color: var(--neutral-grey-6);
+    }
+
+    .statusDot {
+        border-radius: 4px;
+        display: inline-block;
+        height: 8px;
+        margin-right: 8px;
+        width: 8px;
+
+        &.neutral {
+            background-color: #99a5b6;
+        }
+        &.success {
+            background-color: var(--feedback-success);
+        }
+        &.warning {
+            background-color: var(--feedback-warning);
+        }
+        &.error {
+            background-color: var(--feedback-error);
+        }
+    }
+}

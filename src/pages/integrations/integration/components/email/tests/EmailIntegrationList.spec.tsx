@@ -229,6 +229,67 @@ describe('<EmailIntegrationList/>', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('should render the page when there are no integrations', async () => {
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+
+            const {container} = render(
+                <Provider store={store}>
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([])}
+                    />
+                </Provider>,
+
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <MemoryRouter>{children}</MemoryRouter>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should render the page without warning when the email is verified', async () => {
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
+                {
+                    name: 'gorgias-test.com',
+                    verified: true,
+                    data: fromJS({
+                        sending_dns_records: [
+                            {
+                                verified: true,
+                                record_type: 'AA',
+                                host: 'gorgias-test.com',
+                                value: 'test',
+                                current_values: ['test1', 'test2'],
+                            },
+                        ],
+                    }),
+                },
+            ])
+
+            const {container} = render(
+                <Provider store={store}>
+                    <EmailIntegrationList {...commonProps} />
+                </Provider>,
+
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <MemoryRouter>{children}</MemoryRouter>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+
+            expect(container).toMatchSnapshot()
+        })
+
         it('should render the default badge if an integration is set as default', async () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.EnableEmailToStoreMapping]: false,
@@ -310,8 +371,7 @@ describe('<EmailIntegrationList/>', () => {
                     EmailIntegrationListVerificationStatusMock
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        isDomainVerificationWarningVisible: true,
-                        isForwardEmail: false,
+                        isDomainVerificationWarningGmailOutlookVisible: true,
                     }),
                     {}
                 )
@@ -319,7 +379,7 @@ describe('<EmailIntegrationList/>', () => {
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
-            'should render the page with a warning when an Outlook integration has sending disabled',
+            'should render the page with a warning when a Outlook integration has sending disabled',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
@@ -346,8 +406,7 @@ describe('<EmailIntegrationList/>', () => {
                     EmailIntegrationListVerificationStatusMock
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        isDomainVerificationWarningVisible: true,
-                        isForwardEmail: false,
+                        isDomainVerificationWarningGmailOutlookVisible: true,
                     }),
                     {}
                 )
@@ -424,7 +483,7 @@ describe('<EmailIntegrationList/>', () => {
             }
         )
 
-        it('should redirect to domain verification tab when provider is not Sendgrid', async () => {
+        it('should redirect to preferences tab when provider is not Sendgrid', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
             const integration = getEmailIntegration(1)
 
@@ -444,11 +503,11 @@ describe('<EmailIntegrationList/>', () => {
             fireEvent.click(component.getByText(integration.meta.address))
 
             expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/channels/email/${integration.id}/dns`
+                `/app/settings/channels/email/${integration.id}`
             )
         })
 
-        it('should redirect to outbound verification settings tab when provider is Sendgrid', async () => {
+        it('should redirect to domain settings tab when provider is Sendgrid', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
             const integration = getEmailIntegration(1)
 

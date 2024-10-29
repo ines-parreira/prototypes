@@ -2,10 +2,11 @@ import {Tooltip} from '@gorgias/ui-kit'
 import React from 'react'
 
 import useId from 'hooks/useId'
+
 import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import Status, {StatusType} from 'pages/common/components/Status/Status'
 
 import {templateAlertContent} from './constants'
+import Status, {StatusIntent} from './WhatsAppMessageTemplateStatus'
 
 type Props = {
     status: WhatsAppMessageTemplateStatus
@@ -25,9 +26,7 @@ export default function WhatsAppMessageTemplateStatusLabel({
 
     return (
         <>
-            <Status type={intent} id={id}>
-                {label ?? status}
-            </Status>
+            <Status intent={intent} label={label ?? status} id={id} />
             {showTooltip && alertContent?.tooltip && (
                 <Tooltip target={id} placement="top">
                     <span>{alertContent.tooltip}</span>{' '}
@@ -48,31 +47,31 @@ export default function WhatsAppMessageTemplateStatusLabel({
 
 const templateStatusToStatusProps = {
     [WhatsAppMessageTemplateStatus.Approved]: {
-        intent: StatusType.Success,
+        intent: StatusIntent.Success,
         label: 'Active',
     },
     [WhatsAppMessageTemplateStatus.Rejected]: {
-        intent: StatusType.Error,
+        intent: StatusIntent.Error,
         label: 'Rejected',
     },
     [WhatsAppMessageTemplateStatus.Pending]: {
-        intent: StatusType.Warning,
+        intent: StatusIntent.Warning,
         label: 'In review',
     },
     [WhatsAppMessageTemplateStatus.InAppeal]: {
-        intent: StatusType.Warning,
+        intent: StatusIntent.Warning,
         label: 'Appeal requested',
     },
     [WhatsAppMessageTemplateStatus.Disabled]: {
-        intent: StatusType.Error,
+        intent: StatusIntent.Error,
         label: 'Disabled',
     },
     [WhatsAppMessageTemplateStatus.Paused]: {
-        intent: StatusType.Warning,
+        intent: StatusIntent.Warning,
         label: 'Paused',
     },
     [WhatsAppMessageTemplateStatus.Unsupported]: {
-        intent: StatusType.Info,
+        intent: StatusIntent.Neutral,
         label: 'Unsupported',
     },
 }

@@ -1,55 +1,89 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
+
+jest.mock('hooks/useId', () => () => 'id')
 
 describe('EmailIntegrationListVerificationStatus', () => {
     const renderComponent = (
         props: ComponentProps<typeof EmailIntegrationListVerificationStatus>
     ) => render(<EmailIntegrationListVerificationStatus {...props} />)
 
-    it('should render Reconnect button and Tooltip when not active and isGmail is true', () => {
+    it('should render Reconnect button and Tooltip when not active and isGmail is true', async () => {
         renderComponent({
             active: false,
-            isForwardEmail: false,
+            isGmail: true,
+            isOutlook: false,
             isVerified: false,
             isRowSubmitting: false,
             redirectURI: 'http://example.com',
             isDomainVerificationWarningVisible: false,
+            isDomainVerificationWarningGmailOutlookVisible: false,
+            isOutboundVerificationWarningVisible: false,
         })
 
-        expect(
-            screen.getByText('Action Required: Reconnect Email')
-        ).toBeInTheDocument()
+        userEvent.hover(screen.getByText('Reconnect'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Login credentials required to reconnect email'
+                )
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should render Not verified message when isForwardEmail is true and isVerified is false', () => {
+    it('should render Not verified message when not isGmail, not isOutlook, and not isVerified', () => {
         renderComponent({
             active: true,
-            isForwardEmail: true,
+            isGmail: false,
+            isOutlook: false,
             isVerified: false,
             isRowSubmitting: false,
             redirectURI: '',
             isDomainVerificationWarningVisible: false,
+            isDomainVerificationWarningGmailOutlookVisible: false,
+            isOutboundVerificationWarningVisible: false,
         })
 
-        expect(
-            screen.getByText('Action Required: Verify Email')
-        ).toBeInTheDocument()
+        expect(screen.getByText('Not verified')).toBeInTheDocument()
     })
 
-    it('should render  "Verify domain" message when isDomainVerificationWarningVisible is true', () => {
+    it('should render Pending domain verification message when isDomainVerificationWarningVisible is true', () => {
         renderComponent({
             active: true,
-            isForwardEmail: true,
+            isGmail: false,
+            isOutlook: false,
             isVerified: true,
             isRowSubmitting: false,
             redirectURI: '',
             isDomainVerificationWarningVisible: true,
+            isDomainVerificationWarningGmailOutlookVisible: false,
+            isOutboundVerificationWarningVisible: false,
         })
 
         expect(
-            screen.getByText('Action Required: Verify Domain')
+            screen.getByText('Pending domain verification')
+        ).toBeInTheDocument()
+    })
+
+    it('should render Pending outbound verification message when isOutboundVerificationWarningVisible is true', () => {
+        renderComponent({
+            active: true,
+            isGmail: false,
+            isOutlook: false,
+            isVerified: true,
+            isRowSubmitting: false,
+            redirectURI: '',
+            isDomainVerificationWarningVisible: false,
+            isDomainVerificationWarningGmailOutlookVisible: false,
+            isOutboundVerificationWarningVisible: true,
+        })
+
+        expect(
+            screen.getByText('Pending outbound verification')
         ).toBeInTheDocument()
     })
 
@@ -60,44 +94,19 @@ describe('EmailIntegrationListVerificationStatus', () => {
 
         renderComponent({
             active: false,
-            isForwardEmail: false,
+            isGmail: true,
+            isOutlook: false,
             isVerified: false,
             isRowSubmitting: false,
             redirectURI: 'http://example.com',
             isDomainVerificationWarningVisible: false,
+            isDomainVerificationWarningGmailOutlookVisible: false,
+            isOutboundVerificationWarningVisible: false,
         })
 
-        fireEvent.click(screen.getByText('Action Required: Reconnect Email'))
+        fireEvent.click(screen.getByText('Reconnect'))
         expect(openSpy).toHaveBeenCalledWith('http://example.com')
 
         openSpy.mockRestore()
-    })
-
-    it('should render "Verified" status', () => {
-        renderComponent({
-            active: true,
-            isForwardEmail: false,
-            isVerified: true,
-            isRowSubmitting: false,
-            redirectURI: '',
-            isDomainVerificationWarningVisible: false,
-        })
-
-        expect(screen.getByText('Verified')).toBeInTheDocument()
-    })
-
-    it('should display Reconnect if active is false and isDomainVerificationWarningVisible is true', () => {
-        renderComponent({
-            active: false,
-            isForwardEmail: false,
-            isVerified: true,
-            isRowSubmitting: false,
-            redirectURI: '',
-            isDomainVerificationWarningVisible: true,
-        })
-
-        expect(
-            screen.getByText('Action Required: Reconnect Email')
-        ).toBeInTheDocument()
     })
 })
