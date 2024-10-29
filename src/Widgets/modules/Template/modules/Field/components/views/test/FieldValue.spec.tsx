@@ -30,4 +30,12 @@ describe('<FieldValue/>', () => {
 
         expect(valueEl.classList.contains('isNotBold')).toBeTruthy()
     })
+
+    it('should add the `overflow` class when `canOverflow` is true', () => {
+        render(<FieldValue canOverflow>content</FieldValue>)
+
+        const valueEl = screen.getByText('content')
+
+        expect(valueEl.classList.contains('overflow')).toBeTruthy()
+    })
 })

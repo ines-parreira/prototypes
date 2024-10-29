@@ -85,11 +85,7 @@ export default function Field<T extends LeafType>({
     return (
         <FieldContainer id={uniqueId} className={className}>
             <FieldLabel className={css.fieldLabel}>{title}:</FieldLabel>
-            <FieldValue
-                className={cs({
-                    [css.overflow]: valueCanOverflow,
-                })}
-            >
+            <FieldValue canOverflow={valueCanOverflow}>
                 {value}
                 {!isEditionMode && copyButton && (
                     <span className={css.copyButton}>{copyButton}</span>
