@@ -386,49 +386,56 @@ export const FiltersPanel = ({
         []
     )
 
-    const filtersToRender: ActiveFilter[] = [
+    const createFilterElement = useCallback(
+        (filter: ActiveFilter) =>
+            createElement(renderFilter(filter.type), {
+                onRemove: () =>
+                    setActiveFilters(
+                        activeFilters.map((activeFilter) => {
+                            if (activeFilter.key === filter.key) {
+                                return {
+                                    ...activeFilter,
+                                    active: false,
+                                }
+                            }
+                            return activeFilter
+                        })
+                    ),
+                key: filter.key,
+                initializeAsOpen: filter.initializeAsOpen,
+                filterName:
+                    filter.type === FilterKey.CustomFields
+                        ? filter.filterName
+                        : '',
+                customFieldId:
+                    filter.type === FilterKey.CustomFields
+                        ? filter.customFieldId
+                        : 0,
+                filterInstanceId:
+                    filter.type === FilterKey.Tags
+                        ? filter?.filterInstanceId
+                        : undefined,
+                ...getFilterSettings(filter.key, filterSettingsOverrides),
+            }),
+        [activeFilters, filterSettingsOverrides]
+    )
+
+    const persistentFiltersToRender: ActiveFilter[] = [
         ...persistentFilters.map((filter) => ({
             key: filter,
             type: filter,
             active: true,
             initializeAsOpen: false,
         })),
-        ...optionalFiltersToRender,
     ]
 
     return (
         <div className={css.wrapper}>
-            {filtersToRender.map((filter) =>
-                createElement(renderFilter(filter.type), {
-                    onRemove: () =>
-                        setActiveFilters(
-                            activeFilters.map((activeFilter) => {
-                                if (activeFilter.key === filter.key) {
-                                    return {
-                                        ...activeFilter,
-                                        active: false,
-                                    }
-                                }
-                                return activeFilter
-                            })
-                        ),
-                    key: filter.key,
-                    initializeAsOpen: filter.initializeAsOpen,
-                    filterName:
-                        filter.type === FilterKey.CustomFields
-                            ? filter.filterName
-                            : '',
-                    customFieldId:
-                        filter.type === FilterKey.CustomFields
-                            ? filter.customFieldId
-                            : 0,
-                    filterInstanceId:
-                        filter.type === FilterKey.Tags
-                            ? filter?.filterInstanceId
-                            : undefined,
-                    ...getFilterSettings(filter.key, filterSettingsOverrides),
-                })
+            {persistentFiltersToRender.map(createFilterElement)}
+            {persistentFiltersToRender.length > 0 && (
+                <span className={css.divider} />
             )}
+            {optionalFiltersToRender.map(createFilterElement)}
             {options.length > 0 && (
                 <AddFilterButton options={options} onClick={handleOnClick} />
             )}

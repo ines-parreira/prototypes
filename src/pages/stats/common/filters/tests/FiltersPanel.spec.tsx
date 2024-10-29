@@ -233,8 +233,8 @@ describe('FiltersPanel', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render only persistentFilters by default', () => {
-        renderWithStore(
+    it('should render only persistentFilters and a divider by default', () => {
+        const {baseElement} = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
@@ -245,6 +245,8 @@ describe('FiltersPanel', () => {
         persistentFilters.forEach((filter) => {
             expect(screen.getByText(FilterLabels[filter])).toBeInTheDocument()
         })
+
+        expect(baseElement.getElementsByClassName('divider').length).toBe(1)
 
         optionalFilters.forEach((filter) => {
             expect(
