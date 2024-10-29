@@ -128,6 +128,7 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: ['person_add'],
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: ['done', css.success],
         [CONTENTFUL_EVENT_TYPES.TicketCreated]: ['add'],
+        [CONTENTFUL_EVENT_TYPES.TicketSplit]: ['call_split'],
         [CONTENTFUL_EVENT_TYPES.TicketCustomerUpdated]: ['people'],
         [CONTENTFUL_EVENT_TYPES.TicketMarkedSpam]: ['flag', css.warning],
         [CONTENTFUL_EVENT_TYPES.TicketMerged]: ['call_merge'],
@@ -167,9 +168,10 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: () => (
             <ActionName>Closed</ActionName>
         ),
-        [CONTENTFUL_EVENT_TYPES.TicketCreated]: () => (
-            <ActionName>Created</ActionName>
-        ),
+        [CONTENTFUL_EVENT_TYPES.TicketCreated]: () =>
+            this._renderTicketCreatedEvent(),
+        [CONTENTFUL_EVENT_TYPES.TicketSplit]: () =>
+            this._renderTicketSplitEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketCustomerUpdated]: () =>
             this._renderCustomerUpdated(),
         [CONTENTFUL_EVENT_TYPES.TicketMarkedSpam]: () => (
@@ -329,6 +331,72 @@ export class AuditLogEventContainer extends Component<Props> {
                     className={css.assigneeLabel}
                 />
             )
+        }
+
+        return elements
+    }
+
+    _renderTicketCreatedEvent() {
+        const {event} = this.props
+        const splitFromTicketId = event.getIn([
+            'data',
+            'split_from_ticket',
+            'id',
+        ])
+        const splitFromTicketClosedDatetime = event.getIn([
+            'data',
+            'split_from_ticket',
+            'closed_datetime',
+        ]) as string
+
+        let elements = [<ActionName key="action-name">Created</ActionName>]
+
+        if (splitFromTicketId) {
+            elements = [
+                <ActionName key="action-name">
+                    Created from{' '}
+                    <i className={`material-icons ${css.eventDetailsGreyIcon}`}>
+                        email
+                    </i>{' '}
+                    <a href={`/app/ticket/${splitFromTicketId}`}>ticket</a>
+                </ActionName>,
+                <Filler key="closed-on">
+                    closed on{' '}
+                    {new Date(splitFromTicketClosedDatetime).toLocaleDateString(
+                        'en-US'
+                    )}
+                </Filler>,
+            ]
+        }
+
+        return elements
+    }
+
+    _renderTicketSplitEvent() {
+        const {event} = this.props
+        const splitIntoTicketId = event.getIn([
+            'data',
+            'split_into_ticket',
+            'id',
+        ])
+
+        let elements = [<ActionName key="action-name">Split</ActionName>]
+
+        if (splitIntoTicketId) {
+            elements = [
+                <Filler key="ticket-closed-for">
+                    Ticket closed for 10+ days.
+                </Filler>,
+                <ActionName key="action-name">
+                    New{' '}
+                    <i className={`material-icons ${css.eventDetailsGreyIcon}`}>
+                        email
+                    </i>{' '}
+                    <a href={`/app/ticket/${splitIntoTicketId}`}>ticket</a>{' '}
+                    created{' '}
+                </ActionName>,
+                <Filler key="for-follow-up">for the follow up message.</Filler>,
+            ]
         }
 
         return elements

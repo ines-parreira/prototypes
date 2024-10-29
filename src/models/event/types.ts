@@ -62,6 +62,19 @@ export type TicketEventPrivateReplyData = {
     instagram_direct_message_ticket_id?: string // deprecated
 }
 
+export type TicketCreatedEventData = {
+    split_from_ticket?: {
+        id: number
+        closed_datetime: string
+    }
+}
+
+export type TicketSplitEventData = {
+    split_into_ticket: {
+        id: number
+    }
+}
+
 export type EventData =
     | TicketTagsAddedEventData
     | TicketTagsRemovedEventData
@@ -74,6 +87,8 @@ export type EventData =
     | TicketSubjectUpdatedEventData
     | TicketCustomerUpdatedEventData
     | TicketEventPrivateReplyData
+    | TicketCreatedEventData
+    | TicketSplitEventData
 
 export enum EventType {
     AccountCreated = 'account-created',
@@ -102,6 +117,7 @@ export enum EventType {
     TicketAssigned = 'ticket-assigned',
     TicketClosed = 'ticket-closed',
     TicketCreated = 'ticket-created',
+    TicketSplit = 'ticket-split',
     TicketCustomerUpdated = 'ticket-customer-updated',
     TicketDeleted = 'ticket-deleted',
     TicketExcludedFromAutoMerge = 'ticket-excluded-from-auto-merge',
@@ -194,6 +210,7 @@ export const TICKET_EVENT_TYPES = Object.freeze({
         'TicketAssigned',
         'TicketClosed',
         'TicketCreated',
+        'TicketSplit',
         'TicketCustomerUpdated',
         'TicketExcludedFromAutoMerge',
         'TicketExcludedFromCSAT',

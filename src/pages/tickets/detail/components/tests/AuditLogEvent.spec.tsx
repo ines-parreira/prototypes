@@ -73,11 +73,21 @@ describe('<AuditLogEvent/>', () => {
                 [TICKET_EVENT_TYPES.TicketAssigned, {assignee_user_id: 1}],
                 [TICKET_EVENT_TYPES.TicketClosed, null],
                 [TICKET_EVENT_TYPES.TicketCreated, null],
+                [
+                    TICKET_EVENT_TYPES.TicketCreated,
+                    {
+                        split_from_ticket: {
+                            id: 1,
+                            closed_datetime: '2024-01-01 00:00:00',
+                        },
+                    },
+                ],
                 [TICKET_EVENT_TYPES.TicketCustomerUpdated, null],
                 [TICKET_EVENT_TYPES.TicketMarkedSpam, null],
                 [TICKET_EVENT_TYPES.TicketMerged, null],
                 [TICKET_EVENT_TYPES.TicketSnoozed, null],
                 [TICKET_EVENT_TYPES.TicketSelfUnsnoozed, null],
+                [TICKET_EVENT_TYPES.TicketSplit, {split_into_ticket: {id: 1}}],
                 [TICKET_EVENT_TYPES.TicketTagsAdded, {tags_added: [1]}],
                 [TICKET_EVENT_TYPES.TicketTagsRemoved, {tags_removed: [1]}],
                 [TICKET_EVENT_TYPES.TicketTeamAssigned, {assignee_team_id: 1}],

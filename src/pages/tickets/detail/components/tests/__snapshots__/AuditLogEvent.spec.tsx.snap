@@ -447,6 +447,77 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type ticket-created 2`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          add
+        </i>
+      </div>
+      <span
+        class="actionName"
+      >
+        Created from
+         
+        <i
+          class="material-icons eventDetailsGreyIcon"
+        >
+          email
+        </i>
+         
+        <a
+          href="/app/ticket/1"
+        >
+          ticket
+        </a>
+      </span>
+      <span
+        class="filler"
+      >
+        closed on
+         
+        1/1/2024
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-customer-updated 1`] = `null`;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-marked-spam 1`] = `
@@ -746,6 +817,83 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
         class="actionName"
       >
         Snoozed
+      </span>
+      <span
+        class="filler"
+      >
+        by
+      </span>
+      <div
+        class="AgentLabel"
+      >
+        <span
+          aria-label="User 1 icon"
+          class="material-icons md-2"
+        >
+          account_circle
+        </span>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </div>
+    <div>
+      2019-11-15 19:00:00.000000
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-split 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <i
+          class="material-icons"
+        >
+          call_split
+        </i>
+      </div>
+      <span
+        class="filler"
+      >
+        Ticket closed for 10+ days.
+      </span>
+      <span
+        class="actionName"
+      >
+        New
+         
+        <i
+          class="material-icons eventDetailsGreyIcon"
+        >
+          email
+        </i>
+         
+        <a
+          href="/app/ticket/1"
+        >
+          ticket
+        </a>
+         
+        created
+         
+      </span>
+      <span
+        class="filler"
+      >
+        for the follow up message.
       </span>
       <span
         class="filler"
