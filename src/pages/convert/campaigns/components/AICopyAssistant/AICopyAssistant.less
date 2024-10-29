@@ -1,7 +1,67 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
 
 :local {
+    .wrapper {
+        max-width: 640px;
+    }
+
     .banner {
         margin-top: @layout-spacing-xs;
+    }
+
+    .headerRow {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+        line-height: 24px;
+        position: relative;
+        width: 100%;
+        flex-wrap: wrap;
+
+        .intro {
+            height: 24px;
+            display: flex;
+            place-items: center;
+            margin: 0 @layout-spacing-xxs;
+            flex: 1;
+            min-width: 0;
+            max-width: 90%;
+
+            @media @tablets {
+                max-width: 80%;
+            }
+
+            @media @mobiles {
+                max-width: 70%;
+            }
+
+            .title {
+                .body-semibold();
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .tooltip {
+                font-size: @body-regular-font-size;
+            }
+        }
+
+        .regenerateButton {
+            width: 114px;
+            margin-right: @layout-spacing-m;
+            flex-shrink: 0;
+
+            @media @tablets {
+                margin-right: @layout-spacing-xs;
+            }
+
+            @media @mobiles {
+                margin-right: 0;
+            }
+        }
     }
 }

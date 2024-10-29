@@ -1,6 +1,6 @@
 import {Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState, useMemo} from 'react'
+import React, {useEffect, useState, useMemo, useCallback} from 'react'
 
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -27,8 +27,13 @@ import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/Pr
 import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import {useManageTriggers} from 'pages/convert/campaigns/hooks/useManageTriggers'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {
+    CampaignDetailsFormApi,
+    CampaignDetailsFormProvider,
+} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
 import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {
@@ -195,9 +200,9 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const chatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]
 
-    const updateCampaignData = (data: Campaign) => {
+    const updateCampaignData = useCallback((data: Campaign) => {
         setCampaign(data)
-    }
+    }, [])
 
     const utmProps = useUtm(channelConnection, campaign?.name || '')
     const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
@@ -254,140 +259,161 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         onClose()
     }
 
+    const {triggers} = useManageTriggers(campaign?.triggers)
+
+    const campaignDetailContext = useMemo<CampaignDetailsFormApi>(() => {
+        return {
+            campaign: campaign || existingCampaign || ({} as Campaign),
+            triggers,
+            updateCampaign: () => null,
+            addTrigger: () => null,
+            updateTrigger: () => null,
+            deleteTrigger: () => null,
+        }
+    }, [triggers, campaign, existingCampaign])
+
     if (!campaign) {
         return null
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={close} size="huge">
-            <ModalBody className={css.modalBody}>
-                <div className={css.modalContainer}>
-                    <div className={css.leftSide}>
-                        <div className={css.labelContainer}>
-                            <Badge
-                                type={ColorType.LightWarning}
-                                corner="square"
-                                upperCase={false}
-                            >
-                                {template.label}
-                            </Badge>
-                            <Badge
-                                className={css.estimationLabel}
-                                type={ColorType.LightSuccess}
-                                corner="square"
-                                upperCase={false}
-                            >
-                                <BadgeIcon
-                                    icon={
-                                        <i className="material-icons">
-                                            monetization_on
-                                        </i>
-                                    }
+        <CampaignDetailsFormProvider value={campaignDetailContext}>
+            <Modal isOpen={isOpen} onClose={close} size="huge">
+                <ModalBody className={css.modalBody}>
+                    <div className={css.modalContainer}>
+                        <div className={css.leftSide}>
+                            <div className={css.labelContainer}>
+                                <Badge
+                                    type={ColorType.LightWarning}
+                                    corner="square"
+                                    upperCase={false}
+                                >
+                                    {template.label}
+                                </Badge>
+                                <Badge
+                                    className={css.estimationLabel}
+                                    type={ColorType.LightSuccess}
+                                    corner="square"
+                                    upperCase={false}
+                                >
+                                    <BadgeIcon
+                                        icon={
+                                            <i className="material-icons">
+                                                monetization_on
+                                            </i>
+                                        }
+                                    />
+
+                                    {`Generates ${estimatedRevenue} on average`}
+                                </Badge>
+                            </div>
+
+                            <h2 className={css.templateTitle}>
+                                {template.name}
+                            </h2>
+                            <div>{template.description}</div>
+
+                            <div className={css.editor}>
+                                <SimpleCampaignEditor
+                                    campaign={campaign}
+                                    onCampaignUpdate={updateCampaignData}
+                                    isConvertSubscriber={isConvertSubscriber}
+                                    integration={integration}
+                                    shopifyIntegration={storeIntegration}
+                                    wizardConfiguration={wizardConfiguration}
+                                    utmConfiguration={utmProps}
                                 />
+                            </div>
 
-                                {`Generates ${estimatedRevenue} on average`}
-                            </Badge>
-                        </div>
-
-                        <h2 className={css.templateTitle}>{template.name}</h2>
-                        <div>{template.description}</div>
-
-                        <div className={css.editor}>
-                            <SimpleCampaignEditor
-                                campaign={campaign}
-                                onCampaignUpdate={updateCampaignData}
-                                isConvertSubscriber={isConvertSubscriber}
-                                integration={integration}
-                                shopifyIntegration={storeIntegration}
-                                wizardConfiguration={wizardConfiguration}
-                                utmConfiguration={utmProps}
-                            />
-                        </div>
-
-                        <div className={css.section}>
-                            <div className={css.disclaimer}>
-                                <span>
-                                    You can further customize this campaign
-                                    after finishing the setup.
-                                </span>
+                            <div className={css.section}>
+                                <div className={css.disclaimer}>
+                                    <span>
+                                        You can further customize this campaign
+                                        after finishing the setup.
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={css.rightSide}>
-                        {campaign && (
-                            <>
-                                {!!productRecommendations.length && (
-                                    <ProductRecommendationBanner
-                                        scenario={productRecommendationScenario}
-                                        className={css.recommendationBanner}
-                                    />
-                                )}
-                                <CampaignPreview
-                                    {...chatPreviewProps}
-                                    translatedTexts={
-                                        campaign.language
-                                            ? GORGIAS_CHAT_WIDGET_TEXTS[
-                                                  campaign.language
-                                              ]
-                                            : chatPreviewProps.translatedTexts
-                                    }
-                                    className={css.campaignPreview}
-                                    products={productsToPreview}
-                                    discountOffers={discountOffers}
-                                    contactCaptureForm={contactCaptureForm}
-                                    html={sanitizeHtmlDefault(
-                                        campaign.message_html || ''
+                        <div className={css.rightSide}>
+                            {campaign && (
+                                <>
+                                    {!!productRecommendations.length && (
+                                        <ProductRecommendationBanner
+                                            scenario={
+                                                productRecommendationScenario
+                                            }
+                                            className={css.recommendationBanner}
+                                        />
                                     )}
-                                    authorName={campaign.meta?.agentName ?? ``}
-                                    authorAvatarUrl={
-                                        campaign.meta?.agentAvatarUrl ?? ''
-                                    }
-                                    chatTitle={integration.get('name')}
-                                    mainFontFamily={
-                                        chatPreviewProps.mainFontFamily ??
-                                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                    }
-                                    shouldHideReplyInput={
-                                        !!campaign.meta?.noReply
-                                    }
-                                    onCampaignContentChange={() => {}}
-                                    emailDisclaimerSettings={
-                                        emailDisclaimerSettings
-                                    }
-                                    defaultLanguage={defaultLanguage}
-                                />
-                            </>
-                        )}
+                                    <CampaignPreview
+                                        {...chatPreviewProps}
+                                        translatedTexts={
+                                            campaign.language
+                                                ? GORGIAS_CHAT_WIDGET_TEXTS[
+                                                      campaign.language
+                                                  ]
+                                                : chatPreviewProps.translatedTexts
+                                        }
+                                        className={css.campaignPreview}
+                                        products={productsToPreview}
+                                        discountOffers={discountOffers}
+                                        contactCaptureForm={contactCaptureForm}
+                                        html={sanitizeHtmlDefault(
+                                            campaign.message_html || ''
+                                        )}
+                                        authorName={
+                                            campaign.meta?.agentName ?? ``
+                                        }
+                                        authorAvatarUrl={
+                                            campaign.meta?.agentAvatarUrl ?? ''
+                                        }
+                                        chatTitle={integration.get('name')}
+                                        mainFontFamily={
+                                            chatPreviewProps.mainFontFamily ??
+                                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                        }
+                                        shouldHideReplyInput={
+                                            !!campaign.meta?.noReply
+                                        }
+                                        onCampaignContentChange={() => {}}
+                                        emailDisclaimerSettings={
+                                            emailDisclaimerSettings
+                                        }
+                                        defaultLanguage={defaultLanguage}
+                                    />
+                                </>
+                            )}
+                        </div>
                     </div>
-                </div>
-            </ModalBody>
-            <ModalFooter>
-                <div className={css.footer}>
-                    <Button
-                        onClick={onClose}
-                        intent="secondary"
-                        className={css.forceLeft}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={() => onSubmit()}
-                        className={css.marginRight}
-                        isLoading={isLoading}
-                        fillStyle="ghost"
-                        intent="primary"
-                    >
-                        Save
-                    </Button>
-                    <Button
-                        onClick={() => onSubmit(true)}
-                        isLoading={isLoading}
-                    >
-                        Save & Publish
-                    </Button>
-                </div>
-            </ModalFooter>
-        </Modal>
+                </ModalBody>
+                <ModalFooter>
+                    <div className={css.footer}>
+                        <Button
+                            onClick={onClose}
+                            intent="secondary"
+                            className={css.forceLeft}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => onSubmit()}
+                            className={css.marginRight}
+                            isLoading={isLoading}
+                            fillStyle="ghost"
+                            intent="primary"
+                        >
+                            Save
+                        </Button>
+                        <Button
+                            onClick={() => onSubmit(true)}
+                            isLoading={isLoading}
+                        >
+                            Save & Publish
+                        </Button>
+                    </div>
+                </ModalFooter>
+            </Modal>
+        </CampaignDetailsFormProvider>
     )
 }
 

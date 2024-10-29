@@ -13,6 +13,7 @@ import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignF
 import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
 
 import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {editorStateWithReplacedText} from 'utils/editor'
 
 type Props = {
     agents: User[]
@@ -52,10 +53,22 @@ export const CampaignMessageStep = ({
     const handleChangeMessage = (value: EditorState) =>
         updateCampaign('message', value)
 
+    const onSuggestionApply = (suggestion: string) => {
+        if (richArea) {
+            const newEditorState = editorStateWithReplacedText(
+                richArea.state.editorState,
+                suggestion
+            )
+            richArea.setEditorState(newEditorState)
+        }
+    }
+
     // makes sure editor and preview are in sync on initial load of HTML
     useEffect(() => {
-        if (richArea) richArea.focusEditor()
-    }, [richArea])
+        if (richArea && isEditMode) {
+            richArea.focusEditor()
+        }
+    }, [richArea, isEditMode])
 
     return (
         <StatefulAccordion
@@ -71,8 +84,11 @@ export const CampaignMessageStep = ({
                 text={campaign.message_text}
                 isConvertSubscriber={isConvertSubscriber}
                 selectedAgent={campaign.meta?.agentEmail ?? ''}
+                shouldGenerateInitialSuggestion={!isEditMode}
+                isAiCopyAssistantEnabled={!isPristine}
                 onSelectAgent={handleChangeAgent}
                 onChangeMessage={handleChangeMessage}
+                onSuggestionApply={onSuggestionApply}
                 onDeleteAttachment={onDeleteAttachment}
             />
         </StatefulAccordion>

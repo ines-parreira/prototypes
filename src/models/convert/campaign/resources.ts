@@ -6,6 +6,7 @@ import {
     CampaignListOptions,
     CampaignListParams,
     CampaignParams,
+    CampaignSuggestCopyPayload,
     CampaignUpdatePayload,
 } from './types'
 
@@ -55,4 +56,13 @@ export const deleteCampaign = async (
     if (!client) return null
 
     return await client.delete_campaign(params)
+}
+
+export const suggestCampaignCopy = async (
+    client: RevenueAddonClient | undefined,
+    data: CampaignSuggestCopyPayload
+) => {
+    if (!client) return null
+
+    return await client.suggest_campaign_copy(null, data)
 }

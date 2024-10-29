@@ -1,0 +1,69 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: @layout-spacing-xs;
+        min-height: 80px;
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+        }
+
+        .mainContent {
+            min-height: 80px;
+        }
+
+        .suggestion {
+            width: 100%;
+            padding: @layout-spacing-s 20px;
+            margin-right: @layout-spacing-xxs;
+            gap: @layout-spacing-xs;
+            border-radius: @layout-spacing-xxs;
+            justify-content: space-between;
+        }
+
+        .clicked {
+            background-color: var(--neutral-grey-1);
+        }
+
+        .clickedInfoMessage {
+            margin-top: @layout-spacing-s;
+            .body-semibold();
+        }
+
+        .cta {
+            margin-right: @layout-spacing-xs;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 52px;
+
+            i {
+                font-size: 20px;
+                font-weight: @body-semibold-font-weight;
+                color: var(--neutral-grey-4);
+                cursor: pointer;
+            }
+
+            .topArrow {
+                align-self: center;
+            }
+
+            .bottomArrow {
+                align-self: center;
+            }
+        }
+    }
+}

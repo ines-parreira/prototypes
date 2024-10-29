@@ -139,6 +139,17 @@ declare namespace Components {
          */
         export type ABTestState = 'active' | 'inactive'
         /**
+         * BaseCampaignTriggerSchema
+         */
+        export interface BaseCampaignTriggerSchema {
+            type: CampaignTriggerType
+            operator: CampaignTriggerOperator
+            /**
+             * Value
+             */
+            value: number | boolean | string | any[] | {}
+        }
+        /**
          * BundleOnboardingStatus
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
@@ -357,6 +368,40 @@ declare namespace Components {
              */
             name: string
             extra?: CampaignAttachmentVisitorFormExtraSchemaOutput | null
+        }
+        /**
+         * CampaignCopySuggestionRequestSchema
+         */
+        export interface CampaignCopySuggestionRequestSchema {
+            /**
+             * Shop Name
+             */
+            shop_name: string
+            /**
+             * Title
+             */
+            title?: string | null
+            /**
+             * Language
+             */
+            language?: string
+            /**
+             * Message
+             */
+            message?: string | null
+            /**
+             * Triggers
+             */
+            triggers?: BaseCampaignTriggerSchema[] | null
+        }
+        /**
+         * CampaignCopySuggestionResponseSchema
+         */
+        export interface CampaignCopySuggestionResponseSchema {
+            /**
+             * Suggestions
+             */
+            suggestions: string[]
         }
         /**
          * CampaignCreateRequestSchema
@@ -895,54 +940,6 @@ declare namespace Components {
              * To Time
              */
             to_time: string
-        }
-        /**
-         * DeprecatedProductRecommendationRequestSchema
-         */
-        export interface DeprecatedProductRecommendationRequestSchema {
-            scenario: Scenario
-            /**
-             * Shop Name
-             */
-            shop_name: string
-            /**
-             * Guest Id
-             */
-            guest_id?: string | null
-            /**
-             * Session Id
-             */
-            session_id?: string | null
-            /**
-             * Customer Id
-             */
-            customer_id?: number | null
-            /**
-             * Context Items
-             */
-            context_items?: string[] | null
-        }
-        /**
-         * DeprecatedProductRecommendationResponseSchema
-         */
-        export interface DeprecatedProductRecommendationResponseSchema {
-            /**
-             * Items
-             */
-            items: DeprecatedRecommendationItemSchema[]
-        }
-        /**
-         * DeprecatedRecommendationItemSchema
-         */
-        export interface DeprecatedRecommendationItemSchema {
-            /**
-             * Item Id
-             */
-            item_id: string
-            /**
-             * Handle
-             */
-            handle: string
         }
         /**
          * DiscountOfferCreateRequestSchema
@@ -1509,18 +1506,6 @@ declare namespace Components {
             | 'ordered_products'
             | 'customer_tags'
             | 'country_code'
-        /**
-         * Scenario
-         */
-        export type Scenario =
-            | 'most_popular_for_you_user'
-            | 'most_popular_for_you_session'
-            | 'recommended_for_you_user'
-            | 'recommended_for_you_user_cart'
-            | 'recommended_for_you_session'
-            | 'recommended_for_you_session_cart'
-            | 'complementary_products_user'
-            | 'complementary_products_session'
         /**
          * ScheduleRequestSchema
          */
@@ -2532,15 +2517,6 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
-    namespace ProductRecommendations {
-        export type RequestBody =
-            Components.Schemas.DeprecatedProductRecommendationRequestSchema
-        namespace Responses {
-            export type $200 =
-                Components.Schemas.DeprecatedProductRecommendationResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
-        }
-    }
     namespace RecommendationsProduct {
         export type RequestBody =
             Components.Schemas.ProductRecommendationRequestSchema
@@ -2676,6 +2652,15 @@ declare namespace Paths {
              * Response Submit Contact Form
              */
             export interface $202 {}
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace SuggestCampaignCopy {
+        export type RequestBody =
+            Components.Schemas.CampaignCopySuggestionRequestSchema
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.CampaignCopySuggestionResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -2835,17 +2820,6 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.RevealDiscountCode.Responses.$200
         | Paths.RevealDiscountCode.Responses.$422
-    >
-    /**
-     * product_recommendations - Deprecated Product Recommendations
-     */
-    'product_recommendations'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.ProductRecommendations.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.ProductRecommendations.Responses.$200
-        | Paths.ProductRecommendations.Responses.$422
     >
     /**
      * recommendations_product - Recommend Products
@@ -3235,6 +3209,17 @@ export interface OperationMethods {
         Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
     >
     /**
+     * suggest_campaign_copy - Suggest Campaign Copy
+     */
+    'suggest_campaign_copy'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.SuggestCampaignCopy.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.SuggestCampaignCopy.Responses.$200
+        | Paths.SuggestCampaignCopy.Responses.$422
+    >
+    /**
      * get_channel_connections - Get Channel Connections
      */
     'get_channel_connections'(
@@ -3452,19 +3437,6 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.RevealDiscountCode.Responses.$200
             | Paths.RevealDiscountCode.Responses.$422
-        >
-    }
-    ['/assistant/pr']: {
-        /**
-         * product_recommendations - Deprecated Product Recommendations
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.ProductRecommendations.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.ProductRecommendations.Responses.$200
-            | Paths.ProductRecommendations.Responses.$422
         >
     }
     ['/assistant/recommend/p']: {
@@ -3909,6 +3881,19 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<
             Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
+        >
+    }
+    ['/campaigns/suggest-copy']: {
+        /**
+         * suggest_campaign_copy - Suggest Campaign Copy
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.SuggestCampaignCopy.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.SuggestCampaignCopy.Responses.$200
+            | Paths.SuggestCampaignCopy.Responses.$422
         >
     }
     ['/channel-connections']: {

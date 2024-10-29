@@ -33,6 +33,7 @@ import {
     truncateContentStateWords,
     ContentStateCounter,
     EditorBlockType,
+    editorStateWithReplacedText,
 } from '../editor'
 
 const imageContentState = ContentState.createFromBlockArray(
@@ -336,6 +337,21 @@ describe('editor utils', () => {
         it('should fallback to text value if html not provided', () => {
             const contentState = contentStateFromTextOrHTML('foo')
             expect(contentState.getPlainText()).toBe('foo')
+        })
+    })
+
+    describe('editorStateWithReplacedText', () => {
+        it('should replace the text in editor state', () => {
+            const oldEditorState = EditorState.createWithContent(
+                ContentState.createFromText('old text')
+            )
+
+            const text = 'new text'
+            const newEditorState = editorStateWithReplacedText(
+                oldEditorState,
+                text
+            )
+            expect(newEditorState.getCurrentContent().getPlainText()).toBe(text)
         })
     })
 

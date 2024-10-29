@@ -468,6 +468,14 @@ export function contentStateFromTextOrHTML(
     return contentState
 }
 
+export function editorStateWithReplacedText(
+    editorState: EditorState,
+    text: string
+): EditorState {
+    const contentState = contentStateFromTextOrHTML(text)
+    return EditorState.push(editorState, contentState, 'insert-characters')
+}
+
 // get selectionState around a specific entity.
 // draft doesn't support removing an entity by key, only all entities in a selection,
 // so we use the selection to isolate one entity.

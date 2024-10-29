@@ -47,6 +47,13 @@ import {toJS} from 'utils'
 
 import css from './CampaignMessage.less'
 
+const SUBSCRIBERS_PLACEHOLDER =
+    'Write your campaign message or prompt, ' +
+    'and let the AI Copy Assistant enhance it for maximum impact. ' +
+    'Highlight key values and include a call-to-action with URLs or discount codes.'
+
+const NONSUBSCRIBERS_PLACEHOLDER = 'Write your message'
+
 type Props = {
     richAreaRef: (ref: RichField | null) => void
     agents: User[]
@@ -56,9 +63,12 @@ type Props = {
     text: string
     selectedAgent: string
     showContentWarning?: boolean
+    shouldGenerateInitialSuggestion: boolean
+    isAiCopyAssistantEnabled: boolean
     onSelectAgent: (agent: Value) => void
     onChangeMessage: (value: EditorState) => void
     onDeleteAttachment: (index: number) => void
+    onSuggestionApply: (suggestion: string) => void
 }
 
 export const CampaignMessage = memo(
@@ -71,8 +81,11 @@ export const CampaignMessage = memo(
         text,
         selectedAgent,
         showContentWarning,
+        shouldGenerateInitialSuggestion,
+        isAiCopyAssistantEnabled,
         onSelectAgent,
         onChangeMessage,
+        onSuggestionApply,
         onDeleteAttachment,
     }: Props): JSX.Element => {
         const dispatch = useAppDispatch()
@@ -91,6 +104,11 @@ export const CampaignMessage = memo(
 
         const attachments = useAppSelector(getNewMessageAttachments)
 
+        // TODO: will be used to compute the similarity between the last suggestion and the current message
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [lastAppliedSuggestion, setLastAppliedSuggestion] = useState<
+            string | null
+        >(null)
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
         >(null)
@@ -206,7 +224,7 @@ export const CampaignMessage = memo(
             attachments,
             shopifyIntegration?.id,
         ])
-        const {campaign, updateCampaign} = useCampaignDetailsContext()
+        const {campaign, triggers, updateCampaign} = useCampaignDetailsContext()
         const canAddContactForm =
             useCanAddContactFormFlag() &&
             !campaign.is_light &&
@@ -275,6 +293,16 @@ export const CampaignMessage = memo(
             }
         }
 
+        const onSuggestionApplyHandler = (suggestion: string) => {
+            onSuggestionApply(suggestion)
+            setLastAppliedSuggestion(suggestion)
+        }
+
+        const placeholder =
+            isConvertSubscriber && isAiCopyAssistantEnabled
+                ? SUBSCRIBERS_PLACEHOLDER
+                : NONSUBSCRIBERS_PLACEHOLDER
+
         return (
             <div>
                 {showAgentSelector && (
@@ -339,7 +367,7 @@ export const CampaignMessage = memo(
                         disableProductCards={!isConvertSubscriber}
                         disableVariantSelection={isConvertSubscriber}
                         onChange={onChangeMessage}
-                        placeholder={'Write your message'}
+                        placeholder={placeholder}
                         displayedActions={displayedActions}
                         isRequired
                         countCharacters={isConvertSubscriber}
@@ -354,7 +382,19 @@ export const CampaignMessage = memo(
                         placementType={RichFieldEditorPlacement.ConvertDetail}
                         canAddUtm={isConvertSubscriber}
                     />
-                    {isConvertSubscriber && <AICopyAssistant />}
+                    {isConvertSubscriber &&
+                        shopifyIntegration?.meta?.shop_name && (
+                            <AICopyAssistant
+                                campaign={campaign}
+                                triggers={Object.values(triggers)}
+                                shopName={shopifyIntegration.meta.shop_name}
+                                shouldGenerateInitialSuggestion={
+                                    shouldGenerateInitialSuggestion
+                                }
+                                isEnabled={isAiCopyAssistantEnabled}
+                                onApply={onSuggestionApplyHandler}
+                            />
+                        )}
                     <TicketAttachments
                         context="campaign-message"
                         removable

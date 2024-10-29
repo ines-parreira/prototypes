@@ -10,12 +10,14 @@ import {
     InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
 import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
+import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import {ShopifyIntegration} from 'models/integration/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import * as integrationHelpers from 'state/integrations/helpers'
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises} from 'utils/testing'
@@ -23,16 +25,11 @@ import {flushPromises} from 'utils/testing'
 import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
 import {CampaignMessage} from '../CampaignMessage'
 
+jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
+jest.mock('models/convert/campaign/queries')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 jest.mock('pages/convert/campaigns/components/ContactCaptureForm/utils')
-jest.mock(
-    'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant',
-    () => ({
-        __esModule: true,
-        AICopyAssistant: () => <div>AI Copy Assistant placeholder</div>,
-    })
-)
 
 jest.mock(
     'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm',
@@ -81,11 +78,14 @@ const attachments = [
     },
 ]
 
+const mockGenerateSuggestions = jest.fn()
+
 describe('<CampaignMessage>', () => {
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
     window.IMAGE_PROXY_SIGN_KEY = 'test-key'
 
     const updateCampaign = jest.fn()
+    const onSuggestionApply = jest.fn()
 
     const renderCampaignMessage = (
         storeState: Partial<RootState>,
@@ -106,6 +106,8 @@ describe('<CampaignMessage>', () => {
                     <CampaignMessage
                         showContentWarning
                         isConvertSubscriber={isConvertSubscriber}
+                        shouldGenerateInitialSuggestion={true}
+                        isAiCopyAssistantEnabled={true}
                         richAreaRef={jest.fn()}
                         agents={[]}
                         html=""
@@ -113,12 +115,20 @@ describe('<CampaignMessage>', () => {
                         selectedAgent=""
                         onSelectAgent={jest.fn()}
                         onChangeMessage={jest.fn()}
+                        onSuggestionApply={onSuggestionApply}
                         onDeleteAttachment={jest.fn()}
                     />
                 </CampaignDetailsFormContext.Provider>
             </Provider>
         )
     }
+
+    beforeEach(() => {
+        ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
+            mutateAsync: mockGenerateSuggestions,
+        })
+        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
+    })
 
     describe('is not convert subscriber', () => {
         beforeEach(() => {
@@ -149,6 +159,9 @@ describe('<CampaignMessage>', () => {
         })
 
         it('it does not display AI copy assistant banner', async () => {
+            mockGenerateSuggestions.mockResolvedValue({
+                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            })
             renderCampaignMessage(
                 {
                     newMessage: fromJS({
@@ -162,9 +175,7 @@ describe('<CampaignMessage>', () => {
 
             await act(flushPromises)
 
-            expect(
-                screen.queryByText('AI Copy Assistant placeholder')
-            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Suggestion 1')).not.toBeInTheDocument()
         })
     })
 
@@ -181,7 +192,8 @@ describe('<CampaignMessage>', () => {
             ).mockImplementation(() => ({
                 shopifyIntegration: {
                     id: 1,
-                } as ShopifyIntegration,
+                    meta: {shop_name: 'shop-name'},
+                } as any as ShopifyIntegration,
             }))
         })
 
@@ -279,6 +291,9 @@ describe('<CampaignMessage>', () => {
         })
 
         it('it displays AI copy assistant banner', async () => {
+            mockGenerateSuggestions.mockResolvedValue({
+                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            })
             renderCampaignMessage(
                 {
                     newMessage: fromJS({
@@ -292,9 +307,30 @@ describe('<CampaignMessage>', () => {
 
             await act(flushPromises)
 
-            expect(
-                screen.getByText('AI Copy Assistant placeholder')
-            ).toBeInTheDocument()
+            expect(screen.getByText('Suggestion 1')).toBeInTheDocument()
+        })
+
+        it('it calls onSuggestionApply on Apply click', async () => {
+            mockGenerateSuggestions.mockResolvedValue({
+                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            })
+            renderCampaignMessage(
+                {
+                    newMessage: fromJS({
+                        newMessage: {
+                            attachments: attachments,
+                        },
+                    }),
+                },
+                true
+            )
+
+            await act(flushPromises)
+
+            const applyButton = screen.getByText('Apply')
+            fireEvent.click(applyButton)
+
+            expect(onSuggestionApply).toHaveBeenCalledWith('Suggestion 1')
         })
     })
 })

@@ -17,6 +17,12 @@ export type CampaignCreatePayload =
 export type CampaignUpdatePayload =
     Components.Schemas.CampaignPatchRequestSchema
 
+export type CampaignSuggestCopyPayload =
+    Components.Schemas.CampaignCopySuggestionRequestSchema
+
+export type CampaignSuggestCopyResponse =
+    Components.Schemas.CampaignCopySuggestionResponseSchema
+
 export type Schedule = Components.Schemas.ScheduleResponseSchema
 
 export type CampaignScheduleRequestPayload =

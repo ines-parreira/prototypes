@@ -28,6 +28,7 @@ jest.mock('../resources', () => ({
     createCampaign: jest.fn(),
     updateCampaign: jest.fn(),
     deleteCampaign: jest.fn(),
+    suggestCampaignCopy: jest.fn(),
 }))
 
 const mockedResources = {
@@ -36,6 +37,7 @@ const mockedResources = {
     mockCreateCampaign: assumeMock(resources.createCampaign),
     mockUpdateCampaign: assumeMock(resources.updateCampaign),
     mockDeleteCampaign: assumeMock(resources.deleteCampaign),
+    mockSuggestCampaignCopy: assumeMock(resources.suggestCampaignCopy),
 }
 
 const queryClient = mockQueryClient()
@@ -188,6 +190,12 @@ describe('Campaign queries', () => {
                 campaign as CampaignUpdatePayload,
             ],
             ['useDeleteCampaign', 'mockDeleteCampaign', id, undefined],
+            [
+                'useSuggestCampaignCopy',
+                'mockSuggestCampaignCopy',
+                undefined,
+                ['suggestion1', 'suggestion2'],
+            ],
         ] as const)(
             '%s return correct data on success',
             async (hook, mockedResource, param, returnedData) => {

@@ -417,46 +417,6 @@
                 }
             }
         },
-        "/assistant/pr": {
-            "post": {
-                "tags": ["product-recommendations"],
-                "summary": "Deprecated Product Recommendations",
-                "operationId": "product_recommendations",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/DeprecatedProductRecommendationRequestSchema"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/DeprecatedProductRecommendationResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                },
-                "deprecated": true
-            }
-        },
         "/assistant/recommend/p": {
             "post": {
                 "tags": ["product-recommendations"],
@@ -1918,6 +1878,46 @@
                 }
             }
         },
+        "/campaigns/suggest-copy": {
+            "post": {
+                "tags": ["campaigns"],
+                "summary": "Suggest Campaign Copy",
+                "operationId": "suggest_campaign_copy",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CampaignCopySuggestionRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CampaignCopySuggestionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            }
+        },
         "/channel-connections": {
             "post": {
                 "tags": ["channel-connections"],
@@ -2489,6 +2489,29 @@
                 "enum": ["active", "inactive"],
                 "title": "ABTestState"
             },
+            "BaseCampaignTriggerSchema": {
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/CampaignTriggerType"
+                    },
+                    "operator": {
+                        "$ref": "#/components/schemas/CampaignTriggerOperator"
+                    },
+                    "value": {
+                        "anyOf": [
+                            {"type": "integer"},
+                            {"type": "boolean"},
+                            {"type": "string"},
+                            {"items": {}, "type": "array"},
+                            {"type": "object"}
+                        ],
+                        "title": "Value"
+                    }
+                },
+                "type": "object",
+                "required": ["type", "operator", "value"],
+                "title": "BaseCampaignTriggerSchema"
+            },
             "BundleOnboardingStatus": {
                 "type": "string",
                 "enum": ["installed", "not_installed"],
@@ -2781,6 +2804,61 @@
                 "type": "object",
                 "required": ["contentType", "name"],
                 "title": "CampaignAttachmentVisitorFormSchema"
+            },
+            "CampaignCopySuggestionRequestSchema": {
+                "properties": {
+                    "shop_name": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "title": "Shop Name"
+                    },
+                    "title": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 256},
+                            {"type": "null"}
+                        ],
+                        "title": "Title"
+                    },
+                    "language": {
+                        "type": "string",
+                        "title": "Language",
+                        "default": "en"
+                    },
+                    "message": {
+                        "anyOf": [
+                            {"type": "string", "maxLength": 512},
+                            {"type": "null"}
+                        ],
+                        "title": "Message"
+                    },
+                    "triggers": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/BaseCampaignTriggerSchema"
+                                },
+                                "type": "array"
+                            },
+                            {"type": "null"}
+                        ],
+                        "title": "Triggers"
+                    }
+                },
+                "type": "object",
+                "required": ["shop_name"],
+                "title": "CampaignCopySuggestionRequestSchema"
+            },
+            "CampaignCopySuggestionResponseSchema": {
+                "properties": {
+                    "suggestions": {
+                        "items": {"type": "string"},
+                        "type": "array",
+                        "title": "Suggestions"
+                    }
+                },
+                "type": "object",
+                "required": ["suggestions"],
+                "title": "CampaignCopySuggestionResponseSchema"
             },
             "CampaignCreateRequestSchema": {
                 "properties": {
@@ -3617,57 +3695,6 @@
                 "required": ["days", "from_time", "to_time"],
                 "title": "CustomScheduleSchema"
             },
-            "DeprecatedProductRecommendationRequestSchema": {
-                "properties": {
-                    "scenario": {"$ref": "#/components/schemas/Scenario"},
-                    "shop_name": {"type": "string", "title": "Shop Name"},
-                    "guest_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Guest Id"
-                    },
-                    "session_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Session Id"
-                    },
-                    "customer_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "Customer Id"
-                    },
-                    "context_items": {
-                        "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
-                        ],
-                        "title": "Context Items"
-                    }
-                },
-                "type": "object",
-                "required": ["scenario", "shop_name"],
-                "title": "DeprecatedProductRecommendationRequestSchema"
-            },
-            "DeprecatedProductRecommendationResponseSchema": {
-                "properties": {
-                    "items": {
-                        "items": {
-                            "$ref": "#/components/schemas/DeprecatedRecommendationItemSchema"
-                        },
-                        "type": "array",
-                        "title": "Items"
-                    }
-                },
-                "type": "object",
-                "required": ["items"],
-                "title": "DeprecatedProductRecommendationResponseSchema"
-            },
-            "DeprecatedRecommendationItemSchema": {
-                "properties": {
-                    "item_id": {"type": "string", "title": "Item Id"},
-                    "handle": {"type": "string", "title": "Handle"}
-                },
-                "type": "object",
-                "required": ["item_id", "handle"],
-                "title": "DeprecatedRecommendationItemSchema"
-            },
             "DiscountOfferCreateRequestSchema": {
                 "properties": {
                     "type": {
@@ -4401,20 +4428,6 @@
                     "country_code"
                 ],
                 "title": "RuleType"
-            },
-            "Scenario": {
-                "type": "string",
-                "enum": [
-                    "most_popular_for_you_user",
-                    "most_popular_for_you_session",
-                    "recommended_for_you_user",
-                    "recommended_for_you_user_cart",
-                    "recommended_for_you_session",
-                    "recommended_for_you_session_cart",
-                    "complementary_products_user",
-                    "complementary_products_session"
-                ],
-                "title": "Scenario"
             },
             "ScheduleRequestSchema": {
                 "properties": {

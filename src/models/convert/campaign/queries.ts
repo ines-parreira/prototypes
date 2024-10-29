@@ -9,6 +9,7 @@ import {
     deleteCampaign,
     getCampaign,
     listCampaigns,
+    suggestCampaignCopy,
     updateCampaign,
 } from './resources'
 import {Campaign, CampaignListOptions, CampaignParams} from './types'
@@ -98,6 +99,19 @@ export const useDeleteCampaign = (
         mutationFn: ([client = convertClient, pathParams]) =>
             deleteCampaign(client, pathParams),
         ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+    })
+}
+
+export const useSuggestCampaignCopy = (
+    overrides?: MutationOverrides<typeof suggestCampaignCopy>
+) => {
+    const {client: convertClient} = useConvertApi()
+
+    return useMutation({
+        mutationFn: ([client = convertClient, data]) =>
+            suggestCampaignCopy(client, data),
+        ...{...CONVERT_DEFAULT_OPTIONS, staleTime: 0, cacheTime: 0},
         ...overrides,
     })
 }

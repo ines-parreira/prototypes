@@ -2,7 +2,10 @@ import _omit from 'lodash/omit'
 
 import {campaign, campaignId} from 'fixtures/campaign'
 import {channelConnectionId} from 'fixtures/channelConnection'
-import {CampaignCreatePayload} from 'models/convert/campaign/types'
+import {
+    CampaignCreatePayload,
+    CampaignSuggestCopyPayload,
+} from 'models/convert/campaign/types'
 import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
@@ -88,6 +91,25 @@ describe('Campaign resources', () => {
                 campaign_id: campaignId,
             })
             expect(res).toEqual(undefined)
+        })
+    })
+
+    describe('suggestCampaignCopy', () => {
+        it('should suggest multiple campaign copy suggestions', async () => {
+            const suggestions = ['suggestion1', 'suggestion2']
+            const client = {
+                suggest_campaign_copy: jest.fn().mockReturnValue(suggestions),
+            } as unknown as RevenueAddonClient
+
+            const res = await resources.suggestCampaignCopy(client, {
+                shop_name: 'best-shop',
+                title: campaign.name,
+                language: campaign.language || undefined,
+                message: campaign.message_text,
+                triggers: [],
+            } as CampaignSuggestCopyPayload)
+
+            expect(res).toEqual(suggestions)
         })
     })
 })
