@@ -307,6 +307,7 @@ export enum SegmentEvent {
     StatDrillDownTicketClicked = 'stat-drill-down-ticket-clicked',
     StatFilterSelected = 'stat-filter-selected',
     StatViewLinkClicked = 'stat-view-link-clicked',
+    StatSavedFilterSelected = 'stat-saved-filter-selected',
     SubscribedToDevNewsletter = 'subscribed-to-dev-newsletter',
     SubscriptionCancellationAutoRenewalClicked = 'subscription/cancellation/cancel-auto-renewal-clicked',
     SubscriptionCancellationChurnMitigationOfferDecision = 'subscription/cancellation/churn-mitigation-offer-decision',

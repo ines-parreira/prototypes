@@ -1,5 +1,7 @@
 import React, {useMemo, useRef, useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import {SavedFilter} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -8,8 +10,10 @@ import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
 
+type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
+
 type Props = {
-    savedFilters: Array<{id: number; name: string}>
+    savedFilters: Array<SavedFilterType>
     isAdmin: boolean
 }
 
@@ -18,6 +22,13 @@ export const NO_FILTERS_CONTENT =
 export const NOT_ADMIN_CONTENT =
     'No Saved Filters available. Check with your admin for permissions to create Saved Filters.'
 export const APPLY_SAVED_FILTERS = 'Apply Saved Filter'
+
+const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
+    logEvent(SegmentEvent.StatSavedFilterSelected, {
+        name,
+        id,
+    })
+}
 
 const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
@@ -36,7 +47,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             return (
                 <DropdownItem
                     key={filter.id}
-                    onClick={() => {}}
+                    onClick={() => logSavedFilterSelection(filter)}
                     option={{
                         label: filter.name,
                         value: filter.id,
@@ -69,11 +80,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             >
                 <DropdownBody>{content}</DropdownBody>
                 <DropdownFooter>
-                    <Button
-                        fillStyle="ghost"
-                        isDisabled={!isAdmin}
-                        onClick={() => {}}
-                    >
+                    <Button fillStyle="ghost" isDisabled={!isAdmin}>
                         Create Saved Filters
                     </Button>
                 </DropdownFooter>
