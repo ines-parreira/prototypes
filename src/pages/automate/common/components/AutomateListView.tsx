@@ -1,10 +1,9 @@
 import React, {ReactNode} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Container} from 'reactstrap'
 
-import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import Spinner from 'pages/common/components/Spinner'
 
 import css from './AutomateListView.less'
 
@@ -51,9 +50,13 @@ const AutomateListView = ({
                     </SecondaryNavbar>
                 )}
             </div>
-            <Container fluid className={css.container}>
-                {isLoading ? <Loader data-testid="loader" /> : children}
-            </Container>
+            {isLoading ? (
+                <div className={css.spinner}>
+                    <Spinner size="big" />
+                </div>
+            ) : (
+                children
+            )}
         </div>
     )
 }

@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import React, {ComponentProps, ReactNode, useRef} from 'react'
-import {Container} from 'reactstrap'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 
@@ -43,11 +42,7 @@ export default function StatsPage({
                     )}
                 </PageHeader>
             </div>
-            <div className={css.statsWrapper}>
-                <Container fluid className={css.statsContainer}>
-                    {children}
-                </Container>
-            </div>
+            <div className={css.statsContainer}>{children}</div>
             <DrillDownModal />
         </div>
     )

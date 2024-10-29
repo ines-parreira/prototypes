@@ -64,7 +64,7 @@ export const ConnectedChannelsEmailView = () => {
     if (isLoading) {
         return (
             <div className={css.loadingContainer}>
-                <Spinner color="dark" size="big" />
+                <Spinner size="big" />
             </div>
         )
     }

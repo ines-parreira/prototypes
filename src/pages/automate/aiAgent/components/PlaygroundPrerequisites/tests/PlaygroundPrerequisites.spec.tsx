@@ -65,7 +65,7 @@ describe('CheckPlaygroundPrerequisites', () => {
         })
         renderComponent({snippetHelpCenterId: 123})
 
-        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders missing knowledge base alert when no source items are done', () => {

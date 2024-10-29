@@ -1,8 +1,10 @@
 import React, {useMemo} from 'react'
 
 import {LocaleCode} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
 
+import Spinner from 'pages/common/components/Spinner'
+
+import css from './AiAgentGuidanceContainer.less'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
@@ -70,7 +72,11 @@ export const AiAgentGuidanceDetailView = ({
     }, [guidanceArticle])
 
     if (!guidanceArticle) {
-        return <Loader data-testid="article-loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

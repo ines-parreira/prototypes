@@ -264,305 +264,301 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
     <div
-      class="statsContainer container-fluid"
+      class="currentDate"
     >
-      <div
-        class="currentDate"
-      >
-        <div
-          class="wrapper"
-        >
-          <span
-            class="date"
-          >
-            Today, 
-            February 14th
-          </span>
-          <span
-            class="businessHours"
-          >
-            Business hours 
-            12:00 am - 01:00 am
-             
-            US/Pacific
-          </span>
-        </div>
-      </div>
       <div
         class="wrapper"
       >
+        <span
+          class="date"
+        >
+          Today, 
+          February 14th
+        </span>
+        <span
+          class="businessHours"
+        >
+          Business hours 
+          12:00 am - 01:00 am
+           
+          US/Pacific
+        </span>
+      </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Activity of the agents
+        </h5>
         <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Activity of the agents
-          </h5>
-          <div
-            class="buttonContainer"
-          />
-        </div>
-        <table
-          class="table table table-hover"
-        >
-          <thead>
-            <tr>
-              <th
-                class="user"
+          class="buttonContainer"
+        />
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="user"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  AGENT
-                </span>
-              </th>
-              <th
-                class="online-state"
+                AGENT
+              </span>
+            </th>
+            <th
+              class="online-state"
+            >
+              <span
+                class="cell-wrapper"
               >
+                ONLINE STATUS
                 <span
-                  class="cell-wrapper"
+                  class="axisHelperIcon"
                 >
-                  ONLINE STATUS
-                  <span
-                    class="axisHelperIcon"
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="Online-status-tooltip-live-agents-stat"
                   >
-                    <i
-                      class="material-icons ml-2 helpIcon"
-                      id="Online-status-tooltip-live-agents-stat"
-                    >
-                      info_outline
-                    </i>
-                  </span>
+                    info_outline
+                  </i>
                 </span>
-              </th>
-              <th
-                class="number"
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
               >
+                TICKETS CLOSED
                 <span
-                  class="cell-wrapper"
+                  class="axisHelperIcon"
                 >
-                  TICKETS CLOSED
-                  <span
-                    class="axisHelperIcon"
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="Tickets-closed-tooltip-live-agents-stat"
                   >
-                    <i
-                      class="material-icons ml-2 helpIcon"
-                      id="Tickets-closed-tooltip-live-agents-stat"
-                    >
-                      info_outline
-                    </i>
-                  </span>
+                    info_outline
+                  </i>
                 </span>
-              </th>
-              <th
-                class="number"
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  MESSAGES SENT
-                </span>
-              </th>
-              <th
-                class="ticket-details"
+                MESSAGES SENT
+              </span>
+            </th>
+            <th
+              class="ticket-details"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  OPEN TICKETS
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell user link-full-td"
+                OPEN TICKETS
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell user link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div
-                      class="userName"
-                    >
-                      Acme Support
-                    </div>
+                <div>
+                  <div
+                    class="userName"
+                  >
+                    Acme Support
                   </div>
-                </span>
-              </td>
-              <td
-                class="lineCell online-state link-full-td"
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell online-state link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div
-                      class="badge upperCase"
-                      style="border-radius: 100px;"
-                    >
-                      Online
-                    </div>
+                <div>
+                  <div
+                    class="badge upperCase"
+                    style="border-radius: 100px;"
+                  >
+                    Online
                   </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  0
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
+                0
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  0
-                </span>
-              </td>
-              <td
-                class="lineCell ticket-details link-full-td"
+                0
+              </span>
+            </td>
+            <td
+              class="lineCell ticket-details link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
+                <div
+                  class="fit-cell"
                 >
                   <div
-                    class="fit-cell"
+                    class="wrapper"
                   >
                     <div
-                      class="wrapper"
+                      class="openTickets"
+                    >
+                      <a
+                        class="viewLink"
+                        to="[object Object]"
+                      >
+                        134
+                      </a>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="channelsBreakdown"
                     >
                       <div
-                        class="openTickets"
+                        class="channel"
+                        title="Facebook"
                       >
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          134
-                        </a>
+                          live_help
+                        </i>
+                        1
                       </div>
                       <div
-                        class="separator"
-                      />
-                      <div
-                        class="channelsBreakdown"
+                        class="channel"
+                        title="Facebook Messenger"
                       >
-                        <div
-                          class="channel"
-                          title="Facebook"
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          1
-                        </div>
-                        <div
-                          class="channel"
-                          title="Facebook Messenger"
+                          live_help
+                        </i>
+                        2
+                      </div>
+                      <div
+                        class="channel"
+                        title="Phone"
+                      >
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          2
-                        </div>
-                        <div
-                          class="channel"
-                          title="Phone"
+                          live_help
+                        </i>
+                        2
+                      </div>
+                      <div
+                        class="channel"
+                        title="Chat"
+                      >
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          2
-                        </div>
-                        <div
-                          class="channel"
-                          title="Chat"
+                          live_help
+                        </i>
+                        102
+                      </div>
+                      <div
+                        class="channel"
+                        title="Email"
+                      >
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          102
-                        </div>
-                        <div
-                          class="channel"
-                          title="Email"
+                          live_help
+                        </i>
+                        26
+                      </div>
+                      <div
+                        class="channel"
+                        title="Instagram Direct Message"
+                      >
+                        <i
+                          class="material-icons channelIcon"
                         >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          26
-                        </div>
-                        <div
-                          class="channel"
-                          title="Instagram Direct Message"
-                        >
-                          <i
-                            class="material-icons channelIcon"
-                          >
-                            live_help
-                          </i>
-                          1
-                        </div>
+                          live_help
+                        </i>
+                        1
                       </div>
                     </div>
                   </div>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div
-          class="navigationWrapper"
+                </div>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="navigationWrapper"
+      >
+        <span
+          class="group horizontal"
         >
-          <span
-            class="group horizontal"
+          <button
+            aria-disabled="true"
+            class="wrapper wrapper fill secondary medium left isDisabled"
+            id="prev-btn"
+            type="button"
           >
-            <button
-              aria-disabled="true"
-              class="wrapper wrapper fill secondary medium left isDisabled"
-              id="prev-btn"
-              type="button"
+            <i
+              class="material-icons icon"
             >
-              <i
-                class="material-icons icon"
-              >
-                keyboard_arrow_left
-              </i>
-            </button>
-            <button
-              aria-disabled="false"
-              class="wrapper wrapper fill secondary medium right"
-              id="next-btn"
-              type="button"
+              keyboard_arrow_left
+            </i>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper wrapper fill secondary medium right"
+            id="next-btn"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
             >
-              <i
-                class="material-icons icon"
-              >
-                keyboard_arrow_right
-              </i>
-            </button>
-          </span>
-        </div>
+              keyboard_arrow_right
+            </i>
+          </button>
+        </span>
       </div>
     </div>
   </div>

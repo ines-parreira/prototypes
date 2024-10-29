@@ -164,7 +164,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             isLoading: true,
         })
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument
+        expect(screen.getByText('Loading...')).toBeInTheDocument
     })
 
     it('should render loader if help centers are loading', () => {
@@ -173,7 +173,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             isLoading: true,
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument
+        expect(screen.getByText('Loading...')).toBeInTheDocument
     })
 
     it('should render alert about store configuration', () => {
@@ -210,7 +210,7 @@ describe('<AiAgentGuidanceContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render empty state component', () => {

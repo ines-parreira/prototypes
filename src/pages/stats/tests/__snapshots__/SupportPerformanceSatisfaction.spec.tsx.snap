@@ -519,560 +519,211 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
     <div
-      class="statsContainer container-fluid"
+      class="wrapper"
     >
       <div
-        class="wrapper"
+        class="metrics"
       >
         <div
-          class="metrics"
+          class="metric"
         >
           <div
-            class="metric"
+            class="label"
           >
-            <div
-              class="label"
-            >
-              Survey sent
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total_sent-0"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              <div>
-                <div
-                  class="value"
-                >
-                  1,176
-                </div>
-                <span
-                  class="diff"
-                  id="value-total_sent-0"
-                >
-                  <span>
-                    <i
-                      class="material-icons mr-1 statsDifference negative"
-                    >
-                      arrow_downward
-                    </i>
-                    -3
-                    %
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Response rate
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-response_rate-1"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              <div
-                class="container"
-              >
-                <svg
-                  class="donut"
-                  viewBox="0 0 320 320"
-                >
-                  <path
-                    class="path-success"
-                    d="M159.99,8.00
-          A152.00,152.00 0 0 1 233.22,26.80A5.76,5.76 0 0 1 223.97,43.62A132.79,132.79 0 0 0 159.99,27.20A5.76,5.76 0 0 1 159.99,8.00"
-                  />
-                  <path
-                    class="path-empty"
-                    d="M233.22,26.80
-          A152.00,152.00 0 1 1 159.99,8.00A5.76,5.76 0 1 0 159.99,27.20A132.79,132.79 0 1 0 223.97,43.62A5.76,5.76 0 1 0 233.22,26.80"
-                  />
-                </svg>
-                <div
-                  class="difference"
-                >
-                  <div
-                    class="value"
-                  >
-                    8%
-                  </div>
-                  <div>
-                    <span
-                      class="diff"
-                      id="value-response_rate-1"
-                    >
-                      <span>
-                        <i
-                          class="material-icons mr-1 statsDifference negative"
-                        >
-                          arrow_downward
-                        </i>
-                        -12
-                        %
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Average rating
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-average_rating-2"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              <div
-                class="container"
-              >
-                <svg
-                  class="donut"
-                  viewBox="0 0 320 320"
-                >
-                  <path
-                    class="path-warning"
-                    d="M159.99,8.00
-          A152.00,152.00 0 1 1 64.59,41.67A5.76,5.76 0 1 1 76.64,56.62A132.79,132.79 0 1 0 159.99,27.20A5.76,5.76 0 1 1 159.99,8.00"
-                  />
-                  <path
-                    class="path-empty"
-                    d="M64.59,41.67
-          A152.00,152.00 0 0 1 159.99,8.00A5.76,5.76 0 0 0 159.99,27.20A132.79,132.79 0 0 0 76.64,56.62A5.76,5.76 0 0 0 64.59,41.67"
-                  />
-                </svg>
-                <div
-                  class="difference"
-                >
-                  <div
-                    class="value"
-                  >
-                    4.46
-                  </div>
-                  <div>
-                    <span
-                      class="diff"
-                      id="value-average_rating-2"
-                    >
-                      <span>
-                        <i
-                          class="material-icons mr-1 statsDifference negative"
-                        >
-                          arrow_downward
-                        </i>
-                        -2
-                        %
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Response Distribution
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-response_distribution-3"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              <div>
-                <div
-                  class="mb-1 row"
-                >
-                  <div
-                    class="col-md-6 ta-left"
-                  >
-                    <span
-                      class="distribution"
-                    >
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="value col-md-3 ta-right"
-                  >
-                    78.64%
-                  </div>
-                </div>
-                <div
-                  class="mb-1 row"
-                >
-                  <div
-                    class="col-md-6 ta-left"
-                  >
-                    <span
-                      class="distribution"
-                    >
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="value col-md-3 ta-right"
-                  >
-                    5.83%
-                  </div>
-                </div>
-                <div
-                  class="mb-1 row"
-                >
-                  <div
-                    class="col-md-6 ta-left"
-                  >
-                    <span
-                      class="distribution"
-                    >
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="value col-md-3 ta-right"
-                  >
-                    5.83%
-                  </div>
-                </div>
-                <div
-                  class="mb-1 row"
-                >
-                  <div
-                    class="col-md-6 ta-left"
-                  >
-                    <span
-                      class="distribution"
-                    >
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="value col-md-3 ta-right"
-                  >
-                    1.94%
-                  </div>
-                </div>
-                <div
-                  class="mb-1 row"
-                >
-                  <div
-                    class="col-md-6 ta-left"
-                  >
-                    <span
-                      class="distribution"
-                    >
-                      <img
-                        alt="filled star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                      <img
-                        alt="empty star"
-                        class="star"
-                        src="test-file-stub"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="value col-md-3 ta-right"
-                  >
-                    7.77%
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Latest Surveys
+            Survey sent
             <span>
               <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-latest-satisfaction-surveys"
+                class="material-icons ml-2 helpIcon info-icon"
+                id="title-total_sent-0"
               >
                 info_outline
               </i>
             </span>
-          </h5>
+          </div>
           <div
-            class="buttonContainer"
+            class="mt-3 statsDisplay"
           >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
-            >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
+            <div>
+              <div
+                class="value"
               >
-                file_download
-              </i>
-              CSV
-            </button>
+                1,176
+              </div>
+              <span
+                class="diff"
+                id="value-total_sent-0"
+              >
+                <span>
+                  <i
+                    class="material-icons mr-1 statsDifference negative"
+                  >
+                    arrow_downward
+                  </i>
+                  -3
+                  %
+                </span>
+              </span>
+            </div>
           </div>
         </div>
-        <table
-          class="table table table-hover"
+        <div
+          class="metric"
         >
-          <thead>
-            <tr>
-              <th
-                class="customer-link"
+          <div
+            class="label"
+          >
+            Response rate
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon info-icon"
+                id="title-response_rate-1"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  CUSTOMER
-                </span>
-              </th>
-              <th
-                class="string"
+                info_outline
+              </i>
+            </span>
+          </div>
+          <div
+            class="mt-3 statsDisplay"
+          >
+            <div
+              class="container"
+            >
+              <svg
+                class="donut"
+                viewBox="0 0 320 320"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  ASSIGNEE
-                </span>
-              </th>
-              <th
-                class="date"
+                <path
+                  class="path-success"
+                  d="M159.99,8.00
+          A152.00,152.00 0 0 1 233.22,26.80A5.76,5.76 0 0 1 223.97,43.62A132.79,132.79 0 0 0 159.99,27.20A5.76,5.76 0 0 1 159.99,8.00"
+                />
+                <path
+                  class="path-empty"
+                  d="M233.22,26.80
+          A152.00,152.00 0 1 1 159.99,8.00A5.76,5.76 0 1 0 159.99,27.20A132.79,132.79 0 1 0 223.97,43.62A5.76,5.76 0 1 0 233.22,26.80"
+                />
+              </svg>
+              <div
+                class="difference"
               >
-                <span
-                  class="cell-wrapper"
+                <div
+                  class="value"
                 >
-                  DATE
-                </span>
-              </th>
-              <th
-                class="satisfaction-score"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  SCORE
-                </span>
-              </th>
-              <th
-                class="satisfaction-survey-link"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  COMMENT
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell customer-link link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <a
-                    class="fit-cell"
-                    to="/app/customer/12345"
-                  >
-                    Go to customer
-                  </a>
-                </span>
-              </td>
-              <td
-                class="lineCell string link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  John D.
-                </span>
-              </td>
-              <td
-                class="lineCell date link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div
-                    class="fit-cell"
+                  8%
+                </div>
+                <div>
+                  <span
+                    class="diff"
+                    id="value-response_rate-1"
                   >
                     <span>
-                      <span
-                        id="datetime-tooltip-26"
+                      <i
+                        class="material-icons mr-1 statsDifference negative"
                       >
-                        12/13/2021
-                      </span>
+                        arrow_downward
+                      </i>
+                      -12
+                      %
                     </span>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell satisfaction-score link-full-td"
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="metric"
+        >
+          <div
+            class="label"
+          >
+            Average rating
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon info-icon"
+                id="title-average_rating-2"
               >
-                <span
-                  class="cell-wrapper cell-content"
+                info_outline
+              </i>
+            </span>
+          </div>
+          <div
+            class="mt-3 statsDisplay"
+          >
+            <div
+              class="container"
+            >
+              <svg
+                class="donut"
+                viewBox="0 0 320 320"
+              >
+                <path
+                  class="path-warning"
+                  d="M159.99,8.00
+          A152.00,152.00 0 1 1 64.59,41.67A5.76,5.76 0 1 1 76.64,56.62A132.79,132.79 0 1 0 159.99,27.20A5.76,5.76 0 1 1 159.99,8.00"
+                />
+                <path
+                  class="path-empty"
+                  d="M64.59,41.67
+          A152.00,152.00 0 0 1 159.99,8.00A5.76,5.76 0 0 0 159.99,27.20A132.79,132.79 0 0 0 76.64,56.62A5.76,5.76 0 0 0 64.59,41.67"
+                />
+              </svg>
+              <div
+                class="difference"
+              >
+                <div
+                  class="value"
+                >
+                  4.46
+                </div>
+                <div>
+                  <span
+                    class="diff"
+                    id="value-average_rating-2"
+                  >
+                    <span>
+                      <i
+                        class="material-icons mr-1 statsDifference negative"
+                      >
+                        arrow_downward
+                      </i>
+                      -2
+                      %
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="metric"
+        >
+          <div
+            class="label"
+          >
+            Response Distribution
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon info-icon"
+                id="title-response_distribution-3"
+              >
+                info_outline
+              </i>
+            </span>
+          </div>
+          <div
+            class="mt-3 statsDisplay"
+          >
+            <div>
+              <div
+                class="mb-1 row"
+              >
+                <div
+                  class="col-md-6 ta-left"
                 >
                   <span
                     class="distribution"
@@ -1103,25 +754,370 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       src="test-file-stub"
                     />
                   </span>
-                </span>
-              </td>
-              <td
-                class="lineCell satisfaction-survey-link link-full-td"
+                </div>
+                <div
+                  class="value col-md-3 ta-right"
+                >
+                  78.64%
+                </div>
+              </div>
+              <div
+                class="mb-1 row"
+              >
+                <div
+                  class="col-md-6 ta-left"
+                >
+                  <span
+                    class="distribution"
+                  >
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="value col-md-3 ta-right"
+                >
+                  5.83%
+                </div>
+              </div>
+              <div
+                class="mb-1 row"
+              >
+                <div
+                  class="col-md-6 ta-left"
+                >
+                  <span
+                    class="distribution"
+                  >
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="value col-md-3 ta-right"
+                >
+                  5.83%
+                </div>
+              </div>
+              <div
+                class="mb-1 row"
+              >
+                <div
+                  class="col-md-6 ta-left"
+                >
+                  <span
+                    class="distribution"
+                  >
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="value col-md-3 ta-right"
+                >
+                  1.94%
+                </div>
+              </div>
+              <div
+                class="mb-1 row"
+              >
+                <div
+                  class="col-md-6 ta-left"
+                >
+                  <span
+                    class="distribution"
+                  >
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="empty star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="value col-md-3 ta-right"
+                >
+                  7.77%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Latest Surveys
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-latest-satisfaction-surveys"
+            >
+              info_outline
+            </i>
+          </span>
+        </h5>
+        <div
+          class="buttonContainer"
+        >
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="customer-link"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                CUSTOMER
+              </span>
+            </th>
+            <th
+              class="string"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                ASSIGNEE
+              </span>
+            </th>
+            <th
+              class="date"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                DATE
+              </span>
+            </th>
+            <th
+              class="satisfaction-score"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                SCORE
+              </span>
+            </th>
+            <th
+              class="satisfaction-survey-link"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                COMMENT
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell customer-link link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <a
+                  class="fit-cell"
+                  to="/app/customer/12345"
+                >
+                  Go to customer
+                </a>
+              </span>
+            </td>
+            <td
+              class="lineCell string link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                John D.
+              </span>
+            </td>
+            <td
+              class="lineCell date link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div
+                  class="fit-cell"
+                >
+                  <span>
+                    <span
+                      id="datetime-tooltip-26"
+                    >
+                      12/13/2021
+                    </span>
+                  </span>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell satisfaction-score link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
                 <span
-                  class="cell-wrapper cell-content"
+                  class="distribution"
                 >
-                  <a
-                    to="/app/ticket/5243423#satisfactionSurvey"
-                  >
-                    Go to ticket
-                  </a>
+                  <img
+                    alt="filled star"
+                    class="star"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="filled star"
+                    class="star"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="filled star"
+                    class="star"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="filled star"
+                    class="star"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="filled star"
+                    class="star"
+                    src="test-file-stub"
+                  />
                 </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              </span>
+            </td>
+            <td
+              class="lineCell satisfaction-survey-link link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <a
+                  to="/app/ticket/5243423#satisfactionSurvey"
+                >
+                  Go to ticket
+                </a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

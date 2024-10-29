@@ -13,7 +13,7 @@ import {
 } from 'reactflow'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import {TestFlowEditor} from '../../editor/visualBuilder/editors/TestFlowEditor'
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
@@ -100,7 +100,11 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
 
     return (
         <div className={css.container}>
-            {(isFetchPending || !areNodesInitialized) && <Loader />}
+            {(isFetchPending || !areNodesInitialized) && (
+                <div className={css.spinner}>
+                    <Spinner size="big" />
+                </div>
+            )}
             {!isFetchPending && (
                 <>
                     <div

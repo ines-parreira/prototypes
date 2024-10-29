@@ -31,9 +31,7 @@ const AutomateLandingPage = () => {
         >
             <AutomateLandingPageDashboardV2
                 filters={filters}
-                isAutomateTopQuestionsEnabled={
-                    isAutomateTopQuestionsEnabled === true
-                }
+                isAutomateTopQuestionsEnabled={!!isAutomateTopQuestionsEnabled}
             />
 
             {isAutomateTopQuestionsEnabled && (

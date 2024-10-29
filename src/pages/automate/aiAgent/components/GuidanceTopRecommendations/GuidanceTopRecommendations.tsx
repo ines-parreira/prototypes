@@ -2,7 +2,7 @@ import React from 'react'
 
 import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {AIGuidance} from 'pages/automate/aiAgent/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import css from './GuidanceTopRecommendations.less'
 
@@ -18,7 +18,11 @@ export const GuidanceTopRecommendations = ({
     isLoading,
 }: Props) => {
     if (isLoading) {
-        return <Loader data-testid="loader" minHeight="32px" size="32px" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="medium" />
+            </div>
+        )
     }
 
     if (!aiGuidances || aiGuidances.length === 0) {

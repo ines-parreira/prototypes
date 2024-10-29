@@ -1,7 +1,7 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import {AiAgentGuidanceLibrary} from './AiAgentGuidanceLibrary'
 import css from './AiAgentGuidanceLibraryContainer.less'
@@ -18,7 +18,11 @@ export const AiAgentGuidanceLibraryContainer = () => {
     })
 
     if (!guidanceHelpCenter) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

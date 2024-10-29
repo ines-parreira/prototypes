@@ -394,227 +394,223 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
     <div
-      class="statsContainer container-fluid"
+      class="wrapper"
     >
       <div
-        class="wrapper"
+        class="mb-3 d-flex justify-content-between align-items-baseline"
       >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
+        <h5
+          class="mb-0 d-flex header"
         >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Tickets created per tag
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-tickets-per-tag"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
+          Tickets created per tag
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-tickets-per-tag"
             >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
-              >
-                file_download
-              </i>
-              CSV
-            </button>
-          </div>
-        </div>
-        <table
-          class="table table table-hover"
+              info_outline
+            </i>
+          </span>
+        </h5>
+        <div
+          class="buttonContainer"
         >
-          <thead>
-            <tr>
-              <th
-                class="string"
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="string"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  TAG
+                TAG
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                TOTAL
+              </span>
+            </th>
+            <th
+              class="percent"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                PERCENTAGE
+              </span>
+            </th>
+            <th
+              class="delta"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                DELTA
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell string link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <i>
+                  <b>
+                    Untagged
+                  </b>
+                </i>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <span>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    44
+                  </a>
                 </span>
-              </th>
-              <th
-                class="number"
+              </span>
+            </td>
+            <td
+              class="lineCell percent link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  TOTAL
-                </span>
-              </th>
-              <th
-                class="percent"
+                98%
+              </span>
+            </td>
+            <td
+              class="lineCell delta link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  PERCENTAGE
-                </span>
-              </th>
-              <th
-                class="delta"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  DELTA
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell string link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <i>
-                    <b>
-                      Untagged
-                    </b>
-                  </i>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <span>
-                    <a
-                      class="viewLink"
-                      to="[object Object]"
-                    >
-                      44
-                    </a>
-                  </span>
-                </span>
-              </td>
-              <td
-                class="lineCell percent link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  98%
-                </span>
-              </td>
-              <td
-                class="lineCell delta link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <span>
-                    <span
-                      id="difference-0"
-                    >
-                      <span>
-                        <i
-                          class="material-icons mr-1 statsDifference"
-                        >
-                          arrow_downward
-                        </i>
-                        -40
-                        %
-                      </span>
+                <span>
+                  <span
+                    id="difference-0"
+                  >
+                    <span>
+                      <i
+                        class="material-icons mr-1 statsDifference"
+                      >
+                        arrow_downward
+                      </i>
+                      -40
+                      %
                     </span>
                   </span>
                 </span>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="lineCell string link-full-td"
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="lineCell string link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
+                <div
+                  class="fit-cell"
                 >
                   <div
-                    class="fit-cell"
+                    class="tag black"
                   >
-                    <div
-                      class="tag black"
-                    >
-                      <span
-                        class="text"
-                      >
-                        rejected
-                      </span>
-                    </div>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <span>
-                    <a
-                      class="viewLink"
-                      to="[object Object]"
-                    >
-                      1
-                    </a>
-                  </span>
-                </span>
-              </td>
-              <td
-                class="lineCell percent link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  2%
-                </span>
-              </td>
-              <td
-                class="lineCell delta link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <span>
                     <span
-                      id="difference-1"
+                      class="text"
                     >
-                      <span>
-                        <i
-                          class="material-icons mr-1 statsDifference"
-                        >
-                          arrow_upward
-                        </i>
-                        100
-                        %
-                      </span>
+                      rejected
+                    </span>
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <span>
+                  <a
+                    class="viewLink"
+                    to="[object Object]"
+                  >
+                    1
+                  </a>
+                </span>
+              </span>
+            </td>
+            <td
+              class="lineCell percent link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                2%
+              </span>
+            </td>
+            <td
+              class="lineCell delta link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <span>
+                  <span
+                    id="difference-1"
+                  >
+                    <span>
+                      <i
+                        class="material-icons mr-1 statsDifference"
+                      >
+                        arrow_upward
+                      </i>
+                      100
+                      %
                     </span>
                   </span>
                 </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

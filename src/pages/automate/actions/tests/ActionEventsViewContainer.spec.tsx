@@ -164,7 +164,7 @@ describe('ActionEventsViewContainer', () => {
             data: undefined,
         } as UseQueryResult<any>)
 
-        const component = renderWithRouter(
+        renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
                     <ActionEventsViewContainer />
@@ -177,9 +177,7 @@ describe('ActionEventsViewContainer', () => {
         )
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(component.container.querySelector('i')).toHaveClass(
-            'icon-custom icon-circle-o-notch md-spin'
-        )
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders empty list of events', () => {

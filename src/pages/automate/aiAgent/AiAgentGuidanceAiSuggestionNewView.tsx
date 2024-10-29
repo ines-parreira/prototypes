@@ -2,8 +2,9 @@ import React, {useMemo, useState} from 'react'
 import {Redirect} from 'react-router-dom'
 
 import {LocaleCode} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
+import css from './AiAgentGuidanceContainer.less'
 import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
@@ -71,7 +72,11 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
     }, [aiGuidanceSuggestion])
 
     if (isLoadingAiGuidances) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     if (!aiGuidanceSuggestion) {

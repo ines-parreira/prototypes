@@ -104,7 +104,7 @@ describe('AiAgentAccountConfigurationProvider', () => {
         mockGetHasAutomate.mockReturnValue(true)
 
         renderComponent()
-        expect(screen.getByTestId('aiAgentProviderLoader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should redirect to "/app/automation" when error', () => {

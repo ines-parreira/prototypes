@@ -2,12 +2,13 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import {FeatureFlagKey} from '../../../config/featureFlags'
 import {AiAgentConfigurationView} from './AiAgentConfigurationView/AiAgentConfigurationView'
+import css from './AiAgentViewContainer.less'
 import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
 import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import {useWelcomePageAcknowledged} from './hooks/useWelcomePageAcknowledged'
@@ -40,7 +41,11 @@ const AiAgentViewContainer = () => {
         useAiAgentStoreConfigurationContext()
 
     if (isLoadingStoreConfiguration || welcomePageAcknowledged.isLoading) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     const displayDynamicWelcomePage =

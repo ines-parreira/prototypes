@@ -6,7 +6,7 @@ import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {reportError} from 'utils/errors'
 
@@ -71,7 +71,11 @@ export const AiAgentGuidanceContainer = () => {
     ])
 
     if (isStoreConfigLoading || isLoadingHelpCenters) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     if (!storeConfiguration || !guidanceHelpCenter) {

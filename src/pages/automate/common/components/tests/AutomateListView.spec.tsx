@@ -57,6 +57,6 @@ describe('<AutomateListView />', () => {
 
         expect(screen.getByText('Title')).toBeInTheDocument()
         expect(screen.queryByText('AutomateListView')).not.toBeInTheDocument()
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 })

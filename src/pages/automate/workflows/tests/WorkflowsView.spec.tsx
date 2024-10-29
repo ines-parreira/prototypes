@@ -132,8 +132,7 @@ describe('<WorkflowsView />', () => {
         )
 
         await waitFor(() => {
-            const loader = screen.queryAllByTestId('loader')
-            expect(loader.length).toBe(1)
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
         })
     })
 

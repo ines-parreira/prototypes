@@ -34,7 +34,7 @@ import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBui
 import {withVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 const nodeTypes = {
     llm_prompt_trigger: LLMPromptTriggerNode,
@@ -93,7 +93,7 @@ const WorkflowVisualBuilderWrapped = ({
 
     return (
         <div className={css.container}>
-            {!areNodesInitialized && <Loader />}
+            {!areNodesInitialized && <Spinner size="big" />}
             <div
                 className={classnames(css.reactFlowContainer, {
                     [css.transparent]: !areNodesInitialized,

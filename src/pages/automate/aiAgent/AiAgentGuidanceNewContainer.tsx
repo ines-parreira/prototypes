@@ -1,9 +1,10 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import {AiAgentGuidanceNewView} from './AiAgentGuidanceNewView'
+import css from './AiAgentViewContainer.less'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
@@ -18,7 +19,11 @@ export const AiAgentGuidanceNewContainer = () => {
     })
 
     if (!guidanceHelpCenter) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

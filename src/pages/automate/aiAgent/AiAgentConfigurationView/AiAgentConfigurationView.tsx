@@ -5,7 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {notify} from 'state/notifications/actions'
@@ -63,7 +63,11 @@ export const AiAgentConfigurationView = ({
     }
 
     if (isStoreConfigLoading || isLoadingHelpCenters) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     const integrationNeedMorePermissions =

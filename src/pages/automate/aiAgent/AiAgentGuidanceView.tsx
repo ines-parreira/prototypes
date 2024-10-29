@@ -3,11 +3,12 @@ import React, {useEffect} from 'react'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LocaleCode} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import css from './AiAgentGuidanceView.less'
 import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
 import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
 import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
@@ -124,7 +125,11 @@ export const AiAgentGuidanceView = ({
         isLoadingGuidanceArticleList ||
         (!guidanceArticles.length && isLoadingAiGuidances)
     ) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     if (isEmptyStateNoAIGuidances) {

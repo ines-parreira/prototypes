@@ -9,8 +9,8 @@ import {
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
-import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
+import Spinner from 'pages/common/components/Spinner'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 
@@ -92,7 +92,11 @@ const AiAgentOnboardingWizard = () => {
         useAiAgentStoreConfigurationContext()
 
     if (isLoading) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

@@ -164,108 +164,104 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
       </div>
     </div>
     <div
-      class="statsWrapper"
+      class="statsContainer"
     >
       <div
-        class="statsContainer container-fluid"
+        class="alert error closable noActivityAlert"
       >
         <div
-          class="alert error closable noActivityAlert"
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            There is no activity for these features. Your chat or help center may not be properly installed.
+          </span>
+        </div>
+        <div
+          aria-label="Close Icon"
+          class="close"
+        >
+          <img
+            alt="close-icon"
+            class="closeIcon"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="container"
         >
           <div
-            class="iconContainer"
+            class="inner"
+            style="min-height: 400px;"
           >
-            <img
-              alt="icon"
-              src="test-file-stub"
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
             />
           </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="container"
+        >
           <div
-            class="content"
+            class="inner"
+            style="min-height: 400px;"
           >
-            <span
-              class="label"
-            >
-              There is no activity for these features. Your chat or help center may not be properly installed.
-            </span>
-          </div>
-          <div
-            aria-label="Close Icon"
-            class="close"
-          >
-            <img
-              alt="close-icon"
-              class="closeIcon"
-              src="test-file-stub"
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
             />
           </div>
         </div>
+      </div>
+      <div
+        class="wrapper"
+      >
         <div
-          class="wrapper"
+          class="container"
         >
           <div
-            class="container"
+            class="inner"
+            style="min-height: 400px;"
           >
-            <div
-              class="inner"
-              style="min-height: 400px;"
-            >
-              <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 40px;"
-              />
-            </div>
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
+            />
           </div>
         </div>
+      </div>
+      <div
+        class="wrapper"
+      >
         <div
-          class="wrapper"
+          class="container"
         >
           <div
-            class="container"
+            class="inner"
+            style="min-height: 400px;"
           >
-            <div
-              class="inner"
-              style="min-height: 400px;"
-            >
-              <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 40px;"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="wrapper"
-        >
-          <div
-            class="container"
-          >
-            <div
-              class="inner"
-              style="min-height: 400px;"
-            >
-              <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 40px;"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="wrapper"
-        >
-          <div
-            class="container"
-          >
-            <div
-              class="inner"
-              style="min-height: 400px;"
-            >
-              <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 40px;"
-              />
-            </div>
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
+            />
           </div>
         </div>
       </div>
@@ -437,770 +433,766 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
     <div
-      class="statsContainer container-fluid"
+      class="wrapper"
     >
       <div
-        class="wrapper"
+        class="mb-3 d-flex justify-content-between align-items-baseline"
       >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Products with most issues and return requests
+        </h5>
         <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
+          class="buttonContainer"
         >
-          <h5
-            class="mb-0 d-flex header"
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
           >
-            Products with most issues and return requests
-          </h5>
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
+            <i
+              class="material-icons mr-1 csvButtonIcon"
             >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
-              >
-                file_download
-              </i>
-              CSV
-            </button>
-          </div>
+              file_download
+            </i>
+            CSV
+          </button>
         </div>
-        <table
-          class="table table table-hover"
-        >
-          <thead>
-            <tr>
-              <th
-                class="product"
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="product"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  PRODUCT
-                </span>
-              </th>
-              <th
-                class="number"
+                PRODUCT
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  TOTAL ISSUES REPORTED
-                </span>
-              </th>
-              <th
-                class="issues"
+                TOTAL ISSUES REPORTED
+              </span>
+            </th>
+            <th
+              class="issues"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  ISSUES
-                </span>
-              </th>
-              <th
-                class="number"
+                ISSUES
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
               >
-                <span
-                  class="cell-wrapper"
-                >
-                  RETURN REQUESTS
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell product link-full-td"
+                RETURN REQUESTS
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell product link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
+                <div
+                  class="container"
                 >
                   <div
-                    class="container"
-                  >
-                    <div
-                      class="product-image"
-                      style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
-                    />
-                    <h5
-                      class="product-name"
-                    >
-                      The Staple 6-Pack - L
-                    </h5>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  61
-                </span>
-              </td>
-              <td
-                class="lineCell issues link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div>
-                      I'm past my expected delivery date
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      I didn't get my refund
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      I'd like to edit my order
-                       (
-                      1
-                      )
-                    </div>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  45
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="lineCell product link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div
-                    class="container"
-                  >
-                    <div
-                      class="product-image"
-                      style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
-                    />
-                    <h5
-                      class="product-name"
-                    >
-                      The Staple 6-Pack - XL
-                    </h5>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  59
-                </span>
-              </td>
-              <td
-                class="lineCell issues link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div>
-                      I'd like to change the delivery date
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      Other
-                       (
-                      29
-                      )
-                    </div>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  11
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Article Recommendation performance
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-self-service-article-recommendation-performance"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
-            >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
-              >
-                file_download
-              </i>
-              CSV
-            </button>
-          </div>
-        </div>
-        <table
-          class="table table table-hover"
-        >
-          <thead>
-            <tr>
-              <th
-                class="title-with-link"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  ARTICLE
-                </span>
-              </th>
-              <th
-                class="article-recommendation-automation-rate"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  AUTOMATION RATE
-                  <span
-                    class="axisHelperIcon"
-                  >
-                    <i
-                      class="material-icons ml-2 helpIcon"
-                      id="Automation-rate-tooltip-self-service-article-recommendation-performance"
-                    >
-                      info_outline
-                    </i>
-                  </span>
-                </span>
-              </th>
-              <th
-                class="number"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  AUTOMATED BY ARTICLE REC
-                </span>
-              </th>
-              <th
-                class="number"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  SERVED BY AN AGENT AFTER ARTICLE REC
-                  <span
-                    class="axisHelperIcon"
-                  >
-                    <i
-                      class="material-icons ml-2 helpIcon"
-                      id="Served-by-an-agent-after-article-rec-tooltip-self-service-article-recommendation-performance"
-                    >
-                      info_outline
-                    </i>
-                  </span>
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell title-with-link link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  Care instructions
-                   
-                  <a
-                    class="material-icons-outlined openArticle"
-                    href="https://trueclassictees.gorgias.help/en-US/care-instructions-78902"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    open_in_new
-                  </a>
-                </span>
-              </td>
-              <td
-                class="lineCell article-recommendation-automation-rate link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  16
-                  %
-                   
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  12
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  60
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="lineCell title-with-link link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  Loyalty Program
-                   
-                  <a
-                    class="material-icons-outlined openArticle"
-                    href="https://trueclassictees.gorgias.help/en-US/loyalty-program-78905"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    open_in_new
-                  </a>
-                </span>
-              </td>
-              <td
-                class="lineCell article-recommendation-automation-rate link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  14
-                  %
-                   
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  21
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  126
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Top order issues reported
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-self-service-top-reported-issues"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
-            >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
-              >
-                file_download
-              </i>
-              CSV
-            </button>
-          </div>
-        </div>
-        <table
-          class="table table table-hover"
-        >
-          <thead>
-            <tr>
-              <th
-                class="issue-reason"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  ISSUE
-                </span>
-              </th>
-              <th
-                class="number"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  TICKETS CREATED
-                </span>
-              </th>
-              <th
-                class="percent"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  % OF ISSUES REPORTED
-                  <span
-                    class="axisHelperIcon"
-                  >
-                    <i
-                      class="material-icons ml-2 helpIcon"
-                      id="percent-of-issues-reported-tooltip"
-                    >
-                      info_outline
-                    </i>
-                  </span>
-                </span>
-              </th>
-              <th
-                class="delta"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  DELTA
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell issue-reason link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
+                    class="product-image"
+                    style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
+                  />
                   <h5
-                    style="margin: 0px;"
+                    class="product-name"
                   >
-                    I'm past my expected delivery date
+                    The Staple 6-Pack - L
                   </h5>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  3
-                </span>
-              </td>
-              <td
-                class="lineCell percent link-full-td"
+                61
+              </span>
+            </td>
+            <td
+              class="lineCell issues link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  30%
-                </span>
-              </td>
-              <td
-                class="lineCell delta link-full-td"
+                <div>
+                  <div>
+                    I'm past my expected delivery date
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    I didn't get my refund
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    I'd like to edit my order
+                     (
+                    1
+                    )
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
               >
-                <span
-                  class="cell-wrapper cell-content"
+                45
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="lineCell product link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div
+                  class="container"
                 >
-                  <span>
-                    <span
-                      id="difference-0"
-                    >
-                      <span>
-                        <i
-                          class="material-icons mr-1 statsDifference positive"
-                        >
-                          arrow_upward
-                        </i>
-                        200
-                      </span>
+                  <div
+                    class="product-image"
+                    style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
+                  />
+                  <h5
+                    class="product-name"
+                  >
+                    The Staple 6-Pack - XL
+                  </h5>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                59
+              </span>
+            </td>
+            <td
+              class="lineCell issues link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div>
+                  <div>
+                    I'd like to change the delivery date
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    Other
+                     (
+                    29
+                    )
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                11
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Article Recommendation performance
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-self-service-article-recommendation-performance"
+            >
+              info_outline
+            </i>
+          </span>
+        </h5>
+        <div
+          class="buttonContainer"
+        >
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="title-with-link"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                ARTICLE
+              </span>
+            </th>
+            <th
+              class="article-recommendation-automation-rate"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                AUTOMATION RATE
+                <span
+                  class="axisHelperIcon"
+                >
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="Automation-rate-tooltip-self-service-article-recommendation-performance"
+                  >
+                    info_outline
+                  </i>
+                </span>
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                AUTOMATED BY ARTICLE REC
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                SERVED BY AN AGENT AFTER ARTICLE REC
+                <span
+                  class="axisHelperIcon"
+                >
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="Served-by-an-agent-after-article-rec-tooltip-self-service-article-recommendation-performance"
+                  >
+                    info_outline
+                  </i>
+                </span>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell title-with-link link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                Care instructions
+                 
+                <a
+                  class="material-icons-outlined openArticle"
+                  href="https://trueclassictees.gorgias.help/en-US/care-instructions-78902"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  open_in_new
+                </a>
+              </span>
+            </td>
+            <td
+              class="lineCell article-recommendation-automation-rate link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                16
+                %
+                 
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                12
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                60
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="lineCell title-with-link link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                Loyalty Program
+                 
+                <a
+                  class="material-icons-outlined openArticle"
+                  href="https://trueclassictees.gorgias.help/en-US/loyalty-program-78905"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  open_in_new
+                </a>
+              </span>
+            </td>
+            <td
+              class="lineCell article-recommendation-automation-rate link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                14
+                %
+                 
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                21
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                126
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Top order issues reported
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-self-service-top-reported-issues"
+            >
+              info_outline
+            </i>
+          </span>
+        </h5>
+        <div
+          class="buttonContainer"
+        >
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+      </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="issue-reason"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                ISSUE
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                TICKETS CREATED
+              </span>
+            </th>
+            <th
+              class="percent"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                % OF ISSUES REPORTED
+                <span
+                  class="axisHelperIcon"
+                >
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="percent-of-issues-reported-tooltip"
+                  >
+                    info_outline
+                  </i>
+                </span>
+              </span>
+            </th>
+            <th
+              class="delta"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                DELTA
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell issue-reason link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <h5
+                  style="margin: 0px;"
+                >
+                  I'm past my expected delivery date
+                </h5>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                3
+              </span>
+            </td>
+            <td
+              class="lineCell percent link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                30%
+              </span>
+            </td>
+            <td
+              class="lineCell delta link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <span>
+                  <span
+                    id="difference-0"
+                  >
+                    <span>
+                      <i
+                        class="material-icons mr-1 statsDifference positive"
+                      >
+                        arrow_upward
+                      </i>
+                      200
                     </span>
                   </span>
                 </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="wrapper"
+    >
       <div
-        class="wrapper"
+        class="mb-3 d-flex justify-content-between align-items-baseline"
       >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Products with most issues and return requests
+        </h5>
         <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
+          class="buttonContainer"
         >
-          <h5
-            class="mb-0 d-flex header"
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
           >
-            Products with most issues and return requests
-          </h5>
-          <div
-            class="buttonContainer"
-          >
-            <button
-              class="csvButton btn btn-secondary"
-              type="button"
+            <i
+              class="material-icons mr-1 csvButtonIcon"
             >
-              <i
-                class="material-icons mr-1 csvButtonIcon"
-              >
-                file_download
-              </i>
-              CSV
-            </button>
-          </div>
+              file_download
+            </i>
+            CSV
+          </button>
         </div>
-        <table
-          class="table table table-hover"
-        >
-          <thead>
-            <tr>
-              <th
-                class="product"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  PRODUCT
-                </span>
-              </th>
-              <th
-                class="number"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  TOTAL ISSUES REPORTED
-                </span>
-              </th>
-              <th
-                class="issues"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  ISSUES
-                </span>
-              </th>
-              <th
-                class="number"
-              >
-                <span
-                  class="cell-wrapper"
-                >
-                  RETURN REQUESTS
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                class="lineCell product link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div
-                    class="container"
-                  >
-                    <div
-                      class="product-image"
-                      style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
-                    />
-                    <h5
-                      class="product-name"
-                    >
-                      The Staple 6-Pack - L
-                    </h5>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  61
-                </span>
-              </td>
-              <td
-                class="lineCell issues link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div>
-                      I'm past my expected delivery date
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      I didn't get my refund
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      I'd like to edit my order
-                       (
-                      1
-                      )
-                    </div>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  45
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="lineCell product link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div
-                    class="container"
-                  >
-                    <div
-                      class="product-image"
-                      style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
-                    />
-                    <h5
-                      class="product-name"
-                    >
-                      The Staple 6-Pack - XL
-                    </h5>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  59
-                </span>
-              </td>
-              <td
-                class="lineCell issues link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  <div>
-                    <div>
-                      I'd like to change the delivery date
-                       (
-                      30
-                      )
-                    </div>
-                    <div>
-                      Other
-                       (
-                      29
-                      )
-                    </div>
-                  </div>
-                </span>
-              </td>
-              <td
-                class="lineCell number link-full-td"
-              >
-                <span
-                  class="cell-wrapper cell-content"
-                >
-                  11
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th
+              class="product"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                PRODUCT
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                TOTAL ISSUES REPORTED
+              </span>
+            </th>
+            <th
+              class="issues"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                ISSUES
+              </span>
+            </th>
+            <th
+              class="number"
+            >
+              <span
+                class="cell-wrapper"
+              >
+                RETURN REQUESTS
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="lineCell product link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div
+                  class="container"
+                >
+                  <div
+                    class="product-image"
+                    style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
+                  />
+                  <h5
+                    class="product-name"
+                  >
+                    The Staple 6-Pack - L
+                  </h5>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                61
+              </span>
+            </td>
+            <td
+              class="lineCell issues link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div>
+                  <div>
+                    I'm past my expected delivery date
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    I didn't get my refund
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    I'd like to edit my order
+                     (
+                    1
+                    )
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                45
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="lineCell product link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div
+                  class="container"
+                >
+                  <div
+                    class="product-image"
+                    style="background-image: url(https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372);"
+                  />
+                  <h5
+                    class="product-name"
+                  >
+                    The Staple 6-Pack - XL
+                  </h5>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                59
+              </span>
+            </td>
+            <td
+              class="lineCell issues link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                <div>
+                  <div>
+                    I'd like to change the delivery date
+                     (
+                    30
+                    )
+                  </div>
+                  <div>
+                    Other
+                     (
+                    29
+                    )
+                  </div>
+                </div>
+              </span>
+            </td>
+            <td
+              class="lineCell number link-full-td"
+            >
+              <span
+                class="cell-wrapper cell-content"
+              >
+                11
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1369,233 +1361,229 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
     <div
-      class="statsContainer container-fluid"
+      class="alert error closable noActivityAlert"
     >
       <div
-        class="alert error closable noActivityAlert"
+        class="iconContainer"
       >
-        <div
-          class="iconContainer"
+        <img
+          alt="icon"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
         >
-          <img
-            alt="icon"
-            src="test-file-stub"
-          />
-        </div>
-        <div
-          class="content"
+          There is no activity for these features. Your chat or help center may not be properly installed.
+        </span>
+      </div>
+      <div
+        aria-label="Close Icon"
+        class="close"
+      >
+        <img
+          alt="close-icon"
+          class="closeIcon"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
         >
-          <span
-            class="label"
-          >
-            There is no activity for these features. Your chat or help center may not be properly installed.
+          Products with most issues and return requests
+        </h5>
+        <div
+          class="buttonContainer"
+        />
+      </div>
+      <div
+        class="text-muted"
+      >
+        There is no data for this period.
+      </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Article Recommendation performance
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-self-service-article-recommendation-performance"
+            >
+              info_outline
+            </i>
           </span>
-        </div>
+        </h5>
         <div
-          aria-label="Close Icon"
-          class="close"
+          class="buttonContainer"
+        />
+      </div>
+      <div
+        class="preview"
+      >
+        <div
+          class="previewImageContainer"
         >
           <img
-            alt="close-icon"
-            class="closeIcon"
-            src="test-file-stub"
+            alt="Article Recommendation feature preview"
+            src="/assets/img/presentationals/article-recommendation-preview.png"
+            width="246"
           />
         </div>
-      </div>
-      <div
-        class="wrapper"
-      >
         <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
+          class="previewTextContainer"
         >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Products with most issues and return requests
-          </h5>
           <div
-            class="buttonContainer"
-          />
-        </div>
-        <div
-          class="text-muted"
-        >
-          There is no data for this period.
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
+            class="title"
           >
-            Article Recommendation performance
+            Leverage your Help Center to automate tickets
+          </div>
+          <div
+            class="description"
+          >
+            Enable Article Recommendation to automatically recommend relevant help center articles to customers.
+          </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill primary medium"
+            type="button"
+          >
             <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-self-service-article-recommendation-performance"
-              >
-                info_outline
-              </i>
+              Go to article recommendation
             </span>
-          </h5>
-          <div
-            class="buttonContainer"
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <div
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Top order issues reported
+          <span>
+            <i
+              class="material-icons ml-2 helpIcon"
+              id="tooltip-self-service-top-reported-issues"
+            >
+              info_outline
+            </i>
+          </span>
+        </h5>
+        <div
+          class="buttonContainer"
+        />
+      </div>
+      <div
+        class="preview"
+      >
+        <div
+          class="previewImageContainer"
+        >
+          <img
+            alt="Report Issue feature preview"
+            src="/assets/img/presentationals/report-issue-preview.png"
+            width="246"
           />
         </div>
         <div
-          class="preview"
+          class="previewTextContainer"
         >
           <div
-            class="previewImageContainer"
+            class="title"
           >
-            <img
-              alt="Article Recommendation feature preview"
-              src="/assets/img/presentationals/article-recommendation-preview.png"
-              width="246"
-            />
+            Monitor order issues with the report issue flow
           </div>
           <div
-            class="previewTextContainer"
+            class="description"
           >
-            <div
-              class="title"
-            >
-              Leverage your Help Center to automate tickets
-            </div>
-            <div
-              class="description"
-            >
-              Enable Article Recommendation to automatically recommend relevant help center articles to customers.
-            </div>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              type="button"
-            >
-              <span>
-                Go to article recommendation
-              </span>
-            </button>
+            Monitor order issues with the report issue flow
           </div>
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
+          <button
+            aria-disabled="false"
+            class="wrapper fill primary medium"
+            type="button"
           >
-            Top order issues reported
             <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-self-service-top-reported-issues"
-              >
-                info_outline
-              </i>
+              Go to Order Management
             </span>
-          </h5>
-          <div
-            class="buttonContainer"
-          />
-        </div>
-        <div
-          class="preview"
-        >
-          <div
-            class="previewImageContainer"
-          >
-            <img
-              alt="Report Issue feature preview"
-              src="/assets/img/presentationals/report-issue-preview.png"
-              width="246"
-            />
-          </div>
-          <div
-            class="previewTextContainer"
-          >
-            <div
-              class="title"
-            >
-              Monitor order issues with the report issue flow
-            </div>
-            <div
-              class="description"
-            >
-              Monitor order issues with the report issue flow
-            </div>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              type="button"
-            >
-              <span>
-                Go to Order Management
-              </span>
-            </button>
-          </div>
+          </button>
         </div>
       </div>
+    </div>
+    <div
+      class="wrapper"
+    >
       <div
-        class="wrapper"
+        class="mb-3 d-flex justify-content-between align-items-baseline"
+      >
+        <h5
+          class="mb-0 d-flex header"
+        >
+          Products with most issues and return requests
+        </h5>
+        <div
+          class="buttonContainer"
+        />
+      </div>
+      <div
+        class="preview"
       >
         <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
+          class="previewImageContainer"
         >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Products with most issues and return requests
-          </h5>
-          <div
-            class="buttonContainer"
+          <img
+            alt="Return Order feature preview"
+            src="/assets/img/presentationals/return-order-preview.png"
+            width="246"
           />
         </div>
         <div
-          class="preview"
+          class="previewTextContainer"
         >
           <div
-            class="previewImageContainer"
+            class="title"
           >
-            <img
-              alt="Return Order feature preview"
-              src="/assets/img/presentationals/return-order-preview.png"
-              width="246"
-            />
+            Gain product insights by enabling the report issue and return Flows
           </div>
           <div
-            class="previewTextContainer"
+            class="description"
           >
-            <div
-              class="title"
-            >
-              Gain product insights by enabling the report issue and return Flows
-            </div>
-            <div
-              class="description"
-            >
-              Enable and customize these Flows in Order Management.
-            </div>
-            <button
-              aria-disabled="false"
-              class="wrapper fill primary medium"
-              type="button"
-            >
-              <span>
-                Go to Order Management
-              </span>
-            </button>
+            Enable and customize these Flows in Order Management.
           </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            <span>
+              Go to Order Management
+            </span>
+          </button>
         </div>
       </div>
     </div>

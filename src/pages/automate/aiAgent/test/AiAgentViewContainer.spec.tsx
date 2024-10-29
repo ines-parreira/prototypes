@@ -210,13 +210,13 @@ describe('AiAgentViewContainer', () => {
     it('renders loader if loading store configuration', () => {
         setupMocks({isStoreConfigurationLoading: true})
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders loader if loading help centers', () => {
         setupMocks({isHelpCentersLoading: true})
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders configuration', () => {
@@ -279,7 +279,7 @@ describe('AiAgentViewContainer', () => {
     it('renders loader if loading welcome page acknowledged', () => {
         setupMocks({isWelcomePageAcknowledgedLoading: true})
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument
+        expect(screen.getByText('Loading...')).toBeInTheDocument
     })
 
     it('renders the dynamic welcome page if account ID is odd and feature flag is set to dynamic_odd_static_even', () => {

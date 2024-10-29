@@ -10,7 +10,7 @@ import {
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
 import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -18,6 +18,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 
+import css from './AiAgentViewContainer.less'
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
@@ -99,7 +100,11 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
     }, [storeFetchError, dispatch, shopName, routes])
 
     if (storeDataLoading || accountDataLoading || snippetHelpCenterLoading) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     if (

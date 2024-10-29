@@ -78,7 +78,7 @@ describe('<AiAgentNewGuidance />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render component', () => {

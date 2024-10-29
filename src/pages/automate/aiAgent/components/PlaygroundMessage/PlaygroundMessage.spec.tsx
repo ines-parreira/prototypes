@@ -27,7 +27,7 @@ describe('PlaygroundMessage', () => {
     it('should render placeholder message', () => {
         renderComponent({message: playgroundPlaceholderMessageFixture})
 
-        expect(screen.getByRole('status')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render error message', () => {

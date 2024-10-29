@@ -1,18 +1,20 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {Redirect} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 
+import css from './AiAgentAccountConfigurationProvider.less'
+
 type Props = {
-    children?: React.ReactNode
+    children?: ReactNode
 }
 
 export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
@@ -43,7 +45,11 @@ export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
     }
 
     if (accountConfigRetrievalStatus !== 'success') {
-        return <Loader data-testid="aiAgentProviderLoader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return <>{children}</>

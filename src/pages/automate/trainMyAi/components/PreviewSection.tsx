@@ -3,11 +3,11 @@ import React, {useEffect, useState, useMemo} from 'react'
 
 import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
 import {HelpCenter} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {Components} from 'rest_api/ssp_api/client.generated'
 
-import {Components} from '../../../../rest_api/ssp_api/client.generated'
 import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
 import DeletedArticlePreview from './DeletedArticlePreview'
 import NoRelevantArticlePreview from './NoRelevantArticlePreview'
@@ -122,7 +122,11 @@ export default function TrainMyAiPreview({
             />
             <CurrentHelpCenterContext.Provider value={helpCenter}>
                 <EditionManagerContextProvider>
-                    <div className={css.preview}>
+                    <div
+                        className={classNames(css.preview, {
+                            [css.isLoading]: previewArticleDataIsInitialLoading,
+                        })}
+                    >
                         {noRelevantArticles ? (
                             <NoRelevantArticlePreview
                                 helpCenterId={recommendations?.helpCenterId}
@@ -135,7 +139,7 @@ export default function TrainMyAiPreview({
                                 articleData={previewArticleData}
                             />
                         ) : previewArticleDataIsInitialLoading ? (
-                            <Loader minHeight="0" />
+                            <Spinner size="big" />
                         ) : null}
                     </div>
                 </EditionManagerContextProvider>

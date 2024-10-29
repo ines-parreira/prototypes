@@ -2,7 +2,7 @@ import React from 'react'
 
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import history from 'pages/history'
 
 import css from './AiAgentGuidanceLibrary.less'
@@ -32,7 +32,11 @@ export const AiAgentGuidanceLibrary = ({helpCenterId, shopName}: Props) => {
     }
 
     if (isLoadingAiGuidances) {
-        return <Loader data-testid="loader" />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

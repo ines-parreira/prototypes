@@ -1,9 +1,10 @@
 import React, {ReactNode} from 'react'
 
 import {StoreConfiguration} from 'models/aiAgent/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import {usePublicResources} from '../../hooks/usePublicResources'
+import css from './PlaygroundPrerequisites.less'
 import {MissingKnowledgeSourceAlert} from './PlaygroundPrerequisitesAlerts'
 
 export const CheckPlaygroundPrerequisites = ({
@@ -49,7 +50,11 @@ const CheckKnowledgeHasAtLeastPublicSources = ({
     })
 
     if (isSourceItemsListLoading) {
-        return <Loader role="alert" aria-label="Loading" />
+        return (
+            <div className={css.spinner}>
+                <Spinner role="alert" size="big" />
+            </div>
+        )
     }
 
     if (!sourceItems || !sourceItems.some(({status}) => status === 'done')) {

@@ -119,7 +119,7 @@ describe('AiAgentPlayground', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should notify when account configuration is exists but no http integration', () => {

@@ -57,7 +57,7 @@ describe('<AutomateFormView />', () => {
 
         expect(screen.getByText('Title')).toBeInTheDocument()
         expect(screen.queryByText('AutomateFormView')).not.toBeInTheDocument()
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render secondary navbar with candu ids', () => {

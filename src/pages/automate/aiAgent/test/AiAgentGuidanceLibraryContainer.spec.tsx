@@ -66,7 +66,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
     it('should render loader', () => {
         mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
         renderComponent()
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render ai guidances and guidance templates', () => {
@@ -164,6 +165,6 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 })

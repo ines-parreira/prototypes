@@ -46,13 +46,9 @@ exports[`StatsPage should render the title, children and filters 1`] = `
     </div>
   </div>
   <div
-    class="statsWrapper"
+    class="statsContainer"
   >
-    <div
-      class="statsContainer container-fluid"
-    >
-      Children
-    </div>
+    Children
   </div>
 </div>
 `;

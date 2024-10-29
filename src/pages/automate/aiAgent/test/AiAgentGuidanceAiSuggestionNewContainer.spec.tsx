@@ -83,7 +83,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render loader when fetching AI guidances', () => {
@@ -94,7 +94,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should prefill input with the data', () => {

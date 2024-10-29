@@ -14,7 +14,7 @@ import {
 } from 'reactflow'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
 import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
@@ -137,7 +137,11 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
 
     return (
         <div className={css.container}>
-            {(isFetchPending || !areNodesInitialized) && <Loader />}
+            {(isFetchPending || !areNodesInitialized) && (
+                <div className={css.spinner}>
+                    <Spinner size="big" />
+                </div>
+            )}
             {!isFetchPending && (
                 <>
                     <div

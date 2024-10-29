@@ -78,7 +78,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should prefill input with the data', () => {

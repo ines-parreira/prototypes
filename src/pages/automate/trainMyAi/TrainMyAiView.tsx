@@ -17,9 +17,9 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Badge from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
-import Loader from 'pages/common/components/Loader/Loader'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
+import Spinner from 'pages/common/components/Spinner'
 
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import {assetsUrl} from '../../../utils'
@@ -521,7 +521,9 @@ const TrainMyAiView = () => {
                         <div className={css.content}>
                             {isInitialLoadingArticleRecommndations ||
                             typeof helpCenterId !== 'number' ? (
-                                <Loader />
+                                <div className={css.spinner}>
+                                    <Spinner size="big" />
+                                </div>
                             ) : (
                                 articleRecommendationsData?.data &&
                                 articleRecommendationsData.data.map(

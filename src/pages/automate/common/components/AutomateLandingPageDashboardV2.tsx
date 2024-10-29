@@ -15,7 +15,7 @@ import css from 'pages/automate/common/components/AutomateLandingPage.less'
 import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
 import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
+import Spinner from 'pages/common/components/Spinner'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -76,7 +76,11 @@ const AutomateLandingPageDashboardV2 = ({
         ticketHandleTimeTrend.isFetching
 
     if (isLoading) {
-        return <Loader />
+        return (
+            <div className={css.spinner}>
+                <Spinner size="big" />
+            </div>
+        )
     }
 
     return (

@@ -81,7 +81,7 @@ describe('<AiAgentGuidanceDetail />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render loader when guidance article query has not fulfilled', () => {
@@ -92,7 +92,7 @@ describe('<AiAgentGuidanceDetail />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('article-loader')).toBeInTheDocument()
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render guidance', () => {
