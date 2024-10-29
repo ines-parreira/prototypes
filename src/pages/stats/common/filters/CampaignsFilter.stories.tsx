@@ -14,7 +14,6 @@ import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import CampaignsFilter from 'pages/stats/common/filters/CampaignsFilter'
 import {initialState} from 'state/stats/statsSlice'
-
 import {RootState} from 'state/types'
 
 const defaultState = {
@@ -92,7 +91,7 @@ const defaultState = {
 } as unknown as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/CampaignsFilter',
+    title: 'Stats/Filters/CampaignsFilter',
     component: CampaignsFilter,
 }
 

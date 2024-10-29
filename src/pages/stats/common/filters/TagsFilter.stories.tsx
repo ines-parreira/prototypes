@@ -12,7 +12,7 @@ import {TagsFilter} from 'pages/stats/common/filters/TagsFilter'
 const defaultState = {}
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/TagsFilter',
+    title: 'Stats/Filters/TagsFilter',
     component: TagsFilter,
 }
 

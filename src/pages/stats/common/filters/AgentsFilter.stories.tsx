@@ -6,13 +6,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import AgentsFilter from 'pages/stats/common/filters/AgentsFilter'
+import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
+import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
 import {initialState} from 'state/stats/statsSlice'
-
 import {RootState} from 'state/types'
-
-import AgentsFilter from './AgentsFilter'
-import {extendedAgents} from './tests/fixtures/agents'
-import {extendedTeams} from './tests/fixtures/teams'
 
 const defaultState = {
     stats: initialState,
@@ -25,7 +23,7 @@ const defaultState = {
 } as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/AgentsFilter',
+    title: 'Stats/Filters/AgentsFilter',
     component: AgentsFilter,
 }
 

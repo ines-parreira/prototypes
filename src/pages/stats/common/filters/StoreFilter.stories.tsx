@@ -15,7 +15,7 @@ import {RootState} from 'state/types'
 import {ThemeProvider} from 'theme'
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/StoreFilter',
+    title: 'Stats/Filters/StoreFilter',
     component: StoreFilter,
     parameters: {
         chromatic: {disableSnapshot: false},

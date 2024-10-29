@@ -33,7 +33,7 @@ const defaultState = {
 } as unknown as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/SavedFiltersActions',
+    title: 'Stats/Filters/SavedFiltersActions',
     component: FiltersPanel,
 }
 

@@ -8,7 +8,7 @@ import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import CampaignStatusesFilter from 'pages/stats/convert/components/CampaignStatusesFilter'
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/CampaignStatusesFilter',
+    title: 'Stats/Filters/CampaignStatusesFilter',
     component: CampaignStatusesFilter,
     parameters: {
         chromatic: {disableSnapshot: false},

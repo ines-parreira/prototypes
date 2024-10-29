@@ -7,13 +7,12 @@ import thunk from 'redux-thunk'
 import {integrationsState} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-
 import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
 
 const defaultState = {}
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/IntegrationsFilter',
+    title: 'Stats/Filters/IntegrationsFilter',
     component: IntegrationsFilter,
 }
 

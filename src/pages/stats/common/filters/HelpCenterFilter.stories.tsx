@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 import {HelpCenter} from 'models/helpCenter/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-
 import HelpCenterFilter from 'pages/stats/common/filters/HelpCenterFilter'
 import {RootState} from 'state/types'
 
@@ -28,7 +27,7 @@ const mockStore = {
 } as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/HelpCenterFilter',
+    title: 'Stats/Filters/HelpCenterFilter',
     component: HelpCenterFilter,
 }
 

@@ -28,7 +28,7 @@ const defaultState = {
 } as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/FiltersPanel',
+    title: 'Stats/Filters/FiltersPanel',
     component: FiltersPanel,
 }
 

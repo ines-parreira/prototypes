@@ -17,7 +17,7 @@ const startDate = moment(DATE).subtract(7, 'days').toISOString()
 const endDateTime = moment(DATE).endOf('day').toISOString()
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/PeriodFilter',
+    title: 'Stats/Filters/PeriodFilter',
     component: PeriodFilter,
     parameters: {
         chromatic: {disableSnapshot: false},

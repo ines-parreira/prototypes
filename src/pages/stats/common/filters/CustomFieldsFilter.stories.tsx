@@ -19,7 +19,7 @@ const defaultState = {
 } as RootState
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/CustomFieldsFilter',
+    title: 'Stats/Filters/CustomFieldsFilter',
     component: CustomFieldsFilter,
 }
 

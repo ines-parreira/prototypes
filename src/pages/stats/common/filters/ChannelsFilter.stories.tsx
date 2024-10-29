@@ -9,13 +9,12 @@ import {appQueryClient} from 'api/queryClient'
 import {channels} from 'fixtures/channels'
 import {channelsQueryKeys} from 'models/channel/queries'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-
 import {ChannelsFilter} from 'pages/stats/common/filters/ChannelsFilter'
 
 const defaultState = {}
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/ChannelsFilter',
+    title: 'Stats/Filters/ChannelsFilter',
     component: ChannelsFilter,
 }
 

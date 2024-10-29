@@ -22,9 +22,7 @@ import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
-
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 

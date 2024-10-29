@@ -7,7 +7,7 @@ import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTi
 
 const storyConfig: Meta = {
     component: FiltersEditableTitle,
-    title: 'General/EditableTitles/FiltersEditableTitle',
+    title: 'Stats/Filters/FiltersEditableTitle',
 }
 
 const Template: Story<ComponentProps<typeof FiltersEditableTitle>> = (

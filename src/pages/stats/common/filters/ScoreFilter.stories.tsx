@@ -9,7 +9,7 @@ import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {ScoreFilter} from './ScoreFilter'
 
 const storyConfig: Meta = {
-    title: 'Common/Filters/ScoreFilter',
+    title: 'Stats/Filters/ScoreFilter',
     component: ScoreFilter,
     parameters: {
         chromatic: {disableSnapshot: false},
