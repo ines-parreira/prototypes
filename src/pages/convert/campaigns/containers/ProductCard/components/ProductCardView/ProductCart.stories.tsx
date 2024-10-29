@@ -20,6 +20,7 @@ const storyConfig: Meta = {
         currency: 'USD',
         image: 'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
         price: 1234.43,
+        compareAtPrice: 2345.67,
         title: 'MacBook Air with M1 chip',
         onClickEdit: () => null,
     },

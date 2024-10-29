@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React, {useMemo} from 'react'
 
 import GorgiasButton from 'gorgias-design-system/Buttons/Button'
@@ -19,6 +20,7 @@ type Props = {
     currency?: string
     image?: FeaturedImage
     price: number
+    compareAtPrice?: number
     title: string
     hasOptions?: boolean
     isHeadlessStore?: boolean
@@ -33,6 +35,7 @@ export const ProductCardView = ({
     currency = 'USD',
     image,
     price,
+    compareAtPrice,
     title,
     hasOptions = false,
     isHeadlessStore = false,
@@ -49,15 +52,21 @@ export const ProductCardView = ({
         [bgColor]
     )
 
-    const formattedAmount = useMemo(() => {
+    const {formattedPrice, formattedCompareAtPrice} = useMemo(() => {
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency || 'USD',
             currencyDisplay: 'symbol',
             maximumFractionDigits: 2,
         })
-        return price > 0 ? formatter.format(price) : ''
-    }, [currency, price])
+        return {
+            formattedPrice: price > 0 ? formatter.format(price) : '',
+            formattedCompareAtPrice:
+                compareAtPrice && compareAtPrice > 0
+                    ? formatter.format(compareAtPrice)
+                    : '',
+        }
+    }, [currency, price, compareAtPrice])
 
     const buttonText = useMemo(() => {
         if (isHeadlessStore || !isConvertSubscriber) {
@@ -105,9 +114,16 @@ export const ProductCardView = ({
         >
             <div className={css.details}>
                 <span className={css.title}>{title}</span>
-                {formattedAmount && (
-                    <span className={css.cost}>{formattedAmount}</span>
-                )}
+                <div className={css.productPrice}>
+                    {formattedPrice && (
+                        <span className={css.cost}>{formattedPrice}</span>
+                    )}
+                    {formattedCompareAtPrice && (
+                        <span className={cn(css.cost, css.compareAtPrice)}>
+                            {formattedCompareAtPrice}
+                        </span>
+                    )}
+                </div>
             </div>
             <GorgiasButton
                 isStretched

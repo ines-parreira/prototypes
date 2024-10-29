@@ -5,6 +5,7 @@ export interface CampaignProduct {
     title: string
     url: string
     price: number
+    compareAtPrice?: number
     currency?: string
     featured_image?: string
     variant_name?: string

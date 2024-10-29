@@ -27,6 +27,7 @@ const MOCK_CAMPAIGN_PRODUCT: CampaignProduct = {
     title: 'The Out of Stock Snowboard',
     url: 'https://shop-name.myshopify.com/products/product-name',
     price: 885.95,
+    compareAtPrice: 999.95,
     currency: 'USD',
     featured_image: 'https://cdn.shopify.com/',
 }
@@ -112,6 +113,7 @@ describe('createCampaignPayload', () => {
                     product_link:
                         'https://shop-name.myshopify.com/products/product-name?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=Welcome%20to%20the%20internet',
                     price: 885.95,
+                    compare_at_price: 999.95,
                     currency: 'USD',
                     position: undefined,
                     variant_name: undefined,

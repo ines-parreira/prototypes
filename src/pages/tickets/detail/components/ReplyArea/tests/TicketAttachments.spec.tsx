@@ -248,6 +248,18 @@ describe('TicketAttachments component', () => {
                         currency: 'USD',
                     },
                 },
+                {
+                    name: 'quxx',
+                    content_type: 'application/productCard',
+                    url: 'http://gorgias.io/quxx',
+                    extra: {
+                        price: 31.24,
+                        compare_at_price: 55.55,
+                        variant_name: 'quux',
+                        product_link: 'http://gorgias.io/quxx',
+                        currency: 'USD',
+                    },
+                },
             ]) as List<Map<string, string>>
             const {getByText, queryByText} = render(
                 <TicketAttachments {...minProps} attachments={attachments} />

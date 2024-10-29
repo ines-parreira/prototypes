@@ -41,6 +41,8 @@ export const transformShopifyProductToProductCardDetails = (
     return {
         imageUrl: product?.data?.image?.src || getIconFromUrl(placeholderImage),
         price: product?.data?.variants[0].price,
+        compareAtPrice:
+            product?.data?.variants[0].compare_at_price ?? undefined,
         currency: shopifyIntegration.get('currency'),
         link: `https://${shopifyIntegration.get('shop_domain')}/products/${
             product?.data?.handle || ''
@@ -64,6 +66,7 @@ export const transformProductCardDetailsToProductCardAttachment = (
             product_id: productDetails.productId,
             variant_id: productDetails.variantId,
             price: productDetails.price,
+            compare_at_price: productDetails.compareAtPrice,
             variant_name: productDetails.variantTitle,
             product_link: productDetails.link,
             currency: productDetails.currency,

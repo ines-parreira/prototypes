@@ -48,6 +48,7 @@ WithProducts.args = {
             id: 1,
             title: `Gibson ES-335 Sunburst 1970`,
             price: 8289,
+            compareAtPrice: 8990,
             url: '',
             currency: 'usd',
             featured_image:
@@ -66,6 +67,7 @@ WithProducts.args = {
             id: 3,
             title: `Fender George Harrison All Things Must Pass Pick Tin Set of 6`,
             price: 11.99,
+            compareAtPrice: 14.99,
             url: '',
             currency: 'usd',
             featured_image:

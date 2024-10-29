@@ -22,6 +22,7 @@ describe('transformCampaignAttachmentsToDetails', () => {
                     product_link:
                         'https://athlete-shift.com/products/thick-socks-heart',
                     price: 12.34,
+                    compare_at_price: 1200.34,
                     featured_image:
                         'https://athlete-shift.com/products/thick-socks',
                     variant_name: 'Thick socks with heart',

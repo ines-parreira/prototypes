@@ -3,6 +3,7 @@
 exports[`transformAttachmentToProduct() adds the integration currency code for products without one 1`] = `
 [
   {
+    "compareAtPrice": undefined,
     "currency": "GBP",
     "featured_image": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/mbp-digitalmat-gallery-4-202206.png?v=1664370856",
     "id": 7545464062118,
@@ -13,6 +14,7 @@ exports[`transformAttachmentToProduct() adds the integration currency code for p
     "variant_name": " Color: Space Gray",
   },
   {
+    "compareAtPrice": 849,
     "currency": "USD",
     "featured_image": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/watch-ultra-digitalmat-gallery-1-202209.jpg?v=1664371058",
     "id": 7545470910630,

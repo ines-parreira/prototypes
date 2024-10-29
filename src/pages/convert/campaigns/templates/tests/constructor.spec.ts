@@ -2,7 +2,11 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import {shopifyIntegration} from 'fixtures/integrations'
-import {integrationDataItemProductFixture} from 'fixtures/shopify'
+import {
+    integrationDataItemProductFixture,
+    shopifyProductFixture,
+    shopifyVariantFixture,
+} from 'fixtures/shopify'
 import client from 'models/api/resources'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
@@ -34,7 +38,15 @@ describe('CampaignConfigurationBuilder', () => {
                     integrationDataItemProductFixture(),
                     integrationDataItemProductFixture(),
                     integrationDataItemProductFixture(),
-                    integrationDataItemProductFixture(),
+                    integrationDataItemProductFixture({
+                        data: shopifyProductFixture({
+                            variants: [
+                                shopifyVariantFixture({
+                                    compareAtPrice: undefined,
+                                }),
+                            ],
+                        }),
+                    }),
                 ],
             })
 

@@ -113,9 +113,13 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
         <div
           class="productPrice"
         >
-          <span>
-            $2.00
-          </span>
+          <div
+            class="price"
+          >
+            <span>
+              $2.00
+            </span>
+          </div>
         </div>
       </div>
       <a

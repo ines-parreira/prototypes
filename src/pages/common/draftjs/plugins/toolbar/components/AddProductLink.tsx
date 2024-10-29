@@ -32,6 +32,7 @@ export type ProductCardAttachment = {
         product_id: number
         variant_id: number
         price?: string
+        compare_at_price?: string
         variant_name?: string
         product_link: string
         currency?: string

@@ -189,6 +189,7 @@ export default function ShopifyProductLine({
                     clickedResult?.data?.image?.src ||
                     getIconFromUrl(shopifyPlaceholderImage),
                 price: result?.price,
+                compareAtPrice: result?.compare_at_price,
                 currency: shopifyIntegration.get('currency'),
                 link: `https://${shopifyIntegration.get(
                     'shop_domain'

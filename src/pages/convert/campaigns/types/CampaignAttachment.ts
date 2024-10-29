@@ -21,6 +21,7 @@ export interface CampaignProductAttachment {
     size: number
     extra: object & {
         price: number
+        compare_at_price?: number
         currency?: string
         product_link: string
         product_id: number

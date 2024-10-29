@@ -28,6 +28,7 @@ export const transformCampaignAttachmentsToDetails = (
                     product_id: attachment.extra.product_id,
                     product_link: attachment.extra.product_link,
                     price: attachment.extra.price,
+                    compare_at_price: attachment.extra.compare_at_price,
                     featured_image: attachment.url,
                     variant_name: attachment.extra?.variant_name,
                     position: attachment.extra?.position,

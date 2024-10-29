@@ -16,6 +16,7 @@ export const transformProductToCampaignAttachment = (
         'shop_domain',
     ]) as string
     const handle = result.data?.handle || ''
+    const firstVariant = result.data?.variants[0]
 
     return {
         url: result.data?.image?.src || getIconFromUrl(shopifyPlaceholderImage),
@@ -23,7 +24,10 @@ export const transformProductToCampaignAttachment = (
         contentType: AttachmentEnum.Product,
         size: 0,
         extra: {
-            price: parseFloat(result.data?.variants[0].price),
+            price: parseFloat(firstVariant.price),
+            compare_at_price: firstVariant?.compare_at_price
+                ? parseFloat(firstVariant.compare_at_price)
+                : undefined,
             currency: shopifyIntegration.getIn(['meta', 'currency']) ?? 'USD',
             product_link: `https://${shopDomain}/products/${handle}`,
             product_id: result.data?.id,

@@ -12,6 +12,7 @@ type AttachmentImmutable = {
         product_id: number
         variant_id: number
         price: string
+        compare_at_price?: string
         variant_name: string
         product_link: string
         currency: string
@@ -35,6 +36,9 @@ export function transformAttachmentToProduct(
                 title: attachment.name,
                 url: attachment.extra.product_link,
                 price: parseFloat(attachment.extra?.price),
+                compareAtPrice: attachment.extra?.compare_at_price
+                    ? parseFloat(attachment.extra?.compare_at_price)
+                    : undefined,
                 currency:
                     attachment.extra?.currency ?? context.currency ?? 'USD',
                 featured_image: attachment.extra?.featured_image,

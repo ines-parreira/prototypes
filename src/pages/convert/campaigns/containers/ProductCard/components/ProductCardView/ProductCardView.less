@@ -25,6 +25,7 @@
         flex-direction: row;
         align-items: flex-start;
         justify-content: space-between;
+        gap: 16px;
         margin-bottom: 16px;
 
         user-select: none;
@@ -47,15 +48,25 @@
         overflow: hidden;
     }
 
+    .productPrice {
+        display: inline-flex;
+        gap: 8px;
+        word-break: keep-all;
+    }
+
     .cost {
         margin: 0;
-        margin-left: 16px;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-6);
 
         font-weight: 500;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
+    }
+
+    .compareAtPrice {
+        text-decoration: line-through;
+        color: var(--neutral-grey-5);
     }
 }

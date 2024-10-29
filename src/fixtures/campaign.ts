@@ -210,6 +210,7 @@ export const campaignProductAttachment = {
     size: 44,
     extra: {
         price: 12.34,
+        compare_at_price: 1200.34,
         currency: 'USD',
         product_link: 'https://athlete-shift.com/products/thick-socks-heart',
         product_id: 349348782,

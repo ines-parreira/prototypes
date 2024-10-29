@@ -66,6 +66,7 @@ export type ProductCardDetails = {
     link: string
     variantTitle?: string
     price?: string
+    compareAtPrice?: string
     productTitle?: string
     productId: number
     variantId: number

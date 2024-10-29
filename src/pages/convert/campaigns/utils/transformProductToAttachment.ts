@@ -22,6 +22,7 @@ export function transformProductToAttachment(
         size: 0,
         extra: {
             price: product.price,
+            compare_at_price: product.compareAtPrice,
             currency: product?.currency ?? context.currency ?? 'USD',
             product_id: product.id,
             product_link: attachUtmToCampaignProduct(

@@ -30,6 +30,7 @@ const ATTACHMENTS = fromJS([
             product_link:
                 'https://robertpmf.myshopify.com/products/apple-watch-ultra?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=Test+1',
             price: 799,
+            compare_at_price: 849,
             featured_image:
                 'https://cdn.shopify.com/s/files/1/0572/7505/6294/products/watch-ultra-digitalmat-gallery-1-202209.jpg?v=1664371058',
         },

@@ -105,6 +105,7 @@ export const ProductCarousel = ({
                             imageSrc={product.featured_image}
                             color={mainColor}
                             price={product.price}
+                            compareAtPrice={product.compareAtPrice}
                             position={product.position}
                             productId={product.id}
                             title={product.title}

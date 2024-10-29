@@ -20,6 +20,7 @@ const MOCK_PRODUCT: CampaignProduct = {
     title: 'Mock product',
     url: 'https://store.com/mock-product/',
     price: 100,
+    compareAtPrice: 200,
     currency: 'USD',
     featured_image: 'https://store.com/mock-product.png',
 }

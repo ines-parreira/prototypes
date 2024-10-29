@@ -162,6 +162,8 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     _renderProductAttachment(attachment: Attachment, idx: number) {
+        const price = attachment.getIn(['extra', 'price'])
+        const compareAtPrice = attachment.getIn(['extra', 'compare_at_price'])
         return (
             <div className={css.productCard}>
                 <div className={css.productImageContainer}>
@@ -179,14 +181,28 @@ export default class TicketAttachments extends Component<Props, State> {
                         {attachment.getIn(['extra', 'variant_name'])}
                     </p>
                     <div className={css.productPrice}>
-                        <MoneyAmount
-                            renderIfZero
-                            amount={attachment.getIn(['extra', 'price'])}
-                            currencyCode={attachment.getIn([
-                                'extra',
-                                'currency',
-                            ])}
-                        />
+                        <div className={css.price}>
+                            <MoneyAmount
+                                renderIfZero
+                                amount={price}
+                                currencyCode={attachment.getIn([
+                                    'extra',
+                                    'currency',
+                                ])}
+                            />
+                        </div>
+                        {!!compareAtPrice && (
+                            <div className={css.compareAtPrice}>
+                                <MoneyAmount
+                                    renderIfZero
+                                    amount={compareAtPrice}
+                                    currencyCode={attachment.getIn([
+                                        'extra',
+                                        'currency',
+                                    ])}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <a

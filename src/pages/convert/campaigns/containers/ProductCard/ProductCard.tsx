@@ -30,6 +30,7 @@ type Props = {
     currency?: string
     imageSrc?: string
     price: number
+    compareAtPrice?: number
     productId: number
     title: string
     hasOptions?: boolean
@@ -46,6 +47,7 @@ export const ProductCard = ({
     isHeadlessStore,
     position,
     price,
+    compareAtPrice,
     productId,
     title,
     hasOptions,
@@ -102,6 +104,7 @@ export const ProductCard = ({
                     isHeadlessStore={isHeadlessStore}
                     position={position}
                     price={price}
+                    compareAtPrice={compareAtPrice}
                     title={title}
                     hasOptions={hasOptions}
                     shouldHideRepositionImage={shouldHideRepositionImage}

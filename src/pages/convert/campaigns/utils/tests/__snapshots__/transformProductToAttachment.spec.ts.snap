@@ -4,6 +4,7 @@ exports[`transformProductToAttachment() adds the currency code if product is mis
 {
   "contentType": "application/productCard",
   "extra": {
+    "compare_at_price": undefined,
     "currency": "GBP",
     "position": undefined,
     "price": 0,
@@ -21,6 +22,7 @@ exports[`transformProductToAttachment() adds the currency code if product is mis
 {
   "contentType": "application/productCard",
   "extra": {
+    "compare_at_price": undefined,
     "currency": "USD",
     "position": undefined,
     "price": 0,

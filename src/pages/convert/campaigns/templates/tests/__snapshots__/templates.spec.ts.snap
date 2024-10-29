@@ -542,6 +542,7 @@ exports[`CampaignTemplates get template configuration 15`] = `
     {
       "contentType": "application/productCard",
       "extra": {
+        "compare_at_price": 14.99,
         "currency": "EUR",
         "price": 9.99,
         "product_id": 1,
@@ -792,6 +793,7 @@ exports[`CampaignTemplates get template configuration 24`] = `
     {
       "contentType": "application/productCard",
       "extra": {
+        "compare_at_price": 14.99,
         "currency": "EUR",
         "price": 9.99,
         "product_id": 1,

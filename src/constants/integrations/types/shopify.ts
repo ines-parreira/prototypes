@@ -363,6 +363,7 @@ export type Variant = {
     admin_graphql_api_id: string
     sku: Maybe<string>
     price: string
+    compare_at_price?: string | null
     title: string
     image_id: Maybe<number>
     option1: Maybe<string>

@@ -33,6 +33,7 @@ const PRODUCT = {
     title: 'Product nr1',
     url: 'https://store.com/mock-product1/',
     price: 100,
+    compareAtPrice: 120,
     currency: 'USD',
     featured_image: 'https://store.com/mock-product1.png',
 }
