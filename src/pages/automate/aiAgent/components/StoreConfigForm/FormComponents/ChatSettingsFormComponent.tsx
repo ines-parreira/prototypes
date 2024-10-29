@@ -64,10 +64,15 @@ export const ChatSettingsFormComponent = ({
 
     return (
         <div className={css.formGroup}>
-            <Label className={css.label} isRequired={isRequired}>
+            <Label
+                className={css.label}
+                id="monitored-chat-channels"
+                isRequired={isRequired}
+            >
                 AI Agent responds to tickets sent to the following Chats
             </Label>
             <ChatIntegrationListSelection
+                labelId="monitored-chat-channels"
                 selectedIds={
                     monitoredChatIntegrations !== null
                         ? monitoredChatIntegrations.map(

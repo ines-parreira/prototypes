@@ -271,6 +271,7 @@ exports[`OrderModal should render Create Order 1`] = `
                   id="billing-address-dropdown"
                 >
                   <div
+                    aria-invalid="false"
                     class="wrapper disabled"
                     role="combobox"
                     tabindex="0"
@@ -684,6 +685,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   id="billing-address-dropdown"
                 >
                   <div
+                    aria-invalid="false"
                     class="wrapper disabled"
                     role="combobox"
                     tabindex="0"

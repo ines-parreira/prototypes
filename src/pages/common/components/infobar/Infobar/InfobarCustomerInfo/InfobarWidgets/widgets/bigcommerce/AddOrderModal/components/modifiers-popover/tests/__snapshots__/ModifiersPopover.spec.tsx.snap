@@ -57,6 +57,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
             </abbr>
           </label>
           <div
+            aria-invalid="true"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -126,6 +127,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
             </abbr>
           </label>
           <div
+            aria-invalid="true"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -165,6 +167,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
             </abbr>
           </label>
           <div
+            aria-invalid="true"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -197,6 +200,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
             Just a drodown
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -231,6 +235,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
             </abbr>
           </label>
           <div
+            aria-invalid="true"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -340,6 +345,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -406,6 +412,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -442,6 +449,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -471,6 +479,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
             Just a drodown
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -507,6 +516,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -613,6 +623,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -672,6 +683,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -706,6 +718,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -733,6 +746,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
             Just a drodown
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"
@@ -767,6 +781,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
             </abbr>
           </label>
           <div
+            aria-invalid="false"
             class="wrapper"
             role="combobox"
             tabindex="0"

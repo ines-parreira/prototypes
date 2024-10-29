@@ -85,11 +85,16 @@ export const EmailFormComponent = ({
 
     return (
         <div className={css.formGroup}>
-            <Label isRequired={isValueRequired} className={css.label}>
+            <Label
+                isRequired={isValueRequired}
+                className={css.label}
+                id="monitored-email-channels"
+            >
                 AI Agent responds to tickets sent to the following email
                 addresses
             </Label>
             <EmailIntegrationListSelection
+                labelId="monitored-email-channels"
                 selectedIds={
                     !!monitoredEmailIntegrations
                         ? monitoredEmailIntegrations.map(

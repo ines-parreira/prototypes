@@ -1065,5 +1065,36 @@ describe('<StoreConfigForm />', () => {
                 expect(history.push).toHaveBeenCalledWith('/app/views/1')
             })
         })
+        it('should show error when chat or email enabled but no integrations selected', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+                [FeatureFlagKey.AiAgentChat]: true,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                formValues: {
+                    ...initialFormValues,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                    monitoredEmailIntegrations: [],
+                    monitoredChatIntegrations: [],
+                },
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText(
+                    /AI Agent responds to tickets sent to the following Chats/i
+                )
+            ).toBeInvalid()
+
+            expect(
+                screen.getByLabelText(
+                    /AI Agent responds to tickets sent to the following email addresses/i
+                )
+            ).toBeInvalid()
+        })
     })
 })

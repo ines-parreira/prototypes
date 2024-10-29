@@ -60,6 +60,7 @@ const SelectInputBox = (
         id,
         ['aria-controls']: ariaControls, // TODO: make aria-controls and aria-expanded required to comply with role="combobox" requirements https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules/role-has-required-aria-props.md
         ['aria-expanded']: ariaExpanded,
+        ['aria-labelledby']: ariaLabelledBy,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
@@ -150,6 +151,8 @@ const SelectInputBox = (
                 role="combobox"
                 aria-controls={ariaControls}
                 aria-expanded={ariaExpanded}
+                aria-invalid={hasError}
+                aria-labelledby={ariaLabelledBy}
                 tabIndex={isDisabledMemoized ? -1 : 0}
                 id={id}
             >

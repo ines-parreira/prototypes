@@ -22,6 +22,7 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
       id="shipping-address-dropdown"
     >
       <div
+        aria-invalid="false"
         class="wrapper"
         role="combobox"
         tabindex="0"
@@ -80,6 +81,7 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
       id="shipping-address-dropdown"
     >
       <div
+        aria-invalid="false"
         class="wrapper"
         role="combobox"
         tabindex="0"

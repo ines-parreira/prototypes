@@ -622,6 +622,10 @@ export const StoreConfigForm = ({
                             monitoredChatIntegrations={
                                 formValues.monitoredChatIntegrations
                             }
+                            isRequired={
+                                formValues.chatChannelDeactivatedDatetime ===
+                                null
+                            }
                             updateValue={updateValue}
                             chatChannels={chatChannels}
                         />
@@ -665,7 +669,9 @@ export const StoreConfigForm = ({
                         monitoredEmailIntegrations={
                             formValues.monitoredEmailIntegrations
                         }
-                        isRequired
+                        isRequired={
+                            formValues.emailChannelDeactivatedDatetime === null
+                        }
                     />
                     <SignatureFormComponent
                         updateValue={updateValue}

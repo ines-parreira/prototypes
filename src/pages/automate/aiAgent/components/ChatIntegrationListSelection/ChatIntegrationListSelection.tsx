@@ -24,6 +24,8 @@ type ChatIntegrationListSelectionProps = {
      * Chat integration list to compute the dropdown items
      */
     chatItems: SelfServiceChatChannel[]
+    /* id of connected label tag  */
+    labelId?: string
     hasError?: boolean
     isDisabled?: boolean
 }
@@ -34,6 +36,7 @@ export const ChatIntegrationListSelection = ({
     chatItems,
     hasError = false,
     isDisabled,
+    labelId,
 }: ChatIntegrationListSelectionProps) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -74,6 +77,7 @@ export const ChatIntegrationListSelection = ({
             aria-expanded={isDropdownOpened}
             aria-controls="chat-integrations-list"
             isDisabled={isDisabled}
+            aria-labelledby={labelId}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

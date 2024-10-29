@@ -25,6 +25,8 @@ type Props = {
     emailItems: EmailItem[]
     hasError?: boolean
     isDisabled?: boolean
+    /* id of connected label tag  */
+    labelId?: string
 }
 
 export const EmailIntegrationListSelection: FC<Props> = ({
@@ -33,6 +35,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     emailItems,
     hasError = false,
     isDisabled,
+    labelId,
 }) => {
     // refs to work with the selector component
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -69,6 +72,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
             onToggle={setIsDropdownOpened}
             placeholder="Select one or more email addresses"
             hasError={hasError}
+            aria-labelledby={labelId}
             ref={targetRef}
             isDisabled={isDisabled}
         >
