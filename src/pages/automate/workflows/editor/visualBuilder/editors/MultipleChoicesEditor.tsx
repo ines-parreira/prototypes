@@ -84,6 +84,7 @@ export default function MultipleChoicesEditor({
                                     multipleChoicesNodeId: nodeInEdition.id,
                                 })
                             }}
+                            workflowVariables={workflowVariables}
                         />
                     </div>
                     {previewLanguage && (

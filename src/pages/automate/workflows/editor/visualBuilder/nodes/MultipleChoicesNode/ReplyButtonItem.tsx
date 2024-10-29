@@ -1,10 +1,12 @@
 import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
+import Editor from 'draft-js-plugins-editor'
 import React, {RefObject, useEffect, useState} from 'react'
 
+import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import TextInput from 'pages/common/forms/input/TextInput'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReplyButtonItem.less'
@@ -22,9 +24,8 @@ type ReplyButtonItemProps = {
     onDeleteChoiceCancel: (index: number) => void
     disabledTooltip?: React.ReactNode
     placeholder?: string
+    workflowVariables: WorkflowVariableList
 }
-
-const choiceTextLimit = 50
 
 export default function ReplyButtonItem({
     onMove,
@@ -39,8 +40,9 @@ export default function ReplyButtonItem({
     onDeleteChoiceCancel,
     disabledTooltip,
     placeholder,
+    workflowVariables,
 }: ReplyButtonItemProps) {
-    const [ref, setRef] = useState<HTMLInputElement | null>(null)
+    const [ref, setRef] = useState<Editor | null>(null)
     const {visualBuilderGraph, dispatch} = useVisualBuilderContext()
     const dndType = 'workflow-multiple-choices-reply-button'
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
@@ -51,7 +53,7 @@ export default function ReplyButtonItem({
 
     useEffect(() => {
         if (eventId === visualBuilderGraph.choiceEventIdEditing) {
-            ref?.focus({preventScroll: true})
+            ref?.focus()
         }
     }, [ref, eventId, visualBuilderGraph.choiceEventIdEditing])
 
@@ -68,12 +70,10 @@ export default function ReplyButtonItem({
             >
                 drag_indicator
             </i>
-            <TextInput
+            <TextInputWithVariables
                 ref={setRef}
                 value={label}
                 onChange={onChangeLabel}
-                className={css.textInput}
-                maxLength={choiceTextLimit}
                 placeholder={placeholder}
                 onFocus={() => {
                     dispatch({
@@ -87,6 +87,7 @@ export default function ReplyButtonItem({
                         eventId: null,
                     })
                 }}
+                variables={workflowVariables}
             />
             <ConfirmationPopover
                 placement="top"

@@ -1040,12 +1040,12 @@ export default function EdgeBlock({
                 <EdgeLabel
                     onClick={() => {
                         dispatch({
-                            type: 'SET_CHOICE_EVENT_EDITING_ID',
-                            eventId: incomingChoice.eventId,
-                        })
-                        dispatch({
                             type: 'SET_NODE_EDITING_ID',
                             nodeId: incomingChoice.nodeId,
+                        })
+                        dispatch({
+                            type: 'SET_CHOICE_EVENT_EDITING_ID',
+                            eventId: incomingChoice.eventId,
                         })
                     }}
                     isSelected={isSelected}

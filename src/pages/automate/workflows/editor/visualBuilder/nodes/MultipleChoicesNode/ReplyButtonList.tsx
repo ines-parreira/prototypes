@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -14,6 +15,7 @@ type ReplyButtonListProps = {
     onReorderChoices: (orderedEventIds: string[]) => void
     onChangeChoiceLabel: (event_id: string, label: string) => void
     onAddChoice: () => void
+    workflowVariables: WorkflowVariableList
 }
 
 export default function ReplyButtonList({
@@ -22,6 +24,7 @@ export default function ReplyButtonList({
     onReorderChoices,
     onChangeChoiceLabel,
     onAddChoice,
+    workflowVariables,
 }: ReplyButtonListProps) {
     const {dispatch} = useWorkflowEditorContext()
     const [choicesDirty, setChoicesDirty] = useState(choices)
@@ -103,6 +106,7 @@ export default function ReplyButtonList({
                     onDeleteChoiceClick={handleDeleteChoiceClick}
                     onDeleteChoiceCancel={handleDeleteChoiceCancel}
                     onDeleteChoiceConfirmation={handleDeleteChoiceConfirmation}
+                    workflowVariables={workflowVariables}
                 />
             ))}
             <div>

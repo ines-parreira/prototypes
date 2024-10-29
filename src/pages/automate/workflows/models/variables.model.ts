@@ -1171,8 +1171,21 @@ export function extractVariablesFromNode(
     let variables: string[] = []
 
     switch (node.type) {
-        case 'automated_message':
         case 'multiple_choices':
+            variables = [
+                ...extractVariablesFromText(node.data.content.text).map(
+                    (variable) => variable.value
+                ),
+                ..._flatten(
+                    node.data.choices.map((choice) =>
+                        extractVariablesFromText(choice.label).map(
+                            (variable) => variable.value
+                        )
+                    )
+                ),
+            ]
+            break
+        case 'automated_message':
         case 'text_reply':
         case 'file_upload':
         case 'order_selection':
@@ -1394,8 +1407,15 @@ export function isValidLiquidSyntaxInNode(
     node: UnionPick<VisualBuilderNode, 'type' | 'data'>
 ) {
     switch (node.type) {
-        case 'automated_message':
         case 'multiple_choices':
+            return (
+                isValidLiquidSyntax(node.data.content.text) &&
+                isValidLiquidSyntax(node.data.content.html) &&
+                node.data.choices.every((choice) =>
+                    isValidLiquidSyntax(choice.label)
+                )
+            )
+        case 'automated_message':
         case 'text_reply':
         case 'file_upload':
         case 'order_selection':

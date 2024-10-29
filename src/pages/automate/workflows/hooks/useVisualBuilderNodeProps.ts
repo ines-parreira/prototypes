@@ -2,6 +2,7 @@ import {useMemo} from 'react'
 
 import {VisualBuilderEdgeProps} from '../editor/visualBuilder/components/EdgeBlock'
 import {VisualBuilderDeleteProps} from '../editor/visualBuilder/components/NodeDeleteIcon'
+import {workflowVariableRegex} from '../models/variables.model'
 import {getIncoming} from '../models/visualBuilderGraph.model'
 import {useVisualBuilderContext} from './useVisualBuilder'
 
@@ -137,7 +138,10 @@ export function useVisualBuilderNodeProps({
                 incomingChoice?.eventId &&
                 incomingChoice?.nodeId
                     ? {
-                          label: incomingChoice.label,
+                          label: incomingChoice.label.replace(
+                              workflowVariableRegex,
+                              '{...}'
+                          ),
                           eventId: incomingChoice.eventId,
                           nodeId: incomingChoice.nodeId,
                       }

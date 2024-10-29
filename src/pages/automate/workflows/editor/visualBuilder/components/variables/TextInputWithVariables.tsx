@@ -12,6 +12,9 @@ import React, {
     useState,
     useEffect,
     memo,
+    forwardRef,
+    ForwardedRef,
+    useImperativeHandle,
 } from 'react'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
@@ -34,6 +37,7 @@ type Props = {
     value: string
     onChange: (value: string) => void
     onBlur?: () => void
+    onFocus?: () => void
     variables?: WorkflowVariableList
     placeholder?: string
     noSelectedCategoryText?: string
@@ -41,17 +45,23 @@ type Props = {
     toolTipMessage?: string | null
 }
 
-const TextInputWithVariables = ({
-    value,
-    onChange,
-    onBlur,
-    variables,
-    placeholder,
-    noSelectedCategoryText,
-    isDisabled,
-    toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
-}: Props) => {
-    const editorRef = useRef<Editor | null>()
+const TextInputWithVariables = (
+    {
+        value,
+        onChange,
+        onBlur,
+        onFocus,
+        variables,
+        placeholder,
+        noSelectedCategoryText,
+        isDisabled,
+        toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
+    }: Props,
+    ref: ForwardedRef<Editor>
+) => {
+    const editorRef = useRef<Editor | null>(null)
+
+    useImperativeHandle(ref, () => editorRef.current!)
 
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -144,6 +154,7 @@ const TextInputWithVariables = ({
                                     plugins={plugins}
                                     onFocus={() => {
                                         inputGroupContext?.setIsFocused(true)
+                                        onFocus?.()
                                     }}
                                     onBlur={() => {
                                         inputGroupContext?.setIsFocused(false)
@@ -190,4 +201,4 @@ const TextInputWithVariables = ({
     )
 }
 
-export default memo(TextInputWithVariables)
+export default memo(forwardRef(TextInputWithVariables))

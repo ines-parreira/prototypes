@@ -3,6 +3,7 @@ import {ulid} from 'ulidx'
 import {
     buildWorkflowVariableFromNode,
     buildWorkflowVariableFromTrigger,
+    extractVariablesFromNode,
     extractVariablesFromText,
     getWorkflowVariableListForNode,
     parseWorkflowVariable,
@@ -596,5 +597,31 @@ describe('buildWorkflowVariableFromTrigger()', () => {
                 },
             ])
         )
+    })
+})
+
+describe('extractVariablesFromNode()', () => {
+    it('should extract variables from multiple_choice node', () => {
+        expect(
+            extractVariablesFromNode({
+                type: 'multiple_choices',
+                data: {
+                    choices: [
+                        {
+                            event_id: 'id1',
+                            label: 'text {{variable2}}',
+                        },
+                        {
+                            event_id: 'id2',
+                            label: 'text {{variable3}}',
+                        },
+                    ],
+                    content: {
+                        html: 'text {{variable1}}',
+                        text: 'text {{variable1}}',
+                    },
+                },
+            })
+        ).toEqual(['variable1', 'variable2', 'variable3'])
     })
 })
