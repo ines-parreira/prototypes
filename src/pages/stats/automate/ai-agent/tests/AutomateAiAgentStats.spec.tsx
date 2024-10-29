@@ -4,6 +4,7 @@ import moment from 'moment-timezone'
 import React, {PropsWithChildren} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
@@ -51,6 +52,9 @@ const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
 jest.mock('pages/stats/AutomateOverviewContent')
 const useTimeSeriesFormattedDataMock =
     useTimeSeriesFormattedData as unknown as jest.Mock
+
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
+const useAIAgentUserIdMock = useAIAgentUserId as jest.Mock
 
 jest.mock(
     'pages/stats/StatsPage',
@@ -154,6 +158,7 @@ describe('AutomateAiAgentStats', () => {
             {label: 'My custom field', managed_type: null},
         ],
         customFieldsIsLoading = false,
+        aiAgentUserId = '5',
     }: {
         statsFilters?: StatsFiltersWithLogicalOperator
         automatedInteractionTrend?: MetricTrend
@@ -162,7 +167,12 @@ describe('AutomateAiAgentStats', () => {
             managed_type: string | null
         }>
         customFieldsIsLoading?: boolean
+        aiAgentUserId?: string
     } = {}) => {
+        useAIAgentUserIdMock.mockReturnValue(
+            aiAgentUserId === null ? undefined : aiAgentUserId
+        )
+
         calculateGreyAreaMock.mockReturnValue({
             from: moment(new Date('2024-09-17')),
             to: moment(new Date('2024-09-20')),

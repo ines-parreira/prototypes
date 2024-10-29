@@ -7,7 +7,6 @@ import {FilterKey} from 'models/stat/types'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
 import {AutomateFeatures} from 'pages/automate/common/types'
 import {AiAgentStatsEmptyState} from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
@@ -34,10 +33,6 @@ export default function AiAgentStatsFilters({children}: Props) {
         }
 
         const defaultFilters = {
-            [FilterKey.Agents]: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: [Number(aiAgentUserId)],
-            },
             [FilterKey.Period]: initialStatsFilters.period,
         }
 

@@ -3,6 +3,7 @@ import moment from 'moment'
 import React, {useEffect, useMemo, useState} from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {
     useAutomateMetricsTimeseriesV2,
     useAutomateMetricsTrendV2,
@@ -52,9 +53,22 @@ export default function AutomateAiAgentStats() {
     const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
         useState(false)
 
+    const aiAgentUserId = useAIAgentUserId()
+
+    const statsFiltersWithAiAgent = useMemo(
+        () => ({
+            ...statsFilters,
+            [FilterKey.Agents]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [Number(aiAgentUserId)],
+            },
+        }),
+        [aiAgentUserId, statsFilters]
+    )
+
     const {automatedInteractionTrend} = useAutomateMetricsTrendV2(
         {
-            ...statsFilters,
+            ...statsFiltersWithAiAgent,
             channels: {values: ['email'], operator: LogicalOperatorEnum.ONE_OF},
         },
         userTimezone
@@ -81,7 +95,7 @@ export default function AutomateAiAgentStats() {
     )
 
     const timeseries = useAutomateMetricsTimeseriesV2(
-        statsFilters,
+        statsFiltersWithAiAgent,
         userTimezone,
         granularity
     )
