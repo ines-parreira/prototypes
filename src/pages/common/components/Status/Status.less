@@ -1,0 +1,24 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .status {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+
+        .dot {
+            border-radius: 4px;
+            height: 8px;
+            width: 8px;
+
+            --dot-success: var(--feedback-success);
+            --dot-warning: var(--feedback-warning);
+            --dot-error: var(--feedback-error);
+            --dot-info: var(--neutral-grey-4);
+        }
+
+        .label {
+            color: var(--neutral-grey-5);
+        }
+    }
+}
