@@ -117,6 +117,7 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyOrderNotes = 'shopify-order-notes',
+    ShowSpeakerLabelsInTranscription = 'show-speaker-labels-in-transcription',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TagNewDesign = 'tag-new-design',
     TicketDemoSuggestion = 'ticket-demo-suggestion',

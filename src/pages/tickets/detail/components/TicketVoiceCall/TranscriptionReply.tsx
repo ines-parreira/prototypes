@@ -1,8 +1,12 @@
 import {VoiceCallRecordingTranscriptionSpeakersItem} from '@gorgias/api-queries'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getFormattedDurationTranscriptionStart} from 'models/voiceCall/utils'
+import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
 import css from './TranscriptionData.less'
 
@@ -22,22 +26,47 @@ export default function TranscriptionReply({
     transcript,
     speakerMapping,
 }: TranscriptionReplyProps) {
+    const showSpeakerLabelsInTranscription =
+        useFlags()[FeatureFlagKey.ShowSpeakerLabelsInTranscription]
     const currentSpeaker = speakerMapping[`${channel}-${speaker}`]
 
     const speakerIndex = currentSpeaker
         ? currentSpeaker.index_in_recording + 1
         : null
     const speakerColorIndex = speakerIndex ? speakerIndex % 4 : 0
+    const agentId = currentSpeaker?.agent_id
+    const customerId = currentSpeaker?.customer_id
+
+    const defaultSpeakerLabel = `Speaker ${speakerIndex ?? 'undefined'}`
+    const defaultLabel = (
+        <span
+            className={classnames(
+                css.replySpeaker,
+                css[`speaker-${speakerColorIndex}`]
+            )}
+        >
+            {defaultSpeakerLabel}
+        </span>
+    )
+    const label = !!showSpeakerLabelsInTranscription ? (
+        agentId ? (
+            <VoiceCallAgentLabel agentId={agentId} />
+        ) : customerId ? (
+            <VoiceCallCustomerLabel
+                customerId={customerId}
+                phoneNumber={defaultSpeakerLabel}
+            />
+        ) : (
+            defaultLabel
+        )
+    ) : (
+        defaultLabel
+    )
 
     return (
         <div className={css.reply}>
             <div className={css.replyHeader}>
-                <span
-                    className={classnames(
-                        css.replySpeaker,
-                        css[`speaker-${speakerColorIndex}`]
-                    )}
-                >{`Speaker ${speakerIndex ?? 'undefined'}`}</span>
+                {label}
                 <span className={css.replyStartTime}>
                     {getFormattedDurationTranscriptionStart(start)}
                 </span>
