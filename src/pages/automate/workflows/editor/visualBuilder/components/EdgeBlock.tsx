@@ -646,7 +646,7 @@ const RemoveItemMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -664,16 +664,40 @@ const RemoveItemMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath(
-                    'refund_order',
-                    visualBuilderGraph,
-                    nodeId
-                ) ||
-                !isNodeUniquePerPath('cancel_order', visualBuilderGraph, nodeId)
-                    ? 'This step cannot be used if Cancel order or Refund order step was already added.'
-                    : undefined
-            }
+        />
+    )
+}
+const ReplaceItemMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    orderExternalId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    customerId: string
+    orderExternalId: string
+    integrationId: string
+}) => {
+    const {dispatch} = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.replace_item}
+            description="Replace order item."
+            icon={iconByVisualBuilderNodeType.replace_item}
+            style={colorByVisualBuilderNodeType.replace_item}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_REPLACE_ITEM_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    orderExternalId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
         />
     )
 }
@@ -1020,6 +1044,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                     orderExternalId="{{objects.order.external_id}}"
                                     integrationId="{{store.helpdesk_integration_id}}"
                                 />
+                                <ReplaceItemMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                    customerId="{{objects.customer.id}}"
+                                    orderExternalId="{{objects.order.external_id}}"
+                                    integrationId="{{store.helpdesk_integration_id}}"
+                                />
                                 <CreateDiscountCodeMenuItem
                                     nodeId={nodeId}
                                     floatingRef={floatingRef}
@@ -1100,6 +1131,10 @@ export type VisualBuilderEdgeProps = {
         label: string
         nodeId: string
     }
+    incomingReplaceItemCondition?: {
+        label: string
+        nodeId: string
+    }
     incomingCreateDiscountCodeCondition?: {
         label: string
         nodeId: string
@@ -1131,6 +1166,7 @@ export default function EdgeBlock({
     incomingRefundOrderCondition,
     incomingUpdateShippingAddressCondition,
     incomingRemoveItemCondition,
+    incomingReplaceItemCondition,
     incomingCreateDiscountCodeCondition,
     incomingRefundShippingCostsCondition,
     incomingReshipForFreeCondition,
@@ -1164,6 +1200,7 @@ export default function EdgeBlock({
                     incomingRefundOrderCondition ||
                     incomingUpdateShippingAddressCondition ||
                     incomingRemoveItemCondition ||
+                    incomingReplaceItemCondition ||
                     incomingCreateDiscountCodeCondition ||
                     incomingReshipForFreeCondition ||
                     incomingRefundShippingCostsCondition ||
@@ -1241,6 +1278,20 @@ export default function EdgeBlock({
                     type="remove_item"
                 >
                     {incomingRemoveItemCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingReplaceItemCondition && (
+                <EdgeLabel
+                    onClick={() => {
+                        dispatch({
+                            type: 'SET_NODE_EDITING_ID',
+                            nodeId: incomingReplaceItemCondition.nodeId,
+                        })
+                    }}
+                    isSelected={isSelected}
+                    type="replace_item"
+                >
+                    {incomingReplaceItemCondition.label}
                 </EdgeLabel>
             )}
             {incomingCreateDiscountCodeCondition && (

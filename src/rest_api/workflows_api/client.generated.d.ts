@@ -317,6 +317,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -340,6 +352,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -715,6 +747,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -796,6 +829,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -910,6 +944,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -1277,6 +1312,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -1300,6 +1347,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -1613,6 +1680,18 @@ declare namespace Components {
           integration_id: string;
           product_variant_id: string;
           quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
         };
       } | {
         id: string;
@@ -1996,6 +2075,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -2077,6 +2157,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -2191,6 +2272,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -2405,6 +2487,7 @@ declare namespace Components {
                     external_type?: string | null;
                     variants?: {
                       external_id: string;
+                      external_gid?: string | null;
                       quantity?: number | null;
                       name?: string | null;
                     }[] | null;
@@ -2485,6 +2568,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -2593,6 +2677,7 @@ declare namespace Components {
                         external_type?: string | null;
                         variants?: {
                           external_id: string;
+                          external_gid?: string | null;
                           quantity?: number | null;
                           name?: string | null;
                         }[] | null;
@@ -2673,6 +2758,7 @@ declare namespace Components {
                       external_type?: string | null;
                       variants?: {
                         external_id: string;
+                        external_gid?: string | null;
                         quantity?: number | null;
                         name?: string | null;
                       }[] | null;
@@ -2746,6 +2832,15 @@ declare namespace Components {
                 at: string; // date-time
               } | {
                 kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
@@ -2839,6 +2934,15 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "remove-item";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "replace-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -2950,6 +3054,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -3027,6 +3132,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -3052,11 +3158,13 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
               selected_variant?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               } | null;
@@ -3411,6 +3519,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -3434,6 +3554,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -3805,6 +3945,18 @@ declare namespace Components {
           integration_id: string;
           product_variant_id: string;
           quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
         };
       } | {
         id: string;
@@ -4353,6 +4505,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -4376,6 +4540,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -4576,6 +4760,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -4718,6 +4903,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -4799,6 +4985,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -4998,6 +5185,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -5079,6 +5267,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -5192,6 +5381,7 @@ declare namespace Components {
                     external_type?: string | null;
                     variants?: {
                       external_id: string;
+                      external_gid?: string | null;
                       quantity?: number | null;
                       name?: string | null;
                     }[] | null;
@@ -5272,6 +5462,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -5380,6 +5571,7 @@ declare namespace Components {
                         external_type?: string | null;
                         variants?: {
                           external_id: string;
+                          external_gid?: string | null;
                           quantity?: number | null;
                           name?: string | null;
                         }[] | null;
@@ -5460,6 +5652,7 @@ declare namespace Components {
                       external_type?: string | null;
                       variants?: {
                         external_id: string;
+                        external_gid?: string | null;
                         quantity?: number | null;
                         name?: string | null;
                       }[] | null;
@@ -5533,6 +5726,15 @@ declare namespace Components {
                 at: string; // date-time
               } | {
                 kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
@@ -5626,6 +5828,15 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "remove-item";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "replace-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -5737,6 +5948,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -5814,6 +6026,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -5839,11 +6052,13 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
               selected_variant?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               } | null;
@@ -6020,6 +6235,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -6101,6 +6317,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -6300,6 +6517,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -6381,6 +6599,7 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
@@ -6494,6 +6713,7 @@ declare namespace Components {
                     external_type?: string | null;
                     variants?: {
                       external_id: string;
+                      external_gid?: string | null;
                       quantity?: number | null;
                       name?: string | null;
                     }[] | null;
@@ -6574,6 +6794,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -6682,6 +6903,7 @@ declare namespace Components {
                         external_type?: string | null;
                         variants?: {
                           external_id: string;
+                          external_gid?: string | null;
                           quantity?: number | null;
                           name?: string | null;
                         }[] | null;
@@ -6762,6 +6984,7 @@ declare namespace Components {
                       external_type?: string | null;
                       variants?: {
                         external_id: string;
+                        external_gid?: string | null;
                         quantity?: number | null;
                         name?: string | null;
                       }[] | null;
@@ -6835,6 +7058,15 @@ declare namespace Components {
                 at: string; // date-time
               } | {
                 kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
@@ -6928,6 +7160,15 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "remove-item";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "replace-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -7039,6 +7280,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -7116,6 +7358,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -7141,11 +7384,13 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
               selected_variant?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               } | null;
@@ -7349,6 +7594,7 @@ declare namespace Components {
                     external_type?: string | null;
                     variants?: {
                       external_id: string;
+                      external_gid?: string | null;
                       quantity?: number | null;
                       name?: string | null;
                     }[] | null;
@@ -7429,6 +7675,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -7537,6 +7784,7 @@ declare namespace Components {
                         external_type?: string | null;
                         variants?: {
                           external_id: string;
+                          external_gid?: string | null;
                           quantity?: number | null;
                           name?: string | null;
                         }[] | null;
@@ -7617,6 +7865,7 @@ declare namespace Components {
                       external_type?: string | null;
                       variants?: {
                         external_id: string;
+                        external_gid?: string | null;
                         quantity?: number | null;
                         name?: string | null;
                       }[] | null;
@@ -7690,6 +7939,15 @@ declare namespace Components {
                 at: string; // date-time
               } | {
                 kind: "remove-item";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "replace-item";
                 success: boolean;
                 error?: {
                   [name: string]: any;
@@ -7783,6 +8041,15 @@ declare namespace Components {
             at: string; // date-time
           } | {
             kind: "remove-item";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "replace-item";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -7894,6 +8161,7 @@ declare namespace Components {
                   external_type?: string | null;
                   variants?: {
                     external_id: string;
+                    external_gid?: string | null;
                     quantity?: number | null;
                     name?: string | null;
                   }[] | null;
@@ -7971,6 +8239,7 @@ declare namespace Components {
                 external_type?: string | null;
                 variants?: {
                   external_id: string;
+                  external_gid?: string | null;
                   quantity?: number | null;
                   name?: string | null;
                 }[] | null;
@@ -7996,11 +8265,13 @@ declare namespace Components {
               external_type?: string | null;
               variants?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               }[] | null;
               selected_variant?: {
                 external_id: string;
+                external_gid?: string | null;
                 quantity?: number | null;
                 name?: string | null;
               } | null;
@@ -8351,6 +8622,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -8374,6 +8657,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -8899,6 +9202,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -8922,6 +9237,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -9448,6 +9783,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -9471,6 +9818,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -9996,6 +10363,18 @@ declare namespace Components {
         };
       } | {
         id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
+        };
+      } | {
+        id: string;
         kind: "create-discount-code";
         settings: {
           customer_id: string;
@@ -10019,6 +10398,26 @@ declare namespace Components {
           customer_id: string;
           order_external_id: string;
           integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
         };
       })[];
       inputs?: ({
@@ -10331,6 +10730,18 @@ declare namespace Components {
           integration_id: string;
           product_variant_id: string;
           quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
         };
       } | {
         id: string;
@@ -10676,6 +11087,18 @@ declare namespace Components {
           integration_id: string;
           product_variant_id: string;
           quantity: string;
+        };
+      } | {
+        id: string;
+        kind: "replace-item";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+          product_variant_id: string;
+          quantity: string;
+          added_product_variant_id: string;
+          added_quantity: string;
         };
       } | {
         id: string;

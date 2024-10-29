@@ -15,6 +15,7 @@ type Props = {
         | 'refund_order'
         | 'update_shipping_address'
         | 'remove_item'
+        | 'replace_item'
         | 'create_discount_code'
         | 'reship_for_free'
         | 'refund_shipping_costs'

@@ -24,6 +24,7 @@ import {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
+    ReplaceItemNodeType,
 } from '../../models/visualBuilderGraph.types'
 import {
     buildAutomatedMessageNode,
@@ -46,6 +47,7 @@ import {
     greyOutBranch,
     buildRefundShippingCostsNode,
     buildReshipForFreeNode,
+    buildReplaceItemNode,
 } from './utils'
 
 export type VisualBuilderBaseAction =
@@ -204,6 +206,21 @@ export type VisualBuilderBaseAction =
           removeItemNodeId: string
           productVariantId: string
           quantity: string
+      }
+    | {
+          type: 'INSERT_REPLACE_ITEM_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'SET_REPLACE_ITEM_NODE_SETTINGS'
+          replaceItemNodeId: string
+          productVariantId: string
+          quantity: string
+          addedProductVariantId: string
+          addedQuantity: string
       }
     | {
           type: 'INSERT_CREATE_DISCOUNT_CODE_NODE'
@@ -506,6 +523,14 @@ export function baseReducer(
                     action.beforeNodeId
                 )
             )
+        case 'INSERT_REPLACE_ITEM_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildReplaceItemNode(action),
+                    action.beforeNodeId
+                )
+            )
         case 'INSERT_CREATE_DISCOUNT_CODE_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
@@ -593,6 +618,21 @@ export function baseReducer(
                 if (node) {
                     node.data.productVariantId = action.productVariantId
                     node.data.quantity = action.quantity
+                }
+            })
+        case 'SET_REPLACE_ITEM_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is ReplaceItemNodeType =>
+                        n.id === action.replaceItemNodeId
+                )
+
+                if (node) {
+                    node.data.productVariantId = action.productVariantId
+                    node.data.quantity = action.quantity
+                    node.data.addedProductVariantId =
+                        action.addedProductVariantId
+                    node.data.addedQuantity = action.addedQuantity
                 }
             })
         case 'SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS':

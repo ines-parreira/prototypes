@@ -178,6 +178,20 @@ export type WorkflowStepRemoveItem = {
     }
 }
 
+export type WorkflowStepReplaceItem = {
+    id: string
+    kind: 'replace-item'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+        product_variant_id: string
+        quantity: string
+        added_product_variant_id: string
+        added_quantity: string
+    }
+}
+
 export type WorkflowStepCreateDiscountCode = {
     id: string
     kind: 'create-discount-code'
@@ -249,6 +263,7 @@ export type WorkflowStep =
     | WorkflowStepRefundOrder
     | WorkflowStepUpdateShippingAddress
     | WorkflowStepRemoveItem
+    | WorkflowStepReplaceItem
     | WorkflowStepCreateDiscountCode
     | WorkflowStepReshipForFree
     | WorkflowStepRefundShippingCosts

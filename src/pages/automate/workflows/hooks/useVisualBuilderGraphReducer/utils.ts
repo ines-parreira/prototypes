@@ -23,6 +23,7 @@ import {
     RefundOrderNodeType,
     RefundShippingCostsNodeType,
     RemoveItemNodeType,
+    ReplaceItemNodeType,
     ReshipForFreeNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
@@ -351,6 +352,31 @@ export const buildRemoveItemNode = ({
             integrationId,
             productVariantId: '',
             quantity: '',
+        },
+    }
+}
+
+export const buildReplaceItemNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Pick<
+    ReplaceItemNodeType['data'],
+    'customerId' | 'orderExternalId' | 'integrationId'
+>): ReplaceItemNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'replace_item',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+            productVariantId: '',
+            quantity: '',
+            addedProductVariantId: '',
+            addedQuantity: '',
         },
     }
 }

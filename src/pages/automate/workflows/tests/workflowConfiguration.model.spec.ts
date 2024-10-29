@@ -959,4 +959,261 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+    test('configuration containing replace-item step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Replace item',
+            is_draft: true,
+            initial_step_id: 'replace_item',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'replace_item',
+                    kind: 'replace-item',
+                    settings: {
+                        customer_id: '{{objects.customer.id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        product_variant_id:
+                            '{{objects.products.product1.selected_variant.external_gid}}',
+                        quantity: '{{custom_inputs.quantity1}}',
+                        added_product_variant_id:
+                            '{{objects.products.product2.selected_variant.external_gid}}',
+                        added_quantity: '{{custom_inputs.quantity2}}',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01JB9PNJ85BQFCNHATM5QGKJE9',
+                    from_step_id: 'replace_item',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01JB9PNJ85Y4SC7QDG7QP331MS',
+                    from_step_id: 'replace_item',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [
+                            {
+                                data_type: 'string',
+                                id: 'quantity1',
+                                name: 'Quantity to remove',
+                                instructions:
+                                    'How nmuch of the product to remove',
+                            },
+                            {
+                                data_type: 'string',
+                                id: 'quantity2',
+                                name: 'Quantity to add',
+                                instructions: 'How much of the product to add',
+                            },
+                        ],
+                        object_inputs: [
+                            {
+                                kind: 'product',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                                id: 'product1',
+                                name: 'Product to replace',
+                                instructions: 'Select the product to replace',
+                            },
+                            {
+                                kind: 'product',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                                id: 'product2',
+                                name: 'Product to replace with',
+                                instructions:
+                                    'Select the product to replace with',
+                            },
+                            {
+                                kind: 'customer',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                            {
+                                kind: 'order',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                            },
+                        ],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'replace_item',
+                                description: '',
+                                path: 'steps_state.replace_item.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action replaces an item',
+                    },
+                    deactivated_datetime: undefined,
+                },
+            ],
+            apps: undefined,
+            inputs: undefined,
+            values: undefined,
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action replaces an item',
+                    requires_confirmation: false,
+                    deactivated_datetime: undefined,
+                    inputs: [
+                        {
+                            data_type: 'string',
+                            id: 'quantity1',
+                            name: 'Quantity to remove',
+                            instructions: 'How nmuch of the product to remove',
+                        },
+                        {
+                            data_type: 'string',
+                            id: 'quantity2',
+                            name: 'Quantity to add',
+                            instructions: 'How much of the product to add',
+                        },
+                        {
+                            kind: 'product',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            id: 'product1',
+                            name: 'Product to replace',
+                            instructions: 'Select the product to replace',
+                        },
+                        {
+                            kind: 'product',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            id: 'product2',
+                            name: 'Product to replace with',
+                            instructions: 'Select the product to replace with',
+                        },
+                    ],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'replace_item',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'replace_item',
+                data: {
+                    customerId: '{{objects.customer.id}}',
+                    orderExternalId: '{{objects.order.external_id}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                    productVariantId:
+                        '{{objects.products.product1.selected_variant.external_gid}}',
+                    quantity: '{{custom_inputs.quantity1}}',
+                    addedProductVariantId:
+                        '{{objects.products.product2.selected_variant.external_gid}}',
+                    addedQuantity: '{{custom_inputs.quantity2}}',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-replace_item',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'replace_item',
+            },
+            {
+                id: 'replace_item-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'replace_item',
+                target: 'end_success',
+            },
+            {
+                id: 'replace_item-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'replace_item',
+                target: 'end_failure',
+            },
+        ])
+    })
 })

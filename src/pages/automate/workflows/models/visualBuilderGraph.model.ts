@@ -41,6 +41,7 @@ import {
     WorkflowStepRefundOrder,
     WorkflowStepRefundShippingCosts,
     WorkflowStepRemoveItem,
+    WorkflowStepReplaceItem,
     WorkflowStepReshipForFree,
     WorkflowStepShopperAuthentication,
     WorkflowStepSkipCharge,
@@ -698,6 +699,35 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         integration_id: node.data.integrationId,
                         product_variant_id: node.data.productVariantId,
                         quantity: node.data.quantity,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'replace_item') {
+                const step: WorkflowStepReplaceItem = {
+                    id: node.id,
+                    kind: 'replace-item',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                        product_variant_id: node.data.productVariantId,
+                        quantity: node.data.quantity,
+                        added_product_variant_id:
+                            node.data.addedProductVariantId,
+                        added_quantity: node.data.addedQuantity,
                     },
                 }
                 c.steps.push(step)

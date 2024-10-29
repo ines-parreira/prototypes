@@ -75,6 +75,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
+    replace_item: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
     create_discount_code: {
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
@@ -132,6 +136,7 @@ export const iconByVisualBuilderNodeType: Record<
     cancel_subscription: <i className="material-icons">unsubscribe</i>,
     skip_charge: <i className="material-icons">skip_next</i>,
     app: <i className="material-icons">key</i>,
+    replace_item: <i className="material-icons">swap_horiz</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -159,6 +164,7 @@ export const labelByVisualBuilderNodeType: Record<
     create_discount_code: 'Create discount code',
     refund_shipping_costs: 'Refund shipping costs',
     reship_for_free: 'Reship for free',
+    replace_item: 'Replace order item',
 }
 
 export const endNodeActionLabelByAction: Record<

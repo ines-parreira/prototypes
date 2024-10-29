@@ -1086,6 +1086,13 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'replace_item') {
+        return {
+            name: 'Replace item success',
+            nodeType: 'replace_item',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     } else if (node.type === 'create_discount_code') {
         return {
             name: 'Create discount code success',
@@ -1345,6 +1352,28 @@ export function extractVariablesFromNode(
                     (variable) => variable.value
                 ),
                 ...extractVariablesFromText(node.data.quantity).map(
+                    (variable) => variable.value
+                ),
+            ]
+            break
+        case 'replace_item':
+            variables = [
+                ...extractVariablesFromText(node.data.customerId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.orderExternalId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.productVariantId).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(node.data.quantity).map(
+                    (variable) => variable.value
+                ),
+                ...extractVariablesFromText(
+                    node.data.addedProductVariantId
+                ).map((variable) => variable.value),
+                ...extractVariablesFromText(node.data.addedQuantity).map(
                     (variable) => variable.value
                 ),
             ]

@@ -32,6 +32,7 @@ import {
     VisualBuilderNode,
     ReshipForFreeNodeType,
     RefundShippingCostsNodeType,
+    ReplaceItemNodeType,
 } from './visualBuilderGraph.types'
 import {
     MessageContent,
@@ -456,6 +457,25 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     integrationId: step.settings.integration_id,
                     productVariantId: step.settings.product_variant_id,
                     quantity: step.settings.quantity,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'replace-item') {
+            const node: ReplaceItemNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'replace_item',
+                data: {
+                    customerId: step.settings.customer_id,
+                    orderExternalId: step.settings.order_external_id,
+                    integrationId: step.settings.integration_id,
+                    productVariantId: step.settings.product_variant_id,
+                    quantity: step.settings.quantity,
+                    addedProductVariantId:
+                        step.settings.added_product_variant_id,
+                    addedQuantity: step.settings.added_quantity,
                 },
             }
 

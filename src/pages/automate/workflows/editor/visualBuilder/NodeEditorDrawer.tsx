@@ -20,6 +20,7 @@ import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import OrderLineItemSelectionEditor from './editors/OrderLineItemSelectionEditor'
 import OrderSelectionEditor from './editors/OrderSelectionEditor'
 import RemoveItemEditor from './editors/RemoveItemEditor'
+import ReplaceItemEditor from './editors/ReplaceItemEditor'
 import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor'
 import SkipChargeEditor from './editors/SkipChargeEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
@@ -164,6 +165,9 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                 )}
                 {memoizedNodeInEdition?.type === 'remove_item' && (
                     <RemoveItemEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'replace_item' && (
+                    <ReplaceItemEditor nodeInEdition={memoizedNodeInEdition} />
                 )}
                 {memoizedNodeInEdition?.type === 'cancel_subscription' && (
                     <CancelSubscriptionEditor

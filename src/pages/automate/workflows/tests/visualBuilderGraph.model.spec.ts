@@ -688,4 +688,214 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+    it('should transform graph with a replace item step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'Replace item',
+            available_languages: ['en-US'],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'llm_prompt_trigger',
+                    data: {
+                        instructions: 'This action replaces an item',
+                        requires_confirmation: false,
+                        inputs: [
+                            {
+                                kind: 'product',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                                id: 'product1',
+                                name: 'Product to replace',
+                                instructions: 'Select the product to replace',
+                            },
+                            {
+                                kind: 'product',
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                                id: 'product2',
+                                name: 'Product to replace with',
+                                instructions:
+                                    'Select the product to replace with',
+                            },
+                            {
+                                data_type: 'string',
+                                id: 'quantity1',
+                                name: 'Quantity to remove',
+                                instructions:
+                                    'How nmuch of the product to remove',
+                            },
+                            {
+                                data_type: 'string',
+                                id: 'quantity2',
+                                name: 'Quantity to add',
+                                instructions: 'How much of the product to add',
+                            },
+                        ],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'replace_item',
+                    type: 'replace_item',
+                    data: {
+                        customerId: '{{objects.customer.id}}',
+                        orderExternalId: '{{objects.order.external_id}}',
+                        integrationId: '{{store.helpdesk_integration_id}}',
+                        productVariantId:
+                            '{{objects.products.product1.selected_variant.external_gid}}',
+                        quantity: '{{custom_inputs.quantity1}}',
+                        addedProductVariantId:
+                            '{{objects.products.product2.selected_variant.external_gid}}',
+                        addedQuantity: '{{custom_inputs.quantity2}}',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_success',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_failure',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'trigger',
+                    target: 'replace_item',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'replace_item',
+                    target: 'end_success',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'replace_item',
+                    target: 'end_failure',
+                },
+            ],
+            wfConfigurationOriginal: {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: 'Replace item',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [
+                    {
+                        type: 'shopify',
+                    },
+                ],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    instructions: 'This action replaces an item',
+                },
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [
+                        {
+                            data_type: 'string',
+                            id: 'quantity1',
+                            name: 'Quantity to remove',
+                            instructions: 'How nmuch of the product to remove',
+                        },
+                        {
+                            data_type: 'string',
+                            id: 'quantity2',
+                            name: 'Quantity to add',
+                            instructions: 'How much of the product to add',
+                        },
+                    ],
+                    object_inputs: [
+                        {
+                            kind: 'product',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            id: 'product1',
+                            name: 'Product to replace',
+                            instructions: 'Select the product to replace',
+                        },
+                        {
+                            kind: 'product',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            id: 'product2',
+                            name: 'Product to replace with',
+                            instructions: 'Select the product to replace with',
+                        },
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditions: null,
+                    outputs: [
+                        {
+                            id: 'replace_item',
+                            description: '',
+                            path: 'steps_state.replace_item.success',
+                        },
+                    ],
+                },
+            },
+        ])
+        expect(configuration.steps).toEqual([
+            {
+                id: 'replace_item',
+                kind: 'replace-item',
+                settings: {
+                    customer_id: '{{objects.customer.id}}',
+                    order_external_id: '{{objects.order.external_id}}',
+                    integration_id: '{{store.helpdesk_integration_id}}',
+                    product_variant_id:
+                        '{{objects.products.product1.selected_variant.external_gid}}',
+                    quantity: '{{custom_inputs.quantity1}}',
+                    added_product_variant_id:
+                        '{{objects.products.product2.selected_variant.external_gid}}',
+                    added_quantity: '{{custom_inputs.quantity2}}',
+                },
+            },
+            {
+                id: 'end_success',
+                kind: 'end',
+            },
+            {
+                id: 'end_failure',
+                kind: 'end',
+            },
+        ])
+    })
 })

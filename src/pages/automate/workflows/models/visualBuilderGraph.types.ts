@@ -237,6 +237,20 @@ export type RemoveItemNodeType = Node<
     'remove_item'
 >
 
+export type ReplaceItemNodeType = Node<
+    {
+        customerId: string
+        orderExternalId: string
+        integrationId: string
+        productVariantId: string
+        quantity: string
+        addedProductVariantId: string
+        addedQuantity: string
+        isGreyedOut?: boolean | null
+    },
+    'replace_item'
+>
+
 export type CreateDiscountCodeNodeType = Node<
     {
         customerId: string
@@ -308,6 +322,7 @@ export type VisualBuilderNode =
     | RefundOrderNodeType
     | UpdateShippingAddressNodeType
     | RemoveItemNodeType
+    | ReplaceItemNodeType
     | CreateDiscountCodeNodeType
     | ReshipForFreeNodeType
     | RefundShippingCostsNodeType

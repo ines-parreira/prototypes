@@ -402,4 +402,48 @@ describe('baseReducer', () => {
             )
         ).toBeDefined()
     })
+    test('INSERT_REPLACE_ITEM_NODE / SET_REPLACE_ITEM_NODE_SETTINGS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_REPLACE_ITEM_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'replace_item' &&
+                    n.data.customerId === 'customerId' &&
+                    n.data.orderExternalId === 'orderExternalId' &&
+                    n.data.integrationId === 'integrationId'
+            )
+        ).toBeDefined()
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_REPLACE_ITEM_NODE_SETTINGS',
+            replaceItemNodeId: nextG.nodes.find(
+                (n) => n.type === 'replace_item'
+            )!.id,
+            addedProductVariantId: 'addedProductVariantId',
+            addedQuantity: '1',
+            productVariantId: 'productVariantId',
+            quantity: '1',
+        })
+
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'replace_item' &&
+                    n.data.addedProductVariantId === 'addedProductVariantId' &&
+                    n.data.addedQuantity === '1' &&
+                    n.data.productVariantId === 'productVariantId' &&
+                    n.data.quantity === '1'
+            )
+        ).toBeDefined()
+    })
 })
