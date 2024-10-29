@@ -1,6 +1,6 @@
 import {Tooltip} from '@gorgias/ui-kit'
 import classnames from 'classnames'
-import React, {useRef} from 'react'
+import React, {ComponentProps, useRef} from 'react'
 
 import css from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon.less'
 import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
@@ -8,9 +8,14 @@ import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constant
 type Props = {
     warningType: 'non-existent' | 'not-applicable'
     tooltip: string
+    tooltipPlacement?: ComponentProps<typeof Tooltip>['placement']
 }
 
-export const FilterWarningIcon = ({warningType, tooltip}: Props) => {
+export const FilterWarningIcon = ({
+    warningType,
+    tooltip,
+    tooltipPlacement = 'bottom-end',
+}: Props) => {
     const ref = useRef<HTMLElement>(null)
     const iconColorClass =
         warningType === 'non-existent' ? 'nonExistent' : 'notApplicable'
@@ -29,7 +34,7 @@ export const FilterWarningIcon = ({warningType, tooltip}: Props) => {
             </i>
             <Tooltip
                 target={ref}
-                placement="bottom-end"
+                placement={tooltipPlacement}
                 boundariesElement={'body'}
             >
                 {tooltip}

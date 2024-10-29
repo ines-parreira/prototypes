@@ -11,9 +11,8 @@ import React, {
 } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
+import css from 'pages/common/components/EditableTitle/EditableTitle.less'
 import TextInput from 'pages/common/forms/input/TextInput'
-
-import css from './EditableTitle.less'
 
 type Props = {
     className?: string
