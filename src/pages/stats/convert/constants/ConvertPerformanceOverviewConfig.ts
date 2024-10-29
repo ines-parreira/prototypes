@@ -36,7 +36,8 @@ export const OverviewMetricConfig: Record<
         (2) clicks on a link displayed in a campaign,
         (3) clicks on product recommendations displayed in a campaign
         (clicks on the product link or direct add to cart),
-        (4) discount code displayed in a campaign applied to an order`,
+        (4) discount code displayed in a campaign applied to an order,
+        (5) submitting an email capture form`,
         },
     },
     [CampaignsTotalsMetricNames.campaignSalesCount]: {
