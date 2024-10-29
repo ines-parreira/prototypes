@@ -458,6 +458,21 @@ export const CampaignDetailsForm = ({
                     })
                 )
             }
+
+            if (key === 'copySuggestion') {
+                setCampaignData(
+                    produce((draft) => {
+                        if (draft.meta) {
+                            draft.meta.copySuggestion = payload
+                        } else {
+                            draft.meta = {
+                                delay: 0,
+                                copySuggestion: payload,
+                            }
+                        }
+                    })
+                )
+            }
         },
         [agents]
     )

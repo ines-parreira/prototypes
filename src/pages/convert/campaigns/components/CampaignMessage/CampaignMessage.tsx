@@ -104,8 +104,6 @@ export const CampaignMessage = memo(
 
         const attachments = useAppSelector(getNewMessageAttachments)
 
-        // TODO: will be used to compute the similarity between the last suggestion and the current message
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [lastAppliedSuggestion, setLastAppliedSuggestion] = useState<
             string | null
         >(null)
@@ -302,6 +300,12 @@ export const CampaignMessage = memo(
             isConvertSubscriber && isAiCopyAssistantEnabled
                 ? SUBSCRIBERS_PLACEHOLDER
                 : NONSUBSCRIBERS_PLACEHOLDER
+
+        useEffect(() => {
+            if (!!lastAppliedSuggestion) {
+                updateCampaign('copySuggestion', lastAppliedSuggestion)
+            }
+        }, [lastAppliedSuggestion, updateCampaign])
 
         return (
             <div>

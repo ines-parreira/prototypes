@@ -25,18 +25,20 @@ import {
 import {channelConnection} from 'fixtures/channelConnection'
 import {integrationsState} from 'fixtures/integrations'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
+import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
 import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {toJS} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, flushPromises} from 'utils/testing'
 
 import {Campaign} from '../../../types/Campaign'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
@@ -59,6 +61,8 @@ jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
 jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
 jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
+jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
+jest.mock('models/convert/campaign/queries')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
@@ -70,6 +74,7 @@ const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
+const mockGenerateSuggestions = jest.fn()
 
 jest.mock('state/newMessage/selectors')
 const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
@@ -109,6 +114,7 @@ const shopifyChatIntegration: Map<any, any> = fromJS({
 const shopifyIntegration = fromJS({
     type: 'shopify',
     id: '1',
+    meta: {shop_name: 'shop-name'},
 })
 
 const campaign = fromJS(campaignFixture)
@@ -136,6 +142,10 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         useIsCampaignProritizationEnabledMock.mockImplementation(() => false)
+        ;(useSuggestCampaignCopy as jest.Mock).mockReturnValue({
+            mutateAsync: mockGenerateSuggestions,
+        })
+        ;(useIsAICopyAssistantEnabled as jest.Mock).mockReturnValue(true)
     })
 
     beforeEach(() => {
@@ -344,6 +354,94 @@ describe('<CampaignDetailsForm />', () => {
                 })
             )
         })
+
+        it('updates state on suggestion apply', async () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            mockGenerateSuggestions.mockResolvedValue({
+                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            })
+
+            const props = {
+                ...defaultProps,
+                isEditMode: true,
+            }
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm {...props} />
+                </Provider>
+            )
+
+            act(() => {
+                userEvent.click(screen.getByText(/Regenerate/))
+            })
+
+            await flushPromises()
+
+            act(() => {
+                userEvent.click(screen.getByText(/Apply/))
+            })
+
+            act(() => {
+                userEvent.click(screen.getByText(/Update Campaign/))
+            })
+
+            expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
+                expect.objectContaining({
+                    meta: {
+                        copySuggestion: 'Suggestion 1',
+                        delay: 0,
+                    },
+                })
+            )
+        })
+
+        it('updates state on suggestion apply when campaign had meta', async () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            mockGenerateSuggestions.mockResolvedValue({
+                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            })
+
+            const props = {
+                ...defaultProps,
+                isEditMode: true,
+                campaign: campaignFixture as Campaign,
+            }
+
+            result.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <CampaignDetailsForm {...props} />
+                </Provider>
+            )
+
+            act(() => {
+                userEvent.click(screen.getByText(/Regenerate/))
+            })
+
+            await flushPromises()
+
+            act(() => {
+                userEvent.click(screen.getByText(/Apply/))
+            })
+
+            act(() => {
+                userEvent.click(screen.getByText(/Update Campaign/))
+            })
+
+            expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
+                expect.objectContaining({
+                    meta: expect.objectContaining({
+                        copySuggestion: 'Suggestion 1',
+                    }),
+                })
+            )
+        })
     })
 
     describe('Light campaign banner', () => {
@@ -446,7 +544,7 @@ describe('<CampaignDetailsForm />', () => {
         })
     })
 
-    describe('Campaign proritization feature flag is enabled', () => {
+    describe('Campaign prioritization feature flag is enabled', () => {
         beforeEach(() => {
             useIsCampaignProritizationEnabledMock.mockImplementation(() => true)
             isConvertSubscriberSpy.mockImplementation(() => true)

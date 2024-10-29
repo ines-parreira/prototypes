@@ -151,6 +151,7 @@ export const campaign = {
         agentName: null,
         agentAvatarUrl: null,
         agentEmail: null,
+        copySuggestion: null,
     },
     triggers: [campaignTrigger],
     variants: [campaignVariant],

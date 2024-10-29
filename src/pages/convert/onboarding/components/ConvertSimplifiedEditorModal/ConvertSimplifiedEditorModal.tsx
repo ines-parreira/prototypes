@@ -1,3 +1,4 @@
+import {produce} from 'immer'
 import {Map, fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useState, useMemo, useCallback} from 'react'
@@ -261,16 +262,36 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
 
     const {triggers} = useManageTriggers(campaign?.triggers)
 
+    const handleUpdateCampaign = useCallback(
+        (key: string, payload: any) => {
+            if (key === 'copySuggestion') {
+                setCampaign((campaign) =>
+                    produce(campaign, (draft: Campaign) => {
+                        if (draft.meta) {
+                            draft.meta.copySuggestion = payload
+                        } else {
+                            draft.meta = {
+                                delay: 0,
+                                copySuggestion: payload,
+                            }
+                        }
+                    })
+                )
+            }
+        },
+        [setCampaign]
+    )
+
     const campaignDetailContext = useMemo<CampaignDetailsFormApi>(() => {
         return {
             campaign: campaign || existingCampaign || ({} as Campaign),
             triggers,
-            updateCampaign: () => null,
+            updateCampaign: handleUpdateCampaign,
             addTrigger: () => null,
             updateTrigger: () => null,
             deleteTrigger: () => null,
         }
-    }, [triggers, campaign, existingCampaign])
+    }, [triggers, campaign, existingCampaign, handleUpdateCampaign])
 
     if (!campaign) {
         return null

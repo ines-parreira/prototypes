@@ -38,31 +38,29 @@ const MOCK_CAMPAIGN_DISCOUNT: CampaignDiscountOffer = {
 }
 
 describe('createCampaignPayload', () => {
+    const defaultProps = {
+        campaignData: campaignFixture as Campaign,
+        triggers: campaignFixture.triggers,
+        isConvertSubscriber: true,
+        chatMultiLanguagesEnabled: true,
+        shopifyIntegration: integration,
+        shopifyProducts: [],
+        discountOffers: [],
+        productRecommendations: [],
+        contactForm: [],
+        isActive: false,
+        canChangeStatus: true,
+        utmQueryString: '',
+        utmEnabled: true,
+    }
+
     beforeAll(() => {
         const allFlagsMock = getLDClient().allFlags as jest.Mock
         allFlagsMock.mockReturnValue({})
     })
 
     it('returns campaign payload', () => {
-        const campaign = {
-            ...campaignFixture,
-        } as Campaign
-
-        const payload = createCampaignPayload({
-            campaignData: campaign,
-            triggers: campaign.triggers,
-            isConvertSubscriber: true,
-            chatMultiLanguagesEnabled: true,
-            shopifyIntegration: integration,
-            shopifyProducts: [],
-            discountOffers: [],
-            productRecommendations: [],
-            contactForm: [],
-            isActive: false,
-            canChangeStatus: true,
-            utmQueryString: '',
-            utmEnabled: true,
-        })
+        const payload = createCampaignPayload(defaultProps)
 
         expect(payload.status).toEqual('inactive')
         expect(payload.trigger_rule).toEqual(
@@ -71,24 +69,12 @@ describe('createCampaignPayload', () => {
     })
 
     it('returns campaign payload with products card and discount', () => {
-        const campaign = {
-            ...campaignFixture,
-        } as Campaign
-
         const payload = createCampaignPayload({
-            campaignData: campaign,
-            triggers: campaign.triggers,
-            isConvertSubscriber: true,
-            chatMultiLanguagesEnabled: true,
+            ...defaultProps,
             shopifyIntegration: integration,
             shopifyProducts: [MOCK_CAMPAIGN_PRODUCT],
             discountOffers: [MOCK_CAMPAIGN_DISCOUNT],
             productRecommendations: [campaignProductRecommendationAttachment],
-            contactForm: [],
-            isActive: true,
-            canChangeStatus: true,
-            utmQueryString: '',
-            utmEnabled: true,
         })
 
         expect(payload.attachments).toEqual([
@@ -123,26 +109,67 @@ describe('createCampaignPayload', () => {
     })
 
     it('do not modify status if is in edit mode', () => {
-        const campaign = {
-            ...campaignFixture,
-        } as Campaign
-
         const payload = createCampaignPayload({
-            campaignData: campaign,
-            triggers: campaign.triggers,
-            isConvertSubscriber: true,
-            chatMultiLanguagesEnabled: true,
-            shopifyIntegration: integration,
-            shopifyProducts: [MOCK_CAMPAIGN_PRODUCT],
-            discountOffers: [MOCK_CAMPAIGN_DISCOUNT],
-            contactForm: [],
-            productRecommendations: [campaignProductRecommendationAttachment],
-            isActive: false,
+            ...defaultProps,
             canChangeStatus: false,
-            utmQueryString: '',
-            utmEnabled: true,
         })
 
         expect(payload.status).toEqual('active')
+    })
+
+    describe('copySuggestion is handled properly', () => {
+        it('do not add copySuggestion to payload if not set', () => {
+            const campaign = {
+                ...campaignFixture,
+                meta: {
+                    ...campaignFixture.meta,
+                    copySuggestion: undefined,
+                },
+            } as Campaign
+
+            const payload = createCampaignPayload({
+                ...defaultProps,
+                campaignData: campaign,
+            })
+
+            expect(payload.meta?.copySuggestion).toBeUndefined()
+        })
+
+        it('add copySuggestion to payload if it matches campaign message', () => {
+            const suggestion = 'Hello, world! - was suggested'
+            const campaign = {
+                ...campaignFixture,
+                message_text: suggestion,
+                meta: {
+                    ...campaignFixture.meta,
+                    copySuggestion: suggestion,
+                },
+            } as Campaign
+
+            const payload = createCampaignPayload({
+                ...defaultProps,
+                campaignData: campaign,
+            })
+
+            expect(payload.meta?.copySuggestion).toEqual(suggestion)
+        })
+
+        it('set copySuggestion to payload as null if campaign message changed too much', () => {
+            const campaign = {
+                ...campaignFixture,
+                message_text: 'Welcome to the internet',
+                meta: {
+                    ...campaignFixture.meta,
+                    copySuggestion: 'Hello, world! - was suggested',
+                },
+            } as Campaign
+
+            const payload = createCampaignPayload({
+                ...defaultProps,
+                campaignData: campaign,
+            })
+
+            expect(payload.meta?.copySuggestion).toBeNull()
+        })
     })
 })

@@ -12,6 +12,7 @@ export type MinimumTimeBetweenCampaigns = {
 export type CampaignMeta = {
     delay?: number | null
     noReply?: boolean | null
+    copySuggestion?: string | null
     maxCampaignDisplaysInSession?: CampaignDisplaysInSession | null
     minimumTimeBetweenCampaigns?: MinimumTimeBetweenCampaigns | null
 } & CampaignAuthor

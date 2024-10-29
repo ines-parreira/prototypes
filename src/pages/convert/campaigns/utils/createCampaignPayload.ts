@@ -15,6 +15,7 @@ import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
+import {evaluateCampaignCopySuggestion} from 'pages/convert/campaigns/utils/evaluateCampaignCopySuggestion'
 import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
 import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
 
@@ -103,6 +104,16 @@ export const createCampaignPayload = ({
                 draft.status = CampaignStatus.Inactive
             } else {
                 draft.status = CampaignStatus.Active
+            }
+        }
+
+        if (draft.meta?.copySuggestion) {
+            draft.meta = {
+                ...draft.meta,
+                copySuggestion: evaluateCampaignCopySuggestion(
+                    campaignData.message_text,
+                    draft.meta.copySuggestion
+                ),
             }
         }
     })
