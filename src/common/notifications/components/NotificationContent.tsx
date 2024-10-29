@@ -2,6 +2,8 @@ import cn from 'classnames'
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketIcon from 'pages/common/components/TicketIcon'
 
 import {Notification, NotificationType} from '../types'
@@ -17,7 +19,11 @@ type Props = {
 
 const notificationTypeMap: Record<
     NotificationType,
-    {title: string; icon?: {name: string; family?: 'fill' | 'outlined'}}
+    {
+        title: string
+        icon?: {name: string; family?: 'fill' | 'outlined'}
+        url?: string
+    }
 > = {
     'ticket.snooze-expired': {title: 'Snooze expired', icon: {name: 'snooze'}},
     'user.mentioned': {title: 'New mention', icon: {name: 'alternate_email'}},
@@ -35,6 +41,11 @@ const notificationTypeMap: Record<
     'ticket-message.created.whatsapp': {title: 'New message'},
     'ticket-message.created.yotpo': {title: 'New message'},
     'ticket-message.created.aircall': {title: 'New message'},
+    'email-domain.verified': {
+        title: 'Domain verification complete',
+        icon: {name: 'settings'},
+        url: 'app/settings/channels/email',
+    },
 }
 
 export default function NotificationContent({
@@ -42,18 +53,36 @@ export default function NotificationContent({
     notification,
     onClick,
 }: Props) {
-    const {ticket} = notification.payload || {}
-    if (!ticket) return null
-
     const iconConfig = notificationTypeMap[notification.type]?.icon
-
-    return (
-        <Link
-            to={`/app/ticket/${ticket.id}`}
-            className={css.container}
-            onClick={onClick}
-        >
-            <div className={css.icon}>
+    const notificationBody: {
+        url: string
+        title: string
+        excerpt?: string
+        icon?: ReactNode
+    } = {
+        url: notificationTypeMap[notification.type]?.url || '#',
+        title:
+            notificationTypeMap[notification.type]?.title || notification.type,
+    }
+    if (notification.type === 'email-domain.verified') {
+        const {domain} = notification.payload || {}
+        if (!domain) return null
+        notificationBody.excerpt = `Your domain has been verified! You can now send emails with Gorgias using addresses ending in @${domain}.`
+        notificationBody.icon = (
+            <div className={css.systemIconWrapper}>
+                <SourceIcon
+                    type={TicketMessageSourceType.SystemMessage}
+                    className={css.systemIcon}
+                />
+            </div>
+        )
+    } else {
+        const {ticket} = notification.payload || {}
+        if (!ticket) return null
+        notificationBody.url = `/app/ticket/${ticket.id}`
+        notificationBody.excerpt = ticket.excerpt
+        notificationBody.icon = (
+            <>
                 <TicketIcon channel={ticket.channel} status={ticket.status} />
                 {!!iconConfig && (
                     <div
@@ -73,7 +102,17 @@ export default function NotificationContent({
                         </i>
                     </div>
                 )}
-            </div>
+            </>
+        )
+    }
+
+    return (
+        <Link
+            to={notificationBody.url}
+            className={css.container}
+            onClick={onClick}
+        >
+            <div className={css.icon}>{notificationBody.icon}</div>
             <div className={css.content}>
                 <header className={css.header}>
                     <h4 className={css.type}>
@@ -83,8 +122,10 @@ export default function NotificationContent({
                     {headerExtra}
                 </header>
                 <Subtitle notification={notification} />
-                {!!ticket.excerpt && (
-                    <div className={css.excerpt}>{ticket.excerpt}</div>
+                {!!notificationBody.excerpt && (
+                    <div className={css.excerpt}>
+                        {notificationBody.excerpt}
+                    </div>
                 )}
             </div>
         </Link>

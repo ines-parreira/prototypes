@@ -1,13 +1,20 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {notification} from 'common/notifications/fixtures/fixtures'
-import {Notification} from 'common/notifications/types'
+import {
+    email_domain_verified_notification,
+    notification,
+} from 'common/notifications/fixtures/fixtures'
+import {
+    DefaultPayload,
+    EmailDomainPayload,
+    Notification,
+} from 'common/notifications/types'
 
 import NotificationContent from '../NotificationContent'
 
 describe('<NotificationContent />', () => {
-    it('should not return anything if there is no ticket in notification payload', () => {
+    it('should not return anything if there is no data in notification payload', () => {
         const {container} = render(
             <NotificationContent
                 notification={
@@ -56,7 +63,7 @@ describe('<NotificationContent />', () => {
                 notification={{
                     ...notification,
                     payload: {
-                        ticket: notification.payload.ticket,
+                        ticket: (notification.payload as DefaultPayload).ticket,
                         sender: null,
                     },
                     type: 'ticket.assigned',
@@ -83,6 +90,32 @@ describe('<NotificationContent />', () => {
         expect(getByText('alternate_email')).toBeInTheDocument()
         expect(getByText('alternate_email')).toHaveClass(
             'material-icons-outlined'
+        )
+    })
+
+    it('should render email domain notification', () => {
+        const {container, getByText} = render(
+            <NotificationContent
+                notification={
+                    {
+                        ...email_domain_verified_notification,
+                        type: email_domain_verified_notification.type,
+                    } as unknown as Notification
+                }
+            />
+        )
+
+        expect(getByText('settings')).toBeInTheDocument()
+        expect(getByText('settings')).toHaveClass('material-icons')
+        expect(
+            getByText(
+                `Your domain has been verified! You can now send emails with Gorgias using addresses ending in @${(email_domain_verified_notification.payload as EmailDomainPayload).domain}.`
+            )
+        ).toBeInTheDocument()
+        expect(getByText('Domain verification complete')).toBeInTheDocument()
+        expect(container.getElementsByTagName('a')[0]).toHaveAttribute(
+            'to',
+            'app/settings/channels/email'
         )
     })
 })

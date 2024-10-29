@@ -40,6 +40,10 @@ type NotificationBase = {
     seen_datetime: string | null
 }
 
+export type EmailDomainPayload = {
+    domain: string
+}
+
 export type DefaultPayload = {
     ticket: Ticket
     sender: null
@@ -63,6 +67,10 @@ type TicketMessageCreatedType =
     | 'ticket-message.created'
 
 export type Notification =
+    | (NotificationBase & {
+          type: 'email-domain.verified'
+          payload: EmailDomainPayload
+      })
     | (NotificationBase & {
           type: 'ticket.snooze-expired'
           payload: DefaultPayload

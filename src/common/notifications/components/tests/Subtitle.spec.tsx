@@ -6,6 +6,8 @@ import {
     notification,
 } from 'common/notifications/fixtures/fixtures'
 
+import {DefaultPayload} from 'common/notifications/types'
+
 import Subtitle from '../Subtitle'
 
 describe('<Subtitle />', () => {
@@ -23,7 +25,7 @@ describe('<Subtitle />', () => {
                     ...notification,
                     type: 'ticket.snooze-expired',
                     payload: {
-                        ticket: notification.payload.ticket,
+                        ticket: (notification.payload as DefaultPayload).ticket,
                         sender: null,
                     },
                 }}

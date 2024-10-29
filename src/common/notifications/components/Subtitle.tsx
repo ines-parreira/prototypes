@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 
-import {Notification} from '../types'
+import {DefaultPayload, Notification, PayloadWithSender} from '../types'
 
 import css from './Subtitle.less'
 
@@ -10,7 +10,9 @@ type Props = {
 
 export default function Subtitle({notification}: Props) {
     const senderInfo = useMemo(() => {
-        const {sender} = notification.payload
+        const {sender} = notification.payload as
+            | DefaultPayload
+            | PayloadWithSender
 
         if (!sender) return null
 
@@ -21,6 +23,14 @@ export default function Subtitle({notification}: Props) {
             </>
         )
     }, [notification.payload])
+
+    if (notification.type === 'email-domain.verified') {
+        return (
+            <p className={css.subtitle}>
+                <strong>System update</strong> from <strong>Gorgias</strong>
+            </p>
+        )
+    }
 
     if (notification.type === 'user.mentioned') {
         const {sender, ticket} = notification.payload

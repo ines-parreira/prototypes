@@ -107,6 +107,7 @@ export const enabledEvents = [legacyEvent, ...events].filter(
 )
 
 export const workflowMap: Record<NotificationType, string> = {
+    'email-domain.verified': 'email-domain.verified',
     'ticket.snooze-expired': 'ticket-snooze-expired',
     'ticket-message.created': 'ticket-message-created',
     'user.mentioned': 'user-mentioned',

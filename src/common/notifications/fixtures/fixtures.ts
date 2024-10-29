@@ -33,3 +33,11 @@ export const mentionNotification: Notification = {
     ...notification,
     type: 'user.mentioned',
 }
+
+export const email_domain_verified_notification: Notification = {
+    ...baseNotification,
+    type: 'email-domain.verified',
+    payload: {
+        domain: 'example.com',
+    },
+}
