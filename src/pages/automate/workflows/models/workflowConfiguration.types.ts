@@ -190,6 +190,26 @@ export type WorkflowStepCreateDiscountCode = {
     }
 }
 
+export type WorkflowStepReshipForFree = {
+    id: string
+    kind: 'reship-for-free'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+    }
+}
+
+export type WorkflowStepRefundShippingCosts = {
+    id: string
+    kind: 'refund-shipping-costs'
+    settings: {
+        customer_id: string
+        order_external_id: string
+        integration_id: string
+    }
+}
+
 export type WorkflowStepCancelSubscription = {
     id: string
     kind: 'cancel-subscription'
@@ -230,6 +250,8 @@ export type WorkflowStep =
     | WorkflowStepUpdateShippingAddress
     | WorkflowStepRemoveItem
     | WorkflowStepCreateDiscountCode
+    | WorkflowStepReshipForFree
+    | WorkflowStepRefundShippingCosts
     | WorkflowStepCancelSubscription
     | WorkflowStepSkipCharge
 

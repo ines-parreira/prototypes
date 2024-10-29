@@ -408,4 +408,284 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+    it('should transform graph with a reship for free step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'Reship for free',
+            available_languages: ['en-US'],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'llm_prompt_trigger',
+                    data: {
+                        instructions: 'This action reships an order for free',
+                        requires_confirmation: false,
+                        inputs: [],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'reship_for_free',
+                    type: 'reship_for_free',
+                    data: {
+                        customerId: '{{objects.customer.id}}',
+                        orderExternalId: '{{objects.order.external_id}}',
+                        integrationId: '{{store.helpdesk_integration_id}}',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_success',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_failure',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'trigger',
+                    target: 'reship_for_free',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'reship_for_free',
+                    target: 'end_success',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'reship_for_free',
+                    target: 'end_failure',
+                },
+            ],
+            wfConfigurationOriginal: {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: 'Reship for free',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [
+                    {
+                        type: 'shopify',
+                    },
+                ],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    instructions: 'This action reships an order for free',
+                },
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditions: null,
+                    outputs: [
+                        {
+                            id: 'reship_for_free',
+                            description: '',
+                            path: 'steps_state.reship_for_free.success',
+                        },
+                    ],
+                },
+            },
+        ])
+        expect(configuration.steps).toEqual([
+            {
+                id: 'reship_for_free',
+                kind: 'reship-for-free',
+                settings: {
+                    order_external_id: '{{objects.order.external_id}}',
+                    customer_id: '{{objects.customer.id}}',
+                    integration_id: '{{store.helpdesk_integration_id}}',
+                },
+            },
+            {
+                id: 'end_success',
+                kind: 'end',
+            },
+            {
+                id: 'end_failure',
+                kind: 'end',
+            },
+        ])
+    })
+    it('should transform graph with a refund shipping costs step', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'Refund shipping costs',
+            available_languages: ['en-US'],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'llm_prompt_trigger',
+                    data: {
+                        instructions: 'This action refunds the shipping costs',
+                        requires_confirmation: false,
+                        inputs: [],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'refund_shipping_costs',
+                    type: 'refund_shipping_costs',
+                    data: {
+                        customerId: '{{objects.customer.id}}',
+                        orderExternalId: '{{objects.order.external_id}}',
+                        integrationId: '{{store.helpdesk_integration_id}}',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_success',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_failure',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'trigger',
+                    target: 'refund_shipping_costs',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'refund_shipping_costs',
+                    target: 'end_success',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'refund_shipping_costs',
+                    target: 'end_failure',
+                },
+            ],
+            wfConfigurationOriginal: {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: 'Refund shipping costs',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [
+                    {
+                        type: 'shopify',
+                    },
+                ],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    instructions: 'This action refunds the shipping costs',
+                },
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                        {
+                            kind: 'order',
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                        },
+                    ],
+                    conditions: null,
+                    outputs: [
+                        {
+                            id: 'refund_shipping_costs',
+                            description: '',
+                            path: 'steps_state.refund_shipping_costs.success',
+                        },
+                    ],
+                },
+            },
+        ])
+        expect(configuration.steps).toEqual([
+            {
+                id: 'refund_shipping_costs',
+                kind: 'refund-shipping-costs',
+                settings: {
+                    order_external_id: '{{objects.order.external_id}}',
+                    customer_id: '{{objects.customer.id}}',
+                    integration_id: '{{store.helpdesk_integration_id}}',
+                },
+            },
+            {
+                id: 'end_success',
+                kind: 'end',
+            },
+            {
+                id: 'end_failure',
+                kind: 'end',
+            },
+        ])
+    })
 })

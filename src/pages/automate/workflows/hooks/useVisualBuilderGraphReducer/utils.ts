@@ -21,7 +21,9 @@ import {
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RefundOrderNodeType,
+    RefundShippingCostsNodeType,
     RemoveItemNodeType,
+    ReshipForFreeNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -371,6 +373,48 @@ export const buildCreateDiscountCodeNode = ({
             discountType: '',
             amount: '',
             validFor: '',
+        },
+    }
+}
+
+export const buildReshipForFreeNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Omit<
+    ReshipForFreeNodeType['data'],
+    'isGreyedOut'
+>): ReshipForFreeNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'reship_for_free',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
+        },
+    }
+}
+
+export const buildRefundShippingCostsNode = ({
+    customerId,
+    orderExternalId,
+    integrationId,
+}: Omit<
+    RefundShippingCostsNodeType['data'],
+    'isGreyedOut'
+>): RefundShippingCostsNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'refund_shipping_costs',
+        data: {
+            customerId,
+            orderExternalId,
+            integrationId,
         },
     }
 }

@@ -44,6 +44,8 @@ import {
     deleteBranch,
     getFallibleNodeSuccessConditions,
     greyOutBranch,
+    buildRefundShippingCostsNode,
+    buildReshipForFreeNode,
 } from './utils'
 
 export type VisualBuilderBaseAction =
@@ -143,6 +145,20 @@ export type VisualBuilderBaseAction =
       }
     | {
           type: 'INSERT_CANCEL_ORDER_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'INSERT_REFUND_SHIPPING_COSTS_NODE'
+          beforeNodeId: string
+          customerId: string
+          orderExternalId: string
+          integrationId: string
+      }
+    | {
+          type: 'INSERT_RESHIP_FOR_FREE_NODE'
           beforeNodeId: string
           customerId: string
           orderExternalId: string
@@ -498,6 +514,22 @@ export function baseReducer(
                     action.beforeNodeId
                 )
             )
+        case 'INSERT_REFUND_SHIPPING_COSTS_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildRefundShippingCostsNode(action),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_RESHIP_FOR_FREE_NODE':
+            return computeNodesPositions(
+                insertFallibleNode(
+                    graph,
+                    buildReshipForFreeNode(action),
+                    action.beforeNodeId
+                )
+            )
         case 'INSERT_CANCEL_SUBSCRIPTION_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
@@ -673,6 +705,8 @@ function insertFallibleNode(
         if (
             nodeToInsert.type !== 'refund_order' &&
             nodeToInsert.type !== 'cancel_order' &&
+            nodeToInsert.type !== 'reship_for_free' &&
+            nodeToInsert.type !== 'refund_shipping_costs' &&
             nodeToInsert.type !== 'create_discount_code'
         ) {
             draft.nodeEditingId = nodeToInsert.id

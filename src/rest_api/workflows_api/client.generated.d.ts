@@ -325,6 +325,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -806,6 +822,10 @@ declare namespace Components {
           kind: "edit-order";
         } | {
           kind: "create-discount-code";
+        } | {
+          kind: "refund-shipping-costs";
+        } | {
+          kind: "reship-for-free";
         })[];
         event?: {
           id: string;
@@ -915,18 +935,30 @@ declare namespace Components {
           }[];
           kind: "order-line-item-selection";
         } | {
-          kind: "edit-order";
           success: boolean;
           errors: {
             message: string;
           }[];
+          kind: "edit-order";
         } | {
+          success: boolean;
+          errors: {
+            message: string;
+          }[];
           kind: "create-discount-code";
           discount_code?: string | null;
+        } | {
           success: boolean;
           errors: {
             message: string;
           }[];
+          kind: "refund-shipping-costs";
+        } | {
+          success: boolean;
+          errors: {
+            message: string;
+          }[];
+          kind: "reship-for-free";
         };
         parent_configuration_id?: string | null;
         parent_configuration_internal_id?: string | null;
@@ -1253,6 +1285,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -1575,6 +1623,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       } | {
         id: string;
@@ -2039,6 +2103,10 @@ declare namespace Components {
         kind: "edit-order";
       } | {
         kind: "create-discount-code";
+      } | {
+        kind: "refund-shipping-costs";
+      } | {
+        kind: "reship-for-free";
       })[];
       event?: {
         id: string;
@@ -2148,18 +2216,30 @@ declare namespace Components {
         }[];
         kind: "order-line-item-selection";
       } | {
-        kind: "edit-order";
         success: boolean;
         errors: {
           message: string;
         }[];
+        kind: "edit-order";
       } | {
+        success: boolean;
+        errors: {
+          message: string;
+        }[];
         kind: "create-discount-code";
         discount_code?: string | null;
+      } | {
         success: boolean;
         errors: {
           message: string;
         }[];
+        kind: "refund-shipping-costs";
+      } | {
+        success: boolean;
+        errors: {
+          message: string;
+        }[];
+        kind: "reship-for-free";
       };
       parent_configuration_id?: string | null;
       parent_configuration_internal_id?: string | null;
@@ -2683,6 +2763,24 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -2751,6 +2849,24 @@ declare namespace Components {
           } | {
             kind: "create-discount-code";
             discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "reship-for-free";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "refund-shipping-costs";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -3303,6 +3419,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -3683,6 +3815,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       } | {
         id: string;
@@ -4212,6 +4360,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       })[];
       inputs?: ({
@@ -5386,6 +5550,24 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -5454,6 +5636,24 @@ declare namespace Components {
           } | {
             kind: "create-discount-code";
             discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "reship-for-free";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "refund-shipping-costs";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -6652,6 +6852,24 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -6720,6 +6938,24 @@ declare namespace Components {
           } | {
             kind: "create-discount-code";
             discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "reship-for-free";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "refund-shipping-costs";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -7471,6 +7707,24 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "reship-for-free";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
+              } | {
+                kind: "refund-shipping-costs";
+                success: boolean;
+                error?: {
+                  [name: string]: any;
+                } | {
+                  message: string;
+                }[];
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -7539,6 +7793,24 @@ declare namespace Components {
           } | {
             kind: "create-discount-code";
             discount_code?: string | null;
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "reship-for-free";
+            success: boolean;
+            error?: {
+              [name: string]: any;
+            } | {
+              message: string;
+            }[];
+            at: string; // date-time
+          } | {
+            kind: "refund-shipping-costs";
             success: boolean;
             error?: {
               [name: string]: any;
@@ -8087,6 +8359,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -8618,6 +8906,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       })[];
       inputs?: ({
@@ -9152,6 +9456,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -9684,6 +10004,22 @@ declare namespace Components {
           amount: string;
           valid_for: string;
         };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
       })[];
       inputs?: ({
         id: string;
@@ -10005,6 +10341,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       } | {
         id: string;
@@ -10334,6 +10686,22 @@ declare namespace Components {
           type: string;
           amount: string;
           valid_for: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-shipping-costs";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "reship-for-free";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
         };
       } | {
         id: string;

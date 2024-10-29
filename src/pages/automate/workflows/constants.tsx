@@ -79,6 +79,14 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
     },
+    refund_shipping_costs: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
+    reship_for_free: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
     cancel_subscription: {
         color: 'var(--neutral-grey-5)',
         backgroundColor: 'var(--neutral-grey-2)',
@@ -119,6 +127,8 @@ export const iconByVisualBuilderNodeType: Record<
     update_shipping_address: <i className="material-icons">local_shipping</i>,
     remove_item: <i className="material-icons">remove</i>,
     create_discount_code: <i className="material-icons">percent</i>,
+    refund_shipping_costs: <i className="material-icons">money_off</i>,
+    reship_for_free: <i className="material-icons">local_shipping</i>,
     cancel_subscription: <i className="material-icons">unsubscribe</i>,
     skip_charge: <i className="material-icons">skip_next</i>,
     app: <i className="material-icons">key</i>,
@@ -147,6 +157,8 @@ export const labelByVisualBuilderNodeType: Record<
     skip_charge: 'Skip next subscription shipment',
     llm_prompt_trigger: 'Start Flow',
     create_discount_code: 'Create discount code',
+    refund_shipping_costs: 'Refund shipping costs',
+    reship_for_free: 'Reship for free',
 }
 
 export const endNodeActionLabelByAction: Record<

@@ -357,4 +357,49 @@ describe('baseReducer', () => {
             )
         ).toBeDefined()
     })
+
+    test('INSERT_RESHIP_FOR_FREE_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_RESHIP_FOR_FREE_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'reship_for_free' &&
+                    n.data.customerId === 'customerId' &&
+                    n.data.orderExternalId === 'orderExternalId' &&
+                    n.data.integrationId === 'integrationId'
+            )
+        ).toBeDefined()
+    })
+    test('INSERT_REFUND_SHIPPING_COSTS_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_REFUND_SHIPPING_COSTS_NODE',
+            beforeNodeId: 'automated_message1',
+            customerId: 'customerId',
+            orderExternalId: 'orderExternalId',
+            integrationId: 'integrationId',
+        })
+
+        expect(nextG.nodes.length).toEqual(g.nodes.length + 2) // 1 new node + 1 failure end
+        expect(nextG.edges.length).toEqual(g.edges.length + 2)
+        expect(
+            nextG.nodes.find(
+                (n) =>
+                    n.type === 'refund_shipping_costs' &&
+                    n.data.customerId === 'customerId' &&
+                    n.data.orderExternalId === 'orderExternalId' &&
+                    n.data.integrationId === 'integrationId'
+            )
+        ).toBeDefined()
+    })
 })

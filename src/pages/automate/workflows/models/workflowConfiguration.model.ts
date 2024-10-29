@@ -30,6 +30,8 @@ import {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
+    ReshipForFreeNodeType,
+    RefundShippingCostsNodeType,
 } from './visualBuilderGraph.types'
 import {
     MessageContent,
@@ -470,6 +472,34 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     discountType: step.settings.type,
                     amount: step.settings.amount,
                     validFor: step.settings.valid_for,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'reship-for-free') {
+            const node: ReshipForFreeNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'reship_for_free',
+                data: {
+                    customerId: step.settings.customer_id,
+                    integrationId: step.settings.integration_id,
+                    orderExternalId: step.settings.order_external_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'refund-shipping-costs') {
+            const node: RefundShippingCostsNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'refund_shipping_costs',
+                data: {
+                    customerId: step.settings.customer_id,
+                    integrationId: step.settings.integration_id,
+                    orderExternalId: step.settings.order_external_id,
                 },
             }
 

@@ -14,6 +14,8 @@ import {buildNodeCommonProperties} from '../models/visualBuilderGraph.model'
 import {
     CreateDiscountCodeNodeType,
     OrderSelectionNodeType,
+    RefundShippingCostsNodeType,
+    ReshipForFreeNodeType,
     VisualBuilderGraph,
 } from '../models/visualBuilderGraph.types'
 import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
@@ -441,6 +443,90 @@ describe('buildWorkflowVariableFromNode()', () => {
             name: 'Create discount code success',
             nodeType: 'create_discount_code',
             value: 'steps_state.create_discount_code1.success',
+            type: 'boolean',
+        })
+    })
+    it('should return refund_shipping_costs node variables', () => {
+        const node: RefundShippingCostsNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'refund_shipping_costs1',
+            type: 'refund_shipping_costs',
+            data: {
+                customerId: '',
+                integrationId: '',
+                orderExternalId: '',
+            },
+        }
+
+        const result = buildWorkflowVariableFromNode(
+            {
+                name: '',
+                available_languages: [],
+                nodes: [node],
+                edges: [],
+                apps: [],
+                wfConfigurationOriginal: {
+                    id: '',
+                    is_draft: false,
+                    name: '',
+                    internal_id: '',
+                    initial_step_id: 'refund_shipping_costs1',
+                    steps: [],
+                    transitions: [],
+                    available_languages: [],
+                },
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            node
+        )
+        expect(result).toEqual({
+            name: 'Refund shipping costs success',
+            nodeType: 'refund_shipping_costs',
+            value: 'steps_state.refund_shipping_costs1.success',
+            type: 'boolean',
+        })
+    })
+    it('should return reship_for_free node variables', () => {
+        const node: ReshipForFreeNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'reship_for_free1',
+            type: 'reship_for_free',
+            data: {
+                customerId: '',
+                integrationId: '',
+                orderExternalId: '',
+            },
+        }
+
+        const result = buildWorkflowVariableFromNode(
+            {
+                name: '',
+                available_languages: [],
+                nodes: [node],
+                edges: [],
+                apps: [],
+                wfConfigurationOriginal: {
+                    id: '',
+                    is_draft: false,
+                    name: '',
+                    internal_id: '',
+                    initial_step_id: 'reship_for_free1',
+                    steps: [],
+                    transitions: [],
+                    available_languages: [],
+                },
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            node
+        )
+        expect(result).toEqual({
+            name: 'Reship for free success',
+            nodeType: 'reship_for_free',
+            value: 'steps_state.reship_for_free1.success',
             type: 'boolean',
         })
     })

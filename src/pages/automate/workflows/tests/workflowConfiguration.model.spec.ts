@@ -617,4 +617,346 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+    test('configuration containing reship-for-free step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Reship For Free',
+            is_draft: true,
+            initial_step_id: 'reship_for_free',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'reship_for_free',
+                    kind: 'reship-for-free',
+                    settings: {
+                        customer_id: '{{objects.customer.id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'reship_for_free',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'reship_for_free',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'reship_for_free',
+                                description: '',
+                                path: 'steps_state.reship_for_free.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action reships the item for free',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action reships the item for free',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'reship_for_free',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'reship_for_free',
+                data: {
+                    customerId: '{{objects.customer.id}}',
+                    orderExternalId: '{{objects.order.external_id}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-reship_for_free',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'reship_for_free',
+            },
+            {
+                id: 'reship_for_free-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'reship_for_free',
+                target: 'end_success',
+            },
+            {
+                id: 'reship_for_free-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'reship_for_free',
+                target: 'end_failure',
+            },
+        ])
+    })
+    test('configuration containing refund-shipping-costs step', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Refund Shipping Costs',
+            is_draft: true,
+            initial_step_id: 'refund_shipping_costs',
+            entrypoint: null,
+            available_languages: ['en-US'],
+            steps: [
+                {
+                    id: 'refund_shipping_costs',
+                    kind: 'refund-shipping-costs',
+                    settings: {
+                        customer_id: '{{objects.customer.id}}',
+                        order_external_id: '{{objects.order.external_id}}',
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'refund_shipping_costs',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'refund_shipping_costs',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        conditions: null,
+                        outputs: [
+                            {
+                                id: 'refund_shipping_costs',
+                                description: '',
+                                path: 'steps_state.refund_shipping_costs.success',
+                            },
+                        ],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        instructions: 'This action refunds the shipping costs',
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'llm_prompt_trigger',
+                data: {
+                    instructions: 'This action refunds the shipping costs',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'refund_shipping_costs',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'refund_shipping_costs',
+                data: {
+                    customerId: '{{objects.customer.id}}',
+                    orderExternalId: '{{objects.order.external_id}}',
+                    integrationId: '{{store.helpdesk_integration_id}}',
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-refund_shipping_costs',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'refund_shipping_costs',
+            },
+            {
+                id: 'refund_shipping_costs-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'refund_shipping_costs',
+                target: 'end_success',
+            },
+            {
+                id: 'refund_shipping_costs-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'refund_shipping_costs',
+                target: 'end_failure',
+            },
+        ])
+    })
 })

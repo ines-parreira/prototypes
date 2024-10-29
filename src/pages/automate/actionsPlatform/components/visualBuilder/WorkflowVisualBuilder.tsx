@@ -23,7 +23,9 @@ import EndNode from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode
 import HttpRequestNode from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
 import LLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
 import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
+import RefundShippingCostsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundShippingCostsNode'
 import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
+import ReshipForFreeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReshipForFreeNode'
 import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 
@@ -42,6 +44,8 @@ const nodeTypes = {
     update_shipping_address: UpdateShippingAddressNode,
     remove_item: RemoveItemNode,
     create_discount_code: CreateDiscountCodeNode,
+    refund_shipping_costs: RefundShippingCostsNode,
+    reship_for_free: ReshipForFreeNode,
     cancel_subscription: CancelSubscriptionNode,
     skip_charge: SkipChargeNode,
     end: EndNode,

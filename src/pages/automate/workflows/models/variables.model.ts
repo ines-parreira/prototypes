@@ -1093,6 +1093,20 @@ export const buildWorkflowVariableFromNode = (
             value: `steps_state.${node.id}.success`,
             type: 'boolean',
         }
+    } else if (node.type === 'reship_for_free') {
+        return {
+            name: 'Reship for free success',
+            nodeType: 'reship_for_free',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
+    } else if (node.type === 'refund_shipping_costs') {
+        return {
+            name: 'Refund shipping costs success',
+            nodeType: 'refund_shipping_costs',
+            value: `steps_state.${node.id}.success`,
+            type: 'boolean',
+        }
     } else if (node.type === 'cancel_subscription') {
         return {
             name: 'Cancel subscription success',
@@ -1242,6 +1256,8 @@ export function extractVariablesFromNode(
         }
         case 'cancel_order':
         case 'refund_order':
+        case 'refund_shipping_costs':
+        case 'reship_for_free':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
                     (variable) => variable.value

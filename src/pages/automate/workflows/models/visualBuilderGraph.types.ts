@@ -249,6 +249,26 @@ export type CreateDiscountCodeNodeType = Node<
     'create_discount_code'
 >
 
+export type ReshipForFreeNodeType = Node<
+    {
+        customerId: string
+        orderExternalId: string
+        integrationId: string
+        isGreyedOut?: boolean | null
+    },
+    'reship_for_free'
+>
+
+export type RefundShippingCostsNodeType = Node<
+    {
+        customerId: string
+        orderExternalId: string
+        integrationId: string
+        isGreyedOut?: boolean | null
+    },
+    'refund_shipping_costs'
+>
+
 export type CancelSubscriptionNodeType = Node<
     {
         customerId: string
@@ -289,6 +309,8 @@ export type VisualBuilderNode =
     | UpdateShippingAddressNodeType
     | RemoveItemNodeType
     | CreateDiscountCodeNodeType
+    | ReshipForFreeNodeType
+    | RefundShippingCostsNodeType
     | CancelSubscriptionNodeType
     | SkipChargeNodeType
 

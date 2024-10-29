@@ -39,7 +39,9 @@ import {
     WorkflowStepOrderLineItemSelection,
     WorkflowStepOrderSelection,
     WorkflowStepRefundOrder,
+    WorkflowStepRefundShippingCosts,
     WorkflowStepRemoveItem,
+    WorkflowStepReshipForFree,
     WorkflowStepShopperAuthentication,
     WorkflowStepSkipCharge,
     WorkflowStepTextInput,
@@ -775,6 +777,54 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 
                     setObjectInputs(g, node, trigger)
                 }
+            } else if (node.type === 'reship_for_free') {
+                const step: WorkflowStepReshipForFree = {
+                    id: node.id,
+                    kind: 'reship-for-free',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
+            } else if (node.type === 'refund_shipping_costs') {
+                const step: WorkflowStepRefundShippingCosts = {
+                    id: node.id,
+                    kind: 'refund-shipping-costs',
+                    settings: {
+                        customer_id: node.data.customerId,
+                        order_external_id: node.data.orderExternalId,
+                        integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+
+                const trigger = c.triggers?.[0]
+
+                if (trigger?.kind === 'llm-prompt') {
+                    trigger.settings.outputs.push({
+                        id: node.id,
+                        description: '',
+                        path: `steps_state.${node.id}.success`,
+                    })
+
+                    setObjectInputs(g, node, trigger)
+                }
             } else if (node.type === 'cancel_subscription') {
                 const step: WorkflowStepCancelSubscription = {
                     id: node.id,
@@ -863,6 +913,8 @@ export function getIncoming(
         | 'update_shipping_address'
         | 'remove_item'
         | 'create_discount_code'
+        | 'refund_shipping_costs'
+        | 'reship_for_free'
         | 'cancel_subscription'
         | 'skip_charge'
 ) {
@@ -922,6 +974,8 @@ export function getIncoming(
         case 'update_shipping_address':
         case 'remove_item':
         case 'create_discount_code':
+        case 'refund_shipping_costs':
+        case 'reship_for_free':
         case 'cancel_subscription':
         case 'skip_charge': {
             const branchName = incomingEdge.data?.name

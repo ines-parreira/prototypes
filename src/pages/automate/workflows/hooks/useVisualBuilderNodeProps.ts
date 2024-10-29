@@ -65,6 +65,16 @@ export function useVisualBuilderNodeProps({
         id,
         'create_discount_code'
     )
+    const incomingReshipForFreeCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'reship_for_free'
+    )
+    const incomingRefundShippingCostsCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'refund_shipping_costs'
+    )
     const incomingCancelSubscriptionCondition = getIncoming(
         visualBuilderGraph,
         id,
@@ -106,6 +116,16 @@ export function useVisualBuilderNodeProps({
             visualBuilderGraph.nodeEditingId
         if (isCreateDiscountSelected) return true
 
+        const isReshipForFreeSelected =
+            incomingReshipForFreeCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isReshipForFreeSelected) return true
+
+        const isRefundShippingCostsSelected =
+            incomingRefundShippingCostsCondition?.nodeId ===
+            visualBuilderGraph.nodeEditingId
+        if (isRefundShippingCostsSelected) return true
+
         const isCancelSubscriptionSelected =
             incomingCancelSubscriptionCondition?.nodeId ===
             visualBuilderGraph.nodeEditingId
@@ -124,6 +144,8 @@ export function useVisualBuilderNodeProps({
         incomingUpdateShippingAddressCondition,
         incomingRemoveItemCondition,
         incomingCreateDiscountCodeCondition,
+        incomingReshipForFreeCondition,
+        incomingRefundShippingCostsCondition,
         incomingCancelSubscriptionCondition,
         incomingSkipChargeCondition,
         visualBuilderGraph.branchIdsEditing,
@@ -206,6 +228,22 @@ export function useVisualBuilderNodeProps({
                           nodeId: incomingCreateDiscountCodeCondition.nodeId,
                       }
                     : undefined,
+            incomingReshipForFreeCondition:
+                incomingReshipForFreeCondition?.nodeId &&
+                incomingReshipForFreeCondition?.label
+                    ? {
+                          label: incomingReshipForFreeCondition.label,
+                          nodeId: incomingReshipForFreeCondition.nodeId,
+                      }
+                    : undefined,
+            incomingRefundShippingCostsCondition:
+                incomingRefundShippingCostsCondition?.nodeId &&
+                incomingRefundShippingCostsCondition?.label
+                    ? {
+                          label: incomingRefundShippingCostsCondition.label,
+                          nodeId: incomingRefundShippingCostsCondition.nodeId,
+                      }
+                    : undefined,
             incomingCancelSubscriptionCondition:
                 incomingCancelSubscriptionCondition?.nodeId &&
                 incomingCancelSubscriptionCondition?.label
@@ -247,6 +285,10 @@ export function useVisualBuilderNodeProps({
             incomingRemoveItemCondition?.nodeId,
             incomingCreateDiscountCodeCondition?.label,
             incomingCreateDiscountCodeCondition?.nodeId,
+            incomingReshipForFreeCondition?.label,
+            incomingReshipForFreeCondition?.nodeId,
+            incomingRefundShippingCostsCondition?.label,
+            incomingRefundShippingCostsCondition?.nodeId,
             incomingCancelSubscriptionCondition?.label,
             incomingCancelSubscriptionCondition?.nodeId,
             incomingSkipChargeCondition?.label,

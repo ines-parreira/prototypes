@@ -709,6 +709,117 @@ const CreateDiscountCodeMenuItem = ({
     )
 }
 
+const ReshipForFreeMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    orderExternalId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    customerId: string
+    orderExternalId: string
+    integrationId: string
+}) => {
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.reship_for_free}
+            description="Reship order for free."
+            icon={iconByVisualBuilderNodeType.reship_for_free}
+            style={colorByVisualBuilderNodeType.reship_for_free}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_RESHIP_FOR_FREE_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    orderExternalId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
+            disabledText={
+                !isNodeUniquePerPath(
+                    'reship_for_free',
+                    visualBuilderGraph,
+                    nodeId
+                )
+                    ? 'This step can only be used once per path in a Flow.'
+                    : !isNodeUniquePerPath(
+                            'refund_order',
+                            visualBuilderGraph,
+                            nodeId
+                        ) ||
+                        !isNodeUniquePerPath(
+                            'update_shipping_address',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Refund order or Update shipping address step was already added.'
+                      : undefined
+            }
+        />
+    )
+}
+
+const RefundShippingCostsMenuItem = ({
+    nodeId,
+    floatingRef,
+    customerId,
+    orderExternalId,
+    integrationId,
+}: {
+    nodeId: string
+    floatingRef?: HTMLElement | null
+    disabledText?: string
+    customerId: string
+    orderExternalId: string
+    integrationId: string
+}) => {
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+
+    return (
+        <MenuItem
+            label={labelByVisualBuilderNodeType.refund_shipping_costs}
+            description="Refund shipping costs."
+            icon={iconByVisualBuilderNodeType.refund_shipping_costs}
+            style={colorByVisualBuilderNodeType.refund_shipping_costs}
+            onClick={() => {
+                dispatch({
+                    type: 'INSERT_REFUND_SHIPPING_COSTS_NODE',
+                    beforeNodeId: nodeId,
+                    customerId,
+                    orderExternalId,
+                    integrationId,
+                })
+            }}
+            floatingRef={floatingRef}
+            disabledText={
+                !isNodeUniquePerPath(
+                    'refund_shipping_costs',
+                    visualBuilderGraph,
+                    nodeId
+                )
+                    ? 'This step can only be used once per path in a Flow.'
+                    : !isNodeUniquePerPath(
+                            'refund_order',
+                            visualBuilderGraph,
+                            nodeId
+                        ) ||
+                        !isNodeUniquePerPath(
+                            'cancel_order',
+                            visualBuilderGraph,
+                            nodeId
+                        )
+                      ? 'This step cannot be used if Refund order or Cancel order step was already added.'
+                      : undefined
+            }
+        />
+    )
+}
+
 const CancelSubscriptionMenuItem = ({
     nodeId,
     floatingRef,
@@ -915,6 +1026,20 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                                     customerId="{{objects.customer.id}}"
                                     integrationId="{{store.helpdesk_integration_id}}"
                                 />
+                                <ReshipForFreeMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                    customerId="{{objects.customer.id}}"
+                                    orderExternalId="{{objects.order.external_id}}"
+                                    integrationId="{{store.helpdesk_integration_id}}"
+                                />
+                                <RefundShippingCostsMenuItem
+                                    nodeId={nodeId}
+                                    floatingRef={floatingRef}
+                                    customerId="{{objects.customer.id}}"
+                                    orderExternalId="{{objects.order.external_id}}"
+                                    integrationId="{{store.helpdesk_integration_id}}"
+                                />
                             </>
                         )}
                         {visualBuilderGraph.apps?.some(
@@ -979,6 +1104,14 @@ export type VisualBuilderEdgeProps = {
         label: string
         nodeId: string
     }
+    incomingReshipForFreeCondition?: {
+        label: string
+        nodeId: string
+    }
+    incomingRefundShippingCostsCondition?: {
+        label: string
+        nodeId: string
+    }
     incomingCancelSubscriptionCondition?: {
         label: string
         nodeId: string
@@ -999,6 +1132,8 @@ export default function EdgeBlock({
     incomingUpdateShippingAddressCondition,
     incomingRemoveItemCondition,
     incomingCreateDiscountCodeCondition,
+    incomingRefundShippingCostsCondition,
+    incomingReshipForFreeCondition,
     incomingCancelSubscriptionCondition,
     incomingSkipChargeCondition,
     isSelected,
@@ -1030,6 +1165,8 @@ export default function EdgeBlock({
                     incomingUpdateShippingAddressCondition ||
                     incomingRemoveItemCondition ||
                     incomingCreateDiscountCodeCondition ||
+                    incomingReshipForFreeCondition ||
+                    incomingRefundShippingCostsCondition ||
                     incomingCancelSubscriptionCondition ||
                     incomingSkipChargeCondition
                         ? -48
@@ -1107,17 +1244,18 @@ export default function EdgeBlock({
                 </EdgeLabel>
             )}
             {incomingCreateDiscountCodeCondition && (
-                <EdgeLabel
-                    onClick={() => {
-                        dispatch({
-                            type: 'SET_NODE_EDITING_ID',
-                            nodeId: incomingCreateDiscountCodeCondition.nodeId,
-                        })
-                    }}
-                    isSelected={isSelected}
-                    type="create_discount_code"
-                >
+                <EdgeLabel isSelected={isSelected} type="create_discount_code">
                     {incomingCreateDiscountCodeCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingReshipForFreeCondition && (
+                <EdgeLabel isSelected={isSelected} type="reship_for_free">
+                    {incomingReshipForFreeCondition.label}
+                </EdgeLabel>
+            )}
+            {incomingRefundShippingCostsCondition && (
+                <EdgeLabel isSelected={isSelected} type="refund_shipping_costs">
+                    {incomingRefundShippingCostsCondition.label}
                 </EdgeLabel>
             )}
             {incomingCancelSubscriptionCondition && (
