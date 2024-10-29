@@ -68,20 +68,16 @@ const getChatChannelMessagesFromResponse = (
     const messages: PlaygroundMessage[] = []
 
     if (
-        aiAgentResponse.qa.output.validate_generated_message &&
-        aiAgentResponse.generate.output.generated_message.length > 0
+        aiAgentResponse.postProcessing.htmlReply?.length ||
+        (aiAgentResponse.qa.output.validate_generated_message &&
+            aiAgentResponse.generate.output.generated_message.length)
     ) {
         messages.push({
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
-            content: aiAgentResponse.generate.output.generated_message,
-            createdDatetime: new Date().toISOString(),
-        })
-    } else if (aiAgentResponse.postProcessing.htmlReply) {
-        messages.push({
-            sender: AI_AGENT_SENDER,
-            type: MessageType.MESSAGE,
-            content: aiAgentResponse.postProcessing.htmlReply,
+            content:
+                aiAgentResponse.postProcessing.htmlReply ??
+                aiAgentResponse.generate.output.generated_message,
             createdDatetime: new Date().toISOString(),
         })
     }

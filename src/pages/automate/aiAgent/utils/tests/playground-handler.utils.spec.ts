@@ -177,7 +177,6 @@ describe('playground-handler.utils', () => {
                     },
                 ])
             })
-
             it('should return a ticket event for handover to agent', () => {
                 const aiAgentResponse =
                     getSubmitPlaygroundTicketResponseFixture({
@@ -212,7 +211,6 @@ describe('playground-handler.utils', () => {
                     },
                 ])
             })
-
             it('should return "Was that helpful?" message when actions should be displayed', () => {
                 const aiAgentResponse =
                     getSubmitPlaygroundTicketResponseFixture({
@@ -253,7 +251,6 @@ describe('playground-handler.utils', () => {
                     },
                 ])
             })
-
             it('should return ticket event based on ai agent message type', () => {
                 const aiAgentResponse =
                     getSubmitPlaygroundTicketResponseFixture({
@@ -287,6 +284,49 @@ describe('playground-handler.utils', () => {
                         createdDatetime: DATE.toISOString(),
                     },
                 ])
+            })
+            it('should get message from generated output if htmlReply is empty', () => {
+                const aiAgentResponse =
+                    getSubmitPlaygroundTicketResponseFixture({
+                        qa: {
+                            output: {
+                                validate_outcome: true,
+                                validate_generated_message: true,
+                            },
+                        },
+                        generate: {
+                            output: {
+                                generated_message:
+                                    'Your last order number is #1234',
+                                outcome: TicketOutcome.CLOSE,
+                            },
+                        },
+                        postProcessing: {
+                            htmlReply: null,
+                            internalNote: '',
+                            chatTicketMessageMeta: {
+                                ai_agent_message_type:
+                                    AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
+                            },
+                        },
+                    })
+
+                const result = handleAiAgentResponse({
+                    aiAgentResponse,
+                    channel: 'chat',
+                    storeData: getStoreConfigurationFixture(),
+                })
+
+                expect(result).toEqual(
+                    expect.arrayContaining([
+                        {
+                            sender: AI_AGENT_SENDER,
+                            type: MessageType.MESSAGE,
+                            content: 'Your last order number is #1234',
+                            createdDatetime: DATE.toISOString(),
+                        },
+                    ])
+                )
             })
         })
 
