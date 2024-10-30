@@ -14,6 +14,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     titleClassName?: string
     direction?: Maybe<OrderDirection>
     isOrderedBy?: boolean
+    isSticky?: boolean
     onClick?: () => void
     title: string
     tooltip?: ReactNode
@@ -34,6 +35,7 @@ export default function HeaderCellProperty({
     tooltip,
     justifyContent,
     wrapContent = false,
+    isSticky = false,
     ...otherProps
 }: Props) {
     const tooltipRef = useRef<HTMLElement>(null)
@@ -41,7 +43,7 @@ export default function HeaderCellProperty({
     return (
         <HeaderCell
             {...otherProps}
-            className={classnames(className)}
+            className={classnames(className, {[css.withShadow]: isSticky})}
             onClick={onClick}
         >
             <div

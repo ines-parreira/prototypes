@@ -108,6 +108,9 @@ export const CampaignTableStats = ({
                     tooltip={headerCell?.hint?.title}
                     direction={arrowDirection}
                     isOrderedBy={orderKey === headerCell.key}
+                    isSticky={
+                        isTableScrolled && headerCell.key === 'campaignName'
+                    }
                     className={
                         headerCell.className
                             ? css[headerCell.className]
@@ -117,7 +120,7 @@ export const CampaignTableStats = ({
                 />
             )
         },
-        [handleClickHeaderCell, orderDirection, orderKey]
+        [handleClickHeaderCell, orderDirection, orderKey, isTableScrolled]
     )
 
     const renderCells = useCallback(

@@ -135,4 +135,26 @@ describe('CampaignTableStats', () => {
         expect(arrowIcon.textContent).toBe('arrow_upward')
         expect(arrowIcon).not.toHaveStyle({display: 'none'})
     })
+
+    it('scroll sets isTableScrolled state correctly', () => {
+        const {container, getByText} = renderWithStore(
+            <CampaignTableStats
+                chatIntegrationId={8}
+                isLoading={false}
+                rows={rows}
+                offset={0}
+                onClickNextPage={jest.fn()}
+                onClickPrevPage={jest.fn()}
+            />,
+            {}
+        )
+        const tableDiv = container.querySelector('.container')
+
+        // Simulate scroll to the right
+        fireEvent.scroll(tableDiv as HTMLElement, {target: {scrollLeft: 100}})
+        expect(getByText('Campaign name')).toBeInTheDocument()
+
+        const closestThElement = getByText('Campaign name').closest('th')!
+        expect(closestThElement).toHaveClass('withShadow')
+    })
 })
