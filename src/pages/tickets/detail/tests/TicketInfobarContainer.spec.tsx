@@ -273,7 +273,7 @@ describe('<TicketInfobarContainer />', () => {
         })
     })
 
-    it('should switch to the Ticket Feedback tab if the user is a team lead and the ticket is closed', () => {
+    it('should switch to the Ticket Feedback tab if the user is a team lead and is coming with AI tab search param', () => {
         const store = mockStore({
             ...state,
             ticket: fromJS({...ticket, status: TicketStatus.Closed}),
@@ -293,17 +293,16 @@ describe('<TicketInfobarContainer />', () => {
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
             {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
+                path: `/foo/:ticketId?`,
+                route: `/foo/123/?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
             }
         )
 
-        const customerInformationTab = screen.getByText(CUSTOMER_DETAILS_TAB)
-        userEvent.click(customerInformationTab)
-
+        const customerInformationTab = screen.getByText(AI_FEEDBACK_TAB)
         expect(mockedChangeActiveTab).toHaveBeenCalledWith({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         })
+        expect(customerInformationTab).toBeInTheDocument()
     })
 
     it('should not call changeActive tab when AI Agent tab is clicked and is already active', () => {

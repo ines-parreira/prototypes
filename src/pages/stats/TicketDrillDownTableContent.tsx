@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -35,11 +36,13 @@ import {
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
+    AutoQAAgentMetric,
     DrillDownMetric,
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
 import {AutoQAMetric} from 'state/ui/stats/types'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -60,6 +63,22 @@ const tooltipHints = {
     ),
 }
 
+const isAutoQAMetric = (
+    metricName: DrillDownMetric['metricName']
+): metricName is AutoQAMetric =>
+    Object.values(AutoQAMetric).map(String).includes(String(metricName))
+
+const isAutoQAAgentsTableColumn = (
+    metricName: DrillDownMetric['metricName']
+): metricName is AutoQAAgentMetric =>
+    [
+        AutoQAAgentsTableColumn.ResolutionCompleteness,
+        AutoQAAgentsTableColumn.ReviewedClosedTickets,
+        AutoQAAgentsTableColumn.CommunicationSkills,
+    ]
+        .map(String)
+        .includes(String(metricName))
+
 const getOnClickHandler =
     (ticketId: string | number, metricName: DrillDownMetric['metricName']) =>
     () => {
@@ -67,7 +86,17 @@ const getOnClickHandler =
             metric: metricName,
             ticket_id: ticketId,
         })
-        window.open(`/app/ticket/${ticketId}`, '_blank')
+        if (
+            isAutoQAMetric(metricName) ||
+            isAutoQAAgentsTableColumn(metricName)
+        ) {
+            window.open(
+                `/app/ticket/${ticketId}?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
+                '_blank'
+            )
+        } else {
+            window.open(`/app/ticket/${ticketId}`, '_blank')
+        }
     }
 
 export const TicketDrillDownTableContent = ({

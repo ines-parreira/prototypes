@@ -1,5 +1,7 @@
 import classNames from 'classnames'
+
 import {fromJS, Map} from 'immutable'
+
 import React, {useEffect, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
@@ -12,6 +14,7 @@ import {logEventWithSampling} from 'common/segment/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useSearchParam} from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import TicketFeedback, {
     useHasAIAgent,
@@ -59,6 +62,7 @@ export const TicketInfobarContainer = ({
     widgets,
 }: Props) => {
     const params = useParams<{ticketId: string}>()
+    const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
@@ -79,10 +83,13 @@ export const TicketInfobarContainer = ({
     if (ticket.id && tabCheckId.current !== ticket.id) {
         tabCheckId.current = ticket.id
         const nextTab =
-            isTeamLead(currentUser) && ticket.status === TicketStatus.Closed
+            isTeamLead(currentUser) &&
+            ticket.status === TicketStatus.Closed &&
+            preferredTab === TicketAIAgentFeedbackTab.AIAgent
                 ? TicketAIAgentFeedbackTab.AIAgent
                 : TicketAIAgentFeedbackTab.CustomerInformation
         if (nextTab !== activeTab) {
+            setPreferredTab(null)
             dispatch(changeActiveTab({activeTab: nextTab}))
         }
         dispatch(changeTicketMessage({message: undefined}))
