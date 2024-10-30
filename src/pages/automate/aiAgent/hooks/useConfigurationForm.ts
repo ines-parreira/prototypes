@@ -19,7 +19,7 @@ import {
     getStoreConfigurationFromFormValues,
 } from '../components/StoreConfigForm/StoreConfigForm.utils'
 import {DEFAULT_FORM_VALUES} from '../constants'
-import {FormValues, ValidFormValues} from '../types'
+import {FormValues, UpdateValue, ValidFormValues} from '../types'
 import {getValidStoreConfigurationFormValues} from '../utils/store-configuration-validation.utils'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
 import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
@@ -80,15 +80,12 @@ export const useConfigurationForm = ({
         [formValues]
     )
 
-    const updateValue = useCallback(
-        <Key extends keyof FormValues>(key: Key, value: FormValues[Key]) => {
-            setFormValues((prev) => ({
-                ...prev,
-                [key]: value,
-            }))
-        },
-        []
-    )
+    const updateValue: UpdateValue<FormValues> = useCallback((key, value) => {
+        setFormValues((prev) => ({
+            ...prev,
+            [key]: value,
+        }))
+    }, [])
 
     const handleOnSave = async ({
         publicUrls,

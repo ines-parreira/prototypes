@@ -1,0 +1,33 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .formGroup {
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .banner {
+        margin-bottom: @layout-spacing-s;
+        border: none;
+        background-color: var(--accessory-magenta-1);
+        align-items: center;
+
+        .bannerWrapper {
+            display: flex;
+            gap: @layout-spacing-xs;
+            justify-content: space-between;
+            align-items: center;
+
+            .bannerButton {
+                background-color: var(--accessory-magenta-3);
+                border-color: var(--accessory-magenta-3);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: var(--accessory-magenta-3);
+                    border-color: var(--accessory-magenta-3);
+                }
+            }
+        }
+    }
+}

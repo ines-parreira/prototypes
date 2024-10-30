@@ -33,10 +33,8 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {getHasAutomate} from 'state/billing/selectors'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -61,6 +59,7 @@ import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreC
 import {FormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
 import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
+import {AIAgentPreviewModeSection} from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
@@ -98,6 +97,8 @@ export const StoreConfigForm = ({
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const isAiAgentMultichannelEnablementEnabled =
         useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
+    const isFollowUpAiAgentPreviewModeEnabled =
+        useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode]
 
     const dispatch = useAppDispatch()
 
@@ -182,7 +183,6 @@ export const StoreConfigForm = ({
         wizardQueryParam,
     ])
 
-    const hasAutomate = useAppSelector(getHasAutomate)
     const {storeConfiguration, updateStoreConfiguration} =
         useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
@@ -424,43 +424,6 @@ export const StoreConfigForm = ({
         formValues.previewModeActivatedDatetime,
     ])
 
-    const handleAiAgentTrialModeChange = (value: string) => {
-        const date = new Date().toISOString()
-        switch (value) {
-            case 'enabled':
-                updateValue('deactivatedDatetime', null)
-                updateValue('chatChannelDeactivatedDatetime', null)
-                updateValue('emailChannelDeactivatedDatetime', null)
-                updateValue('trialModeActivatedDatetime', null)
-                updateValue('previewModeActivatedDatetime', null)
-                break
-
-            case 'trial':
-                updateValue('deactivatedDatetime', null)
-                // We don't support trial mode in chat
-                updateValue('chatChannelDeactivatedDatetime', date)
-                updateValue('emailChannelDeactivatedDatetime', null)
-
-                updateValue('trialModeActivatedDatetime', date)
-                updateValue('previewModeActivatedDatetime', date)
-                break
-
-            case 'disabled':
-                updateValue('deactivatedDatetime', date)
-                updateValue(
-                    'chatChannelDeactivatedDatetime',
-                    new Date().toISOString()
-                )
-                updateValue(
-                    'emailChannelDeactivatedDatetime',
-                    new Date().toISOString()
-                )
-                updateValue('trialModeActivatedDatetime', null)
-                updateValue('previewModeActivatedDatetime', null)
-                break
-        }
-    }
-
     const onCloseAiAgentConfigurationModal = () => {
         setIsAiAgentConfigurationModalOpen(false)
     }
@@ -492,40 +455,21 @@ export const StoreConfigForm = ({
                         </h2>
                         <span>How should AI Agent send responses?</span>
                     </div>
-                    {!isAiAgentMultichannelEnablementEnabled ||
-                    trialModeAvailable ? (
-                        <div className={css.formGroup}>
-                            {trialModeAvailable ? (
-                                <RadioFieldSet
-                                    name="ai-agent-trial-mode"
-                                    dataCanduId="ai-agent-trial-mode-toggle"
-                                    options={[
-                                        {
-                                            caption:
-                                                'Answer customer questions immediately, even outside business hours.',
-                                            label: 'Directly respond to customers',
-                                            disabled: !hasAutomate,
-                                            value: 'enabled',
-                                        },
-                                        {
-                                            caption:
-                                                'Draft messages for your agents to review and edit before sending. This mode is only available for a limited period of time.',
-                                            label: 'Draft responses for agents to review before sending',
-                                            value: 'trial',
-                                        },
-                                        {
-                                            caption:
-                                                'AI Agent won’t generate any responses.',
-                                            label: 'Disabled',
-                                            value: 'disabled',
-                                        },
-                                    ]}
-                                    selectedValue={aiAgentMode}
-                                    onChange={(value) => {
-                                        handleAiAgentTrialModeChange(value)
-                                    }}
-                                />
-                            ) : !isAiAgentMultichannelEnablementEnabled ? (
+                    {(trialModeAvailable ||
+                        isFollowUpAiAgentPreviewModeEnabled) && (
+                        <AIAgentPreviewModeSection
+                            storeConfiguration={storeConfiguration}
+                            updateValue={updateValue}
+                            aiAgentMode={aiAgentMode}
+                            aiAgentTicketViewId={aiAgentTicketViewId}
+                            isFollowUpAiAgentPreviewModeEnabled={
+                                isFollowUpAiAgentPreviewModeEnabled
+                            }
+                        />
+                    )}
+                    {!isAiAgentMultichannelEnablementEnabled &&
+                        !trialModeAvailable && (
+                            <div className={css.formGroup}>
                                 <ToggleInput
                                     isToggled={isAIAgentToggled}
                                     onClick={() => {
@@ -548,9 +492,8 @@ export const StoreConfigForm = ({
                                 >
                                     Enable AI Agent
                                 </ToggleInput>
-                            ) : null}
-                        </div>
-                    ) : null}
+                            </div>
+                        )}
 
                     <ToneOfVoiceFormComponent
                         toneOfVoice={formValues.toneOfVoice}
