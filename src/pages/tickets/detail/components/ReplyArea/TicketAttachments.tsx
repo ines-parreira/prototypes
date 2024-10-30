@@ -7,6 +7,7 @@ import {AttachmentEnum} from 'common/types'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
+import {getIsProductCardDiscountedPriceEnabled} from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
 import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
 import shortcutManager from 'services/shortcutManager/index'
@@ -164,6 +165,10 @@ export default class TicketAttachments extends Component<Props, State> {
     _renderProductAttachment(attachment: Attachment, idx: number) {
         const price = attachment.getIn(['extra', 'price'])
         const compareAtPrice = attachment.getIn(['extra', 'compare_at_price'])
+
+        const isDiscountedPriceEnabled =
+            getIsProductCardDiscountedPriceEnabled()
+
         return (
             <div className={css.productCard}>
                 <div className={css.productImageContainer}>
@@ -191,7 +196,7 @@ export default class TicketAttachments extends Component<Props, State> {
                                 ])}
                             />
                         </div>
-                        {!!compareAtPrice && (
+                        {isDiscountedPriceEnabled && !!compareAtPrice && (
                             <div className={css.compareAtPrice}>
                                 <MoneyAmount
                                     renderIfZero

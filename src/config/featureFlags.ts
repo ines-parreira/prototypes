@@ -110,6 +110,7 @@ export enum FeatureFlagKey {
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     OfficeHours = 'office-hours',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
+    ProductCardDiscountedPrice = 'product-card-discounted-price',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

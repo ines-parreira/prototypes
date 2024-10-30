@@ -14,6 +14,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types'
+import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import {RootState} from 'state/types'
 
 import CampaignPreview from '../CampaignPreview'
@@ -192,5 +193,52 @@ describe('<CampaignPreview />', () => {
         )
 
         expect(screen.queryByText('Reposition image')).not.toBeInTheDocument()
+    })
+
+    it('renders product cards with compareAtPrice if discounted price flag is enabled', () => {
+        jest.spyOn(
+            discountedPriceFlagModule,
+            'useIsProductCardDiscountedPriceEnabled'
+        ).mockReturnValue(true)
+
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <CampaignPreview
+                    html="<div>Jest campaign</div>"
+                    mainColor="#0d87dd"
+                    mainFontFamily="Inter"
+                    translatedTexts={TEXTS}
+                    position={CAMPAIGN_POSITION}
+                    products={[PRODUCT]}
+                />
+            </Provider>
+        )
+
+        getByText('$100.00')
+        getByText('$120.00')
+    })
+
+    it('renders product cards without compareAtPrice if discounted price flag is disabled', () => {
+        jest.spyOn(
+            discountedPriceFlagModule,
+            'useIsProductCardDiscountedPriceEnabled'
+        ).mockReturnValue(false)
+
+        const {getByText, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <CampaignPreview
+                    html="<div>Jest campaign</div>"
+                    mainColor="#0d87dd"
+                    mainFontFamily="Inter"
+                    translatedTexts={TEXTS}
+                    position={CAMPAIGN_POSITION}
+                    products={[PRODUCT]}
+                />
+            </Provider>
+        )
+
+        getByText('$100.00')
+        const compareAtPrice = queryByText('$120.00')
+        expect(compareAtPrice).not.toBeInTheDocument()
     })
 })

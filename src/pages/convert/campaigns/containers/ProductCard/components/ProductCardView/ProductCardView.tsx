@@ -7,6 +7,8 @@ import Button from 'pages/common/components/button/Button'
 
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
+import {useIsProductCardDiscountedPriceEnabled} from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
+
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
@@ -106,6 +108,8 @@ export const ProductCardView = ({
         )
     }
 
+    const isDiscountedPriceEnabled = useIsProductCardDiscountedPriceEnabled()
+
     return (
         <BaseProductCard
             renderFeaturedImage={() =>
@@ -118,7 +122,7 @@ export const ProductCardView = ({
                     {formattedPrice && (
                         <span className={css.cost}>{formattedPrice}</span>
                     )}
-                    {formattedCompareAtPrice && (
+                    {isDiscountedPriceEnabled && formattedCompareAtPrice && (
                         <span className={cn(css.cost, css.compareAtPrice)}>
                             {formattedCompareAtPrice}
                         </span>

@@ -5,6 +5,7 @@ import {fromJS, List, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 
 import {AttachmentEnum} from 'common/types'
+import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import {Account} from 'state/currentAccount/types'
 import {replaceAttachmentURL} from 'utils'
 
@@ -295,6 +296,49 @@ describe('TicketAttachments component', () => {
             )
 
             expect(getAllByText(attachments.getIn([0, 'name']))).toHaveLength(2)
+        })
+
+        const attachments = fromJS([
+            {
+                name: 'quxx',
+                content_type: 'application/productCard',
+                url: 'http://gorgias.io/quxx',
+                extra: {
+                    price: 31.24,
+                    compare_at_price: 55.55,
+                    variant_name: 'quux',
+                    product_link: 'http://gorgias.io/quxx',
+                    currency: 'USD',
+                },
+            },
+        ]) as List<Map<string, string>>
+
+        it('should display compare-at price if flag is enabled', () => {
+            jest.spyOn(
+                discountedPriceFlagModule,
+                'getIsProductCardDiscountedPriceEnabled'
+            ).mockReturnValue(true)
+
+            const {getByText} = render(
+                <TicketAttachments {...minProps} attachments={attachments} />
+            )
+
+            getByText('$31.24')
+            getByText('$55.55')
+        })
+
+        it('should display compare-at price if flag is disabled', () => {
+            jest.spyOn(
+                discountedPriceFlagModule,
+                'getIsProductCardDiscountedPriceEnabled'
+            ).mockReturnValue(false)
+
+            const {getByText, queryByText} = render(
+                <TicketAttachments {...minProps} attachments={attachments} />
+            )
+
+            getByText('$31.24')
+            expect(queryByText('$55.55')).not.toBeInTheDocument()
         })
     })
 })
