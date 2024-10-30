@@ -59,6 +59,8 @@ describe('<AiAgentLayout />', () => {
             name: 'View AI Agent Tickets',
         })
         ticketViewButton.click()
-        expect(history.push).toHaveBeenCalledWith('/app/views/1')
+        expect(history.push).toHaveBeenCalledWith('/app/views/1', {
+            skipRedirect: true,
+        })
     })
 })

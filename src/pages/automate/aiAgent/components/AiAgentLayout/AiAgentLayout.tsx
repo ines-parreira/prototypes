@@ -79,7 +79,9 @@ export const AiAgentLayout = ({
                         intent="secondary"
                         onClick={() => {
                             logEvent(SegmentEvent.AiAgentViewTicketsClicked)
-                            history.push(`/app/views/${aiAgentTicketViewId}`)
+                            history.push(`/app/views/${aiAgentTicketViewId}`, {
+                                skipRedirect: true,
+                            })
                         }}
                     >
                         View AI Agent Tickets

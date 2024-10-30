@@ -10,9 +10,17 @@ import {isStrictTicketPath} from 'utils'
 
 import useSplitTicketView from './useSplitTicketView'
 
+interface LocationState {
+    skipRedirect?: boolean
+}
+
 export default function useSplitTicketViewSwitcher() {
     const history = useHistory()
-    const {pathname: path, search: params} = useLocation()
+    const {
+        pathname: path,
+        search: params,
+        state: locationState,
+    } = useLocation<LocationState>()
     const previousPath = usePrevious(path)
     const {isEnabled, shouldRedirectToSplitView} = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
@@ -24,6 +32,8 @@ export default function useSplitTicketViewSwitcher() {
     const previousIsSplitTicketViewEnabled = useRef<boolean | undefined>(
         undefined
     )
+
+    const shouldSkipRedirect = locationState?.skipRedirect
 
     const activeViewId = useMemo(
         () => activeView.get('id') as number | undefined,
@@ -82,7 +92,7 @@ export default function useSplitTicketViewSwitcher() {
             return
         }
 
-        if (viewId) {
+        if (viewId && !shouldSkipRedirect) {
             history.replace(
                 `/app/views/${
                     activeViewId && activeViewId.toString() !== viewId
@@ -108,5 +118,6 @@ export default function useSplitTicketViewSwitcher() {
         previousPath,
         shouldRedirectToSplitView,
         params,
+        shouldSkipRedirect,
     ])
 }

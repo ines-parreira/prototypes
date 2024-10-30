@@ -1101,7 +1101,9 @@ describe('<StoreConfigForm />', () => {
                     name: 'Show Me',
                 })
                 ticketViewButton.click()
-                expect(history.push).toHaveBeenCalledWith('/app/views/1')
+                expect(history.push).toHaveBeenCalledWith('/app/views/1', {
+                    skipRedirect: true,
+                })
             })
         })
 

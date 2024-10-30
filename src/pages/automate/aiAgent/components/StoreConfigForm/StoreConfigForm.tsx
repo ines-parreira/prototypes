@@ -468,7 +468,9 @@ export const StoreConfigForm = ({
     const onShowMeAiAgentConfigurationModal = () => {
         setIsAiAgentConfigurationModalOpen(false)
         if (aiAgentTicketViewId) {
-            history.push(`/app/views/${aiAgentTicketViewId}`)
+            history.push(`/app/views/${aiAgentTicketViewId}`, {
+                skipRedirect: true,
+            })
         }
     }
 
