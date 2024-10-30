@@ -1,6 +1,8 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PhoneIntegrationPreferences} from 'models/integration/types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
@@ -33,10 +35,20 @@ export default function VoiceIntegrationPreferencesTranscription({
                 >
                     Transcription
                 </h2>
-                <p>
-                    Use speech-to-text to transcribe all recorded calls and/or
-                    voicemails
-                </p>
+                {useFlags()[FeatureFlagKey.SummarizeCalls] ? (
+                    <p>
+                        Automatically transcribes and summarizes recorded calls
+                        and/or voicemails for quick reference and easy
+                        follow-up. Transcriptions are generated for English,
+                        French, German and Spanish, summaries are only generated
+                        in English.
+                    </p>
+                ) : (
+                    <p>
+                        Use speech-to-text to transcribe all recorded calls
+                        and/or voicemails
+                    </p>
+                )}
             </div>
             <ToggleInput
                 isToggled={preferences.transcribe?.recordings ?? false}

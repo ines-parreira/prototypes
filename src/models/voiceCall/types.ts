@@ -28,6 +28,13 @@ export enum VoiceCallDisplayStatus {
     Failed = 'Failed',
 }
 
+export type VoiceCallSummary = {
+    id: number
+    recording_id: number
+    created_datetime: string
+    summary: string
+}
+
 export type VoiceCall = {
     id: number
     integration_id: number
@@ -50,6 +57,7 @@ export type VoiceCall = {
     customer_id: number
     has_call_recording: boolean
     has_voicemail: boolean
+    summaries?: VoiceCallSummary[]
 }
 
 export enum VoiceCallRecordingType {

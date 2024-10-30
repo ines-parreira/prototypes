@@ -1,6 +1,8 @@
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {Customer} from 'models/customer/types'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
@@ -13,6 +15,7 @@ import TicketVoiceCallAudios from './TicketVoiceCallAudios'
 import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
 import TicketVoiceCallSource from './TicketVoiceCallSource'
+import TicketVoiceCallSummary from './TicketVoiceCallSummary'
 
 type Props = {
     header: JSX.Element
@@ -35,6 +38,8 @@ export default function TicketVoiceCallContainer({
 }: Props) {
     const {isRecordingOpened, toggleRecordingOpened} =
         useVoiceRecordingsContext()
+
+    const useCallSummary = !!useFlags()[FeatureFlagKey.SummarizeCalls]
 
     return (
         <div className={css.container}>
@@ -98,6 +103,9 @@ export default function TicketVoiceCallContainer({
                             type={VoiceCallRecordingType.Voicemail}
                         />
                     </ControlledCollapsibleDetails>
+                )}
+                {useCallSummary && voiceCall.summaries && (
+                    <TicketVoiceCallSummary summaries={voiceCall.summaries} />
                 )}
             </div>
         </div>

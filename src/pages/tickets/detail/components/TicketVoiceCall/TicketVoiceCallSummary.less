@@ -1,0 +1,24 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~css/new/mixins';
+
+:local {
+    .summaryContainer {
+        display: flex;
+        padding: @layout-spacing-s 20px;
+        align-items: flex-start;
+        gap: @layout-spacing-xxs;
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-4);
+        flex-direction: column;
+        justify-content: center;
+        flex: 1 0 0;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .summaryTitle {
+        color: var(--neutral-grey-6);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+    }
+}
