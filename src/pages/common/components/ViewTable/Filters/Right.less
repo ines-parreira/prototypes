@@ -1,5 +1,30 @@
+@import (reference) '~css/typography';
+
 :local {
     .timedeltaPicker {
         width: 200px;
+    }
+
+    .customFieldValueInput {
+        width: auto;
+        margin-bottom: 0;
+
+        &:not(div, p) {
+            width: auto;
+            height: 32px;
+            border: 1px solid var(--neutral-grey-3);
+            border-radius: 4px;
+            .body-regular();
+        }
+
+        &[class*='valid'] {
+            border: 1px solid var(--main-primary);
+        }
+    }
+
+    .customFieldValueInput > span {
+        input {
+            .customFieldValueInput();
+        }
     }
 }

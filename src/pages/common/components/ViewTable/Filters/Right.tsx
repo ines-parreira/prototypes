@@ -1,7 +1,8 @@
-import {Expression, Identifier, Literal} from 'estree'
+import {ArrayExpression, Expression, Identifier, Literal} from 'estree'
 import {List, Map, Seq} from 'immutable'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import _debounce from 'lodash/debounce'
 import moment from 'moment-timezone'
 import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -9,13 +10,12 @@ import {Input} from 'reactstrap'
 
 import {timedeltaOperators} from 'config/rules'
 import {DateAndTimeFormatting, TimeFormatType} from 'constants/datetime'
-
+import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import {isMultiValue} from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
+import {CustomFieldValue} from 'custom-fields/types'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-
 import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
 import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
-
-import css from 'pages/common/components/ViewTable/Filters/Right.less'
 import DatePicker from 'pages/common/forms/DatePicker'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
@@ -35,6 +35,9 @@ import {FieldSearchResult} from 'state/views/types'
 import {formatDatetime, getLanguageDisplayName} from 'utils'
 import {stringToDatetime} from 'utils/date'
 
+import css from './Right.less'
+import {getCustomFieldIdFromObjectPath, getMultiSelectLabel} from './utils'
+
 type OwnProps = {
     operator: Identifier
     config: Map<any, any>
@@ -53,6 +56,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
     dropdownOpen: boolean
+    renderedCustomFieldValue?: CustomFieldValue | CustomFieldValue[] | undefined
 }
 
 export class RightContainer extends Component<Props, State> {
@@ -63,14 +67,36 @@ export class RightContainer extends Component<Props, State> {
     state = {
         dropdownOpen: false,
         selectedOptions: [],
+        renderedCustomFieldValue: undefined,
     }
 
     componentDidMount() {
         const {empty, node} = this.props
-        // Automatically set the first option
-        // if the operator is not an empty operator AND the field has only one option
-        if (!empty && 'value' in node && node.value === '') {
-            this._selectFirstOption()
+
+        if (!empty) {
+            if ('value' in node) {
+                if (node.value === '') {
+                    // Automatically set the first option
+                    // if the operator is not an empty operator AND the field has only one option
+                    this._selectFirstOption()
+                } else if (this._isTicketFieldExpression()) {
+                    this.setState({
+                        renderedCustomFieldValue:
+                            node.value as CustomFieldValue,
+                    })
+                }
+            } else if (
+                this._isTicketFieldExpression() &&
+                (node as ArrayExpression)?.type === 'ArrayExpression'
+            ) {
+                this.setState({
+                    renderedCustomFieldValue: (
+                        node as ArrayExpression
+                    ).elements.map(
+                        (opt) => (opt as Literal).value as CustomFieldValue
+                    ),
+                })
+            }
         }
     }
 
@@ -81,6 +107,25 @@ export class RightContainer extends Component<Props, State> {
         if (!empty && 'value' in node && node.value === '') {
             this._selectFirstOption()
         }
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>) {
+        const {node} = nextProps
+
+        if (
+            this._isTicketFieldExpression() &&
+            (!node ||
+                (typeof (node as Literal).value !== 'boolean' &&
+                    !(node as Literal).value &&
+                    !(node as ArrayExpression).elements) ||
+                (node as ArrayExpression).elements?.length === 0)
+        ) {
+            this.setState({renderedCustomFieldValue: undefined})
+        }
+    }
+
+    _isTicketFieldExpression = () => {
+        return this.props.field.get('name') === 'ticket_field'
     }
 
     _selectFirstOption = () => {
@@ -108,6 +153,24 @@ export class RightContainer extends Component<Props, State> {
             value: result.name,
             label: result.name,
         }))
+    }
+
+    _debouncedUpdateFieldFilter = _debounce(this.props.updateFieldFilter, 300)
+
+    _handleCustomFieldChange = (
+        value: CustomFieldValue | CustomFieldValue[] | undefined
+    ) => {
+        this._debouncedUpdateFieldFilter(this.props.index, value)
+        this.setState({renderedCustomFieldValue: value})
+    }
+
+    _getCustomMultiSelectLabel = (
+        value: CustomFieldValue | CustomFieldValue[] | undefined
+    ) => {
+        if (isMultiValue(value)) {
+            return getMultiSelectLabel(value)
+        }
+        return ''
     }
 
     render() {
@@ -302,6 +365,40 @@ export class RightContainer extends Component<Props, State> {
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
+                    />
+                )
+            }
+        } else if (this._isTicketFieldExpression()) {
+            const customFieldId = getCustomFieldIdFromObjectPath(
+                this.props.objectPath
+            )
+
+            if (customFieldId) {
+                const isArrayExpression = node.type === 'ArrayExpression'
+
+                return (
+                    <CustomFieldByIdInput
+                        onChange={this._handleCustomFieldChange}
+                        customFieldId={Number(customFieldId)}
+                        className={css.customFieldValueInput}
+                        placeholder={
+                            isArrayExpression
+                                ? 'Select value(s)...'
+                                : 'Set value...'
+                        }
+                        {...(isArrayExpression
+                            ? {
+                                  value: this.state.renderedCustomFieldValue,
+                                  dropdownAdditionalProps: {
+                                      customDisplayValue:
+                                          this._getCustomMultiSelectLabel,
+                                      allowMultiValues: true,
+                                  },
+                              }
+                            : {
+                                  value:
+                                      this.state.renderedCustomFieldValue ?? '',
+                              })}
                     />
                 )
             }

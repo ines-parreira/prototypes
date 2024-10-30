@@ -26,6 +26,7 @@ import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -86,6 +87,7 @@ import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
 
+import {getDefaultCustomFieldOperator} from './Filters/utils'
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
 
@@ -126,6 +128,21 @@ export const FilterTopbar = ({
     const suggestedPreviousViewId = useAppSelector((state) =>
         getViewIdToDisplay(state)(ViewType.TicketList, lastViewId?.toString())
     )
+    const customFields = useCustomFieldDefinitions({
+        archived: false,
+        object_type: 'Ticket',
+    })
+
+    const activeCustomFields = useMemo(() => {
+        return (
+            customFields.data?.data.filter(
+                (field) => !field.deactivated_datetime
+            ) || []
+        )
+    }, [customFields.data?.data])
+
+    const firstCustomField = activeCustomFields[0]
+
     const searchRank = useContext(SearchRankScenarioContext)
     const orderBy = activeView.get('order_by') as string
     const isActiveViewValid =
@@ -267,12 +284,17 @@ export const FilterTopbar = ({
     }
 
     const handleClickFilter = (field: Map<any, any>) => {
-        const left = `${config.get('singular') as string}.${fieldPath(field)}`
-        const operator = getDefaultOperator(left, schemas) as string
+        const path = fieldPath(field)
+        const isCustomFieldsFilter = fieldPath(field) === 'custom_fields'
+        const left = `${config.get('singular') as string}.${path}`
+        const operator = isCustomFieldsFilter
+            ? getDefaultCustomFieldOperator(schemas, firstCustomField)
+            : (getDefaultOperator(left, schemas) as string)
         const filter = {
             left,
             operator,
         }
+
         dispatch(addFieldFilter(field.toJS(), filter))
     }
 

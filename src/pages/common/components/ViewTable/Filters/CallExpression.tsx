@@ -8,7 +8,7 @@ import {
 import {fromJS, Map, List, Seq} from 'immutable'
 import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
-import React from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from 'config'
@@ -18,25 +18,14 @@ import {updateFieldFilter} from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
 import {fieldPath, findProperty} from 'utils'
 
+import useCustomFieldsFilters from './hooks/useCustomFieldsFilters'
 import Left from './Left'
 import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
 import Right from './Right'
 import {OperatorType} from './types'
-
-const resolveObjectPath = (node: Expression): string => {
-    switch (node.type) {
-        case 'MemberExpression':
-            return `${resolveObjectPath(
-                node.object as Expression
-            )}.${resolveObjectPath(node.property)}`
-        case 'Identifier':
-            return node.name
-        default:
-            throw Error(`Unknown type: ${node.type}`)
-    }
-}
+import {getCustomFieldOperators, resolveObjectPath} from './utils'
 
 type OwnProps = {
     node: ESCallExpression
@@ -53,111 +42,123 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-class CallExpression extends React.Component<Props> {
-    _getOperators = (objectPath: string): Record<string, OperatorType> => {
-        const {schemas} = this.props
+export const CallExpression = ({
+    config,
+    view,
+    node,
+    updateOperator,
+    removeCondition,
+    index,
+    agents,
+    teams,
+    parentNode,
+    schemas,
+    updateFieldFilter,
+}: Props) => {
+    const getOperators = useCallback(
+        (objectPath: string): Record<string, OperatorType> => {
+            const property = findProperty(objectPath, schemas)
 
-        const property = findProperty(objectPath, schemas)
+            if (property && property.meta) {
+                let operators = {
+                    ...(_get(property.meta, 'operators') as Record<
+                        string,
+                        unknown
+                    >),
+                    ...(_get(
+                        property.meta,
+                        'views.additional_operators',
+                        {}
+                    ) as Record<string, OperatorType>),
+                }
 
-        if (property && property.meta) {
-            let operators = {
-                ...(_get(property.meta, 'operators') as Record<
-                    string,
-                    unknown
-                >),
-                ...(_get(
+                const excludedOperators = _get(
                     property.meta,
-                    'views.additional_operators',
+                    'views.excluded_operators',
                     {}
-                ) as Record<string, OperatorType>),
+                ) as Record<string, OperatorType>
+
+                if (excludedOperators) {
+                    operators = _pickBy(
+                        operators,
+                        (_, key) =>
+                            !Object.keys(excludedOperators).includes(key)
+                    )
+                }
+
+                return operators as Record<string, OperatorType>
             }
 
-            const excludedOperators = _get(
-                property.meta,
-                'views.excluded_operators',
-                {}
-            ) as Record<string, OperatorType>
+            return BASIC_OPERATORS
+        },
+        [schemas]
+    )
 
-            if (excludedOperators) {
-                operators = _pickBy(
-                    operators,
-                    (value, key) =>
-                        !Object.keys(excludedOperators).includes(key)
-                )
-            }
+    const [left, right] = node.arguments as Expression[]
 
-            return operators as Record<string, OperatorType>
-        }
+    const operator = node.callee as Identifier
 
-        return BASIC_OPERATORS
-    }
+    const objectPath = resolveObjectPath(left)
 
-    render() {
-        const {
-            config,
-            view,
-            node,
-            updateOperator,
-            removeCondition,
-            index,
-            agents,
-            teams,
-            parentNode,
-        } = this.props
+    const isCustomFieldPath = objectPath.includes('custom_fields')
+    const fields = config.get('fields', fromJS([])) as List<any>
+    const field = fields.find(
+        (field: Map<any, any>) =>
+            objectPath ===
+                `${config.get('singular') as string}.${fieldPath(field)}` ||
+            (isCustomFieldPath && fieldPath(field) === 'custom_fields')
+    )
 
-        const [left, right] = node.arguments as Expression[]
+    const {customField, onCustomFieldChange} = useCustomFieldsFilters({
+        objectPath,
+        index,
+        schemas,
+    })
 
-        const operator = node.callee as Identifier
+    const operators = useMemo(
+        () =>
+            isCustomFieldPath
+                ? getCustomFieldOperators(schemas, customField)
+                : getOperators(objectPath),
+        [customField, getOperators, isCustomFieldPath, objectPath, schemas]
+    )
 
-        const objectPath = resolveObjectPath(left)
-
-        const fields = config.get('fields', fromJS([])) as List<any>
-        const field = fields.find(
-            (field: Map<any, any>) =>
-                objectPath ===
-                `${config.get('singular') as string}.${fieldPath(field)}`
-        )
-
-        const operators = this._getOperators(objectPath)
-
-        return (
-            <div className="CallExpression">
-                {index > 0 && (
-                    <OperatorLabel
-                        operator={
-                            parentNode.operator as Exclude<
-                                LogicalOperator,
-                                '??'
-                            >
-                        }
-                    />
-                )}
-                <Left objectPath={objectPath} view={view} />
-                <Operator
-                    operators={operators}
-                    selected={operator.name}
-                    index={index}
-                    onChange={updateOperator}
+    return (
+        <div className="CallExpression">
+            {index > 0 && (
+                <OperatorLabel
+                    operator={
+                        parentNode.operator as Exclude<LogicalOperator, '??'>
+                    }
                 />
-                <Right
-                    operator={operator}
-                    node={right}
-                    objectPath={objectPath}
-                    agents={agents}
-                    teams={teams}
-                    updateFieldFilter={this.props.updateFieldFilter}
-                    index={index}
-                    config={config}
-                    field={field}
-                    empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
-                />
-                {!field && (
-                    <Badge type={ColorType.Error}>System condition</Badge>
-                )}
-                <RemoveCallExpression onClick={removeCondition} index={index} />
-            </div>
-        )
-    }
+            )}
+            <Left
+                objectPath={objectPath}
+                view={view}
+                onCustomFieldChange={onCustomFieldChange}
+            />
+            <Operator
+                operators={operators}
+                selected={operator.name}
+                index={index}
+                onChange={updateOperator}
+            />
+            <Right
+                operator={operator}
+                node={right}
+                objectPath={objectPath}
+                agents={agents}
+                teams={teams}
+                updateFieldFilter={updateFieldFilter}
+                index={index}
+                config={config}
+                field={field}
+                empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
+            />
+            {!field && <Badge type={ColorType.Error}>System condition</Badge>}
+            <RemoveCallExpression onClick={removeCondition} index={index} />
+        </div>
+    )
 }
 
 const connector = connect((state: RootState) => {

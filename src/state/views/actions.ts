@@ -123,7 +123,7 @@ export const removeFieldFilter = (index: number) => ({
 // update a filter value
 export const updateFieldFilter = (
     index: number,
-    value: string | number | boolean | Array<any>
+    value: string | number | boolean | Array<any> | undefined
 ) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,

@@ -1,20 +1,22 @@
-import {fireEvent, render} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {view as viewFixture} from '../../../../../../fixtures/views'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     removeFieldFilter,
     updateFieldFilter,
     updateFieldFilterOperator,
-} from '../../../../../../state/views/actions'
+} from 'state/views/actions'
+
+import {view as viewFixture} from '../../../../../../fixtures/views'
+import {CallExpression} from '../CallExpression'
 import ViewFilters from '../ViewFilters'
 
-jest.mock('../../../../../../state/views/actions')
+jest.mock('state/views/actions')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -54,54 +56,126 @@ const defaultState: Partial<RootState> = {
     }),
 }
 
-;(
-    removeFieldFilter as jest.MockedFunction<
-        typeof removeFieldFilter
-    > as jest.SpyInstance
-).mockImplementation(() => () => ({}))
-;(
-    updateFieldFilter as jest.MockedFunction<
-        typeof updateFieldFilter
-    > as jest.SpyInstance
-).mockImplementation(() => () => ({}))
-;(
-    updateFieldFilterOperator as jest.MockedFunction<
-        typeof updateFieldFilterOperator
-    > as jest.SpyInstance
-).mockImplementation(() => () => ({}))
+;(removeFieldFilter as jest.Mock).mockImplementation(() => () => ({}))
+;(updateFieldFilter as jest.Mock).mockImplementation(() => () => ({}))
+;(updateFieldFilterOperator as jest.Mock).mockImplementation(() => () => ({}))
+
+jest.mock(
+    '../CallExpression',
+    () => (props: ComponentProps<typeof CallExpression>) => {
+        const {removeCondition, updateOperator, updateFieldFilter} = props
+
+        removeCondition(0)
+        updateOperator(0, 'eq')
+        updateFieldFilter(0, 'foo')
+
+        return <div>CallExpression</div>
+    }
+)
 
 describe('<ViewFilters />', () => {
-    it('should update active view on remove field', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
+    it('should return null if schemas are empty', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    schemas: fromJS({}),
+                })}
+            >
                 <ViewFilters />
             </Provider>
         )
-        fireEvent.click(getByText('clear'))
-        expect(removeFieldFilter).toHaveBeenLastCalledWith(0)
+        expect(container).toBeEmptyDOMElement()
     })
 
-    it('should update active view on update field', () => {
+    it('should return no filters if none are selected', () => {
         const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: fromJS({
+                        active: {...viewFixture, filters_ast: null},
+                    }),
+                })}
+            >
                 <ViewFilters />
             </Provider>
         )
-        fireEvent.click(getByText('closed'))
-        fireEvent.click(getByText('open'))
-        expect(updateFieldFilter).toHaveBeenLastCalledWith(0, 'open')
+        expect(getByText('No filters selected')).toBeInTheDocument()
     })
 
-    it('should update active view on update field operator', () => {
+    it('should throw if expression node is not CallExpression or LogicalExpression', () => {
+        expect(() =>
+            render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        views: fromJS({
+                            active: {
+                                ...viewFixture,
+                                filters_ast: {
+                                    body: [{expression: {type: 'Expression'}}],
+                                },
+                            },
+                        }),
+                    })}
+                >
+                    <ViewFilters />
+                </Provider>
+            )
+        ).toThrow('Unknown type: Expression')
+    })
+
+    it('should render CallExpression', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <ViewFilters />
             </Provider>
         )
-        fireEvent.change(container.querySelector('select')!, {
-            target: {value: 'neq'},
-        })
+        expect(container).toHaveTextContent('CallExpression')
+    })
 
-        expect(updateFieldFilterOperator).toHaveBeenLastCalledWith(0, 'neq')
+    it('should walk through LogicalExpression', () => {
+        const {getAllByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: fromJS({
+                        active: {
+                            ...viewFixture,
+                            filters_ast: {
+                                body: [
+                                    {
+                                        expression: {
+                                            type: 'LogicalExpression',
+                                            left: {type: 'CallExpression'},
+                                            right: {type: 'CallExpression'},
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    }),
+                })}
+            >
+                <ViewFilters />
+            </Provider>
+        )
+
+        expect(getAllByText('CallExpression')).toHaveLength(2)
+    })
+
+    // this test is not ideal, as it just satisfies code coverage
+    // in reality, the prop drilling should be refactored
+    it('should pass dispatched actions to CallExpression', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <ViewFilters />
+            </Provider>
+        )
+
+        expect(removeFieldFilter).toHaveBeenCalled()
+        expect(updateFieldFilter).toHaveBeenCalled()
+        expect(updateFieldFilterOperator).toHaveBeenCalled()
     })
 })

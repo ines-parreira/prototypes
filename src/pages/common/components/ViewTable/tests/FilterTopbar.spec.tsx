@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {view as viewFixture} from 'fixtures/views'
 import {JobType} from 'models/job/types'
@@ -118,6 +119,12 @@ jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
 const globalDataNow = jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
+    useCustomFieldDefinitions: jest.fn(),
+}))
+
+const mockUseCustomFieldDefinitions = useCustomFieldDefinitions as jest.Mock
+
 beforeEach(() => {
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
@@ -128,6 +135,7 @@ beforeEach(() => {
     createJobMock.mockImplementation(() => () => Promise.resolve())
 
     mockUseSplitTicketViewMock.mockReturnValue({isEnabled: false})
+    mockUseCustomFieldDefinitions.mockReturnValue({})
 })
 
 afterEach(() => {

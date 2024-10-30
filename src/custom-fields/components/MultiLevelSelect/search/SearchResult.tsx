@@ -16,7 +16,7 @@ export function SearchResult({
     label: string
     path: string
     value: CustomFieldValue
-    currentValue?: CustomFieldValue
+    currentValue?: CustomFieldValue | CustomFieldValue[]
     currentSearch?: string
 }) {
     return (
@@ -33,7 +33,9 @@ export function SearchResult({
                     </small>
                 )}
             </span>
-            {value === currentValue && <CheckIcon />}
+            {(Array.isArray(currentValue)
+                ? currentValue.includes(value)
+                : value === currentValue) && <CheckIcon />}
         </>
     )
 }

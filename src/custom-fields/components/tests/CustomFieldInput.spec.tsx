@@ -130,7 +130,7 @@ describe('CustomFieldInput', () => {
             )
         })
 
-        it('should cast input and ouput value into a number', () => {
+        it('should cast input and output value into a number', () => {
             render(
                 <CustomFieldInput
                     {...defaultProps}
@@ -161,7 +161,7 @@ describe('CustomFieldInput', () => {
                 <CustomFieldInput
                     {...defaultProps}
                     field={ticketDropdownFieldDefinition}
-                    prediction={prediction}
+                    dropdownAdditionalProps={{prediction}}
                 />
             )
 
@@ -177,7 +177,35 @@ describe('CustomFieldInput', () => {
                             .choices,
                     prediction,
                     onBlur: undefined,
+                    allowMultiValues: undefined,
+                    customDisplayValue: undefined,
                 },
+                expect.any(Object)
+            )
+        })
+
+        it('should pass specific props to MultiLevelSelect component', () => {
+            const mockPrediction = {predicted: 'foo'} as CustomFieldPrediction
+            render(
+                <CustomFieldInput
+                    {...defaultProps}
+                    field={ticketDropdownFieldDefinition}
+                    value={['value1', 'value2']}
+                    dropdownAdditionalProps={{
+                        allowMultiValues: true,
+                        prediction: mockPrediction,
+                        customDisplayValue: jest.fn(),
+                    }}
+                />
+            )
+
+            expect(MultiLevelSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    value: ['value1', 'value2'],
+                    allowMultiValues: true,
+                    prediction: mockPrediction,
+                    customDisplayValue: expect.any(Function),
+                }),
                 expect.any(Object)
             )
         })

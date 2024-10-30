@@ -3,13 +3,12 @@ import {CustomFieldValue} from 'custom-fields/types'
 import isMultiValueEmpty from '../isMultiValueEmpty'
 
 describe('isMultiValueEmpty', () => {
-    it('should return true for a non-array', () => {
-        const values: unknown = 'test'
-        expect(isMultiValueEmpty(values)).toBe(true)
+    it('should return true for undefined', () => {
+        expect(isMultiValueEmpty(undefined)).toBe(true)
     })
 
     it('should return true for an empty array', () => {
-        const values: unknown = []
+        const values: CustomFieldValue[] = []
         expect(isMultiValueEmpty(values)).toBe(true)
     })
 

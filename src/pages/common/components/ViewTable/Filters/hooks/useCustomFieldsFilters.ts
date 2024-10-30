@@ -16,6 +16,7 @@ type Props = {
     index: number
     schemas: Schemas
 }
+
 export default function useCustomFieldsFilters({
     objectPath,
     index,
@@ -27,7 +28,12 @@ export default function useCustomFieldsFilters({
         () => getCustomFieldIdFromObjectPath(objectPath),
         [objectPath]
     )
-    const {data: customField} = useCustomFieldDefinition(customFieldId || 0)
+
+    // @ts-ignore - customFieldId can be null - but the query is disabled in that case
+    const {data: customField} = useCustomFieldDefinition(customFieldId, {
+        enabled: typeof customFieldId === 'number',
+    })
+
     const customFields = useCustomFieldDefinitions({
         archived: false,
         object_type: 'Ticket',

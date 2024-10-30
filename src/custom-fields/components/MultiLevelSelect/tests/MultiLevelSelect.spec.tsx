@@ -112,6 +112,62 @@ describe('<MultiLevelSelect />', () => {
         expect(screen.getByText('placeholder')).toBeVisible()
     })
 
+    it('should render custom display value', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                customDisplayValue={() => 'custom display value'}
+            />
+        )
+        expect(screen.getByRole('textbox')).toHaveValue('custom display value')
+    })
+
+    it('should render multiple values correctly', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                allowMultiValues
+                value={['s1::ss2::c1', 's1::ss2::c2']}
+            />
+        )
+
+        expect(screen.getByRole('textbox')).toHaveValue(
+            's1::ss2::c1,s1::ss2::c2'
+        )
+    })
+
+    it('should call onChange with correct params and when multiple values are selected', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                allowMultiValues
+                value={['s1::ss2::c2']}
+            />
+        )
+
+        userEvent.click(screen.getByRole('textbox'))
+        userEvent.click(screen.getByText('s2'))
+        expect(initialProps.onChange).toHaveBeenCalledWith([
+            's2',
+            's1::ss2::c2',
+        ])
+    })
+
+    it('should exclude a value when reselected in multiple mode', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                allowMultiValues
+                value={['s2']}
+            />
+        )
+
+        userEvent.click(screen.getByRole('textbox'))
+        userEvent.click(screen.getByText('s2'))
+
+        expect(initialProps.onChange).toHaveBeenCalledWith([])
+    })
+
     describe('Empty helper', () => {
         it('should display an empty helper when they are no choices', async () => {
             render(<MultiLevelSelect {...initialProps} choices={[]} />)

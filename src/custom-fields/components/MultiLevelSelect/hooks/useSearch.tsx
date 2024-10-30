@@ -16,7 +16,7 @@ export function useSearch({
     isDisabled,
 }: {
     choices: ChoicesTree
-    dropdownValue: CustomFieldValue | undefined
+    dropdownValue: CustomFieldValue | CustomFieldValue[] | undefined
     isDisabled: boolean
 }) {
     const [search, setSearch] = useState('')
@@ -38,8 +38,10 @@ export function useSearch({
         search,
         setSearch,
         searchResults,
-        valueIsInSearchResults: searchResults.some(
-            ({value}) => value === dropdownValue
+        valueIsInSearchResults: searchResults.some(({value}) =>
+            Array.isArray(dropdownValue)
+                ? dropdownValue.includes(value)
+                : value === dropdownValue
         ),
     }
 }

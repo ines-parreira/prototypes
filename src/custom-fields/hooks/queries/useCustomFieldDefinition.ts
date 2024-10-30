@@ -6,9 +6,13 @@ import {NotificationStatus} from 'state/notifications/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
-export const useCustomFieldDefinition = (id: number) => {
+export const useCustomFieldDefinition = (
+    id: number,
+    overrides?: Parameters<typeof useGetCustomFieldDefinition>[1]
+) => {
     const dispatch = useAppDispatch()
     return useGetCustomFieldDefinition<CustomField>(id, {
+        ...overrides,
         staleTime: STALE_TIME_MS,
         select: (data) => data.data,
         refetchOnWindowFocus: false,

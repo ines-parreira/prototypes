@@ -1,11 +1,12 @@
 import {Tooltip} from '@gorgias/ui-kit'
-import React, {ComponentProps, useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import {isOutdatedValue} from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
+import {MultiLevelSelectProps} from 'custom-fields/components/MultiLevelSelect/MultiLevelSelect'
 import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import {CustomFieldState, CustomFieldValue} from 'custom-fields/types'
@@ -20,16 +21,9 @@ import {getTicket} from 'state/ticket/selectors'
 
 import css from './DropdownField.less'
 
-type Props = Omit<
-    ComponentProps<typeof MultiLevelSelect>,
-    | 'onChange'
-    | 'onFocus'
-    | 'value'
-    | 'prediction'
-    | 'hasError'
-    | 'inputId'
-    | 'labelRef'
-    | 'isDisabled'
+type Props = Pick<
+    MultiLevelSelectProps,
+    'id' | 'label' | 'choices' | 'isDisabled'
 > & {
     fieldState?: CustomFieldState
     isRequired?: boolean

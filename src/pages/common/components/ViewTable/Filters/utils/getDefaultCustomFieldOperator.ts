@@ -1,7 +1,7 @@
 import {CustomField} from 'custom-fields/types'
 import {Schemas} from 'types'
 
-import {getCustomFieldOperators} from './'
+import getCustomFieldOperators from './getCustomFieldOperators'
 
 export default function getDefaultCustomFieldOperator(
     schemas: Schemas,

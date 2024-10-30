@@ -7,25 +7,28 @@ import {
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import {
-    CustomField,
-    CustomFieldPrediction,
-    CustomFieldValue,
-} from 'custom-fields/types'
+import {CustomField, CustomFieldValue} from 'custom-fields/types'
 
+import {MultiLevelSelectProps} from './MultiLevelSelect/MultiLevelSelect'
 import StealthInput from './StealthInput'
 
-type Props = {
+export type CustomFieldInputProps = {
     id: string
     field: CustomField
-    value?: CustomFieldValue
+    value?: CustomFieldValue | CustomFieldValue[]
     hasError?: boolean
     isDisabled?: boolean
-    onChange: (nextValue: CustomFieldValue | undefined) => void
+    onChange: (
+        nextValue: CustomFieldValue | CustomFieldValue[] | undefined
+    ) => void
     onFocus?: () => void
     onBlur?: () => void
     placeholder?: string
-    prediction?: CustomFieldPrediction
+    dropdownAdditionalProps?: Pick<
+        MultiLevelSelectProps<boolean | undefined>,
+        'prediction' | 'allowMultiValues' | 'customDisplayValue'
+    >
+    className?: string
 }
 
 export default function CustomFieldInput({
@@ -38,8 +41,9 @@ export default function CustomFieldInput({
     onBlur,
     id,
     placeholder,
-    prediction,
-}: Props) {
+    dropdownAdditionalProps,
+    className,
+}: CustomFieldInputProps) {
     if (isTextInput(field)) {
         return (
             <StealthInput
@@ -55,6 +59,7 @@ export default function CustomFieldInput({
                 placeholder={
                     field.definition.input_settings.placeholder || placeholder
                 }
+                className={className}
             />
         )
     }
@@ -67,7 +72,7 @@ export default function CustomFieldInput({
                 type="number"
                 min={field.definition.input_settings.min}
                 max={field.definition.input_settings.max}
-                value={getNumberOrUndefined(value)}
+                value={getNumberOrUndefined(value as CustomFieldValue)}
                 onChange={(nextValue) =>
                     onChange(getNumberOrUndefined(nextValue))
                 }
@@ -76,25 +81,32 @@ export default function CustomFieldInput({
                 onFocus={onFocus}
                 onBlur={onBlur}
                 placeholder={placeholder}
+                className={className}
             />
         )
     }
 
     if (isDropdownInput(field)) {
         return (
-            <MultiLevelSelect
-                id={field.id}
-                label={field.label}
-                inputId={id}
-                prediction={prediction}
-                value={value}
-                onChange={onChange}
-                hasError={hasError}
-                onFocus={onFocus}
-                placeholder={placeholder}
-                choices={field.definition.input_settings.choices}
-                isDisabled={isDisabled}
-            />
+            <div className={className}>
+                <MultiLevelSelect
+                    id={field.id}
+                    label={field.label}
+                    inputId={id}
+                    hasError={hasError}
+                    onFocus={onFocus}
+                    placeholder={placeholder}
+                    choices={field.definition.input_settings.choices}
+                    isDisabled={isDisabled}
+                    onChange={onChange}
+                    allowMultiValues={dropdownAdditionalProps?.allowMultiValues}
+                    value={value}
+                    customDisplayValue={
+                        dropdownAdditionalProps?.customDisplayValue
+                    }
+                    prediction={dropdownAdditionalProps?.prediction}
+                />
+            </div>
         )
     }
 

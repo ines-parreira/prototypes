@@ -29,6 +29,18 @@ describe('SearchResult', () => {
         expect(screen.getByText('check'))
     })
 
+    it('should render with a check icon when value is included in currentValue', () => {
+        render(
+            <SearchResult
+                label="foo"
+                path="bar"
+                value="foo"
+                currentValue={['foo']}
+            />
+        )
+        expect(screen.getByText('check'))
+    })
+
     it('should render with a highlighted label or path when currentSearch is equal to label or path', () => {
         const {container} = render(
             <SearchResult

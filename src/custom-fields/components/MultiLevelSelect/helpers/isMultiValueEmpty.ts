@@ -2,8 +2,8 @@ import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueE
 import {CustomFieldValue} from 'custom-fields/types'
 
 export default function isMultiValueEmpty(
-    values: unknown
-): values is CustomFieldValue[] {
+    values: Array<CustomFieldValue> | undefined
+) {
     return (
         !Array.isArray(values) ||
         values.length === 0 ||

@@ -4,7 +4,7 @@ import {OperatorType} from 'pages/common/components/ViewTable/Filters/types'
 import {Schemas} from 'types'
 import {findProperty} from 'utils'
 
-import {getFieldSchemaDefinitionKey} from './'
+import getFieldSchemaDefinitionKey from './getFieldSchemaDefinitionKey'
 
 export default function getCustomFieldOperators(
     schemas: Schemas,

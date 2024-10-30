@@ -28,7 +28,7 @@ export default function ViewFilters() {
     const teams = useAppSelector(getTeams)
     const view = useAppSelector(getActiveView)
 
-    if (!view || !schemas || schemas.isEmpty()) {
+    if (schemas.isEmpty()) {
         return null
     }
 

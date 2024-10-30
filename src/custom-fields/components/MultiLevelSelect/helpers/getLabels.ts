@@ -4,8 +4,8 @@ import {CustomFieldValue} from 'custom-fields/types'
 
 import {DROPDOWN_NESTING_FANCY_DELIMITER} from '../constants'
 
-export function getLabel(choice?: CustomFieldValue) {
-    if (isCustomFieldValueEmpty(choice)) return ''
+export function getLabel(choice?: CustomFieldValue | CustomFieldValue[]) {
+    if (!Array.isArray(choice) && isCustomFieldValueEmpty(choice)) return ''
     if (typeof choice === 'boolean') {
         return choice ? 'Yes' : 'No'
     }
@@ -25,12 +25,4 @@ export function getStealthLabel(choice?: CustomFieldValue) {
             : choice
 
     return getLabel(_choice)
-}
-
-export function getMultiLabel(choices?: CustomFieldValue[]) {
-    return choices?.length
-        ? choices.length >= 2
-            ? `${choices.length} fields selected`
-            : choices.map(getStealthLabel).join(', ')
-        : ''
 }

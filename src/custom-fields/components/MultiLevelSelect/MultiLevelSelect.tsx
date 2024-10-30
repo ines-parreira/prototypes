@@ -1,5 +1,6 @@
 import {Tooltip} from '@gorgias/ui-kit'
 import classNames from 'classnames'
+import _xor from 'lodash/xor'
 import React, {RefObject, useCallback, useMemo, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 
@@ -28,6 +29,7 @@ import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
 import {getCurrentPathFromFullValue} from './helpers/getCurrentPathFromFullValue'
 import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
 import {getLabel, getStealthLabel} from './helpers/getLabels'
+import isMultiValueEmpty from './helpers/isMultiValueEmpty'
 import {isOutdatedValue} from './helpers/isOutdatedValue'
 import {useA11yDropdown} from './hooks/useA11yDropdown'
 import {useActiveState} from './hooks/useActiveState'
@@ -37,23 +39,43 @@ import css from './MultiLevelSelect.less'
 import {SearchInput} from './search/SearchInput'
 import {SearchResult} from './search/SearchResult'
 
-type Props = {
+function isMultiValueAllowed<T extends boolean | undefined>(
+    allowMultiValues: T,
+    __value: CustomFieldValue | CustomFieldValue[] | undefined
+): __value is CustomFieldValue[] {
+    return allowMultiValues === true
+}
+
+type InferCustomFieldValueType<AllowMultiValues extends boolean | undefined> =
+    AllowMultiValues extends true ? CustomFieldValue[] : CustomFieldValue
+
+export type MultiLevelSelectProps<
+    AllowMultiValues extends boolean | undefined = false,
+> = {
     id: CustomFieldState['id']
     label: string
-    value?: CustomFieldValue
     placeholder?: string
     hasError?: boolean
-    prediction?: CustomFieldPrediction
     choices: CustomFieldValue[]
     showFullValue?: boolean
     autoWidth?: boolean
     inputId: string
-    onChange: (value: CustomFieldValue) => void
     onFocus?: () => void
     isDisabled?: boolean
+    allowMultiValues?: AllowMultiValues
+    value?: InferCustomFieldValueType<AllowMultiValues> | undefined
+    prediction?: CustomFieldPrediction
+    onChange: (
+        value: InferCustomFieldValueType<AllowMultiValues> | undefined
+    ) => void
+    customDisplayValue?: (
+        value: InferCustomFieldValueType<AllowMultiValues> | undefined
+    ) => string
 }
 
-export default function MultiLevelSelect({
+export default function MultiLevelSelect<
+    AllowMultiValues extends boolean | undefined = false,
+>({
     id,
     label,
     value,
@@ -62,26 +84,35 @@ export default function MultiLevelSelect({
     prediction,
     choices,
     showFullValue = false,
+    customDisplayValue,
     autoWidth = false,
     inputId,
     onChange,
     onFocus,
     isDisabled = false,
-}: Props) {
+    allowMultiValues = false,
+}: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
     const [inputRef, inputDimensions] = useDimensions()
 
-    const isValueEmpty = isCustomFieldValueEmpty(value)
-    const displayValue = showFullValue
-        ? getLabel(value)
-        : getStealthLabel(value)
+    const isValueEmpty = isMultiValueAllowed(allowMultiValues, value)
+        ? isMultiValueEmpty(value)
+        : isCustomFieldValueEmpty(value)
+
+    const displayValue = customDisplayValue
+        ? customDisplayValue(value)
+        : showFullValue || isMultiValueAllowed(allowMultiValues, value)
+          ? getLabel(value)
+          : getStealthLabel(value)
 
     const [previousValue, setPreviousValue] =
         useState<Maybe<CustomFieldValue>>(null)
 
     const [currentPath, setCurrentPath] = useState<string[]>(
-        getCurrentPathFromFullValue(value)
+        isMultiValueAllowed(allowMultiValues, value)
+            ? []
+            : getCurrentPathFromFullValue(value)
     )
 
     const choicesTree = useMemo(() => buildTreeOfChoices(choices), [choices])
@@ -130,9 +161,20 @@ export default function MultiLevelSelect({
     const handleChange = useCallback(
         (newValue: CustomFieldValue) => {
             setActive(false)
-            onChange(newValue)
+            isMultiValueAllowed(allowMultiValues, value)
+                ? onChange(
+                      (!newValue
+                          ? []
+                          : _xor(
+                                [newValue],
+                                value
+                            )) as unknown as InferCustomFieldValueType<AllowMultiValues>
+                  )
+                : onChange(
+                      newValue as unknown as InferCustomFieldValueType<AllowMultiValues>
+                  )
         },
-        [setActive, onChange]
+        [setActive, allowMultiValues, value, onChange]
     )
 
     const handleFocus = useCallback(() => {
@@ -143,7 +185,10 @@ export default function MultiLevelSelect({
     }, [isActive, setActive, onFocus])
 
     // Update the currentPath to match the value
-    if (value !== previousValue) {
+    if (
+        !isMultiValueAllowed(allowMultiValues, value) &&
+        value !== previousValue
+    ) {
         setPreviousValue(value)
         if (isOutdatedValue(value, choices)) {
             setCurrentPath([])
@@ -159,7 +204,7 @@ export default function MultiLevelSelect({
             (prediction.confirmed === false && prediction.modified === false))
 
     const {iconLeft, hiddenRef} = usePredictionIconPositionAdjuster({
-        value,
+        value: isMultiValueAllowed(allowMultiValues, value) ? undefined : value,
         inputDimensions,
         shouldShowIcon: isPredictionCorrect,
     })
@@ -271,14 +316,14 @@ export default function MultiLevelSelect({
                         </>
                     ) : (
                         <>
-                            {Object.keys(currentBranch).map((key) => {
-                                const label = getLabel(key)
+                            {Object.keys(currentBranch).map((choice) => {
+                                const label = getLabel(choice)
                                 return (
                                     <DropdownItem
-                                        key={key}
+                                        key={choice}
                                         tag="button"
-                                        onClick={() => goNext(key)}
-                                        option={{label, value: key}}
+                                        onClick={() => goNext(choice)}
+                                        option={{label, value: choice}}
                                     >
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
@@ -326,7 +371,14 @@ export default function MultiLevelSelect({
                                                 {label}
                                             </span>
                                         </span>
-                                        {fullValue === value && <CheckIcon />}
+                                        {(isMultiValueAllowed(
+                                            allowMultiValues,
+                                            value
+                                        )
+                                            ? value?.includes(fullValue)
+                                            : fullValue === value) && (
+                                            <CheckIcon />
+                                        )}
                                     </DropdownItem>
                                 )
                             })}

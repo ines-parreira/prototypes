@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'
 import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import {isMultiValue} from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import {OBJECT_TYPES} from 'custom-fields/constants'
 import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
 import {
@@ -50,9 +51,13 @@ export default function CustomerField({
         ])
     }
 
-    const handleChange = (newValue: CustomFieldValue | undefined) => {
+    const handleChange = (
+        newValue: CustomFieldValue | CustomFieldValue[] | undefined
+    ) => {
+        if (isMultiValue(newValue)) return
         if (isDropdownInputField) {
             setCurrentValue(newValue)
+
             return mutate(newValue)
         }
         if (isNumberInput(field)) {
