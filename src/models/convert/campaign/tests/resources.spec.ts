@@ -102,7 +102,7 @@ describe('Campaign resources', () => {
             } as unknown as RevenueAddonClient
 
             const res = await resources.suggestCampaignCopy(client, {
-                shop_name: 'best-shop',
+                store_domain: 'best-shop.gorgias.com',
                 title: campaign.name,
                 language: campaign.language || undefined,
                 message: campaign.message_text,

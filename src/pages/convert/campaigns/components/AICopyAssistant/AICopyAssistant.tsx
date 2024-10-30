@@ -6,6 +6,7 @@ import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Button from 'pages/common/components/button/Button'
 import {VerticalTextCarousel} from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
 import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
@@ -18,7 +19,7 @@ const SUCCESS_MESSAGE =
 type Props = {
     campaign: Campaign
     triggers: CampaignTrigger[]
-    shopName: string
+    shopDomain: string
     isEnabled: boolean
     shouldGenerateInitialSuggestion: boolean
     onApply: (suggestion: string) => void
@@ -27,7 +28,7 @@ type Props = {
 export const AICopyAssistant = ({
     campaign,
     triggers,
-    shopName,
+    shopDomain,
     isEnabled = false,
     shouldGenerateInitialSuggestion = false,
     onApply,
@@ -43,12 +44,17 @@ export const AICopyAssistant = ({
     const onRegenerateClick = useCallback(async () => {
         setIsRegenerating(true)
         setHasError(false)
+
+        const title =
+            campaign.name.toLowerCase() === DEFAULT_CAMPAIGN_NAME.toLowerCase()
+                ? ''
+                : campaign.name
         try {
             const response = await generateSuggestions([
                 undefined,
                 {
-                    shop_name: shopName,
-                    title: campaign.name,
+                    store_domain: shopDomain,
+                    title: title,
                     language: campaign.language || undefined,
                     message: campaign.message_text,
                     triggers: triggers,
@@ -67,7 +73,7 @@ export const AICopyAssistant = ({
         campaign.message_text,
         campaign.name,
         generateSuggestions,
-        shopName,
+        shopDomain,
         triggers,
     ])
 

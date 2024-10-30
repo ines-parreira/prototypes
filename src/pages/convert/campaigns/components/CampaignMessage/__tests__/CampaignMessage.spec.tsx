@@ -9,6 +9,7 @@ import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
+import {campaign} from 'fixtures/campaign'
 import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
 import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import {ShopifyIntegration} from 'models/integration/types'
@@ -95,7 +96,7 @@ describe('<CampaignMessage>', () => {
             <Provider store={mockStore({...defaultState, ...storeState})}>
                 <CampaignDetailsFormContext.Provider
                     value={{
-                        campaign: {} as Campaign,
+                        campaign: campaign as Campaign,
                         triggers: {},
                         addTrigger: jest.fn(),
                         updateTrigger: jest.fn(),
@@ -192,7 +193,7 @@ describe('<CampaignMessage>', () => {
             ).mockImplementation(() => ({
                 shopifyIntegration: {
                     id: 1,
-                    meta: {shop_name: 'shop-name'},
+                    meta: {shop_domain: 'shop-domain.com'},
                 } as any as ShopifyIntegration,
             }))
         })

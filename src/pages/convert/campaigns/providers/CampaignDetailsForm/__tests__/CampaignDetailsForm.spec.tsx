@@ -114,7 +114,7 @@ const shopifyChatIntegration: Map<any, any> = fromJS({
 const shopifyIntegration = fromJS({
     type: 'shopify',
     id: '1',
-    meta: {shop_name: 'shop-name'},
+    meta: {shop_domain: 'shop-domain.com'},
 })
 
 const campaign = fromJS(campaignFixture)

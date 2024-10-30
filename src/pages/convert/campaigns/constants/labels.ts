@@ -18,3 +18,5 @@ export const DURATION_VALUES = [
         label: 'Custom hours',
     },
 ]
+
+export const DEFAULT_CAMPAIGN_NAME = 'Untitled campaign'

@@ -1,7 +1,7 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "Revenue Addon API",
+        "title": "Convert API",
         "description": "It's mission is to increase merchants revenue",
         "version": "0.1.0"
     },
@@ -2148,6 +2148,60 @@
                 }
             }
         },
+        "/shoppers/lookup": {
+            "get": {
+                "tags": ["shoppers"],
+                "summary": "Lookup",
+                "operationId": "shopper_lookup",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "store_integration_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "Helpdesk store integration ID",
+                            "title": "Store Integration Id"
+                        },
+                        "description": "Helpdesk store integration ID"
+                    },
+                    {
+                        "name": "marketing_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Marketing ID of the shopper (revenue_id)",
+                            "title": "Marketing Id"
+                        },
+                        "description": "Marketing ID of the shopper (revenue_id)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShopperLookupResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/billing/subscriptions/account-status": {
             "get": {
                 "tags": ["subscriptions"],
@@ -2561,6 +2615,10 @@
                         "anyOf": [{"type": "number"}, {"type": "null"}],
                         "title": "Price"
                     },
+                    "compare_at_price": {
+                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "title": "Compare At Price"
+                    },
                     "currency": {
                         "anyOf": [{"type": "string"}, {"type": "null"}],
                         "title": "Currency"
@@ -2609,7 +2667,7 @@
                 "required": ["id", "scenario"],
                 "title": "CampaignAttachmentProductRecommendationExtraSchema"
             },
-            "CampaignAttachmentProductRecommendationSchema-Input": {
+            "CampaignAttachmentProductRecommendationSchema": {
                 "properties": {
                     "contentType": {
                         "type": "string",
@@ -2626,24 +2684,7 @@
                 "required": ["contentType", "name", "extra"],
                 "title": "CampaignAttachmentProductRecommendationSchema"
             },
-            "CampaignAttachmentProductRecommendationSchema-Output": {
-                "properties": {
-                    "contentType": {
-                        "type": "string",
-                        "enum": ["application/productRecommendation"],
-                        "const": "application/productRecommendation",
-                        "title": "Contenttype"
-                    },
-                    "name": {"type": "string", "title": "Name"},
-                    "extra": {
-                        "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationExtraSchema"
-                    }
-                },
-                "type": "object",
-                "required": ["contentType", "name", "extra"],
-                "title": "CampaignAttachmentProductRecommendationSchema"
-            },
-            "CampaignAttachmentProductSchema-Input": {
+            "CampaignAttachmentProductSchema": {
                 "properties": {
                     "contentType": {
                         "type": "string",
@@ -2673,41 +2714,11 @@
                 "required": ["contentType", "name"],
                 "title": "CampaignAttachmentProductSchema"
             },
-            "CampaignAttachmentProductSchema-Output": {
-                "properties": {
-                    "contentType": {
-                        "type": "string",
-                        "enum": ["application/productCard"],
-                        "const": "application/productCard",
-                        "title": "Contenttype"
-                    },
-                    "name": {"type": "string", "title": "Name"},
-                    "url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Url"
-                    },
-                    "size": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "Size"
-                    },
-                    "extra": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/CampaignAttachmentProductExtraSchema"
-                            },
-                            {"type": "null"}
-                        ]
-                    }
-                },
-                "type": "object",
-                "required": ["contentType", "name"],
-                "title": "CampaignAttachmentProductSchema"
-            },
-            "CampaignAttachmentVisitorFormExtraSchema-Input": {
+            "CampaignAttachmentVisitorFormExtraSchema": {
                 "properties": {
                     "steps": {
                         "items": {
-                            "$ref": "#/components/schemas/VisitorFormStepSchema-Input"
+                            "$ref": "#/components/schemas/VisitorFormStepSchema"
                         },
                         "type": "array",
                         "title": "Steps"
@@ -2732,36 +2743,7 @@
                 "required": ["steps", "targets"],
                 "title": "CampaignAttachmentVisitorFormExtraSchema"
             },
-            "CampaignAttachmentVisitorFormExtraSchema-Output": {
-                "properties": {
-                    "steps": {
-                        "items": {
-                            "$ref": "#/components/schemas/VisitorFormStepSchema-Output"
-                        },
-                        "type": "array",
-                        "title": "Steps"
-                    },
-                    "on_success_content": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema"
-                            },
-                            {"type": "null"}
-                        ]
-                    },
-                    "targets": {
-                        "items": {
-                            "$ref": "#/components/schemas/VisitorFormTargetsSchema"
-                        },
-                        "type": "array",
-                        "title": "Targets"
-                    }
-                },
-                "type": "object",
-                "required": ["steps", "targets"],
-                "title": "CampaignAttachmentVisitorFormExtraSchema"
-            },
-            "CampaignAttachmentVisitorFormSchema-Input": {
+            "CampaignAttachmentVisitorFormSchema": {
                 "properties": {
                     "contentType": {
                         "type": "string",
@@ -2773,29 +2755,7 @@
                     "extra": {
                         "anyOf": [
                             {
-                                "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema-Input"
-                            },
-                            {"type": "null"}
-                        ]
-                    }
-                },
-                "type": "object",
-                "required": ["contentType", "name"],
-                "title": "CampaignAttachmentVisitorFormSchema"
-            },
-            "CampaignAttachmentVisitorFormSchema-Output": {
-                "properties": {
-                    "contentType": {
-                        "type": "string",
-                        "enum": ["application/visitorForm"],
-                        "const": "application/visitorForm",
-                        "title": "Contenttype"
-                    },
-                    "name": {"type": "string", "title": "Name"},
-                    "extra": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema-Output"
+                                "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema"
                             },
                             {"type": "null"}
                         ]
@@ -2807,10 +2767,10 @@
             },
             "CampaignCopySuggestionRequestSchema": {
                 "properties": {
-                    "shop_name": {
+                    "store_domain": {
                         "type": "string",
                         "maxLength": 128,
-                        "title": "Shop Name"
+                        "title": "Store Domain"
                     },
                     "title": {
                         "anyOf": [
@@ -2845,7 +2805,7 @@
                     }
                 },
                 "type": "object",
-                "required": ["shop_name"],
+                "required": ["store_domain"],
                 "title": "CampaignCopySuggestionRequestSchema"
             },
             "CampaignCopySuggestionResponseSchema": {
@@ -2903,25 +2863,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -2932,8 +2892,10 @@
                         "title": "Attachments"
                     },
                     "meta": {
-                        "anyOf": [{"type": "object"}, {"type": "null"}],
-                        "title": "Meta"
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CampaignMetaSchema"},
+                            {"type": "null"}
+                        ]
                     },
                     "triggers": {
                         "items": {
@@ -2993,6 +2955,52 @@
                 ],
                 "title": "CampaignCreateRequestSchema"
             },
+            "CampaignMetaSchema": {
+                "properties": {
+                    "noReply": {
+                        "anyOf": [{"type": "boolean"}, {"type": "null"}],
+                        "title": "Noreply"
+                    },
+                    "delay": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Delay"
+                    },
+                    "agentEmail": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Agentemail"
+                    },
+                    "agentName": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Agentname"
+                    },
+                    "agentAvatarUrl": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Agentavatarurl"
+                    },
+                    "minimumTimeBetweenCampaigns": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/MinimumTimeBetweenCampaigns"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
+                    "maxCampaignDisplaysInSession": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/MaxCampaignDisplaysInSession"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
+                    "copySuggestion": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Copysuggestion"
+                    }
+                },
+                "type": "object",
+                "title": "CampaignMetaSchema"
+            },
             "CampaignPatchRequestSchema": {
                 "properties": {
                     "name": {
@@ -3050,25 +3058,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -3079,8 +3087,10 @@
                         "title": "Attachments"
                     },
                     "meta": {
-                        "anyOf": [{"type": "object"}, {"type": "null"}],
-                        "title": "Meta"
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CampaignMetaSchema"},
+                            {"type": "null"}
+                        ]
                     },
                     "publish_mode": {
                         "anyOf": [
@@ -3187,25 +3197,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -3397,25 +3407,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Input",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Input",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Input"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -3451,25 +3461,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -3498,6 +3508,48 @@
                 "type": "object",
                 "required": ["message_text", "id"],
                 "title": "CampaignVariantResponseSchema"
+            },
+            "CartItemSchema": {
+                "properties": {
+                    "product": {
+                        "$ref": "#/components/schemas/InteractedProductSchema"
+                    },
+                    "quantity": {"type": "integer", "title": "Quantity"},
+                    "total": {
+                        "anyOf": [{"type": "number"}, {"type": "integer"}],
+                        "title": "Total"
+                    },
+                    "original_total": {
+                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "title": "Original Total"
+                    }
+                },
+                "type": "object",
+                "required": ["product", "quantity", "total"],
+                "title": "CartItemSchema"
+            },
+            "CartSchema": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/CartItemSchema"
+                        },
+                        "type": "array",
+                        "title": "Items"
+                    },
+                    "currency": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Currency"
+                    },
+                    "last_updated_timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Last Updated Timestamp"
+                    }
+                },
+                "type": "object",
+                "required": ["items", "last_updated_timestamp"],
+                "title": "CartSchema"
             },
             "ChannelConnectionCreateRequestSchema": {
                 "properties": {
@@ -3822,11 +3874,19 @@
                         "title": "Prefix"
                     },
                     "value": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [
+                            {"type": "number", "minimum": 0.0},
+                            {"type": "string"},
+                            {"type": "null"}
+                        ],
                         "title": "Value"
                     },
                     "minimum_purchase_amount": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [
+                            {"type": "number", "minimum": 0.0},
+                            {"type": "string"},
+                            {"type": "null"}
+                        ],
                         "title": "Minimum Purchase Amount"
                     },
                     "external_customer_segment_ids": {
@@ -3976,7 +4036,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -3997,16 +4057,78 @@
                 "required": ["config"],
                 "title": "InstallationUpdateConfigSchema"
             },
+            "InteractedProductSchema": {
+                "properties": {
+                    "id": {"type": "integer", "title": "Id"},
+                    "variant_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Variant Id"
+                    },
+                    "title": {"type": "string", "title": "Title"},
+                    "handle": {"type": "string", "title": "Handle"}
+                },
+                "type": "object",
+                "required": ["id", "title", "handle"],
+                "title": "InteractedProductSchema"
+            },
             "JWTTokenSchema": {
                 "properties": {"token": {"type": "string", "title": "Token"}},
                 "type": "object",
                 "required": ["token"],
                 "title": "JWTTokenSchema"
             },
+            "MaxCampaignDisplaysInSession": {
+                "properties": {"value": {"type": "integer", "title": "Value"}},
+                "type": "object",
+                "required": ["value"],
+                "title": "MaxCampaignDisplaysInSession"
+            },
             "MethodEnum": {
                 "type": "string",
                 "enum": ["theme_app", "one_click", "manual"],
                 "title": "MethodEnum"
+            },
+            "MinimumTimeBetweenCampaigns": {
+                "properties": {
+                    "value": {"type": "integer", "title": "Value"},
+                    "unit": {"$ref": "#/components/schemas/TimeUnit"}
+                },
+                "type": "object",
+                "required": ["value", "unit"],
+                "title": "MinimumTimeBetweenCampaigns"
+            },
+            "PageViewSchema": {
+                "properties": {
+                    "url": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Url"
+                    },
+                    "product": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/InteractedProductSchema"
+                            },
+                            {"type": "null"}
+                        ]
+                    },
+                    "page_title": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Page Title"
+                    },
+                    "search_query": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Search Query"
+                    },
+                    "visit_count": {"type": "integer", "title": "Visit Count"},
+                    "last_visit_timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Last Visit Timestamp"
+                    }
+                },
+                "type": "object",
+                "required": ["visit_count", "last_visit_timestamp"],
+                "title": "PageViewSchema"
             },
             "ProductInfoSchema": {
                 "properties": {
@@ -4146,7 +4268,10 @@
                 "properties": {
                     "id": {"type": "integer", "title": "Id"},
                     "title": {"type": "string", "title": "Title"},
-                    "price": {"type": "string", "title": "Price"},
+                    "price": {
+                        "anyOf": [{"type": "number"}, {"type": "string"}],
+                        "title": "Price"
+                    },
                     "options": {
                         "items": {"type": "string"},
                         "type": "array",
@@ -4208,25 +4333,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -4326,25 +4451,25 @@
                                 "items": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductSchema"
                                         },
                                         {
                                             "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output"
+                                            "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationSchema"
                                         }
                                     ],
                                     "discriminator": {
                                         "propertyName": "contentType",
                                         "mapping": {
                                             "application/discountOffer": "#/components/schemas/CampaignAttachmentDiscountOfferSchema",
-                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema-Output",
-                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema-Output",
-                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema-Output"
+                                            "application/productCard": "#/components/schemas/CampaignAttachmentProductSchema",
+                                            "application/productRecommendation": "#/components/schemas/CampaignAttachmentProductRecommendationSchema",
+                                            "application/visitorForm": "#/components/schemas/CampaignAttachmentVisitorFormSchema"
                                         }
                                     }
                                 },
@@ -4359,6 +4484,28 @@
                 "type": "object",
                 "required": ["message_text", "id"],
                 "title": "PublicCampaignVariantResponseSchema"
+            },
+            "PurchasesSchema": {
+                "properties": {
+                    "products": {
+                        "items": {
+                            "$ref": "#/components/schemas/InteractedProductSchema"
+                        },
+                        "type": "array",
+                        "title": "Products"
+                    },
+                    "total_amount_spent": {
+                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "title": "Total Amount Spent"
+                    },
+                    "total_orders_count": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Total Orders Count"
+                    }
+                },
+                "type": "object",
+                "required": ["products"],
+                "title": "PurchasesSchema"
             },
             "RequestSettingSchema": {
                 "properties": {
@@ -4528,6 +4675,32 @@
                 ],
                 "title": "SettingType"
             },
+            "ShopperLookupResponse": {
+                "properties": {
+                    "page_views": {
+                        "items": {
+                            "$ref": "#/components/schemas/PageViewSchema"
+                        },
+                        "type": "array",
+                        "title": "Page Views"
+                    },
+                    "cart": {
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/CartSchema"},
+                            {"type": "null"}
+                        ]
+                    },
+                    "purchases": {
+                        "anyOf": [
+                            {"$ref": "#/components/schemas/PurchasesSchema"},
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": ["page_views"],
+                "title": "ShopperLookupResponse"
+            },
             "StatusEnum": {
                 "type": "string",
                 "enum": ["draft", "installed", "uninstalled"],
@@ -4637,6 +4810,11 @@
                 "type": "string",
                 "enum": ["ok", "limit-reached"],
                 "title": "SubscriptionUsageStatus"
+            },
+            "TimeUnit": {
+                "type": "string",
+                "enum": ["seconds", "minutes", "hours"],
+                "title": "TimeUnit"
             },
             "URLBulkSchema": {
                 "properties": {
@@ -4876,25 +5054,7 @@
                 "type": "object",
                 "title": "VisitorFormOnSuccessContentSchema"
             },
-            "VisitorFormStepSchema-Input": {
-                "properties": {
-                    "cta": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Cta"
-                    },
-                    "fields": {
-                        "items": {
-                            "$ref": "#/components/schemas/VisitorFormFieldsSchema"
-                        },
-                        "type": "array",
-                        "title": "Fields"
-                    }
-                },
-                "type": "object",
-                "required": ["fields"],
-                "title": "VisitorFormStepSchema"
-            },
-            "VisitorFormStepSchema-Output": {
+            "VisitorFormStepSchema": {
                 "properties": {
                     "cta": {
                         "anyOf": [{"type": "string"}, {"type": "null"}],

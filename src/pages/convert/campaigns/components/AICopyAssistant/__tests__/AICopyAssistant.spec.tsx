@@ -2,6 +2,7 @@ import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
+import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 
 import {AICopyAssistant} from '../AICopyAssistant'
@@ -20,7 +21,7 @@ describe('AICopyAssistant', () => {
             message_text: 'Test message',
         } as any,
         triggers: [],
-        shopName: 'Test Shop',
+        shopDomain: 'test-shop.myshopify.com',
         isEnabled: true,
         shouldGenerateInitialSuggestion: false,
         onApply: onApply,
@@ -110,6 +111,28 @@ describe('AICopyAssistant', () => {
         await waitFor(() => {
             expect(mockGenerateSuggestions).toHaveBeenCalled()
             expect(screen.getByText('Suggestion 1')).toBeInTheDocument()
+        })
+    })
+
+    it('should pass empty campaign title if it is a default name', async () => {
+        const props = {
+            ...defaultProps,
+            campaign: {
+                ...defaultProps.campaign,
+                name: DEFAULT_CAMPAIGN_NAME,
+            },
+            shouldGenerateInitialSuggestion: true,
+        }
+
+        render(<AICopyAssistant {...props} />)
+
+        await waitFor(() => {
+            expect(mockGenerateSuggestions).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    title: '',
+                }),
+            ])
         })
     })
 })

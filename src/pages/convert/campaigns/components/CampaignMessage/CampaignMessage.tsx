@@ -391,11 +391,11 @@ export const CampaignMessage = memo(
                         canAddUtm={isConvertSubscriber}
                     />
                     {isConvertSubscriber &&
-                        shopifyIntegration?.meta?.shop_name && (
+                        shopifyIntegration?.meta?.shop_domain && (
                             <AICopyAssistant
                                 campaign={campaign}
                                 triggers={Object.values(triggers)}
-                                shopName={shopifyIntegration.meta.shop_name}
+                                shopDomain={shopifyIntegration.meta.shop_domain}
                                 shouldGenerateInitialSuggestion={
                                     shouldGenerateInitialSuggestion
                                 }

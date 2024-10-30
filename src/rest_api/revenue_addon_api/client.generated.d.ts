@@ -193,6 +193,10 @@ declare namespace Components {
              */
             price?: number | null
             /**
+             * Compare At Price
+             */
+            compare_at_price?: number | null
+            /**
              * Currency
              */
             currency?: string | null
@@ -244,21 +248,7 @@ declare namespace Components {
         /**
          * CampaignAttachmentProductRecommendationSchema
          */
-        export interface CampaignAttachmentProductRecommendationSchemaInput {
-            /**
-             * Contenttype
-             */
-            contentType: 'application/productRecommendation'
-            /**
-             * Name
-             */
-            name: string
-            extra: CampaignAttachmentProductRecommendationExtraSchema
-        }
-        /**
-         * CampaignAttachmentProductRecommendationSchema
-         */
-        export interface CampaignAttachmentProductRecommendationSchemaOutput {
+        export interface CampaignAttachmentProductRecommendationSchema {
             /**
              * Contenttype
              */
@@ -272,29 +262,7 @@ declare namespace Components {
         /**
          * CampaignAttachmentProductSchema
          */
-        export interface CampaignAttachmentProductSchemaInput {
-            /**
-             * Contenttype
-             */
-            contentType: 'application/productCard'
-            /**
-             * Name
-             */
-            name: string
-            /**
-             * Url
-             */
-            url?: string | null
-            /**
-             * Size
-             */
-            size?: number | null
-            extra?: CampaignAttachmentProductExtraSchema | null
-        }
-        /**
-         * CampaignAttachmentProductSchema
-         */
-        export interface CampaignAttachmentProductSchemaOutput {
+        export interface CampaignAttachmentProductSchema {
             /**
              * Contenttype
              */
@@ -316,25 +284,11 @@ declare namespace Components {
         /**
          * CampaignAttachmentVisitorFormExtraSchema
          */
-        export interface CampaignAttachmentVisitorFormExtraSchemaInput {
+        export interface CampaignAttachmentVisitorFormExtraSchema {
             /**
              * Steps
              */
-            steps: VisitorFormStepSchemaInput[]
-            on_success_content?: VisitorFormOnSuccessContentSchema | null
-            /**
-             * Targets
-             */
-            targets: VisitorFormTargetsSchema[]
-        }
-        /**
-         * CampaignAttachmentVisitorFormExtraSchema
-         */
-        export interface CampaignAttachmentVisitorFormExtraSchemaOutput {
-            /**
-             * Steps
-             */
-            steps: VisitorFormStepSchemaOutput[]
+            steps: VisitorFormStepSchema[]
             on_success_content?: VisitorFormOnSuccessContentSchema | null
             /**
              * Targets
@@ -344,7 +298,7 @@ declare namespace Components {
         /**
          * CampaignAttachmentVisitorFormSchema
          */
-        export interface CampaignAttachmentVisitorFormSchemaInput {
+        export interface CampaignAttachmentVisitorFormSchema {
             /**
              * Contenttype
              */
@@ -353,30 +307,16 @@ declare namespace Components {
              * Name
              */
             name: string
-            extra?: CampaignAttachmentVisitorFormExtraSchemaInput | null
-        }
-        /**
-         * CampaignAttachmentVisitorFormSchema
-         */
-        export interface CampaignAttachmentVisitorFormSchemaOutput {
-            /**
-             * Contenttype
-             */
-            contentType: 'application/visitorForm'
-            /**
-             * Name
-             */
-            name: string
-            extra?: CampaignAttachmentVisitorFormExtraSchemaOutput | null
+            extra?: CampaignAttachmentVisitorFormExtraSchema | null
         }
         /**
          * CampaignCopySuggestionRequestSchema
          */
         export interface CampaignCopySuggestionRequestSchema {
             /**
-             * Shop Name
+             * Store Domain
              */
-            shop_name: string
+            store_domain: string
             /**
              * Title
              */
@@ -437,16 +377,13 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaInput
-                      | CampaignAttachmentProductRecommendationSchemaInput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
-            /**
-             * Meta
-             */
-            meta?: {} | null
+            meta?: CampaignMetaSchema | null
             /**
              * Triggers
              */
@@ -469,6 +406,37 @@ declare namespace Components {
              * Variants
              */
             variants?: CampaignVariantRequestSchema[]
+        }
+        /**
+         * CampaignMetaSchema
+         */
+        export interface CampaignMetaSchema {
+            /**
+             * Noreply
+             */
+            noReply?: boolean | null
+            /**
+             * Delay
+             */
+            delay?: number | null
+            /**
+             * Agentemail
+             */
+            agentEmail?: string | null
+            /**
+             * Agentname
+             */
+            agentName?: string | null
+            /**
+             * Agentavatarurl
+             */
+            agentAvatarUrl?: string | null
+            minimumTimeBetweenCampaigns?: MinimumTimeBetweenCampaigns | null
+            maxCampaignDisplaysInSession?: MaxCampaignDisplaysInSession | null
+            /**
+             * Copysuggestion
+             */
+            copySuggestion?: string | null
         }
         /**
          * CampaignPatchRequestSchema
@@ -509,16 +477,13 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaInput
-                      | CampaignAttachmentProductRecommendationSchemaInput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
-            /**
-             * Meta
-             */
-            meta?: {} | null
+            meta?: CampaignMetaSchema | null
             publish_mode?: CampaignPublishType | null
             /**
              * Triggers
@@ -579,10 +544,10 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaOutput
-                      | CampaignAttachmentProductRecommendationSchemaOutput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -713,10 +678,10 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaInput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaInput
-                      | CampaignAttachmentProductRecommendationSchemaInput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -741,10 +706,10 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaOutput
-                      | CampaignAttachmentProductRecommendationSchemaOutput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -759,6 +724,41 @@ declare namespace Components {
              * Stopped Datetime
              */
             stopped_datetime?: string /* date-time */ | null
+        }
+        /**
+         * CartItemSchema
+         */
+        export interface CartItemSchema {
+            product: InteractedProductSchema
+            /**
+             * Quantity
+             */
+            quantity: number
+            /**
+             * Total
+             */
+            total: number | number
+            /**
+             * Original Total
+             */
+            original_total?: number | null
+        }
+        /**
+         * CartSchema
+         */
+        export interface CartSchema {
+            /**
+             * Items
+             */
+            items: CartItemSchema[]
+            /**
+             * Currency
+             */
+            currency?: string | null
+            /**
+             * Last Updated Timestamp
+             */
+            last_updated_timestamp: string // date-time
         }
         /**
          * ChannelConnectionCreateRequestSchema
@@ -1017,11 +1017,11 @@ declare namespace Components {
             /**
              * Value
              */
-            value?: string | null
+            value?: number | string | null
             /**
              * Minimum Purchase Amount
              */
-            minimum_purchase_amount?: string | null
+            minimum_purchase_amount?: number | string | null
             /**
              * External Customer Segment Ids
              */
@@ -1174,6 +1174,27 @@ declare namespace Components {
             config: {}
         }
         /**
+         * InteractedProductSchema
+         */
+        export interface InteractedProductSchema {
+            /**
+             * Id
+             */
+            id: number
+            /**
+             * Variant Id
+             */
+            variant_id?: number | null
+            /**
+             * Title
+             */
+            title: string
+            /**
+             * Handle
+             */
+            handle: string
+        }
+        /**
          * JWTTokenSchema
          */
         export interface JWTTokenSchema {
@@ -1183,9 +1204,54 @@ declare namespace Components {
             token: string
         }
         /**
+         * MaxCampaignDisplaysInSession
+         */
+        export interface MaxCampaignDisplaysInSession {
+            /**
+             * Value
+             */
+            value: number
+        }
+        /**
          * MethodEnum
          */
         export type MethodEnum = 'theme_app' | 'one_click' | 'manual'
+        /**
+         * MinimumTimeBetweenCampaigns
+         */
+        export interface MinimumTimeBetweenCampaigns {
+            /**
+             * Value
+             */
+            value: number
+            unit: TimeUnit
+        }
+        /**
+         * PageViewSchema
+         */
+        export interface PageViewSchema {
+            /**
+             * Url
+             */
+            url?: string | null
+            product?: InteractedProductSchema | null
+            /**
+             * Page Title
+             */
+            page_title?: string | null
+            /**
+             * Search Query
+             */
+            search_query?: string | null
+            /**
+             * Visit Count
+             */
+            visit_count: number
+            /**
+             * Last Visit Timestamp
+             */
+            last_visit_timestamp: string // date-time
+        }
         /**
          * ProductInfoSchema
          */
@@ -1317,7 +1383,7 @@ declare namespace Components {
             /**
              * Price
              */
-            price: string
+            price: number | string
             /**
              * Options
              */
@@ -1364,10 +1430,10 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaOutput
-                      | CampaignAttachmentProductRecommendationSchemaOutput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -1422,16 +1488,33 @@ declare namespace Components {
              */
             attachments?:
                 | (
-                      | CampaignAttachmentProductSchemaOutput
+                      | CampaignAttachmentProductSchema
                       | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchemaOutput
-                      | CampaignAttachmentProductRecommendationSchemaOutput
+                      | CampaignAttachmentVisitorFormSchema
+                      | CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
              * Id
              */
             id: string
+        }
+        /**
+         * PurchasesSchema
+         */
+        export interface PurchasesSchema {
+            /**
+             * Products
+             */
+            products: InteractedProductSchema[]
+            /**
+             * Total Amount Spent
+             */
+            total_amount_spent?: number | null
+            /**
+             * Total Orders Count
+             */
+            total_orders_count?: number | null
         }
         /**
          * RequestSettingSchema
@@ -1564,6 +1647,17 @@ declare namespace Components {
             | 'email_disclaimer'
             | 'campaign_frequency'
         /**
+         * ShopperLookupResponse
+         */
+        export interface ShopperLookupResponse {
+            /**
+             * Page Views
+             */
+            page_views: PageViewSchema[]
+            cart?: CartSchema | null
+            purchases?: PurchasesSchema | null
+        }
+        /**
          * StatusEnum
          */
         export type StatusEnum = 'draft' | 'installed' | 'uninstalled'
@@ -1634,6 +1728,10 @@ declare namespace Components {
          * SubscriptionUsageStatus
          */
         export type SubscriptionUsageStatus = 'ok' | 'limit-reached'
+        /**
+         * TimeUnit
+         */
+        export type TimeUnit = 'seconds' | 'minutes' | 'hours'
         /**
          * URLBulkSchema
          */
@@ -1847,20 +1945,7 @@ declare namespace Components {
         /**
          * VisitorFormStepSchema
          */
-        export interface VisitorFormStepSchemaInput {
-            /**
-             * Cta
-             */
-            cta?: string | null
-            /**
-             * Fields
-             */
-            fields: VisitorFormFieldsSchema[]
-        }
-        /**
-         * VisitorFormStepSchema
-         */
-        export interface VisitorFormStepSchemaOutput {
+        export interface VisitorFormStepSchema {
             /**
              * Cta
              */
@@ -2598,6 +2683,28 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace ShopperLookup {
+        namespace Parameters {
+            /**
+             * Marketing Id
+             * Marketing ID of the shopper (revenue_id)
+             */
+            export type MarketingId = string
+            /**
+             * Store Integration Id
+             * Helpdesk store integration ID
+             */
+            export type StoreIntegrationId = number
+        }
+        export interface QueryParameters {
+            store_integration_id: Parameters.StoreIntegrationId
+            marketing_id: Parameters.MarketingId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ShopperLookupResponse
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace ShortenShortenPost {
         export type RequestBody = Components.Schemas.URLCreateBulkSchema
         namespace Responses {
@@ -3271,6 +3378,16 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    /**
+     * shopper_lookup - Lookup
+     */
+    'shopper_lookup'(
+        parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.ShopperLookup.Responses.$200 | Paths.ShopperLookup.Responses.$422
+    >
     /**
      * get_status_and_usage - Get Status And Usage
      */
@@ -3951,6 +4068,19 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    }
+    ['/shoppers/lookup']: {
+        /**
+         * shopper_lookup - Lookup
+         */
+        'get'(
+            parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.ShopperLookup.Responses.$200
+            | Paths.ShopperLookup.Responses.$422
+        >
     }
     ['/billing/subscriptions/account-status']: {
         /**

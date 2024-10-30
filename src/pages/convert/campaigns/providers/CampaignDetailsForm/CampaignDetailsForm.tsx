@@ -32,6 +32,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {
     CampaignContactFormAttachment,
@@ -193,7 +194,7 @@ export const CampaignDetailsForm = ({
     const [actionInProgress, setActionInProgress] = useState<string>('')
     const [campaignData, setCampaignData] = useState<Campaign>({
         id: campaign?.id,
-        name: campaign?.name ?? 'Untitled campaign',
+        name: campaign?.name ?? DEFAULT_CAMPAIGN_NAME,
         language: campaign?.language ?? defaultLanguage,
         message_html: campaign?.message_html ?? '',
         message_text: campaign?.message_text ?? '',
