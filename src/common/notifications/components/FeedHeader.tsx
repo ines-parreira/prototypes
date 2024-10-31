@@ -8,6 +8,8 @@ import _capitalize from 'lodash/capitalize'
 import React, {useCallback, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+import {NotificationCenterEventTypes} from 'common/segment/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -40,6 +42,10 @@ export default function FeedHeader({
 
     const handleFilterStatusChange = useCallback(
         (status: FilterStatus) => {
+            logEvent(SegmentEvent.NotificationCenter, {
+                type: NotificationCenterEventTypes.Filter,
+                value: status,
+            })
             setFilterStatus(status)
             setIsFilterDropdownOpen(false)
         },
@@ -47,6 +53,9 @@ export default function FeedHeader({
     )
 
     const markAllAsRead = useCallback(() => {
+        logEvent(SegmentEvent.NotificationCenter, {
+            type: NotificationCenterEventTypes.MarkAllAsRead,
+        })
         void feedClient.markAllAsRead()
     }, [feedClient])
 
@@ -79,6 +88,7 @@ export default function FeedHeader({
                         {OrderedFilterStatuses.map((option) => (
                             <DropdownItem
                                 key={option}
+                                className={css.dropdownItem}
                                 option={{
                                     label: _capitalize(option),
                                     value: option,
@@ -107,7 +117,12 @@ export default function FeedHeader({
                         size="small"
                         fillStyle="ghost"
                         intent="secondary"
-                        onClick={toggleVisibility}
+                        onClick={() => {
+                            logEvent(SegmentEvent.NotificationCenter, {
+                                type: NotificationCenterEventTypes.GoToSettings,
+                            })
+                            toggleVisibility()
+                        }}
                     >
                         settings
                     </IconButton>

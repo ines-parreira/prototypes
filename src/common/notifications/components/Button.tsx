@@ -10,6 +10,7 @@ import React, {useCallback, useRef, useState} from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {NotificationCenterEventTypes} from 'common/segment/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -31,14 +32,18 @@ export default function NotificationsButton() {
 
     const handleClick = useCallback(() => {
         if (!isVisible) {
-            logEvent(SegmentEvent.NotificationCenterOpened)
+            logEvent(SegmentEvent.NotificationCenter, {
+                type: NotificationCenterEventTypes.Opened,
+            })
         }
         setIsVisible(!isVisible)
     }, [isVisible])
 
     const handleClickNotification = useCallback(
         (item: KnockFeedItem) => {
-            logEvent(SegmentEvent.NotificationFeedItemClicked)
+            logEvent(SegmentEvent.NotificationCenter, {
+                type: NotificationCenterEventTypes.FeedItemClicked,
+            })
             void feedClient.markAsRead(item)
             setIsVisible(false)
         },
@@ -49,7 +54,8 @@ export default function NotificationsButton() {
         (item: KnockFeedItem) => {
             const isRead = !!item.read_at
 
-            logEvent(SegmentEvent.NotificationStatusToggled, {
+            logEvent(SegmentEvent.NotificationCenter, {
+                type: NotificationCenterEventTypes.StatusToggled,
                 status: isRead ? 'unread' : 'read',
             })
             isRead
