@@ -6,3 +6,9 @@ export type ChoicesTree = {
     [key: string]: ChoicesTree
     [CHOICE_VALUES_SYMBOL]: Set<string>
 }
+
+export type SearchResults = {
+    label: string
+    path: string
+    value: string
+}[]

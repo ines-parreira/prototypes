@@ -4,14 +4,18 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
+import {useSearch} from '../hooks/useSearch'
 import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
 import css from './Deprecated_MultiLevelSelect.less'
 import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
 import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
 import {getLabel} from './helpers/getLabel'
+import {SearchInput} from './search/SearchInput'
+import {SearchResult} from './search/SearchResult'
 
 export type MultiLevelSelectProps = {
     id: number
@@ -22,6 +26,7 @@ export type MultiLevelSelectProps = {
     children: React.ReactNode
     onToggle: () => void
     isOpen: boolean
+    value?: string
     values: string[]
     onApplyClick: () => void
 }
@@ -33,6 +38,7 @@ export default function MultiLevelSelect({
     children,
     onToggle,
     isOpen,
+    value,
     values,
     onApplyClick,
 }: MultiLevelSelectProps) {
@@ -47,6 +53,24 @@ export default function MultiLevelSelect({
         (nextBranchPath) =>
             (currentBranch = currentBranch[nextBranchPath] || currentBranch)
     )
+
+    const isSearchDisabled =
+        choices.length > 0 && typeof choices[0] !== 'string'
+
+    const {
+        search,
+        setSearch,
+        isSearching,
+        searchResults,
+        valueIsInSearchResults,
+    } = useSearch({
+        choices: choicesTree,
+        dropdownValue: value,
+        isDisabled: isSearchDisabled,
+    })
+
+    const isValueEmpty =
+        typeof value === 'undefined' || typeof value === 'string'
 
     const goPrevious = useCallback(() => {
         setCurrentPath((currentPath) => {
@@ -102,30 +126,67 @@ export default function MultiLevelSelect({
                         </Button>
                     </DropdownHeader>
                 )}
+                {!isSearchDisabled && (
+                    <SearchInput
+                        search={search}
+                        setSearch={setSearch}
+                        dropdownName="deprecated-multi-level-select"
+                    />
+                )}
                 <DropdownBody>
-                    {Object.keys(currentBranch).map((key) => {
-                        const label = getLabel(key)
-                        return (
-                            <DropdownItem
-                                key={key}
-                                tag="button"
-                                onClick={() => goNext(key)}
-                                option={{label, value: key}}
-                                hasSubItems
-                            >
-                                <span className={css.choiceButton}>
-                                    <span className={css.ellipsis}>
-                                        {label}
-                                    </span>
-                                    <span
-                                        className={`material-icons ${css.nextIcon}`}
+                    {isSearching ? (
+                        <>
+                            {searchResults.length ? (
+                                searchResults.map((searchResult) => (
+                                    <DropdownItem
+                                        key={searchResult.value.toString()}
+                                        tag="button"
+                                        onClick={() =>
+                                            handleChange(searchResult.value)
+                                        }
+                                        option={{
+                                            value: searchResult.value,
+                                            label: '', // we don’t need it here
+                                        }}
                                     >
-                                        navigate_next
-                                    </span>
-                                </span>
-                            </DropdownItem>
-                        )
-                    })}
+                                        <SearchResult
+                                            {...searchResult}
+                                            currentValue={value}
+                                            currentSearch={search}
+                                        />
+                                    </DropdownItem>
+                                ))
+                            ) : (
+                                <div className={css.noResults}>No results</div>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {Object.keys(currentBranch).map((key) => {
+                                const label = getLabel(key)
+                                return (
+                                    <DropdownItem
+                                        key={key}
+                                        tag="button"
+                                        onClick={() => goNext(key)}
+                                        option={{label, value: key}}
+                                        hasSubItems
+                                    >
+                                        <span className={css.choiceButton}>
+                                            <span className={css.ellipsis}>
+                                                {label}
+                                            </span>
+                                            <span
+                                                className={`material-icons ${css.nextIcon}`}
+                                            >
+                                                navigate_next
+                                            </span>
+                                        </span>
+                                    </DropdownItem>
+                                )
+                            })}
+                        </>
+                    )}
                     {Array.from(currentBranch[CHOICE_VALUES_SYMBOL]).map(
                         (choice) => {
                             const label = getLabel(choice)
@@ -155,6 +216,18 @@ export default function MultiLevelSelect({
                         }
                     )}
                 </DropdownBody>
+                {((!isValueEmpty && !isSearching) ||
+                    valueIsInSearchResults) && (
+                    <DropdownFooter className={css.modalFooter}>
+                        <Button
+                            onClick={() => handleChange('')}
+                            fillStyle="ghost"
+                            className={css.clearButton}
+                        >
+                            Clear Selection
+                        </Button>
+                    </DropdownFooter>
+                )}
                 {onApplyClick &&
                     currentBranch[CHOICE_VALUES_SYMBOL].size > 0 && (
                         <div

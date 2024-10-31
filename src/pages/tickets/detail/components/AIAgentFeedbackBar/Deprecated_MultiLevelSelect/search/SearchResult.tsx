@@ -1,0 +1,57 @@
+import React from 'react'
+
+import CheckIcon from '../CheckIcon'
+import dropdownCss from '../Deprecated_MultiLevelSelect.less'
+import searchCss from './search.less'
+
+export function SearchResult({
+    currentSearch = '',
+    label,
+    path,
+    value,
+    currentValue,
+}: {
+    label: string
+    path: string
+    value: string
+    currentValue?: string
+    currentSearch?: string
+}) {
+    return (
+        <>
+            <span className={searchCss.searchResultWrapper}>
+                <span className={dropdownCss.ellipsis}>
+                    {highlightMatchedText(label, currentSearch)}
+                </span>
+                {path && (
+                    <small
+                        className={`${searchCss.searchResultPath} ${dropdownCss.ellipsis}`}
+                    >
+                        {highlightMatchedText(path, currentSearch)}
+                    </small>
+                )}
+            </span>
+            {value === currentValue && <CheckIcon />}
+        </>
+    )
+}
+
+function highlightMatchedText(label: string, search: string) {
+    if (!search || !label) return label
+
+    const searchIndex = label.toLowerCase().indexOf(search.toLowerCase())
+
+    if (searchIndex === -1) return label
+
+    const beforeMatch = label.slice(0, searchIndex)
+    const match = label.slice(searchIndex, searchIndex + search.length)
+    const afterMatch = label.slice(searchIndex + search.length)
+
+    return (
+        <>
+            {beforeMatch}
+            <strong>{match}</strong>
+            {afterMatch}
+        </>
+    )
+}
