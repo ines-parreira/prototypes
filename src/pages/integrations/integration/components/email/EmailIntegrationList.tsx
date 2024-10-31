@@ -1,3 +1,4 @@
+import {EmailProvider} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -36,7 +37,6 @@ import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
     isOutboundVerifiedSendgrid,
-    isSendgridEmailIntegration,
 } from './helpers'
 import {fetchEmailDomains} from './resources'
 
@@ -126,38 +126,34 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             | IntegrationType.Gmail
             | IntegrationType.Outlook
             | IntegrationType.Email = integration.get('type')
-        const isGmail = integrationType === IntegrationType.Gmail
-        const isOutlook = integrationType === IntegrationType.Outlook
+        const isForwardEmail = integrationType === IntegrationType.Email
+        const isSendgrid =
+            integration.getIn(['meta', 'provider'], EmailProvider.Mailgun) ===
+            EmailProvider.Sendgrid
 
-        const isVerified = integration.getIn(['meta', 'verified'], true)
-        const isDomainVerified = verifiedDomains.includes(domain)
+        const isVerified =
+            integration.getIn(['meta', 'verified'], true) || !isForwardEmail
+        const isDomainVerified = isSendgrid
+            ? isOutboundVerifiedSendgrid(integration.toJS())
+            : verifiedDomains.includes(domain)
 
         // Whether to show the "pending domain verification" warning for this integration
 
         const shouldDisplayDomainVerificationWarning =
-            !isSendgridEmailIntegration(integration.toJS()) && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
             !isDomainVerified &&
             !isBaseIntegration && // The base email integration cannot have a domain associated
-            isVerified &&
-            !isOutlook &&
-            !isGmail
-
-        const shouldDisplayDomainVerificationWarningGmailOutlook =
-            !isDomainVerified && active && (isOutlook || isGmail)
-
-        const shouldDisplayOutboundVerificationWarning =
-            isSendgridEmailIntegration(integration.toJS()) &&
-            !isOutboundVerifiedSendgrid(integration.toJS()) &&
-            !isBaseIntegration && // The base email integration cannot have a domain associated
-            isVerified &&
-            !isOutlook &&
-            !isGmail
+            isVerified
 
         const getTabURL = () => {
-            if (shouldDisplayOutboundVerificationWarning) {
-                return '/outbound-verification'
+            if (!isForwardEmail && !active) {
+                return ''
             }
-            return isVerified || isGmail ? '' : '/verification'
+
+            if (shouldDisplayDomainVerificationWarning) {
+                return isSendgrid ? '/outbound-verification' : '/dns'
+            }
+
+            return isVerified ? '' : '/verification'
         }
 
         const editLink = `/app/settings/channels/email/${integrationId}${getTabURL()}`
@@ -249,22 +245,15 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                         )}
                     </td>
                 )}
-                <td className="smallest align-middle text-right p-0">
+                <td className="smallest align-middle text-left p-0">
                     <EmailIntegrationListVerificationStatus
                         active={active}
-                        isGmail={isGmail}
-                        isOutlook={isOutlook}
+                        isForwardEmail={isForwardEmail}
                         isVerified={isVerified}
                         isRowSubmitting={isRowSubmitting}
                         redirectURI={adapter.uri}
                         isDomainVerificationWarningVisible={
                             shouldDisplayDomainVerificationWarning
-                        }
-                        isDomainVerificationWarningGmailOutlookVisible={
-                            shouldDisplayDomainVerificationWarningGmailOutlook
-                        }
-                        isOutboundVerificationWarningVisible={
-                            shouldDisplayOutboundVerificationWarning
                         }
                     />
                 </td>
@@ -298,7 +287,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                 !areAllEmailIntegrationsVerified ? (
                     <Alert icon type={AlertType.Warning}>
                         In order to verify your domains, click on the emails
-                        with 'Pending domain verification status', go to the
+                        with 'Action required: verify domain' status, go to the
                         Outbound Verification tab and complete the verification
                         process.
                         <br />

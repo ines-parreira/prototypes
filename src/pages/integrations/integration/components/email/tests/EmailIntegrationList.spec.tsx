@@ -16,6 +16,7 @@ import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
+import {isBaseEmailIntegration, isOutboundVerifiedSendgrid} from '../helpers'
 import {fetchEmailDomains} from '../resources'
 
 const queryClient = mockQueryClient()
@@ -24,6 +25,7 @@ jest.mock(
     'pages/integrations/integration/components/email/EmailIntegrationListVerificationStatus'
 )
 
+jest.mock('../helpers')
 jest.mock('../resources')
 jest.mock('pages/history')
 
@@ -31,13 +33,16 @@ const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
     EmailIntegrationListVerificationStatus
 )
+const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
+const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
 
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
         id: number,
         deactivated = false,
         provider = EmailProvider.Mailgun,
-        address = 'email@gorgias-test.com'
+        address = 'email@gorgias-test.com',
+        verified = true
     ) {
         return {
             id,
@@ -45,6 +50,7 @@ describe('<EmailIntegrationList/>', () => {
             ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
             name: `My Email Integration ${id}`,
             meta: {
+                verified,
                 address,
                 provider,
             },
@@ -55,7 +61,8 @@ describe('<EmailIntegrationList/>', () => {
         id: number,
         deactivated = false,
         sendingEnabled: boolean,
-        provider = EmailProvider.Mailgun
+        provider = EmailProvider.Mailgun,
+        verified = true
     ) {
         return {
             id,
@@ -64,6 +71,7 @@ describe('<EmailIntegrationList/>', () => {
             name: `My GMail Integration ${id}`,
             meta: {
                 address: 'email@gmail.com',
+                verified,
                 enable_gmail_sending: sendingEnabled,
                 provider: provider,
             },
@@ -74,7 +82,8 @@ describe('<EmailIntegrationList/>', () => {
         id: number,
         deactivated = false,
         sendingEnabled: boolean,
-        provider = EmailProvider.Mailgun
+        provider = EmailProvider.Mailgun,
+        verified = true
     ) {
         return {
             id,
@@ -83,6 +92,7 @@ describe('<EmailIntegrationList/>', () => {
             name: `My Outlook Integration ${id}`,
             meta: {
                 address: 'email@Outlook.com',
+                verified,
                 enable_gmail_sending: sendingEnabled,
                 provider: provider,
             },
@@ -103,6 +113,7 @@ describe('<EmailIntegrationList/>', () => {
             [FeatureFlagKey.EnableEmailToStoreMapping]: false,
             [FeatureFlagKey.DefaultEmailAddress]: false,
         }))
+        isBaseEmailIntegrationMock.mockReturnValue(false)
         EmailIntegrationListVerificationStatusMock.mockImplementation(() => (
             <div>EmailIntegrationListVerificationStatus</div>
         ))
@@ -183,15 +194,7 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the alert when there is just the base email integration', async () => {
-            window.GORGIAS_STATE = {
-                integrations: {
-                    authentication: {
-                        email: {
-                            forwarding_email_address: 'gorgias.com',
-                        },
-                    },
-                },
-            } as any
+            isBaseEmailIntegrationMock.mockReturnValue(true)
 
             const get = fetchEmailDomainsMock.mockResolvedValueOnce([
                 {
@@ -227,67 +230,6 @@ describe('<EmailIntegrationList/>', () => {
                     {exact: false}
                 )
             ).not.toBeInTheDocument()
-        })
-
-        it('should render the page when there are no integrations', async () => {
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
-
-            const {container} = render(
-                <Provider store={store}>
-                    <EmailIntegrationList
-                        {...commonProps}
-                        integrations={fromJS([])}
-                    />
-                </Provider>,
-
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <MemoryRouter>{children}</MemoryRouter>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
-            expect(container).toMatchSnapshot()
-        })
-
-        it('should render the page without warning when the email is verified', async () => {
-            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
-                {
-                    name: 'gorgias-test.com',
-                    verified: true,
-                    data: fromJS({
-                        sending_dns_records: [
-                            {
-                                verified: true,
-                                record_type: 'AA',
-                                host: 'gorgias-test.com',
-                                value: 'test',
-                                current_values: ['test1', 'test2'],
-                            },
-                        ],
-                    }),
-                },
-            ])
-
-            const {container} = render(
-                <Provider store={store}>
-                    <EmailIntegrationList {...commonProps} />
-                </Provider>,
-
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <MemoryRouter>{children}</MemoryRouter>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
-            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-
-            expect(container).toMatchSnapshot()
         })
 
         it('should render the default badge if an integration is set as default', async () => {
@@ -371,7 +313,8 @@ describe('<EmailIntegrationList/>', () => {
                     EmailIntegrationListVerificationStatusMock
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        isDomainVerificationWarningGmailOutlookVisible: true,
+                        isDomainVerificationWarningVisible: true,
+                        isForwardEmail: false,
                     }),
                     {}
                 )
@@ -379,7 +322,7 @@ describe('<EmailIntegrationList/>', () => {
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
-            'should render the page with a warning when a Outlook integration has sending disabled',
+            'should render the page with a warning when an Outlook integration has sending disabled',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
@@ -406,7 +349,8 @@ describe('<EmailIntegrationList/>', () => {
                     EmailIntegrationListVerificationStatusMock
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        isDomainVerificationWarningGmailOutlookVisible: true,
+                        isDomainVerificationWarningVisible: true,
+                        isForwardEmail: false,
                     }),
                     {}
                 )
@@ -417,6 +361,7 @@ describe('<EmailIntegrationList/>', () => {
             'should render the page without warning when a GMail integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+                isOutboundVerifiedSendgridMock.mockReturnValue(false)
 
                 renderWithRouter(
                     <QueryClientProvider client={queryClient}>
@@ -452,6 +397,7 @@ describe('<EmailIntegrationList/>', () => {
             'should render the page without warning when a Outlook integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
+                isOutboundVerifiedSendgridMock.mockReturnValue(false)
 
                 renderWithRouter(
                     <QueryClientProvider client={queryClient}>
@@ -483,59 +429,211 @@ describe('<EmailIntegrationList/>', () => {
             }
         )
 
-        it('should redirect to preferences tab when provider is not Sendgrid', async () => {
-            fetchEmailDomainsMock.mockResolvedValueOnce([])
-            const integration = getEmailIntegration(1)
+        describe('redirect URLs', () => {
+            it.each([
+                {
+                    description:
+                        'should redirect to domain verification - active Mailgun forwarding email',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Mailgun
+                    ),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                },
+                {
+                    description:
+                        'should redirect to domain verification - inactive Mailgun forwarding email',
+                    integration: getEmailIntegration(
+                        1,
+                        true,
+                        EmailProvider.Mailgun
+                    ),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                },
+                {
+                    description:
+                        'should redirect to outbound verification - active Sendgrid forwarding email',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Sendgrid
+                    ),
+                    expected: `/app/settings/channels/email/${1}/outbound-verification`,
+                },
+                {
+                    description:
+                        'should redirect to outbound verification - inactive Sendgrid forwarding email',
+                    integration: getEmailIntegration(
+                        1,
+                        true,
+                        EmailProvider.Sendgrid
+                    ),
+                    expected: `/app/settings/channels/email/${1}/outbound-verification`,
+                },
+                {
+                    description:
+                        'should redirect to domain verification - gmail',
+                    integration: getGmailIntegration(1, false, true),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                },
+                {
+                    description:
+                        'should redirect to domain verification - outlook',
+                    integration: getOutlookIntegration(1, false, true),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                },
+            ])(
+                '(outbound unverified) $description',
+                async ({integration, expected}) => {
+                    fetchEmailDomainsMock.mockResolvedValueOnce([])
+                    isOutboundVerifiedSendgridMock.mockReturnValue(false)
 
-            const component = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([integration])}
-                        />
-                    </Provider>
-                </QueryClientProvider>
+                    const component = renderWithRouter(
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={store}>
+                                <EmailIntegrationList
+                                    {...commonProps}
+                                    integrations={fromJS([integration])}
+                                />
+                            </Provider>
+                        </QueryClientProvider>
+                    )
+
+                    await component.findByText(integration.meta.address)
+
+                    fireEvent.click(
+                        component.getByText(integration.meta.address)
+                    )
+
+                    expect(history.push).toHaveBeenCalledWith(expected)
+                }
             )
 
-            await component.findByText(integration.meta.address)
+            it.each([
+                getGmailIntegration(1, true, true),
+                getOutlookIntegration(1, true, true),
+            ])(
+                '(inactive integrations) should redirect to the correct page when clicking on the integration - $type',
+                async (integration) => {
+                    fetchEmailDomainsMock.mockResolvedValueOnce([])
+                    isOutboundVerifiedSendgridMock.mockReturnValue(false)
 
-            fireEvent.click(component.getByText(integration.meta.address))
-
-            expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/channels/email/${integration.id}`
-            )
-        })
-
-        it('should redirect to domain settings tab when provider is Sendgrid', async () => {
-            fetchEmailDomainsMock.mockResolvedValueOnce([])
-            const integration = getEmailIntegration(1)
-
-            const component = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <EmailIntegrationList
-                            {...commonProps}
-                            integrations={fromJS([
-                                {
-                                    ...integration,
-                                    meta: {
-                                        ...integration.meta,
-                                        provider: EmailProvider.Sendgrid,
-                                    },
-                                },
-                            ])}
-                        />
-                    </Provider>
-                </QueryClientProvider>
+                    const component = renderWithRouter(
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={store}>
+                                <EmailIntegrationList
+                                    {...commonProps}
+                                    integrations={fromJS([integration])}
+                                />
+                            </Provider>
+                        </QueryClientProvider>
+                    )
+                    await component.findByText(integration.meta.address)
+                    fireEvent.click(
+                        component.getByText(integration.meta.address)
+                    )
+                    expect(history.push).toHaveBeenCalledWith(
+                        `/app/settings/channels/email/${1}`
+                    )
+                }
             )
 
-            await component.findByText(integration.meta.address)
+            it.each([
+                {
+                    description:
+                        'inbound verified integration, forward integration',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Sendgrid,
+                        'email@gorgias-test.com',
+                        true
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+                {
+                    description:
+                        'inbound unverified integration, forward integration',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Sendgrid,
+                        'email@gorgias-test.com',
+                        false
+                    ),
+                    expected: `/app/settings/channels/email/${1}/verification`,
+                },
+                {
+                    description:
+                        'inbound unverified integration, gmail integration',
+                    integration: getGmailIntegration(
+                        1,
+                        false,
+                        true,
+                        EmailProvider.Sendgrid,
+                        false
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+                {
+                    description:
+                        'inbound unverified integration, outlook integration',
+                    integration: getOutlookIntegration(
+                        1,
+                        false,
+                        true,
+                        EmailProvider.Sendgrid,
+                        false
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+                {
+                    description:
+                        'inbound verified integration, gmail integration',
+                    integration: getGmailIntegration(
+                        1,
+                        false,
+                        true,
+                        EmailProvider.Sendgrid,
+                        true
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+                {
+                    description:
+                        'inbound verified integration, outlook integration',
+                    integration: getOutlookIntegration(
+                        1,
+                        false,
+                        true,
+                        EmailProvider.Sendgrid,
+                        true
+                    ),
+                    expected: `/app/settings/channels/email/${1}`,
+                },
+            ])(
+                '(outbound verified) should redirect to the correct page when clicking on the integration - $description',
+                async ({integration, expected}) => {
+                    fetchEmailDomainsMock.mockResolvedValueOnce([])
+                    isOutboundVerifiedSendgridMock.mockReturnValue(true)
 
-            fireEvent.click(component.getByText(integration.meta.address))
-
-            expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/channels/email/${integration.id}/outbound-verification`
+                    const component = renderWithRouter(
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={store}>
+                                <EmailIntegrationList
+                                    {...commonProps}
+                                    integrations={fromJS([integration])}
+                                />
+                            </Provider>
+                        </QueryClientProvider>
+                    )
+                    await component.findByText(integration.meta.address)
+                    fireEvent.click(
+                        component.getByText(integration.meta.address)
+                    )
+                    expect(history.push).toHaveBeenCalledWith(expected)
+                }
             )
         })
     })
