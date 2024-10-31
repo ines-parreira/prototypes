@@ -5,6 +5,7 @@ import {Product} from 'constants/integrations/types/shopify'
 import {IntegrationDataItem} from 'models/integration/types'
 import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {getIconFromUrl} from 'utils'
+import {findCheapestProductVariant} from 'utils/findCheapestProductVariant'
 
 export const transformProductToCampaignAttachment = (
     result: IntegrationDataItem<Product>,
@@ -16,7 +17,7 @@ export const transformProductToCampaignAttachment = (
         'shop_domain',
     ]) as string
     const handle = result.data?.handle || ''
-    const firstVariant = result.data?.variants[0]
+    const cheapestVariant = findCheapestProductVariant(result.data)
 
     return {
         url: result.data?.image?.src || getIconFromUrl(shopifyPlaceholderImage),
@@ -24,9 +25,9 @@ export const transformProductToCampaignAttachment = (
         contentType: AttachmentEnum.Product,
         size: 0,
         extra: {
-            price: parseFloat(firstVariant.price),
-            compare_at_price: firstVariant?.compare_at_price
-                ? parseFloat(firstVariant.compare_at_price)
+            price: parseFloat(cheapestVariant.price),
+            compare_at_price: cheapestVariant.compare_at_price
+                ? parseFloat(cheapestVariant.compare_at_price)
                 : undefined,
             currency: shopifyIntegration.getIn(['meta', 'currency']) ?? 'USD',
             product_link: `https://${shopDomain}/products/${handle}`,

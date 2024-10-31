@@ -6,6 +6,8 @@ import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {getIconFromUrl} from 'utils'
 
+import {findCheapestProductVariant} from 'utils/findCheapestProductVariant'
+
 import {TooltipTourConfigurationType} from './types'
 
 export const getTooltipTourConfiguration = (
@@ -38,11 +40,12 @@ export const transformShopifyProductToProductCardDetails = (
     shouldSetVariantTitle: boolean = true,
     placeholderImage: string = 'integrations/shopify-placeholder.png'
 ): ProductCardDetails => {
+    const cheapestVariant = findCheapestProductVariant(product.data)
+
     return {
         imageUrl: product?.data?.image?.src || getIconFromUrl(placeholderImage),
-        price: product?.data?.variants[0].price,
-        compareAtPrice:
-            product?.data?.variants[0].compare_at_price ?? undefined,
+        price: cheapestVariant.price,
+        compareAtPrice: cheapestVariant.compare_at_price ?? undefined,
         currency: shopifyIntegration.get('currency'),
         link: `https://${shopifyIntegration.get('shop_domain')}/products/${
             product?.data?.handle || ''
