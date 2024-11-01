@@ -154,7 +154,7 @@ export const usePaywallConfig = (
                 paywallLogo: '',
                 paywallLogoAlt: 'Gorgias Chat Preview',
                 paywallTitle:
-                    'Connect a Chat to your store to use Automate features',
+                    'Connect a store to your Chat to use Automate features',
                 showRoiCalculator: false,
                 hideLearnMore: true,
                 descriptions: [
