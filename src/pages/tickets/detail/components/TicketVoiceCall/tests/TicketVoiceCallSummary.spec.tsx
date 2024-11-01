@@ -33,7 +33,7 @@ describe('TicketVoiceCallSummary', () => {
         ]
         const {getByText} = renderSummary(summaries)
 
-        expect(getByText('Call summary')).toBeInTheDocument()
+        expect(getByText('Call Summary')).toBeInTheDocument()
         expect(getByText('Summary 1')).toBeInTheDocument()
         expect(getByText('Summary 2')).toBeInTheDocument()
     })

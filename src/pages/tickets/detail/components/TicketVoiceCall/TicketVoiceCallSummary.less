@@ -6,13 +6,23 @@
         display: flex;
         padding: @layout-spacing-s 20px;
         align-items: flex-start;
-        gap: @layout-spacing-xxs;
+        gap: @layout-spacing-xs;
         border-radius: 4px;
         border: 1px solid var(--neutral-grey-4);
-        flex-direction: column;
         justify-content: center;
         flex: 1 0 0;
         margin-top: @layout-spacing-xs;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .summaryText {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        flex: 1;
     }
 
     .summaryTitle {

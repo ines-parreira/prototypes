@@ -14,14 +14,17 @@ export default function TicketVoiceCallSummary({summaries}: Props) {
     }
     return (
         <div className={css.summaryContainer}>
-            <div className={css.summaryTitle}>Call summary</div>
-            {summaries
-                .sort((a, b) =>
-                    a.created_datetime.localeCompare(b.created_datetime)
-                )
-                .map((summary) => (
-                    <span key={summary.id}>{summary.summary}</span>
-                ))}
+            <i className="material-icons">short_text</i>
+            <div className={css.summaryText}>
+                <div className={css.summaryTitle}>Call Summary</div>
+                {summaries
+                    .sort((a, b) =>
+                        a.created_datetime.localeCompare(b.created_datetime)
+                    )
+                    .map((summary) => (
+                        <span key={summary.id}>{summary.summary}</span>
+                    ))}
+            </div>
         </div>
     )
 }
