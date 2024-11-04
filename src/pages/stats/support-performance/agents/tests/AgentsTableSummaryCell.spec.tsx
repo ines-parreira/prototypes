@@ -73,6 +73,7 @@ describe('<AgentsTableSummaryCell', () => {
                         cleanStatsFilters: statsFilters,
                         userTimezone,
                     }}
+                    agentsLength={agents.length}
                 />
             </Provider>
         )
@@ -96,6 +97,7 @@ describe('<AgentsTableSummaryCell', () => {
                         cleanStatsFilters: statsFilters,
                         userTimezone,
                     }}
+                    agentsLength={agents.length}
                 />
             </Provider>
         )
@@ -115,6 +117,7 @@ describe('<AgentsTableSummaryCell', () => {
                         cleanStatsFilters: statsFilters,
                         userTimezone,
                     }}
+                    agentsLength={agents.length}
                 />
             </Provider>
         )
@@ -147,6 +150,7 @@ describe('<AgentsTableSummaryCell', () => {
                         cleanStatsFilters: statsFilters,
                         userTimezone,
                     }}
+                    agentsLength={agents.length}
                 />
             </Provider>
         )

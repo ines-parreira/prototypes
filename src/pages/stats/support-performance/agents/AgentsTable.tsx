@@ -141,6 +141,7 @@ export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
                                         useMetric={getSummaryQuery(column)}
                                         statsFilters={statsFilters}
                                         column={column}
+                                        agentsLength={allAgents.length}
                                     />
                                 </BodyCell>
                             ))}

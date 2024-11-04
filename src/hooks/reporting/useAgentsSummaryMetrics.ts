@@ -50,13 +50,22 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-    const repliedTicketsPerHourMetric = useTicketsRepliedPerHour()
+    const repliedTicketsPerHourMetric = useTicketsRepliedPerHour(
+        cleanStatsFilters,
+        userTimezone
+    )
     const onlineTimeMetric = useOnlineTimeMetric(
         cleanStatsFilters,
         userTimezone
     )
-    const messagesSentPerHourMetric = useMessagesSentPerHour()
-    const closedTicketsPerHourMetric = useTicketsClosedPerHour()
+    const messagesSentPerHourMetric = useMessagesSentPerHour(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const closedTicketsPerHourMetric = useTicketsClosedPerHour(
+        cleanStatsFilters,
+        userTimezone
+    )
     const ticketHandleTimeMetric = useTicketAverageHandleTimeMetric(
         cleanStatsFilters,
         userTimezone

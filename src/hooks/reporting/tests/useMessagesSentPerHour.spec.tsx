@@ -67,11 +67,16 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
     })
 
     it('should calculate the metric from messages sent and online time', () => {
-        const {result} = renderHook(() => useMessagesSentPerHour(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
+        const {result} = renderHook(
+            () => useMessagesSentPerHour(statsFilters, timeZone),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
 
         expect(result.current).toEqual({
             data: {
@@ -83,7 +88,7 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
     })
 
     it('should strip the statsFilters to period and agents only', () => {
-        renderHook(() => useMessagesSentPerHour(), {
+        renderHook(() => useMessagesSentPerHour(statsFilters, timeZone), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
@@ -106,8 +111,11 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
     })
 
     it('should strip the statsFilters to period and no agents', () => {
+        const statsFiltersWithoutAgents = {
+            period: statsFilters.period,
+        }
         const state = {
-            stats: {filters: {period: statsFilters.period}},
+            stats: {filters: statsFiltersWithoutAgents},
             ui: {
                 stats: {
                     filters: uiStatsInitialState,
@@ -115,11 +123,14 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
             },
         } as RootState
 
-        renderHook(() => useMessagesSentPerHour(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
-        })
+        renderHook(
+            () => useMessagesSentPerHour(statsFiltersWithoutAgents, timeZone),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            }
+        )
 
         expect(useMessagesSentMetricMock).toHaveBeenCalledWith(
             {
@@ -145,11 +156,16 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
             data: undefined,
         })
 
-        const {result} = renderHook(() => useMessagesSentPerHour(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
+        const {result} = renderHook(
+            () => useMessagesSentPerHour(statsFilters, timeZone),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
 
         expect(result.current).toEqual({
             data: {

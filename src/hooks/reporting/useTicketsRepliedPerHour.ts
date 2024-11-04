@@ -3,21 +3,23 @@ import {
     useOnlineTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
+import {StatsFilters} from 'models/stat/types'
 
-export const useTicketsRepliedPerHour = (): Metric => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+export const useTicketsRepliedPerHour = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric => {
     const repliedTickets = useTicketsRepliedMetric(
-        periodAndAgentOnlyFilters(cleanStatsFilters),
-        userTimezone
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone
     )
     const onlineTime = useOnlineTimeMetric(
-        periodAndAgentOnlyFilters(cleanStatsFilters),
-        userTimezone
+        periodAndAgentOnlyFilters(statsFilters),
+        timezone
     )
 
     let metricValue: number | null = null
