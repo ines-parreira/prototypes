@@ -9,6 +9,7 @@ import {
     convertBundle as mockConvertBundle,
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -32,12 +33,16 @@ jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings', () => ({
     useConvertGeneralSettings: () => ({data: undefined, isLoading: false}),
 }))
 
+jest.mock('pages/common/hooks/useIsConvertSubscriber')
+const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)
+
 const mockStore = configureMockStore([thunk])
 const queryClient = mockQueryClient()
 
 describe('<ConvertSettingsView />', () => {
     beforeAll(() => {
         useInstallBundleMock.mockImplementation(installBundleMockImplementation)
+        useIsConvertSubscriberMock.mockReturnValue(true)
     })
 
     it('should render the disclaimer settings', () => {
@@ -65,5 +70,19 @@ describe('<ConvertSettingsView />', () => {
         expect(
             getByText('Campaign bundle installation method')
         ).toBeInTheDocument()
+    })
+
+    it("shouldn't render the general settings", () => {
+        useIsConvertSubscriberMock.mockReturnValue(false)
+
+        const {queryByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore({})}>
+                    <ConvertSettingsView />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(queryByText('General Settings')).not.toBeInTheDocument()
     })
 })

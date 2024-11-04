@@ -10,12 +10,12 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {AdvancedTriggersForm} from 'pages/convert/campaigns/components/AdvancedTriggersForm'
 import {AdvancedTriggersSelect} from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
-import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
 import {CampaignDisplaySettings} from 'pages/convert/campaigns/components/CampaignDisplaySettings'
 import CampaignFrequency from 'pages/convert/campaigns/components/CampaignFrequency'
 import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
 import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
+import {Conditions} from 'pages/convert/campaigns/containers/CampaignAudienceStep/Conditions'
 import {TriggersProvider} from 'pages/convert/campaigns/containers/TriggersProvider'
 import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
@@ -176,84 +176,86 @@ export const CampaignAudienceStep = ({
                 />
 
                 <Accordion defaultExpandedItem="conditions">
-                    <AccordionItem highlightOnExpand={false} id="conditions">
-                        <AccordionHeader>
-                            <h3 className={css.header}>Conditions</h3>
-                        </AccordionHeader>
-                        <AccordionBody>
-                            <div className="mb-4">
-                                <TriggersProvider
-                                    triggers={triggers}
-                                    onUpdateTrigger={updateTrigger}
-                                    onDeleteTrigger={deleteTrigger}
-                                >
-                                    <AdvancedTriggersForm
-                                        triggers={triggers}
-                                        onValidationChange={onValidationChange}
-                                    />
-                                    <AdvancedTriggersSelect
-                                        isShopifyStore={isShopifyStore}
+                    {isConvertSubscriber ? (
+                        <AccordionItem
+                            highlightOnExpand={false}
+                            id="conditions"
+                        >
+                            <AccordionHeader>
+                                <h3 className={css.header}>Conditions</h3>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <Conditions
+                                    isConvertSubscriber={isConvertSubscriber}
+                                    isShopifyStore={isShopifyStore}
+                                    isConsideredLightCampaign={
+                                        isConsideredLightCampaign
+                                    }
+                                    onValidationChange={onValidationChange}
+                                />
+                            </AccordionBody>
+                        </AccordionItem>
+                    ) : (
+                        <Conditions
+                            isConvertSubscriber={isConvertSubscriber}
+                            isShopifyStore={isShopifyStore}
+                            isConsideredLightCampaign={
+                                isConsideredLightCampaign
+                            }
+                            onValidationChange={onValidationChange}
+                        />
+                    )}
+                    {isConvertSubscriber && (
+                        <AccordionItem
+                            highlightOnExpand={false}
+                            id="campaign-preferences"
+                        >
+                            <AccordionHeader>
+                                <h3 className={css.header}>
+                                    Campaign preferences
+                                </h3>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                {!isConsideredLightCampaign && (
+                                    <CampaignDisplaySettings
                                         isConvertSubscriber={
                                             isConvertSubscriber
                                         }
-                                        isLightCampaign={
-                                            isConsideredLightCampaign
+                                        triggers={triggers}
+                                        isNoReply={campaignWithNoReply}
+                                        /* deprecated */
+                                        delay={campaignDelay}
+                                        onChangeDelay={handleUpdateDelay}
+                                        /* end deprecated */
+                                        onChangeDeviceType={
+                                            handleChangeDeviceType
                                         }
-                                        onClick={addTrigger}
+                                        onChangeIncognitoVisitor={
+                                            handleChangeIncognitoVisitor
+                                        }
+                                        onChangeNoReply={handleUpdateNoReply}
                                     />
-                                </TriggersProvider>
-                            </div>
-                            <div className={css.delaySelector}>
-                                <CampaignDelay
-                                    delay={campaignDelay}
-                                    onChangeDelay={handleUpdateDelay}
-                                />
-                            </div>
-                        </AccordionBody>
-                    </AccordionItem>
-                    <AccordionItem
-                        highlightOnExpand={false}
-                        id="campaign-preferences"
-                    >
-                        <AccordionHeader>
-                            <h3 className={css.header}>Campaign preferences</h3>
-                        </AccordionHeader>
-                        <AccordionBody>
-                            {!isConsideredLightCampaign && (
-                                <CampaignDisplaySettings
-                                    isConvertSubscriber={isConvertSubscriber}
-                                    triggers={triggers}
-                                    isNoReply={campaignWithNoReply}
-                                    /* deprecated */
-                                    delay={campaignDelay}
-                                    onChangeDelay={handleUpdateDelay}
-                                    /* end deprecated */
-                                    onChangeDeviceType={handleChangeDeviceType}
-                                    onChangeIncognitoVisitor={
-                                        handleChangeIncognitoVisitor
-                                    }
-                                    onChangeNoReply={handleUpdateNoReply}
-                                />
-                            )}
+                                )}
 
-                            <CampaignFrequency
-                                integrationId={integration.get('id')}
-                                maximumCampaignsDisplayed={
-                                    campaignMaxDisplaysInSession
-                                }
-                                timeBetweenCampaigns={
-                                    minimumTimeBetweenCampaigns
-                                }
-                                onChangeTimeBetweenCampaigns={
-                                    handleUpdateMinTimeBetweenCampaigns
-                                }
-                                onChangeMaximumCampaignDisplayed={
-                                    handleUpdateMaxDisplaysInSession
-                                }
-                                onValidationChange={onValidationChange}
-                            />
-                        </AccordionBody>
-                    </AccordionItem>
+                                <CampaignFrequency
+                                    integrationId={integration.get('id')}
+                                    maximumCampaignsDisplayed={
+                                        campaignMaxDisplaysInSession
+                                    }
+                                    timeBetweenCampaigns={
+                                        minimumTimeBetweenCampaigns
+                                    }
+                                    onChangeTimeBetweenCampaigns={
+                                        handleUpdateMinTimeBetweenCampaigns
+                                    }
+                                    onChangeMaximumCampaignDisplayed={
+                                        handleUpdateMaxDisplaysInSession
+                                    }
+                                    onValidationChange={onValidationChange}
+                                />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )}
                 </Accordion>
             </StatefulAccordion>
         )
