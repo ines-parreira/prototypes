@@ -395,6 +395,7 @@ export const CampaignMessage = memo(
                                 campaign={campaign}
                                 triggers={Object.values(triggers)}
                                 shopDomain={shopifyIntegration.meta.shop_domain}
+                                shopId={shopifyIntegration.id}
                                 shouldGenerateInitialSuggestion={
                                     shouldGenerateInitialSuggestion
                                 }

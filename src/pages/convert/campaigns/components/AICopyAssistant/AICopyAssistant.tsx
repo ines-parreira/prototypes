@@ -1,5 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import {CampaignSuggestCopyResponse} from 'models/convert/campaign/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
@@ -19,6 +20,7 @@ type Props = {
     campaign: Campaign
     triggers: CampaignTrigger[]
     shopDomain: string
+    shopId: number
     isEnabled: boolean
     shouldGenerateInitialSuggestion: boolean
     onApply: (suggestion: string) => void
@@ -28,6 +30,7 @@ export const AICopyAssistant = ({
     campaign,
     triggers,
     shopDomain,
+    shopId,
     isEnabled = false,
     shouldGenerateInitialSuggestion = false,
     onApply,
@@ -40,25 +43,32 @@ export const AICopyAssistant = ({
     const {mutateAsync: generateSuggestions} = useSuggestCampaignCopy()
     const isAssistantEnabled = useIsAICopyAssistantEnabled()
 
-    const onRegenerateClick = useCallback(async () => {
-        setIsRegenerating(true)
-        setHasError(false)
-
+    const context = useMemo(() => {
         const title =
             campaign.name.toLowerCase() === DEFAULT_CAMPAIGN_NAME.toLowerCase()
                 ? ''
                 : campaign.name
+
+        return {
+            store_domain: shopDomain,
+            title: title,
+            language: campaign.language || undefined,
+            message: campaign.message_text,
+            triggers: triggers,
+        }
+    }, [
+        campaign.language,
+        campaign.message_text,
+        campaign.name,
+        shopDomain,
+        triggers,
+    ])
+
+    const onRegenerateClick = useCallback(async () => {
+        setIsRegenerating(true)
+        setHasError(false)
         try {
-            const response = await generateSuggestions([
-                undefined,
-                {
-                    store_domain: shopDomain,
-                    title: title,
-                    language: campaign.language || undefined,
-                    message: campaign.message_text,
-                    triggers: triggers,
-                },
-            ])
+            const response = await generateSuggestions([undefined, context])
             const data = response?.data as CampaignSuggestCopyResponse
             setSuggestions(data.suggestions.length ? data.suggestions : [])
         } catch (e) {
@@ -67,14 +77,7 @@ export const AICopyAssistant = ({
         } finally {
             setIsRegenerating(false)
         }
-    }, [
-        campaign.language,
-        campaign.message_text,
-        campaign.name,
-        generateSuggestions,
-        shopDomain,
-        triggers,
-    ])
+    }, [context, generateSuggestions])
 
     useEffect(() => {
         if (
@@ -97,6 +100,19 @@ export const AICopyAssistant = ({
         <Button size="small" intent="primary" fillStyle="ghost">
             Apply
         </Button>
+    )
+
+    const onApplyClick = useCallback(
+        (suggestion: string) => {
+            onApply(suggestion)
+            logEvent(SegmentEvent.ConvertApplySuggestionClicked, {
+                shopId: shopId,
+                campaignId: campaign.id,
+                context: context,
+                suggestion: suggestion,
+            })
+        },
+        [onApply, context, shopId, campaign.id]
     )
 
     if (!isAssistantEnabled) {
@@ -129,7 +145,7 @@ export const AICopyAssistant = ({
                         texts={suggestions}
                         cta={applyButton}
                         ctaSuccessMessage={SUCCESS_MESSAGE}
-                        onCtaClick={onApply}
+                        onCtaClick={onApplyClick}
                     />
                 </div>
             </div>

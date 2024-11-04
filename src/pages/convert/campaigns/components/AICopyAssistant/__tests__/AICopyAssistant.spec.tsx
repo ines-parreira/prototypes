@@ -1,14 +1,26 @@
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
+import {logEvent} from 'common/segment'
 import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
 import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
+import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
+
+import {assumeMock} from 'utils/testing'
 
 import {AICopyAssistant} from '../AICopyAssistant'
 
 jest.mock('pages/convert/common/hooks/useIsAICopyAssistantEnabled')
 jest.mock('models/convert/campaign/queries')
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        ConvertApplySuggestionClicked: 'ConvertApplySuggestionClicked',
+    },
+}))
+
+const logEventMock = assumeMock(logEvent)
 
 const mockGenerateSuggestions = jest.fn()
 
@@ -16,12 +28,14 @@ describe('AICopyAssistant', () => {
     const onApply = jest.fn()
     const defaultProps = {
         campaign: {
+            id: '2f712c6f-7215-4f67-a072-fe657bc51674',
             name: 'Test Campaign',
             language: 'en',
             message_text: 'Test message',
-        } as any,
+        } as Campaign,
         triggers: [],
         shopDomain: 'test-shop.myshopify.com',
+        shopId: 123,
         isEnabled: true,
         shouldGenerateInitialSuggestion: false,
         onApply: onApply,
@@ -98,6 +112,17 @@ describe('AICopyAssistant', () => {
         await waitFor(() => {
             fireEvent.click(screen.getByText('Apply'))
             expect(onApply).toHaveBeenCalledWith('Suggestion 1')
+            expect(logEventMock).toHaveBeenCalledWith(
+                'ConvertApplySuggestionClicked',
+                {
+                    shopId: 123,
+                    campaignId: defaultProps.campaign.id,
+                    context: expect.objectContaining({
+                        title: defaultProps.campaign.name,
+                    }),
+                    suggestion: 'Suggestion 1',
+                }
+            )
         })
     })
 

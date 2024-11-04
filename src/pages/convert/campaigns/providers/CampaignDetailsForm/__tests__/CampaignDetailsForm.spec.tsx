@@ -447,6 +447,7 @@ describe('<CampaignDetailsForm />', () => {
     describe('Light campaign banner', () => {
         const bannerText = "Light campaigns don't allow advanced triggers"
         const lightCampaign = {
+            name: 'Light campaign',
             is_light: true,
         } as Campaign
 
