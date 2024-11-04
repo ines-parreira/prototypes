@@ -1,16 +1,17 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {tags} from 'fixtures/tag'
 import useAppDispatch from 'hooks/useAppDispatch'
+import Row from 'pages/settings/tags/Row'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
 import {assumeMock} from 'utils/testing'
-
-import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
 
@@ -32,6 +33,11 @@ jest.mock('@gorgias/design-tokens/dist/tokens/colors.json', () => ({
 }))
 
 describe('<Row />', () => {
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: false,
+        })
+    })
     const defaultTag = tags[0]
     const defaultMeta = {
         edit: false,
@@ -195,8 +201,33 @@ describe('<Row />', () => {
         )
 
         fireEvent.click(screen.getByText('delete'))
+
+        expect(screen.queryByText(/Saved filters/i)).not.toBeInTheDocument()
+
         fireEvent.click(screen.getByText('Confirm'))
         expect(removeMock).toHaveBeenCalledWith(defaultProps.row.id.toString())
+    })
+
+    it('should check if delete notification contains "saved filters" text', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: true,
+        })
+        render(
+            <Provider store={mockStore({})}>
+                <Row {...defaultProps} />
+            </Provider>,
+            {
+                wrapper: ({children}) => (
+                    <table>
+                        <tbody>{children}</tbody>
+                    </table>
+                ),
+            }
+        )
+
+        fireEvent.click(screen.getByText('delete'))
+
+        expect(screen.getByText(/Saved filters/i)).toBeInTheDocument()
     })
 
     it('should handle failed tag deletion', async () => {

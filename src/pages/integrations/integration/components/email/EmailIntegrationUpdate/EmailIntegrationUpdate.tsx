@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import _capitalize from 'lodash/capitalize'
 import React, {Component, FormEvent, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -23,6 +24,7 @@ import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from 'config'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
 import {IntegrationType} from 'models/integration/types'
@@ -34,7 +36,13 @@ import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import EmailIntegrationAddressField from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
+import EmailIntegrationDeliverabilitySettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
+import css from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.less'
+import EmailIntegrationConnectStore from 'pages/integrations/integration/components/email/EmailToStoreMapping/EmailIntegrationConnectStore'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -49,14 +57,10 @@ import {RootState} from 'state/types'
 import {displayRestrictedSymbols, isGorgiasSupportAddress} from 'utils'
 import {convertToHTML} from 'utils/editor'
 
-import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
-import EmailIntegrationAddressField from './EmailIntegrationAddressField'
-import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'
-import css from './EmailIntegrationUpdate.less'
-
 type Props = {
     integration: Map<any, any>
     loading: Map<any, any>
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -469,6 +473,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             loading,
             deleteIntegration,
             gmailRedirectUri,
+            flags = {},
         } = this.props
 
         const isSubmitting =
@@ -479,6 +484,8 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isOutlook = integration.get('type') === IntegrationType.Outlook
         const {errors, name, use_gmail_categories, enable_gmail_threading} =
             this.state
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
@@ -642,7 +649,10 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         <ConfirmButton
                             className="float-right"
                             onConfirm={() => deleteIntegration(integration)}
-                            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                            confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                isAnalyticsSavedFilters,
+                                INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                            )}
                             intent="destructive"
                             fillStyle="ghost"
                         >
@@ -695,4 +705,4 @@ const connector = connect(
     }
 )
 
-export default connector(EmailIntegrationUpdateContainer)
+export default connector(withLDConsumer()(EmailIntegrationUpdateContainer))

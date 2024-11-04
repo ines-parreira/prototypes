@@ -6,9 +6,11 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {omit} from 'lodash'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
 import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
@@ -20,12 +22,13 @@ import {
 } from 'fixtures/customField'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
 
-import DropdownInput from '../DropdownInput'
-
-jest.mock('../DropdownInput', () => jest.fn(() => <div>Dropdown</div>))
+jest.mock('pages/settings/customFields/components/DropdownInput', () =>
+    jest.fn(() => <div>Dropdown</div>)
+)
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
@@ -58,6 +61,9 @@ describe('<FieldForm/>', () => {
                 mutateAsync: updateMutateMock,
             } as unknown as ReturnType<typeof useUpdateCustomFieldArchiveStatus>
         })
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: false,
+        })
     })
 
     it('should show archiving status and disable type change on edit', () => {
@@ -73,6 +79,7 @@ describe('<FieldForm/>', () => {
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
             expect(screen.getByText(/The values you have changed/))
+            expect(screen.queryByText(/Saved Filters/i)).not.toBeInTheDocument()
         })
     })
 
@@ -83,6 +90,20 @@ describe('<FieldForm/>', () => {
         userEvent.hover(screen.getByText(/Save changes/))
         await waitFor(() => {
             expect(screen.getByText(/The values you have changed/))
+        })
+    })
+
+    it('should show a tooltip on hover save after doing a change on placeholder with saved filters text added', async () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: true,
+        })
+        render(<FieldForm {...defaultProps} />)
+
+        await userEvent.type(screen.getByLabelText(/Placeholder/), 'a')
+        userEvent.hover(screen.getByText(/Save changes/))
+        await waitFor(() => {
+            expect(screen.getByText(/The values you have changed/))
+            expect(screen.getByText(/Saved Filters/i)).toBeInTheDocument()
         })
     })
 

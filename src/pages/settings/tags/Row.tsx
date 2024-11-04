@@ -2,9 +2,11 @@ import {Tag, TagDecoration} from '@gorgias/api-queries'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Form} from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -13,11 +15,10 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import TicketTag from 'pages/common/components/TicketTag'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
+import css from 'pages/settings/tags/Row.less'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
 import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
-
-import css from './Row.less'
 
 type Props = {
     row: Tag
@@ -27,6 +28,8 @@ type Props = {
 
 export default function Row({meta, refresh, row}: Props) {
     const dispatch = useAppDispatch()
+    const isAnalyticsSavedFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
 
     const [decoration, setDecoration] = useState<TagDecoration>({color: ''})
     const [description, setDescription] = useState<string | null>('')
@@ -190,6 +193,12 @@ export default function Row({meta, refresh, row}: Props) {
                                         It will not be possible to add the tag
                                         back to the tickets it was previously on
                                     </li>
+                                    {isAnalyticsSavedFilters ? (
+                                        <li>
+                                            The tag will have to be removed from
+                                            Saved Filters manually
+                                        </li>
+                                    ) : null}
                                 </ul>
                             </>
                         }

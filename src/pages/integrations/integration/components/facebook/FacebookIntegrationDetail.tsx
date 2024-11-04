@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
@@ -17,6 +18,7 @@ import {
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
@@ -33,6 +35,22 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import CheckBoxFieldSet, {
+    Props as CheckBoxFieldSetProps,
+} from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
+import FacebookIntegrationDetailSummary from 'pages/integrations/integration/components/facebook/FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
+import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
+import FacebookIntegrationLoginButton from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookIntegrationLoginButton'
+import {
+    canEnableMetaSetting,
+    FacebookRole,
+    getInstagramDMSettingsInlineComponent,
+    getInstagramDMSettingStatus,
+    hasFacebookRole,
+    InstagramDMSettingStatus,
+} from 'pages/integrations/integration/components/facebook/utils'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import css from 'pages/settings/settings.less'
 import * as billingSelectors from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -42,24 +60,10 @@ import {
 } from 'state/integrations/actions'
 import {RootState} from 'state/types'
 
-import CheckBoxFieldSet, {
-    Props as CheckBoxFieldSetProps,
-} from './CheckBoxFieldSet/CheckBoxFieldSet'
-import FacebookIntegrationDetailSummary from './FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
-import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
-import FacebookIntegrationLoginButton from './FacebookLoginButton/FacebookIntegrationLoginButton'
-import {
-    canEnableMetaSetting,
-    FacebookRole,
-    getInstagramDMSettingsInlineComponent,
-    getInstagramDMSettingStatus,
-    hasFacebookRole,
-    InstagramDMSettingStatus,
-} from './utils'
-
 type Props = {
     integration: FacebookIntegration
     loading: Map<any, any>
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -153,9 +157,12 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             currentHelpdeskProduct,
             deleteIntegration,
             hasInstagramDMFeature,
+            flags = {},
         } = this.props
 
         const integrationMeta = integration.meta || {}
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         let userRoles: string | undefined | FacebookRole[] =
             integrationMeta.roles
@@ -560,7 +567,10 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                     Save changes
                                 </Button>
                                 <ConfirmButton
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                        isAnalyticsSavedFilters,
+                                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                                    )}
                                     onConfirm={() =>
                                         deleteIntegration(fromJS(integration))
                                     }
@@ -595,4 +605,4 @@ const connector = connect(
     }
 )
 
-export default connector(FacebookIntegrationDetail)
+export default connector(withLDConsumer()(FacebookIntegrationDetail))

@@ -1,13 +1,17 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useDeleteAgent} from 'hooks/agents/useDeleteAgent'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {navigateBackToUserList} from 'pages/settings/users/Detail/constants'
 
-import {navigateBackToUserList} from './constants'
+export const REMOVE_MESSAGE_ABOUT_SAVED_FILTERS =
+    'The user will have to be removed from Saved Filters manually.'
 
 type Props = {
     agentId: number
@@ -22,8 +26,11 @@ export const DeleteModal = ({
     isModalOpen,
     setModalOpen,
 }: Props) => {
+    const isAnalyticsSavedFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
     const {mutateAsync: deleteAgent, isLoading: isDeleting} =
         useDeleteAgent(name)
+
     return (
         <Modal
             isOpen={isModalOpen}
@@ -33,11 +40,22 @@ export const DeleteModal = ({
         >
             <ModalHeader title={`Delete ${name}?`} />
             <ModalBody>
-                Deleting this user will unassign them from all their tickets,
-                open or closed, and will delete their statistics.
-                <br />
-                <br />
-                This action is irreversible.
+                {
+                    <>
+                        Deleting this user will unassign them from all their
+                        tickets, open or closed, and will delete their
+                        statistics.
+                        {isAnalyticsSavedFilters ? (
+                            <>
+                                <br />
+                                {REMOVE_MESSAGE_ABOUT_SAVED_FILTERS}
+                            </>
+                        ) : null}
+                        <br />
+                        <br />
+                        This action is irreversible.
+                    </>
+                }
             </ModalBody>
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={() => setModalOpen(false)}>

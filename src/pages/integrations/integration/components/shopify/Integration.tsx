@@ -12,10 +12,10 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import css from 'pages/settings/settings.less'
@@ -36,6 +36,7 @@ export default function Integration({
     redirectUri,
 }: Props) {
     const dispatch = useAppDispatch()
+    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
 
     const isAuthenticationPending = useAuthenticationPolling(integration)
@@ -270,7 +271,7 @@ export default function Integration({
                                 onConfirm={() =>
                                     dispatch(deleteIntegration(integration))
                                 }
-                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                confirmationContent={confirmationContent}
                                 intent="destructive"
                             >
                                 <ButtonIconLabel icon="delete">

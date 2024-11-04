@@ -10,16 +10,16 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {getConnectUrl} from 'pages/integrations/integration/components/bigcommerce/Utils'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,
 } from 'state/integrations/actions'
-
-import {getConnectUrl} from './Utils'
 
 type Props = {
     integration: Map<any, any>
@@ -29,6 +29,7 @@ type Props = {
 
 const Integration = ({integration, loading}: Props) => {
     const dispatch = useAppDispatch()
+    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
     const isAuthenticationPending = useAuthenticationPolling(integration)
 
@@ -133,7 +134,7 @@ const Integration = ({integration, loading}: Props) => {
                                 onConfirm={() =>
                                     dispatch(deleteIntegration(integration))
                                 }
-                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                confirmationContent={confirmationContent}
                                 intent="destructive"
                             >
                                 <ButtonIconLabel icon="delete">

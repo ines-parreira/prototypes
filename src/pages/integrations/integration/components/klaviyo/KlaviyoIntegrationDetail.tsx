@@ -1,4 +1,5 @@
 import type {Map} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {
@@ -13,6 +14,7 @@ import {
     Row,
 } from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
@@ -25,6 +27,8 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -43,9 +47,10 @@ type Props = {
     actions: IActions
     loading: Map<string, string>
     isUpdate: boolean
+    flags?: LDFlagSet
 }
 
-export default class KlaviyoIntegrationDetail extends React.Component<Props> {
+class KlaviyoIntegrationDetail extends React.Component<Props> {
     state = {
         isSubmitting: false,
         isActivating: false,
@@ -188,7 +193,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
     }
 
     render(): JSX.Element {
-        const {integration, isUpdate} = this.props
+        const {integration, isUpdate, flags = {}} = this.props
         const {
             isSubmitting,
             isActivating,
@@ -208,6 +213,8 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
 
         const isLoading = false
         const isActive = !integration.get('deactivated_datetime')
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         return (
             <div className="full-width">
@@ -504,7 +511,10 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     isSubmitting ||
                                                     isDeleting
                                                 }
-                                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                                confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                                    isAnalyticsSavedFilters,
+                                                    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                                                )}
                                                 intent="destructive"
                                             >
                                                 <ButtonIconLabel icon="delete">
@@ -522,3 +532,4 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
         )
     }
 }
+export default withLDConsumer()(KlaviyoIntegrationDetail)

@@ -12,6 +12,8 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import css from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences.less'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
@@ -19,8 +21,6 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-
-import css from './SmsIntegrationPreferences.less'
 
 type Props = {
     integration: SmsIntegration
@@ -36,6 +36,8 @@ export default function SmsIntegrationPreferences({
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
 
     const dispatch = useAppDispatch()
+
+    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
@@ -144,7 +146,7 @@ export default function SmsIntegrationPreferences({
                                 isDisabled={!isInitialized}
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}
-                                confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
+                                confirmationContent={confirmationContent}
                             >
                                 <ButtonIconLabel icon="delete">
                                     Delete integration

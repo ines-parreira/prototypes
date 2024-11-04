@@ -15,6 +15,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import {deleteIntegration} from 'state/integrations/actions'
@@ -36,6 +37,7 @@ export default function Integration({
     redirectUri,
 }: Props) {
     const dispatch = useAppDispatch()
+    const confirmationContent = useNotificationTextForRemovalMessage()
     useQueryNotify()
     const match = useRouteMatch<{integrationId: string}>()
     const isUpdate = match.params.integrationId !== 'new'
@@ -124,7 +126,7 @@ export default function Integration({
                                     onConfirm={() =>
                                         dispatch(deleteIntegration(integration))
                                     }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent={confirmationContent}
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">

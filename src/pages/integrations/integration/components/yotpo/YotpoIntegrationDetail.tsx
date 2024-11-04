@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {parse} from 'qs'
 import React, {MouseEvent, Component} from 'react'
 import {Link, RouteComponentProps} from 'react-router-dom'
@@ -12,6 +13,7 @@ import {
     Row,
 } from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -20,6 +22,8 @@ import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import withRouter from 'pages/common/utils/withRouter'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -40,6 +44,7 @@ type Props = {
     loading: Map<string, string>
     actions: IActions
     redirectUri: string
+    flags?: LDFlagSet
 } & RouteComponentProps
 
 type State = {
@@ -119,7 +124,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
     }
 
     render(): JSX.Element {
-        const {actions, integration, loading} = this.props
+        const {actions, integration, loading, flags = {}} = this.props
         const {enable_yotpo_tickets} = this.state
 
         const isSubmitting = loading.get('updateIntegration')
@@ -127,6 +132,9 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
         if (loading.get('integration')) {
             return <Loader />
         }
+
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         const enableYotpoTicketsHelp = (
             <div>
@@ -216,7 +224,10 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                                             integration
                                         )
                                     }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                        isAnalyticsSavedFilters,
+                                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                                    )}
                                     isDisabled={!!isSubmitting}
                                     intent="destructive"
                                 >
@@ -233,4 +244,4 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
     }
 }
 
-export default withRouter(YotpoIntegrationDetailComponent)
+export default withRouter(withLDConsumer()(YotpoIntegrationDetailComponent))

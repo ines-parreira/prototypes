@@ -21,17 +21,6 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
-
-import settingsCss from 'pages/settings/settings.less'
-
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {
-    deleteIntegration,
-    updateOrCreateIntegration,
-} from 'state/integrations/actions'
-
 import {
     RING_TIME_DEFAULT_VALUE,
     RING_TIME_MAX_VALUE,
@@ -40,12 +29,21 @@ import {
     WAIT_TIME_DEFAULT_VALUE,
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
-} from './constants'
-import {isValueInRange} from './utils'
-import css from './VoiceIntegrationPreferences.less'
-import VoiceIntegrationPreferencesCallRecordings from './VoiceIntegrationPreferencesCallRecordings'
-import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
-import VoiceIntegrationPreferencesTranscription from './VoiceIntegrationPreferencesTranscription'
+} from 'pages/integrations/integration/components/voice/constants'
+import {isValueInRange} from 'pages/integrations/integration/components/voice/utils'
+import css from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences.less'
+import VoiceIntegrationPreferencesCallRecordings from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesCallRecordings'
+import VoiceIntegrationPreferencesInboundCalls from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesInboundCalls'
+import VoiceIntegrationPreferencesTranscription from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTranscription'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
+import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import settingsCss from 'pages/settings/settings.less'
+import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from 'state/integrations/actions'
 
 type Props = {
     integration: PhoneIntegration
@@ -72,6 +70,8 @@ export default function VoiceIntegrationPreferences({
     const phoneNumberId = integration?.meta?.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
+
+    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event?: React.FormEvent) => {
@@ -288,7 +288,7 @@ export default function VoiceIntegrationPreferences({
                         isDisabled={!isInitialized}
                         isLoading={isDeleting}
                         onConfirm={handleDelete}
-                        confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
+                        confirmationContent={confirmationContent}
                     >
                         <ButtonIconLabel icon="delete">
                             Delete integration

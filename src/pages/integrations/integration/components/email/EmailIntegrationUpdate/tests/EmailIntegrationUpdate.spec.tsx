@@ -12,24 +12,25 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {integrationsState} from 'fixtures/integrations'
-
 import {IntegrationType} from 'models/integration/constants'
-
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
 import {isBoolean} from 'pages/common/components/infobar/utils'
-
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
-
+import {
+    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
+    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
+} from 'pages/integrations/integration/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 jest.mock('common/flags', () => ({
@@ -343,4 +344,60 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             expect(displayNameInfoIcon).not.toBeInTheDocument()
         }
     )
+
+    it('should check the warning message of removing the integration, it should not contain the text related to saved filters', () => {
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: OUTLOOK_INTEGRATION_TYPE,
+                meta: {
+                    address: 'support@gorgias.com',
+                    signature: {
+                        text: '',
+                        html: '<div><br></div>',
+                    },
+                },
+            }),
+        }
+
+        const {queryByText, getByText, getByRole} = renderWithStore(props)
+
+        fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+
+        expect(
+            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+        ).toBeInTheDocument()
+        expect(
+            queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
+        ).not.toBeInTheDocument()
+    })
+
+    it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: OUTLOOK_INTEGRATION_TYPE,
+                meta: {
+                    address: 'support@gorgias.com',
+                    signature: {
+                        text: '',
+                        html: '<div><br></div>',
+                    },
+                },
+            }),
+            flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
+        }
+
+        const {getByText, getByRole} = renderWithStore(props)
+
+        fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+
+        expect(
+            getByText(
+                `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
+            )
+        ).toBeInTheDocument()
+    })
 })

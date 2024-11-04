@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {isArray} from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
@@ -6,6 +7,7 @@ import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ContentType, HttpMethod} from 'models/api/types'
 import {EventType} from 'models/event/types'
 import {
@@ -27,6 +29,8 @@ import JSONBody from 'pages/integrations/integration/components/http/Integration
 import ObjectListField, {
     Field,
 } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import css from 'pages/settings/settings.less'
 import {
     activateIntegration,
@@ -41,6 +45,7 @@ import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 type Props = {
     integration: HttpIntegration | undefined
     isUpdate: boolean
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -279,6 +284,7 @@ export class Integration extends Component<Props, State> {
             activateIntegration,
             deactivateIntegration,
             deleteIntegration,
+            flags = {},
         } = this.props
         const {
             method,
@@ -305,6 +311,9 @@ export class Integration extends Component<Props, State> {
         if (isUpdate && !integration) {
             return <Loader />
         }
+
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         return (
             <div className="full-width">
@@ -582,7 +591,10 @@ export class Integration extends Component<Props, State> {
                                     onConfirm={() =>
                                         deleteIntegration(fromJS(integration))
                                     }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                        isAnalyticsSavedFilters,
+                                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                                    )}
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
@@ -610,4 +622,4 @@ const connector = connect(
     }
 )
 
-export default connector(Integration)
+export default connector(withLDConsumer()(Integration))

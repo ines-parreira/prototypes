@@ -1,10 +1,14 @@
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {EmailIntegrationCreateVerification} from 'pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
 import * as helpers from 'pages/integrations/integration/components/email/helpers'
-
-import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification'
+import {
+    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
+    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
+} from 'pages/integrations/integration/constants'
 
 const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')
 
@@ -69,6 +73,50 @@ describe('<EmailIntegrationCreateVerification/>', () => {
             )
 
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should check the delete email message, it should not contain the text about "saved filters"', () => {
+            isBaseEmailAddressSpy.mockImplementation(() => false)
+
+            const {getByText, queryByText} = render(
+                <EmailIntegrationCreateVerification
+                    {...commonProps}
+                    emailForwardingActivated
+                />
+            )
+
+            fireEvent.click(getByText(/Delete email address/i))
+
+            expect(
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+            ).toBeInTheDocument()
+            expect(
+                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
+            ).not.toBeInTheDocument()
+        })
+
+        it('should check the delete email message, it should contain the text about "saved filters" when feature flag is enabled', () => {
+            isBaseEmailAddressSpy.mockImplementation(() => false)
+
+            const {getByText, getByRole} = render(
+                <EmailIntegrationCreateVerification
+                    {...{
+                        ...commonProps,
+                        flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
+                    }}
+                    emailForwardingActivated
+                />
+            )
+
+            fireEvent.click(
+                getByRole('button', {name: /Delete email address/i})
+            )
+
+            expect(
+                getByText(
+                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
+                )
+            ).toBeInTheDocument()
         })
     })
 })

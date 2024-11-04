@@ -18,6 +18,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -38,6 +39,8 @@ export default function TwitterIntegrationDetail({
     actions,
     redirectUri,
 }: Props): JSX.Element {
+    const confirmationContent = useNotificationTextForRemovalMessage()
+
     const [isInitialized, setIsInitialized] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
@@ -253,7 +256,9 @@ export default function TwitterIntegrationDetail({
                                     <ConfirmButton
                                         className="float-right"
                                         onConfirm={onDelete}
-                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        confirmationContent={
+                                            confirmationContent
+                                        }
                                         isDisabled={isSubmitting}
                                         isLoading={isDeleting}
                                         intent="destructive"

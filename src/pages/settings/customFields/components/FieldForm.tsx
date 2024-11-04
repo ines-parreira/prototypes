@@ -1,8 +1,10 @@
 import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import {Location} from 'history'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {pick, set} from 'lodash'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
 import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
@@ -21,11 +23,9 @@ import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import history from 'pages/history'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
-
-import DropdownInput from './DropdownInput'
-
-import css from './FieldForm.less'
-import TypeSelectInput from './TypeSelectInput'
+import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
+import css from 'pages/settings/customFields/components/FieldForm.less'
+import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 
@@ -53,6 +53,8 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
+    const isAnalyticsSavedFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTypeLabel = objectTypeSettings.LABEL
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
@@ -133,6 +135,13 @@ export default function FieldForm(props: FieldFormProps) {
         (val) => setValue('definition.input_settings.choices', val),
         [setValue]
     )
+
+    const tooltipMessage = useMemo(() => {
+        if (isAnalyticsSavedFilters) {
+            return 'Note: The values you have changed may be in use in Rules, Macros and Saved Filters. Make sure to edit them, as they will not be able to apply an invalid value.'
+        }
+        return 'Note: The values you have changed may be in use in rules and macros. Make sure to edit the rules and macros, as they will not be able to apply an invalid value.'
+    }, [isAnalyticsSavedFilters])
 
     return (
         <form onSubmit={(evt) => evt.preventDefault()} ref={formRef}>
@@ -272,10 +281,7 @@ export default function FieldForm(props: FieldFormProps) {
                                 }
                                 target={SAVE_BUTTON_ID}
                             >
-                                Note: The values you have changed may be in use
-                                in rules and macros. Make sure to edit the rules
-                                and macros, as they will not be able to apply an
-                                invalid value.
+                                {tooltipMessage}
                             </Tooltip>
                         </>
                     )}

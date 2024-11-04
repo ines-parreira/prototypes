@@ -1,10 +1,12 @@
 import {Map, fromJS} from 'immutable'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {parse} from 'qs'
 import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
@@ -14,6 +16,8 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import withRouter from 'pages/common/utils/withRouter'
+import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
+import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import css from 'pages/settings/settings.less'
 import {
     fetchIntegration,
@@ -25,6 +29,7 @@ type Props = {
     integration: Map<any, any>
     redirectUri: string
     loading: Map<any, any>
+    flags?: LDFlagSet
 } & RouteComponentProps &
     ConnectedProps<typeof connector>
 
@@ -86,7 +91,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
     }
 
     render() {
-        const {deleteIntegration, integration, loading} = this.props
+        const {deleteIntegration, integration, loading, flags = {}} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -103,6 +108,9 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
         if (loading.get('integration')) {
             return <Loader />
         }
+
+        const isAnalyticsSavedFilters =
+            !!flags[FeatureFlagKey.AnalyticsSavedFilters]
 
         return (
             <div className="full-width">
@@ -197,7 +205,10 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                     onConfirm={() =>
                                         deleteIntegration(integration)
                                     }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent={getRemovalConfirmationMessageWithSavedFiltersText(
+                                        isAnalyticsSavedFilters,
+                                        INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT
+                                    )}
                                     isDisabled={isSubmitting}
                                     intent="destructive"
                                 >
@@ -219,4 +230,6 @@ const connector = connect(null, {
     deleteIntegration,
     updateOrCreateIntegration,
 })
-export default withRouter(connector(SmileIntegrationDetailComponent))
+export default withRouter(
+    connector(withLDConsumer()(SmileIntegrationDetailComponent))
+)

@@ -5,6 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import {deleteIntegration} from 'state/integrations/actions'
 
 type Props = {
@@ -23,6 +24,7 @@ export const IntegrationActionButtons = ({
     redirectUri,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const confirmationOfRemovalContent = useNotificationTextForRemovalMessage()
     const isDeactivated = integration.get('deactivated_datetime')
     const isManual = integration.getIn(['meta', 'is_manual']) as boolean
 
@@ -74,7 +76,7 @@ export const IntegrationActionButtons = ({
                     id="delete-integration"
                     className="float-right"
                     onConfirm={() => dispatch(deleteIntegration(integration))}
-                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                    confirmationContent={confirmationOfRemovalContent}
                     intent="destructive"
                 >
                     <ButtonIconLabel icon="delete">Delete App</ButtonIconLabel>

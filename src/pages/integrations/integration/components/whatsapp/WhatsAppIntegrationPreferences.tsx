@@ -15,16 +15,15 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import css from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences.less'
+import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
-
 import settingsCss from 'pages/settings/settings.less'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-
-import css from './WhatsAppIntegrationPreferences.less'
 
 type Props = {
     integration: WhatsAppIntegration
@@ -40,6 +39,8 @@ export default function WhatsAppIntegrationPreferences({
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const phoneNumber = phoneNumbers[phoneNumberId]
     const dispatch = useAppDispatch()
+
+    const confirmationContent = useNotificationTextForRemovalMessage()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
@@ -139,7 +140,7 @@ export default function WhatsAppIntegrationPreferences({
                                 isDisabled={!isInitialized}
                                 isLoading={isDeleting}
                                 onConfirm={handleDelete}
-                                confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
+                                confirmationContent={confirmationContent}
                             >
                                 <ButtonIconLabel icon="delete">
                                     Delete integration

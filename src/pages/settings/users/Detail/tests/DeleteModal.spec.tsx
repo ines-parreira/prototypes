@@ -1,9 +1,14 @@
 import {screen, render, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {navigateBackToUserList} from '../constants'
-import {DeleteModal} from '../DeleteModal'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {navigateBackToUserList} from 'pages/settings/users/Detail/constants'
+import {
+    DeleteModal,
+    REMOVE_MESSAGE_ABOUT_SAVED_FILTERS,
+} from 'pages/settings/users/Detail/DeleteModal'
 
 const mockedDeleteAgent = jest.fn(() => Promise.resolve(true))
 jest.mock('hooks/agents/useDeleteAgent', () => ({
@@ -20,6 +25,10 @@ describe('DeleteModal', () => {
         isModalOpen: true,
         setModalOpen: jest.fn(),
     }
+
+    beforeEach(() => {
+        mockFlags({[FeatureFlagKey.AnalyticsSavedFilters]: false})
+    })
 
     it('should display or not according to `isModalOpen` prop', async () => {
         const {rerender} = render(<DeleteModal {...props} />)
@@ -50,5 +59,26 @@ describe('DeleteModal', () => {
         await waitFor(() => {
             expect(props.setModalOpen).toHaveBeenCalledWith(false)
         })
+    })
+
+    it('should setModalOpen when clicking delete button and display the warning message, it should not contain text about "saved filters"', () => {
+        const {getByRole, queryByText} = render(<DeleteModal {...props} />)
+
+        userEvent.click(getByRole('button', {name: /Delete User/i}))
+
+        expect(
+            queryByText(REMOVE_MESSAGE_ABOUT_SAVED_FILTERS)
+        ).not.toBeInTheDocument()
+    })
+
+    it('should setModalOpen when clicking delete button and display the warning message, it should contain text about "saved filters"', () => {
+        mockFlags({[FeatureFlagKey.AnalyticsSavedFilters]: true})
+        const {getByRole, getByText} = render(<DeleteModal {...props} />)
+
+        userEvent.click(getByRole('button', {name: /Delete User/i}))
+
+        expect(
+            getByText(new RegExp(REMOVE_MESSAGE_ABOUT_SAVED_FILTERS, 'i'))
+        ).toBeInTheDocument()
     })
 })

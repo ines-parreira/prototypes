@@ -5,17 +5,22 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {BrowserRouter} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
+import {isValueInRange} from 'pages/integrations/integration/components/voice/utils'
+import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
+import {
+    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
+    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
+} from 'pages/integrations/integration/constants'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {mockStore} from 'utils/testing'
-
-import {isValueInRange} from '../utils'
-import VoiceIntegrationPreferences from '../VoiceIntegrationPreferences'
 
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone
@@ -99,6 +104,12 @@ describe('<VoiceIntegrationPreferences />', () => {
         cleanup()
     })
 
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: false,
+        })
+    })
+
     it('should render the component', () => {
         renderComponent(props)
         expect(screen.getByText('App title')).toBeInTheDocument()
@@ -138,6 +149,11 @@ describe('<VoiceIntegrationPreferences />', () => {
             const titleInput = screen.getByLabelText('App title')
             fireEvent.change(titleInput, {target: {value: 'New title'}})
 
+            fireEvent.click(
+                screen.getByRole('button', {name: /Delete integration/i})
+            )
+            screen.debug()
+
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {name: 'Save changes'})
@@ -171,6 +187,41 @@ describe('<VoiceIntegrationPreferences />', () => {
                     screen.getByRole('button', {name: 'Save changes'})
                 ).toBeAriaEnabled()
             })
+        })
+
+        it('should display delete warning message and it should not contain text about "saved filters"', () => {
+            const {getByText, queryByText, getByRole} = renderComponent(props)
+
+            const titleInput = screen.getByLabelText('App title')
+            fireEvent.change(titleInput, {target: {value: 'New title'}})
+
+            fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+
+            expect(
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+            ).toBeInTheDocument()
+            expect(
+                queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display delete warning message and it should contain text about "saved filters"', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsSavedFilters]: true,
+            })
+
+            const {getByText, getByRole} = renderComponent(props)
+
+            const titleInput = screen.getByLabelText('App title')
+            fireEvent.change(titleInput, {target: {value: 'New title'}})
+
+            fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+
+            expect(
+                getByText(
+                    `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
+                )
+            ).toBeInTheDocument()
         })
     })
 

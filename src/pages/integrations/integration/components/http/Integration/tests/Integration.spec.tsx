@@ -1,12 +1,15 @@
-import {render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {baseHttp, httpIntegration} from 'fixtures/integrations'
-
 import {ContentType} from 'models/api/types'
-
-import {Integration} from '../Integration'
+import {Integration} from 'pages/integrations/integration/components/http/Integration/Integration'
+import {
+    INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
+    INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
+} from 'pages/integrations/integration/constants'
 
 describe('Integration', () => {
     const minProps: ComponentProps<typeof Integration> = {
@@ -76,5 +79,45 @@ describe('Integration', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display confirmation message before the deletion and message should not contain text about "saved filters"', () => {
+        const {getByText, queryByText} = render(
+            <Integration
+                {...minProps}
+                integration={httpIntegration}
+                isUpdate={true}
+            />
+        )
+
+        fireEvent.click(screen.getByText(/Delete HTTP integration/i))
+
+        expect(
+            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+        ).toBeInTheDocument()
+        expect(
+            queryByText(INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT)
+        ).not.toBeInTheDocument()
+    })
+
+    it('should display confirmation message before the deletion and message should contain text about "saved filters" when FF is enabled', () => {
+        const {getByText} = render(
+            <Integration
+                {...{
+                    ...minProps,
+                    flags: {[FeatureFlagKey.AnalyticsSavedFilters]: true},
+                }}
+                integration={httpIntegration}
+                isUpdate={true}
+            />
+        )
+
+        fireEvent.click(screen.getByText(/Delete HTTP integration/i))
+
+        expect(
+            getByText(
+                `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
+            )
+        ).toBeInTheDocument()
     })
 })
