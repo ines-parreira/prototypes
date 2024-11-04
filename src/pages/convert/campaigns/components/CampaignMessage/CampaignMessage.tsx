@@ -49,9 +49,8 @@ import {toJS} from 'utils'
 import css from './CampaignMessage.less'
 
 const SUBSCRIBERS_PLACEHOLDER =
-    'Write your campaign message or prompt, ' +
-    'and let the AI Copy Assistant enhance it for maximum impact. ' +
-    'Highlight key values and include a call-to-action with URLs or discount codes.'
+    'Write your campaign message below and AI Copy Assistant will uplift it. ' +
+    'Highlight key values and add a call-to-action with relevant URLs or discount codes.'
 
 const NONSUBSCRIBERS_PLACEHOLDER = 'Write your message'
 

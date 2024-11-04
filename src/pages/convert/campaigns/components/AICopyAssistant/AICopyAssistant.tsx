@@ -5,7 +5,6 @@ import {CampaignSuggestCopyResponse} from 'models/convert/campaign/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Button from 'pages/common/components/button/Button'
 import {VerticalTextCarousel} from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
@@ -112,18 +111,6 @@ export const AICopyAssistant = ({
                         <span className={css.title}>
                             Uplift your message with AI Copy Assistant
                         </span>
-                        <IconTooltip
-                            icon="info"
-                            tooltipProps={{
-                                placement: 'top',
-                            }}
-                            className={css.tooltip}
-                        >
-                            Type your campaign message below and AI Copy
-                            Assistant will uplift it. Highlight key values and
-                            add a call-to-action with relevant URLs or discount
-                            codes.
-                        </IconTooltip>
                     </div>
                     <div>
                         <Button
