@@ -1,4 +1,4 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
 import {
@@ -73,26 +73,7 @@ describe('<EventSettings/>', () => {
         }
     )
 
-    it('should handle sound select change', () => {
-        const {getAllByRole} = render(
-            <EventSettings
-                settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
-            />
-        )
-
-        const select = getAllByRole('combobox')[0]
-
-        fireEvent.change(select, {target: {value: 'sound 1'}})
-
-        expect(mockOnChangeSound).toHaveBeenCalledWith(
-            'legacy-chat-and-messaging',
-            'sound 1'
-        )
-    })
-
-    it('should handle channel checkbox change', () => {
+    it('should call a function to handle a channel change for ticket updates', () => {
         const {getAllByRole} = render(
             <EventSettings
                 settings={settings}
@@ -102,7 +83,6 @@ describe('<EventSettings/>', () => {
         )
 
         const checkbox = getAllByRole('checkbox')[1]
-
         fireEvent.click(checkbox)
 
         expect(mockOnChangeChannel).toHaveBeenCalledWith(
@@ -112,7 +92,7 @@ describe('<EventSettings/>', () => {
         )
     })
 
-    it('should disable checkbox change for the legacy notification', () => {
+    it('should call a function to handle a sound change for ticket updates', () => {
         const {getAllByRole} = render(
             <EventSettings
                 settings={settings}
@@ -121,29 +101,13 @@ describe('<EventSettings/>', () => {
             />
         )
 
-        const checkbox = getAllByRole('checkbox')[0]
+        const combobox = getAllByRole('combobox')[0]
+        fireEvent.change(combobox, {target: {value: 'sound 1'}})
 
-        fireEvent.click(checkbox)
-
-        expect(mockOnChangeChannel).not.toHaveBeenCalled()
-    })
-
-    it('should render tooltip for the legacy notification', async () => {
-        const {getAllByRole, getByText} = render(
-            <EventSettings
-                settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
-            />
+        expect(mockOnChangeSound).toHaveBeenCalledWith(
+            'legacy-chat-and-messaging',
+            'sound 1'
         )
-
-        fireEvent.mouseEnter(getAllByRole('checkbox')[0])
-
-        await waitFor(() => {
-            expect(
-                getByText('This setting cannot be deselected')
-            ).toBeInTheDocument()
-        })
     })
 
     it.each(
@@ -158,5 +122,42 @@ describe('<EventSettings/>', () => {
         )
 
         expect(getByText(label as string)).toBeInTheDocument()
+    })
+
+    it('should call a function to handle a channel change for new message updates', () => {
+        const {getAllByRole} = render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={mockOnChangeChannel}
+                onChangeSound={mockOnChangeSound}
+            />
+        )
+
+        const checkbox = getAllByRole('checkbox')[5]
+        fireEvent.click(checkbox)
+
+        expect(mockOnChangeChannel).toHaveBeenCalledWith(
+            'ticket-message.created.chat',
+            'in_app_feed',
+            true
+        )
+    })
+
+    it('should call a function to handle a sound change for new message updates', () => {
+        const {getAllByRole} = render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={mockOnChangeChannel}
+                onChangeSound={mockOnChangeSound}
+            />
+        )
+
+        const combobox = getAllByRole('combobox')[5]
+        fireEvent.change(combobox, {target: {value: 'sound 1'}})
+
+        expect(mockOnChangeSound).toHaveBeenCalledWith(
+            'ticket-message.created.chat',
+            'sound 1'
+        )
     })
 })

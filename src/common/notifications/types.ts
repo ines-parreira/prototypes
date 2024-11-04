@@ -103,3 +103,15 @@ export type Settings = {
         }
     }
 }
+
+export type NotificationConfig = {
+    type: string
+    label: ReactNode
+    icon?: string
+    tooltip?: string
+}
+
+export type Setting = {
+    channels: {[k in ChannelType]?: boolean}
+    sound: '' | SoundValue
+}
