@@ -1,0 +1,187 @@
+name: CICD
+
+on: [push]
+
+permissions:
+  contents: read
+
+concurrency:
+  # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ contains(fromJSON('["refs/heads/main", "refs/heads/staging"]'), github.ref) && github.sha || '' }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 18
+  BUILD_DIR: build
+  ASSETS_DIR: src/assets
+  STORAGE_PATH: web-app
+
+jobs:
+  Install-dependencies:
+    name: Install dependencies
+    runs-on: gh-actions-large-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install node with yarn cache
+        uses: actions/setup-node@v4
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Set GitHub Packages auth token
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
+          echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_READ_PACKAGES_TOKEN }}' >> .npmrc
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+  Lint:
+    needs: Install-dependencies
+    runs-on: gh-actions-default-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Lint
+        run: yarn lint
+
+  Typecheck:
+    needs: Install-dependencies
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Typecheck
+        run: yarn types
+
+  Tests:
+    needs: Install-dependencies
+    runs-on: gh-actions-large-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        job-index: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Tests
+        run: yarn test:ci:cover --shard "${{ matrix.job-index }}/8"
+
+      - name: Upload codecov report
+        run: |
+          cat ./codecov_pgp_key.asc | gpg --no-default-keyring --keyring trustedb.gpg --import
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+          gpg --keyring ~/.gnupg/trustedb.gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
+          shasum -a 256 -c codecov.SHA256SUM
+          chmod +x codecov
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+
+  Build:
+    name: Build smoke test
+    needs: Install-dependencies
+    runs-on: gh-actions-default-runner-set
+    if: github.ref != 'refs/heads/staging' && github.ref != 'refs/heads/main'
+    env:
+      WEB_APP_RELEASE: smoke-test-${GITHUB_SHA}
+      GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${GITHUB_SHA}/${STORAGE_PATH}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build preview
+        run: yarn build
+
+  Chromatic:
+    name: Upload Chromatic
+    needs:
+      - Lint
+      - Typecheck
+      - Tests
+      - Build
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Upload Chromatic
+        run: yarn chromatic --zip --exit-once-uploaded --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
