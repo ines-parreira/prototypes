@@ -1,11 +1,15 @@
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
+
 import React, {ReactNode, useEffect, useMemo} from 'react'
+
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
 import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {
@@ -24,9 +28,11 @@ export default function DefaultStatsFilters({
     children,
     notReadyFallback,
 }: Props) {
+    useCustomFieldDefinitions(activeParams)
     const dispatch = useAppDispatch()
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
+
     const userTimezone = useAppSelector(getTimezone)
 
     const currentDay = userTimezone ? moment().tz(userTimezone) : moment()

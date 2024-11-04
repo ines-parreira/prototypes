@@ -1,14 +1,18 @@
 import {render} from '@testing-library/react'
+
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+
 import {user} from 'fixtures/users'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -18,6 +22,8 @@ jest.mock('moment-timezone', () => () => {
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
+const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 describe('DefaultStatsFilters', () => {
     const defaultState = {
@@ -116,5 +122,17 @@ describe('DefaultStatsFilters', () => {
         unmount()
 
         expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('should load the Custom Fields definitions to speed up the Filters load time', () => {
+        const store = mockStore(defaultState)
+
+        render(
+            <Provider store={store}>
+                <DefaultStatsFilters />
+            </Provider>
+        )
+
+        expect(useCustomFieldDefinitionsMock).toHaveBeenCalled()
     })
 })

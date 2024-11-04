@@ -1,4 +1,5 @@
 import {act} from '@testing-library/react'
+
 import {createBrowserHistory} from 'history'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -40,6 +41,7 @@ jest.mock(
         ({children}: {children?: ReactNode}) =>
             children
 )
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const mockHistory = createBrowserHistory()
 
 describe('<StatsRoutes/>', () => {
