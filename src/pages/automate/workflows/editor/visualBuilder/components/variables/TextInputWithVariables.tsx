@@ -1,6 +1,6 @@
 import 'draft-js/dist/Draft.css'
 
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {ContentState, EditorState} from 'draft-js'
 import Editor from 'draft-js-plugins-editor'

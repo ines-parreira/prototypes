@@ -1,5 +1,5 @@
 import {Card} from '@gorgias/analytics-ui-kit'
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
 

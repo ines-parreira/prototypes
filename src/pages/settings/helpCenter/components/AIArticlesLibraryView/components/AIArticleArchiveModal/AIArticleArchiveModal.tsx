@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
 
 import {AIArticle} from 'models/helpCenter/types'

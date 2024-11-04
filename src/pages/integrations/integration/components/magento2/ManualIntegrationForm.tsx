@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {fromJS, Map} from 'immutable'
 import _get from 'lodash/get'
 import _some from 'lodash/some'

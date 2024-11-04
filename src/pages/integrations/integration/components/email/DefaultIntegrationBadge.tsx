@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useRef} from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'

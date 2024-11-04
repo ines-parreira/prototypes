@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {fromJS} from 'immutable'
 import React, {FormEvent, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'

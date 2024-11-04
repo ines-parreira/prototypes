@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {produce} from 'immer'

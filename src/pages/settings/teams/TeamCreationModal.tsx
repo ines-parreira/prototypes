@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
 import {Map} from 'immutable'
 import React, {

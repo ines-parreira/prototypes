@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 
 import classNames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
@@ -86,8 +86,7 @@ export const ConnectToShopSection = ({
                         </Button>
                         <ConfirmButton
                             confirmationButtonIntent="destructive"
-                            confirmationContent="Disconnecting this help center from the store will uninstall it, and make 
-Auto-embedding and Automate features unavailable."
+                            confirmationContent="Disconnecting this help center from the store will uninstall it, and make Auto-embedding and Automate features unavailable."
                             confirmationTitle={<b>Disconnect store?</b>}
                             confirmLabel="Disconnect"
                             fillStyle="ghost"

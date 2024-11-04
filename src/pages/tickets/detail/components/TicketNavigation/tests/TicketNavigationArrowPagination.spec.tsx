@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {render, screen, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
@@ -18,9 +18,9 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppDispatchMock = useAppDispatch as jest.Mock
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: ({children}: ComponentProps<typeof Tooltip>) => {
             return <div aria-label="tooltip mock">{children}</div>
         },

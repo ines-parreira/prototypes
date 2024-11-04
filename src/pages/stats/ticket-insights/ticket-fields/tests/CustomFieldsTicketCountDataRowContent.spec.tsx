@@ -31,7 +31,7 @@ import {
 
 const rafControl = mockRequestAnimationFrame()
 
-jest.mock('@gorgias/ui-kit', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     Tooltip: () => <div />,
 }))
 

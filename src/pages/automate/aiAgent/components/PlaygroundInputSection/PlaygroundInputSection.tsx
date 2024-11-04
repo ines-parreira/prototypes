@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
 

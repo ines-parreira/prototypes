@@ -1,5 +1,5 @@
 import {Placement} from '@floating-ui/react'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
 
 import StatsHelpIcon from '../../../../stats/common/components/StatsHelpIcon'

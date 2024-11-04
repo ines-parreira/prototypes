@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 

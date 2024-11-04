@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {JSONPath} from 'jsonpath-plus'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'

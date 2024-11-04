@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {List} from 'immutable'
 import React, {FormEvent, useCallback, useState} from 'react'

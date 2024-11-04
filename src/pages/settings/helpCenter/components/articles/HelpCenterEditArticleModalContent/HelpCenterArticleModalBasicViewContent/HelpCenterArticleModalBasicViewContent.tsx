@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo} from 'react'
 
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'

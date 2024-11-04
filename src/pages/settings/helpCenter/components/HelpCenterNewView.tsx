@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import axios from 'axios'
 import classnames from 'classnames'
 import {produce} from 'immer'

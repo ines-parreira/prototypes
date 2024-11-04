@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Link, NavLink, useParams, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {EditorState} from 'draft-js'
 import React, {Component, ComponentProps} from 'react'

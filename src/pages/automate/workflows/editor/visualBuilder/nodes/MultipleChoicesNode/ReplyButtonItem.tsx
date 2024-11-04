@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import Editor from 'draft-js-plugins-editor'
 import React, {RefObject, useEffect, useState} from 'react'

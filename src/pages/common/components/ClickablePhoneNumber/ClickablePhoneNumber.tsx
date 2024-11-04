@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useEffect, useMemo, useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
 

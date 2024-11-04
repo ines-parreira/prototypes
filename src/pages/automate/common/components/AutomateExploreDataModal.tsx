@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -3082,10 +3082,10 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7#25a551ebe4ce428f03e1157f60263b2ef049d5c7"
   integrity sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==
 
-"@gorgias/ui-kit@^0.4.0":
-  version "0.4.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/ui-kit/0.4.0/c46a965c4610284c3f7ceb26aa747a1722991e07#c46a965c4610284c3f7ceb26aa747a1722991e07"
-  integrity sha512-9ldXqtCZ8AdvBr5g9crQbwi+XduvUP9uA5gjdT9PgeRchMRzAea9mVllVR7En+VgAq7LHM+sd2MjnvMAoU0vXA==
+"@gorgias/merchant-ui-kit@^0.0.2":
+  version "0.0.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.0.2/155cfcd4ac0c590e08ee5c74b9ddea9109324660#155cfcd4ac0c590e08ee5c74b9ddea9109324660"
+  integrity sha512-TFwnw0QkIu2PuDwWxnQKCEpuw46uY5Er9ZKAbXkHMR70rSFeVkyc63m8yo/oRzphxD2v7yUH6fVI/7V2yz7D4g==
   dependencies:
     "@floating-ui/react" "^0.25.1"
     downshift "^9.0.6"

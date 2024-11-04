@@ -1,6 +1,6 @@
 // External Libraries
 import {useId} from '@floating-ui/react'
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {List} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {

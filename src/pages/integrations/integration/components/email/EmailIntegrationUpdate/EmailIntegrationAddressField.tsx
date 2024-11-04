@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useRef} from 'react'
 
 import {useFlag} from 'common/flags'

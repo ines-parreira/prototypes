@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {Map, fromJS} from 'immutable'
 import React, {useMemo, useState} from 'react'
 

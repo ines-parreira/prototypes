@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {Link} from 'react-router-dom'

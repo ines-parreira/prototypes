@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {AxiosError} from 'axios'
 import {Map} from 'immutable'
 import {isEqual} from 'lodash'

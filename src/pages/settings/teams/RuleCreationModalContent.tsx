@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'

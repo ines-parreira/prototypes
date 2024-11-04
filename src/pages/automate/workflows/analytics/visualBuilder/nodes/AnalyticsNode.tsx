@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, Position, NodeProps, useNodeId} from 'reactflow'

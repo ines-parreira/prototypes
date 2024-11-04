@@ -40,9 +40,9 @@ jest.mock(
     }
 )
 
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: ({children}: {children: ReactNode}) => (
             <div>TooltipMock{children}</div>
         ),

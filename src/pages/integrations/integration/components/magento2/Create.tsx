@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
 import React, {useState} from 'react'
 import {Col, Container, Row} from 'reactstrap'

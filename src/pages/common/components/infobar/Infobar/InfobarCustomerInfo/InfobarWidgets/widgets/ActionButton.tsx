@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'

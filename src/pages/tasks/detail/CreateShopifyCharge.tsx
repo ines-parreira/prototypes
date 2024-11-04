@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {AxiosError} from 'axios'
 import classnames from 'classnames'
 import React, {FormEvent, useState} from 'react'

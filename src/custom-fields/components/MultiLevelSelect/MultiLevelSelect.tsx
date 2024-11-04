@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import React, {RefObject, useCallback, useMemo, useRef, useState} from 'react'

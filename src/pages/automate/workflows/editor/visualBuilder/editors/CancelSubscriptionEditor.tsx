@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'

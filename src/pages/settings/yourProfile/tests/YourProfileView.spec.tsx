@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/ui-kit'
+import {SelectInput} from '@gorgias/merchant-ui-kit'
 import {
     act,
     fireEvent,
@@ -48,9 +48,9 @@ jest.mock('moment-timezone', () => {
     }
 })
 
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         SelectInput: ({
             label,
             options,

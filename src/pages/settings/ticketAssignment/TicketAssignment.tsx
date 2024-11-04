@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {List} from 'immutable'
 import _isEqual from 'lodash/isEqual'

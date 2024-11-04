@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'

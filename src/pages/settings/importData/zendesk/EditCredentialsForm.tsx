@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import React, {FormEvent, useState} from 'react'

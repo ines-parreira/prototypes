@@ -13,9 +13,9 @@ import {MacrosState} from 'state/entities/macros/types'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 
 jest.mock('models/macro/resources')
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: () => <div>Tooltip</div>,
     } as Record<string, unknown>
 })

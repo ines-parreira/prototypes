@@ -1,13 +1,13 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
 import {PlanInterval} from '../../../../models/billing/types'
 import SubscriptionAmount from '../SubscriptionAmount'
 
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: ({children}: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
         ),

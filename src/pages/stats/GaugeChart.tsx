@@ -1,5 +1,5 @@
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useMemo, useRef} from 'react'
 
 import {DEFAULT_LOCALE, formatNumber} from './common/utils'

@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {FormEvent, useState} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
 

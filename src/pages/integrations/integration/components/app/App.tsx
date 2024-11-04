@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {isEmpty} from 'lodash'
 import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'

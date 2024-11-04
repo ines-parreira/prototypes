@@ -7,7 +7,7 @@ import {
     WeightShopifyMetafieldData,
 } from '@gorgias/api-queries'
 import {ShopifyMetafieldType} from '@gorgias/api-types'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {isArray, map, startCase, truncate} from 'lodash'
 import React, {createRef, useContext} from 'react'
 

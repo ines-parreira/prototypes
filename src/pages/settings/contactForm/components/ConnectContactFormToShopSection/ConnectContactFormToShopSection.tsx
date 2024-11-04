@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 

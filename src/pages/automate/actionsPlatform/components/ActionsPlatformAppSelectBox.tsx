@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useRef, useState} from 'react'
 
 import {IntegrationType} from 'models/integration/types'

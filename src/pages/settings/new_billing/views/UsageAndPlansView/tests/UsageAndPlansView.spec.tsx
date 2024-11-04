@@ -1,4 +1,4 @@
-import * as uiKit from '@gorgias/ui-kit'
+import * as uiKit from '@gorgias/merchant-ui-kit'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
@@ -36,10 +36,10 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
 // Mock ui-kit as an ES module to enable spying
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         __esModule: true,
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
     } as Record<string, unknown>
 })
 

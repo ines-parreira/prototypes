@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import React, {Component, CSSProperties} from 'react'

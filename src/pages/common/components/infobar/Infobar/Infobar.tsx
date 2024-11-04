@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import React, {KeyboardEvent, useEffect, useMemo, useState} from 'react'

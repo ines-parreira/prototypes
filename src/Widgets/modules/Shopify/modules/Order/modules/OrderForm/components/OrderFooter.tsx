@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {Map} from 'immutable'
 import React, {ChangeEvent} from 'react'
 import {Col, Container, FormGroup, FormText, Input, Row} from 'reactstrap'

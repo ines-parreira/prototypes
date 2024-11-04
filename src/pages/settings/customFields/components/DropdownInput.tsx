@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import uniqueId from 'lodash/uniqueId'
 import React, {memo, useCallback, useState} from 'react'
 

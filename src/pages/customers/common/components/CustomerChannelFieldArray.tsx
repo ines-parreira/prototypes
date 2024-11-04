@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import _clone from 'lodash/clone'
 import React, {Component} from 'react'
 import {FormGroup, Row, Col} from 'reactstrap'

@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import moment from 'moment'
 import React, {useEffect, useMemo, useRef, useState} from 'react'

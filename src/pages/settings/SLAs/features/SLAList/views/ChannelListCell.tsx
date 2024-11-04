@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {PropsWithRef, useMemo} from 'react'
 
 import SourceIcon from 'pages/common/components/SourceIcon'

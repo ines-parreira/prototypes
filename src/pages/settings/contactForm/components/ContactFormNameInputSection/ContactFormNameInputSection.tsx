@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import _debounce from 'lodash/debounce'
 import React, {useMemo, useCallback, useEffect, useState} from 'react'
 

@@ -1,4 +1,4 @@
-import {SelectInput} from '@gorgias/ui-kit'
+import {SelectInput} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'

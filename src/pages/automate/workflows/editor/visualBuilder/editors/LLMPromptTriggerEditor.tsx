@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import _noop from 'lodash/noop'
 import React, {useMemo} from 'react'
 

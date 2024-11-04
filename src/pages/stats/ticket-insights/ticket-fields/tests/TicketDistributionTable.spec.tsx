@@ -25,7 +25,7 @@ const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 jest.mock('hooks/reporting/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
-jest.mock('@gorgias/ui-kit', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     Tooltip: () => <div />,
 }))
 

@@ -1,5 +1,5 @@
 import {TicketQAScoreDimension} from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 

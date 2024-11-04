@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent, ContextType, useEffect} from 'react'
 import ReactPlayer from 'react-player'

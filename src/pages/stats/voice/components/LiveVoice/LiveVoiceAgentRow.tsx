@@ -2,7 +2,7 @@ import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
 } from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useState} from 'react'
 

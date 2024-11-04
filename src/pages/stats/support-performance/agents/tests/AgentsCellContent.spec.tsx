@@ -16,7 +16,7 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('@gorgias/ui-kit', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     Tooltip: () => <div />,
 }))
 

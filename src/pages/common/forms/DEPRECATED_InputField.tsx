@@ -1,5 +1,5 @@
 // Please use src/pages/common/forms/input/InputField.tsx instead
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'

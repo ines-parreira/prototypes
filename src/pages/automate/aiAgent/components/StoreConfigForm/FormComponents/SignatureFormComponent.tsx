@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useState} from 'react'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

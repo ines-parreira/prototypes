@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {render, screen, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
@@ -15,9 +15,9 @@ import client from 'models/api/resources'
 import {ShippingMethod, useShippingMethods} from '../ShippingMethod'
 
 // Mocking to check what text is provided to `Tooltip`
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: ({children}: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
         ),

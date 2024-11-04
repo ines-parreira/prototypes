@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useEffect, useMemo, useState} from 'react'
 
 import store from 'assets/img/icons/store.svg'

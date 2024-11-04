@@ -1,4 +1,4 @@
-import {RootNodeProvider} from '@gorgias/ui-kit'
+import {RootNodeProvider} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
 
 import {useAppNode} from 'appNode'

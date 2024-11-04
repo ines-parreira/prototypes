@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {ContactFormIntegration} from 'models/contactForm/types'

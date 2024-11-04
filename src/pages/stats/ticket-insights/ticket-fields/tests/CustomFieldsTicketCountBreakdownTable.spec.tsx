@@ -55,7 +55,7 @@ const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
-jest.mock('@gorgias/ui-kit', () => ({
+jest.mock('@gorgias/merchant-ui-kit', () => ({
     Tooltip: () => <div />,
 }))
 

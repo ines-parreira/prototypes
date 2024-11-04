@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'

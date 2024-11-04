@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'

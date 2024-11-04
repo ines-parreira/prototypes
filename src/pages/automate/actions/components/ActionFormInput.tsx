@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import _omit from 'lodash/omit'
 import React, {useMemo, useRef} from 'react'
 

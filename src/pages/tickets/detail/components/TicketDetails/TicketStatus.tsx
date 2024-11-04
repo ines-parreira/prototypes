@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'

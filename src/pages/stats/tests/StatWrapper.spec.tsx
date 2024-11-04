@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
@@ -23,9 +23,9 @@ jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('models/stat/resources')
 jest.mock('common/segment')
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         Tooltip: ({
             children,
             ...otherProps

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import {fromJS, List, Map} from 'immutable'
 
 import pluralize from 'pluralize'

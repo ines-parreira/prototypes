@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import {get as _get} from 'lodash'
 import React, {FormEvent, useCallback} from 'react'
 

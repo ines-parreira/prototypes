@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/ui-kit'
+import {Label} from '@gorgias/merchant-ui-kit'
 import axios, {AxiosError} from 'axios'
 import {Map} from 'immutable'
 import moment from 'moment-timezone'

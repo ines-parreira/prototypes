@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import axios, {AxiosError, CancelToken} from 'axios'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'

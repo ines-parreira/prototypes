@@ -1,4 +1,4 @@
-import {Label, Tooltip} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import {Location} from 'history'
 import {pick, set} from 'lodash'
 import React, {useCallback, useEffect, useRef, useState} from 'react'

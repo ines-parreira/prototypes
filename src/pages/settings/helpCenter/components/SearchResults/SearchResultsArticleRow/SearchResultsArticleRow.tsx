@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import _keyBy from 'lodash/keyBy'
 import React, {FC, useCallback, useMemo} from 'react'
 

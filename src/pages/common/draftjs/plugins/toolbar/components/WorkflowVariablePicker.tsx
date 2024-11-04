@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useRef, useState} from 'react'
 
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'

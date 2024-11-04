@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useContext} from 'react'
 
 import navbarCss from 'assets/css/navbar.less'

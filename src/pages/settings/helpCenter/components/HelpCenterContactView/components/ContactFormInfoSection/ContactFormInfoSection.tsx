@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useState} from 'react'

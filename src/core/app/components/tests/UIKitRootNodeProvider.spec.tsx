@@ -1,4 +1,4 @@
-import {RootNodeProvider} from '@gorgias/ui-kit'
+import {RootNodeProvider} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React from 'react'
 
@@ -10,9 +10,9 @@ import UIKitRootNodeProvider from '../UIKitRootNodeProvider'
 jest.mock('appNode')
 const useAppNodeMock = assumeMock(useAppNode)
 
-jest.mock('@gorgias/ui-kit', () => {
+jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
-        ...jest.requireActual('@gorgias/ui-kit'),
+        ...jest.requireActual('@gorgias/merchant-ui-kit'),
         RootNodeProvider: jest.fn(() => null),
     } as Record<string, unknown>
 })

@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/ui-kit'
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useEffect} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
