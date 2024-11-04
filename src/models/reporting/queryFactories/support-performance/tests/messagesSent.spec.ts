@@ -24,7 +24,7 @@ import {
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
-    PublicHelpdeskAndApiMessagesFilter,
+    PublicAndMessageViaFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
 
@@ -62,7 +62,7 @@ describe('messagesSentQueryFactory', () => {
                     values: [periodStart, periodEnd],
                 },
                 ...NotSpamNorTrashedTicketsFilter,
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
@@ -118,7 +118,7 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
                     values: [periodStart, periodEnd],
                 },
                 ...NotSpamNorTrashedTicketsFilter,
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,

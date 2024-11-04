@@ -21,7 +21,7 @@ import {
     HelpdeskMessagesStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
-    PublicHelpdeskAndApiMessagesFilter,
+    PublicAndMessageViaFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
 } from 'utils/reporting'
@@ -51,7 +51,7 @@ export const messagesSentQueryFactory = (
             values: getFilterDateRange(filters.period),
         },
         ...NotSpamNorTrashedTicketsFilter,
-        ...PublicHelpdeskAndApiMessagesFilter,
+        ...PublicAndMessageViaFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,
             filters

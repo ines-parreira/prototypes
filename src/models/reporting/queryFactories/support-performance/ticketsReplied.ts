@@ -22,7 +22,7 @@ import {
     HelpdeskTicketsRepliedStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
-    PublicHelpdeskAndApiMessagesFilter,
+    PublicAndMessageViaFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
 } from 'utils/reporting'
@@ -57,7 +57,7 @@ export const ticketsRepliedQueryFactory = (
             operator: ReportingFilterOperator.NotEquals,
             values: [TicketMessageSourceType.InternalNote],
         },
-        ...PublicHelpdeskAndApiMessagesFilter,
+        ...PublicAndMessageViaFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskTicketsRepliedStatsFiltersMembers,
             filters

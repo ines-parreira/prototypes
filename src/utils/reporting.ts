@@ -130,7 +130,7 @@ export const NotSpamNorTrashedTicketsFilter = [
     },
 ]
 
-export const PublicHelpdeskAndApiMessagesFilter = [
+export const PublicAndMessageViaFilter = [
     {
         member: HelpdeskMessageMember.IsMessagePublic,
         operator: ReportingFilterOperator.Equals,
@@ -139,7 +139,7 @@ export const PublicHelpdeskAndApiMessagesFilter = [
     {
         member: HelpdeskMessageMember.MessageVia,
         operator: ReportingFilterOperator.In,
-        values: ['helpdesk', 'api'],
+        values: ['aircall', 'api', 'helpdesk'],
     },
 ]
 

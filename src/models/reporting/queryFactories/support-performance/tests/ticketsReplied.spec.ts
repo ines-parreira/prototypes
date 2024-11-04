@@ -25,7 +25,7 @@ import {
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
-    PublicHelpdeskAndApiMessagesFilter,
+    PublicAndMessageViaFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
 
@@ -68,7 +68,7 @@ describe('ticketsRepliedQueryFactory', () => {
                     operator: ReportingFilterOperator.NotEquals,
                     values: [TicketMessageSourceType.InternalNote],
                 },
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
@@ -129,7 +129,7 @@ describe('ticketsRepliedTimeSeriesQueryFactory', () => {
                     operator: ReportingFilterOperator.NotEquals,
                     values: [TicketMessageSourceType.InternalNote],
                 },
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
@@ -198,7 +198,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
                     operator: ReportingFilterOperator.NotEquals,
                     values: [TicketMessageSourceType.InternalNote],
                 },
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
@@ -267,7 +267,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
                     operator: ReportingFilterOperator.NotEquals,
                     values: [TicketMessageSourceType.InternalNote],
                 },
-                ...PublicHelpdeskAndApiMessagesFilter,
+                ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
