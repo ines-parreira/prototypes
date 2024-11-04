@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
@@ -21,7 +21,7 @@ import {FeatureSettings} from './FeatureSettings'
 export const ConnectedChannelsEmailView = () => {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
-    const isAiAgentMultichannelEnablementEnabled =
+    const isAiAgentMultiChannelEnabled =
         useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
 
     const {shopType, shopName} = useParams<{
@@ -29,7 +29,7 @@ export const ConnectedChannelsEmailView = () => {
         shopName: string
     }>()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const accountDomain = currentAccount.get('domain')
@@ -44,12 +44,14 @@ export const ConnectedChannelsEmailView = () => {
             storeConfiguration?.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations:
             storeConfiguration?.monitoredChatIntegrations ?? [],
-        isChatChanelEnabled: isAiAgentMultichannelEnablementEnabled
+        isChatChanelEnabled: isAiAgentMultiChannelEnabled
             ? storeConfiguration?.chatChannelDeactivatedDatetime === null
             : storeConfiguration?.deactivatedDatetime === null,
-        isEmailChannelEnabled: isAiAgentMultichannelEnablementEnabled
+        // Reverse the condition because this component update email channel without "Save" button how it works on Settings Page.
+        // Linear to refactor this hook to support params in updateSettingsAfterAiAgentEnabled https://linear.app/gorgias/issue/AUTAI-1993/useaiagentenabled-hook-incorrectly-working-with-one-click-updates
+        isEmailChannelEnabled: !(isAiAgentMultiChannelEnabled
             ? storeConfiguration?.emailChannelDeactivatedDatetime === null
-            : storeConfiguration?.deactivatedDatetime === null,
+            : storeConfiguration?.deactivatedDatetime === null),
     })
 
     const {
@@ -69,13 +71,49 @@ export const ConnectedChannelsEmailView = () => {
         )
     }
 
+    const deactivatedDatetime = isAiAgentMultiChannelEnabled
+        ? storeConfiguration?.emailChannelDeactivatedDatetime
+        : storeConfiguration?.deactivatedDatetime
+
     const isAIAgentToggled = isAiAgentEnabled(
-        storeConfiguration?.deactivatedDatetime !== undefined
-            ? storeConfiguration.deactivatedDatetime
+        deactivatedDatetime !== undefined
+            ? deactivatedDatetime
             : new Date().toISOString()
     )
 
-    const isDisabled = !storeConfiguration
+    const isDisabled =
+        !storeConfiguration ||
+        storeConfiguration.monitoredEmailIntegrations.length === 0
+
+    const onToggle = async (value: boolean) => {
+        if (!storeConfiguration) return
+
+        if (isAiAgentMultiChannelEnabled) {
+            await upsertStoreConfiguration({
+                ...storeConfiguration,
+                trialModeActivatedDatetime: null,
+                emailChannelDeactivatedDatetime: value
+                    ? null
+                    : new Date().toISOString(),
+            })
+        } else {
+            await upsertStoreConfiguration({
+                ...storeConfiguration,
+                trialModeActivatedDatetime: null,
+                deactivatedDatetime: value ? null : new Date().toISOString(),
+            })
+        }
+        if (error) {
+            void dispatch(
+                notify({
+                    message: 'Could not update store configuration',
+                })
+            )
+        }
+        if (!isAIAgentToggled && isAiAgentOnboardingWizardEnabled) {
+            updateSettingsAfterAiAgentEnabled()
+        }
+    }
 
     return (
         <div className={classNames('full-width', css.container)}>
@@ -91,34 +129,7 @@ export const ConnectedChannelsEmailView = () => {
                         disabled={isDisabled}
                         showConfigurationRequiredAlert={isDisabled}
                         isLoading={isUpserting}
-                        onToggle={async (value) => {
-                            if (!storeConfiguration) return
-                            await upsertStoreConfiguration({
-                                ...storeConfiguration,
-                                trialModeActivatedDatetime: null,
-                                emailChannelDeactivatedDatetime: value
-                                    ? null
-                                    : new Date().toISOString(),
-                                previewModeActivatedDatetime: null,
-                                deactivatedDatetime: value
-                                    ? null
-                                    : new Date().toISOString(),
-                            })
-                            if (error) {
-                                dispatch(
-                                    notify({
-                                        message:
-                                            'Could not update store configuration',
-                                    })
-                                )
-                            }
-                            if (
-                                !isAIAgentToggled &&
-                                isAiAgentOnboardingWizardEnabled
-                            ) {
-                                updateSettingsAfterAiAgentEnabled()
-                            }
-                        }}
+                        onToggle={onToggle}
                     />
                 </div>
             </div>

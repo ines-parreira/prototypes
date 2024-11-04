@@ -128,12 +128,14 @@ export const useAiAgentEnabled = ({
 
         Promise.all(calls)
             .then(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: successNotification,
-                    })
-                )
+                if (successNotification !== '') {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: successNotification,
+                        })
+                    )
+                }
             })
             .catch(() => {
                 void dispatch(
