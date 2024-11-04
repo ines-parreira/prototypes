@@ -219,7 +219,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
         await flushPromises()
 
         act(() => {
-            userEvent.click(screen.getByText(/Regenerate/))
+            userEvent.click(screen.getByText('Generate'))
         })
 
         await flushPromises()

@@ -373,7 +373,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Regenerate/))
+                userEvent.click(screen.getByText(/Generate/))
             })
 
             await flushPromises()
@@ -418,7 +418,7 @@ describe('<CampaignDetailsForm />', () => {
             )
 
             act(() => {
-                userEvent.click(screen.getByText(/Regenerate/))
+                userEvent.click(screen.getByText(/Generate/))
             })
 
             await flushPromises()

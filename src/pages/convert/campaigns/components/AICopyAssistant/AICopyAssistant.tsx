@@ -64,7 +64,7 @@ export const AICopyAssistant = ({
         triggers,
     ])
 
-    const onRegenerateClick = useCallback(async () => {
+    const onGenerateClick = useCallback(async () => {
         setIsRegenerating(true)
         setHasError(false)
         try {
@@ -86,14 +86,14 @@ export const AICopyAssistant = ({
             shouldGenerateInitialSuggestion &&
             !hasGeneratedInitialSuggestion.current
         ) {
-            void onRegenerateClick()
+            void onGenerateClick()
             hasGeneratedInitialSuggestion.current = true
         }
     }, [
         isAssistantEnabled,
         isEnabled,
         shouldGenerateInitialSuggestion,
-        onRegenerateClick,
+        onGenerateClick,
     ])
 
     const applyButton = (
@@ -115,6 +115,16 @@ export const AICopyAssistant = ({
         [onApply, context, shopId, campaign.id]
     )
 
+    const generateButtonLabel = useMemo(() => {
+        if (isRegenerating) {
+            return suggestions.length ? 'Regenerating' : 'Generating'
+        }
+
+        return shouldGenerateInitialSuggestion || suggestions.length
+            ? 'Regenerate'
+            : 'Generate'
+    }, [isRegenerating, shouldGenerateInitialSuggestion, suggestions])
+
     if (!isAssistantEnabled) {
         return null
     }
@@ -134,9 +144,9 @@ export const AICopyAssistant = ({
                             intent="secondary"
                             isLoading={isRegenerating}
                             className={css.regenerateButton}
-                            onClick={onRegenerateClick}
+                            onClick={onGenerateClick}
                         >
-                            {isRegenerating ? 'Regenerating' : 'Regenerate'}
+                            {generateButtonLabel}
                         </Button>
                     </div>
                 </div>

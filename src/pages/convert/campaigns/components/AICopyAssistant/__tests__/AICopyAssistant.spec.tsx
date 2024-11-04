@@ -66,10 +66,10 @@ describe('AICopyAssistant', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should call onRegenerateClick when Regenerate button is clicked', () => {
+    it('should call onGenerateClick when Generate button is clicked', () => {
         render(<AICopyAssistant {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('Regenerate'))
+        fireEvent.click(screen.getByText('Generate'))
 
         expect(mockGenerateSuggestions).toHaveBeenCalled()
     })
@@ -80,7 +80,7 @@ describe('AICopyAssistant', () => {
         })
         render(<AICopyAssistant {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('Regenerate'))
+        fireEvent.click(screen.getByText('Generate'))
 
         await waitFor(() => {
             expect(screen.getByText('Suggestion 1')).toBeInTheDocument()
@@ -91,7 +91,7 @@ describe('AICopyAssistant', () => {
         mockGenerateSuggestions.mockRejectedValue(new Error('API Error'))
         render(<AICopyAssistant {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('Regenerate'))
+        fireEvent.click(screen.getByText('Generate'))
 
         await waitFor(() => {
             expect(
@@ -107,7 +107,7 @@ describe('AICopyAssistant', () => {
         })
         render(<AICopyAssistant {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('Regenerate'))
+        fireEvent.click(screen.getByText('Generate'))
 
         await waitFor(() => {
             fireEvent.click(screen.getByText('Apply'))
@@ -126,7 +126,7 @@ describe('AICopyAssistant', () => {
         })
     })
 
-    it('should call onRegenerateClick on initial render if shouldGenerateInitialSuggestion is true', async () => {
+    it('should call onGenerateClick on initial render if shouldGenerateInitialSuggestion is true', async () => {
         render(
             <AICopyAssistant
                 {...defaultProps}
@@ -159,5 +159,43 @@ describe('AICopyAssistant', () => {
                 }),
             ])
         })
+    })
+
+    it('should display Regenerate label on follow-up calls', async () => {
+        render(<AICopyAssistant {...defaultProps} />)
+
+        fireEvent.click(screen.getByText('Generate'))
+
+        expect(mockGenerateSuggestions).toHaveBeenCalled()
+
+        await waitFor(() => {
+            expect(screen.getByText('Regenerate')).toBeInTheDocument()
+        })
+    })
+
+    it('should display Generating label on the first call', () => {
+        render(<AICopyAssistant {...defaultProps} />)
+
+        fireEvent.click(screen.getByText('Generate'))
+
+        expect(mockGenerateSuggestions).toHaveBeenCalled()
+
+        expect(screen.getByText('Generating')).toBeInTheDocument()
+    })
+
+    it('should display Generating label on follow-up calls', async () => {
+        render(<AICopyAssistant {...defaultProps} />)
+
+        fireEvent.click(screen.getByText('Generate'))
+
+        expect(mockGenerateSuggestions).toHaveBeenCalled()
+
+        await waitFor(() => {
+            expect(screen.getByText('Regenerate')).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByText('Regenerate'))
+
+        expect(screen.getByText('Regenerating')).toBeInTheDocument()
     })
 })
