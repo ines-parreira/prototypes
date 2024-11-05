@@ -1,8 +1,9 @@
 import isString from 'lodash/isString'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import noop from 'lodash/noop'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import React, {useCallback} from 'react'
+
+import {connect} from 'react-redux'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
@@ -22,30 +23,45 @@ import {
 } from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
+
 import {
     Channel,
     ChannelIdentifier,
     getChannels,
     toChannel,
 } from 'services/channels'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['channels']
+    value: StatsFiltersWithLogicalOperator[FilterKey.Channels]
     channelsFilter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.Channels],
+            undefined
+        >
+    ) => void
+    dispatchStatFiltersDirty?: () => void
+    dispatchStatFiltersClean?: () => void
 } & RemovableFilter
 
 export function ChannelsFilter({
     value = emptyFilter,
+    dispatchUpdate,
     channelsFilter,
     initializeAsOpen = false,
     onRemove,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
 }: Props) {
-    const dispatch = useAppDispatch()
     const channels = filterChannels(getChannels(), channelsFilter)
     const allChannelsSlugs = channels.map((channel) => channel.slug)
 
@@ -88,41 +104,33 @@ export function ChannelsFilter({
                     return toChannel(channelLabel)?.slug
                 })
                 .filter(isString)
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    channels: {
-                        values: channels,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: channels,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    channels: {
-                        values: value.values,
-                        operator: operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: value.values,
+                operator: operator,
+            })
         },
-        [dispatch, value.values]
+        [dispatchUpdate, value.values]
     )
 
     const handleDropdownOpen = () => {
-        dispatch(statFiltersDirty())
+        dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Channels,
             LogicalOperatorLabel[value.operator]
         )
-        dispatch(statFiltersClean())
+        dispatchStatFiltersClean()
     }
 
     return (
@@ -140,11 +148,7 @@ export function ChannelsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatch(
-                    mergeStatsFiltersWithLogicalOperator({
-                        channels: emptyFilter,
-                    })
-                )
+                dispatchUpdate(emptyFilter)
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
@@ -155,6 +159,32 @@ export function ChannelsFilter({
     )
 }
 
-export const ChannelsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Channels],
-}))(ChannelsFilter)
+export const ChannelsFilterWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[
+            FilterKey.Channels
+        ],
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                channels: filter,
+            }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
+    }
+)(ChannelsFilter)
+
+export const ChannelsFilterWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[FilterKey.Channels],
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                member: FilterKey.Channels,
+                operator: filter.operator,
+                values: filter.values,
+            }),
+    }
+)(ChannelsFilter)

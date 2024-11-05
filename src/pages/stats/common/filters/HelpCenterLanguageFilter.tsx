@@ -2,7 +2,6 @@ import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -24,11 +23,19 @@ import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator['localeCodes']
+    value: StatsFiltersWithLogicalOperator[FilterKey.LocaleCodes]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.LocaleCodes],
+            undefined
+        >
+    ) => void
 }
 
-const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
-    const dispatch = useAppDispatch()
+const HelpCenterLanguageFilter = ({
+    value = emptyFilter,
+    dispatchUpdate,
+}: Props) => {
     const locales = useSupportedLocales()
     const {helpCenters: selectedHelpCenterId} = useAppSelector(
         getPageStatsFiltersWithLogicalOperators
@@ -42,7 +49,7 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
     }, [helpCenters, selectedHelpCenterId])
     const helpCenterLocales = getLocaleSelectOptions(
         locales,
-        selectedHelpCenterItem[0].supported_locales
+        selectedHelpCenterItem[0]?.supported_locales ?? []
     )
 
     const languages = useMemo(
@@ -69,13 +76,9 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    localeCodes: {values, operator: value.operator},
-                })
-            )
+            dispatchUpdate({values, operator: value.operator})
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -92,16 +95,12 @@ const HelpCenterLanguageFilter = ({value = emptyFilter}: Props) => {
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    localeCodes: {
-                        values: value.values,
-                        operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: value.values,
+                operator,
+            })
         },
-        [dispatch, value.values]
+        [dispatchUpdate, value.values]
     )
 
     const handleDropdownClosed = () => {
@@ -138,5 +137,11 @@ export const HelpCenterLanguageFilterWithState = connect(
         value: getPageStatsFiltersWithLogicalOperators(state)[
             FilterKey.LocaleCodes
         ],
-    })
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                localeCodes: filter,
+            }),
+    }
 )(HelpCenterLanguageFilter)

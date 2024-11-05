@@ -1,6 +1,7 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,7 @@ import {CustomField} from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
@@ -36,13 +37,14 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 jest.mock('pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.tsx')
 const CustomFieldSelectMock = assumeMock(CustomFieldSelect)
 jest.mock(

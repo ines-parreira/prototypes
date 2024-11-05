@@ -1,5 +1,6 @@
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -16,23 +17,19 @@ import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
     MAX_SCORE_VALUE,
     ScoreFilter,
+    ScoreFiltersWithSavedState,
     ScoreFiltersWithState,
 } from 'pages/stats/common/filters/ScoreFilter'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
-import {statFiltersClean} from 'state/ui/stats/actions'
+import * as statsSlice from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {renderWithStore} from 'utils/testing'
 
-const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -40,37 +37,43 @@ jest.mock('common/segment', () => ({
 }))
 
 const defaultState = {
-    stats: initialState,
-}
-
-const dispatchChangeValuePayload = (
-    values: string[],
-    operator = LogicalOperatorEnum.ONE_OF
-) =>
-    mergeStatsFiltersWithLogicalOperator({
-        score: {
-            values,
-            operator,
+    stats: statsSlice.initialState,
+    ui: {
+        stats: {
+            filters: filtersSlice.initialState,
         },
-    })
+    },
+} as RootState
 
 const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
     ({label: label}) => label
 )
 
 describe('ScoreFilter', () => {
+    const dispatchUpdate = jest.fn()
+    const dispatchStatFiltersDirty = jest.fn()
+    const dispatchStatFiltersClean = jest.fn()
     const renderComponent = () =>
         renderWithStore(
             <ScoreFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
     it('should render ScoreFilter component just fine if value is undefined', () => {
         renderWithStore(
-            <ScoreFilter onRemove={mockedRemove} value={undefined} />,
+            <ScoreFilter
+                onRemove={mockedRemove}
+                value={undefined}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         expect(
@@ -117,8 +120,8 @@ describe('ScoreFilter', () => {
                 getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
             )
         )
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            dispatchChangeValuePayload([`${numberOfStars}`])
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withLogicalOperator([`${numberOfStars}`])
         )
     })
 
@@ -128,6 +131,9 @@ describe('ScoreFilter', () => {
             <ScoreFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -139,18 +145,16 @@ describe('ScoreFilter', () => {
                 getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
             )[1]
         )
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            dispatchChangeValuePayload([])
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
     })
 
     it('should dispatch the right action on deselect all', () => {
         const {rerenderComponent} = renderComponent()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            2,
-            dispatchChangeValuePayload(
+
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withLogicalOperator(
                 Array.from({length: MAX_SCORE_VALUE})
                     .fill(undefined)
                     .map((_, index) => `${MAX_SCORE_VALUE - index}`)
@@ -160,21 +164,21 @@ describe('ScoreFilter', () => {
             <ScoreFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`5`, `4`, `3`])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
         fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            dispatchChangeValuePayload([])
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
     })
 
     it('should remove the Score filter', () => {
         renderComponent()
         fireEvent.click(screen.getByText('close'))
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            dispatchChangeValuePayload([])
-        )
+
+        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
         expect(mockedRemove).toHaveBeenCalled()
     })
 
@@ -194,25 +198,17 @@ describe('ScoreFilter', () => {
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                score: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                score: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
@@ -231,11 +227,14 @@ describe('ScoreFilter', () => {
             <ScoreFilter
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
+        expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Score,
             logical_operator:
@@ -246,11 +245,34 @@ describe('ScoreFilter', () => {
     })
 
     describe('ScoreFiltersWithState', () => {
-        it('should render ScoreFilter component', () => {
+        it('should render ScoreFiltersWithState component', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
             renderWithStore(<ScoreFiltersWithState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
             expect(
                 screen.getByText(FilterLabels[FilterKey.Score])
             ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('ScoreFiltersWithSavedState', () => {
+        it('should render ScoreFiltersWithSavedState component', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(<ScoreFiltersWithSavedState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Score])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

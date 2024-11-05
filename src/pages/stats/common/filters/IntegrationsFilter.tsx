@@ -1,7 +1,7 @@
+import noop from 'lodash/noop'
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {Integration} from 'models/integration/types'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
@@ -20,15 +20,25 @@ import {DropdownOption} from 'pages/stats/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
     integrations: Integration[]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.Integrations],
+            undefined
+        >
+    ) => void
+    dispatchStatFiltersDirty?: () => void
+    dispatchStatFiltersClean?: () => void
 } & RemovableFilter
 
 export function IntegrationsFilter({
@@ -36,9 +46,10 @@ export function IntegrationsFilter({
     integrations,
     initializeAsOpen = false,
     onRemove,
+    dispatchUpdate,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
 }: Props) {
-    const dispatch = useAppDispatch()
-
     const getSelectedIntegrations = useCallback(() => {
         return integrations
             .filter((integration) => value.values.includes(integration.id))
@@ -63,30 +74,22 @@ export function IntegrationsFilter({
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    integrations: {
-                        values,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    integrations: {
-                        values: value.values,
-                        operator: operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: value.values,
+                operator: operator,
+            })
         },
-        [dispatch, value.values]
+        [dispatchUpdate, value.values]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -101,14 +104,14 @@ export function IntegrationsFilter({
     }
 
     const handleDropdownOpen = () => {
-        dispatch(statFiltersDirty())
+        dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Integrations,
             LogicalOperatorLabel[value.operator]
         )
-        dispatch(statFiltersClean())
+        dispatchStatFiltersClean()
     }
 
     return (
@@ -128,11 +131,7 @@ export function IntegrationsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatch(
-                    mergeStatsFiltersWithLogicalOperator({
-                        integrations: emptyFilter,
-                    })
-                )
+                dispatchUpdate(emptyFilter)
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
@@ -143,16 +142,53 @@ export function IntegrationsFilter({
     )
 }
 
-export const IntegrationsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[
-        FilterKey.Integrations
-    ],
-    integrations: getStatsMessagingAndAppIntegrations(state),
-}))(IntegrationsFilter)
+export const IntegrationsFilterWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[
+            FilterKey.Integrations
+        ],
+        integrations: getStatsMessagingAndAppIntegrations(state),
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: filter,
+            }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
+    }
+)(IntegrationsFilter)
 
-export const PhoneIntegrationsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[
-        FilterKey.Integrations
-    ],
-    integrations: getPhoneIntegrations(state),
-}))(IntegrationsFilter)
+export const PhoneIntegrationsFilterWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[
+            FilterKey.Integrations
+        ],
+        integrations: getPhoneIntegrations(state),
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: filter,
+            }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
+    }
+)(IntegrationsFilter)
+
+export const IntegrationsFilterWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[
+            FilterKey.Integrations
+        ],
+        integrations: getStatsMessagingAndAppIntegrations(state),
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                member: FilterKey.Integrations,
+                operator: filter.operator,
+                values: filter.values.map(String),
+            }),
+    }
+)(IntegrationsFilter)

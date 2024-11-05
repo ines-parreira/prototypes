@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
@@ -9,7 +10,7 @@ import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
@@ -29,13 +30,14 @@ jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
 const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
 jest.mock('pages/stats/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 jest.mock(
     'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx'
 )

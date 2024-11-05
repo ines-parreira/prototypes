@@ -7,27 +7,30 @@ import {campaignsList} from 'fixtures/campaign'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {
+    FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import CampaignsFilter from 'pages/stats/common/filters/CampaignsFilter'
+import CampaignsFilter, {
+    CampaignsFilterFromContext,
+    CampaignsFilterFromSavedContext,
+} from 'pages/stats/common/filters/CampaignsFilter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
-
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import * as statsSlice from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import * as filtersActions from 'state/ui/stats/actions'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 const mockedCampaignsList = campaignsList
-const mockedDispatch = jest.fn()
 
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('pages/stats/convert/hooks/useGetCampaignsForStore')
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -40,11 +43,27 @@ jest.mock('react-router-dom', () => ({
     useParams: () => mockedUseParamsReturnValue(),
 }))
 
-const defaultState = {}
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const defaultState = {
+    stats: statsSlice.initialState,
+    ui: {
+        stats: {
+            filters: filtersSlice.initialState,
+        },
+    },
+} as RootState
 
 const renderComponent = () =>
     renderWithStore(
-        <CampaignsFilter value={emptyFilter} campaigns={mockedCampaignsList} />,
+        <CampaignsFilter
+            value={emptyFilter}
+            campaigns={mockedCampaignsList}
+            dispatchUpdate={dispatchUpdate}
+            dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+            dispatchStatFiltersClean={dispatchStatFiltersClean}
+        />,
         {}
     )
 
@@ -65,7 +84,13 @@ describe('CampaignsFilter', () => {
 
     it('should render with empty filter', () => {
         renderWithStore(
-            <CampaignsFilter value={undefined} campaigns={[]} />,
+            <CampaignsFilter
+                value={undefined}
+                campaigns={[]}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
@@ -91,20 +116,12 @@ describe('CampaignsFilter', () => {
         userEvent.click(screen.getByText(mockedCampaignsList[0].name))
         userEvent.click(screen.getByText(mockedCampaignsList[1].name))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator([
-                    mockedCampaignsList[0].id,
-                ]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([mockedCampaignsList[0].id])
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator([
-                    mockedCampaignsList[1].id,
-                ]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([mockedCampaignsList[1].id])
         )
     })
 
@@ -113,6 +130,9 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={withDefaultLogicalOperator([mockedCampaignsList[0].id])}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -122,10 +142,8 @@ describe('CampaignsFilter', () => {
             screen.getByRole('option', {name: mockedCampaignsList[0].name})
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -138,26 +156,25 @@ describe('CampaignsFilter', () => {
             (campaign) => campaign.id
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator(allAvailableCampaignsIds),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(allAvailableCampaignsIds)
         )
 
         rerenderComponent(
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -172,6 +189,9 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -185,20 +205,17 @@ describe('CampaignsFilter', () => {
         )
         userEvent.click(screen.getByText(mockedCampaignsList[0].name))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator(
-                    allAvailableCampaignsIds.filter(
-                        (campaign) => campaign !== mockedCampaignsList[0].id
-                    )
-                ),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                allAvailableCampaignsIds.filter(
+                    (campaign) => campaign !== mockedCampaignsList[0].id
+                )
+            )
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all integrations when filters dropdown is closed', () => {
         const {rerenderComponent} = renderComponent()
-        const clearFilterIcon = 'close'
 
         const allAvailableCampaignsIds = mockedCampaignsList.map(
             (campaign) => campaign.id
@@ -208,16 +225,17 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
-        userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+        userEvent.click(screen.getByText(new RegExp(FILTER_CLEAR_ICON, 'i')))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                campaigns: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -226,6 +244,9 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -234,7 +255,7 @@ describe('CampaignsFilter', () => {
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersDirty())
+        expect(dispatchStatFiltersDirty).toHaveBeenCalled()
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -242,11 +263,14 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
+        expect(dispatchStatFiltersClean).toHaveBeenCalled()
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
@@ -254,6 +278,9 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -265,6 +292,9 @@ describe('CampaignsFilter', () => {
             <CampaignsFilter
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -275,6 +305,43 @@ describe('CampaignsFilter', () => {
                 LogicalOperatorLabel[
                     LogicalOperatorEnum.ONE_OF
                 ].toLocaleLowerCase(),
+        })
+    })
+
+    describe('CampaignsFilterFromContext', () => {
+        it('should render', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
+            const spy2 = jest.spyOn(filtersActions, 'statFiltersClean')
+            renderWithStore(<CampaignsFilterFromContext />, defaultState)
+
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Campaigns])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+            expect(spy2).toHaveBeenCalled()
+        })
+    })
+
+    describe('CampaignsFilterFromSavedContext', () => {
+        it('should render', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(<CampaignsFilterFromSavedContext />, defaultState)
+
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Campaigns])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

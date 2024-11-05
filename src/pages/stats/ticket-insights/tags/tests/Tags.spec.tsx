@@ -1,9 +1,10 @@
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {
     Tags,
@@ -20,13 +21,14 @@ import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 jest.mock('pages/stats/ticket-insights/tags/TagsTrendChart')
 const TagsTrendChartMock = assumeMock(TagsTrendChart)
 jest.mock('pages/stats/ticket-insights/tags/TopUsedTagsChart')

@@ -1,7 +1,6 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import isEqual from 'lodash/isEqual'
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -16,17 +15,15 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import AgentsFilter, {
+    AgentsFiltersWithSavedState,
     AgentsFiltersWithState,
 } from 'pages/stats/common/filters/AgentsFilter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
 import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
+import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {statFiltersClean} from 'state/ui/stats/actions'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 
 import {renderWithStore} from 'utils/testing'
 
@@ -34,13 +31,18 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 const defaultState = {
-    stats: initialState,
+    stats: statsSlice.initialState,
     agents: fromJS({
         all: extendedAgents,
     }),
     teams: fromJS({
         all: extendedTeams,
     }),
+    ui: {
+        stats: {
+            filters: filtersSlice.initialState,
+        },
+    },
 } as RootState
 
 jest.mock('common/segment', () => ({
@@ -49,23 +51,23 @@ jest.mock('common/segment', () => ({
 }))
 
 describe('AgentsFilter', () => {
+    const dispatchUpdate = jest.fn()
+    const dispatchStatFiltersDirty = jest.fn()
+    const dispatchStatFiltersClean = jest.fn()
+
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
     )
 
-    const checkIfMockedDispatchWasCalledWithExpectedArguments = (
-        mockCalls: Record<string, any>[],
-        expectedObject: Record<string, any>
-    ) => {
-        return mockCalls.some((mockCall) =>
-            isEqual(mockCall[0], expectedObject)
-        )
-    }
-
     it('should render AgentsFilter component', () => {
         renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         expect(
@@ -75,7 +77,12 @@ describe('AgentsFilter', () => {
 
     it('should render AgentsFilter options', () => {
         renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -86,36 +93,34 @@ describe('AgentsFilter', () => {
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting an agent', () => {
         renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-
         userEvent.click(screen.getByText(extendedAgents[0].name))
         userEvent.click(screen.getByText(extendedAgents[1].name))
 
-        const isFirstAgentInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator([extendedAgents[0].id]),
-                })
-            )
-        const isSecondAgentInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator([extendedAgents[1].id]),
-                })
-            )
-
-        expect(isFirstAgentInDispatch).toBe(true)
-        expect(isSecondAgentInDispatch).toBe(true)
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([extendedAgents[0].id])
+        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([extendedAgents[1].id])
+        )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting a team', () => {
         renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -123,32 +128,26 @@ describe('AgentsFilter', () => {
         userEvent.click(screen.getByText(extendedTeams[0].name))
         userEvent.click(screen.getByText(extendedTeams[1].name))
 
-        const isFirstTeamMembersInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator(
-                        extendedTeams[0].members.map((member) => member.id)
-                    ),
-                })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                extendedTeams[0].members.map((member) => member.id)
             )
-        const isSecondTeamMembersInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator(
-                        extendedTeams[1].members.map((member) => member.id)
-                    ),
-                })
+        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                extendedTeams[1].members.map((member) => member.id)
             )
-
-        expect(isFirstTeamMembersInDispatch).toBe(true)
-        expect(isSecondTeamMembersInDispatch).toBe(true)
+        )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting a team', () => {
         const {rerenderComponent} = renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         const testTeam = extendedTeams.find((t) => t.id === 36) as Team
@@ -163,36 +162,34 @@ describe('AgentsFilter', () => {
                     ...testTeam.members.map((member) => member.id),
                     testAgent.id,
                 ])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
         mockedDispatch.mockClear()
         userEvent.click(screen.getByText(testTeam.name))
 
-        const selectedTeamMembersNotInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator(
-                        testTeam.members.map((member) => member.id)
-                    ),
-                })
-            )
-        const selectedAgentInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator([testAgent.id]),
-                })
-            )
-
-        expect(selectedTeamMembersNotInDispatch).toBe(false)
-        expect(selectedAgentInDispatch).toBe(true)
+        expect(dispatchUpdate).not.toHaveBeenCalledWith(
+            withDefaultLogicalOperator([
+                ...testTeam.members.map((member) => member.id),
+                testAgent.id,
+            ])
+        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([testAgent.id])
+        )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all agents and deselecting all agents', () => {
         const {rerenderComponent} = renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -202,46 +199,40 @@ describe('AgentsFilter', () => {
             extendedAgents.map((agents) => agents.id)
         )
 
-        const areAllAgentsInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator(
-                        extendedAgents.map((agents) => agents.id)
-                    ),
-                })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                extendedAgents.map((agents) => agents.id)
             )
-        let areEmptyAgentsInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator([]),
-                })
-            )
-        expect(areAllAgentsInDispatch).toBe(true)
-        expect(areEmptyAgentsInDispatch).toBe(false)
+        )
+        expect(dispatchUpdate).not.toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
+        )
 
         rerenderComponent(
-            <AgentsFilter value={allAvailableAgentsIds} />,
+            <AgentsFilter
+                value={allAvailableAgentsIds}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
-        areEmptyAgentsInDispatch =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator([]),
-                })
-            )
-
-        expect(areEmptyAgentsInDispatch).toBe(true)
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
+        )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the agent', () => {
         const {rerenderComponent} = renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
@@ -250,31 +241,35 @@ describe('AgentsFilter', () => {
         )
 
         rerenderComponent(
-            <AgentsFilter value={allAvailableAgentsIds} />,
+            <AgentsFilter
+                value={allAvailableAgentsIds}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(extendedAgents[0].name))
 
-        const allAgentsWithoutTheFirstOne =
-            checkIfMockedDispatchWasCalledWithExpectedArguments(
-                mockedDispatch.mock.calls,
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: withDefaultLogicalOperator(
-                        extendedAgents
-                            .map((agents) => agents.id)
-                            .filter((id) => id !== extendedAgents[0].id)
-                    ),
-                })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                extendedAgents
+                    .map((agents) => agents.id)
+                    .filter((id) => id !== extendedAgents[0].id)
             )
-
-        expect(allAgentsWithoutTheFirstOne).toBe(true)
+        )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all agents when filters dropdown is closed', () => {
         const {rerenderComponent} = renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         const clearFilterIcon = 'close'
@@ -284,25 +279,30 @@ describe('AgentsFilter', () => {
         )
 
         rerenderComponent(
-            <AgentsFilter value={allAvailableAgentsIds} />,
+            <AgentsFilter
+                value={allAvailableAgentsIds}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        const emptyAgents = checkIfMockedDispatchWasCalledWithExpectedArguments(
-            mockedDispatch.mock.calls,
-            mergeStatsFiltersWithLogicalOperator({
-                agents: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
-
-        expect(emptyAgents).toBe(true)
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
         renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -319,29 +319,29 @@ describe('AgentsFilter', () => {
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                agents: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                agents: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
     })
 
     it('should render AgentsFilter component even if value is undefined', () => {
-        renderWithStore(<AgentsFilter value={undefined} />, defaultState)
+        renderWithStore(
+            <AgentsFilter
+                value={undefined}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            defaultState
+        )
         expect(
             screen.getByText(FilterLabels[FilterKey.Agents])
         ).toBeInTheDocument()
@@ -349,7 +349,12 @@ describe('AgentsFilter', () => {
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
         const {rerenderComponent} = renderWithStore(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
@@ -358,11 +363,16 @@ describe('AgentsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerenderComponent(
-            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            <AgentsFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
+        expect(dispatchStatFiltersClean).toHaveBeenCalled()
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Agents,
             logical_operator:
@@ -374,10 +384,35 @@ describe('AgentsFilter', () => {
 
     describe('AgentsFiltersWithState', () => {
         it('should render AgentsFilter component', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
+
             renderWithStore(<AgentsFiltersWithState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
             expect(
                 screen.getByText(FilterLabels[FilterKey.Agents])
             ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('AgentsFiltersWithSavedState', () => {
+        it('should render AgentsFilter component', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(<AgentsFiltersWithSavedState />, defaultState)
+
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Agents])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

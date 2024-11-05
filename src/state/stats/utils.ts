@@ -5,10 +5,12 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {
     AggregationWindow,
     CustomFieldFilter,
+    CustomFieldSavedFilter,
     FilterKey,
     LegacyStatsFilters,
     Period,
     SavedFilterDraft,
+    SavedFilterSupportedFilters,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
@@ -273,6 +275,48 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
         []
     )
 
+export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
+    filters: SavedFilterDraft['filters'] | undefined
+): Omit<StatsFiltersWithLogicalOperator, 'period'> =>
+    filters === undefined
+        ? {}
+        : filters.reduce<Omit<StatsFiltersWithLogicalOperator, 'period'>>(
+              (statsFilters, savedFilter) => {
+                  if (savedFilter.member === FilterKey.CustomFields) {
+                      statsFilters[savedFilter.member] = savedFilter.values
+                  } else if (savedFilter.member === FilterKey.Tags) {
+                      statsFilters[savedFilter.member] = savedFilter.values.map(
+                          (filter, index) => ({
+                              ...filter,
+                              operator: filter.operator,
+                              values: filter.values.map(Number),
+                              filterInstanceId:
+                                  index % 2 === 0
+                                      ? TagFilterInstanceId.First
+                                      : TagFilterInstanceId.Second,
+                          })
+                      )
+                  } else if (
+                      savedFilter.member === FilterKey.HelpCenters ||
+                      savedFilter.member === FilterKey.Integrations ||
+                      savedFilter.member === FilterKey.Agents
+                  ) {
+                      statsFilters[savedFilter.member] = {
+                          operator: savedFilter.operator,
+                          values: savedFilter.values.map(Number),
+                      }
+                  } else {
+                      statsFilters[savedFilter.member] = {
+                          operator: savedFilter.operator,
+                          values: savedFilter.values,
+                      }
+                  }
+
+                  return statsFilters
+              },
+              {}
+          )
+
 export const getAllowedAggregationWindows = (
     period: Period
 ): AggregationWindow[] => {
@@ -311,3 +355,7 @@ export const getAdjustedAggregationWindow = (
         ? filters.aggregationWindow
         : allowedAggregations[0]
 }
+
+export const isCustomFieldSavedFilter = (
+    filter: SavedFilterSupportedFilters
+): filter is CustomFieldSavedFilter => filter.member === FilterKey.CustomFields

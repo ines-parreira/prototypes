@@ -1,11 +1,12 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {
     BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
     BUSIEST_TIME_OF_DAY_PAGE_TITLE,
@@ -22,13 +23,14 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/SupportPerformanceFilters')
 const FiltersMock = assumeMock(SupportPerformanceFilters)
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))

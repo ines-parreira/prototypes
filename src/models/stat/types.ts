@@ -125,12 +125,12 @@ export type SavedFilterWithLogicalOperator = {
     values: string[]
 }
 
-type CustomFieldSavedFilter = {
+export type CustomFieldSavedFilter = {
     member: FilterKey.CustomFields
     values: CustomFieldFilter[]
 }
 
-type TagsSavedFilter = {
+export type TagsSavedFilter = {
     member: FilterKey.Tags
     values: WithLogicalOperator<string>[]
 }

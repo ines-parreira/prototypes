@@ -35,6 +35,7 @@ import {
     initialiseSavedFilterDraftFromSavedFilter,
     initialiseSavedFilterDraftFromFilters,
     duplicateSavedFilterDraftFromSavedFilter,
+    upsertSavedFilterCustomFieldFilter,
 } from 'state/ui/stats/filtersSlice'
 
 describe('filtersSlice', () => {
@@ -311,6 +312,128 @@ describe('filtersSlice', () => {
             expect(newState.savedFilterDraft?.filters).toEqual([
                 channelsFilter,
                 agentsSavedFilter,
+            ])
+        })
+
+        it('should create draft and insert filter upsertSavedFilterCustomFieldFilter', () => {
+            const state = {
+                ...initialState,
+                savedFilterDraft: null,
+            }
+            const customFieldFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                customFieldId: 123,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+            )
+
+            expect(newState.savedFilterDraft?.filters).toEqual([
+                {member: FilterKey.CustomFields, values: [customFieldFilter]},
+            ])
+        })
+
+        it('should insert upsertSavedFilterCustomFieldFilter', () => {
+            const state = {
+                ...initialState,
+                savedFilterDraft: {
+                    name: 'someName',
+                    filters: [],
+                },
+            }
+            const customFieldFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                customFieldId: 123,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+            )
+
+            expect(newState.savedFilterDraft?.filters).toEqual([
+                {member: FilterKey.CustomFields, values: [customFieldFilter]},
+            ])
+        })
+
+        it('should add filter with upsertSavedFilterCustomFieldFilter', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                customFieldId: 123,
+            }
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filters: [
+                    {
+                        member: FilterKey.CustomFields,
+                        values: [currentFilter],
+                    },
+                ],
+            }
+            const state = {
+                ...initialState,
+                savedFilterDraft,
+            }
+            const customFieldFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                customFieldId: 456,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+            )
+
+            expect(newState.savedFilterDraft?.filters).toEqual([
+                {
+                    member: FilterKey.CustomFields,
+                    values: [currentFilter, customFieldFilter],
+                },
+            ])
+        })
+
+        it('should update filter with upsertSavedFilterCustomFieldFilter', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                customFieldId: 123,
+            }
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filters: [
+                    {
+                        member: FilterKey.CustomFields,
+                        values: [currentFilter],
+                    },
+                ],
+            }
+            const state = {
+                ...initialState,
+                savedFilterDraft,
+            }
+            const newValue = 'Some::otherValue'
+            const customFieldFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [newValue],
+                customFieldId: 123,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+            )
+
+            expect(newState.savedFilterDraft?.filters).toEqual([
+                {
+                    member: FilterKey.CustomFields,
+                    values: [customFieldFilter],
+                },
             ])
         })
 

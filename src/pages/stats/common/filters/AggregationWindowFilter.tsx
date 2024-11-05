@@ -2,7 +2,6 @@ import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AggregationWindow,
     FilterKey,
@@ -24,11 +23,16 @@ import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/sta
 type Props = {
     value?: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
     period: StatsFiltersWithLogicalOperator[FilterKey.Period]
+    dispatchUpdate: (
+        value: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
+    ) => void
 }
 
-export const AggregationWindowFilter = ({value, period}: Props) => {
-    const dispatch = useAppDispatch()
-
+export const AggregationWindowFilter = ({
+    value,
+    period,
+    dispatchUpdate,
+}: Props) => {
     const allowedAggregationWindows = useMemo(
         () =>
             getAllowedAggregationWindows(period).map((granularity) => ({
@@ -54,14 +58,9 @@ export const AggregationWindowFilter = ({value, period}: Props) => {
 
     const handleFilterValuesChange = useCallback(
         (value: DropdownOption | undefined) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    [FilterKey.AggregationWindow]:
-                        value?.value as AggregationWindow,
-                })
-            )
+            dispatchUpdate(value?.value as AggregationWindow)
         },
-        [dispatch]
+        [dispatchUpdate]
     )
 
     const handleDropdownClosed = () => {
@@ -87,8 +86,18 @@ export const AggregationWindowFilter = ({value, period}: Props) => {
     )
 }
 
-export const AggregationWindowFilterWithState = connect((state: RootState) => ({
-    value: getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
-        .granularity,
-    period: getStatsFiltersWithLogicalOperators(state)[FilterKey.Period],
-}))(AggregationWindowFilter)
+export const AggregationWindowFilterWithState = connect(
+    (state: RootState) => ({
+        value: getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
+            .granularity,
+        period: getStatsFiltersWithLogicalOperators(state)[FilterKey.Period],
+    }),
+    {
+        dispatchUpdate: (
+            filter: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
+        ) =>
+            mergeStatsFiltersWithLogicalOperator({
+                aggregationWindow: filter,
+            }),
+    }
+)(AggregationWindowFilter)

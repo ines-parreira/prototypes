@@ -1,10 +1,11 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import AutoQA, {
     AUTO_QA_OPTIONAL_FILTERS,
     AUTO_QA_PAGE_TITLE,
@@ -55,13 +56,14 @@ const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
 jest.mock('pages/stats/support-performance/auto-qa/AutoQADownloadDataButton')
 const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
 
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 
 describe('AutoQA', () => {
     beforeEach(() => {

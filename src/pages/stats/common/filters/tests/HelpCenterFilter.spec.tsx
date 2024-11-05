@@ -1,5 +1,6 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -7,20 +8,21 @@ import {HelpCenter} from 'models/helpCenter/types'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {FILTER_DROPDOWN_ICON} from 'pages/stats/common/components/Filter/constants'
+import {
+    FILTER_DROPDOWN_ICON,
+    FILTER_VALUE_PLACEHOLDER,
+} from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import HelpCenterFilter, {
     HelpCenterFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterFilter'
-import {initialState} from 'state/stats/statsSlice'
+import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {renderWithStore} from 'utils/testing'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -28,7 +30,8 @@ jest.mock('common/segment', () => ({
 }))
 
 describe('HelpCenterFilter', () => {
-    const mockStore = {
+    const defaultState = {
+        stats: statsSlice.initialState,
         entities: {
             helpCenter: {
                 helpCenters: {
@@ -42,18 +45,33 @@ describe('HelpCenterFilter', () => {
                 },
             },
         },
+        ui: {
+            stats: {
+                filters: filtersSlice.initialState,
+            },
+        },
     } as RootState
+    const dispatchUpdate = jest.fn()
 
     it('should render HelpCenterFilter component', () => {
         renderWithStore(
-            <HelpCenterFilter value={withDefaultLogicalOperator([])} />,
-            mockStore
+            <HelpCenterFilter
+                value={withDefaultLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+            />,
+            defaultState
         )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
 
     it('should render HelpCenterFilter component as usual with no value provided', () => {
-        renderWithStore(<HelpCenterFilter value={undefined} />, mockStore)
+        renderWithStore(
+            <HelpCenterFilter
+                value={undefined}
+                dispatchUpdate={dispatchUpdate}
+            />,
+            defaultState
+        )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
 
@@ -61,8 +79,9 @@ describe('HelpCenterFilter', () => {
         renderWithStore(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
+                dispatchUpdate={dispatchUpdate}
             />,
-            mockStore
+            defaultState
         )
 
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
@@ -75,8 +94,9 @@ describe('HelpCenterFilter', () => {
         renderWithStore(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
+                dispatchUpdate={dispatchUpdate}
             />,
-            mockStore
+            defaultState
         )
 
         userEvent.click(
@@ -87,22 +107,19 @@ describe('HelpCenterFilter', () => {
             screen.getByText(getHelpCentersResponseFixture.data[1].name)
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith({
-            payload: {
-                helpCenters: withDefaultLogicalOperator([
-                    getHelpCentersResponseFixture.data[1].id,
-                ]),
-            },
-            type: 'stats/mergeStatsFiltersWithLogicalOperator',
-        })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([
+                getHelpCentersResponseFixture.data[1].id,
+            ])
+        )
     })
 
     it('should render the HelpCenterFilterWithState and reflect the value coming from store', () => {
         const mockedStoreWithHelpCenterFilters = {
-            ...mockStore,
+            ...defaultState,
             stats: {
                 filters: {
-                    ...initialState.filters,
+                    ...statsSlice.initialState.filters,
                     helpCenters: withDefaultLogicalOperator([
                         getHelpCentersResponseFixture.data[0].id,
                     ]),
@@ -124,8 +141,9 @@ describe('HelpCenterFilter', () => {
         renderWithStore(
             <HelpCenterFilter
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
+                dispatchUpdate={dispatchUpdate}
             />,
-            mockStore
+            defaultState
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -134,6 +152,24 @@ describe('HelpCenterFilter', () => {
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.HelpCenters,
             logical_operator: null,
+        })
+    })
+
+    describe('HelpCenterFilterWithState', () => {
+        it('should render HelpCenterFilterWithState component', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
+
+            renderWithStore(<HelpCenterFilterWithState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(mockedHelpCenterData[0].name))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.HelpCenters])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

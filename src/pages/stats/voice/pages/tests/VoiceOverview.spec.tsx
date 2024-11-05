@@ -2,6 +2,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,7 +16,7 @@ import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
 import {user} from 'fixtures/users'
 import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     ALL_CALLS_FILTER_LABEL,
@@ -56,13 +57,14 @@ jest.mock('services/reporting/voiceOverviewReportingService')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
     data: {prevValue: 10, value: 15},

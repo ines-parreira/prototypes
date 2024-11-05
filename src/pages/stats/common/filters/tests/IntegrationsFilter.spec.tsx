@@ -20,20 +20,15 @@ import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
 import {
     IntegrationsFilter,
+    IntegrationsFilterWithSavedState,
     IntegrationsFilterWithState,
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
-import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
+import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {statFiltersClean} from 'state/ui/stats/actions'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 
 import {renderWithStore} from 'utils/testing'
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -41,15 +36,30 @@ jest.mock('common/segment', () => ({
 }))
 
 const defaultState = {
-    stats: initialState,
+    stats: statsSlice.initialState,
+    ui: {
+        stats: {
+            filters: filtersSlice.initialState,
+        },
+    },
 } as RootState
 
 const integrations: Integration[] =
     integrationsState.integrations as Integration[]
 
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+
 const renderComponent = () =>
     renderWithStore(
-        <IntegrationsFilter value={emptyFilter} integrations={integrations} />,
+        <IntegrationsFilter
+            value={emptyFilter}
+            integrations={integrations}
+            dispatchUpdate={dispatchUpdate}
+            dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+            dispatchStatFiltersClean={dispatchStatFiltersClean}
+        />,
         defaultState
     )
 
@@ -72,6 +82,9 @@ describe('IntegrationsFilter', () => {
             <IntegrationsFilter
                 value={undefined}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -96,16 +109,12 @@ describe('IntegrationsFilter', () => {
         userEvent.click(screen.getByText(integrations[0].name))
         userEvent.click(screen.getByText(integrations[1].name))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator([integrations[0].id]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([integrations[0].id])
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator([integrations[1].id]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([integrations[1].id])
         )
     })
 
@@ -114,6 +123,9 @@ describe('IntegrationsFilter', () => {
             <IntegrationsFilter
                 value={withDefaultLogicalOperator([integrations[0].id])}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
@@ -125,10 +137,8 @@ describe('IntegrationsFilter', () => {
             screen.getByRole('option', {name: new RegExp(integrations[0].name)})
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -141,28 +151,25 @@ describe('IntegrationsFilter', () => {
             (integration) => integration.id
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator(
-                    allAvailableIntegrationsIds
-                ),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(allAvailableIntegrationsIds)
         )
 
         rerender(
             <IntegrationsFilter
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -177,20 +184,21 @@ describe('IntegrationsFilter', () => {
             <IntegrationsFilter
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(integrations[0].name))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator(
-                    allAvailableIntegrationsIds.filter(
-                        (channel) => channel !== integrations[0].id
-                    )
-                ),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator(
+                allAvailableIntegrationsIds.filter(
+                    (channel) => channel !== integrations[0].id
+                )
+            )
         )
     })
 
@@ -206,15 +214,16 @@ describe('IntegrationsFilter', () => {
             <IntegrationsFilter
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: withDefaultLogicalOperator([]),
-            })
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
         )
     })
 
@@ -235,25 +244,17 @@ describe('IntegrationsFilter', () => {
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(mockedDispatch).toHaveBeenCalledWith(
-            mergeStatsFiltersWithLogicalOperator({
-                integrations: {
-                    operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: [],
-                },
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [],
+        })
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
@@ -267,11 +268,14 @@ describe('IntegrationsFilter', () => {
             <IntegrationsFilter
                 value={withDefaultLogicalOperator([])}
                 integrations={integrations}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
 
-        expect(mockedDispatch).toHaveBeenCalledWith(statFiltersClean())
+        expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Integrations,
             logical_operator:
@@ -283,37 +287,78 @@ describe('IntegrationsFilter', () => {
 
     describe('IntegrationsFilterWithState', () => {
         it('should render IntegrationsFilterWithState component', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
             const stateWithIntegrations = {
                 stats: defaultState.stats,
                 integrations: fromJS({
                     integrations: integrations,
                 }),
             }
+
             renderWithStore(
                 <IntegrationsFilterWithState />,
                 stateWithIntegrations
             )
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
             expect(
                 screen.getByText(FilterLabels[FilterKey.Integrations])
             ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('IntegrationsFilterWithSavedState', () => {
+        it('should render IntegrationsFilterWithState component', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const stateWithIntegrations = {
+                ...defaultState,
+                integrations: fromJS({
+                    integrations: integrations,
+                }),
+            }
+            renderWithStore(
+                <IntegrationsFilterWithSavedState />,
+                stateWithIntegrations
+            )
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Integrations])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 
     describe('PhoneIntegrationsFilterWithState', () => {
         it('should render IntegrationsFilterWithState component', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
             const stateWithIntegrations = {
                 stats: defaultState.stats,
                 integrations: fromJS({
                     integrations: integrations,
                 }),
             }
+
             renderWithStore(
                 <PhoneIntegrationsFilterWithState />,
                 stateWithIntegrations
             )
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
             expect(
                 screen.getByText(FilterLabels[FilterKey.Integrations])
             ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

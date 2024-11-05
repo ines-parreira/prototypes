@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps, PropsWithChildren} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
@@ -54,13 +55,14 @@ jest.mock('pages/stats/sla/components/SLAPolicySelect')
 const SLAPolicySelectMock = assumeMock(SLAPolicySelect)
 jest.mock('pages/stats/sla/components/DownloadSLAsData')
 const DownloadSLAsDataMock = assumeMock(DownloadSLAsData)
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {

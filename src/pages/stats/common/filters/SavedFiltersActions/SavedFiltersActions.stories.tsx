@@ -55,7 +55,6 @@ const FiltersPanelWithSavedFilters: StoryFn<
 export const Default = FiltersPanelWithSavedFilters.bind({})
 
 Default.args = {
-    persistentFilters: [FilterKey.Period],
     optionalFilters: [
         FilterKey.Integrations,
         FilterKey.Channels,

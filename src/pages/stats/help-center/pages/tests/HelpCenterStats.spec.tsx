@@ -12,7 +12,7 @@ import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
@@ -68,8 +68,8 @@ jest.mock(
     })
 )
 
-jest.mock('pages/stats/common/filters/FiltersPanel')
-const filtersPanelMock = assumeMock(FiltersPanel)
+jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
+const filtersPanelMock = assumeMock(FiltersPanelWrapper)
 
 const mockUseHelpCenterList = jest.mocked(useHelpCenterList)
 const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)

@@ -10,7 +10,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {isAdmin} from 'utils'
 
-type Props = FiltersPanelProps & {
+type Props = Pick<FiltersPanelProps, 'optionalFilters'> & {
     savedFilters: Array<{id: number; name: string}>
     onSaveFilters: () => void
 }

@@ -2,16 +2,17 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import React, {
     ComponentProps,
+    ComponentType,
     createElement,
     useCallback,
     useEffect,
     useMemo,
     useState,
 } from 'react'
+import {connect} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import {
     FilterComponentKey,
@@ -21,96 +22,48 @@ import {
     TagFilterInstanceId,
 } from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
-import {AgentsFiltersWithState} from 'pages/stats/common/filters/AgentsFilter'
-import {AggregationWindowFilterWithState} from 'pages/stats/common/filters/AggregationWindowFilter'
-import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
-import {CampaignsFilterFromContext} from 'pages/stats/common/filters/CampaignsFilter'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
-import {CustomFieldsFilterFilterWithState} from 'pages/stats/common/filters/CustomFieldsFilter'
 import css from 'pages/stats/common/filters/FiltersPanel.less'
-import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
-import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
+import {FilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
 } from 'pages/stats/common/filters/helpers'
-import {
-    IntegrationsFilterWithState,
-    PhoneIntegrationsFilterWithState,
-} from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
-import {ScoreFiltersWithState} from 'pages/stats/common/filters/ScoreFilter'
-import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
-import {StoreFilterFromContext} from 'pages/stats/common/filters/StoreFilter'
-import {TagsFilterWithState} from 'pages/stats/common/filters/TagsFilter'
-import {CampaignStatusesFilterFromContext} from 'pages/stats/convert/components/CampaignStatusesFilter'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import {RootState} from 'state/types'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
 export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
 
+type FilterSettingOverrides = {
+    [FilterKey.Period]?: Omit<
+        ComponentProps<typeof PeriodFilterWithState>,
+        'value'
+    >
+    [FilterKey.Channels]?: Omit<
+        ComponentProps<typeof ChannelsFilterWithState>,
+        'value'
+    >
+}
+
 export type FiltersPanelProps = {
     persistentFilters?: StaticFilter[]
     optionalFilters?: OptionalFilter[]
-    filterSettingsOverrides?: {
-        [FilterKey.Period]?: Omit<
-            ComponentProps<typeof PeriodFilterWithState>,
-            'value'
-        >
-        [FilterKey.Channels]?: Omit<
-            ComponentProps<typeof ChannelsFilterWithState>,
-            'value'
-        >
-    }
+    filterSettingsOverrides?: FilterSettingOverrides
+    cleanStatsFilters: StatsFiltersWithLogicalOperator
+    filterComponentMap: Record<
+        FilterKey | FilterComponentKey,
+        ComponentType<any>
+    >
 }
 
 export const UNSUPPORTED_FILTER_PLACEHOLDER = 'placeholder'
-
-export const renderFilter = (filter: FilterKey | FilterComponentKey) => {
-    switch (filter) {
-        case FilterKey.Period:
-            return PeriodFilterWithState
-        case FilterKey.CustomFields:
-            return CustomFieldsFilterFilterWithState
-        case FilterKey.Channels:
-            return ChannelsFilterWithState
-        case FilterKey.Integrations:
-            return IntegrationsFilterWithState
-        case FilterComponentKey.PhoneIntegrations:
-            return PhoneIntegrationsFilterWithState
-        case FilterKey.Agents:
-            return AgentsFiltersWithState
-        case FilterKey.Tags:
-            return TagsFilterWithState
-        case FilterKey.HelpCenters:
-            return HelpCenterFilterWithState
-        case FilterKey.LocaleCodes:
-            return HelpCenterLanguageFilterWithState
-        case FilterKey.SlaPolicies:
-            return SLAPolicyFilterWithState
-        case FilterKey.Score:
-            return ScoreFiltersWithState
-        case FilterComponentKey.BusiestTimesMetricSelectFilter:
-            return BusiestTimesMetricSelectFilter
-        case FilterComponentKey.CustomField:
-            return CustomFieldFilter
-        case FilterKey.Campaigns:
-            return CampaignsFilterFromContext
-        case FilterKey.CampaignStatuses:
-            return CampaignStatusesFilterFromContext
-        case FilterKey.AggregationWindow:
-            return AggregationWindowFilterWithState
-        case FilterComponentKey.Store:
-            return StoreFilterFromContext
-        default:
-            return () => <div>{UNSUPPORTED_FILTER_PLACEHOLDER}</div>
-    }
-}
 
 export function isFilterTypeWithValues(
     type: FilterKey | FilterComponentKey
@@ -195,6 +148,46 @@ const getActiveFilters = (
     }, [])
 }
 
+const activeFiltersToOptions = (activeFilters: ActiveFilter[]): FilterOptions =>
+    activeFilters
+        .filter((filter) => !filter.active)
+        .reduce<ActiveFilter[]>((filters, filter) => {
+            if (filter.type === FilterKey.Tags) {
+                if (
+                    filters.find(
+                        (addedFilter) => addedFilter.type === FilterKey.Tags
+                    )
+                ) {
+                    return filters
+                }
+            }
+            filters.push(filter)
+            return filters
+        }, [])
+        .map((filter) => {
+            if (filter.type === FilterKey.CustomFields) {
+                return {
+                    value: filter.key,
+                    label: filter.filterName,
+                    type: FilterKey.CustomFields,
+                }
+            }
+            return {
+                value: filter.key,
+                label: FilterLabels[filter.type],
+            }
+        })
+        .sort((a, b) => (a.label < b.label ? -1 : 1))
+        .sort((a, b) => {
+            if (
+                a.type !== FilterKey.CustomFields &&
+                b.type === FilterKey.CustomFields
+            ) {
+                return -1
+            }
+            return 0
+        })
+
 type FilterComponent = {
     key: string
     active: boolean
@@ -212,48 +205,61 @@ type TagFilter = FilterComponent & {
     filterInstanceId: TagFilterInstanceId
 }
 
-type ActiveFilter =
+export type ActiveFilter =
     | (FilterComponent & {
           type: StaticFilter
       })
     | CustomFieldFilter
     | TagFilter
 
-export const FiltersPanel = ({
+type FilterOptions = (
+    | {value: string; label: string; type: FilterKey}
+    | {
+          value: string
+          label: string
+          type?: undefined
+      }
+)[]
+
+const useCustomFieldFilters = (
+    cleanStatsFilters: StatsFiltersWithLogicalOperator
+): CustomFieldFilter[] => {
+    const isAnalyticsCustomFieldsFilter =
+        !!useFlags()[FeatureFlagKey.AnalyticsCustomFieldsFilter]
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+    const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
+
+    return isAnalyticsCustomFieldsFilter
+        ? activeDropdownFields.map((field) => ({
+              type: FilterKey.CustomFields,
+              key: `${FilterKey.CustomFields}::${field.id}`,
+              filterName: field.label,
+              customFieldId: field.id,
+              active:
+                  (
+                      cleanStatsFilters[FilterKey.CustomFields]?.find(
+                          (filter) => filter.customFieldId === field.id
+                      )?.values ?? []
+                  ).length > 0,
+              initializeAsOpen: false,
+          }))
+        : []
+}
+
+export const FiltersPanelComponent = ({
     persistentFilters = [],
     optionalFilters = [],
     filterSettingsOverrides,
+    cleanStatsFilters,
+    filterComponentMap,
 }: FiltersPanelProps) => {
-    const isAnalyticsCustomFieldsFilter =
-        !!useFlags()[FeatureFlagKey.AnalyticsCustomFieldsFilter]
-
-    const {cleanStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-    )
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getActiveFilters(optionalFilters, cleanStatsFilters)
     )
 
     const previousCleanStatsFilters = usePrevious(cleanStatsFilters)
-
-    const {data: {data: activeFields = []} = {}} =
-        useCustomFieldDefinitions(activeParams)
-    const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
-    const customFieldFilters: CustomFieldFilter[] = activeDropdownFields.map(
-        (field) => ({
-            type: FilterKey.CustomFields,
-            key: `${FilterKey.CustomFields}::${field.id}`,
-            filterName: field.label,
-            customFieldId: field.id,
-            active:
-                (
-                    cleanStatsFilters[FilterKey.CustomFields]?.find(
-                        (filter) => filter.customFieldId === field.id
-                    )?.values ?? []
-                ).length > 0,
-            initializeAsOpen: false,
-        })
-    )
+    const customFieldFilters = useCustomFieldFilters(cleanStatsFilters)
 
     useEffect(() => {
         const newFilters = optionalFilters.filter(
@@ -304,7 +310,6 @@ export const FiltersPanel = ({
 
     useEffect(() => {
         if (
-            isAnalyticsCustomFieldsFilter &&
             optionalFilters.includes(FilterKey.CustomFields) &&
             customFieldFilters.length > 0 &&
             !activeFilters.find(
@@ -313,55 +318,19 @@ export const FiltersPanel = ({
         ) {
             setActiveFilters([...activeFilters, ...customFieldFilters])
         }
-    }, [
-        activeFilters,
-        customFieldFilters,
-        isAnalyticsCustomFieldsFilter,
-        optionalFilters,
-    ])
-
-    const options = activeFilters
-        .filter((filter) => !filter.active)
-        .reduce<ActiveFilter[]>((filters, filter) => {
-            if (filter.type === FilterKey.Tags) {
-                if (
-                    filters.find(
-                        (addedFilter) => addedFilter.type === FilterKey.Tags
-                    )
-                ) {
-                    return filters
-                }
-            }
-            filters.push(filter)
-            return filters
-        }, [])
-        .map((filter) => {
-            if (filter.type === FilterKey.CustomFields) {
-                return {
-                    value: filter.key,
-                    label: filter.filterName,
-                    type: FilterKey.CustomFields,
-                }
-            }
-            return {
-                value: filter.key,
-                label: FilterLabels[filter.type],
-            }
-        })
-        .sort((a, b) => (a.label < b.label ? -1 : 1))
-        .sort((a, b) => {
-            if (
-                a.type !== FilterKey.CustomFields &&
-                b.type === FilterKey.CustomFields
-            ) {
-                return -1
-            }
-            return 0
-        })
+    }, [activeFilters, customFieldFilters, optionalFilters])
 
     const optionalFiltersToRender = useMemo(
         () => activeFilters.filter((filter) => filter.active),
         [activeFilters]
+    )
+    const persistentFiltersToRender: ActiveFilter[] = persistentFilters.map(
+        (filter) => ({
+            key: filter,
+            type: filter,
+            active: true,
+            initializeAsOpen: false,
+        })
     )
 
     const handleOnClick = useCallback(
@@ -386,9 +355,56 @@ export const FiltersPanel = ({
         []
     )
 
+    return (
+        <FiltersPanelUI
+            optionalFiltersToRender={optionalFiltersToRender}
+            persistentFiltersToRender={persistentFiltersToRender}
+            setActiveFilters={setActiveFilters}
+            activeFilters={activeFilters}
+            filterSettingsOverrides={filterSettingsOverrides}
+            handleOnClick={handleOnClick}
+            filterComponentMap={filterComponentMap}
+        />
+    )
+}
+
+export const FiltersPanel = connect((state: RootState) => ({
+    cleanStatsFilters:
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
+            .cleanStatsFilters,
+    filterComponentMap: FilterComponentMap,
+}))(FiltersPanelComponent)
+
+type FiltersPanelUIProps = {
+    optionalFiltersToRender: ActiveFilter[]
+    persistentFiltersToRender: ActiveFilter[]
+    setActiveFilters: (filters: ActiveFilter[]) => void
+    activeFilters: ActiveFilter[]
+    filterSettingsOverrides?: FilterSettingOverrides
+    handleOnClick: (value: string) => void
+    filterComponentMap: Record<
+        FilterKey | FilterComponentKey,
+        ComponentType<any>
+    >
+}
+
+export const FiltersPanelUI = ({
+    persistentFiltersToRender,
+    optionalFiltersToRender,
+    setActiveFilters,
+    activeFilters,
+    filterSettingsOverrides,
+    filterComponentMap,
+    handleOnClick,
+}: FiltersPanelUIProps) => {
+    const options = useMemo(
+        () => activeFiltersToOptions(activeFilters),
+        [activeFilters]
+    )
+
     const createFilterElement = useCallback(
         (filter: ActiveFilter) =>
-            createElement(renderFilter(filter.type), {
+            createElement(filterComponentMap[filter.type], {
                 onRemove: () =>
                     setActiveFilters(
                         activeFilters.map((activeFilter) => {
@@ -417,17 +433,13 @@ export const FiltersPanel = ({
                         : undefined,
                 ...getFilterSettings(filter.key, filterSettingsOverrides),
             }),
-        [activeFilters, filterSettingsOverrides]
+        [
+            activeFilters,
+            filterComponentMap,
+            filterSettingsOverrides,
+            setActiveFilters,
+        ]
     )
-
-    const persistentFiltersToRender: ActiveFilter[] = [
-        ...persistentFilters.map((filter) => ({
-            key: filter,
-            type: filter,
-            active: true,
-            initializeAsOpen: false,
-        })),
-    ]
 
     return (
         <div className={css.wrapper}>

@@ -67,9 +67,9 @@ jest.mock(
         )
 )
 
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: () => <div>filters-panel</div>,
-}))
+jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
+    <div>filters-panel</div>
+))
 
 jest.mock(
     'pages/stats/support-performance/agents/AgentsPerformanceCardExtra',

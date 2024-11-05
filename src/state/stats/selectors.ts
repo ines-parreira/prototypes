@@ -2,6 +2,7 @@ import {createSelector, Selector} from 'reselect'
 
 import {Integration, IntegrationType} from 'models/integration/types'
 import {
+    CustomFieldSavedFilter,
     FilterKey,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
@@ -16,8 +17,13 @@ import {
 } from 'state/integrations/selectors'
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
 import {statsSlice} from 'state/stats/statsSlice'
-import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
+import {
+    fromFiltersWithLogicalOperators,
+    isCustomFieldSavedFilter,
+    statsFiltersWithLogicalOperatorsFromSavedFilters,
+} from 'state/stats/utils'
 import {RootState} from 'state/types'
+import {getSavedFilterDraft} from 'state/ui/stats/filtersSlice'
 import {makeGetPlainJS} from 'utils'
 
 export const getStats = (state: RootState) => state[statsSlice.name]
@@ -213,8 +219,33 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
     }
 )
 
+export const getSavedFiltersWithLogicalOperators = createSelector(
+    getSavedFilterDraft,
+    getStatsFiltersWithLogicalOperators,
+    (savedFilterDraft, statsFilters) => {
+        return {
+            period: statsFilters.period,
+            ...statsFiltersWithLogicalOperatorsFromSavedFilters(
+                savedFilterDraft?.filters
+            ),
+        }
+    }
+)
+
 export const getCustomFieldFilterById = (customFieldId: number) =>
     createSelector(getPageStatsFiltersWithLogicalOperators, (statsFilters) => {
         const filters = statsFilters[FilterKey.CustomFields] ?? []
         return filters.find((filter) => filter.customFieldId === customFieldId)
+    })
+
+export const getCustomFieldSavedFilterById = (customFieldId: number) =>
+    createSelector(getSavedFilterDraft, (savedFilterDraft) => {
+        const customFieldsFilter: CustomFieldSavedFilter | undefined =
+            savedFilterDraft?.filters.find<CustomFieldSavedFilter>(
+                isCustomFieldSavedFilter
+            )
+
+        return customFieldsFilter?.values.find(
+            (csFilter) => csFilter.customFieldId === customFieldId
+        )
     })

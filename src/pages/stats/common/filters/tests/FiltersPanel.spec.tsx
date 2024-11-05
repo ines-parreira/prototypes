@@ -4,6 +4,7 @@ import {act, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -35,14 +36,17 @@ import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButto
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
     FiltersPanel,
+    FiltersPanelComponent,
     isFilterTypeWithValues,
-    UNSUPPORTED_FILTER_PLACEHOLDER,
 } from 'pages/stats/common/filters/FiltersPanel'
+import {
+    FilterComponentMap,
+    SavedFilterComponentMap,
+} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
 } from 'pages/stats/common/filters/helpers'
-import * as PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {initialState, statsSlice} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
@@ -177,6 +181,17 @@ describe('FiltersPanel', () => {
         FilterKey.CampaignStatuses,
         FilterKey.Score,
     ]
+    const unSupportedSaveFilters: StaticFilter[] = [
+        FilterKey.AggregationWindow,
+        FilterKey.HelpCenters,
+        FilterKey.LocaleCodes,
+        FilterKey.Period,
+        FilterKey.SlaPolicies,
+        FilterComponentKey.BusiestTimesMetricSelectFilter,
+        FilterComponentKey.CustomField,
+        FilterComponentKey.PhoneIntegrations,
+        FilterComponentKey.Store,
+    ]
 
     const someTags = tags
     const tagState = tags.reduce<Record<string, Tag>>((state, tag) => {
@@ -218,20 +233,22 @@ describe('FiltersPanel', () => {
         }
     )
 
-    it('should render a placeholder for unsupported filter', () => {
-        const unsupportedFilter = 'someFilter'
-        renderWithStore(
-            <FiltersPanel
-                persistentFilters={[unsupportedFilter as StaticFilter]}
-                optionalFilters={[]}
-            />,
-            defaultState
-        )
+    it.each(unSupportedSaveFilters)(
+        'should not render unsupported filters',
+        (filter) => {
+            renderWithStore(
+                <FiltersPanelComponent
+                    persistentFilters={[filter]}
+                    optionalFilters={[]}
+                    filterComponentMap={SavedFilterComponentMap}
+                    cleanStatsFilters={initialState.filters}
+                />,
+                defaultState
+            )
 
-        expect(
-            screen.getByText(new RegExp(UNSUPPORTED_FILTER_PLACEHOLDER))
-        ).toBeInTheDocument()
-    })
+            expect(screen.queryByTestId('filter-name')).not.toBeInTheDocument()
+        }
+    )
 
     it('should render only persistentFilters and a divider by default', () => {
         const {baseElement} = renderWithStore(
@@ -777,20 +794,28 @@ describe('FiltersPanel', () => {
 
     it('should allow passing some initialSettings to the PeriodFilter', () => {
         const spy = jest.fn().mockImplementation(() => null)
-        ;(PeriodFilter as {PeriodFilterWithState: any}).PeriodFilterWithState =
-            spy
 
         const periodFilterInitialSettings = {
             maxSpan: 123,
             tooltipMessageForPreviousPeriod: 'someString',
         }
         renderWithStore(
-            <FiltersPanel
+            <FiltersPanelComponent
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
                 filterSettingsOverrides={{
                     [FilterKey.Period]: {
                         initialSettings: periodFilterInitialSettings,
+                    },
+                }}
+                filterComponentMap={{
+                    ...FilterComponentMap,
+                    [FilterKey.Period]: spy,
+                }}
+                cleanStatsFilters={{
+                    [FilterKey.Period]: {
+                        start_datetime: '',
+                        end_datetime: '',
                     },
                 }}
             />,

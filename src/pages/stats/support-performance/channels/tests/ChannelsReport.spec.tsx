@@ -1,9 +1,10 @@
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {
     ChannelsReport,
@@ -29,13 +30,14 @@ jest.mock('pages/stats/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: ({hidden = false}: {hidden: boolean}) =>
         hidden ? null : <div>{defaultFiltersText}</div>,
 }))
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsDownloadDataButton',
     () => ({

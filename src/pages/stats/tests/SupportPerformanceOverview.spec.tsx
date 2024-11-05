@@ -1,5 +1,6 @@
 import {fireEvent, render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +9,7 @@ import thunk from 'redux-thunk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
@@ -63,13 +64,14 @@ const ticketsCreatedVsClosedChartCardMock = assumeMock(
 jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
-jest.mock('pages/stats/common/filters/FiltersPanel', () => ({
-    FiltersPanel: (props: ComponentProps<typeof FiltersPanel>) => {
+jest.mock(
+    'pages/stats/common/filters/FiltersPanelWrapper',
+    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    },
-}))
+    }
+)
 
 describe('<SupportPerformanceOverview />', () => {
     beforeEach(() => {

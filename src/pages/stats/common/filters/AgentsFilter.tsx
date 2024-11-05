@@ -1,7 +1,8 @@
+import noop from 'lodash/noop'
 import React, {useCallback, useState} from 'react'
+
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
@@ -17,23 +18,38 @@ import {
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
+
 import {getFilterAgentsJS} from 'state/agents/selectors'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {getFilterTeamsJS} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Agents]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.Agents],
+            undefined
+        >
+    ) => void
+    dispatchStatFiltersDirty?: () => void
+    dispatchStatFiltersClean?: () => void
 } & RemovableFilter
 
 export default function AgentsFilter({
     value = emptyFilter,
+    dispatchUpdate,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
     initializeAsOpen = false,
     onRemove,
 }: Props) {
-    const dispatch = useAppDispatch()
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
     const [selectedTeamOption, setSelectedTeamOption] = useState<
@@ -43,16 +59,12 @@ export default function AgentsFilter({
 
     const handleFilterValuesChange = useCallback(
         (values) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: {
-                        values,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const filterOptions = [
@@ -129,24 +141,20 @@ export default function AgentsFilter({
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    agents: {
-                        values: value.values,
-                        operator: operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: value.values,
+                operator: operator,
+            })
         },
-        [dispatch, value.values]
+        [dispatchUpdate, value.values]
     )
 
     const handleDropdownOpen = () => {
-        dispatch(statFiltersDirty())
+        dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.Agents, LogicalOperatorLabel[value.operator])
-        dispatch(statFiltersClean())
+        dispatchStatFiltersClean()
     }
 
     return (
@@ -167,11 +175,8 @@ export default function AgentsFilter({
                 setSelectedTeamOption([])
             }}
             onRemove={() => {
-                dispatch(
-                    mergeStatsFiltersWithLogicalOperator({agents: emptyFilter})
-                )
+                dispatchUpdate(emptyFilter)
                 setSelectedTeamOption([])
-
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
@@ -182,6 +187,30 @@ export default function AgentsFilter({
     )
 }
 
-export const AgentsFiltersWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Agents],
-}))(AgentsFilter)
+export const AgentsFiltersWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Agents],
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                agents: filter,
+            }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
+    }
+)(AgentsFilter)
+
+export const AgentsFiltersWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[FilterKey.Agents],
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                operator: filter.operator,
+                values: filter.values.map(String),
+                member: FilterKey.Agents,
+            }),
+    }
+)(AgentsFilter)

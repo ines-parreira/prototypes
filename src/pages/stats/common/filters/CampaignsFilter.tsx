@@ -1,3 +1,5 @@
+import noop from 'lodash/noop'
+
 import React, {useCallback, useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -7,22 +9,32 @@ import {CampaignPreview} from 'models/convert/campaign/types'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'pages/stats/common/components/Filter/constants'
+import {LogicalOperatorLabel} from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {DropdownOption} from 'pages/stats/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]
     campaigns: CampaignPreview[]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.Campaigns],
+            undefined
+        >
+    ) => void
+    dispatchStatFiltersDirty?: () => void
+    dispatchStatFiltersClean?: () => void
 } & RemovableFilter
 
 export default function CampaignsFilter({
@@ -30,9 +42,10 @@ export default function CampaignsFilter({
     initializeAsOpen = false,
     campaigns,
     onRemove,
+    dispatchUpdate,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
 }: Props) {
-    const dispatch = useAppDispatch()
-
     const getSelectedCampaigns = useMemo(() => {
         return campaigns
             .filter((campaign) => value.values.includes(campaign.id))
@@ -55,30 +68,12 @@ export default function CampaignsFilter({
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    campaigns: {
-                        values,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
-    )
-
-    const handleFilterOperatorChange = useCallback(
-        (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    campaigns: {
-                        values: value.values,
-                        operator: operator,
-                    },
-                })
-            )
-        },
-        [dispatch, value.values]
+        [dispatchUpdate, value.operator]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -93,14 +88,14 @@ export default function CampaignsFilter({
     }
 
     const handleDropdownOpen = () => {
-        dispatch(statFiltersDirty())
+        dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Campaigns,
             LogicalOperatorLabel[value.operator]
         )
-        dispatch(statFiltersClean())
+        dispatchStatFiltersClean()
     }
 
     return (
@@ -119,14 +114,10 @@ export default function CampaignsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatch(
-                    mergeStatsFiltersWithLogicalOperator({
-                        campaigns: emptyFilter,
-                    })
-                )
+                dispatchUpdate(emptyFilter)
                 onRemove?.()
             }}
-            onChangeLogicalOperator={handleFilterOperatorChange}
+            onChangeLogicalOperator={noop}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
@@ -138,6 +129,7 @@ export const CampaignsFilterFromContext = ({
     initializeAsOpen,
     onRemove,
 }: RemovableFilter) => {
+    const dispatch = useAppDispatch()
     const {campaigns, selectedCampaigns} = useCampaignStatsFilters()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     return (
@@ -149,6 +141,51 @@ export const CampaignsFilterFromContext = ({
             )}
             initializeAsOpen={initializeAsOpen}
             onRemove={onRemove}
+            dispatchUpdate={(
+                filter: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]
+            ) =>
+                dispatch(
+                    mergeStatsFiltersWithLogicalOperator({
+                        campaigns: filter,
+                    })
+                )
+            }
+            dispatchStatFiltersDirty={() => dispatch(statFiltersDirty())}
+            dispatchStatFiltersClean={() => dispatch(statFiltersClean())}
+        />
+    )
+}
+
+export const CampaignsFilterFromSavedContext = ({
+    initializeAsOpen,
+    onRemove,
+}: RemovableFilter) => {
+    const dispatch = useAppDispatch()
+    const {campaigns} = useCampaignStatsFilters()
+    const selectedCampaigns = useAppSelector(
+        getSavedFiltersWithLogicalOperators
+    )[FilterKey.Campaigns]
+
+    return (
+        <CampaignsFilter
+            campaigns={campaigns}
+            value={selectedCampaigns}
+            initializeAsOpen={initializeAsOpen}
+            onRemove={onRemove}
+            dispatchUpdate={(
+                filter: Exclude<
+                    StatsFiltersWithLogicalOperator[FilterKey.Campaigns],
+                    undefined
+                >
+            ) =>
+                dispatch(
+                    upsertSavedFilterFilter({
+                        operator: filter.operator,
+                        values: filter.values.map(String),
+                        member: FilterKey.Campaigns,
+                    })
+                )
+            }
         />
     )
 }

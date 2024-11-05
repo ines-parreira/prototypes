@@ -27,14 +27,16 @@ import {RootState} from 'state/types'
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
     storeIntegrations: Integration[]
+    dispatchUpdate: (
+        value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
+    ) => void
 } & RemovableFilter
 
 export default function StoreFilter({
     value = emptyFilter,
     storeIntegrations,
+    dispatchUpdate,
 }: Props) {
-    const dispatch = useAppDispatch()
-
     const options = useMemo(
         () => [
             {
@@ -62,16 +64,12 @@ export default function StoreFilter({
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    integrations: {
-                        values,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -105,16 +103,36 @@ export default function StoreFilter({
 }
 
 export const StoreFilterFromContext = () => {
+    const dispatch = useAppDispatch()
     const {selectedIntegrations, integrations} = useCampaignStatsFilters()
     return (
         <StoreFilter
             storeIntegrations={integrations}
             value={withLogicalOperator(selectedIntegrations)}
+            dispatchUpdate={(
+                value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
+            ) =>
+                dispatch(
+                    mergeStatsFiltersWithLogicalOperator({
+                        integrations: value,
+                    })
+                )
+            }
         />
     )
 }
 
-export const StoreFilterWithState = connect((state: RootState) => ({
-    value: getStatsFiltersWithLogicalOperators(state)[FilterKey.Integrations],
-    storeIntegrations: getStoreIntegrations(state),
-}))(StoreFilter)
+export const StoreFilterWithState = connect(
+    (state: RootState) => ({
+        value: getStatsFiltersWithLogicalOperators(state)[
+            FilterKey.Integrations
+        ],
+        storeIntegrations: getStoreIntegrations(state),
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: filter,
+            }),
+    }
+)(StoreFilter)

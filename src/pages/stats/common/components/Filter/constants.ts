@@ -9,6 +9,7 @@ export const FILTER_SELECT_ALL_LABEL = 'Select all'
 export const FILTER_DESELECT_ALL_LABEL = 'Deselect all'
 export const FILTER_DROPDOWN_ICON = 'arrow_drop_down'
 export const FILTER_WARNING_ICON = 'error'
+export const FILTER_CLEAR_ICON = 'close'
 
 export const REMOVE_FILTER_LABEL = 'Remove filter'
 

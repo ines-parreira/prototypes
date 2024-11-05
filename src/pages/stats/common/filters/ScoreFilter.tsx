@@ -1,7 +1,7 @@
+import noop from 'lodash/noop'
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
@@ -20,37 +20,47 @@ import {
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
 import {DropdownOption} from 'pages/stats/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Score]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.Score],
+            undefined
+        >
+    ) => void
+    dispatchStatFiltersDirty?: () => void
+    dispatchStatFiltersClean?: () => void
 } & RemovableFilter
 
 export function ScoreFilter({
     value = emptyFilter,
     initializeAsOpen = false,
     onRemove,
+    dispatchUpdate,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
 }: Props) {
-    const dispatch = useAppDispatch()
     const scores = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    score: {
-                        values,
-                        operator: value.operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
         },
-        [dispatch, value.operator]
+        [dispatchUpdate, value.operator]
     )
 
     const filterOptions = [
@@ -76,24 +86,20 @@ export function ScoreFilter({
 
     const handleFilterOperatorChange = useCallback(
         (operator: LogicalOperatorEnum) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    score: {
-                        values: value.values,
-                        operator: operator,
-                    },
-                })
-            )
+            dispatchUpdate({
+                values: value.values,
+                operator: operator,
+            })
         },
-        [dispatch, value.values]
+        [dispatchUpdate, value.values]
     )
 
     const handleDropdownOpen = () => {
-        dispatch(statFiltersDirty())
+        dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.Score, LogicalOperatorLabel[value.operator])
-        dispatch(statFiltersClean())
+        dispatchStatFiltersClean()
     }
 
     return (
@@ -111,9 +117,7 @@ export function ScoreFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatch(
-                    mergeStatsFiltersWithLogicalOperator({score: emptyFilter})
-                )
+                dispatchUpdate(emptyFilter)
 
                 onRemove?.()
             }}
@@ -126,6 +130,30 @@ export function ScoreFilter({
     )
 }
 
-export const ScoreFiltersWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Score],
-}))(ScoreFilter)
+export const ScoreFiltersWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Score],
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                score: filter,
+            }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
+    }
+)(ScoreFilter)
+
+export const ScoreFiltersWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[FilterKey.Score],
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                member: FilterKey.Score,
+                operator: filter.operator,
+                values: filter.values.map(String),
+            }),
+    }
+)(ScoreFilter)

@@ -16,18 +16,25 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {StoreFilterWithState} from 'pages/stats/common/filters/StoreFilter'
+import {
+    StoreFilterFromContext,
+    StoreFilterWithState,
+} from 'pages/stats/common/filters/StoreFilter'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {
     initialState,
     mergeStatsFiltersWithLogicalOperator,
 } from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {renderWithStore} from 'utils/testing'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
+const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -35,14 +42,15 @@ jest.mock('common/segment', () => ({
 }))
 
 const firstId = 1
+const integrations = [
+    getIntegration(firstId, IntegrationType.Shopify),
+    getIntegration(2, IntegrationType.Magento2),
+    getIntegration(3, IntegrationType.Shopify),
+]
 const defaultState = {
     stats: initialState,
     integrations: fromJS({
-        integrations: [
-            getIntegration(firstId, IntegrationType.Shopify),
-            getIntegration(2, IntegrationType.Magento2),
-            getIntegration(3, IntegrationType.Shopify),
-        ],
+        integrations,
     }),
     billing: fromJS(billingState),
 } as RootState
@@ -62,6 +70,12 @@ const firstStoreName = getIntegration(firstId, IntegrationType.Shopify).name
 const thirdStoreName = getIntegration(3, IntegrationType.Shopify).name
 
 describe('StoreFilter', () => {
+    beforeEach(() => {
+        useCampaignStatsFiltersMock.mockReturnValue({
+            selectedIntegrations: [],
+            integrations: integrations,
+        } as any)
+    })
     const renderComponent = () =>
         renderWithStore(
             <StoreFilterWithState onRemove={mockedRemove} />,
@@ -70,6 +84,7 @@ describe('StoreFilter', () => {
 
     it('should render the component correctly', () => {
         renderComponent()
+
         expect(
             screen.getByText(FilterLabels[FilterComponentKey.Store])
         ).toBeTruthy()
@@ -77,7 +92,9 @@ describe('StoreFilter', () => {
 
     it('should render IntegrationsFilter shopify options only since hasAutomate is false', () => {
         renderComponent()
+
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
         expect(screen.getByText(firstStoreName)).toBeInTheDocument()
         expect(screen.getByText(thirdStoreName)).toBeInTheDocument()
         expect(
@@ -85,30 +102,47 @@ describe('StoreFilter', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should select an option', () => {
-        renderComponent()
+    it('should select an option when from context', () => {
+        renderWithStore(<StoreFilterFromContext />, defaultState)
+
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(thirdStoreName))
+
         expect(mockedDispatch).toHaveBeenCalledWith(
             dispatchChangeValuePayload([3])
         )
     })
 
+    it('should select an option', () => {
+        const {store} = renderComponent()
+
+        fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        fireEvent.click(screen.getByText(thirdStoreName))
+
+        expect(store.getActions()).toContainEqual(
+            dispatchChangeValuePayload([3])
+        )
+    })
+
     it('should have a default selected option and should not be able to deselect it', () => {
-        renderComponent().rerenderComponent(<StoreFilterWithState />, {
-            ...defaultState,
-            stats: {
-                ...initialState,
-                filters: {
-                    ...initialState.filters,
-                    integrations: withLogicalOperator([firstId]),
+        const {store} = renderWithStore(
+            <StoreFilterWithState onRemove={mockedRemove} />,
+            {
+                ...defaultState,
+                stats: {
+                    ...initialState,
+                    filters: {
+                        ...initialState.filters,
+                        integrations: withLogicalOperator([firstId]),
+                    },
                 },
-            },
-        })
+            }
+        )
         expect(screen.getByText(firstStoreName)).toBeInTheDocument()
         fireEvent.click(screen.getByText(firstStoreName))
-        fireEvent.click(screen.getAllByText(firstStoreName)['1'])
-        expect(mockedDispatch).toHaveBeenCalledWith(
+        fireEvent.click(screen.getAllByText(firstStoreName)[1])
+
+        expect(store.getActions()).toContainEqual(
             dispatchChangeValuePayload([firstId])
         )
     })

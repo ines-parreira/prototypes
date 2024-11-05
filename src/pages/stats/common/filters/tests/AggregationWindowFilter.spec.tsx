@@ -9,13 +9,14 @@ import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
-import {AggregationWindowFilter} from 'pages/stats/common/filters/AggregationWindowFilter'
-import {ReportingGranularityLabels} from 'pages/stats/common/filters/constants'
 import {
-    defaultStatsFilters,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
-
+    AggregationWindowFilter,
+    AggregationWindowFilterWithState,
+} from 'pages/stats/common/filters/AggregationWindowFilter'
+import {ReportingGranularityLabels} from 'pages/stats/common/filters/constants'
+import * as statsSlice from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {renderWithStore} from 'utils/testing'
 
 jest.mock('common/segment', () => ({
@@ -24,15 +25,26 @@ jest.mock('common/segment', () => ({
 }))
 
 describe('AggregationWindowFilter', () => {
-    const defaultState = {}
+    const defaultState = {
+        stats: statsSlice.initialState,
+        ui: {
+            stats: {
+                filters: filtersSlice.initialState,
+            },
+        },
+    } as RootState
     const period = {
         start_datetime: '1970-01-01T00:00:00+00:00',
         end_datetime: '1970-02-01T00:00:00+00:00',
     }
+    const dispatchUpdate = jest.fn()
 
     it('should render available aggregations', () => {
         renderWithStore(
-            <AggregationWindowFilter period={period} />,
+            <AggregationWindowFilter
+                period={period}
+                dispatchUpdate={dispatchUpdate}
+            />,
             defaultState
         )
 
@@ -55,8 +67,11 @@ describe('AggregationWindowFilter', () => {
     it('should update selectedMetric in state on selection', () => {
         const aggregation = ReportingGranularity.Week
 
-        const {store} = renderWithStore(
-            <AggregationWindowFilter period={period} />,
+        renderWithStore(
+            <AggregationWindowFilter
+                period={period}
+                dispatchUpdate={dispatchUpdate}
+            />,
             defaultState
         )
 
@@ -65,16 +80,15 @@ describe('AggregationWindowFilter', () => {
             screen.getByText(ReportingGranularityLabels[aggregation])
         )
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                [FilterKey.AggregationWindow]: aggregation,
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith(aggregation)
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
         renderWithStore(
-            <AggregationWindowFilter period={defaultStatsFilters.period} />,
+            <AggregationWindowFilter
+                period={statsSlice.defaultStatsFilters.period}
+                dispatchUpdate={dispatchUpdate}
+            />,
             defaultState
         )
 
@@ -84,6 +98,26 @@ describe('AggregationWindowFilter', () => {
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.AggregationWindow,
             logical_operator: null,
+        })
+    })
+
+    describe('AggregationWindowFilterWithState', () => {
+        it('should call dispatchUpdate', () => {
+            const aggregation = ReportingGranularity.Hour
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
+            renderWithStore(<AggregationWindowFilterWithState />, defaultState)
+
+            userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+            userEvent.click(
+                screen.getByRole('option', {
+                    name: new RegExp(ReportingGranularityLabels[aggregation]),
+                })
+            )
+
+            expect(spy).toHaveBeenCalled()
         })
     })
 })

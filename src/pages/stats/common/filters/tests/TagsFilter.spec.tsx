@@ -1,6 +1,7 @@
 import {Tag} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -16,13 +17,16 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {stateToProps, TagsFilter} from 'pages/stats/common/filters/TagsFilter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
-    initialState,
-    mergeStatsFiltersWithLogicalOperator,
-} from 'state/stats/statsSlice'
+    getFilterInstanceProps,
+    TagsFilter,
+    TagsFilterWithSavedState,
+    TagsFilterWithState,
+} from 'pages/stats/common/filters/TagsFilter'
+import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
-import {statFiltersClean} from 'state/ui/stats/actions'
+import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/common/useTagSearch')
@@ -39,6 +43,14 @@ describe('<TagsFilter />', () => {
         state[tag.id] = tag
         return state
     }, {})
+    const defaultState = {
+        stats: statsSlice.initialState,
+        ui: {
+            stats: {
+                filters: filtersSlice.initialState,
+            },
+        },
+    } as RootState
     beforeEach(() => {
         useTagSearchMock.mockReturnValue({
             tags: someTags,
@@ -49,6 +61,9 @@ describe('<TagsFilter />', () => {
             tagsState: tagState,
         })
     })
+    const dispatchUpdate = jest.fn()
+    const dispatchStatFiltersDirty = jest.fn()
+    const dispatchStatFiltersClean = jest.fn()
 
     it('Should render first batch of tags', () => {
         const selectedTags: number[] = []
@@ -59,6 +74,9 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -80,7 +98,13 @@ describe('<TagsFilter />', () => {
         }
 
         renderWithStore(
-            <TagsFilter value={currentInstance} otherValue={anotherInstance} />,
+            <TagsFilter
+                value={currentInstance}
+                otherValue={anotherInstance}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
             {}
         )
         userEvent.click(
@@ -98,28 +122,27 @@ describe('<TagsFilter />', () => {
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting tag', () => {
         const selectedTags: number[] = []
 
-        const {store} = renderWithStore(
+        renderWithStore(
             <TagsFilter
                 value={{
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(someTags[0].name))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        ...withDefaultLogicalOperator([someTags[0].id]),
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                ...withDefaultLogicalOperator([someTags[0].id]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting tag, including the value of a second filter', () => {
@@ -130,30 +153,29 @@ describe('<TagsFilter />', () => {
             filterInstanceId: TagFilterInstanceId.Second,
         }
 
-        const {store} = renderWithStore(
+        renderWithStore(
             <TagsFilter
                 value={{
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 otherValue={otherValue}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(someTags[0].name))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        ...withDefaultLogicalOperator([someTags[0].id]),
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                    otherValue,
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                ...withDefaultLogicalOperator([someTags[0].id]),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+            otherValue,
+        ])
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all tags and deselecting all tags', () => {
@@ -165,6 +187,9 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -174,17 +199,13 @@ describe('<TagsFilter />', () => {
 
         const allAvailableTags = tags.map((tag) => tag.id)
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        values: allAvailableTags,
-                        operator: LogicalOperatorEnum.ONE_OF,
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                values: allAvailableTags,
+                operator: LogicalOperatorEnum.ONE_OF,
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
 
         rerender(
             <Provider store={store}>
@@ -193,17 +214,16 @@ describe('<TagsFilter />', () => {
                         ...withDefaultLogicalOperator(allAvailableTags),
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
+                    dispatchUpdate={dispatchUpdate}
+                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                    dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
             </Provider>
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([])
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the tags', () => {
@@ -216,6 +236,9 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -229,6 +252,9 @@ describe('<TagsFilter />', () => {
                         ...withDefaultLogicalOperator(allAvailableTags),
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
+                    dispatchUpdate={dispatchUpdate}
+                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                    dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
             </Provider>
         )
@@ -243,19 +269,15 @@ describe('<TagsFilter />', () => {
         )
         userEvent.click(screen.getByText(selectedTag.name))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        operator: LogicalOperatorEnum.ONE_OF,
-                        values: allAvailableTags.filter(
-                            (tag) => tag !== selectedTag.id
-                        ),
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: allAvailableTags.filter(
+                    (tag) => tag !== selectedTag.id
+                ),
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting all tags when filters dropdown is closed', () => {
@@ -267,6 +289,9 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -281,17 +306,16 @@ describe('<TagsFilter />', () => {
                         ...withDefaultLogicalOperator(allAvailableTags),
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
+                    dispatchUpdate={dispatchUpdate}
+                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                    dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
             </Provider>
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([])
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action with otherFilterValue intact on deselecting all tags when filters dropdown is closed', () => {
@@ -309,6 +333,9 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 otherValue={otherValue}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -324,28 +351,30 @@ describe('<TagsFilter />', () => {
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
                     otherValue={otherValue}
+                    dispatchUpdate={dispatchUpdate}
+                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                    dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
             </Provider>
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [otherValue],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([otherValue])
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
         const selectedTags: number[] = []
 
-        const {store} = renderWithStore(
+        renderWithStore(
             <TagsFilter
                 value={{
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -367,45 +396,33 @@ describe('<TagsFilter />', () => {
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        operator: LogicalOperatorEnum.NOT_ONE_OF,
-                        values: [],
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        operator: LogicalOperatorEnum.NOT_ONE_OF,
-                        values: [],
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
 
         userEvent.click(isAllOfRadioLabel)
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        operator: LogicalOperatorEnum.ALL_OF,
-                        values: [],
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                operator: LogicalOperatorEnum.ALL_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+        ])
     })
 
     it('should change selection of logical operator including value from another filter', () => {
@@ -416,13 +433,16 @@ describe('<TagsFilter />', () => {
             filterInstanceId: TagFilterInstanceId.Second,
         }
 
-        const {store} = renderWithStore(
+        renderWithStore(
             <TagsFilter
                 value={{
                     ...withDefaultLogicalOperator(selectedTags),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 otherValue={otherValue}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -438,18 +458,14 @@ describe('<TagsFilter />', () => {
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(store.getActions()).toContainEqual(
-            mergeStatsFiltersWithLogicalOperator({
-                tags: [
-                    {
-                        operator: LogicalOperatorEnum.NOT_ONE_OF,
-                        values: [],
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                    otherValue,
-                ],
-            })
-        )
+        expect(dispatchUpdate).toHaveBeenCalledWith([
+            {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: [],
+                filterInstanceId: TagFilterInstanceId.First,
+            },
+            otherValue,
+        ])
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
@@ -461,6 +477,9 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator([selectedTag.id]),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             {}
         )
@@ -481,11 +500,14 @@ describe('<TagsFilter />', () => {
                     ...withDefaultLogicalOperator([selectedTag.id]),
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             store as any
         )
 
-        expect(store.getActions()).toContainEqual(statFiltersClean())
+        expect(dispatchStatFiltersClean).toHaveBeenCalled()
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.StatFilterSelected, {
             name: FilterKey.Tags,
             logical_operator:
@@ -494,15 +516,44 @@ describe('<TagsFilter />', () => {
                 ].toLocaleLowerCase(),
         })
     })
+
+    describe('TagsFilterWithState', () => {
+        it('should pass dispatch action', () => {
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
+
+            renderWithStore(<TagsFilterWithState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Tags])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('TagsFilterWithSavedState', () => {
+        it('should pass dispatch action', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(<TagsFilterWithSavedState />, defaultState)
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.Tags])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
 })
 
 describe('stateToProps', () => {
     it('when called without tag filters in state it should assign default value', () => {
-        const state = {
-            stats: initialState,
-        } as RootState
-
-        const props = stateToProps(state, {})
+        const props = getFilterInstanceProps([], {})
 
         expect(props).toEqual({
             value: {
@@ -520,16 +571,9 @@ describe('stateToProps', () => {
             values: [1, 2],
             filterInstanceId: TagFilterInstanceId.Second,
         }
-        const state = {
-            stats: {
-                filters: {
-                    ...initialState.filters,
-                    tags: [existingFilter],
-                },
-            },
-        } as RootState
+        const tagsFilter = [existingFilter]
 
-        const props = stateToProps(state, {
+        const props = getFilterInstanceProps(tagsFilter, {
             filterInstanceId: TagFilterInstanceId.First,
         })
 

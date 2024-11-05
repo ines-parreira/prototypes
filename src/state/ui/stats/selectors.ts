@@ -9,8 +9,12 @@ import {
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
-import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
+import {
+    fromFiltersWithLogicalOperators,
+    statsFiltersWithLogicalOperatorsFromSavedFilters,
+} from 'state/stats/utils'
 import {RootState} from 'state/types'
+import {getSavedFilterDraft} from 'state/ui/stats/filtersSlice'
 import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 
 export const isCleanStatsDirty = (state: RootState) =>
@@ -56,6 +60,21 @@ export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
             }
         }
     )
+
+export const getStatsFiltersFromSavedFilters = createSelector(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getSavedFilterDraft,
+    (statsFilters, savedFilterDraft) => {
+        const filtersFromSavedFilter =
+            statsFiltersWithLogicalOperatorsFromSavedFilters(
+                savedFilterDraft?.filters ?? []
+            )
+        return {
+            period: statsFilters.cleanStatsFilters.period,
+            ...filtersFromSavedFilter,
+        }
+    }
+)
 
 export const getCleanStatsFiltersWithInitialStoreIntegration = createSelector(
     getCleanStatsFiltersWithTimezone,

@@ -2,7 +2,6 @@ import _noop from 'lodash/noop'
 import React, {useCallback, useMemo} from 'react'
 import {connect} from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
@@ -16,22 +15,23 @@ import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
-type HelpCenterFilterProps = {
+type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.HelpCenters]
+    dispatchUpdate: (
+        value: Exclude<
+            StatsFiltersWithLogicalOperator[FilterKey.HelpCenters],
+            undefined
+        >
+    ) => void
 }
 
-const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
-    const dispatch = useAppDispatch()
+const HelpCenterFilter = ({value = emptyFilter, dispatchUpdate}: Props) => {
     const helpCenters = useAppSelector(getHelpCenterFAQList)
     const handleFilterChange = useCallback(
         (values: number[]) => {
-            dispatch(
-                mergeStatsFiltersWithLogicalOperator({
-                    helpCenters: withDefaultLogicalOperator(values),
-                })
-            )
+            dispatchUpdate(withDefaultLogicalOperator(values))
         },
-        [dispatch]
+        [dispatchUpdate]
     )
     const filterItems = useMemo(
         () => [
@@ -81,8 +81,16 @@ const HelpCenterFilter = ({value = emptyFilter}: HelpCenterFilterProps) => {
 
 export default HelpCenterFilter
 
-export const HelpCenterFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFiltersWithLogicalOperators(state)[
-        FilterKey.HelpCenters
-    ],
-}))(HelpCenterFilter)
+export const HelpCenterFilterWithState = connect(
+    (state: RootState) => ({
+        value: getPageStatsFiltersWithLogicalOperators(state)[
+            FilterKey.HelpCenters
+        ],
+    }),
+    {
+        dispatchUpdate: (filter: Props['value']) =>
+            mergeStatsFiltersWithLogicalOperator({
+                helpCenters: filter,
+            }),
+    }
+)(HelpCenterFilter)

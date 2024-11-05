@@ -3,13 +3,19 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {createSelector} from 'reselect'
 
 import {
+    CustomFieldFilter,
+    CustomFieldSavedFilter,
+    FilterKey,
     SavedFilter,
     SavedFilterDraft,
     SavedFilterSupportedFilters,
+    SavedFilterWithLogicalOperator,
     StatsFiltersWithLogicalOperator,
+    TagsSavedFilter,
 } from 'models/stat/types'
 import {
     fromLegacyStatsFilters,
+    isCustomFieldSavedFilter,
     savedFilterDraftFiltersFromFiltersWithLogicalOperators,
 } from 'state/stats/utils'
 import {RootState} from 'state/types'
@@ -98,7 +104,9 @@ export const filtersSlice = createSlice({
         },
         upsertSavedFilterFilter(
             state,
-            action: PayloadAction<SavedFilterSupportedFilters>
+            action: PayloadAction<
+                SavedFilterWithLogicalOperator | TagsSavedFilter
+            >
         ) {
             if (state.savedFilterDraft === null) {
                 state.savedFilterDraft = {
@@ -111,6 +119,45 @@ export const filtersSlice = createSlice({
                 )
                 state.savedFilterDraft.filters = [
                     action.payload,
+                    ...otherFilters,
+                ]
+            }
+        },
+        upsertSavedFilterCustomFieldFilter(
+            state,
+            action: PayloadAction<CustomFieldFilter>
+        ) {
+            if (state.savedFilterDraft === null) {
+                state.savedFilterDraft = {
+                    name: EMPTY_DRAFT_NAME,
+                    filters: [
+                        {
+                            member: FilterKey.CustomFields,
+                            values: [action.payload],
+                        },
+                    ],
+                }
+            } else {
+                const otherFilters = state.savedFilterDraft.filters.filter(
+                    (filter) => filter.member !== FilterKey.CustomFields
+                )
+
+                const existingCustomFieldFilter =
+                    state.savedFilterDraft.filters.find(
+                        isCustomFieldSavedFilter
+                    )
+
+                const otherValues =
+                    existingCustomFieldFilter?.values.filter(
+                        (v) => v.customFieldId !== action.payload.customFieldId
+                    ) ?? []
+
+                const updatedFilter: CustomFieldSavedFilter = {
+                    member: FilterKey.CustomFields,
+                    values: [...otherValues, action.payload],
+                }
+                state.savedFilterDraft.filters = [
+                    updatedFilter,
                     ...otherFilters,
                 ]
             }
@@ -139,6 +186,7 @@ export const {
     unapplySavedFilter,
     updateSavedFilterDraftName,
     upsertSavedFilterFilter,
+    upsertSavedFilterCustomFieldFilter,
     removeFilterFromSavedFilterDraft,
 } = filtersSlice.actions
 

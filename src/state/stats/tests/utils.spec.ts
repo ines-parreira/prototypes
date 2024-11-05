@@ -7,6 +7,7 @@ import {
     AggregationWindow,
     FilterKey,
     LegacyStatsFilters,
+    SavedFilterDraft,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
@@ -19,6 +20,7 @@ import {
     getAdjustedAggregationWindow,
     getAllowedAggregationWindows,
     savedFilterDraftFiltersFromFiltersWithLogicalOperators,
+    statsFiltersWithLogicalOperatorsFromSavedFilters,
 } from 'state/stats/utils'
 
 const agents = [1, 2]
@@ -351,6 +353,78 @@ describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
             member: FilterKey.Agents,
             values: ['123'],
             operator: LogicalOperatorEnum.ONE_OF,
+        })
+    })
+})
+
+describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
+    it('should return statsFilters from saved filters', () => {
+        const customFieldFilter = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['Some::value'],
+            customFieldId: 123,
+        }
+        const tagFilter = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['456'],
+        }
+        const secondTagFilter = {
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: ['765'],
+        }
+        const agentFilter = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['789'],
+        }
+        const campaignsFilter = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['470'],
+        }
+        const savedFiltersDraft: SavedFilterDraft = {
+            name: 'someName',
+            filters: [
+                {
+                    member: FilterKey.CustomFields,
+                    values: [customFieldFilter],
+                },
+                {
+                    member: FilterKey.Tags,
+                    values: [tagFilter, secondTagFilter],
+                },
+                {
+                    member: FilterKey.Agents,
+                    ...agentFilter,
+                },
+                {
+                    member: FilterKey.Campaigns,
+                    ...campaignsFilter,
+                },
+            ],
+        }
+
+        expect(
+            statsFiltersWithLogicalOperatorsFromSavedFilters(
+                savedFiltersDraft.filters
+            )
+        ).toEqual({
+            [FilterKey.CustomFields]: [customFieldFilter],
+            [FilterKey.Tags]: [
+                {
+                    ...tagFilter,
+                    values: tagFilter.values.map(Number),
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+                {
+                    ...secondTagFilter,
+                    values: secondTagFilter.values.map(Number),
+                    filterInstanceId: TagFilterInstanceId.Second,
+                },
+            ],
+            [FilterKey.Agents]: {
+                ...agentFilter,
+                values: agentFilter.values.map(Number),
+            },
+            [FilterKey.Campaigns]: campaignsFilter,
         })
     })
 })
