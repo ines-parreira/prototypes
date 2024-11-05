@@ -17,6 +17,8 @@ export enum FilterKey {
     Score = 'score',
     SlaPolicies = 'slaPolicies',
     Tags = 'tags',
+    CommunicationSkills = 'communicationSkills',
+    ResolutionCompleteness = 'resolutionCompleteness',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -48,6 +50,8 @@ export type StaticFilter =
     | FilterKey.Period
     | FilterKey.Score
     | FilterKey.SlaPolicies
+    | FilterKey.CommunicationSkills
+    | FilterKey.ResolutionCompleteness
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
     | FilterComponentKey.Store
@@ -90,6 +94,8 @@ export type LegacyStatsFilters = {
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
+    [FilterKey.CommunicationSkills]?: string[]
+    [FilterKey.ResolutionCompleteness]?: string[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -121,6 +127,8 @@ export type SavedFilterWithLogicalOperator = {
         | FilterKey.LocaleCodes
         | FilterKey.Score
         | FilterKey.SlaPolicies
+        | FilterKey.CommunicationSkills
+        | FilterKey.ResolutionCompleteness
     operator: LogicalOperatorEnum
     values: string[]
 }
@@ -163,6 +171,8 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
     [FilterKey.AggregationWindow]?: AggregationWindow
+    [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
+    [FilterKey.ResolutionCompleteness]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

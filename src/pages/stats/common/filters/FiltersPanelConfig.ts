@@ -15,6 +15,10 @@ import {
     ChannelsFilterWithSavedState,
     ChannelsFilterWithState,
 } from 'pages/stats/common/filters/ChannelsFilter'
+import {
+    CommunicationSkillsFilter,
+    CommunicationSkillsFilterWithSavedState,
+} from 'pages/stats/common/filters/CommunicationSkillsFilter'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import {
     CustomFieldsFilterWithSavedState,
@@ -28,6 +32,10 @@ import {
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
+import {
+    ResolutionCompletenessFilter,
+    ResolutionCompletenessFilterWithSavedState,
+} from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import {
     ScoreFiltersWithSavedState,
     ScoreFiltersWithState,
@@ -65,6 +73,8 @@ export const FilterComponentMap: Record<
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
     [FilterComponentKey.Store]: StoreFilterFromContext,
+    [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilter,
+    [FilterKey.CommunicationSkills]: CommunicationSkillsFilter,
 }
 
 export const SavedFilterComponentMap: Record<
@@ -88,4 +98,7 @@ export const SavedFilterComponentMap: Record<
     [FilterComponentKey.CustomField]: () => null,
     [FilterComponentKey.PhoneIntegrations]: () => null,
     [FilterComponentKey.Store]: () => null,
+    [FilterKey.ResolutionCompleteness]:
+        ResolutionCompletenessFilterWithSavedState,
+    [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithSavedState,
 }

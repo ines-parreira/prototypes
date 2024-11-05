@@ -35,6 +35,8 @@ export const getValidator = (
         case FilterKey.LocaleCodes:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
+        case FilterKey.CommunicationSkills:
+        case FilterKey.ResolutionCompleteness:
             return isFilterWithLogicalOperator
     }
 }

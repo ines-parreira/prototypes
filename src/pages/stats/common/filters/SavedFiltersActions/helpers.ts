@@ -24,6 +24,8 @@ export const isFilterFilled = (
         case FilterKey.LocaleCodes:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
+        case FilterKey.CommunicationSkills:
+        case FilterKey.ResolutionCompleteness:
             return !_isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:
         case FilterKey.CustomFields:
