@@ -43,7 +43,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouter} from 'utils/testing'
 
-import {ToneOfVoice} from '../../../constants'
+import {INITIAL_FORM_VALUES, ToneOfVoice} from '../../../constants'
+import * as util from '../../../util'
 import {StoreConfigForm} from '../StoreConfigForm'
 
 const queryClient = mockQueryClient()
@@ -108,6 +109,8 @@ const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+
+const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
 
 const mockStore = configureMockStore([thunk])
 
@@ -302,6 +305,11 @@ describe('<StoreConfigForm />', () => {
             aiAgentTicketViewId: 1,
         })
     })
+
+    afterAll(() => {
+        spyIsAiAgentEnabled.mockRestore()
+    })
+
     it('should render the component', () => {
         renderComponent()
 
@@ -918,6 +926,46 @@ describe('<StoreConfigForm />', () => {
         )
     })
 
+    it('set ai agent enabled toggles correctly if default form values are set', async () => {
+        mockedUseAccountStoreConfiguration.mockReturnValue({
+            accountConfiguration: undefined,
+            aiAgentTicketViewId: 1,
+        })
+
+        mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: undefined,
+            isLoading: false,
+            updateStoreConfiguration: mockUpdateStoreConfiguration,
+            createStoreConfiguration: mockCreateStoreConfiguration,
+            isPendingCreateOrUpdate: false,
+        })
+
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            isFormDirty: true,
+            formValues: {
+                ...initialFormValues,
+                deactivatedDatetime: undefined,
+                emailChannelDeactivatedDatetime: undefined,
+                chatChannelDeactivatedDatetime: undefined,
+            },
+        })
+
+        renderComponent()
+
+        await waitFor(() => {
+            expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
+                INITIAL_FORM_VALUES.deactivatedDatetime
+            )
+            expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
+                INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime
+            )
+            expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
+                INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
+            )
+        })
+    })
+
     describe('AI Agent ticket view modal', () => {
         it('should not modal if AI Agent is enabled', async () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
@@ -931,6 +979,7 @@ describe('<StoreConfigForm />', () => {
                     deactivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: null,
                 },
                 isLoading: false,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
@@ -1137,6 +1186,106 @@ describe('<StoreConfigForm />', () => {
                     /AI Agent responds to tickets sent to the following email addresses/i
                 )
             ).toBeInvalid()
+        })
+
+        it('should not show model when trial mode is enabled', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentTrialMode]: false,
+            })
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: 1,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: null,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.queryByRole('button', {
+                    name: 'Show Me',
+                })
+                expect(ticketViewButton).not.toBeInTheDocument()
+            })
+        })
+
+        it('should show model when switching form trial mode to live mode', async () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentTrialMode]: false,
+            })
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: 1,
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            mockedUseConfigurationForm.mockReturnValue({
+                ...defaultUseConfigurationFormValues,
+                isFormDirty: true,
+                formValues: {
+                    ...initialFormValues,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    emailChannelDeactivatedDatetime: null,
+                },
+            })
+
+            renderComponent({})
+
+            const saveButton = screen.getByText(/Save Changes/i)
+            fireEvent.click(saveButton)
+
+            await waitFor(() => {
+                expect(mockHandleOnSave).toHaveBeenCalled()
+
+                const ticketViewButton = screen.queryByRole('button', {
+                    name: 'Show Me',
+                })
+                expect(ticketViewButton).toBeInTheDocument()
+            })
         })
     })
 })

@@ -360,6 +360,47 @@ export const StoreConfigForm = ({
         [deactivateAiAgent, storeConfiguration]
     )
 
+    const shouldDisplayAiAgentConfigurationModal = useMemo(() => {
+        const hasViewedModal = ticketModalViewed?.includes(shopName)
+        const isAiAgentDeactivated =
+            storeConfiguration?.deactivatedDatetime !== null &&
+            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
+            storeConfiguration?.chatChannelDeactivatedDatetime !== null
+        const isFormPendingActivation =
+            formValues.deactivatedDatetime === null ||
+            formValues.emailChannelDeactivatedDatetime === null ||
+            formValues.chatChannelDeactivatedDatetime === null
+
+        const isTrialModeActivated = !!formValues.trialModeActivatedDatetime
+        const isTrialModeActive = trialModeAvailable && isTrialModeActivated
+
+        // if user has enabled trial mode, we should not show the modal
+        // if trial mode feature flag is false, and we have trialModeActivatedDatetime in store config -> user was in trial mode and is switching to live
+        // if trial mode is false, and we don't have trialModeActivatedDatetime in store config -> check if user activated ai agent before
+        const isAiAgentDeactivatedWithTrialMode = isTrialModeActive
+            ? false
+            : !!storeConfiguration?.trialModeActivatedDatetime ||
+              isAiAgentDeactivated
+
+        return (
+            !hasViewedModal &&
+            isFormPendingActivation &&
+            isAiAgentDeactivatedWithTrialMode
+        )
+    }, [
+        formValues.chatChannelDeactivatedDatetime,
+        formValues.deactivatedDatetime,
+        formValues.emailChannelDeactivatedDatetime,
+        formValues.trialModeActivatedDatetime,
+        shopName,
+        storeConfiguration?.chatChannelDeactivatedDatetime,
+        storeConfiguration?.deactivatedDatetime,
+        storeConfiguration?.emailChannelDeactivatedDatetime,
+        storeConfiguration?.trialModeActivatedDatetime,
+        ticketModalViewed,
+        trialModeAvailable,
+    ])
+
     const onSubmit = () => {
         const isAiAgentWasEnabled =
             storeConfiguration?.deactivatedDatetime !== null &&
@@ -376,15 +417,6 @@ export const StoreConfigForm = ({
             (isAiAgentWasEnabled ||
                 isAiAgentWasEnabledForChat ||
                 isAiAgentWasEnabledForEmail)
-
-        const shouldDisplayAiAgentConfigurationModal =
-            !ticketModalViewed?.includes(shopName) &&
-            storeConfiguration?.deactivatedDatetime !== null &&
-            storeConfiguration?.emailChannelDeactivatedDatetime !== null &&
-            storeConfiguration?.chatChannelDeactivatedDatetime !== null &&
-            (formValues.deactivatedDatetime === null ||
-                formValues.emailChannelDeactivatedDatetime === null ||
-                formValues.chatChannelDeactivatedDatetime === null)
 
         void handleOnSave({
             publicUrls,
