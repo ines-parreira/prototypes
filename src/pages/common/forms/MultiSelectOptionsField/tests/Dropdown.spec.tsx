@@ -1,12 +1,8 @@
-import {mount} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
-
 import Dropdown from '../Dropdown'
-import Input from '../Input'
-import Menu from '../Menu'
 
 describe('MultiSelectField Dropdown', () => {
     const options = [
@@ -37,69 +33,109 @@ describe('MultiSelectField Dropdown', () => {
     }
 
     describe('input arrow up', () => {
+        it('should create selection on hover', () => {
+            const {getByText} = render(<Dropdown {...defaultProps} />)
+
+            fireEvent.mouseEnter(getByText(options[2].label))
+
+            expect(
+                (getByText(options[2].label) as Element).parentElement
+            ).toHaveClass('option--focused')
+        })
+
         it('should move the selection up', () => {
-            const wrapper = mount(<Dropdown {...defaultProps} />)
-            wrapper.find(Menu).prop('onActivate')(2)
-            wrapper.find(Input).prop('onUp')()
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(1)
+            const {getByText, getByPlaceholderText} = render(
+                <Dropdown {...defaultProps} />
+            )
+
+            fireEvent.mouseEnter(getByText(options[2].label))
+            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
+                key: 'ArrowUp',
+            })
+
+            expect(
+                (getByText(options[1].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
 
         it('should not go below selected index 0', () => {
-            const wrapper = mount(
-                <Dropdown {...defaultProps} options={options} />
+            const {getByText, getByPlaceholderText} = render(
+                <Dropdown {...defaultProps} />
             )
-            wrapper.find(Menu).prop('onActivate')(0)
-            wrapper.find(Input).prop('onUp')()
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(0)
+
+            fireEvent.mouseEnter(getByText(options[0].label))
+            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
+                key: 'ArrowUp',
+            })
+
+            expect(
+                (getByText(options[0].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
     })
 
     describe('input arrow down', () => {
         it('should move the selection down', () => {
-            const wrapper = mount(<Dropdown {...defaultProps} />)
-            wrapper.find(Menu).prop('onActivate')(1)
-            wrapper.find(Input).prop('onDown')()
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(2)
+            const {getByText, getByPlaceholderText} = render(
+                <Dropdown {...defaultProps} />
+            )
+
+            fireEvent.mouseEnter(getByText(options[1].label))
+            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
+                key: 'ArrowDown',
+            })
+
+            expect(
+                (getByText(options[2].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
 
-        it('should not go up more than the number of options', () => {
-            const wrapper = mount(
-                <Dropdown {...defaultProps} options={options} />
+        it('should not go down more than the number of options', () => {
+            const {getByText, getByPlaceholderText} = render(
+                <Dropdown {...defaultProps} />
             )
-            wrapper.find(Menu).prop('onActivate')(2)
-            wrapper.find(Input).prop('onDown')()
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(2)
+
+            fireEvent.mouseEnter(getByText(options[2].label))
+            fireEvent.keyDown(getByPlaceholderText('some placeholder'), {
+                key: 'ArrowDown',
+            })
+
+            expect(
+                (getByText(options[2].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
     })
 
     describe('selection reset', () => {
         it('should reset selection if options change', () => {
-            const wrapper = mount(<Dropdown {...defaultProps} />)
-            wrapper.find(Menu).prop('onActivate')(2)
-            wrapper.setProps({
-                options: [options[0]],
-            })
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(0)
+            const {getByText, rerender} = render(<Dropdown {...defaultProps} />)
+
+            fireEvent.mouseEnter(getByText(options[2].label))
+            rerender(<Dropdown {...defaultProps} options={[options[0]]} />)
+
+            expect(
+                (getByText(options[0].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
 
         it('should not reset selection if options did not change', () => {
-            const wrapper = mount(<Dropdown {...defaultProps} />)
-            wrapper.find(Menu).prop('onActivate')(2)
-            wrapper.setProps({options})
-            wrapper.update()
-            expect(wrapper.find(Menu).prop('activeIndex')).toBe(2)
+            const {getByText, rerender} = render(<Dropdown {...defaultProps} />)
+
+            fireEvent.mouseEnter(getByText(options[2].label))
+            rerender(<Dropdown {...defaultProps} options={options} />)
+
+            expect(
+                (getByText(options[2].label) as Element).parentElement
+            ).toHaveClass('option--focused')
         })
     })
 
     it('should accept custom DropdownMenu', () => {
-        const wrapper = mount(
-            <Dropdown {...defaultProps} menu={TagDropdownMenu} />
+        const CustomMenu = () => <div>Custom Menu</div>
+        const {getByText} = render(
+            <Dropdown {...defaultProps} menu={CustomMenu} />
         )
-        expect(wrapper.find(TagDropdownMenu)).toHaveLength(1)
+
+        expect(getByText('Custom Menu')).toBeInTheDocument()
     })
 })

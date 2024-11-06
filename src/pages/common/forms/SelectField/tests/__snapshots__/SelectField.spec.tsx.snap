@@ -1,481 +1,110 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 1`] = `
-{
-  "filteredOptions": [
-    {
-      "isHeader": true,
-      "label": "Group 1",
-    },
-    {
-      "isAction": true,
-      "node": <span>
-        Action 1
-      </span>,
-      "onClick": [MockFunction],
-    },
-    {
-      "label": "Bar",
-      "value": "bar",
-    },
-    {
-      "isDivider": true,
-    },
-    {
-      "isHeader": true,
-      "label": "Group 2",
-    },
-    {
-      "label": "Baz",
-      "value": "baz",
-    },
-    {
-      "isDivider": true,
-    },
-    {
-      "isHeader": true,
-      "label": "Group 3",
-    },
-    {
-      "label": "Lorem ipsum",
-      "value": "loremipsum",
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 2`] = `
-{
-  "filteredOptions": [
-    {
-      "isHeader": true,
-      "label": "Group 1",
-    },
-    {
-      "isAction": true,
-      "node": <span>
-        Action 1
-      </span>,
-      "onClick": [MockFunction],
-    },
-    {
-      "label": "Bar",
-      "value": "bar",
-    },
-    {
-      "isDivider": true,
-    },
-    {
-      "isHeader": true,
-      "label": "Group 2",
-    },
-    {
-      "label": "Baz",
-      "value": "baz",
-    },
-  ],
-  "input": "ba",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should filter when rerendered 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Hello",
-      "value": "hello",
-    },
-  ],
-  "input": "hello",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": -1,
-}
-`;
-
-exports[`SelectField should handle key down event Enter/Tab (existing value) 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "First",
-      "text": "first",
-      "value": 1,
-    },
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should handle key down event Enter/Tab (existing value) 2`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "First",
-      "text": "first",
-      "value": 1,
-    },
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should handle key down event Enter/tab (custom value) 1`] = `
-{
-  "filteredOptions": [],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": true,
-  "selectedOptionIndex": -1,
-}
-`;
-
-exports[`SelectField should handle key down event Enter/tab (custom value) 2`] = `
-{
-  "filteredOptions": [],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": true,
-  "selectedOptionIndex": -1,
-}
-`;
-
-exports[`SelectField should handle key down event Escape 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should init state with custom props 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should init state with default props 1`] = `
-{
-  "filteredOptions": [],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
 exports[`SelectField should render a select input with custom props 1`] = `
 <div
-  style={
-    {
-      "background": "red",
-    }
-  }
+  style="background: red;"
 >
-  <UncontrolledDropdown
-    isOpen={false}
-    toggle={[Function]}
+  <div
+    class="dropdown"
   >
-    <DropdownToggle
-      aria-haspopup={true}
-      color="secondary"
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
       data-toggle="dropdown"
-      tag="div"
     >
-      <ContextConsumer>
-        <Component />
-      </ContextConsumer>
-    </DropdownToggle>
-    <DropdownMenu
-      className="options"
-      flip={true}
-      modifiers={
-        {
-          "preventOverflow": {
-            "boundariesElement": "viewport",
-          },
-        }
-      }
-      tag="div"
+      <div
+        class="select dropdown-toggle"
+      >
+        <span
+          class="label"
+          style="min-width: 10px; opacity: 1;"
+        >
+          First
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          style="min-width: 10px;"
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons dropdownIcon"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
     >
-      <DropdownItem
-        className="option option--focused"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-        tag="button"
-        toggle={true}
+      
+      <button
+        class="option option--focused dropdown-item"
+        role="menuitem"
+        tabindex="0"
         type="button"
       >
         <span>
           Second
         </span>
-      </DropdownItem>
-    </DropdownMenu>
-  </UncontrolledDropdown>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`SelectField should render a select input with default props 1`] = `
-<div
-  style={{}}
->
-  <UncontrolledDropdown
-    isOpen={false}
-    toggle={[Function]}
+<div>
+  <div
+    class="dropdown"
   >
-    <DropdownToggle
-      aria-haspopup={true}
-      color="secondary"
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
       data-toggle="dropdown"
-      tag="div"
     >
-      <ContextConsumer>
-        <Component />
-      </ContextConsumer>
-    </DropdownToggle>
-    <DropdownMenu
-      className="options"
-      flip={true}
-      modifiers={
-        {
-          "preventOverflow": {
-            "boundariesElement": "viewport",
-          },
-        }
-      }
-      tag="div"
+      <div
+        class="select dropdown-toggle"
+      >
+        <span
+          class="label placeholder"
+          style="min-width: 10px; opacity: 1;"
+        >
+          Select an option
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          style="min-width: 10px;"
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons dropdownIcon"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
     >
-      <DropdownItem
-        header={true}
-        tag="button"
-        toggle={true}
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
       >
         No result
-      </DropdownItem>
-    </DropdownMenu>
-  </UncontrolledDropdown>
+      </h6>
+    </div>
+  </div>
 </div>
-`;
-
-exports[`SelectField should reset state on blur 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should set the minWidth of the input according to the length of the longest label 1`] = `
-<div
-  style={
-    {
-      "background": "red",
-    }
-  }
->
-  <UncontrolledDropdown
-    isOpen={false}
-    toggle={[Function]}
-  >
-    <DropdownToggle
-      aria-haspopup={true}
-      color="secondary"
-      data-toggle="dropdown"
-      tag="div"
-    >
-      <ContextConsumer>
-        <Component />
-      </ContextConsumer>
-    </DropdownToggle>
-    <DropdownMenu
-      className="options"
-      flip={true}
-      modifiers={
-        {
-          "preventOverflow": {
-            "boundariesElement": "viewport",
-          },
-        }
-      }
-      tag="div"
-    >
-      <DropdownItem
-        className="option option--focused"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
-      >
-        <span>
-          Second
-        </span>
-      </DropdownItem>
-    </DropdownMenu>
-  </UncontrolledDropdown>
-</div>
-`;
-
-exports[`SelectField should update state when search changes (custom NOT values allowed) 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Hello",
-      "value": "hello",
-    },
-  ],
-  "input": "hello",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should update state when search changes (custom NOT values allowed) 2`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Hello",
-      "value": "hello",
-    },
-    {
-      "label": "World",
-      "value": "world",
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": 0,
-}
-`;
-
-exports[`SelectField should update state when search changes (custom values allowed) 1`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Hello",
-      "value": "hello",
-    },
-  ],
-  "input": "hello",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": -1,
-}
-`;
-
-exports[`SelectField should update state when search changes (custom values allowed) 2`] = `
-{
-  "filteredOptions": [
-    {
-      "label": "Hello",
-      "value": "hello",
-    },
-    {
-      "label": "World",
-      "value": "world",
-    },
-  ],
-  "input": "",
-  "isFocused": false,
-  "optionsOpen": false,
-  "selectedOptionIndex": -1,
-}
-`;
-
-exports[`SelectField should use custom props 1`] = `
-{
-  "allowCustomValue": false,
-  "fixedWidth": false,
-  "fullWidth": false,
-  "id": null,
-  "isSearchable": true,
-  "onChange": [MockFunction],
-  "onSearchChange": [Function],
-  "options": [
-    {
-      "label": "First",
-      "text": "first",
-      "value": 1,
-    },
-    {
-      "label": "Second",
-      "text": "second",
-      "value": 2,
-    },
-  ],
-  "placeholder": "placeholder",
-  "required": false,
-  "singular": "option",
-  "style": {
-    "background": "red",
-  },
-  "value": 1,
-}
-`;
-
-exports[`SelectField should use default props 1`] = `
-{
-  "allowCustomValue": false,
-  "fixedWidth": false,
-  "fullWidth": false,
-  "id": null,
-  "isSearchable": true,
-  "onChange": [MockFunction],
-  "onSearchChange": [Function],
-  "options": [],
-  "placeholder": "Select an option",
-  "required": false,
-  "singular": "option",
-  "style": {},
-}
 `;

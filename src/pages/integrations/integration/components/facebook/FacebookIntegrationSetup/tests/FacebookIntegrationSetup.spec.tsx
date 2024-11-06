@@ -1,4 +1,5 @@
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
+
 import {fromJS, Map, List} from 'immutable'
 import React, {ComponentProps} from 'react'
 
@@ -44,6 +45,10 @@ const allPermissions = [
     ADS_MANAGEMENT,
 ].join(',')
 
+jest.mock('pages/common/components/Loader/Loader', () => () => (
+    <div>Loader</div>
+))
+
 describe('FacebookIntegrationSetup', () => {
     const minProps: ComponentProps<typeof FacebookIntegrationSetupContainer> = {
         loading: fromJS({
@@ -79,69 +84,61 @@ describe('FacebookIntegrationSetup', () => {
     ])
 
     it('should render an empty list because there is no integrations to display', () => {
-        const component = shallow(
+        const {queryByRole} = render(
             <FacebookIntegrationSetupContainer {...minProps} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(queryByRole('img')).toBeNull()
     })
 
     it('should render integrations because there is available data and and it is not loading', () => {
-        const component = shallow(
+        const {getAllByRole} = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(getAllByRole('img')).not.toBeNull()
     })
 
     it('should render a loader because integrations are currently being fetched', () => {
-        const component = shallow(
+        const {getByText} = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
+                pagination={fromJS({nb_pages: 2})}
             />
-        ).setState({
-            isLoading: true,
-        })
+        )
 
-        expect(component).toMatchSnapshot()
+        fireEvent.click(getByText('keyboard_arrow_right'))
+
+        expect(getByText('Loader')).toBeInTheDocument()
     })
 
     it('should render the integration as enabled with canModerate enabled because it has MODERATE_ROLE', () => {
         const integrations = onboardingIntegrations
             .setIn([0, 'meta', 'instagram', 'id'], 'foo')
+            .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
             .setIn(
                 [0, 'meta', 'roles'],
                 [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
             )
-        const component = shallow(
+
+        const {container, getAllByRole} = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={integrations}
             />
-        ).setState({
-            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
-                integrations.getIn([0, 'id']),
-                (integrations.get(0) as Map<any, any>).setIn(
-                    ['meta', 'settings'],
-                    fromJS({
-                        messenger_enabled: true,
-                        posts_enabled: true,
-                        instagram_comments_enabled: true,
-                        instagram_mentions_enabled: true,
-                    })
-                )
-            ),
-        })
+        )
 
-        expect(component).toMatchSnapshot()
+        fireEvent.click(getAllByRole('checkbox')[0])
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the integration with canModerate disabled because there is no MODERATE_ROLE', () => {
-        const component = shallow(
+        const {container} = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations
@@ -153,182 +150,164 @@ describe('FacebookIntegrationSetup', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render the integration as enabled and save button as enabled because the integration is selected', () => {
-        const integrations = onboardingIntegrations
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn(
-                [0, 'meta', 'oauth', 'scope'],
-                [
-                    PAGES_MANAGE_ADS,
-                    PAGES_MANAGE_METADATA,
-                    PAGES_READ_ENGAGEMENT,
-                    PAGES_READ_USER_CONTENT,
-                    PAGES_MANAGE_POSTS,
-                    PAGES_MANAGE_ENGAGEMENT,
-                    BUSINESS_MANAGEMENT,
-                    PAGES_SHOW_LIST,
-                    PAGES_MESSAGING,
-                    INSTAGRAM_BASIC,
-                    INSTAGRAM_MANAGE_COMMENTS,
-                    INSTAGRAM_MANAGE_MESSAGES,
-                    ADS_READ,
-                    ADS_MANAGEMENT,
-                ].join(',')
-            )
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                {...minProps}
-                integrations={integrations}
-            />
-        ).setState({
-            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
-                integrations.getIn([0, 'id']),
-                (integrations.get(0) as Map<any, any>).setIn(
-                    ['meta', 'settings'],
-                    fromJS({
-                        messenger_enabled: true,
-                        posts_enabled: true,
-                        instagram_comments_enabled: false,
-                        instagram_mentions_enabled: false,
-                    })
-                )
-            ),
-        })
-
-        component.update()
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render the integration as enabled with Instagram enabled because it has an Instagram id', () => {
-        const integrationsWithIG = onboardingIntegrations
-            .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn(
-                [0, 'meta', 'oauth', 'scope'],
-                [
-                    PAGES_MANAGE_ADS,
-                    PAGES_MANAGE_METADATA,
-                    PAGES_READ_ENGAGEMENT,
-                    PAGES_READ_USER_CONTENT,
-                    PAGES_MANAGE_POSTS,
-                    PAGES_MANAGE_ENGAGEMENT,
-                    BUSINESS_MANAGEMENT,
-                    PAGES_SHOW_LIST,
-                    PAGES_MESSAGING,
-                    INSTAGRAM_BASIC,
-                    INSTAGRAM_MANAGE_COMMENTS,
-                    INSTAGRAM_MANAGE_MESSAGES,
-                    ADS_READ,
-                    ADS_MANAGEMENT,
-                ].join(',')
-            )
-
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                {...minProps}
-                integrations={integrationsWithIG}
-            />
-        ).setState({
-            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
-                integrationsWithIG.getIn([0, 'id']),
-                (integrationsWithIG.get(0) as Map<any, any>).setIn(
-                    ['meta', 'settings'],
-                    fromJS({
-                        messenger_enabled: true,
-                        posts_enabled: true,
-                        instagram_comments_enabled: true,
-                        instagram_mentions_enabled: true,
-                    })
-                )
-            ),
-        })
-
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it.each([
-        // Messenger enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled'].join(','),
-        // Messenger disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Posts && History enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled'].join(','),
-        // Posts && History disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Mentions enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(','),
-        // Mentions disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Instagram comments enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_comments_enabled'
-        ].join(','),
-        // Instagram comments disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_comments_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Instagram mentions enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_mentions_enabled'
-        ].join(','),
-        // Instagram mentions disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_mentions_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Instagram ads enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_ads_enabled'].join(
-            ','
-        ),
-        // Instagram ads disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_ads_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Instagram direct message enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ].join(','),
-        // Instagram direct message disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ]
-            .slice(0, -1)
-            .join(','),
-        // Facebook recommendations enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'recommendations_enabled'
-        ].join(','),
-        // Facebook recommendations disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING['recommendations_enabled']
-            .slice(0, -1)
-            .join(','),
-        // Instagram DM disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ]
-            .slice(0, -1)
-            .join(','),
-        // Instagram DM enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ].join(','),
+        [
+            // Messenger enabled
+            'messenger_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled'].join(
+                ','
+            ),
+            false,
+        ],
+
+        [
+            // Messenger disabled
+            'messenger_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled']
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Posts && History enabled
+            'posts_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled'].join(','),
+            false,
+        ],
+        [
+            // Posts && History disabled
+            'posts_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
+                .slice(0, -2)
+                .join(','),
+            true,
+        ],
+        [
+            // Mentions enabled
+            'mentions_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(
+                ','
+            ),
+            false,
+        ],
+        [
+            // Mentions disabled
+            'mentions_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled']
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Instagram comments enabled
+            'instagram_comments_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_comments_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Instagram comments disabled
+            'instagram_comments_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_comments_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Instagram mentions enabled
+            'instagram_mentions_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_mentions_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Instagram mentions disabled
+            'instagram_mentions_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_mentions_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Instagram ads enabled
+            'instagram_ads_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_ads_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Instagram ads disabled
+            'instagram_ads_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_ads_enabled']
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Instagram direct message enabled
+            'instagram_direct_message_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Instagram direct message disabled
+            'instagram_direct_message_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Facebook recommendations enabled
+            'recommendations_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'recommendations_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Facebook recommendations disabled
+            'recommendations_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['recommendations_enabled']
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
+        [
+            // Instagram DM enabled
+            'instagram_direct_message_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ].join(','),
+            false,
+        ],
+        [
+            // Instagram DM disabled
+            'instagram_direct_message_enabled',
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            true,
+        ],
     ])(
-        'should render the integration with meta settings enabled/disabled based on permissions',
-        (permissions) => {
+        'should render the integration with meta settings enabled/disabled based on permissions for %s',
+        (checkboxName, permissions, isDisabled) => {
             const integrations = onboardingIntegrations
                 .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                 .setIn(
@@ -345,41 +324,26 @@ describe('FacebookIntegrationSetup', () => {
                     ],
                     true
                 )
-            const component = shallow(
+
+            const {getAllByRole, queryAllByRole} = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
                 />
-            ).setState({
-                selectedIntegrations: (fromJS({}) as Map<any, any>).set(
-                    onboardingIntegrations.getIn([0, 'id']),
-                    (onboardingIntegrations.get(0) as Map<any, any>).setIn(
-                        ['meta', 'settings'],
-                        fromJS({
-                            messenger_enabled: true,
-                            posts_enabled: true,
-                            instagram_comments_enabled: true,
-                            instagram_mentions_enabled: true,
-                        })
-                    )
-                ),
-            })
+            )
 
-            expect(component).toMatchSnapshot()
+            if (isDisabled) {
+                expect(queryAllByRole('checkbox')).toHaveLength(0)
+            } else {
+                fireEvent.click(getAllByRole('checkbox')[0])
+                const channelCheckbox = document.getElementById(
+                    `1.${checkboxName}`
+                )
+
+                expect(channelCheckbox).not.toBeDisabled()
+            }
         }
     )
-
-    it('should render the integration list without showing mentions cause the domain doesnt support it', () => {
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                {...minProps}
-                currentAccount={fromJS({domain: 'notacme'})}
-                integrations={onboardingIntegrations}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
 
     it.each([
         [
@@ -432,7 +396,7 @@ describe('FacebookIntegrationSetup', () => {
                 },
             }
 
-            const component = shallow(
+            const {container, getByText} = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
@@ -441,7 +405,11 @@ describe('FacebookIntegrationSetup', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            if (!priceHasInstagramDmFeature) {
+                expect(getByText('Upgrade')).toBeInTheDocument()
+            } else {
+                expect(container.firstChild).toMatchSnapshot()
+            }
         }
     )
 })

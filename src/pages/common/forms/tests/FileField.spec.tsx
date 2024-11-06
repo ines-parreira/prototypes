@@ -1,5 +1,5 @@
 import {fireEvent, render} from '@testing-library/react'
-import {shallow} from 'enzyme'
+
 import _noop from 'lodash/noop'
 import React, {ComponentProps} from 'react'
 import {Input} from 'reactstrap'
@@ -25,13 +25,19 @@ jest.mock('reactstrap', () => {
     const reactstrap = jest.requireActual('reactstrap')
     return {
         ...reactstrap,
-        Input: ({innerRef}: ComponentProps<typeof Input>) => {
+        Input: ({innerRef, onChange}: ComponentProps<typeof Input>) => {
             if (innerRef && typeof innerRef === 'object') {
                 // @ts-ignore
                 innerRef.current =
                     MockInput.inputRef as unknown as HTMLInputElement
             }
-            return <div>file input mock</div>
+            return (
+                <input
+                    type="file"
+                    aria-label="file input mock"
+                    onChange={onChange}
+                />
+            )
         },
     } as unknown
 })
@@ -49,21 +55,27 @@ describe('<FileField/>', () => {
     describe('handleRemove()', () => {
         it('should call onChange with an empty string when removing the file', () => {
             const removeFn = jest.fn()
-            const component = shallow<FileFieldContainer>(
-                <FileFieldContainer {...minProps} onChange={removeFn} />
+            const {getByText} = render(
+                <FileFieldContainer
+                    {...minProps}
+                    isRemovable
+                    onChange={removeFn}
+                />
             )
-            component.instance().handleRemove()
+
+            fireEvent.click(getByText('close'))
 
             expect(removeFn).toHaveBeenCalled()
         })
     })
 
     describe('handleOnChange()', () => {
-        it('should notify a warning when trying to upload a SVG', async () => {
-            const component = shallow<FileFieldContainer>(
+        it('should notify a warning when trying to upload a SVG', () => {
+            const {getByLabelText, queryByText} = render(
                 <FileFieldContainer {...minProps} />
             )
-            await component.instance().handleOnChange({
+
+            fireEvent.change(getByLabelText('file input mock'), {
                 target: {
                     files: [
                         {
@@ -73,17 +85,17 @@ describe('<FileField/>', () => {
                 },
             })
 
-            expect(component.state('isUploading')).toBe(false)
+            expect(queryByText('Uploading...')).toBeNull()
             expect(uploadFiles).not.toBeCalled()
             expect(mockNotify).toHaveBeenCalled()
         })
 
-        it('should not allow uploading files larger than 10MB', async () => {
-            const component = shallow<FileFieldContainer>(
+        it('should not allow uploading files larger than 10MB', () => {
+            const {getByLabelText} = render(
                 <FileFieldContainer {...minProps} maxSize={10 * 1000 * 1000} />
             )
 
-            await component.instance().handleOnChange({
+            fireEvent.change(getByLabelText('file input mock'), {
                 target: {
                     files: [
                         {size: 1000 * 1000 * 10},
@@ -99,12 +111,12 @@ describe('<FileField/>', () => {
             })
         })
 
-        it('should not allow uploading files larger than 1kB', async () => {
-            const component = shallow<FileFieldContainer>(
+        it('should not allow uploading files larger than 1kB', () => {
+            const {getByLabelText} = render(
                 <FileFieldContainer {...minProps} maxSize={1000} />
             )
 
-            await component.instance().handleOnChange({
+            fireEvent.change(getByLabelText('file input mock'), {
                 target: {
                     files: [{size: 1000}, {size: 1000}] as any,
                 },
@@ -120,41 +132,45 @@ describe('<FileField/>', () => {
 
     describe('render()', () => {
         it('should render a basic file input', () => {
-            const component = shallow(
+            const {getByLabelText} = render(
                 <FileFieldContainer
                     {...minProps}
                     value="value"
                     onChange={_noop}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(getByLabelText('file input mock')).toBeInTheDocument()
         })
 
         it('should render preview', () => {
-            const component = shallow(
+            const {getByRole} = render(
                 <FileFieldContainer {...minProps} previewUrl="url" />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(getByRole('img')).toBeInTheDocument()
         })
 
         it('should not render preview', () => {
-            const component = shallow(
+            const {queryByRole} = render(
                 <FileFieldContainer {...minProps} previewUrl="url" noPreview />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(queryByRole('img')).toBeNull()
         })
 
         it('should display loading when loading', () => {
-            const component = shallow(<FileFieldContainer {...minProps} />)
-            component.setState({isUploading: true})
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should display a remove button', () => {
-            const component = shallow(
-                <FileFieldContainer {...minProps} isRemovable />
+            const {getByLabelText, getByText} = render(
+                <FileFieldContainer {...minProps} />
             )
-            expect(component).toMatchSnapshot()
+
+            fireEvent.change(getByLabelText('file input mock'), {
+                target: {
+                    files: [{type: 'image/png'}, {type: 'image/png'}] as any,
+                },
+            })
+
+            expect(getByText('Uploading...')).toBeInTheDocument()
         })
     })
 

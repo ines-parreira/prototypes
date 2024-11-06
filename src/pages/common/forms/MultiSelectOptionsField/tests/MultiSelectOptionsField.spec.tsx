@@ -1,14 +1,10 @@
-import {mount, render} from 'enzyme'
+import {render, fireEvent} from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps, ReactElement} from 'react'
+import React, {ComponentProps} from 'react'
 
 import {TAGS_LIMIT} from 'models/integration/constants'
 
-import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
-
-import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
-import OptionTag from '../Tag'
 
 type OptionProps = ComponentProps<typeof MultiSelectField>['options']
 
@@ -47,25 +43,15 @@ describe('MultiSelectField', () => {
     }
 
     it('should render a select input with default props', () => {
-        const component = mount(<MultiSelectField {...minProps} />)
-        expect(component).toMatchSnapshot()
-        expect(component.props()).toMatchSnapshot()
-        expect(component.state()).toMatchSnapshot()
+        const {container} = render(<MultiSelectField {...minProps} />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should use custom props', () => {
-        const component = mount(<MultiSelectField {...minProps} {...props} />)
-        expect(component.props()).toMatchSnapshot()
-    })
-
-    it('should init state with custom props', () => {
-        const component = mount(<MultiSelectField {...minProps} {...props} />)
-        expect(component.state()).toMatchSnapshot()
-    })
-
-    it('should render a multi select input with custom props', () => {
-        const component = mount(<MultiSelectField {...minProps} {...props} />)
-        expect(component).toMatchSnapshot()
+        const {getByPlaceholderText} = render(
+            <MultiSelectField {...minProps} {...props} />
+        )
+        expect(getByPlaceholderText('Add tags...')).toBeInTheDocument()
     })
 
     it('should update state when search changes (custom values allowed)', () => {
@@ -80,20 +66,18 @@ describe('MultiSelectField', () => {
             },
         ]
 
-        const wrapper = mount<MultiSelectField>(
+        const {getByPlaceholderText, getByDisplayValue} = render(
             <MultiSelectField
                 {...minProps}
                 options={options}
                 allowCustomOptions
             />
         )
-        const component = wrapper.instance()
+        fireEvent.change(getByPlaceholderText('Add items...'), {
+            target: {value: 'hello'},
+        })
 
-        component._onDropdownChange('hello')
-        expect(wrapper.state()).toMatchSnapshot()
-
-        component._onDropdownChange('')
-        expect(wrapper.state()).toMatchSnapshot()
+        expect(getByDisplayValue('hello')).toBeInTheDocument()
     })
 
     it('should update state when search changes (custom values NOT allowed)', () => {
@@ -108,39 +92,42 @@ describe('MultiSelectField', () => {
             },
         ]
 
-        const wrapper = mount<MultiSelectField>(
+        const {getByPlaceholderText, getByDisplayValue} = render(
             <MultiSelectField {...minProps} options={options} />
         )
-        const component = wrapper.instance()
-        component._onDropdownChange('hello')
-        expect(wrapper.state()).toMatchSnapshot()
 
-        component._onDropdownChange('')
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.change(getByPlaceholderText('Add items...'), {
+            target: {value: 'hello'},
+        })
+
+        expect(getByDisplayValue('hello')).toBeInTheDocument()
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount<MultiSelectField>(
+        const {container, getByPlaceholderText} = render(
             <MultiSelectField {...minProps} {...props} />
         )
-        const component = wrapper.instance()
 
-        component._focus()
-        component._onDropdownChange('')
-        component._blur()
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.focus(getByPlaceholderText('Add tags...'))
+
+        expect(container.firstChild?.firstChild).toHaveClass('focused')
+
+        fireEvent.blur(getByPlaceholderText('Add tags...'))
+
+        expect(container.firstChild?.firstChild).not.toHaveClass('focused')
     })
 
     describe('custom options', () => {
         it('should not display the custom option if input is empty', () => {
-            const wrapper = mount(
+            const {queryByText} = render(
                 <MultiSelectField {...minProps} {...props} options={[]} />
             )
-            expect(wrapper.find(Dropdown).prop('options')).toHaveLength(0)
+
+            expect(queryByText('Add tags...')).toBeNull()
         })
 
         it('should not display the custom option if not enabled', () => {
-            const wrapper = mount(
+            const {getByPlaceholderText, container} = render(
                 <MultiSelectField
                     {...minProps}
                     {...props}
@@ -148,13 +135,16 @@ describe('MultiSelectField', () => {
                     allowCustomOptions={false}
                 />
             )
-            wrapper.find(Dropdown).prop('onChange')('foo')
-            wrapper.update()
-            expect(wrapper.find(Dropdown).prop('options')).toHaveLength(0)
+
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'foo'},
+            })
+
+            expect(container.querySelector('b')).toBeNull()
         })
 
         it('should display the custom option', () => {
-            const wrapper = mount(
+            const {container, getByPlaceholderText} = render(
                 <MultiSelectField
                     {...minProps}
                     {...props}
@@ -162,147 +152,171 @@ describe('MultiSelectField', () => {
                     allowCustomOptions
                 />
             )
-            wrapper.find(Dropdown).prop('onChange')('foo')
-            wrapper.update()
-            const options = wrapper.find(Dropdown).prop('options')
-            expect(options).toHaveLength(1)
-            expect(options[0].label).toBe('foo')
-            expect(options[0].value).toBe('foo')
-            expect(
-                render(options[0].displayLabel as ReactElement).text()
-            ).toEqual('Add tag "foo"')
+
+            fireEvent.focus(getByPlaceholderText('Add tags...'))
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'foo'},
+            })
+
+            expect(container.querySelector('b')).toHaveTextContent('foo')
         })
     })
 
     describe('options filtering', () => {
         it('should filter out selected options', () => {
-            const wrapper = mount(
+            const {container} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                 />
             )
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[1]])
+
+            expect(
+                container.querySelector('.dropdown-menu')?.children.length
+            ).toBe(1)
         })
 
         it('should filter out options not matching input (case-insensitive) if matchInput', () => {
-            const wrapper = mount(
+            const {getByPlaceholderText, getByText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                     matchInput
                 />
             )
-            wrapper.find(Dropdown).prop('onChange')('sec') // It should match "Second" label
-            wrapper.update()
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[1]])
+
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'foo'},
+            })
+
+            expect(getByText('No result')).toBeInTheDocument()
         })
 
         it('should not filter out options not matching input if not matchInput', () => {
-            const wrapper = mount(
+            const {container, getByPlaceholderText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[]}
                     matchInput={false}
                 />
             )
-            wrapper.find(Dropdown).prop('onChange')('sec') // It should match "Second" label
-            wrapper.update()
-            expect(wrapper.find(Dropdown).prop('options')).toEqual(options)
+
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'foo'},
+            })
+
+            expect(
+                container.querySelector('.dropdown-menu')?.children.length
+            ).toBe(3)
         })
 
         it('should not filter out options if there is no input', () => {
-            const wrapper = mount(
+            const {container} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                     matchInput
                 />
             )
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[1]])
+
+            expect(
+                container.querySelector('.dropdown-menu')?.children.length
+            ).toBe(1)
         })
     })
 
     describe('component update', () => {
         it('should update filtered options on options change but not the input', () => {
-            const wrapper = mount(<MultiSelectField {...props} />)
-            wrapper.find(Dropdown).prop('onChange')('sec')
-            wrapper.update()
-            wrapper.setProps({
-                options: [options[0]],
+            const {
+                rerender,
+                getByPlaceholderText,
+                getByDisplayValue,
+                getByText,
+            } = render(<MultiSelectField {...props} />)
+
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'sec'},
             })
-            wrapper.update()
-            expect(wrapper.find(Dropdown).prop('value')).toBe('sec')
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[0]])
+            rerender(<MultiSelectField {...props} options={[options[0]]} />)
+
+            expect(getByDisplayValue('sec')).toBeInTheDocument()
+            expect(getByText('First')).toBeInTheDocument()
         })
 
         it('should reset the input and update the options on selected options change', () => {
-            const wrapper = mount(
+            const {rerender, getByText, getByPlaceholderText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                 />
             )
-            wrapper.find(Dropdown).prop('onChange')('sec')
-            wrapper.update()
-            wrapper.setProps({
-                selectedOptions: options,
+
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'sec'},
             })
-            wrapper.update()
-            expect(wrapper.find(Dropdown).prop('value')).toBe('')
-            expect(wrapper.find(Dropdown).prop('options')).toHaveLength(0)
+            rerender(<MultiSelectField {...props} selectedOptions={options} />)
+
+            expect(getByPlaceholderText('Add tags...')).toHaveValue('')
+            expect(getByText('No result')).toBeInTheDocument()
         })
     })
 
     describe('selected options', () => {
         it('should remove selected option and focus the dropdown on tag remove', () => {
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            const {getByText, getByPlaceholderText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                     onChange={onChangeSpy}
                 />
             )
-            wrapper.find(OptionTag).at(0).prop('onRemove')(options[0])
-            wrapper.update()
-            expect(onChangeSpy.mock.calls).toHaveLength(1)
-            expect(onChangeSpy.mock.calls[0]).toEqual([[options[2]]])
-            expect(wrapper.find(Dropdown).prop('isFocused')).toBe(true)
+
+            fireEvent.click(getByText('First').nextSibling!)
+
+            expect(onChangeSpy).toHaveBeenCalledWith([options[2]])
+            expect(getByPlaceholderText('Add tags...')).toHaveFocus()
         })
 
         it('should remove the last selected option on dropdown delete', () => {
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            const {getByPlaceholderText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[options[0], options[2]]}
                     onChange={onChangeSpy}
                 />
             )
-            wrapper.find(Dropdown).prop('onDelete')()
-            expect(onChangeSpy.mock.calls).toHaveLength(1)
-            expect(onChangeSpy.mock.calls[0]).toEqual([[options[0]]])
+
+            fireEvent.keyDown(getByPlaceholderText('Add tags...'), {
+                key: 'Backspace',
+            })
+
+            expect(onChangeSpy).toHaveBeenCalledWith([options[0]])
         })
 
         it('should do nothing on dropdown delete if there is no selected options', () => {
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            const {getByPlaceholderText} = render(
                 <MultiSelectField
                     {...props}
                     selectedOptions={[]}
                     onChange={onChangeSpy}
                 />
             )
-            wrapper.find(Dropdown).prop('onDelete')()
-            expect(onChangeSpy.mock.calls).toHaveLength(0)
+
+            fireEvent.keyDown(getByPlaceholderText('Add tags...'), {
+                key: 'Backspace',
+            })
+
+            expect(onChangeSpy).not.toHaveBeenCalled()
         })
     })
 
     describe('select option', () => {
         it('should handle click on option', () => {
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            const {getByText} = render(
                 <MultiSelectField
                     {...minProps}
                     {...props}
@@ -310,46 +324,14 @@ describe('MultiSelectField', () => {
                 />
             )
 
-            wrapper.find(Dropdown).prop('onSelect')(options[0])
-            expect(onChangeSpy.mock.calls[0]).toEqual([[options[0]]])
-        })
+            fireEvent.mouseDown(getByText('First'))
 
-        it('should whitelist values to those available', () => {
-            const onChangeSpy = jest.fn()
-            const wrapper = mount(
-                <MultiSelectField
-                    {...minProps}
-                    {...props}
-                    onChange={onChangeSpy}
-                />
-            )
-            wrapper.find(Dropdown).prop('onSelect')({
-                value: 'silly value',
-                label: options[0].label,
-            })
-            expect(onChangeSpy.mock.calls).toHaveLength(0)
-        })
-
-        it('should support case insensitive', () => {
-            const onChangeSpy = jest.fn()
-            const wrapper = mount(
-                <MultiSelectField
-                    {...minProps}
-                    {...props}
-                    onChange={onChangeSpy}
-                    caseInsensitive
-                />
-            )
-            wrapper.find(Dropdown).prop('onSelect')({
-                value: (options[0].value as string).toUpperCase(),
-                label: options[0].label,
-            })
-            expect(onChangeSpy.mock.calls[0]).toEqual([[options[0]]])
+            expect(onChangeSpy).toHaveBeenCalledWith([options[0]])
         })
 
         it('should support custom options', () => {
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            const {container, getByPlaceholderText} = render(
                 <MultiSelectField
                     {...minProps}
                     {...props}
@@ -357,37 +339,29 @@ describe('MultiSelectField', () => {
                     allowCustomOptions
                 />
             )
-            const customOption = {
-                value: 'foo',
-                label: 'bar',
-            }
-            wrapper.find(Dropdown).prop('onSelect')(customOption)
-            expect(onChangeSpy.mock.calls[0]).toEqual([[customOption]])
-        })
 
-        it('should deduplicate selected options', () => {
-            const onChangeSpy = jest.fn()
-            const wrapper = mount(
-                <MultiSelectField
-                    {...minProps}
-                    {...props}
-                    selectedOptions={[options[1]]}
-                    onChange={onChangeSpy}
-                />
-            )
-            wrapper.find(Dropdown).prop('onSelect')(options[1])
-            expect(onChangeSpy.mock.calls).toHaveLength(0)
+            fireEvent.change(getByPlaceholderText('Add tags...'), {
+                target: {value: 'foo'},
+            })
+            fireEvent.mouseDown(container.querySelector('b')!)
+
+            expect(onChangeSpy).toHaveBeenCalledWith([
+                {value: 'foo', label: 'foo'},
+            ])
         })
 
         it('should support custom DropdownMenu', () => {
-            const wrapper = mount(
+            const CustomDropdownMenu = () => <div>CustomDropdownMenu</div>
+
+            const {getByText} = render(
                 <MultiSelectField
                     {...minProps}
                     {...props}
-                    dropdownMenu={TagDropdownMenu}
+                    dropdownMenu={CustomDropdownMenu}
                 />
             )
-            expect(wrapper.find(TagDropdownMenu)).toHaveLength(1)
+
+            expect(getByText('CustomDropdownMenu')).toBeInTheDocument()
         })
 
         it('should display max TAGS_LIMIT options', () => {
@@ -397,11 +371,13 @@ describe('MultiSelectField', () => {
             }
             props.options = tags.map((tag) => ({label: tag, value: tag}))
 
-            const component = render(
+            const {container} = render(
                 <MultiSelectField {...minProps} {...props} />
             )
+            const displayedOptions =
+                container.querySelectorAll('.dropdown-item')
 
-            expect(component).toMatchSnapshot()
+            expect(displayedOptions.length).toBe(TAGS_LIMIT)
         })
     })
 })

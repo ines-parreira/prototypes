@@ -165,7 +165,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                       tabindex="-1"
                     >
                       <button
-                        class="option--focused dropdown-item"
+                        class="option option--focused dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -175,7 +175,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -185,7 +185,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -195,7 +195,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -205,7 +205,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -523,7 +523,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                       tabindex="-1"
                     >
                       <button
-                        class="option--focused dropdown-item"
+                        class="option option--focused dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -533,7 +533,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -543,7 +543,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -553,7 +553,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -563,7 +563,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -867,7 +867,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                       tabindex="-1"
                     >
                       <button
-                        class="option--focused dropdown-item"
+                        class="option option--focused dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -877,7 +877,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -887,7 +887,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -897,7 +897,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"
@@ -907,7 +907,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
                         </span>
                       </button>
                       <button
-                        class="dropdown-item"
+                        class="option dropdown-item"
                         role="menuitem"
                         tabindex="0"
                         type="button"

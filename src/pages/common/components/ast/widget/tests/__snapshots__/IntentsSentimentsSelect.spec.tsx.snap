@@ -34,7 +34,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
           tabindex="-1"
         >
           <button
-            class="option--focused optionDeprecated dropdown-item"
+            class="option option--focused optionDeprecated dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"
@@ -54,7 +54,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
             </span>
           </button>
           <button
-            class="dropdown-item"
+            class="option dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"
@@ -118,7 +118,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
           tabindex="-1"
         >
           <button
-            class="option--focused dropdown-item"
+            class="option option--focused dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"
@@ -168,7 +168,7 @@ exports[`<IntentsSentimentsSelect /> should render component with no selected it
           tabindex="-1"
         >
           <button
-            class="option--focused dropdown-item"
+            class="option option--focused dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"
@@ -178,7 +178,7 @@ exports[`<IntentsSentimentsSelect /> should render component with no selected it
             </span>
           </button>
           <button
-            class="dropdown-item"
+            class="option dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"
@@ -242,7 +242,7 @@ exports[`<IntentsSentimentsSelect /> should render component with selected item 
           tabindex="-1"
         >
           <button
-            class="option--focused dropdown-item"
+            class="option option--focused dropdown-item"
             role="menuitem"
             tabindex="0"
             type="button"

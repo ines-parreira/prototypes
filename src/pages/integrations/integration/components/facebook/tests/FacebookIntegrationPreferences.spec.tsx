@@ -1,37 +1,39 @@
-import {mount, shallow} from 'enzyme'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, SyntheticEvent} from 'react'
+import React, {ComponentProps} from 'react'
 
-import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-} from '../../../../../../config/integrations/index'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+} from 'config/integrations'
+import {FACEBOOK_LANGUAGE_DEFAULT} from 'config/integrations/facebook'
+import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+
 import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
+
+const mockUpdateOrCreateIntegration = jest.fn()
 
 describe('<FacebookIntegrationPreferences/>', () => {
     const minProps: ComponentProps<typeof FacebookIntegrationPreferences> = {
-        updateOrCreateIntegration: jest.fn(),
+        updateOrCreateIntegration: mockUpdateOrCreateIntegration,
         integration: fromJS({}),
     }
 
     describe('componentWillMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow<FacebookIntegrationPreferences>(
-                <FacebookIntegrationPreferences {...minProps} />,
-                {disableLifecycleMethods: true}
+            const {getByText, queryByRole} = render(
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
-            const prevState = component.state()
-            component.instance().componentDidMount()
-            expect(component.state()).toEqual(prevState)
+            expect(getByText(/This message will be sent/)).toHaveClass(
+                'text-faded'
+            )
+            expect(queryByRole('radio')).toBeNull()
         })
 
-        it('should initialize the state because the passed integration is not empty', () => {
+        it('should initialize the state because the passed integration is not empty', async () => {
             const integration: ComponentProps<
                 typeof FacebookIntegrationPreferences
             >['integration'] = fromJS({
@@ -48,31 +50,44 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const {getByText} = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
                 />
             )
 
-            expect(component.state()).toMatchSnapshot()
+            expect(getByText(/This message will be sent/)).not.toHaveClass(
+                'text-faded'
+            )
+            await waitFor(() => {
+                expect(
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS)
+                ).toBeChecked()
+            })
         })
     })
 
     describe('componentDidUpdate()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
+            const {getByText, queryByRole, rerender} = render(
                 <FacebookIntegrationPreferences {...minProps} />
             )
 
-            const prevState = component.instance()
+            rerender(
+                <FacebookIntegrationPreferences
+                    {...minProps}
+                    integration={fromJS({})}
+                />
+            )
 
-            component.setProps({integration: fromJS({})})
-
-            expect(component.instance()).toEqual(prevState)
+            expect(getByText(/This message will be sent/)).toHaveClass(
+                'text-faded'
+            )
+            expect(queryByRole('radio')).toBeNull()
         })
 
-        it('should not initialize the state because it was already initialized', () => {
+        it('should initialize the state because the passed integration is not empty', async () => {
             const integration: ComponentProps<
                 typeof FacebookIntegrationPreferences
             >['integration'] = fromJS({
@@ -88,117 +103,88 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-
-            const component = shallow(
+            const {getByText, rerender} = render(
                 <FacebookIntegrationPreferences {...minProps} />
             )
+            rerender(
+                <FacebookIntegrationPreferences
+                    {...minProps}
+                    integration={integration}
+                />
+            )
 
-            component.setState({isInitialized: true})
-            const prevState = component.state()
-
-            component.setProps({integration})
-
-            expect(component.state()).toEqual(prevState)
-        })
-
-        it('should initialize the state because the passed integration is not empty', () => {
-            const integration: ComponentProps<
-                typeof FacebookIntegrationPreferences
-            >['integration'] = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                meta: {
-                    language: FACEBOOK_LANGUAGE_DEFAULT,
-                    preferences: {
-                        auto_responder: {
-                            enabled: true,
-                            reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                        },
-                    },
-                },
+            expect(getByText(/This message will be sent/)).not.toHaveClass(
+                'text-faded'
+            )
+            await waitFor(() => {
+                expect(
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS)
+                ).toBeChecked()
             })
-
-            const component = shallow(
-                <FacebookIntegrationPreferences {...minProps} />
-            )
-
-            component.setProps({integration})
-
-            expect(component.state()).toMatchSnapshot()
         })
     })
 
     describe('_setAutoResponderEnabled()', () => {
         it('should set passed value in the state', () => {
-            const component = shallow<FacebookIntegrationPreferences>(
+            const {getByRole} = render(
                 <FacebookIntegrationPreferences {...minProps} />
             )
+            const checkbox = getByRole('checkbox')
 
-            expect(component.state('autoResponderEnabled')).toEqual(
-                CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
-            )
+            expect(checkbox).not.toBeChecked()
 
-            component
-                .instance()
-                ._setAutoResponderEnabled(!CHAT_AUTO_RESPONDER_ENABLED_DEFAULT)
+            fireEvent.click(checkbox)
 
-            expect(component.state('autoResponderEnabled')).toEqual(
-                !CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
-            )
+            expect(checkbox).toBeChecked()
         })
     })
 
     describe('_setAutoResponderReply()', () => {
-        it('should set passed value in the state', () => {
-            const component = shallow<FacebookIntegrationPreferences>(
-                <FacebookIntegrationPreferences {...minProps} />
-            )
+        it('should set passed value in the state', async () => {
+            const integration: ComponentProps<
+                typeof FacebookIntegrationPreferences
+            >['integration'] = fromJS({
+                id: 1,
+                type: FACEBOOK_INTEGRATION_TYPE,
+                meta: {
+                    language: FACEBOOK_LANGUAGE_DEFAULT,
+                    preferences: {
+                        auto_responder: {
+                            enabled: true,
+                            reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+                        },
+                    },
+                },
+            })
 
-            expect(component.state('autoResponderReply')).toEqual(
-                CHAT_AUTO_RESPONDER_REPLY_DEFAULT
-            )
-
-            component
-                .instance()
-                ._setAutoResponderReply(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
-
-            expect(component.state('autoResponderReply')).toEqual(
-                CHAT_AUTO_RESPONDER_REPLY_IN_DAY
-            )
-        })
-    })
-
-    describe('_submitPreferences()', () => {
-        it('should be called when the form is submitted', () => {
-            const component = mount<FacebookIntegrationPreferences>(
-                <FacebookIntegrationPreferences {...minProps} />
-            )
-
-            const submitPreferencesSpy = jest.spyOn(
-                component.instance(),
-                '_submitPreferences'
-            )
-            component.instance().forceUpdate()
-            component.find('form').simulate('submit')
-
-            expect(submitPreferencesSpy).toHaveBeenCalledTimes(1)
-        })
-
-        it('should submit the form with defaults', async () => {
-            const updateOrCreateIntegration = jest.fn()
-
-            const component = shallow<FacebookIntegrationPreferences>(
+            render(
                 <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={updateOrCreateIntegration}
-                    integration={fromJS({type: FACEBOOK_INTEGRATION_TYPE})}
+                    {...minProps}
+                    integration={integration}
                 />
             )
 
-            await component.instance()._submitPreferences({
-                preventDefault: _noop,
-            } as unknown as SyntheticEvent)
+            fireEvent.click(
+                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!
+            )
 
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
+            await waitFor(() => {
+                expect(
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
+                ).toBeChecked()
+            })
+        })
+    })
+
+    describe('form submission', () => {
+        it('should submit the form with defaults', () => {
+            const {getByText} = render(
+                <FacebookIntegrationPreferences {...minProps} />
+            )
+
+            fireEvent.click(getByText('Save changes'))
+
+            expect(mockUpdateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: undefined,
                     meta: {
@@ -213,17 +199,15 @@ describe('<FacebookIntegrationPreferences/>', () => {
             )
         })
 
-        it('should submit the form with loaded values', async () => {
-            const updateOrCreateIntegration = jest.fn()
-
+        it('should submit the form with loaded values', () => {
             const integration: ComponentProps<
                 typeof FacebookIntegrationPreferences
             >['integration'] = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 meta: {
+                    language: FACEBOOK_LANGUAGE_DEFAULT,
                     preferences: {
-                        language: FACEBOOK_LANGUAGE_DEFAULT,
                         auto_responder: {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -231,23 +215,19 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-
-            const component = shallow<FacebookIntegrationPreferences>(
+            const {getByText} = render(
                 <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={updateOrCreateIntegration}
-                    integration={fromJS(integration)}
+                    {...minProps}
+                    integration={integration}
                 />
             )
 
-            component.setState({
-                autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
-            })
+            fireEvent.click(
+                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!
+            )
+            fireEvent.click(getByText('Save changes'))
 
-            await component.instance()._submitPreferences({
-                preventDefault: _noop,
-            } as unknown as SyntheticEvent)
-
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
+            expect(mockUpdateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: integration.get('id'),
                     meta: (integration.get('meta') as Map<any, any>).setIn(
@@ -261,7 +241,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('render()', () => {
         it('should render the Facebook preferences', () => {
-            const component = shallow(
+            const {container} = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({
@@ -272,11 +252,11 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render loading buttons because the integration is being updated', () => {
-            const component = shallow(
+            const {getByText} = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({
@@ -287,9 +267,11 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 />
             )
 
-            component.setState({isUpdating: true})
+            fireEvent.click(getByText('Save changes'))
 
-            expect(component).toMatchSnapshot()
+            expect(getByText('Save changes').parentNode).toHaveClass(
+                'btn-loading'
+            )
         })
     })
 })

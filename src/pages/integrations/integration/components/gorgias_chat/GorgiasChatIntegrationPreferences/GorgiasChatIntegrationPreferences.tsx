@@ -1229,6 +1229,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 isToggled={
                                                     displayCampaignsHiddenChat
                                                 }
+                                                name="display-campaigns-hidden-chat-toggle"
                                             />
 
                                             <div
@@ -1360,6 +1361,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             onClick={
                                                 this._setAutoResponderEnabled
                                             }
+                                            name="auto-responder-toggle"
                                             isToggled={autoResponderEnabled}
                                         />
                                         <div className="ml-1">

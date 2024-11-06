@@ -1,12 +1,11 @@
 import {fireEvent, render, screen, waitFor, act} from '@testing-library/react'
 import {EditorState} from 'draft-js'
-import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, MouseEvent} from 'react'
 
 import * as flagUtils from 'common/flags'
 import {utmConfiguration} from 'fixtures/utmConfiguration'
-import Button from 'pages/common/components/button/Button'
+import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
 
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
@@ -25,6 +24,7 @@ const useCampaignFormContextMock: jest.MockedFunction<
 > = assumeMock(useCampaignFormContext)
 const attachUtmtoUrlMock = assumeMock(attachUtmToUrl)
 
+const mockOnClose = jest.fn()
 function AddLinkWithIsOpenState(
     props: ComponentProps<typeof AddLinkContainer>
 ) {
@@ -32,10 +32,37 @@ function AddLinkWithIsOpenState(
     return (
         <AddLinkContainer
             {...props}
-            onClose={() => setIsOpen(false)}
+            onClose={() => {
+                setIsOpen(false)
+            }}
             onOpen={() => setIsOpen(true)}
             isOpen={isOpen}
         />
+    )
+}
+
+jest.mock('pages/common/draftjs/plugins/toolbar/components/ButtonPopover')
+const MockButtonPopover = ButtonPopover as jest.Mock
+
+const mockToggle = jest.fn()
+
+const setupMockPopover = () => {
+    const mockDiv = document.createElement('div')
+    MockButtonPopover.mockImplementation(
+        ({toggleGuard}: ComponentProps<typeof ButtonPopover>) => {
+            return (
+                <div
+                    onClick={() => {
+                        const shouldToggle = toggleGuard?.({
+                            target: mockDiv,
+                        } as unknown as MouseEvent)
+                        shouldToggle && mockToggle()
+                    }}
+                >
+                    Toggle
+                </div>
+            )
+        }
     )
 }
 
@@ -45,6 +72,11 @@ describe('<AddLink />', () => {
             utmConfiguration: utmConfiguration,
         })
         attachUtmtoUrlMock.mockReturnValue('')
+        MockButtonPopover.mockImplementation(
+            jest.requireActual<Record<string, any>>(
+                'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
+            ).default
+        )
     })
 
     afterEach(() => {
@@ -55,7 +87,7 @@ describe('<AddLink />', () => {
         isOpen: true,
         getEditorState: () => EditorState.createEmpty(),
         setEditorState: _noop,
-        onClose: _noop,
+        onClose: mockOnClose,
         onOpen: _noop,
         onTextChange: _noop,
         onUrlChange: _noop,
@@ -68,47 +100,78 @@ describe('<AddLink />', () => {
     } as unknown as ComponentProps<typeof AddLinkContainer>
 
     it('should allow to submit a valid url', () => {
-        const component = shallow(
-            <AddLinkContainer
+        const {getByText, getByRole} = render(
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="http://gorgias.io"
             />
         )
-        const button = component.find(Button)
-        expect(button.props().isDisabled).toBe(false)
+
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should allow to submit a url without the protocol', () => {
-        const component = shallow(
-            <AddLinkContainer {...defaultProps} text="foo" url="gorgias.io" />
+        const {getByText, getByRole} = render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="gorgias.io"
+            />
         )
-        const button = component.find(Button)
-        expect(button.props().isDisabled).toBe(false)
+
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should NOT allow to submit an invalid url', () => {
-        const component = shallow(
-            <AddLinkContainer
+        const {getByText, getByRole} = render(
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="bar{{ticket.url_something}}"
             />
         )
-        const button = component.find(Button)
-        expect(button.props().isDisabled).toBe(true)
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should allow to submit templated url', () => {
-        const component = shallow(
-            <AddLinkContainer
+        const {getByText, getByRole} = render(
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="{{ticket.url_something}}"
             />
         )
-        const button = component.find(Button)
-        expect(button.props().isDisabled).toBe(false)
+
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should remove link if there is an entity key', () => {
@@ -124,8 +187,8 @@ describe('<AddLink />', () => {
         jest.spyOn(editorUtils, 'getSelectedEntityKey').mockReturnValue(
             entityKey
         )
-
         const mockRemoveLink = jest.spyOn(draftjsPluginsUtils, 'removeLink')
+
         const {getByText} = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
@@ -183,8 +246,8 @@ describe('<AddLink />', () => {
             act(() => {
                 fireEvent.click(screen.getByText(/link/))
             })
-
             fireEvent.keyDown(getByLabelText('Link text'), {key: inputKey})
+
             expect(mockOnClose).toBeCalled()
         }
     )
@@ -250,6 +313,7 @@ describe('<AddLink />', () => {
         act(() => {
             fireEvent.click(getByText(/Insert Link/))
         })
+
         expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
             baseUrl,
             '',
@@ -283,19 +347,26 @@ describe('<AddLink />', () => {
         act(() => {
             fireEvent.click(getByText(/Insert Link/))
         })
+
         expect(attachUtmtoUrlMock).not.toHaveBeenCalled()
     })
 
     it('should allow to submit an url with a variable', () => {
-        const component = shallow(
-            <AddLinkContainer
+        const {getByText, getByRole} = render(
+            <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="http://google.com/?email={{message.customer.email}}"
             />
         )
-        const button = component.find(Button)
-        expect(button.props().isDisabled).toBe(false)
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should add a video at the bottom when URL is compatible and under a chat channel', () => {
@@ -316,6 +387,7 @@ describe('<AddLink />', () => {
         )
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(getByText(/Insert Link/))
+
         expect(addVideoSpy).toHaveBeenCalled()
     })
 
@@ -338,6 +410,7 @@ describe('<AddLink />', () => {
         )
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(screen.getByText(/Insert Link/))
+
         expect(addVideoSpy).not.toHaveBeenCalled()
     })
 
@@ -405,8 +478,11 @@ describe('<AddLink />', () => {
     })
 
     it('should return true when workflowVariables are provided and target matches', () => {
-        const wrapper = shallow(
+        setupMockPopover()
+
+        const {getByText} = render(
             <AddLinkContainer
+                {...defaultProps}
                 getWorkflowVariables={() => [
                     {
                         type: 'string',
@@ -415,110 +491,37 @@ describe('<AddLink />', () => {
                         value: 'value',
                     },
                 ]}
-                {...defaultProps}
             />
         )
-        const instance = wrapper.instance() as unknown as {
-            _flowVariablesDisablePopoverToggle: (
-                event: React.MouseEvent<any, globalThis.MouseEvent>
-            ) => boolean
-        }
 
-        const event = {
-            target: document.createElement('div'),
-        }
-        event.target.setAttribute('id', 'floating-ui-123')
+        fireEvent.click(getByText('Toggle'))
 
-        // Act
-
-        const result = instance._flowVariablesDisablePopoverToggle(
-            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
-        )
-
-        expect(result).toBe(true)
+        expect(mockToggle).toHaveBeenCalled()
     })
 
     it('should return false when workflowVariables are not provided', () => {
-        const wrapper = shallow(<AddLinkContainer {...defaultProps} />)
-        const instance = wrapper.instance()
+        setupMockPopover()
 
-        const event = {
-            target: document.createElement('div'),
-        }
+        const {getByText} = render(<AddLinkContainer {...defaultProps} />)
 
-        const result = (
-            instance as unknown as {
-                _flowVariablesDisablePopoverToggle: (
-                    event: React.MouseEvent<any, globalThis.MouseEvent>
-                ) => boolean
-            }
-        )._flowVariablesDisablePopoverToggle(
-            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
-        )
+        fireEvent.click(getByText('Toggle'))
 
-        expect(result).toBe(false)
-    })
-
-    it('should return true when workflowVariables are provided and target matches', () => {
-        // Arrange
-        const wrapper = shallow(
-            <AddLinkContainer
-                getWorkflowVariables={() => [
-                    {
-                        type: 'string',
-                        name: 'testVar',
-                        nodeType: 'text_reply',
-                        value: 'value',
-                    },
-                ]}
-                {...defaultProps}
-            />
-        )
-        const instance = wrapper.instance() as unknown as {
-            _flowVariablesDisablePopoverToggle: (
-                event: React.MouseEvent<any, globalThis.MouseEvent>
-            ) => boolean
-        }
-
-        const event = {
-            target: document.createElement('div'),
-        }
-
-        const result = (
-            instance as unknown as {
-                _flowVariablesDisablePopoverToggle: (
-                    event: React.MouseEvent<any, globalThis.MouseEvent>
-                ) => boolean
-            }
-        )._flowVariablesDisablePopoverToggle(
-            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
-        )
-
-        expect(result).toBe(true)
+        expect(mockToggle).not.toHaveBeenCalled()
     })
 
     it('should return false when workflowVariables is an empty array', () => {
-        const wrapper = shallow(
+        setupMockPopover()
+
+        const {getByText} = render(
             <AddLinkContainer
                 {...defaultProps}
                 getWorkflowVariables={() => []}
             />
         )
-        const instance = wrapper.instance() as unknown as {
-            _flowVariablesDisablePopoverToggle: (
-                event: React.MouseEvent<any, globalThis.MouseEvent>
-            ) => boolean
-        }
 
-        const event = {
-            target: document.createElement('div'),
-        }
+        fireEvent.click(getByText('Toggle'))
 
-        const result = instance._flowVariablesDisablePopoverToggle(
-            event as unknown as React.MouseEvent<any, globalThis.MouseEvent>
-        )
-
-        expect(result).toBe(false)
+        expect(mockToggle).not.toHaveBeenCalled()
     })
 
     it('should render "open in a new tab" checkbox', () => {

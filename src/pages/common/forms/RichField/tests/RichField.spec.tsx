@@ -1,8 +1,7 @@
 import {render} from '@testing-library/react'
 import {ContentState, EditorState} from 'draft-js'
-import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, LegacyRef} from 'react'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -46,6 +45,7 @@ describe('RichField', () => {
                 />
             </Provider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -59,6 +59,7 @@ describe('RichField', () => {
                 />
             </Provider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -77,6 +78,7 @@ describe('RichField', () => {
                 />
             </Provider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -84,26 +86,28 @@ describe('RichField', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
 
-        const component = mount<RichField>(
+        const instanceRef: LegacyRef<InstanceType<typeof RichField>> = {
+            current: null,
+        }
+
+        const {container} = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
                     value={{text: 'text', html: 'html'}}
+                    ref={instanceRef}
                 />
             </Provider>,
-            {attachTo: div}
+            {container: div}
         )
 
         // simulate typed text
         const editorState = EditorState.createWithContent(
             ContentState.createFromText('{{current_user.name}}')
         )
-        const compenentInstance = component
-            .find(RichField)
-            .instance() as RichField
-        compenentInstance.setEditorState(editorState)
+        instanceRef.current?.setEditorState(editorState)
 
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render default content state', () => {
@@ -123,6 +127,7 @@ describe('RichField', () => {
                 />
             </Provider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 

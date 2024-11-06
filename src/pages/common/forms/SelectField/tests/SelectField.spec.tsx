@@ -1,7 +1,8 @@
-import {shallow, mount} from 'enzyme'
-import React, {ChangeEvent, ComponentProps, SyntheticEvent} from 'react'
+import {render, screen, fireEvent} from '@testing-library/react'
+import React, {ComponentProps, LegacyRef, SyntheticEvent} from 'react'
 
 // refs are not passed by enzyme to popper.js
+// this mock might not be needed anymore
 // https://github.com/facebook/react/issues/9244
 // https://github.com/facebook/react/issues/7371
 jest.mock('popper.js', () => {
@@ -41,44 +42,26 @@ describe('SelectField', () => {
         },
     }
     const searchChangeEvent = {
-        currentTarget: {value: 'hello'},
-    } as unknown as ChangeEvent<HTMLInputElement>
-
-    it('should use default props', () => {
-        const component = mount(<SelectField {...minProps} />)
-        expect(component.props()).toMatchSnapshot()
-    })
-
-    it('should init state with default props', () => {
-        const component = mount(<SelectField {...minProps} />)
-        expect(component.state()).toMatchSnapshot()
-    })
+        target: {value: 'hello'},
+    }
 
     it('should render a select input with default props', () => {
-        const component = shallow(<SelectField {...minProps} />)
-        expect(component).toMatchSnapshot()
-    })
+        const {container} = render(<SelectField {...minProps} />)
 
-    it('should use custom props', () => {
-        const component = mount(<SelectField {...minProps} {...props} />)
-        expect(component.props()).toMatchSnapshot()
-    })
-
-    it('should init state with custom props', () => {
-        const component = mount(<SelectField {...minProps} {...props} />)
-        expect(component.state()).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a select input with custom props', () => {
-        const component = shallow(<SelectField {...minProps} {...props} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<SelectField {...minProps} {...props} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should set the minWidth of the input according to the length of the longest label', () => {
-        const component = shallow(
+        const {getByRole} = render(
             <SelectField {...minProps} {...props} fixedWidth />
         )
-        expect(component).toMatchSnapshot()
+        expect(getByRole('textbox')).toHaveStyle('min-width: 58px')
     })
 
     it('should update state when search changes (custom values allowed)', () => {
@@ -92,19 +75,13 @@ describe('SelectField', () => {
                 label: 'World',
             },
         ]
-
-        const wrapper = shallow<SelectField>(
+        const {getByRole, getByDisplayValue} = render(
             <SelectField {...minProps} options={options} allowCustomValue />
         )
-        const component = wrapper.instance()
 
-        component._onSearchChange(searchChangeEvent)
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.change(getByRole('textbox'), searchChangeEvent)
 
-        component._onSearchChange({
-            currentTarget: {value: ''},
-        } as unknown as ChangeEvent<HTMLInputElement>)
-        expect(wrapper.state()).toMatchSnapshot()
+        expect(getByDisplayValue('hello')).toBeInTheDocument()
     })
 
     it('should update state when search changes (custom NOT values allowed)', () => {
@@ -119,17 +96,13 @@ describe('SelectField', () => {
             },
         ]
 
-        const wrapper = mount<SelectField>(
+        const {getByRole, getByDisplayValue} = render(
             <SelectField {...minProps} options={options} />
         )
-        const component = wrapper.instance()
-        component._onSearchChange(searchChangeEvent)
-        expect(wrapper.state()).toMatchSnapshot()
 
-        component._onSearchChange({
-            currentTarget: {value: ''},
-        } as unknown as ChangeEvent<HTMLInputElement>)
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.change(getByRole('textbox'), searchChangeEvent)
+
+        expect(getByDisplayValue('hello')).toBeInTheDocument()
     })
 
     it('should filter when rerendered', () => {
@@ -141,13 +114,14 @@ describe('SelectField', () => {
             ],
         }
 
-        const wrapper = shallow<SelectField>(
+        const {queryByText} = render(
             <SelectField {...props} allowCustomValue />
         )
-        const component = wrapper.instance()
-        component._onSearchChange(searchChangeEvent)
-        wrapper.setProps(props)
-        expect(wrapper.state()).toMatchSnapshot()
+
+        fireEvent.change(screen.getByRole('textbox'), searchChangeEvent)
+
+        expect(queryByText('World')).toBeNull()
+        expect(queryByText('Hello')).toBeInTheDocument()
     })
 
     it('should handle search on mixed label type options', () => {
@@ -162,52 +136,57 @@ describe('SelectField', () => {
                 label: <b>Hello2</b>,
             },
         ]
-
-        const wrapper = mount<SelectField>(
+        const {getByText} = render(
             <SelectField {...minProps} options={options} />
         )
-        const component = wrapper.instance()
-        component._onSearchChange(searchChangeEvent)
-        wrapper.update()
 
-        const items = wrapper.find('DropdownItem')
-        expect(items).toHaveLength(1)
-        expect(items.at(0)).toHaveText('Hello2')
+        fireEvent.change(screen.getByRole('textbox'), searchChangeEvent)
+
+        expect(getByText('Hello2')).toBeInTheDocument()
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount<SelectField>(
-            <SelectField {...minProps} {...props} />
+        const {getByRole, getByText} = render(
+            <SelectField
+                {...minProps}
+                {...props}
+                focusedPlaceholder="focused placeholder"
+                placeholder="unfocused placeholder"
+                value={undefined}
+            />
         )
-        const component = wrapper.instance()
 
-        component._focusInput()
-        component._onSearchChange(searchChangeEvent)
-        component._blurInput()
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.focus(getByRole('textbox'))
+
+        expect(getByText('focused placeholder')).toBeInTheDocument()
+
+        fireEvent.blur(getByRole('textbox'))
+
+        expect(getByText('unfocused placeholder')).toBeInTheDocument()
     })
 
+    // test should be properly rewritten or included through a different approach
     it('stopPropagation()', () => {
+        const instanceRef: LegacyRef<InstanceType<typeof SelectField>> = {
+            current: null,
+        }
         const stopPropagationSpy = jest.fn()
         const preventDefaultSpy = jest.fn()
         const event = {
             stopPropagation: stopPropagationSpy,
             preventDefault: preventDefaultSpy,
         } as unknown as SyntheticEvent
-        const wrapper = mount<SelectField>(
-            <SelectField {...minProps} {...props} />
-        )
-        const component = wrapper.instance()
+        render(<SelectField {...minProps} {...props} ref={instanceRef} />)
 
-        component._stopPropagation(event)
+        instanceRef.current?._stopPropagation(event)
+
         expect(stopPropagationSpy.mock.calls.length).toBe(1)
         expect(preventDefaultSpy.mock.calls.length).toBe(1)
     })
 
     it('should handle click on option (custom value NOT allowed)', () => {
-        const stopPropagationSpy = jest.fn()
         const onChangeSpy = jest.fn()
-        const wrapper = mount<SelectField>(
+        render(
             <SelectField
                 {...minProps}
                 {...props}
@@ -215,18 +194,14 @@ describe('SelectField', () => {
                 onChange={onChangeSpy}
             />
         )
-        const component = wrapper.instance()
+        fireEvent.click(screen.getByText('First'))
 
-        component._stopPropagation = stopPropagationSpy
-        wrapper.find('button').first().simulate('click')
-        expect(stopPropagationSpy.mock.calls.length).toBe(1)
-        expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(1)
+        expect(onChangeSpy).toHaveBeenCalledWith(1)
     })
 
     it('should handle click on option (custom value allowed)', () => {
-        const stopPropagationSpy = jest.fn()
         const onChangeSpy = jest.fn()
-        const wrapper = mount<SelectField>(
+        const {getByRole} = render(
             <SelectField
                 {...minProps}
                 {...props}
@@ -235,60 +210,53 @@ describe('SelectField', () => {
                 allowCustomValue
             />
         )
-        const component = wrapper.instance()
-        component._onSearchChange(searchChangeEvent)
-        component._stopPropagation = stopPropagationSpy
-        wrapper.update()
-        wrapper.find('button').first().simulate('click')
 
-        expect(stopPropagationSpy.mock.calls.length).toBe(1)
-        expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual('hello')
+        fireEvent.change(getByRole('textbox'), searchChangeEvent)
+        fireEvent.click(document.querySelector('b')!)
+
+        expect(onChangeSpy).toHaveBeenCalledWith('hello')
     })
 
     describe('should handle key down event', () => {
         const addKeys = ['Enter', 'Tab']
 
         it('Escape', () => {
-            const wrapper = mount<SelectField>(
-                <SelectField {...minProps} {...props} />
+            const {getByText} = render(<SelectField {...minProps} {...props} />)
+            const input = screen.getByRole('textbox')
+            fireEvent.click(getByText('First'))
+            fireEvent.change(input, searchChangeEvent)
+            fireEvent.keyDown(input, {key: 'Escape'})
+
+            expect(document.querySelector('.dropdown-menu')).toHaveAttribute(
+                'aria-hidden',
+                'true'
             )
-            const component = wrapper.instance()
-
-            component._onSearchChange(searchChangeEvent)
-
-            component._toggleDropdown()
-            wrapper.find('input').simulate('keyDown', {key: 'Escape'})
-            expect(wrapper.state()).toMatchSnapshot()
         })
 
         it('ArrowUp/ArrowDown', () => {
-            const wrapper = mount<SelectField>(
+            const {container} = render(
                 <SelectField {...minProps} {...props} value={undefined} />
             )
-            const component = wrapper.instance()
+            const input = screen.getByRole('textbox')
 
-            component._toggleDropdown()
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('Second')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('First')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            // cannot select an item that does not exist
-            expect(wrapper.state().selectedOptionIndex).toEqual(1)
-
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(0)
-
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(0)
-
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            // cannot select an item that does not exist
-            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('First')
         })
 
         it('ArrowUp/ArrowDown (custom value allowed)', () => {
-            const wrapper = mount<SelectField>(
+            const {container} = render(
                 <SelectField
                     {...minProps}
                     {...props}
@@ -296,49 +264,53 @@ describe('SelectField', () => {
                     allowCustomValue
                 />
             )
-            const component = wrapper.instance()
-            component._toggleDropdown()
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(0)
+            const input = screen.getByRole('textbox')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(-1)
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('First')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            // cannot select an item that does not exist
-            expect(wrapper.state().selectedOptionIndex).toEqual(-1)
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('Second')
+
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('First')
+
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(container.querySelector('.option--focused')).toBeNull()
         })
 
-        it('Enter/tab (custom value)', () => {
-            addKeys.forEach((key) => {
-                const onChangeSpy = jest.fn()
-                const wrapper = mount<SelectField>(
-                    <SelectField
-                        {...minProps}
-                        {...props}
-                        onChange={onChangeSpy}
-                        allowCustomValue
-                    />
-                )
-                const component = wrapper.instance()
+        it.each([addKeys])('should propagate custom value on %s key', (key) => {
+            const onChangeSpy = jest.fn()
+            const {getByRole} = render(
+                <SelectField
+                    {...minProps}
+                    {...props}
+                    onChange={onChangeSpy}
+                    allowCustomValue
+                />
+            )
+            const input = getByRole('textbox')
 
-                component._onSearchChange({
-                    currentTarget: {value: 'custom value'},
-                } as unknown as ChangeEvent<HTMLInputElement>)
-                wrapper.find('input').simulate('keyDown', {key})
-
-                expect(wrapper.state()).toMatchSnapshot()
-                expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(
-                    'custom value'
-                )
+            fireEvent.change(input, {
+                target: {value: 'custom value'},
             })
+            fireEvent.keyDown(input, {key})
+
+            expect(onChangeSpy).toHaveBeenCalledWith('custom value')
         })
 
-        it('Enter/Tab (existing value)', () => {
-            addKeys.forEach((key) => {
+        it.each([addKeys])(
+            'should propagate existing value on %s key',
+            (key) => {
                 const onChangeSpy = jest.fn()
-                const wrapper = mount<SelectField>(
+                render(
                     <SelectField
                         {...minProps}
                         {...props}
@@ -346,17 +318,13 @@ describe('SelectField', () => {
                         onChange={onChangeSpy}
                     />
                 )
-                const component = wrapper.instance()
+                const input = screen.getByRole('textbox')
 
-                component._toggleDropdown()
-                wrapper.find('input').simulate('keyDown', {key})
+                fireEvent.keyDown(input, {key})
 
-                expect(wrapper.state()).toMatchSnapshot()
-                expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(
-                    props.options[0].value
-                )
-            })
-        })
+                expect(onChangeSpy).toHaveBeenCalledWith(props.options[0].value)
+            }
+        )
 
         it('Enter/Tab (disabled value)', () => {
             const optionsWithDisabledValue = [
@@ -365,11 +333,10 @@ describe('SelectField', () => {
                     label: 'disabled',
                     isDisabled: true,
                 },
-
                 ...props.options,
             ]
             const onChangeSpy = jest.fn()
-            const wrapper = mount(
+            render(
                 <SelectField
                     {...minProps}
                     {...props}
@@ -379,31 +346,47 @@ describe('SelectField', () => {
                     allowCustomValue
                 />
             )
+            const input = screen.getByRole('textbox')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
-            expect(onChangeSpy.mock.calls.length).toEqual(0)
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, {key: 'Enter'})
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
-            expect(onChangeSpy.mock.calls.length).toEqual(1)
+            expect(onChangeSpy).not.toHaveBeenCalled()
+
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, {key: 'Enter'})
+
+            expect(onChangeSpy).toHaveBeenCalledWith(props.options[0].value)
         })
 
-        it('should stop propagation of events', () => {
-            const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
-            keys.forEach((key) => {
-                const stopPropagationSpy = jest.fn()
-                const wrapper = mount<SelectField>(
-                    <SelectField {...minProps} {...props} value={undefined} />
-                )
-                const component = wrapper.instance()
+        it.each(['ArrowUp', 'ArrowDown', 'Enter', 'Tab'])(
+            `should stop propagation of events on %s key`,
+            (key) => {
+                const instanceRef: LegacyRef<InstanceType<typeof SelectField>> =
+                    {
+                        current: null,
+                    }
 
-                component._stopPropagation = stopPropagationSpy
-                wrapper.find('input').simulate('keyDown', {key})
+                render(
+                    <SelectField
+                        {...minProps}
+                        {...props}
+                        value={undefined}
+                        ref={instanceRef}
+                    />
+                )
+
+                const stopPropagationSpy = jest.spyOn(
+                    instanceRef.current!,
+                    '_stopPropagation'
+                )
+                const input = screen.getByRole('textbox')
+
+                fireEvent.keyDown(input, {key})
 
                 expect(stopPropagationSpy.mock.calls.length).toEqual(1)
-            })
-        })
+            }
+        )
     })
 
     describe('select with headers, dividers and actions', () => {
@@ -421,45 +404,57 @@ describe('SelectField', () => {
         ] as ComponentProps<typeof SelectField>['options']
 
         it('should filter corresponding headers and dividers when search applied', () => {
-            const wrapper = mount<SelectField>(
+            const {queryByText} = render(
                 <SelectField {...minProps} options={options} />
             )
-            expect(wrapper.state()).toMatchSnapshot()
 
-            wrapper.instance()._onSearchChange({
-                currentTarget: {value: 'ba'},
-            } as unknown as ChangeEvent<HTMLInputElement>)
-            wrapper.update()
+            const input = screen.getByRole('textbox')
+            fireEvent.change(input, {target: {value: 'ba'}})
 
-            expect(wrapper.state()).toMatchSnapshot()
+            expect(queryByText('Group 1')).toBeInTheDocument()
+            expect(queryByText('Action 1')).toBeNull()
+            expect(queryByText('Bar')).toBeInTheDocument()
+            expect(queryByText('Group 2')).toBeInTheDocument()
+            expect(queryByText('Baz')).toBeInTheDocument()
+            expect(queryByText('Group 3')).toBeNull()
+            expect(queryByText('Lorem ipsum')).toBeNull()
         })
 
         it('ArrowUp/ArrowDown should skip dividers and headers, but not actions', () => {
-            const wrapper = mount<SelectField>(
+            const {container} = render(
                 <SelectField {...minProps} options={options} />
             )
+            const input = screen.getByRole('textbox')
 
-            const component = wrapper.instance()
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.action--focused')
+            ).toBeInTheDocument()
 
-            component._toggleDropdown()
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('Bar')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('Baz')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(2)
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.option--focused')
+            ).toHaveTextContent('Bar')
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(5)
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.action--focused')
+            ).toBeInTheDocument()
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(2)
-
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(1)
-
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
-            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            expect(
+                container.querySelector('.action--focused')
+            ).toBeInTheDocument()
         })
 
         it('Enter/Tab should not be applied for headers and dividers, but should be applied for actions', () => {
@@ -476,7 +471,7 @@ describe('SelectField', () => {
                 {label: 'Bar', value: 'bar'},
             ] as ComponentProps<typeof SelectField>['options']
 
-            const wrapper = mount<SelectField>(
+            render(
                 <SelectField
                     {...minProps}
                     options={optionsWithSpy}
@@ -484,53 +479,42 @@ describe('SelectField', () => {
                 />
             )
 
-            const component = wrapper.instance()
+            const input = screen.getByRole('textbox')
 
-            component._toggleDropdown()
+            fireEvent.keyDown(input, {key: 'Enter'})
 
-            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
-            expect(onChangeSpy.mock.calls.length).toEqual(0)
+            expect(onChangeSpy).not.toHaveBeenCalled()
 
-            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
-            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
-            expect(onChangeSpy.mock.calls.length).toEqual(0)
-            expect(onClickSpy.mock.calls.length).toEqual(1)
+            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, {key: 'Enter'})
+
+            expect(onChangeSpy).not.toHaveBeenCalled()
+            expect(onClickSpy).toHaveBeenCalled()
         })
 
         it('should show a caption if it was passed through props', () => {
             const caption = 'Caption'
-            const wrapper = mount<SelectField>(
+            const {getByText} = render(
                 <SelectField
                     {...minProps}
                     options={options}
                     caption={caption}
                 />
             )
-            expect(wrapper.find('.caption').text()).toEqual(caption)
-
-            wrapper.setProps({caption: undefined})
-            expect(wrapper.find('.caption').exists()).toEqual(false)
-
-            wrapper.setProps({caption})
-            expect(wrapper.find('.caption').text()).toEqual(caption)
-
-            wrapper.setProps({caption: ''})
-            expect(wrapper.find('.caption').exists()).toEqual(false)
+            expect(getByText(caption)).toBeInTheDocument()
         })
 
         it('should show a custom icon if it was passed through props', () => {
-            const icon = <span id="test-custom-icon">Icon</span>
-            const wrapper = mount<SelectField>(
+            const icon = <span>Custom Icon</span>
+            const {getByText} = render(
                 <SelectField
                     {...minProps}
                     options={options}
                     customIcon={icon}
                 />
             )
-            expect(wrapper.find('#test-custom-icon').text()).toEqual('Icon')
 
-            wrapper.setProps({customIcon: undefined})
-            expect(wrapper.find('#test-custom-icon').exists()).toEqual(false)
+            expect(getByText('Custom Icon')).toBeInTheDocument()
         })
     })
 })

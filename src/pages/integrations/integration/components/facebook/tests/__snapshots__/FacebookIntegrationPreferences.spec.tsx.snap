@@ -1,248 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FacebookIntegrationPreferences/> componentDidUpdate() should initialize the state because the passed integration is not empty 1`] = `
-{
-  "autoResponderEnabled": true,
-  "autoResponderReply": "reply-in-hours",
-  "isInitialized": true,
-  "isUpdating": false,
-}
-`;
-
-exports[`<FacebookIntegrationPreferences/> componentWillMount() should initialize the state because the passed integration is not empty 1`] = `
-{
-  "autoResponderEnabled": true,
-  "autoResponderReply": "reply-in-hours",
-  "isInitialized": true,
-  "isUpdating": false,
-}
-`;
-
-exports[`<FacebookIntegrationPreferences/> render() should render loading buttons because the integration is being updated 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations"
-          >
-            All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/facebook"
-          >
-            Facebook, Messenger & Instagram
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        />
-      </Breadcrumb>
-    }
-  />
-  <FacebookIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 2,
-        "type": "facebook",
-        "meta": Immutable.Map {
-          "language": "en-US",
-        },
-      }
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <div
-        className="mb-4"
-      >
-        <h4>
-          Auto-responder
-        </h4>
-        <div
-          className="mb-3 d-flex align-items-center"
-        >
-          <ToggleInput
-            isToggled={false}
-            onClick={[Function]}
-          />
-          <div
-            className="ml-2"
-          >
-            <b>
-              Enable auto-responder
-            </b>
-          </div>
-        </div>
-        <div
-          className="mb-3"
-        >
-          <p
-            className="text-faded"
-          >
-            <b>
-              During
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                Business hours
-              </Link>
-            </b>
-            , tell customers how fast they can expect a response with an auto-responder:
-          </p>
-          <RadioFieldSet
-            className="mb-3"
-            isDisabled={true}
-            onChange={[Function]}
-            options={
-              [
-                {
-                  "label": ""Thanks for reaching out! Our team will get back to you shortly."",
-                  "value": "reply-shortly",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a few minutes."",
-                  "value": "reply-in-minutes",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a few hours."",
-                  "value": "reply-in-hours",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a day."",
-                  "value": "reply-in-day",
-                },
-              ]
-            }
-            selectedValue="reply-shortly"
-          />
-          <p
-            className="text-faded"
-          >
-            This message will be sent in new Messenger tickets after 30 seconds without replies from an agent.
-          </p>
-          <p
-            className="text-faded"
-          >
-            <b>
-              Outside
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                Business hours
-              </Link>
-            </b>
-            , Gorgias will automatically tell customers when they can expect a response.
-          </p>
-        </div>
-      </div>
-      <div>
-        <ForwardRef(Button)
-          className="btn-loading"
-          intent="primary"
-          isDisabled={true}
-          type="submit"
-        >
-          Save changes
-        </ForwardRef(Button)>
-      </div>
-    </Form>
-  </Container>
-</div>
-`;
-
 exports[`<FacebookIntegrationPreferences/> render() should render the Facebook preferences 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <FacebookIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 2,
-        "type": "facebook",
-        "meta": Immutable.Map {
-          "language": "en-US",
-        },
-      }
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
   >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <a
+      class="link"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/facebook/2/overview"
+    >
+      Overview
+    </a>
+    <a
+      class="link"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/facebook/2/customer_chat"
+    >
+      Customer chat
+    </a>
+    <a
+      class="link"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/facebook/2/preferences"
+    >
+      Preferences
+    </a>
+  </nav>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
     >
       <div
-        className="mb-4"
+        class="mb-4"
       >
         <h4>
           Auto-responder
         </h4>
         <div
-          className="mb-3 d-flex align-items-center"
+          class="mb-3 d-flex align-items-center"
         >
-          <ToggleInput
-            isToggled={false}
-            onClick={[Function]}
-          />
+          <div>
+            <label
+              aria-checked="false"
+              class="Label--label--QAnfT label"
+              for="toggle-button-17"
+              role="switch"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-17"
+                name="toggle-button-17"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </div>
           <div
-            className="ml-2"
+            class="ml-2"
           >
             <b>
               Enable auto-responder
@@ -250,80 +109,130 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           </div>
         </div>
         <div
-          className="mb-3"
+          class="mb-3"
         >
           <p
-            className="text-faded"
+            class="text-faded"
           >
             <b>
               During
                
-              <Link
+              <a
                 to="/app/settings/business-hours"
               >
                 Business hours
-              </Link>
+              </a>
             </b>
             , tell customers how fast they can expect a response with an auto-responder:
           </p>
-          <RadioFieldSet
-            className="mb-3"
-            isDisabled={true}
-            onChange={[Function]}
-            options={
-              [
-                {
-                  "label": ""Thanks for reaching out! Our team will get back to you shortly."",
-                  "value": "reply-shortly",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a few minutes."",
-                  "value": "reply-in-minutes",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a few hours."",
-                  "value": "reply-in-hours",
-                },
-                {
-                  "label": ""Thanks for reaching out! We typically reply in a day."",
-                  "value": "reply-in-day",
-                },
-              ]
-            }
-            selectedValue="reply-shortly"
-          />
+          <fieldset
+            class="mb-3"
+            disabled=""
+            name="radio-field-18"
+          >
+            <div
+              class="option"
+            >
+              <label
+                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                for="reply-shortly"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="reply-shortly"
+                  name="radio-field-18"
+                  type="radio"
+                />
+                "Thanks for reaching out! Our team will get back to you shortly."
+              </label>
+            </div>
+            <div
+              class="option"
+            >
+              <label
+                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                for="reply-in-minutes"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="reply-in-minutes"
+                  name="radio-field-18"
+                  type="radio"
+                />
+                "Thanks for reaching out! We typically reply in a few minutes."
+              </label>
+            </div>
+            <div
+              class="option"
+            >
+              <label
+                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                for="reply-in-hours"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="reply-in-hours"
+                  name="radio-field-18"
+                  type="radio"
+                />
+                "Thanks for reaching out! We typically reply in a few hours."
+              </label>
+            </div>
+            <div
+              class="option"
+            >
+              <label
+                class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                for="reply-in-day"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="reply-in-day"
+                  name="radio-field-18"
+                  type="radio"
+                />
+                "Thanks for reaching out! We typically reply in a day."
+              </label>
+            </div>
+          </fieldset>
           <p
-            className="text-faded"
+            class="text-faded"
           >
             This message will be sent in new Messenger tickets after 30 seconds without replies from an agent.
           </p>
           <p
-            className="text-faded"
+            class="text-faded"
           >
             <b>
               Outside
                
-              <Link
+              <a
                 to="/app/settings/business-hours"
               >
                 Business hours
-              </Link>
+              </a>
             </b>
             , Gorgias will automatically tell customers when they can expect a response.
           </p>
         </div>
       </div>
       <div>
-        <ForwardRef(Button)
-          className=""
-          intent="primary"
-          isDisabled={false}
+        <button
+          aria-disabled="false"
+          class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
-        </ForwardRef(Button)>
+          <span>
+            Save changes
+          </span>
+        </button>
       </div>
-    </Form>
-  </Container>
+    </form>
+  </div>
 </div>
 `;

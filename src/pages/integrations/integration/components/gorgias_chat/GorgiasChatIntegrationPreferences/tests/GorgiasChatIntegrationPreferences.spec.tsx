@@ -1,17 +1,18 @@
-import {mount, shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
+
 import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, SyntheticEvent} from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
 } from 'config/integrations/gorgias_chat'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
@@ -20,17 +21,13 @@ import {
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {Language} from 'constants/languages'
 import {user} from 'fixtures/users'
+import {IntegrationFromType, IntegrationType} from 'models/integration/types'
 import history from 'pages/history'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
 
-import {
-    GorgiasChatIntegrationPreferencesComponent,
-    PREVIEW_AUTO_RESPONDER,
-    PREVIEW_EMAIL_CAPTURE,
-    PREVIEW_LIVE_CHAT_AVAILABILITY,
-} from '../GorgiasChatIntegrationPreferences'
+import {GorgiasChatIntegrationPreferencesComponent} from '../GorgiasChatIntegrationPreferences'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -60,6 +57,16 @@ jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
 
+const mockGetTranslations = IntegrationsActions.getTranslations as jest.Mock
+
+jest.mock('state/integrations/actions', () => {
+    return {
+        getTranslations: jest.fn().mockResolvedValue({}),
+        getApplicationTexts: jest.fn().mockResolvedValue({}),
+        updateApplicationTexts: jest.fn().mockResolvedValue({}),
+    }
+})
+
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     const minProps: ComponentProps<
         typeof GorgiasChatIntegrationPreferencesComponent
@@ -83,17 +90,18 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
     describe('componentDidMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                    />,
-                    {disableLifecycleMethods: true}
-                )
+            const {getAllByRole} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            const prevState = component.state()
-            component.instance().componentDidMount()
-            expect(component.state()).toEqual(prevState)
+            // chat title should be empty
+            expect(getAllByRole('listitem')[1]).toBeEmpty()
         })
 
         it('should initialize the state using the integration passed', () => {
@@ -113,16 +121,21 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     shop_integration_id: 1,
                     language: Language.Spanish,
                 },
+                name: 'Foo Chat',
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    {...minProps}
-                    integration={integration}
-                />
+            const {getAllByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
             )
 
-            expect(component.state()).toMatchSnapshot()
+            expect(getAllByText('Foo Chat')).toHaveLength(2)
         })
     })
 
@@ -146,19 +159,39 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         shop_integration_id: 1,
                         language: Language.Spanish,
                     },
+                    name: 'Foo Chat',
                 })
 
-                const component = shallow(
-                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+                const {rerender, queryByText, getAllByText} = render(
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            {' '}
+                            <GorgiasChatIntegrationPreferencesComponent
+                                {...minProps}
+                            />
+                        </Provider>
+                    </Router>
                 )
 
-                component.setProps({integration})
+                expect(queryByText('Foo Chat')).toBeNull()
 
-                expect(component.state()).toMatchSnapshot()
+                rerender(
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationPreferencesComponent
+                                {...minProps}
+                                integration={integration}
+                            />
+                        </Provider>
+                    </Router>
+                )
+
+                expect(getAllByText('Foo Chat')).toHaveLength(2)
+                expect(mockGetTranslations).toHaveBeenCalledTimes(1)
             }
         )
 
-        it('should not initialize the state because it was already initialized', () => {
+        it('should not reinitialize the state because it was already initialized', () => {
             const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -176,28 +209,53 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+            const {rerender} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
             )
 
-            component.setState({isInitialized: true})
-            const prevState = component.state()
+            rerender(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            component.setProps({integration})
-
-            expect(component.state()).toEqual(prevState)
+            expect(mockGetTranslations).toHaveBeenCalledTimes(1)
         })
 
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+            const {rerender} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                        />
+                    </Provider>
+                </Router>
             )
 
-            const prevState = component.state()
+            rerender(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            component.setProps({integration: fromJS({})})
-
-            expect(component.state()).toEqual(prevState)
+            expect(mockGetTranslations).not.toHaveBeenCalled()
         })
     })
 
@@ -225,91 +283,31 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component =
-                    shallow<GorgiasChatIntegrationPreferencesComponent>(
-                        <GorgiasChatIntegrationPreferencesComponent
-                            currentUser={minProps.currentUser}
-                            updateOrCreateIntegration={jest.fn()}
-                            integration={integration}
-                            articleRecommendationEnabled={true}
-                            actions={minProps.actions}
-                            selfServiceConfiguration={null}
-                            selfServiceConfigurationEnabled={false}
-                        />
-                    )
-
-                const prevState = component.state()
-                expect(prevState.emailCaptureEnabled).toEqual(
-                    emailCaptureEnabled
-                )
-                expect(prevState.preview).toEqual(
-                    PREVIEW_LIVE_CHAT_AVAILABILITY
+                const {getByRole} = render(
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationPreferencesComponent
+                                currentUser={minProps.currentUser}
+                                updateOrCreateIntegration={jest.fn()}
+                                integration={integration}
+                                articleRecommendationEnabled={true}
+                                actions={minProps.actions}
+                                selfServiceConfiguration={null}
+                                selfServiceConfigurationEnabled={false}
+                            />
+                        </Provider>
+                    </Router>
                 )
 
-                const expectedState = (fromJS(prevState) as Map<any, any>)
-                    .set('emailCaptureEnabled', !emailCaptureEnabled)
-                    .set('preview', PREVIEW_EMAIL_CAPTURE)
-                    .toJS()
-
-                component
-                    .instance()
-                    ._setEmailCaptureEnabled(!emailCaptureEnabled)
-
-                expect(component.state()).toEqual(expectedState)
-            }
-        )
-
-        it(
-            'should set passed value in the state because the email capture' +
-                ' was disabled',
-            () => {
-                const emailCaptureEnabled = false
-                const integration: Map<any, any> = fromJS({
-                    id: 1,
-                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                    meta: {
-                        preferences: {
-                            auto_responder: {
-                                enabled: true,
-                                reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-                            },
-                            email_capture_enabled: emailCaptureEnabled,
-                            email_capture_enforcement:
-                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-                        },
-                        shop_integration_id: 1,
-                        language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                    },
+                const emailCaptureToggle = getByRole('checkbox', {
+                    name: /Enable email capture/,
                 })
 
-                const component =
-                    shallow<GorgiasChatIntegrationPreferencesComponent>(
-                        <GorgiasChatIntegrationPreferencesComponent
-                            {...minProps}
-                            integration={integration}
-                        />
-                    )
+                expect(emailCaptureToggle).not.toBeChecked()
 
-                component.setState({preview: PREVIEW_LIVE_CHAT_AVAILABILITY})
+                fireEvent.click(emailCaptureToggle)
 
-                const prevState = component.state()
-                expect(prevState.emailCaptureEnabled).toEqual(
-                    emailCaptureEnabled
-                )
-                expect(prevState.preview).toEqual(
-                    PREVIEW_LIVE_CHAT_AVAILABILITY
-                )
-
-                const expectedState = (fromJS(prevState) as Map<any, any>)
-                    .set('emailCaptureEnabled', !emailCaptureEnabled)
-                    .set('preview', PREVIEW_EMAIL_CAPTURE)
-                    .toJS()
-
-                component
-                    .instance()
-                    ._setEmailCaptureEnabled(!emailCaptureEnabled)
-
-                expect(component.state()).toEqual(expectedState)
+                expect(emailCaptureToggle).toBeChecked()
             }
         )
     })
@@ -333,37 +331,22 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                        integration={integration}
-                    />
-                )
-
-            component.setState({preview: PREVIEW_AUTO_RESPONDER})
-
-            const prevState = component.state()
-            expect(prevState.emailCaptureEnforcement).toEqual(
-                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT
+            const {getByRole} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
             )
-            expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
 
-            const expectedState = (fromJS(prevState) as Map<any, any>)
-                .set(
-                    'emailCaptureEnforcement',
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
-                )
-                .set('preview', PREVIEW_EMAIL_CAPTURE)
-                .toJS()
+            const alwaysRequiredRadio = getByRole('radio', {name: 'Required'})
 
-            component
-                .instance()
-                ._setEmailCaptureEnforcement(
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
-                )
+            fireEvent.click(alwaysRequiredRadio)
 
-            expect(component.state()).toEqual(expectedState)
+            expect(alwaysRequiredRadio).toBeChecked()
         })
     })
 
@@ -390,88 +373,50 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component =
-                    shallow<GorgiasChatIntegrationPreferencesComponent>(
-                        <GorgiasChatIntegrationPreferencesComponent
-                            currentUser={minProps.currentUser}
-                            updateOrCreateIntegration={jest.fn()}
-                            integration={integration}
-                            articleRecommendationEnabled={true}
-                            actions={minProps.actions}
-                            selfServiceConfiguration={null}
-                            selfServiceConfigurationEnabled={false}
-                        />
+                const {getByText, queryByText} = render(
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationPreferencesComponent
+                                currentUser={minProps.currentUser}
+                                updateOrCreateIntegration={jest.fn()}
+                                integration={integration}
+                                articleRecommendationEnabled={true}
+                                actions={minProps.actions}
+                                selfServiceConfiguration={null}
+                                selfServiceConfigurationEnabled={false}
+                            />
+                        </Provider>
+                    </Router>
+                )
+                const autoResponderCheckbox = document.getElementById(
+                    'auto-responder-toggle'
+                )!
+
+                expect(
+                    getByText(
+                        /let customers know how fast they can expect a response/
                     )
+                ).toHaveClass('text-faded')
 
-                const prevState = component.state()
-                expect(prevState.autoResponderEnabled).toEqual(
-                    autoResponderEnabled
-                )
-                expect(prevState.preview).toEqual(
-                    PREVIEW_LIVE_CHAT_AVAILABILITY
-                )
+                fireEvent.click(autoResponderCheckbox)
 
-                const expectedState = (fromJS(prevState) as Map<any, any>)
-                    .set('autoResponderEnabled', !autoResponderEnabled)
-                    .set('preview', PREVIEW_AUTO_RESPONDER)
-                    .toJS()
-
-                component
-                    .instance()
-                    ._setAutoResponderEnabled(!autoResponderEnabled)
-
-                expect(component.state()).toEqual(expectedState)
-            }
-        )
-
-        it(
-            'should set passed value in the state and set the preview to "email capture" because the auto responder' +
-                ' was disabled',
-            () => {
-                const autoResponderEnabled = true
-                const integration: Map<any, any> = fromJS({
-                    id: 1,
-                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                    meta: {
-                        preferences: {
-                            auto_responder: {
-                                enabled: autoResponderEnabled,
-                                reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-                            },
-                            email_capture_enforcement:
-                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-                        },
-                        shop_integration_id: 1,
-                        language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                    },
-                })
-
-                const component =
-                    shallow<GorgiasChatIntegrationPreferencesComponent>(
-                        <GorgiasChatIntegrationPreferencesComponent
-                            {...minProps}
-                            integration={integration}
-                        />
+                expect(autoResponderCheckbox).toBeChecked()
+                expect(
+                    getByText(
+                        /let customers know how fast they can expect a response/
                     )
+                ).not.toHaveClass('text-faded')
+                expect(getByText('schedule')).toBeInTheDocument()
 
-                component.setState({preview: PREVIEW_AUTO_RESPONDER})
+                fireEvent.click(autoResponderCheckbox)
 
-                const prevState = component.state()
-                expect(prevState.autoResponderEnabled).toEqual(
-                    autoResponderEnabled
-                )
-                expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
-
-                const expectedState = (fromJS(prevState) as Map<any, any>)
-                    .set('autoResponderEnabled', !autoResponderEnabled)
-                    .set('preview', PREVIEW_EMAIL_CAPTURE)
-                    .toJS()
-
-                component
-                    .instance()
-                    ._setAutoResponderEnabled(!autoResponderEnabled)
-
-                expect(component.state()).toEqual(expectedState)
+                expect(
+                    getByText(
+                        /let customers know how fast they can expect a response/
+                    )
+                ).toHaveClass('text-faded')
+                expect(autoResponderCheckbox).not.toBeChecked()
+                expect(queryByText('schedule')).toBeNull()
             }
         )
     })
@@ -485,7 +430,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     preferences: {
                         auto_responder: {
                             enabled: true,
-                            reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+                            reply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                         },
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -495,30 +440,26 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                        integration={integration}
-                    />
-                )
-
-            const prevState = component.state()
-            expect(prevState.autoResponderReply).toEqual(
-                CHAT_AUTO_RESPONDER_REPLY_SHORTLY
+            const {getByRole} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
             )
-            expect(prevState.preview).toEqual(PREVIEW_LIVE_CHAT_AVAILABILITY)
 
-            const expectedState = (fromJS(prevState) as Map<any, any>)
-                .set('autoResponderReply', CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
-                .set('preview', PREVIEW_AUTO_RESPONDER)
-                .toJS()
+            expect(
+                getByRole('radio', {name: /Dynamic wait time/})
+            ).toBeChecked()
 
-            component
-                .instance()
-                ._setAutoResponderReply(CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
-
-            expect(component.state()).toEqual(expectedState)
+            const inMinutesRadio = getByRole('radio', {
+                name: 'In a few minutes',
+            })
+            fireEvent.click(inMinutesRadio)
+            expect(inMinutesRadio).toBeChecked()
         })
     })
 
@@ -536,74 +477,118 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                        integration={integration}
-                    />
-                )
-
-            const prevState = component.state()
-            expect(prevState.liveChatAvailability).toEqual(
-                GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+            const {getByRole} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
             )
-            expect(prevState.preview).toEqual(PREVIEW_LIVE_CHAT_AVAILABILITY)
 
-            const expectedState = (fromJS(prevState) as Map<any, any>)
-                .set(
-                    'liveChatAvailability',
-                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                )
-                .set('preview', PREVIEW_LIVE_CHAT_AVAILABILITY)
-                .toJS()
+            expect(
+                getByRole('radio', {name: 'Live when agents are available'})
+            ).toBeChecked()
 
-            component
-                .instance()
-                ._setLiveChatAvailability(
-                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                )
+            const liveDuringBusinessHoursRadio = getByRole('radio', {
+                name: 'Always live during business hours',
+            })
 
-            expect(component.state()).toEqual(expectedState)
+            fireEvent.click(liveDuringBusinessHoursRadio)
+
+            expect(liveDuringBusinessHoursRadio).toBeChecked()
         })
     })
 
     describe('_setDisplayCampaignsChatHidden()', () => {
         it('should update the display campaigns with hidden chat in the state.', () => {
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
-                )
+            render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            flags={{
+                                [FeatureFlagKey.RevenueBetaTesters]: true,
+                            }}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            expect(component.state()).toMatchSnapshot()
-            component.instance()._setDisplayCampaignsChatHidden(true)
-            expect(component.state()).toMatchSnapshot()
+            const displayCampaignsChatHiddenToggle = document.getElementById(
+                'display-campaigns-hidden-chat-toggle'
+            )!
+
+            expect(displayCampaignsChatHiddenToggle).not.toBeChecked()
+
+            fireEvent.click(displayCampaignsChatHiddenToggle)
+
+            expect(displayCampaignsChatHiddenToggle).toBeChecked()
         })
     })
 
     describe('_setLinkedEmailIntegration()', () => {
         it('should update the linked email integration in the state.', () => {
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
-                )
+            const {getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            emailIntegrations={[
+                                {
+                                    id: 1,
+                                    name: 'Foo Email Integration',
+                                    meta: {
+                                        address: 'foo@bar.baz',
+                                    },
+                                    type: IntegrationType.Email,
+                                } as IntegrationFromType<IntegrationType.Email>,
+                                {
+                                    id: 2,
+                                    name: 'Bar Email Integration',
+                                    meta: {
+                                        address: 'bar@bar.baz',
+                                    },
+                                    type: IntegrationType.Email,
+                                } as IntegrationFromType<IntegrationType.Email>,
+                            ]}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            expect(component.state()).toMatchSnapshot()
-            component.instance()._setLinkedEmailIntegration(234)
-            expect(component.state()).toMatchSnapshot()
+            fireEvent.click(getByText('Select an email integration'))
+            const emailIntegrationOption = getByText(/Bar Email Integration/)
+            fireEvent.click(emailIntegrationOption)
+
+            // dropdown closes and selected value is displayed
+            expect(getByText(/Bar Email Integration/)).toBeInTheDocument()
         })
     })
 
     describe('_setControlTicketVolume()', () => {
         it('should update the control ticket volume in the state.', () => {
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
-                )
+            const component = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            expect(component.state()).toMatchSnapshot()
-            component.instance()._setControlTicketVolume(true)
-            expect(component.state()).toMatchSnapshot()
+            const controlTicketVolumeToggle = component.getByRole('checkbox', {
+                name: /Remove “Send us a message” button/,
+            })
+
+            expect(controlTicketVolumeToggle).not.toBeChecked()
+
+            fireEvent.click(controlTicketVolumeToggle)
+
+            expect(controlTicketVolumeToggle).toBeChecked()
         })
     })
 
@@ -619,57 +604,46 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 document.body.appendChild(mockedTooltip)
             })
 
-            const component = mount<GorgiasChatIntegrationPreferencesComponent>(
-                <GorgiasChatIntegrationPreferencesComponent {...minProps} />,
-                {
-                    wrappingComponent: ({children}) => (
-                        <Router history={history}>
-                            <Provider store={mockStore(defaultState)}>
-                                {children}
-                            </Provider>
-                        </Router>
-                    ),
-                }
+            const {getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                        />
+                    </Provider>
+                </Router>
             )
 
-            const submitPreferencesSpy = jest.spyOn(
-                component.instance(),
-                '_submitPreferences'
+            fireEvent.click(getByText('Save Changes'))
+
+            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
+        })
+
+        it('should submit the form with defaults', () => {
+            const {getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={fromJS({
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    shop_integration_id: 1,
+                                },
+                            })}
+                        />
+                    </Provider>
+                </Router>
             )
-            component.instance().forceUpdate()
-            component.find('form').simulate('submit')
 
-            expect(submitPreferencesSpy).toHaveBeenCalledTimes(1)
+            fireEvent.click(getByText('Save Changes'))
+
+            expect(minProps.updateOrCreateIntegration).toMatchSnapshot()
         })
 
-        it('should submit the form with defaults', async () => {
-            const updateOrCreateIntegration = jest.fn()
-
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                        updateOrCreateIntegration={updateOrCreateIntegration}
-                        integration={fromJS({
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            meta: {
-                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                                shop_integration_id: 1,
-                            },
-                        })}
-                    />
-                )
-
-            await component.instance()._submitPreferences({
-                preventDefault: _noop,
-            } as unknown as SyntheticEvent)
-
-            expect(updateOrCreateIntegration).toMatchSnapshot()
-        })
-
-        it('should submit the form with loaded values', async () => {
-            const updateOrCreateIntegration = jest.fn()
-
+        it('should submit the form with loaded values', () => {
             const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -687,77 +661,90 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component =
-                shallow<GorgiasChatIntegrationPreferencesComponent>(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        {...minProps}
-                        updateOrCreateIntegration={updateOrCreateIntegration}
-                        integration={integration}
-                    />
-                )
+            const {getByRole, getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
+                </Router>
+            )
 
-            const newAutoResponder = {
-                enabled: false,
-                reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-            }
+            const autoResponderCheckbox = document.getElementById(
+                'auto-responder-toggle'
+            )!
 
-            component.setState({
-                autoResponderEnabled: newAutoResponder.enabled,
-                autoResponderReply: newAutoResponder.reply,
-            })
+            fireEvent.click(autoResponderCheckbox)
+            fireEvent.click(
+                getByRole('radio', {
+                    name: 'In a few minutes',
+                })
+            )
 
-            await component.instance()._submitPreferences({
-                preventDefault: _noop,
-            } as unknown as SyntheticEvent)
+            fireEvent.click(getByText('Save Changes'))
 
-            expect(updateOrCreateIntegration).toMatchSnapshot()
+            expect(minProps.updateOrCreateIntegration).toMatchSnapshot()
         })
     })
 
     describe('render()', () => {
         it('should render the Chat preferences', () => {
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    {...minProps}
-                    integration={fromJS({
-                        id: 2,
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            shop_integration_id: 1,
-                        },
-                        decoration: {
-                            main_color: '#789c5d',
-                            conversation_color: '#08d123',
-                        },
-                    })}
-                />
+            const {container} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={fromJS({
+                                id: 2,
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    shop_integration_id: 1,
+                                },
+                                decoration: {
+                                    main_color: '#789c5d',
+                                    conversation_color: '#08d123',
+                                },
+                            })}
+                        />
+                    </Provider>
+                </Router>
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render buttons in loading state because preferences are being submitted', () => {
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    {...minProps}
-                    integration={fromJS({
-                        id: 2,
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            shop_integration_id: 1,
-                        },
-                        decoration: {
-                            main_color: '#789c5d',
-                            conversation_color: '#08d123',
-                        },
-                    })}
-                />
+            const {getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={fromJS({
+                                id: 2,
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    shop_integration_id: 1,
+                                },
+                                decoration: {
+                                    main_color: '#789c5d',
+                                    conversation_color: '#08d123',
+                                },
+                            })}
+                        />
+                    </Provider>
+                </Router>
             )
+            const saveButton = getByText('Save Changes').parentElement!
 
-            component.setState({isUpdating: true})
+            fireEvent.click(saveButton)
 
-            expect(component).toMatchSnapshot()
+            expect(saveButton).toBeAriaDisabled()
         })
     })
 })

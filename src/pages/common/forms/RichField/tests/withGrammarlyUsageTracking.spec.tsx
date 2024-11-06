@@ -1,5 +1,5 @@
-import {mount, shallow} from 'enzyme'
-import React, {Component} from 'react'
+import {fireEvent, render} from '@testing-library/react'
+import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 
@@ -10,6 +10,10 @@ import withGrammarlyUsageTracking, {
 
 jest.mock('common/segment')
 jest.useFakeTimers()
+
+const MockComponent = ({detectGrammarly}: InjectedProps) => (
+    <div onClick={detectGrammarly}>DetectGrammarlyTrigger</div>
+)
 
 describe('withGrammarlyUsageTracking', () => {
     describe('with grammarly extension present', () => {
@@ -28,17 +32,18 @@ describe('withGrammarlyUsageTracking', () => {
         })
 
         it('should detect grammarly extension and send only one event in case of multiple detections', () => {
-            mount(<grammarly-extension />, {
-                attachTo: domElement,
+            render(<grammarly-extension />, {
+                container: domElement,
             })
+            const Wrapped = withGrammarlyUsageTracking(MockComponent)
+            const {getByText} = render(<Wrapped />)
 
-            const Wrapped = withGrammarlyUsageTracking(Component)
-            const component = shallow(<Wrapped />)
             jest.runAllTimers()
-            component.find<InjectedProps>(Component).prop('detectGrammarly')()
+            fireEvent.click(getByText('DetectGrammarlyTrigger'))
             jest.runAllTimers()
-            component.find<InjectedProps>(Component).prop('detectGrammarly')()
+            fireEvent.click(getByText('DetectGrammarlyTrigger'))
             jest.runAllTimers()
+
             expect(
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
             ).not.toBeNull()
@@ -52,16 +57,16 @@ describe('withGrammarlyUsageTracking', () => {
                 GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
                 grammarlyLastFound.toString()
             )
-
-            mount(<grammarly-extension />, {
-                attachTo: domElement,
+            render(<grammarly-extension />, {
+                container: domElement,
             })
+            const Wrapped = withGrammarlyUsageTracking(MockComponent)
+            const {getByText} = render(<Wrapped />)
 
-            const Wrapped = withGrammarlyUsageTracking(Component)
-            const component = shallow(<Wrapped />)
             jest.runAllTimers()
-            component.find<InjectedProps>(Component).prop('detectGrammarly')()
+            fireEvent.click(getByText('DetectGrammarlyTrigger'))
             jest.runAllTimers()
+
             expect(
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
             ).not.toBeNull()
@@ -82,21 +87,18 @@ describe('withGrammarlyUsageTracking', () => {
             })
 
             it('should detect grammarly extension and send only one event in case of multiple detections', () => {
-                mount(<grammarly-extension />, {
-                    attachTo: domElement,
+                render(<grammarly-extension />, {
+                    container: domElement,
                 })
+                const Wrapped = withGrammarlyUsageTracking(MockComponent)
+                const {getByText} = render(<Wrapped />)
 
-                const Wrapped = withGrammarlyUsageTracking(Component)
-                const component = shallow(<Wrapped />)
                 jest.runAllTimers()
-                component
-                    .find<InjectedProps>(Component)
-                    .prop('detectGrammarly')()
+                fireEvent.click(getByText('DetectGrammarlyTrigger'))
                 jest.runAllTimers()
-                component
-                    .find<InjectedProps>(Component)
-                    .prop('detectGrammarly')()
+                fireEvent.click(getByText('DetectGrammarlyTrigger'))
                 jest.runAllTimers()
+
                 expect(logEvent).toBeCalledTimes(1)
                 expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
                 expect(localStorage).toBeNull()
@@ -105,11 +107,13 @@ describe('withGrammarlyUsageTracking', () => {
     })
 
     it("shouldn't detect grammarly extension when not present", () => {
-        const Wrapped = withGrammarlyUsageTracking(Component)
-        const component = shallow(<Wrapped />)
+        const Wrapped = withGrammarlyUsageTracking(MockComponent)
+        const {getByText} = render(<Wrapped />)
+
         jest.runAllTimers()
-        component.find<InjectedProps>(Component).prop('detectGrammarly')()
+        fireEvent.click(getByText('DetectGrammarlyTrigger'))
         jest.runAllTimers()
+
         expect(logEvent).not.toHaveBeenCalled()
         expect(
             localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
