@@ -55,6 +55,8 @@ describe('reporting utils', () => {
                     agents: [2],
                     tags: [1, 2],
                     score: ['3', '4'],
+                    resolutionCompleteness: ['3', '4'],
+                    communicationSkills: ['3', '4'],
                 })
             ).toEqual([
                 {
@@ -89,6 +91,16 @@ describe('reporting utils', () => {
                 },
                 {
                     member: TicketMember.SurveyScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.ResolutionCompletenessScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.CommunicationSkillsScore,
                     operator: ReportingFilterOperator.Equals,
                     values: ['3', '4'],
                 },

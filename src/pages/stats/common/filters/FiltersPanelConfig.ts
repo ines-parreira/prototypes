@@ -16,8 +16,8 @@ import {
     ChannelsFilterWithState,
 } from 'pages/stats/common/filters/ChannelsFilter'
 import {
-    CommunicationSkillsFilter,
     CommunicationSkillsFilterWithSavedState,
+    CommunicationSkillsFilterWithState,
 } from 'pages/stats/common/filters/CommunicationSkillsFilter'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import {
@@ -33,8 +33,8 @@ import {
 } from 'pages/stats/common/filters/IntegrationsFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {
-    ResolutionCompletenessFilter,
     ResolutionCompletenessFilterWithSavedState,
+    ResolutionCompletenessFilterWithState,
 } from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import {
     ScoreFiltersWithSavedState,
@@ -73,8 +73,8 @@ export const FilterComponentMap: Record<
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
     [FilterComponentKey.Store]: StoreFilterFromContext,
-    [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilter,
-    [FilterKey.CommunicationSkills]: CommunicationSkillsFilter,
+    [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilterWithState,
+    [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
 }
 
 export const SavedFilterComponentMap: Record<

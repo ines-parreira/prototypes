@@ -57,6 +57,8 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     score: TicketMember.SurveyScore,
+    resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
+    communicationSkills: TicketMember.CommunicationSkillsScore,
 }
 
 export type VoiceCallCube = Cube<

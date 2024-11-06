@@ -54,6 +54,8 @@ export enum TicketMember {
     TotalCustomFieldIdsToMatch = 'TicketEnriched.totalCustomFieldIdsToMatch',
     CustomFieldToExclude = 'TicketEnriched.customFieldToExclude',
     SurveyScore = 'TicketEnriched.surveyScore',
+    ResolutionCompletenessScore = 'TicketEnriched.resolutionCompletenessScore',
+    CommunicationSkillsScore = 'TicketEnriched.communicationSkillsScore',
 }
 
 export type TicketTimeDimensions =

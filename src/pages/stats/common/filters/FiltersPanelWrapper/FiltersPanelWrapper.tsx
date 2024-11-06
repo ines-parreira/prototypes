@@ -1,9 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React, {ReactElement} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import {
     FiltersPanel,
     FiltersPanelProps,

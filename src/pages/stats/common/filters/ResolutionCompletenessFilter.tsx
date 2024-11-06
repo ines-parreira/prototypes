@@ -37,7 +37,6 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-    onRemove?: () => void
 } & RemovableFilter
 
 export function ResolutionCompletenessFilter({
@@ -63,10 +62,15 @@ export function ResolutionCompletenessFilter({
     )
 
     const handleFilterValuesChange = useCallback(
-        (value: DropdownOption | undefined) => {
-            dispatchUpdate(withLogicalOperator([String(value?.value)]))
+        (filterValues: DropdownOption | undefined) => {
+            dispatchUpdate(
+                withLogicalOperator(
+                    [String(filterValues?.value)],
+                    value.operator
+                )
+            )
         },
-        [dispatchUpdate]
+        [dispatchUpdate, value]
     )
 
     const handleDropdownClosed = () => {
@@ -105,6 +109,7 @@ export function ResolutionCompletenessFilter({
 
                 onRemove?.()
             }}
+            selectedLogicalOperator={value.operator}
         />
     )
 }

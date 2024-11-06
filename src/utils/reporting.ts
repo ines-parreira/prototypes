@@ -62,6 +62,8 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     score: TicketMember.SurveyScore,
+    resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
+    communicationSkills: TicketMember.CommunicationSkillsScore,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -85,6 +87,8 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     score: TicketMember.SurveyScore,
+    resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
+    communicationSkills: TicketMember.CommunicationSkillsScore,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
@@ -166,6 +170,8 @@ export const statsFiltersToReportingFilters = (
         localeCodes,
         slaPolicies,
         score,
+        resolutionCompleteness,
+        communicationSkills,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -230,6 +236,18 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(score) && members.score) {
         filters = addOptionalFilter(filters, score, {
             member: members.score,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(resolutionCompleteness) && members.resolutionCompleteness) {
+        filters = addOptionalFilter(filters, resolutionCompleteness, {
+            member: members.resolutionCompleteness,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(communicationSkills) && members.communicationSkills) {
+        filters = addOptionalFilter(filters, communicationSkills, {
+            member: members.communicationSkills,
             operator: ReportingFilterOperator.Equals,
         })
     }

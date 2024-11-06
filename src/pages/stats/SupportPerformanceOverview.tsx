@@ -46,6 +46,7 @@ export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
 export default function SupportPerformanceOverview() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const isAutoQaFiltersEnabled = !!useFlags()[FeatureFlagKey.AutoQAFilters]
     const supportPerformanceOverviewOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilter(
             PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
@@ -94,9 +95,15 @@ export default function SupportPerformanceOverview() {
                                     FilterKey.Period,
                                     FilterKey.AggregationWindow,
                                 ]}
-                                optionalFilters={
-                                    supportPerformanceOverviewOptionalFilters
-                                }
+                                optionalFilters={[
+                                    ...supportPerformanceOverviewOptionalFilters,
+                                    ...(isAutoQaFiltersEnabled
+                                        ? [
+                                              FilterKey.CommunicationSkills,
+                                              FilterKey.ResolutionCompleteness,
+                                          ]
+                                        : []),
+                                ]}
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {
                                         initialSettings: {

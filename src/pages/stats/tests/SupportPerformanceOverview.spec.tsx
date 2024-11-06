@@ -1,6 +1,5 @@
 import {fireEvent, render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -185,6 +184,7 @@ describe('<SupportPerformanceOverview />', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+                [FeatureFlagKey.AutoQAFilters]: false,
             })
         })
 
@@ -217,6 +217,29 @@ describe('<SupportPerformanceOverview />', () => {
             filtersWithScore.forEach((filter) => {
                 expect(getByText(filter)).toBeInTheDocument()
             })
+        })
+
+        it('should show New Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+                [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+                [FeatureFlagKey.AutoQAFilters]: true,
+            })
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+            const filtersWithResolutionCompletenessAndCommunicationSkills = [
+                ...PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
+                FilterKey.ResolutionCompleteness,
+                FilterKey.CommunicationSkills,
+            ]
+            filtersWithResolutionCompletenessAndCommunicationSkills.forEach(
+                (filter) => {
+                    expect(getByText(filter)).toBeInTheDocument()
+                }
+            )
         })
     })
 })

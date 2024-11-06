@@ -137,6 +137,8 @@ export const getPageStatsFilters = createSelector(
             campaignStatuses,
             customFields,
             slaPolicies,
+            communicationSkills,
+            resolutionCompleteness,
         } = statsFilters
         return {
             aggregationWindow,
@@ -154,6 +156,8 @@ export const getPageStatsFilters = createSelector(
             campaignStatuses,
             customFields,
             slaPolicies,
+            communicationSkills,
+            resolutionCompleteness,
         }
     }
 )
@@ -200,6 +204,8 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             campaigns,
             campaignStatuses,
             slaPolicies,
+            communicationSkills,
+            resolutionCompleteness,
         } = statsFilters
         return {
             aggregationWindow,
@@ -215,6 +221,8 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             campaigns,
             campaignStatuses,
             slaPolicies,
+            communicationSkills,
+            resolutionCompleteness,
         }
     }
 )

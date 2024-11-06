@@ -31,6 +31,7 @@ export enum FeatureFlagKey {
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutoQA = 'auto-qa',
+    AutoQAFilters = 'auto-qa-filters',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingStripeElementsPaymentIntegration = 'billing-stripe-elements-payment-integration',
