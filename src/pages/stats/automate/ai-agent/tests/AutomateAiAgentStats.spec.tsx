@@ -1,9 +1,15 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {fromJS} from 'immutable'
+
 import moment from 'moment-timezone'
+
 import React, {PropsWithChildren} from 'react'
 
+import {UserRole} from 'config/types/user'
+
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {agents} from 'fixtures/agents'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
@@ -13,8 +19,10 @@ import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/Autom
 import {useTimeSeriesFormattedData} from 'pages/stats/AutomateOverviewContent'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import {assumeMock} from 'utils/testing'
 
 import AutomateAiAgentStats from '../AutomateAiAgentStats'
 
@@ -28,6 +36,8 @@ jest.mock(
 jest.mock('state/stats/selectors')
 const getStatsFiltersWithLogicalOperatorsMock =
     getStatsFiltersWithLogicalOperators as unknown as jest.Mock
+jest.mock('state/currentUser/selectors')
+const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getSelectedCustomFieldMock =
@@ -71,14 +81,9 @@ jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
     <div>filters-panel</div>
 ))
 
-jest.mock(
-    'pages/stats/support-performance/agents/AgentsPerformanceCardExtra',
-    () => ({
-        AgentsPerformanceCardExtra: () => (
-            <div>agents-performance-card-extra</div>
-        ),
-    })
-)
+jest.mock('pages/stats/common/components/Table/EditTableColumns', () => ({
+    EditTableColumns: () => <div>edit-table-columns</div>,
+}))
 
 jest.mock('pages/stats/automate/ai-agent/AiAgentTable', () => ({
     AiAgentTable: () => <div>ai-agent-table</div>,
@@ -169,6 +174,12 @@ describe('AutomateAiAgentStats', () => {
         customFieldsIsLoading?: boolean
         aiAgentUserId?: string
     } = {}) => {
+        getCurrentUserMock.mockReturnValue(
+            fromJS({
+                ...agents[0],
+                role: {name: UserRole.Admin},
+            })
+        )
         useAIAgentUserIdMock.mockReturnValue(
             aiAgentUserId === null ? undefined : aiAgentUserId
         )
@@ -213,9 +224,7 @@ describe('AutomateAiAgentStats', () => {
         expect(screen.queryByText('stats-page')).toBeInTheDocument()
         expect(screen.queryByText('filters-panel')).toBeInTheDocument()
 
-        expect(
-            screen.queryByText('agents-performance-card-extra')
-        ).toBeInTheDocument()
+        expect(screen.queryByText('edit-table-columns')).toBeInTheDocument()
         expect(screen.queryByText('ai-agent-table')).toBeInTheDocument()
 
         expect(screen.queryByText('custom-field-select')).toBeInTheDocument()

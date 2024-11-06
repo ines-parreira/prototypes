@@ -75,9 +75,16 @@ type Props = {
         cleanStatsFilters: StatsFilters
         userTimezone: string
     }
+    withAverageRow?: boolean
+    isHeatmapMode?: boolean
 }
 
-export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
+export const AgentsTable = ({
+    paginatedAgents,
+    statsFilters,
+    withAverageRow = true,
+    isHeatmapMode = false,
+}: Props) => {
     const dispatch = useDispatch()
     const {columnsOrder} = useAgentsTableConfigSetting()
     const {currentPage, perPage, agents, allAgents} = paginatedAgents
@@ -94,7 +101,6 @@ export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
             setIsTableScrolled(false)
         }
     }
-    const isHeatmapMode = useAppSelector(getHeatmapMode)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
     return (
@@ -121,31 +127,35 @@ export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
                         ))}
                     </TableHead>
                     <TableBody>
-                        <TableBodyRow>
-                            {columnsOrder.map((column) => (
-                                <BodyCell
-                                    key={column}
-                                    width={getColumnWidth(column)}
-                                    isHighlighted
-                                    justifyContent={getColumnAlignment(column)}
-                                    className={classNames(css.BodyCell, {
-                                        [css.withShadow]:
-                                            column ===
-                                                AgentsTableColumn.AgentName &&
-                                            isTableScrolled,
-                                        [css.highlight]: true,
-                                    })}
-                                    innerClassName={css.BodyCellContent}
-                                >
-                                    <AgentsTableSummaryCell
-                                        useMetric={getSummaryQuery(column)}
-                                        statsFilters={statsFilters}
-                                        column={column}
-                                        agentsLength={allAgents.length}
-                                    />
-                                </BodyCell>
-                            ))}
-                        </TableBodyRow>
+                        {withAverageRow && (
+                            <TableBodyRow>
+                                {columnsOrder.map((column) => (
+                                    <BodyCell
+                                        key={column}
+                                        width={getColumnWidth(column)}
+                                        isHighlighted
+                                        justifyContent={getColumnAlignment(
+                                            column
+                                        )}
+                                        className={classNames(css.BodyCell, {
+                                            [css.withShadow]:
+                                                column ===
+                                                    AgentsTableColumn.AgentName &&
+                                                isTableScrolled,
+                                            [css.highlight]: true,
+                                        })}
+                                        innerClassName={css.BodyCellContent}
+                                    >
+                                        <AgentsTableSummaryCell
+                                            useMetric={getSummaryQuery(column)}
+                                            statsFilters={statsFilters}
+                                            column={column}
+                                            agentsLength={allAgents.length}
+                                        />
+                                    </BodyCell>
+                                ))}
+                            </TableBodyRow>
+                        )}
                         {agents.map((agent) => (
                             <TableBodyRow key={agent.id}>
                                 {columnsOrder.map((column) => (
@@ -214,11 +224,13 @@ export const AgentsTable = ({paginatedAgents, statsFilters}: Props) => {
 export const AgentsTableWithDefaultState = () => {
     const paginatedAgents = useAppSelector(getPaginatedAgents)
     const statsFilters = useNewStatsFilters()
+    const isHeatmapMode = useAppSelector(getHeatmapMode)
 
     return (
         <AgentsTable
             paginatedAgents={paginatedAgents}
             statsFilters={statsFilters}
+            isHeatmapMode={isHeatmapMode}
         />
     )
 }

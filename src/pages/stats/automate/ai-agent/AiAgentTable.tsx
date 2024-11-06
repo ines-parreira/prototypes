@@ -33,6 +33,8 @@ export const AiAgentTable = () => {
         <AgentsTable
             paginatedAgents={paginatedAgents}
             statsFilters={{...statsFilters, cleanStatsFilters}}
+            withAverageRow={false}
+            isHeatmapMode={false}
         />
     )
 }

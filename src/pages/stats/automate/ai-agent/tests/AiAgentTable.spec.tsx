@@ -51,6 +51,7 @@ describe('AiAgentTable', () => {
 
         expect(AgentsTableMock).toHaveBeenCalledWith(
             {
+                isHeatmapMode: false,
                 paginatedAgents: {
                     agents: [],
                     allAgents: [],
@@ -64,6 +65,7 @@ describe('AiAgentTable', () => {
                         agents: withDefaultLogicalOperator([]),
                     },
                 },
+                withAverageRow: false,
             },
             {}
         )
@@ -74,6 +76,7 @@ describe('AiAgentTable', () => {
 
         expect(AgentsTableMock).toHaveBeenCalledWith(
             {
+                isHeatmapMode: false,
                 paginatedAgents: {
                     agents: [aiAgent],
                     allAgents: [aiAgent],
@@ -87,6 +90,7 @@ describe('AiAgentTable', () => {
                         agents: withDefaultLogicalOperator([aiAgent.id]),
                     },
                 },
+                withAverageRow: false,
             },
             {}
         )

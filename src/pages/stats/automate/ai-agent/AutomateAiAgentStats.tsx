@@ -2,6 +2,8 @@ import moment from 'moment'
 
 import React, {useEffect, useMemo, useState} from 'react'
 
+import {UserRole} from 'config/types/user'
+
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
 import {
@@ -35,7 +37,7 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
-import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
+import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
 import {
     activeParams,
@@ -44,11 +46,14 @@ import {
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {TicketDistributionTable} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import {hasRole} from 'utils'
 
 export default function AutomateAiAgentStats() {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
+    const currentUser = useAppSelector(getCurrentUser)
     const {userTimezone, granularity} = useNewAutomateFilters()
     const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
         useState(false)
@@ -164,7 +169,11 @@ export default function AutomateAiAgentStats() {
                 <DashboardGridCell size={12}>
                     <ChartCard
                         title={AGENT_PERFORMANCE_SECTION_TITLE}
-                        titleExtra={<AgentsPerformanceCardExtra />}
+                        titleExtra={
+                            hasRole(currentUser, UserRole.Admin) && (
+                                <AgentsEditColumns />
+                            )
+                        }
                         noPadding
                     >
                         <AiAgentTable />
