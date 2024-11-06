@@ -536,41 +536,6 @@ export const StoreConfigForm = ({
                     />
                 </section>
 
-                {!isAiAgentSnippetsFromExternalFilesEnabled && (
-                    <ConfigurationSection
-                        title="Knowledge"
-                        isRequired
-                        subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
-                        sectionRef={knowledgeSectionRef}
-                        data-candu-id="ai-agent-configuration-knowledge-copy"
-                    >
-                        <div className={css.formGroup}>
-                            <Label className={css.label}>Help Center</Label>
-                            <HelpCenterSelect
-                                helpCenter={selectedHelpCenter}
-                                setHelpCenterId={setHelpCenterId}
-                                helpCenters={faqHelpCenters}
-                                withEmptyItemSelection
-                                className={css.helpCenterSelect}
-                            />
-                            <div className={css.formInputFooterInfo}>
-                                Select a Help Center to connect to AI Agent.
-                            </div>
-                        </div>
-
-                        {snippetHelpCenter ? (
-                            <CreatePublicSourcesSection
-                                helpCenterId={snippetHelpCenter.id}
-                                selectedHelpCenterId={selectedHelpCenter?.id}
-                                onPublicURLsChanged={handlePublicURLsChange}
-                                shopName={shopName}
-                                setIsFailedResources={setIsUrlSyncFail}
-                                setIsSuccessResources={setIsUrlSyncSuccess}
-                            />
-                        ) : null}
-                    </ConfigurationSection>
-                )}
-
                 {isAiAgentChatEnabled && (
                     <ConfigurationSection
                         title="Chat settings"
@@ -665,6 +630,41 @@ export const StoreConfigForm = ({
                         signature={formValues.signature}
                     />
                 </section>
+
+                {!isAiAgentSnippetsFromExternalFilesEnabled && (
+                    <ConfigurationSection
+                        title="Knowledge"
+                        isRequired
+                        subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                        sectionRef={knowledgeSectionRef}
+                        data-candu-id="ai-agent-configuration-knowledge-copy"
+                    >
+                        <div className={css.formGroup}>
+                            <Label className={css.label}>Help Center</Label>
+                            <HelpCenterSelect
+                                helpCenter={selectedHelpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                helpCenters={faqHelpCenters}
+                                withEmptyItemSelection
+                                className={css.helpCenterSelect}
+                            />
+                            <div className={css.formInputFooterInfo}>
+                                Select a Help Center to connect to AI Agent.
+                            </div>
+                        </div>
+
+                        {snippetHelpCenter ? (
+                            <CreatePublicSourcesSection
+                                helpCenterId={snippetHelpCenter.id}
+                                selectedHelpCenterId={selectedHelpCenter?.id}
+                                onPublicURLsChanged={handlePublicURLsChange}
+                                shopName={shopName}
+                                setIsFailedResources={setIsUrlSyncFail}
+                                setIsSuccessResources={setIsUrlSyncSuccess}
+                            />
+                        ) : null}
+                    </ConfigurationSection>
+                )}
 
                 <section>
                     <h2
