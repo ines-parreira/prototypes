@@ -1340,6 +1340,94 @@ describe('ticket utils', () => {
                 ).toEqual(fromJS(expectedSender))
             }
         )
+
+        it('should disregard failed messages when cosidering the last message', () => {
+            const integrationId = 42
+            const channels = fromJS([
+                {
+                    id: integrationId,
+                    type: 'email',
+                    name: 'Acme Billing',
+                    address: 'billing@acme.gorgias.io',
+                    preferred: false,
+                    signature: {
+                        text: 'cheers, ',
+                        html: 'cheers, <strong></strong>',
+                    },
+                    verified: true,
+                    isDeactivated: false,
+                },
+                {
+                    id: 1,
+                    type: 'email',
+                    name: 'Acme Support',
+                    address: 'support@acme.gorgias.io',
+                    preferred: true,
+                    signature: {
+                        text: 'cheers, ',
+                        html: 'cheers, <strong></strong>',
+                    },
+                    verified: true,
+                    isDeactivated: false,
+                },
+            ])
+            const ticket = fromJS({
+                customer: {
+                    name: 'Patrick',
+                    channels: [
+                        {
+                            address: 'nico@las.com',
+                            id: 5,
+                            preferred: true,
+                            type: 'email',
+                        },
+                    ],
+                },
+                messages: [
+                    {
+                        from_agent: false,
+                        integration_id: integrationId,
+                        failed_datetime: Date.now(),
+                        source: {
+                            type: 'email',
+                            to: [
+                                {
+                                    name: '',
+                                    address: 'billing-alias@acme.gorgias.io',
+                                },
+                            ],
+                            from: {
+                                name: 'Patrick',
+                                address: 'nico@las.com',
+                            },
+                        },
+                    },
+                ],
+            })
+
+            expect(
+                getNewMessageSender(
+                    ticket,
+                    TicketMessageSourceType.Email,
+                    channels,
+                    fromJS([])
+                )
+            ).toEqual(
+                fromJS({
+                    id: 1,
+                    type: 'email',
+                    name: 'Acme Support',
+                    address: 'support@acme.gorgias.io',
+                    preferred: true,
+                    signature: {
+                        text: 'cheers, ',
+                        html: 'cheers, <strong></strong>',
+                    },
+                    verified: true,
+                    isDeactivated: false,
+                })
+            )
+        })
     })
 
     describe('getOutboundCallFrom()', () => {

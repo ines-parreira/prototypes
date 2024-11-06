@@ -871,6 +871,24 @@ describe('integrations selectors', () => {
                                 address: 'theshop',
                             },
                         },
+                        {
+                            id: 456,
+                            type: 'app',
+                            application_id: '64785607477d0a11fc731bfa',
+                            name: 'Second Shop',
+                            meta: {
+                                address: 'second-shop',
+                            },
+                        },
+                        {
+                            id: 789,
+                            type: 'app',
+                            application_id: 'not-matching-application-id',
+                            name: 'Third Shop',
+                            meta: {
+                                address: 'third-shop',
+                            },
+                        },
                     ],
                 }),
             } as RootState
@@ -878,6 +896,12 @@ describe('integrations selectors', () => {
                 {
                     address: 'theshop',
                     name: 'The Shop',
+                    isDeactivated: false,
+                    isDefault: false,
+                },
+                {
+                    address: 'second-shop',
+                    name: 'Second Shop',
                     isDeactivated: false,
                     isDefault: false,
                 },

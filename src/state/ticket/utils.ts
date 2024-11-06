@@ -625,10 +625,9 @@ export function getNewMessageSender(
     const defaultIntegration =
         defaultSettings?.data?.[sourceTypeToChannel(newMessageSourceType)]
 
-    const defaultChannel: Map<any, any> | undefined = channels.find(
-        (c: Map<any, any>) => c.get('id') === defaultIntegration
-    )
-
+    const defaultChannel: Map<any, any> | undefined =
+        defaultIntegration &&
+        channels.find((c: Map<any, any>) => c.get('id') === defaultIntegration)
     const preferredChannel =
         defaultChannel ??
         getPreferredChannel(
@@ -637,8 +636,14 @@ export function getNewMessageSender(
         ) ??
         fromJS({})
 
+    const previousMessages = (ticket.get('messages') as List<any>).filter(
+        (message: Map<any, any>) => {
+            return !message.get('failed_datetime', null)
+        }
+    )
+
     const lastMessage: Map<any, any> | undefined = (
-        ticket.get('messages') as List<any>
+        previousMessages as List<any>
     ).findLast((message: Map<any, any>) => {
         const type = message.getIn(['source', 'type'], '')
 

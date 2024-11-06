@@ -480,15 +480,13 @@ export const getSendersForChannel =
             IntegrationType.App
         )(state)
         const channelSlug = toChannel(channelLike)?.slug
-
-        return applications
-            .map((application) =>
-                integrations.find(
-                    (integration: AppIntegration) =>
-                        integration.application_id === application.id
-                )
+        const applicationIds = applications.map((app) => app.id)
+        return integrations
+            .filter(
+                (integration: AppIntegration) =>
+                    isAppIntegration(integration) &&
+                    applicationIds.includes(integration.application_id)
             )
-            .filter(isAppIntegration)
             .map(({id, name, meta: {address}, deactivated_datetime}) => ({
                 address,
                 name,
