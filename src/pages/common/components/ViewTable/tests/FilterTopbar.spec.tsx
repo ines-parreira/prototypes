@@ -697,6 +697,6 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        expect(queryByText('Ticket Field')).toBeInTheDocument()
+        expect(queryByText('Ticket field')).toBeInTheDocument()
     })
 })

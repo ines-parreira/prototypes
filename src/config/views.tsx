@@ -332,7 +332,7 @@ export const defaultTicketView = {
         },
         {
             name: ViewField.TicketField,
-            title: 'Ticket Field',
+            title: 'Ticket field',
             path: 'custom_fields',
             filter: {
                 showInModes: ['search'],
