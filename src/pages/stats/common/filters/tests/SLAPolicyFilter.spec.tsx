@@ -23,6 +23,7 @@ import {
     SLAPolicyFilter,
     SLAPolicyFilterWithState,
 } from 'pages/stats/common/filters/SLAPolicyFilter'
+import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 
@@ -309,7 +310,10 @@ describe('SLAPolicyFilter', () => {
 
     describe('SLAPolicyFilterWithState', () => {
         it('should render SLAPolicyFilterWithState component', () => {
-            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const spy = jest.spyOn(
+                statsSlice,
+                'mergeStatsFiltersWithLogicalOperator'
+            )
 
             renderWithStore(<SLAPolicyFilterWithState />, defaultState)
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))

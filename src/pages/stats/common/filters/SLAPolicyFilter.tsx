@@ -5,15 +5,14 @@ import {connect} from 'react-redux'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
+import {LogicalOperatorLabel} from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {DropdownOption} from 'pages/stats/types'
 import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
-
-import {LogicalOperatorLabel} from '../components/Filter/constants'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.SlaPolicies]
@@ -119,10 +118,8 @@ export const SLAPolicyFilterWithState = connect(
     }),
     {
         dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
-            upsertSavedFilterFilter({
-                member: FilterKey.SlaPolicies,
-                operator: filter.operator,
-                values: filter.values.map(String),
+            mergeStatsFiltersWithLogicalOperator({
+                [FilterKey.SlaPolicies]: filter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
