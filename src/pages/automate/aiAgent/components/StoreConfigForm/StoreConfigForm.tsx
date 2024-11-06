@@ -575,6 +575,7 @@ export const StoreConfigForm = ({
                     <ConfigurationSection
                         title="Chat settings"
                         data-candu-id="ai-agent-configuration-chat-settings"
+                        isBeta={true}
                     >
                         <SettingsBanner
                             type={SettingsBannerType.Chat}
