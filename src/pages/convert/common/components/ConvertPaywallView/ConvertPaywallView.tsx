@@ -1,16 +1,17 @@
 import classNames from 'classnames'
-import React, {useState} from 'react'
+import React from 'react'
 import {Redirect} from 'react-router-dom'
 
 import convertIcon from 'assets/img/convert/convert-logo.svg'
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
-import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
+import {
+    CONVERT_BOOK_DEMO_LINK,
+    CONVERT_PRODUCT_LINK,
+} from 'pages/convert/common/constants'
 
 import {ConvertFeatures, PaywallConfig} from './constants'
 import css from './ConvertPaywallView.less'
@@ -18,14 +19,12 @@ import css from './ConvertPaywallView.less'
 type Props = {
     convertFeature: ConvertFeatures
     onSubscribedRedirectPath: string
-    modalCanduId: string
     pageHeaderTitle?: string
 }
 
 const ConvertPaywallView = ({
     convertFeature,
     onSubscribedRedirectPath,
-    modalCanduId,
     pageHeaderTitle,
 }: Props) => {
     const {
@@ -36,8 +35,6 @@ const ConvertPaywallView = ({
         primaryButtonText,
         slidesData,
     } = PaywallConfig[convertFeature]
-    const [isModalOpened, setIsModalOpened] = useState(false)
-
     const isConvertSubscriber = useIsConvertSubscriber()
 
     return isConvertSubscriber ? (
@@ -70,12 +67,15 @@ const ConvertPaywallView = ({
                     ))}
 
                     <div className={css.actionButton}>
-                        <Button
+                        <LinkButton
                             data-candu-id="convert-paywall-select-plan"
-                            onClick={() => setIsModalOpened(true)}
+                            className="mr-2"
+                            target="_blank"
+                            intent="primary"
+                            href={CONVERT_BOOK_DEMO_LINK}
                         >
                             {primaryButtonText}
-                        </Button>
+                        </LinkButton>
                         <LinkButton
                             target="blank"
                             data-candu-id="convert-paywall-learn-more"
@@ -90,13 +90,6 @@ const ConvertPaywallView = ({
                     <HeroImageCarousel slides={slidesData} />
                 </div>
             </div>
-            <ConvertSubscriptionModal
-                isOpen={isModalOpened}
-                onClose={() => setIsModalOpened(false)}
-                canduId={modalCanduId}
-                onSubscribe={() => setIsModalOpened(false)}
-                redirectPath={onSubscribedRedirectPath}
-            />
         </div>
     )
 }

@@ -20,7 +20,7 @@ export const PaywallConfig: Record<ConvertFeatures, PaywallFeature> = {
     [ConvertFeatures.Default]: {
         headerTitle: 'Convert',
         greyButtonText: 'Learn more',
-        primaryButtonText: 'Select plan to get started',
+        primaryButtonText: 'Book Demo',
         paywallTitle:
             'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩',
         descriptions: [

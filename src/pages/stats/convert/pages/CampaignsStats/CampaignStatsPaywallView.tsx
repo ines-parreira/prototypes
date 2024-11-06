@@ -25,7 +25,6 @@ const CampaignStatsPaywallView = () => {
     return (
         <ConvertPaywallView
             convertFeature={ConvertFeatures.Default}
-            modalCanduId={'campaign-stats-paywall-modal'}
             onSubscribedRedirectPath={redirectUrl}
             pageHeaderTitle={TITLE}
         />

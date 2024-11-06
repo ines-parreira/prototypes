@@ -135,7 +135,7 @@ describe('CampaignsStats', () => {
         const {getByText, queryByText} = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(getByText('Select plan to get started')).toBeInTheDocument()
+        expect(getByText('Book Demo')).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
             '/app/stats/convert/campaigns/subscribe'
@@ -154,7 +154,7 @@ describe('CampaignsStats', () => {
         const {getByText, queryByText} = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(getByText('Select plan to get started')).toBeInTheDocument()
+        expect(getByText('Book Demo')).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
             '/app/convert/123/performance/subscribe'
@@ -167,9 +167,7 @@ describe('CampaignsStats', () => {
         const {queryByText} = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
-        expect(
-            queryByText('Select plan to get started')
-        ).not.toBeInTheDocument()
+        expect(queryByText('Book Demo')).not.toBeInTheDocument()
     })
 
     it('should render stats for Convert subscriber', () => {

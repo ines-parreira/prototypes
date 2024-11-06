@@ -9,19 +9,12 @@ import {mockStore} from 'utils/testing'
 import {ConvertFeatures} from '../constants'
 import ConvertPaywallView from '../ConvertPaywallView'
 
-jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
-})
-
 describe('ConvertPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>
         render(
             <Provider store={mockStore(state as any)}>
                 <ConvertPaywallView
                     convertFeature={ConvertFeatures.Default}
-                    modalCanduId={'click-tracking-paywall-modal'}
                     onSubscribedRedirectPath={
                         '/app/settings/convert/click-tracking'
                     }
@@ -47,10 +40,8 @@ describe('ConvertPaywallView', () => {
     it('always has custom CTA and modal', () => {
         const mockedState = getStateWithHelpdeskPlan()
 
-        const {getByText, queryByTestId} = renderWithStore(mockedState)
+        const {getByText} = renderWithStore(mockedState)
 
-        expect(getByText('Select plan to get started')).toBeInTheDocument()
-        const mockModal = queryByTestId('mock-convert-subscription-modal')
-        expect(mockModal).toBeInTheDocument()
+        expect(getByText('Book Demo')).toBeInTheDocument()
     })
 })

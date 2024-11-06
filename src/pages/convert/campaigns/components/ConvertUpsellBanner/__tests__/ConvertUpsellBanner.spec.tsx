@@ -13,7 +13,7 @@ describe('ConvertUpsellBanner', () => {
     it('renders correctly', () => {
         const {getByText} = render(<ConvertUpsellBanner />)
 
-        expect(getByText('Select Plan To Get Started')).toBeInTheDocument()
+        expect(getByText('Book Demo')).toBeInTheDocument()
 
         expect(getByText('Learn More')).toBeInTheDocument()
         expect(

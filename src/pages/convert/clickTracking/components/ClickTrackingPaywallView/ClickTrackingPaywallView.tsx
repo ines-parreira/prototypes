@@ -25,7 +25,6 @@ const ClickTrackingPaywallView = () => {
     return (
         <ConvertPaywallView
             convertFeature={ConvertFeatures.Default}
-            modalCanduId={'click-tracking-paywall-modal'}
             onSubscribedRedirectPath={redirectUrl}
             pageHeaderTitle={TITLE}
         />

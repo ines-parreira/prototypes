@@ -503,7 +503,7 @@ describe('<CampaignsView/>', () => {
 
             const {getByText} = renderComponent(stateWithShopifyIntegration)
 
-            expect(getByText('Select Plan To Get Started')).toBeInTheDocument()
+            expect(getByText('Book Demo')).toBeInTheDocument()
         })
 
         it('should not display the upsell banner for non-Shopify non-subscribers', () => {
@@ -511,9 +511,7 @@ describe('<CampaignsView/>', () => {
 
             const {queryByText} = renderComponent(defaultState)
 
-            expect(
-                queryByText('Select Plan To Get Started')
-            ).not.toBeInTheDocument()
+            expect(queryByText('Book Demo')).not.toBeInTheDocument()
         })
 
         it('should not display the upsell banner for Shopify subscribers', () => {

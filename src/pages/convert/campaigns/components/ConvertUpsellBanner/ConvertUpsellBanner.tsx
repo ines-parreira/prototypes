@@ -1,23 +1,14 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import LinkButton from 'pages/common/components/button/LinkButton'
+import {CONVERT_BOOK_DEMO_LINK} from 'pages/convert/common/constants'
 import {assetsUrl} from 'utils'
 
 import css from './ConvertUpsellBanner.less'
 
 const ConvertUpsellBanner = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
-
     return (
         <div className={css.container}>
             <div className={css.bannerContent}>
@@ -32,9 +23,14 @@ const ConvertUpsellBanner = () => {
                     </p>
                     <div className={css.buttonGroup}>
                         <div className={css.buttonWrapper}>
-                            <Button className="mr-2" onClick={openModal}>
-                                Select Plan To Get Started
-                            </Button>
+                            <LinkButton
+                                className="mr-2"
+                                target="_blank"
+                                intent="primary"
+                                href={CONVERT_BOOK_DEMO_LINK}
+                            >
+                                Book Demo
+                            </LinkButton>
                         </div>
                         <div className={css.buttonWrapper}>
                             <a
@@ -56,12 +52,6 @@ const ConvertUpsellBanner = () => {
                     />
                 </div>
             </div>
-            <ConvertSubscriptionModal
-                canduId={'campaign-triggers-convert-modal-body'}
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                onSubscribe={closeModal}
-            />
         </div>
     )
 }

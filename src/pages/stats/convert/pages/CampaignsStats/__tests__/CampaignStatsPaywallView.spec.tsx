@@ -8,12 +8,6 @@ import {mockStore} from 'utils/testing'
 
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
-jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
-})
-
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn().mockReturnValue({}),
 }))
@@ -29,14 +23,12 @@ describe('CampaignStatsPaywallView', () => {
     it('has custom CTA and modal', () => {
         const mockedState = getStateWithHelpdeskPlan()
 
-        const {getByText, queryByTestId} = renderWithStore(mockedState)
+        const {getByText} = renderWithStore(mockedState)
 
         expect(
             getByText(
                 'Meet Gorgias Convert - Your onsite revenue generation toolkit 🤩'
             )
         ).toBeInTheDocument()
-        const mockModal = queryByTestId('mock-convert-subscription-modal')
-        expect(mockModal).toBeInTheDocument()
     })
 })
