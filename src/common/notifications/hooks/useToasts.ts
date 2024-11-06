@@ -1,5 +1,3 @@
-import {FeedEventPayload, FeedRealTimeCallback} from '@knocklabs/client'
-import {useKnockFeed} from '@knocklabs/react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import getNotificationSound from 'common/notifications/utils/getNotificationSound'
@@ -8,8 +6,9 @@ import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
 
-import {Notification, RawNotification} from '../types'
-import transformKnockNotification from '../utils/transformKnockNotification'
+import {Notification} from '../types'
+
+import useNotifications from './useNotifications'
 
 export default function useToasts() {
     const notificationSettings = useAppSelector(getNotificationSettings)
@@ -24,7 +23,6 @@ export default function useToasts() {
         [notificationSettings]
     )
 
-    const {feedClient} = useKnockFeed()
     const [notifications, setNotifications] = useState<Notification[]>([])
     const timeoutsRef = useRef<NodeJS.Timeout[]>([])
 
@@ -45,42 +43,19 @@ export default function useToasts() {
         [dismiss]
     )
 
-    const handleNotificationsReceived = useCallback(
-        ({items}: FeedEventPayload<RawNotification>) => {
-            const mappedItems = items
-                .map(transformKnockNotification)
-                .filter((notification) => !!notification) as Notification[]
-
-            if (!mappedItems.length) return
-
-            const sound = getNotificationSound(mappedItems[0], eventSettings)
+    const handleNotificationReceived = useCallback(
+        (notification: Notification) => {
+            const sound = getNotificationSound(notification, eventSettings)
             if (sound) {
                 notificationSounds.play(sound, notificationVolume)
             }
 
-            mappedItems.forEach((notification) => {
-                queueHide(notification.id)
-            })
-            setNotifications((n) => [...n, ...mappedItems])
+            queueHide(notification.id)
+            setNotifications((n) => [...n, notification])
         },
         [eventSettings, notificationVolume, queueHide]
     )
-
-    useEffect(() => {
-        feedClient.on(
-            'items.received.realtime',
-            // remove cast after consultation with knock team
-            handleNotificationsReceived as unknown as FeedRealTimeCallback
-        )
-
-        return () => {
-            feedClient.off(
-                'items.received.realtime',
-                // remove cast after consultation with knock team
-                handleNotificationsReceived as unknown as FeedRealTimeCallback
-            )
-        }
-    }, [feedClient, handleNotificationsReceived])
+    useNotifications(handleNotificationReceived)
 
     useEffect(
         () => () => {
