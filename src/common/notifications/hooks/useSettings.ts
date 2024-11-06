@@ -18,12 +18,7 @@ import {
     ticketMessageCreatedEvents,
     workflowMap,
 } from '../data'
-import {
-    LegacyNotificationType,
-    NotificationType,
-    Settings,
-    Event,
-} from '../types'
+import {Settings, Event} from '../types'
 
 const baseEvents = [legacyEvent, ...events]
 
@@ -111,11 +106,7 @@ export default function useSettings() {
     })
 
     const handleChangeChannel = useCallback(
-        (
-            notificationType: NotificationType,
-            channel: string,
-            enabled: boolean
-        ) => {
+        (notificationType: string, channel: string, enabled: boolean) => {
             setSettings((s) => ({
                 ...s,
                 events: {
@@ -134,10 +125,7 @@ export default function useSettings() {
     )
 
     const handleChangeSound = useCallback(
-        (
-            notificationType: NotificationType | LegacyNotificationType,
-            sound: '' | SoundValue
-        ) => {
+        (notificationType: string, sound: '' | SoundValue) => {
             setSettings((s) => {
                 return {
                     ...s,

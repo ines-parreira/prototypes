@@ -27,20 +27,19 @@ export default function EventSettingsRow({
     onChangeChannel,
     onChangeSound,
 }: Props) {
+    if (!config.settings) return null
+
+    const {icon, label, tooltip} = config.settings
+
     return (
         <TableBodyRow>
             <BodyCell innerClassName={css.bodyCell}>
-                {config.icon && (
-                    <SourceIcon
-                        type={config.icon}
-                        className={css.ticketChannelIcon}
-                    />
+                {icon && (
+                    <SourceIcon type={icon} className={css.ticketChannelIcon} />
                 )}
-                {config.label}
-                {config.tooltip && (
-                    <IconTooltip className={css.tooltip}>
-                        {config.tooltip}
-                    </IconTooltip>
+                {label}
+                {tooltip && (
+                    <IconTooltip className={css.tooltip}>{tooltip}</IconTooltip>
                 )}
             </BodyCell>
             <BodyCell innerClassName={cn(css.bodyCell, css.soundSelectCell)}>

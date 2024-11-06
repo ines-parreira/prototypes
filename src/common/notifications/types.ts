@@ -104,11 +104,21 @@ export type Settings = {
     }
 }
 
+export type CategoryConfig = {
+    type: string
+    label: string
+    description: string
+    typeLabel: string
+    notifications?: string[]
+}
+
 export type NotificationConfig = {
     type: string
-    label: ReactNode
-    icon?: string
-    tooltip?: string
+    settings?: {
+        label: string
+        icon?: string
+        tooltip?: string
+    }
 }
 
 export type Setting = {

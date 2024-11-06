@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {SoundValue} from 'services/NotificationSounds'
 
-import {events, legacyEvent, ticketMessageCreatedEvents} from '../data'
-import {LegacyNotificationType, NotificationType, Settings} from '../types'
+import {categories, notifications} from '../data'
+import {Settings} from '../types'
 
 import css from './EventSettings.less'
 import EventSettingsRow from './EventSettingsRow'
@@ -14,17 +14,12 @@ import EventSettingsTableHead from './EventSettingsTableHead'
 type Props = {
     settings: Settings
     onChangeChannel: (
-        notificationType: NotificationType,
+        notificationType: string,
         channel: string,
         value: boolean
     ) => void
-    onChangeSound: (
-        notificationType: NotificationType | LegacyNotificationType,
-        sound: '' | SoundValue
-    ) => void
+    onChangeSound: (notificationType: string, sound: '' | SoundValue) => void
 }
-
-const availableEvents = [legacyEvent, ...events]
 
 export default function EventSettings({
     settings,
@@ -33,53 +28,46 @@ export default function EventSettings({
 }: Props) {
     return (
         <>
-            <h2 className={css.heading}>Ticket updates</h2>
-            <p className={css.subtitle}>
-                Get notified when one of these events happen:
-            </p>
+            {categories.map((category) => (
+                <Fragment key={category.type}>
+                    <h2 className={css.heading}>{category.label}</h2>
+                    <p className={css.subtitle}>{category.description}</p>
 
-            <TableWrapper className={css.container}>
-                <EventSettingsTableHead typeHeader="Event" />
-                <TableBody>
-                    {availableEvents.map((event) => (
-                        <EventSettingsRow
-                            key={event.type}
-                            config={event}
-                            setting={settings.events[event.type]}
-                            onChangeChannel={(channel, value) => {
-                                event.type !== 'legacy-chat-and-messaging' &&
-                                    onChangeChannel(event.type, channel, value)
-                            }}
-                            onChangeSound={(sound) => {
-                                onChangeSound(event.type, sound)
-                            }}
+                    <TableWrapper className={css.container}>
+                        <EventSettingsTableHead
+                            typeHeader={category.typeLabel}
                         />
-                    ))}
-                </TableBody>
-            </TableWrapper>
-
-            <h2 className={css.heading}>New messages</h2>
-            <p className={css.subtitle}>
-                Get notified when you receive new messages from these channels.
-            </p>
-            <TableWrapper className={css.container}>
-                <EventSettingsTableHead typeHeader="Message channel" />
-                <TableBody>
-                    {ticketMessageCreatedEvents.map((event) => (
-                        <EventSettingsRow
-                            key={event.type}
-                            config={event}
-                            setting={settings.events[event.type]}
-                            onChangeChannel={(channel, value) => {
-                                onChangeChannel(event.type, channel, value)
-                            }}
-                            onChangeSound={(sound) => {
-                                onChangeSound(event.type, sound)
-                            }}
-                        />
-                    ))}
-                </TableBody>
-            </TableWrapper>
+                        <TableBody>
+                            {(category.notifications || []).map(
+                                (notificationType) => (
+                                    <EventSettingsRow
+                                        key={notificationType}
+                                        config={notifications[notificationType]}
+                                        setting={
+                                            settings.events[notificationType]
+                                        }
+                                        onChangeChannel={(channel, value) => {
+                                            notificationType !==
+                                                'legacy-chat-and-messaging' &&
+                                                onChangeChannel(
+                                                    notificationType,
+                                                    channel,
+                                                    value
+                                                )
+                                        }}
+                                        onChangeSound={(sound) => {
+                                            onChangeSound(
+                                                notificationType,
+                                                sound
+                                            )
+                                        }}
+                                    />
+                                )
+                            )}
+                        </TableBody>
+                    </TableWrapper>
+                </Fragment>
+            ))}
         </>
     )
 }

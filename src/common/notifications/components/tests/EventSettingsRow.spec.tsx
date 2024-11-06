@@ -26,7 +26,9 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'user.mentioned',
-                            label: 'Mentioned in an internal note',
+                            settings: {
+                                label: 'Mentioned in an internal note',
+                            },
                         }}
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
@@ -45,8 +47,10 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'user.mentioned',
-                            label: 'Mentioned in an internal note',
-                            icon: 'email',
+                            settings: {
+                                label: 'Mentioned in an internal note',
+                                icon: 'email',
+                            },
                         }}
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
@@ -65,8 +69,10 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'user.mentioned',
-                            label: 'Mentioned in an internal note',
-                            tooltip: 'I am a tooltip',
+                            settings: {
+                                label: 'Mentioned in an internal note',
+                                tooltip: 'I am a tooltip',
+                            },
                         }}
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
@@ -90,7 +96,9 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'user.mentioned',
-                            label: 'Mentioned in an internal note',
+                            settings: {
+                                label: 'Mentioned in an internal note',
+                            },
                         }}
                         onChangeChannel={jest.fn()}
                         onChangeSound={onChangeSound}
@@ -113,7 +121,9 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'user.mentioned',
-                            label: 'Mentioned in an internal note',
+                            settings: {
+                                label: 'Mentioned in an internal note',
+                            },
                         }}
                         onChangeChannel={onChangeChannel}
                         onChangeSound={jest.fn()}
@@ -136,7 +146,9 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'legacy-chat-and-messaging',
-                            label: 'Chat & messaging tickets',
+                            settings: {
+                                label: 'Chat & messaging tickets',
+                            },
                         }}
                         onChangeChannel={onChangeChannel}
                         onChangeSound={jest.fn()}
@@ -158,7 +170,9 @@ describe('EventSettingsRow', () => {
                     <EventSettingsRow
                         config={{
                             type: 'legacy-chat-and-messaging',
-                            label: 'Chat & messaging tickets',
+                            settings: {
+                                label: 'Chat & messaging tickets',
+                            },
                         }}
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}

@@ -1,6 +1,13 @@
 import {TicketChannel} from 'business/types/ticket'
 
-import {Channel, Event, LegacyEvent, NotificationType} from './types'
+import {
+    CategoryConfig,
+    Channel,
+    Event,
+    LegacyEvent,
+    NotificationConfig,
+    NotificationType,
+} from './types'
 
 export const channels: Channel[] = [
     {
@@ -141,4 +148,141 @@ export const ticketMessageCreatedChannelWorkflowMap: Partial<
     [TicketChannel.WhatsApp]: 'ticket-message.created.whatsapp',
     [TicketChannel.YotpoReview]: 'ticket-message.created.yotpo',
     [TicketChannel.Aircall]: 'ticket-message.created.aircall',
+}
+
+export const categories: CategoryConfig[] = [
+    {
+        type: 'ticket-updates',
+        label: 'Ticket updates',
+        description: 'Get notified when one of these events happen:',
+        typeLabel: 'Event',
+        notifications: [
+            'legacy-chat-and-messaging',
+            'user.mentioned',
+            'ticket.snooze-expired',
+            'ticket.assigned',
+        ],
+    },
+    {
+        type: 'ticket-message-created',
+        label: 'New messages',
+        description:
+            'Get notified when you receive new messages from these channels.',
+        typeLabel: 'Message channel',
+        notifications: [
+            'ticket-message.created.email',
+            'ticket-message.created.chat',
+            'ticket-message.created.phone',
+            'ticket-message.created.sms',
+            'ticket-message.created.facebook',
+            'ticket-message.created.instagram',
+            'ticket-message.created.whatsapp',
+            'ticket-message.created.yotpo',
+            'ticket-message.created.aircall',
+            'ticket-message.created',
+        ],
+    },
+]
+
+export const notifications: Record<string, NotificationConfig> = {
+    'legacy-chat-and-messaging': {
+        type: 'legacy-chat-and-messaging',
+        settings: {
+            label: 'Chat & messaging tickets',
+        },
+    },
+    'user.mentioned': {
+        type: 'user.mentioned',
+        settings: {
+            label: 'Mentioned in an internal note',
+        },
+    },
+    'ticket.snooze-expired': {
+        type: 'ticket.snooze-expired',
+        settings: {
+            label: 'Snooze expired',
+        },
+    },
+    'ticket.assigned': {
+        type: 'ticket.assigned',
+        settings: {
+            label: 'Assigned to a ticket',
+        },
+    },
+    'ticket-message.created.email': {
+        type: 'ticket-message.created.email',
+        settings: {
+            icon: 'email',
+            label: 'Email',
+        },
+    },
+    'ticket-message.created.chat': {
+        type: 'ticket-message.created.chat',
+        settings: {
+            icon: 'chat',
+            label: 'Chat',
+        },
+    },
+    'ticket-message.created.phone': {
+        type: 'ticket-message.created.phone',
+        settings: {
+            icon: 'phone',
+            label: 'Phone',
+            tooltip:
+                'This setting only controls the messages sent after the original phone call.',
+        },
+    },
+    'ticket-message.created.sms': {
+        type: 'ticket-message.created.sms',
+        settings: {
+            icon: 'sms',
+            label: 'SMS',
+        },
+    },
+    'ticket-message.created.facebook': {
+        type: 'ticket-message.created.facebook',
+        settings: {
+            icon: 'facebook',
+            label: 'Facebook',
+            tooltip:
+                'Facebook includes Messenger, comments, mentions and recommendations.',
+        },
+    },
+    'ticket-message.created.instagram': {
+        type: 'ticket-message.created.instagram',
+        settings: {
+            icon: 'instagram',
+            label: 'Instagram',
+            tooltip:
+                'Instagram includes Ad comments, comments, direct messages and mentions.',
+        },
+    },
+    'ticket-message.created.whatsapp': {
+        type: 'ticket-message.created.whatsapp',
+        settings: {
+            icon: 'whatsapp',
+            label: 'WhatsApp',
+        },
+    },
+    'ticket-message.created.yotpo': {
+        type: 'ticket-message.created.yotpo',
+        settings: {
+            icon: 'yotpo',
+            label: 'Yotpo',
+        },
+    },
+    'ticket-message.created.aircall': {
+        type: 'ticket-message.created.aircall',
+        settings: {
+            icon: 'aircall',
+            label: 'Aircall',
+        },
+    },
+    'ticket-message.created': {
+        type: 'ticket-message.created',
+        settings: {
+            icon: 'api',
+            label: 'Other',
+        },
+    },
 }
