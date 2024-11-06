@@ -296,4 +296,33 @@ describe('<Right />', () => {
             expect(queryByText(/Custom:/)).not.toBeInTheDocument()
         })
     })
+
+    it('should render plain danger button when no field is present, but a value is passed in node', () => {
+        const {getByText} = render(
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    field={undefined}
+                    node={{value: true, raw: 'true', type: 'Literal'}}
+                />
+            </Provider>
+        )
+
+        expect(getByText('true')).toHaveClass('btn-outline-danger')
+    })
+
+    it('should render empty span when no field is present and no value is passed in node', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    field={undefined}
+                    // @ts-ignore this is not likely to happen, but there is a safeguard in place
+                    node={{}}
+                />
+            </Provider>
+        )
+
+        expect(container.firstChild).toBeEmpty()
+    })
 })

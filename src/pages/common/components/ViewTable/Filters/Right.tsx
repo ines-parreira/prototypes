@@ -41,7 +41,7 @@ import {getCustomFieldIdFromObjectPath, getMultiSelectLabel} from './utils'
 type OwnProps = {
     operator: Identifier
     config: Map<any, any>
-    field: Map<any, any>
+    field: Map<any, any> | undefined
     node: Expression
     index: number
     agents: List<Map<any, any>>
@@ -125,7 +125,7 @@ export class RightContainer extends Component<Props, State> {
     }
 
     _isTicketFieldExpression = () => {
-        return this.props.field.get('name') === 'ticket_field'
+        return this.props.field?.get('name') === 'ticket_field'
     }
 
     _selectFirstOption = () => {
@@ -189,6 +189,11 @@ export class RightContainer extends Component<Props, State> {
                     </div>
                 </div>
             )
+        }
+
+        // not bound to happen, just a TS safety check
+        if (!field) {
+            return <span />
         }
 
         let displayedValue: Literal['value'] | ReactNode = (node as Literal)
