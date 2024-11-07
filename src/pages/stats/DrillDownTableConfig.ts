@@ -87,10 +87,7 @@ const queryBuilderWithAgentFilter =
         return queryBuilder(
             {
                 ...statsFiltersWithLogicalOperators,
-                agents: withDefaultLogicalOperator(
-                    [agentId],
-                    statsFiltersWithLogicalOperators[FilterKey.Agents]?.operator
-                ),
+                agents: withDefaultLogicalOperator([agentId]),
             },
             timezone,
             sorting
