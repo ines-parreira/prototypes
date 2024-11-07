@@ -23,6 +23,7 @@ import {
     storeWithActiveSubscriptionWithPhone,
     storeWithCanceledSubscription,
 } from 'pages/settings/new_billing/fixtures'
+import {renderWithQueryClientAndRouter} from 'tests/renderWIthQueryClientAndRouter'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import BillingStartView from '../BillingStartView'
@@ -216,13 +217,12 @@ describe('BillingStartView', () => {
             mockFlags({
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
             })
-            renderWithRouter(
+
+            renderWithQueryClientAndRouter(
                 <Provider store={storeWithActiveSubscriptionWithPhone}>
                     <BillingStartView />
                 </Provider>,
-                {
-                    route: BILLING_PAYMENT_PATH,
-                }
+                BILLING_PAYMENT_PATH
             )
 
             const button = screen.queryByText('Change Frequency', {
@@ -236,13 +236,12 @@ describe('BillingStartView', () => {
             mockFlags({
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
             })
-            renderWithRouter(
+
+            renderWithQueryClientAndRouter(
                 <Provider store={storeWithActiveSubscriptionWithPhone}>
                     <BillingStartView />
                 </Provider>,
-                {
-                    route: BILLING_PAYMENT_PATH,
-                }
+                BILLING_PAYMENT_PATH
             )
 
             const button = screen.queryByText('Change Frequency', {

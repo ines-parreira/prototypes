@@ -3,7 +3,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 
-import {countries} from 'config/countries'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,21 +13,16 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
-import Loader from 'pages/common/components/Loader/Loader'
-import {fetchContact, fetchCreditCard} from 'state/billing/actions'
-import {
-    creditCard,
-    getContact,
-    getCurrentHelpdeskInterval,
-} from 'state/billing/selectors'
-import {BillingContact, TicketPurpose} from 'state/billing/types'
+import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
+import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
+import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
+import {fetchCreditCard} from 'state/billing/actions'
+import {creditCard, getCurrentHelpdeskInterval} from 'state/billing/selectors'
+import {TicketPurpose} from 'state/billing/types'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
-import {
-    BILLING_INFORMATION_PATH,
-    BILLING_PAYMENT_FREQUENCY_PATH,
-} from '../../constants'
+import {BILLING_PAYMENT_FREQUENCY_PATH} from '../../constants'
 import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {
@@ -60,31 +54,10 @@ const PaymentInformationView = ({
     const phoneSelfServeEnabled =
         useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
 
-    const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
-    const hasAddress = !!contact?.shipping
-    const address = contact?.shipping?.address
-    const country = address
-        ? (countries.find((country) => country.value === address.country)
-              ?.label ?? address.country)
-        : ''
-
-    const displayedAddress = hasAddress
-        ? [
-              address.line1,
-              address.line2,
-              address.city,
-              address.state,
-              address.postal_code,
-          ]
-              .filter((value) => !!value)
-              .join(', ')
-        : ''
-
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
-    const [isBillingAddressFetched, setIsBillingAddressFetched] = useState(true)
 
     // fetch card
     useEffect(() => {
@@ -97,17 +70,6 @@ const PaymentInformationView = ({
 
         void fetchCard()
     }, [card, dispatch])
-
-    // Fetch billing contact
-    useEffect(() => {
-        const getBillingShippingContact = async () => {
-            if (!contact?.email) {
-                await fetchContact()(dispatch)
-            }
-            setIsBillingAddressFetched(false)
-        }
-        void getBillingShippingContact()
-    }, [dispatch, contact?.email])
 
     const changeFrequency = useMemo(() => {
         let toolTipContent
@@ -198,69 +160,19 @@ const PaymentInformationView = ({
 
     return (
         <div className={css.container}>
-            <div>
-                <div className={css.title}>
-                    <i className="material-icons">credit_card</i>
-                    Payment method
-                </div>
-                <div className={css.card}>
-                    <SummaryPaymentSection
-                        isCreditCardFetched={isCreditCardFetched}
-                        isPaymentInformationView
-                    />
-                </div>
-            </div>
-            <div>
-                <div className={css.title}>
-                    <i className="material-icons">history</i>
-                    Billing frequency
-                </div>
-                <div className={css.card}>
-                    <div className={css.description}>
-                        All plans are billed <strong>{interval}ly</strong>
-                    </div>
-                    {changeFrequency}
-                </div>
-            </div>
-            {!shouldPayWithShopify && (
-                <div>
-                    <div className={css.title}>
-                        <i className="material-icons">person_pin_circle</i>
-                        Billing address
-                    </div>
-                    <div className={css.card}>
-                        {isBillingAddressFetched ? (
-                            <Loader minHeight="auto" />
-                        ) : (
-                            <>
-                                <div className={css.description}>
-                                    <strong>Billing email:</strong>{' '}
-                                    {contact?.email}
-                                    {!hasAddress ? (
-                                        <div>
-                                            <strong>No billing address</strong>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <strong>Company name:</strong>{' '}
-                                            {contact?.shipping.name}
-                                            <br />
-                                            <strong>Phone number:</strong>{' '}
-                                            {contact?.shipping.phone}
-                                            <br />
-                                            <strong>Address:</strong>{' '}
-                                            {displayedAddress} - {country}
-                                        </div>
-                                    )}
-                                </div>
-                                <Link to={BILLING_INFORMATION_PATH}>
-                                    {hasAddress ? 'Update' : 'Add'} address
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
+            <Section icon="credit_card" title="Payment method">
+                <SummaryPaymentSection
+                    isCreditCardFetched={isCreditCardFetched}
+                    isPaymentInformationView
+                />
+            </Section>
+            <Section icon="history" title="Billing frequency">
+                <Description>
+                    All plans are billed <strong>{interval}ly</strong>
+                </Description>
+                {changeFrequency}
+            </Section>
+            {!shouldPayWithShopify ? <BillingInformationSection /> : null}
         </div>
     )
 }
