@@ -1,6 +1,7 @@
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import type {NotificationConfig} from '../../types'
 import EventSettingsRow from '../EventSettingsRow'
 
 jest.mock(
@@ -24,12 +25,14 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'user.mentioned',
-                            settings: {
-                                label: 'Mentioned in an internal note',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'user.mentioned',
+                                settings: {
+                                    label: 'Mentioned in an internal note',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
                     />
@@ -45,13 +48,15 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'user.mentioned',
-                            settings: {
-                                label: 'Mentioned in an internal note',
-                                icon: 'email',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'user.mentioned',
+                                settings: {
+                                    label: 'Mentioned in an internal note',
+                                    icon: 'email',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
                     />
@@ -67,13 +72,15 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'user.mentioned',
-                            settings: {
-                                label: 'Mentioned in an internal note',
-                                tooltip: 'I am a tooltip',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'user.mentioned',
+                                settings: {
+                                    label: 'Mentioned in an internal note',
+                                    tooltip: 'I am a tooltip',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
                     />
@@ -94,12 +101,14 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'user.mentioned',
-                            settings: {
-                                label: 'Mentioned in an internal note',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'user.mentioned',
+                                settings: {
+                                    label: 'Mentioned in an internal note',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={jest.fn()}
                         onChangeSound={onChangeSound}
                     />
@@ -119,12 +128,14 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'user.mentioned',
-                            settings: {
-                                label: 'Mentioned in an internal note',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'user.mentioned',
+                                settings: {
+                                    label: 'Mentioned in an internal note',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={onChangeChannel}
                         onChangeSound={jest.fn()}
                     />
@@ -144,12 +155,14 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'legacy-chat-and-messaging',
-                            settings: {
-                                label: 'Chat & messaging tickets',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'legacy-chat-and-messaging',
+                                settings: {
+                                    label: 'Chat & messaging tickets',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={onChangeChannel}
                         onChangeSound={jest.fn()}
                     />
@@ -168,12 +181,14 @@ describe('EventSettingsRow', () => {
             <table>
                 <tbody>
                     <EventSettingsRow
-                        config={{
-                            type: 'legacy-chat-and-messaging',
-                            settings: {
-                                label: 'Chat & messaging tickets',
-                            },
-                        }}
+                        config={
+                            {
+                                type: 'legacy-chat-and-messaging',
+                                settings: {
+                                    label: 'Chat & messaging tickets',
+                                },
+                            } as NotificationConfig
+                        }
                         onChangeChannel={jest.fn()}
                         onChangeSound={jest.fn()}
                     />

@@ -2,18 +2,18 @@ import React, {MouseEvent, useCallback} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
+import {notifications} from '../data'
 import {Notification} from '../types'
 
-import NotificationContent from './NotificationContent'
 import css from './Toast.less'
 
 type Props = {
     notification: Notification
-    onDismiss: () => void
     onClick: () => void
+    onDismiss: () => void
 }
 
-export default function Toast({notification, onDismiss, onClick}: Props) {
+export default function Toast({notification, onClick, onDismiss}: Props) {
     const handleClickClose = useCallback(
         (e: MouseEvent) => {
             e.preventDefault()
@@ -22,9 +22,14 @@ export default function Toast({notification, onDismiss, onClick}: Props) {
         [onDismiss]
     )
 
+    const config = notifications[notification.type]
+    if (!config) return null
+
+    const Component = config.component
+
     return (
         <div className={css.container}>
-            <NotificationContent
+            <Component
                 headerExtra={
                     <IconButton
                         className={css.close}

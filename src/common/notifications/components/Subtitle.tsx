@@ -1,59 +1,12 @@
-import React, {useMemo} from 'react'
-
-import {DefaultPayload, Notification, PayloadWithSender} from '../types'
+import React from 'react'
+import type {ReactNode} from 'react'
 
 import css from './Subtitle.less'
 
 type Props = {
-    notification: Notification
+    children: ReactNode
 }
 
-export default function Subtitle({notification}: Props) {
-    const senderInfo = useMemo(() => {
-        const {sender} = notification.payload as
-            | DefaultPayload
-            | PayloadWithSender
-
-        if (!sender) return null
-
-        return (
-            <>
-                {' '}
-                from <strong>{sender.name}</strong>
-            </>
-        )
-    }, [notification.payload])
-
-    if (notification.type === 'email-domain.verified') {
-        return (
-            <p className={css.subtitle}>
-                <strong>System update</strong> from <strong>Gorgias</strong>
-            </p>
-        )
-    }
-
-    if (notification.type === 'user.mentioned') {
-        const {sender, ticket} = notification.payload
-        return (
-            <p className={css.subtitle}>
-                {!!sender ? (
-                    <>
-                        <strong>{sender.name}</strong> mentioned you in
-                    </>
-                ) : (
-                    <>You were mentioned in</>
-                )}{' '}
-                <strong className={css.subject}>{ticket.subject}</strong>
-            </p>
-        )
-    }
-
-    const {ticket} = notification.payload
-
-    return (
-        <p className={css.subtitle}>
-            <strong className={css.subject}>{ticket.subject} </strong>
-            {senderInfo}
-        </p>
-    )
+export default function Subtitle({children}: Props) {
+    return <p className={css.subtitle}>{children}</p>
 }

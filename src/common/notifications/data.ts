@@ -1,5 +1,9 @@
 import {TicketChannel} from 'business/types/ticket'
 
+import DomainVerificationNotification from './components/DomainVerificationNotification'
+import TicketNotification from './components/TicketNotification'
+import UserMentionedNotification from './components/UserMentionedNotification'
+
 import {
     CategoryConfig,
     Channel,
@@ -187,30 +191,35 @@ export const categories: CategoryConfig[] = [
 export const notifications: Record<string, NotificationConfig> = {
     'legacy-chat-and-messaging': {
         type: 'legacy-chat-and-messaging',
+        component: TicketNotification,
         settings: {
             label: 'Chat & messaging tickets',
         },
     },
     'user.mentioned': {
         type: 'user.mentioned',
+        component: UserMentionedNotification,
         settings: {
             label: 'Mentioned in an internal note',
         },
     },
     'ticket.snooze-expired': {
         type: 'ticket.snooze-expired',
+        component: TicketNotification,
         settings: {
             label: 'Snooze expired',
         },
     },
     'ticket.assigned': {
         type: 'ticket.assigned',
+        component: TicketNotification,
         settings: {
             label: 'Assigned to a ticket',
         },
     },
     'ticket-message.created.email': {
         type: 'ticket-message.created.email',
+        component: TicketNotification,
         settings: {
             icon: 'email',
             label: 'Email',
@@ -218,6 +227,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.chat': {
         type: 'ticket-message.created.chat',
+        component: TicketNotification,
         settings: {
             icon: 'chat',
             label: 'Chat',
@@ -225,6 +235,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.phone': {
         type: 'ticket-message.created.phone',
+        component: TicketNotification,
         settings: {
             icon: 'phone',
             label: 'Phone',
@@ -234,6 +245,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.sms': {
         type: 'ticket-message.created.sms',
+        component: TicketNotification,
         settings: {
             icon: 'sms',
             label: 'SMS',
@@ -241,6 +253,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.facebook': {
         type: 'ticket-message.created.facebook',
+        component: TicketNotification,
         settings: {
             icon: 'facebook',
             label: 'Facebook',
@@ -250,6 +263,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.instagram': {
         type: 'ticket-message.created.instagram',
+        component: TicketNotification,
         settings: {
             icon: 'instagram',
             label: 'Instagram',
@@ -259,6 +273,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.whatsapp': {
         type: 'ticket-message.created.whatsapp',
+        component: TicketNotification,
         settings: {
             icon: 'whatsapp',
             label: 'WhatsApp',
@@ -266,6 +281,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.yotpo': {
         type: 'ticket-message.created.yotpo',
+        component: TicketNotification,
         settings: {
             icon: 'yotpo',
             label: 'Yotpo',
@@ -273,6 +289,7 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created.aircall': {
         type: 'ticket-message.created.aircall',
+        component: TicketNotification,
         settings: {
             icon: 'aircall',
             label: 'Aircall',
@@ -280,9 +297,14 @@ export const notifications: Record<string, NotificationConfig> = {
     },
     'ticket-message.created': {
         type: 'ticket-message.created',
+        component: TicketNotification,
         settings: {
             icon: 'api',
             label: 'Other',
         },
+    },
+    'email-domain.verified': {
+        type: 'email-domain.verified',
+        component: DomainVerificationNotification,
     },
 }

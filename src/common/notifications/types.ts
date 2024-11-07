@@ -1,9 +1,11 @@
 import type {ChannelType} from '@knocklabs/types'
-import type {ReactNode} from 'react'
+import type {ComponentType, ReactNode} from 'react'
 
 import type {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {Actor} from 'models/ticket/types'
 import type {SoundValue} from 'services/NotificationSounds'
+
+import type {ParentProps} from './components/NotificationContent'
 
 export type PickedActor = Pick<Actor, 'id' | 'name' | 'firstname' | 'lastname'>
 
@@ -51,7 +53,7 @@ export type DefaultPayload = {
 
 export type PayloadWithSender = {
     ticket: Ticket
-    sender: PickedActor
+    sender?: PickedActor
 }
 
 type TicketMessageCreatedType =
@@ -114,6 +116,7 @@ export type CategoryConfig = {
 
 export type NotificationConfig = {
     type: string
+    component: ComponentType<{notification: Notification} & ParentProps>
     settings?: {
         label: string
         icon?: string

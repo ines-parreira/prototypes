@@ -2,8 +2,9 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React from 'react'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import {TicketStatus} from 'business/types/ticket'
 import useId from 'hooks/useId'
+import type {ChannelLike} from 'models/channel/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 
 import css from 'pages/common/components/TicketIcon.less'
@@ -13,7 +14,7 @@ export default function TicketIcon({
     className,
     status,
 }: {
-    channel: TicketChannel
+    channel: ChannelLike
     className?: string
     status: TicketStatus
 }) {
