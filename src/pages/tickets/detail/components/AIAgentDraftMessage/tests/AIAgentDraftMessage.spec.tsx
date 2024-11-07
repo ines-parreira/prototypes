@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import useMeasure from 'hooks/useMeasure'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {message} from 'models/ticket/tests/mocks'
 import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
@@ -15,6 +16,7 @@ import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {assumeMock} from 'utils/testing'
 
 import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
+import {PREVIEW_HEIGHT} from '../../RuleSuggestion/SuggestionBody'
 import AIAgentDraftMessage from '../AIAgentDraftMessage'
 
 jest.mock('state/currentAccount/selectors')
@@ -38,12 +40,14 @@ jest.mock('state/ui/ticketAIAgentFeedback', () => ({
 }))
 
 jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
+jest.mock('hooks/useMeasure')
 
 const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const logEventMock = assumeMock(logEvent)
+const useMeasureMock = assumeMock(useMeasure)
 
 const mockMessage = {
     ...message,
@@ -62,6 +66,7 @@ describe('AIAgentDraftMessage', () => {
         isTrial: false,
     }
     beforeEach(() => {
+        jest.resetAllMocks()
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
         useAIAgentSendFeedbackMock.mockReturnValue({
             aiAgentSendFeedback: jest.fn(),
@@ -80,6 +85,19 @@ describe('AIAgentDraftMessage', () => {
             ui: {editor: {isFocused: false}},
             ticket: fromJS({_internal: {isPartialUpdating: false}}),
         })
+        useMeasureMock.mockReturnValue([
+            jest.fn(),
+            {
+                height: PREVIEW_HEIGHT + 1,
+                width: 0,
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                x: 0,
+                y: 0,
+            },
+        ] as unknown as [jest.Mock, ReturnType<typeof useMeasure>[1]])
     })
 
     it('should get accountId from useAppSelector', () => {
@@ -157,5 +175,39 @@ describe('AIAgentDraftMessage', () => {
         )
 
         expect(screen.queryByText('Copy to Editor')).toBeInTheDocument()
+    })
+
+    it('should display gorgias tips on preview state when isTrial is false', () => {
+        const props = {
+            ...defaultProps,
+            isTrial: false,
+        }
+
+        render(
+            <Provider store={store}>
+                <AIAgentDraftMessage {...props} />
+            </Provider>
+        )
+
+        expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
+        expect(screen.getByText('Expand')).toBeInTheDocument()
+        expect(screen.queryByText('Review Response')).not.toBeInTheDocument()
+    })
+
+    it('should display gorgias tips on expand state when isTrial is true', () => {
+        const props = {
+            ...defaultProps,
+            isTrial: true,
+        }
+
+        render(
+            <Provider store={store}>
+                <AIAgentDraftMessage {...props} />
+            </Provider>
+        )
+
+        expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
+        expect(screen.queryByText('Expand')).not.toBeInTheDocument()
+        expect(screen.getByText('Review Response')).toBeInTheDocument()
     })
 })

@@ -23,7 +23,7 @@ type Props = {
     isTrialMessage?: boolean
 }
 
-const PREVIEW_HEIGHT = 110
+export const PREVIEW_HEIGHT = 110
 
 export default function SuggestionBody({
     text,
@@ -38,9 +38,13 @@ export default function SuggestionBody({
     const [innerRef, {height}] = useMeasure<HTMLDivElement>()
 
     useEffect(() => {
-        if ((state && !isTrialMessage) || height === 0) return
+        if (isTrialMessage && state === 'preview') {
+            setSuggestionState('expand')
+        }
 
-        if (height < PREVIEW_HEIGHT || isTrialMessage) {
+        if (state || height === 0) return
+
+        if (height < PREVIEW_HEIGHT) {
             setSuggestionState('expand')
         } else {
             setSuggestionState('preview')
