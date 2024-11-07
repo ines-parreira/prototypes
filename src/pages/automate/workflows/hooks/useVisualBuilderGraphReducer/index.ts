@@ -22,6 +22,11 @@ import {
     llmPromptTriggerReducer,
     VisualBuilderLLMPromptTriggerAction,
 } from './llmPromptTriggerReducer'
+import {
+    isVisualBuilderReusableLLMPromptTriggerAction,
+    reusableLLMPromptTriggerReducer,
+    VisualBuilderReusableLLMPromptTriggerAction,
+} from './reusableLLMPromptTriggerReducer'
 
 export type VisualBuilderGraphAction =
     | VisualBuilderBaseAction
@@ -29,6 +34,7 @@ export type VisualBuilderGraphAction =
     | VisualBuilderHttpRequestAction
     | VisualBuilderConditionsAction
     | VisualBuilderLLMPromptTriggerAction
+    | VisualBuilderReusableLLMPromptTriggerAction
 
 export function useVisualBuilderGraphReducer(initialState: VisualBuilderGraph) {
     return useReducer(reducer, initialState)
@@ -49,6 +55,9 @@ export function reducer(
     }
     if (isVisualBuilderLLMPromptTriggerAction(action)) {
         return llmPromptTriggerReducer(graph, action)
+    }
+    if (isVisualBuilderReusableLLMPromptTriggerAction(action)) {
+        return reusableLLMPromptTriggerReducer(graph, action)
     }
     return baseReducer(graph, action)
 }

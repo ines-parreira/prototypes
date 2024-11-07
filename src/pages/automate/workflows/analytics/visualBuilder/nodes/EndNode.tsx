@@ -54,7 +54,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
             <div className={classNames(css.node, css.endNode)}>
                 <div className={css.endNodeHeader}>
                     <div>
-                        <Badge type={ColorType.Light}>end flow</Badge>
+                        <Badge type={ColorType.Light}>end</Badge>
                     </div>
                     <div className={css.endNodeTitle}>
                         <div>

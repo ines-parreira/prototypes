@@ -595,8 +595,6 @@ describe('buildWorkflowVariableFromTrigger()', () => {
                                 name: 'some name',
                                 instructions: 'some instructions',
                                 kind: 'product',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
                             },
                         ],
                         conditionsType: null,

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
 import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
 import React, {useMemo, useRef, useState} from 'react'
 
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -11,6 +12,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import TextInput from 'pages/common/forms/input/TextInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import css from '../NodeEditor.less'
 
@@ -87,6 +89,19 @@ const Outputs = ({
                                     description: nextValue,
                                 })
                             }}
+                        />
+                        <SelectField
+                            showSelectedOption
+                            value={variable.data_type}
+                            onChange={_noop}
+                            options={[
+                                {label: 'String', value: 'string'},
+                                {label: 'Number', value: 'number'},
+                                {label: 'Boolean', value: 'boolean'},
+                                {label: 'Date', value: 'date'},
+                                {label: 'JSON', value: 'json'},
+                            ]}
+                            disabled
                         />
                         <IconButton
                             intent="destructive"

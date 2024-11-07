@@ -21,6 +21,7 @@ import OrderLineItemSelectionEditor from './editors/OrderLineItemSelectionEditor
 import OrderSelectionEditor from './editors/OrderSelectionEditor'
 import RemoveItemEditor from './editors/RemoveItemEditor'
 import ReplaceItemEditor from './editors/ReplaceItemEditor'
+import ReusableLLMPromptTriggerEditor from './editors/ReusableLLMPromptTriggerEditor'
 import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor'
 import SkipChargeEditor from './editors/SkipChargeEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
@@ -176,6 +177,12 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                 )}
                 {memoizedNodeInEdition?.type === 'skip_charge' && (
                     <SkipChargeEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type ===
+                    'reusable_llm_prompt_trigger' && (
+                    <ReusableLLMPromptTriggerEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
                 )}
             </NodeEditorDrawerContext.Provider>
         </Drawer>

@@ -40,16 +40,16 @@ const EndNode = memo(function EndNode({
                 className={classNames(css.node, css.endNode, {
                     [css.nodeGreyedOut]: isGreyedOut,
                     [css.nodeSelected]: isSelected,
-                    [css.notClickable]: actions.length === 1,
+                    [css.notClickable]: actions.length < 2,
                 })}
                 onClick={(event) => {
-                    if (actions.length === 1) {
+                    if (actions.length < 2) {
                         event.stopPropagation()
                     }
                 }}
             >
                 <div className={'w-100'}>
-                    <Badge type={ColorType.Light}>end flow</Badge>
+                    <Badge type={ColorType.Light}>end</Badge>
                 </div>
                 <div className={css.nodeTitle}>
                     <div>
@@ -81,7 +81,8 @@ export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
     const actions = useMemo<EndNodeType['data']['action'][]>(() => {
         switch (triggerNode.type!) {
             case 'llm_prompt_trigger':
-                return ['end']
+            case 'reusable_llm_prompt_trigger':
+                return ['end-success', 'end-failure']
             case 'channel_trigger':
                 return ['end', 'ask-for-feedback', 'create-ticket']
         }

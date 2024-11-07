@@ -681,7 +681,9 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
         if (!edge) return
         const httpRequestNode = buildHttpRequestNode()
         const endNode = buildEndNode(
-            triggerNode.type === 'llm_prompt_trigger' ? 'end' : 'create-ticket'
+            triggerNode.type === 'channel_trigger'
+                ? 'ask-for-feedback'
+                : 'end-failure'
         )
 
         draft.nodes.push(httpRequestNode, endNode)

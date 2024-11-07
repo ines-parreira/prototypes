@@ -29,9 +29,12 @@ import EditActionFormView from 'pages/automate/actions/EditActionFormView'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
+import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
 import ActionsPlatformCreateTemplateView from 'pages/automate/actionsPlatform/ActionsPlatformCreateTemplateView'
 import ActionsPlatformEditAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView'
+import ActionsPlatformEditStepViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditStepViewContainer'
 import ActionsPlatformEditTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditTemplateViewContainer'
+import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlatformStepsView'
 import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
 import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import {AiAgentGuidanceContainer} from 'pages/automate/aiAgent/AiAgentGuidanceContainer'
@@ -947,6 +950,11 @@ function AutomationContent() {
                     <ActionsPlatformTemplatesView />
                 )}
             </Route>
+            <Route path={`${path}/actions-platform/steps`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformStepsView />
+                )}
+            </Route>
             <Route path={`${path}/actions-platform/apps`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformAppsView />
@@ -970,6 +978,16 @@ function AutomationContent() {
             <Route path={`${path}/actions-platform/edit/:id`} exact>
                 {isActionsInternalPlatformEnabled && (
                     <ActionsPlatformEditTemplateViewContainer />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/steps/new`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformCreateStepView />
+                )}
+            </Route>
+            <Route path={`${path}/actions-platform/steps/edit/:id`} exact>
+                {isActionsInternalPlatformEnabled && (
+                    <ActionsPlatformEditStepViewContainer />
                 )}
             </Route>
 

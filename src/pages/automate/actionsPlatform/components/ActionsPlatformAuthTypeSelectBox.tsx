@@ -8,7 +8,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {AUTH_TYPE_LABEL_BY_TYPE} from '../constants'
+import {AUTH_TYPE_LABEL_BY_TYPE, DISABLED_AUTH_TYPES} from '../constants'
 import {ActionsApp} from '../types'
 
 import css from './ActionsPlatformAuthTypeSelectBox.less'
@@ -63,6 +63,9 @@ const ActionsPlatformAuthTypeSelectBox = ({
                                         }}
                                         onClick={onChange}
                                         shouldCloseOnSelect
+                                        isDisabled={DISABLED_AUTH_TYPES.includes(
+                                            value
+                                        )}
                                     />
                                 ))}
                             </DropdownBody>

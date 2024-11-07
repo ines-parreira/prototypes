@@ -39,7 +39,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({
                 />
                 <div className={css.nodeContainer}>
                     <div className={'w-100'}>
-                        <Badge type={ColorType.Light}>start flow</Badge>
+                        <Badge type={ColorType.Light}>start</Badge>
                     </div>
                     <Label className={css.nodeTitle}>
                         {label.length > 0 ? (

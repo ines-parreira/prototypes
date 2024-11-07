@@ -8,7 +8,10 @@ import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 export const colorByVisualBuilderNodeType: Record<
     | Exclude<
           NonNullable<VisualBuilderNode['type']>,
-          'channel_trigger' | 'llm_prompt_trigger' | 'end'
+          | 'channel_trigger'
+          | 'llm_prompt_trigger'
+          | 'end'
+          | 'reusable_llm_prompt_trigger'
       >
     | 'custom_input'
     | 'merchant_input'
@@ -108,7 +111,10 @@ export const colorByVisualBuilderNodeType: Record<
 export const iconByVisualBuilderNodeType: Record<
     | Exclude<
           NonNullable<VisualBuilderNode['type']>,
-          'channel_trigger' | 'llm_prompt_trigger' | 'end'
+          | 'channel_trigger'
+          | 'llm_prompt_trigger'
+          | 'end'
+          | 'reusable_llm_prompt_trigger'
       >
     | 'custom_input'
     | 'merchant_input'
@@ -143,7 +149,7 @@ export const labelByVisualBuilderNodeType: Record<
     NonNullable<VisualBuilderNode['type']>,
     string
 > = {
-    channel_trigger: 'Start Flow',
+    channel_trigger: 'Start',
     automated_message: 'Automated answer',
     multiple_choices: 'Multiple choice',
     text_reply: 'Collect text reply',
@@ -152,7 +158,7 @@ export const labelByVisualBuilderNodeType: Record<
     http_request: 'HTTP request',
     shopper_authentication: 'Customer login',
     conditions: 'Conditions',
-    end: 'End Flow',
+    end: 'End',
     order_line_item_selection: 'Item selection',
     cancel_order: 'Cancel order',
     refund_order: 'Refund order',
@@ -160,7 +166,8 @@ export const labelByVisualBuilderNodeType: Record<
     remove_item: 'Remove order item',
     cancel_subscription: 'Cancel subscription',
     skip_charge: 'Skip next subscription shipment',
-    llm_prompt_trigger: 'Start Flow',
+    llm_prompt_trigger: 'Start',
+    reusable_llm_prompt_trigger: 'Start',
     create_discount_code: 'Create discount code',
     refund_shipping_costs: 'Refund shipping costs',
     reship_for_free: 'Reship for free',
@@ -174,6 +181,8 @@ export const endNodeActionLabelByAction: Record<
     'ask-for-feedback': 'Ask for feedback',
     'create-ticket': 'Create ticket',
     end: 'End interaction',
+    'end-success': 'Action successfully performed',
+    'end-failure': 'Action not performed',
 }
 export const endNodeActionIconByAction: Record<
     EndNodeType['data']['action'],
@@ -182,6 +191,8 @@ export const endNodeActionIconByAction: Record<
     'ask-for-feedback': 'thumb_up_alt',
     'create-ticket': 'forum',
     end: 'stop_circle',
+    'end-success': 'done',
+    'end-failure': 'error',
 }
 
 export const MAX_CONFIGURATION_SIZE_IN_BYTES = 2 * 1024 * 1024 // 2MB

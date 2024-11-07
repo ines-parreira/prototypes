@@ -49,6 +49,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -91,6 +92,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -119,6 +121,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -153,6 +156,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -173,6 +177,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -207,6 +215,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -219,6 +228,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -244,6 +256,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -574,6 +587,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[] | null;
       entrypoints?: ({
         deactivated_datetime?: string | null; // date-time
@@ -583,6 +623,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[] | null;
       apps?: ({
         type: "shopify";
@@ -591,13 +699,15 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
     export type GetAppResponseDto = {
       id: string;
-      auth_type: "api-key";
+      auth_type: "api-key" | "oauth2-token";
       auth_settings: {
+        refresh_token_url?: string | null;
         url?: string | null;
       };
     };
@@ -1044,6 +1154,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1086,6 +1197,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1114,6 +1226,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1148,6 +1261,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1168,6 +1282,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -1202,6 +1320,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1214,6 +1333,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -1239,6 +1361,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -1569,6 +1692,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -1578,6 +1728,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps?: ({
         type: "shopify";
@@ -1586,6 +1804,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
@@ -1612,6 +1831,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -1728,6 +1951,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -1929,6 +2155,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -1938,6 +2191,74 @@ declare namespace Components {
           requires_confirmation: boolean;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps: ({
         type: "shopify";
@@ -1946,6 +2267,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[];
     }
@@ -2876,6 +3198,10 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -2977,6 +3303,10 @@ declare namespace Components {
             } | {
               message: string;
             }[];
+            at: string; // date-time
+          } | {
+            kind: "end";
+            success: boolean;
             at: string; // date-time
           };
         } | null;
@@ -3201,8 +3531,9 @@ declare namespace Components {
     }[];
     export type ListAppResponseDto = ({
       id: string;
-      auth_type: "api-key";
+      auth_type: "api-key" | "oauth2-token";
       auth_settings: {
+        refresh_token_url?: string | null;
         url?: string | null;
       };
     })[];
@@ -3251,6 +3582,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3293,6 +3625,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3321,6 +3654,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3355,6 +3689,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3375,6 +3710,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -3409,6 +3748,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3421,6 +3761,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -3446,6 +3789,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -3776,6 +4120,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -3785,6 +4156,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps?: ({
         type: "shopify";
@@ -3793,6 +4232,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }[];
@@ -3877,6 +4317,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -3993,6 +4437,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -4194,6 +4641,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -4203,6 +4677,74 @@ declare namespace Components {
           requires_confirmation: boolean;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps: ({
         type: "shopify";
@@ -4211,6 +4753,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[];
     }[];
@@ -4252,6 +4795,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -4294,6 +4838,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -4322,6 +4867,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -4356,6 +4902,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -4395,6 +4942,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -4407,6 +4955,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -4432,6 +4983,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -5770,6 +6322,10 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -5871,6 +6427,10 @@ declare namespace Components {
             } | {
               message: string;
             }[];
+            at: string; // date-time
+          } | {
+            kind: "end";
+            success: boolean;
             at: string; // date-time
           };
         } | null;
@@ -7102,6 +7662,10 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -7203,6 +7767,10 @@ declare namespace Components {
             } | {
               message: string;
             }[];
+            at: string; // date-time
+          } | {
+            kind: "end";
+            success: boolean;
             at: string; // date-time
           };
         } | null;
@@ -7983,6 +8551,10 @@ declare namespace Components {
                   message: string;
                 }[];
                 at: string; // date-time
+              } | {
+                kind: "end";
+                success: boolean;
+                at: string; // date-time
               };
             } | null;
             at: string; // date-time
@@ -8084,6 +8656,10 @@ declare namespace Components {
             } | {
               message: string;
             }[];
+            at: string; // date-time
+          } | {
+            kind: "end";
+            success: boolean;
             at: string; // date-time
           };
         } | null;
@@ -8296,15 +8872,17 @@ declare namespace Components {
       } | null;
     };
     export interface UpsertAppRequestBodyDto {
-      auth_type: "api-key";
+      auth_type: "api-key" | "oauth2-token";
       auth_settings: {
+        refresh_token_url?: string | null;
         url?: string | null;
       };
     }
     export type UpsertAppRequestResponseDto = {
       id: string;
-      auth_type: "api-key";
+      auth_type: "api-key" | "oauth2-token";
       auth_settings: {
+        refresh_token_url?: string | null;
         url?: string | null;
       };
     };
@@ -8354,6 +8932,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8396,6 +8975,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8424,6 +9004,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8458,6 +9039,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8478,6 +9060,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -8512,6 +9098,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8524,6 +9111,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -8549,6 +9139,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8876,6 +9467,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -8885,6 +9503,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps?: ({
         type: "shopify";
@@ -8893,6 +9579,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
@@ -8934,6 +9621,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -8976,6 +9664,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9004,6 +9693,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9038,6 +9728,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9058,6 +9749,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -9092,6 +9787,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9104,6 +9800,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -9129,6 +9828,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9459,6 +10159,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -9468,6 +10195,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps?: ({
         type: "shopify";
@@ -9476,6 +10271,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
@@ -9515,6 +10311,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9557,6 +10354,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9585,6 +10383,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9619,6 +10418,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9639,6 +10439,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -9673,6 +10477,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -9685,6 +10490,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -9710,6 +10518,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10037,6 +10846,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[] | null;
       entrypoints?: ({
         deactivated_datetime?: string | null; // date-time
@@ -10046,6 +10882,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[] | null;
       apps?: ({
         type: "shopify";
@@ -10054,6 +10958,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
@@ -10095,6 +11000,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10137,6 +11043,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10165,6 +11072,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10199,6 +11107,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10219,6 +11128,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -10253,6 +11166,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10265,6 +11179,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       } | {
         id: string;
         kind: "conditions";
@@ -10290,6 +11207,7 @@ declare namespace Components {
                   product_id?: number | null;
                   variant_id?: number | null;
                   price?: string | null;
+                  compare_at_price?: string | null;
                   variant_name?: string | null;
                   product_link?: string | null;
                   currency?: string | null;
@@ -10620,6 +11538,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[] | null;
       entrypoints?: ({
         deactivated_datetime?: string | null; // date-time
@@ -10629,6 +11574,74 @@ declare namespace Components {
           requires_confirmation?: boolean | null;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[] | null;
       apps?: ({
         type: "shopify";
@@ -10637,6 +11650,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[] | null;
     }
@@ -10662,6 +11676,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -10778,6 +11796,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -10976,6 +11997,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -10985,6 +12033,74 @@ declare namespace Components {
           requires_confirmation: boolean;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps: ({
         type: "shopify";
@@ -10993,6 +12109,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[];
     }
@@ -11019,6 +12136,10 @@ declare namespace Components {
             [name: string]: string;
           } | null;
           body?: string | null;
+          oauth2_token_settings?: {
+            account_oauth2_token_id: string;
+            refresh_token_url: string;
+          } | null;
           variables: {
             id: string;
             name: string;
@@ -11135,6 +12256,9 @@ declare namespace Components {
       } | {
         id: string;
         kind: "end";
+        settings?: {
+          success: boolean;
+        } | null;
       })[];
       inputs?: ({
         id: string;
@@ -11336,6 +12460,33 @@ declare namespace Components {
         kind: "channel";
         settings: {
         };
+      } | {
+        kind: "reusable-llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+          } | {
+            kind: "order";
+          } | {
+            kind: "product";
+            name: string;
+            instructions: string;
+            id: string;
+          })[];
+          outputs: {
+            id: string;
+            name: string;
+            description: string;
+            path: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
       })[];
       entrypoints: ({
         deactivated_datetime?: string | null; // date-time
@@ -11345,6 +12496,74 @@ declare namespace Components {
           requires_confirmation: boolean;
           instructions: string;
         };
+      } | {
+        deactivated_datetime?: string | null; // date-time
+        kind: "reusable-llm-prompt-call-step";
+        trigger: "reusable-llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          conditions: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+        };
       })[];
       apps: ({
         type: "shopify";
@@ -11353,6 +12572,7 @@ declare namespace Components {
       } | {
         app_id: string;
         api_key?: string | null;
+        account_oauth2_token_id?: string | null;
         type: "app";
       })[];
     }

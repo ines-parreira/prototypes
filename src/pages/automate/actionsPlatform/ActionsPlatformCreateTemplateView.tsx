@@ -85,15 +85,15 @@ const getInitialTemplate = () => {
         ],
         is_draft: true,
     })
-    b.insertHttpRequestConditionAndEndStepAndSelect('success')
+    b.insertHttpRequestConditionAndEndStepAndSelect('success', {success: true})
     b.selectParentStep()
-    b.insertHttpRequestConditionAndEndStepAndSelect('error')
+    b.insertHttpRequestConditionAndEndStepAndSelect('error', {success: false})
 
     return b.build()
 }
 
 const ActionsPlatformCreateTemplateView = () => {
-    const {isLoading: isEditActionTemplateLoading, createActionTemplate} =
+    const {isLoading: isCreateActionTemplateLoading, createActionTemplate} =
         useCreateActionTemplate()
     const {apps = [], isLoading: isAppsLoading, actionsApps} = useApps()
 
@@ -192,7 +192,7 @@ const ActionsPlatformCreateTemplateView = () => {
                             history.push('/app/automation/actions-platform')
                         }}
                         isDisabled={
-                            isEditActionTemplateLoading || isAppsLoading
+                            isCreateActionTemplateLoading || isAppsLoading
                         }
                     >
                         Cancel
@@ -200,7 +200,7 @@ const ActionsPlatformCreateTemplateView = () => {
                     <Button
                         intent="secondary"
                         isDisabled={
-                            isEditActionTemplateLoading || isAppsLoading
+                            isCreateActionTemplateLoading || isAppsLoading
                         }
                         onClick={() => {
                             void handleSave(true)
@@ -211,7 +211,7 @@ const ActionsPlatformCreateTemplateView = () => {
                     <Button
                         intent="primary"
                         isDisabled={
-                            isEditActionTemplateLoading || isAppsLoading
+                            isCreateActionTemplateLoading || isAppsLoading
                         }
                         onClick={() => {
                             void handleSave(false)

@@ -15,18 +15,14 @@ import SelectInputBox, {
 
 import css from './EndNodeTypeSelect.less'
 
-const options: EndNodeType['data']['action'][] = [
-    'ask-for-feedback',
-    'create-ticket',
-    'end',
-]
-
 type EndNodeTypeSelectProps = {
+    options: EndNodeType['data']['action'][]
     value: EndNodeType['data']['action']
     onChange: (value: EndNodeType['data']['action']) => void
 }
 
 export default function EndNodeTypeSelect({
+    options,
     value,
     onChange,
 }: EndNodeTypeSelectProps) {

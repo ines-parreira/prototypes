@@ -155,7 +155,10 @@ export const buildWorkflowVariableFromTrigger = (
     | undefined => {
     const triggerNode = graph.nodes.find(isTriggerNodeType)!
 
-    if (triggerNode.type === 'llm_prompt_trigger') {
+    if (
+        triggerNode.type === 'llm_prompt_trigger' ||
+        triggerNode.type === 'reusable_llm_prompt_trigger'
+    ) {
         const {
             data: {inputs},
         } = triggerNode

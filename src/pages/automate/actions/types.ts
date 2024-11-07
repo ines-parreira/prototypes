@@ -23,7 +23,9 @@ export type TemplateConfiguration =
 export type CustomInput = LlmPromptTrigger['settings']['custom_inputs'][number]
 export type ObjectInput = LlmPromptTrigger['settings']['object_inputs'][number]
 
-export type Input = CustomInput | Extract<ObjectInput, {kind: 'product'}>
+export type Input =
+    | CustomInput
+    | Omit<Extract<ObjectInput, {kind: 'product'}>, 'integration_id'>
 export type MerchantInput = Exclude<
     WfConfigurationResponseDto['inputs'],
     null | undefined

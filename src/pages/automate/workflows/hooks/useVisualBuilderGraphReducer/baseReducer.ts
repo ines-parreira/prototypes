@@ -479,9 +479,9 @@ export function baseReducer(
                     )
                     if (!incomingEdge) return
                     const endNode = buildEndNode(
-                        triggerNode.type === 'llm_prompt_trigger'
-                            ? 'end'
-                            : 'ask-for-feedback'
+                        triggerNode.type === 'channel_trigger'
+                            ? 'ask-for-feedback'
+                            : 'end-success'
                     )
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
@@ -715,7 +715,9 @@ function insertFallibleNode(
         const edge = draft.edges.find((e) => e.target === beforeNodeId)
         if (!edge) return
         const endNode = buildEndNode(
-            triggerNode.type === 'llm_prompt_trigger' ? 'end' : 'create-ticket'
+            triggerNode.type === 'channel_trigger'
+                ? 'ask-for-feedback'
+                : 'end-failure'
         )
 
         draft.nodes.push(nodeToInsert, endNode)

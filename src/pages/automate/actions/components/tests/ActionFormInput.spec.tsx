@@ -111,7 +111,6 @@ describe('<ActionFormInput />', () => {
             name: 'some name',
             instructions: 'some instructions',
             kind: 'product',
-            integration_id: '{{store.helpdesk_integration_id}}',
         })
 
         act(() => {
@@ -133,7 +132,6 @@ describe('<ActionFormInput />', () => {
                     name: 'some name',
                     instructions: 'some instructions',
                     kind: 'product',
-                    integration_id: '{{store.helpdesk_integration_id}}',
                 }}
                 onDelete={jest.fn()}
                 onChange={mockOnChange}

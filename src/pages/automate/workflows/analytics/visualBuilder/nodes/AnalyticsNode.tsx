@@ -51,7 +51,10 @@ type NodeType =
 type Props = VisualBuilderNodeProps & {
     type: Exclude<
         NonNullable<VisualBuilderNode['type']>,
-        'channel_trigger' | 'llm_prompt_trigger' | 'end'
+        | 'channel_trigger'
+        | 'llm_prompt_trigger'
+        | 'end'
+        | 'reusable_llm_prompt_trigger'
     >
     contentText: string
     nodeId: string
@@ -170,7 +173,10 @@ export default function AnalyticsNodeWrapper(
 ) {
     const nodeType = node.type as Exclude<
         NonNullable<VisualBuilderNode['type']>,
-        'channel_trigger' | 'llm_prompt_trigger' | 'end'
+        | 'channel_trigger'
+        | 'llm_prompt_trigger'
+        | 'end'
+        | 'reusable_llm_prompt_trigger'
     >
 
     const {content, name} = node.data as any

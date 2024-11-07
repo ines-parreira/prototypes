@@ -27,6 +27,7 @@ import RefundShippingCostsNode from 'pages/automate/workflows/editor/visualBuild
 import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
 import ReplaceItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReplaceItemNode'
 import ReshipForFreeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReshipForFreeNode'
+import ReusableLLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptTriggerNode'
 import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 
@@ -38,6 +39,7 @@ import Spinner from 'pages/common/components/Spinner'
 
 const nodeTypes = {
     llm_prompt_trigger: LLMPromptTriggerNode,
+    reusable_llm_prompt_trigger: ReusableLLMPromptTriggerNode,
     conditions: ConditionsNode,
     http_request: HttpRequestNode,
     cancel_order: CancelOrderNode,

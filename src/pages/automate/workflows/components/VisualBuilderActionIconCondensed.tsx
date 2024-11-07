@@ -7,7 +7,10 @@ import css from './VisualBuilderActionIconCondensed.less'
 type Props = {
     nodeType: Exclude<
         NonNullable<VisualBuilderNode['type']>,
-        'channel_trigger' | 'llm_prompt_trigger' | 'end'
+        | 'channel_trigger'
+        | 'llm_prompt_trigger'
+        | 'end'
+        | 'reusable_llm_prompt_trigger'
     >
 }
 

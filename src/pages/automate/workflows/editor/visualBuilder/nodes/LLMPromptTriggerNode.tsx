@@ -40,7 +40,7 @@ const LLMPromptTriggerNode = memo(function LLMPromptTriggerNode({
                 />
                 <div className={css.nodeContainer}>
                     <div className={'w-100'}>
-                        <Badge type={ColorType.Light}>start flow</Badge>
+                        <Badge type={ColorType.Light}>start</Badge>
                     </div>
                     <Label className={css.nodeTitle}>
                         {instructions.length > 0 ? (

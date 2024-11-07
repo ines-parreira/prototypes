@@ -35,6 +35,7 @@ import LLMPromptTriggerNode from './nodes/LLMPromptTriggerNode'
 import MultipleChoicesNode from './nodes/MultipleChoicesNode'
 import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
+import ReusableLLMPromptTriggerNode from './nodes/ReusableLLMPromptTriggerNode'
 import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
 import TextReplyNode from './nodes/TextReplyNode'
 
@@ -44,6 +45,7 @@ import css from './WorkflowVisualBuilder.less'
 const nodeTypes = {
     channel_trigger: ChannelTriggerNode,
     llm_prompt_trigger: LLMPromptTriggerNode,
+    reusable_llm_prompt_trigger: ReusableLLMPromptTriggerNode,
     automated_message: AutomatedMessageNode,
     conditions: ConditionsNode,
     multiple_choices: MultipleChoicesNode,

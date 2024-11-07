@@ -442,6 +442,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             string_input: 'test',
         })
     })
+
     test('configuration containing create-discount-code step', () => {
         const c: WorkflowConfiguration = {
             internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
@@ -617,6 +618,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+
     test('configuration containing reship-for-free step', () => {
         const c: WorkflowConfiguration = {
             internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
@@ -788,6 +790,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+
     test('configuration containing refund-shipping-costs step', () => {
         const c: WorkflowConfiguration = {
             internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
@@ -959,6 +962,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
             },
         ])
     })
+
     test('configuration containing replace-item step', () => {
         const c: WorkflowConfiguration = {
             internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
@@ -1121,14 +1125,12 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                         },
                         {
                             kind: 'product',
-                            integration_id: '{{store.helpdesk_integration_id}}',
                             id: 'product1',
                             name: 'Product to replace',
                             instructions: 'Select the product to replace',
                         },
                         {
                             kind: 'product',
-                            integration_id: '{{store.helpdesk_integration_id}}',
                             id: 'product2',
                             name: 'Product to replace with',
                             instructions: 'Select the product to replace with',
@@ -1212,6 +1214,184 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 interactionWidth: 0,
                 data: {},
                 source: 'replace_item',
+                target: 'end_failure',
+            },
+        ])
+    })
+
+    test('reusable llm prompt trigger configuration', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+            id: '01J7ZTERAST0PVVPF347XA37FR',
+            name: 'Reusable LLM prompt',
+            is_draft: true,
+            initial_step_id: 'http_request1',
+            entrypoint: null,
+            available_languages: [],
+            steps: [
+                {
+                    id: 'http_request1',
+                    kind: 'http-request',
+                    settings: {
+                        headers: {},
+                        method: 'GET',
+                        name: '',
+                        url: 'https://example.com',
+                        variables: [],
+                    },
+                },
+                {
+                    id: 'end_success',
+                    kind: 'end',
+                    settings: {
+                        success: true,
+                    },
+                },
+                {
+                    id: 'end_failure',
+                    kind: 'end',
+                    settings: {
+                        success: false,
+                    },
+                },
+            ],
+            transitions: [
+                {
+                    id: '01J87E4X5V8YDKSF81BX80CCS5',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end_success',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: '01J87E4X5VZ7NTSXPV74384JKN',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end_failure',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2024-09-17T11:18:00.201Z',
+            triggers: [
+                {
+                    kind: 'reusable-llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'reusable-llm-prompt-call-step',
+                    trigger: 'reusable-llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        conditions: null,
+                    },
+                },
+            ],
+        }
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                transformVisualBuilderGraphIntoWfConfiguration(
+                    transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+                )
+            )
+        expect(visualBuilderGraph.nodes.length).toBe(4)
+        expect(visualBuilderGraph.edges.length).toBe(3)
+        expect(visualBuilderGraph.nodes).toEqual([
+            {
+                id: 'trigger_button',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'reusable_llm_prompt_trigger',
+                data: {
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: null,
+                    conditions: [],
+                },
+            },
+            {
+                id: 'http_request1',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'http_request',
+                data: {
+                    bodyContentType: null,
+                    formUrlencoded: null,
+                    headers: [],
+                    json: null,
+                    method: 'GET',
+                    name: '',
+                    outputs: [],
+                    url: 'https://example.com',
+                    variables: [],
+                },
+            },
+            {
+                id: 'end_success',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end-success',
+                },
+            },
+            {
+                id: 'end_failure',
+                position: {
+                    x: 0,
+                    y: 0,
+                },
+                type: 'end',
+                data: {
+                    action: 'end-failure',
+                },
+            },
+        ])
+        expect(visualBuilderGraph.edges).toEqual([
+            {
+                id: 'trigger_button-http_request1',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'trigger_button',
+                target: 'http_request1',
+            },
+            {
+                id: 'http_request1-end_success',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'http_request1',
+                target: 'end_success',
+            },
+            {
+                id: 'http_request1-end_failure',
+                type: 'custom',
+                style: {
+                    stroke: '#D2D7DE',
+                },
+                interactionWidth: 0,
+                data: {},
+                source: 'http_request1',
                 target: 'end_failure',
             },
         ])

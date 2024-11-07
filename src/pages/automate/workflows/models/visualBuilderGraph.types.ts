@@ -33,7 +33,6 @@ export type LLMPromptTriggerNodeType = Node<
                   name: string
                   instructions: string
                   kind: 'product'
-                  integration_id: number | string
               }
         )[]
         conditionsType: keyof ConditionsSchema | null
@@ -42,6 +41,30 @@ export type LLMPromptTriggerNodeType = Node<
         isGreyedOut?: boolean | null
     },
     'llm_prompt_trigger'
+>
+
+export type ReusableLLMPromptTriggerNodeType = Node<
+    {
+        requires_confirmation: boolean
+        inputs: (
+            | {
+                  id: string
+                  name: string
+                  instructions: string
+                  data_type: 'string' | 'number' | 'date' | 'boolean'
+              }
+            | {
+                  id: string
+                  name: string
+                  instructions: string
+                  kind: 'product'
+              }
+        )[]
+        conditionsType: keyof ConditionsSchema | null
+        conditions: ConditionSchema[]
+        isGreyedOut?: boolean | null
+    },
+    'reusable_llm_prompt_trigger'
 >
 
 export type MultipleChoicesNodeType = Node<
@@ -81,10 +104,23 @@ export function isLLMPromptTriggerNodeType(
     return node.type === 'llm_prompt_trigger'
 }
 
+export function isReusableLLMPromptTriggerNodeType(
+    node: VisualBuilderNode
+): node is ReusableLLMPromptTriggerNodeType {
+    return node.type === 'reusable_llm_prompt_trigger'
+}
+
 export function isTriggerNodeType(
     node: VisualBuilderNode
-): node is ChannelTriggerNodeType | LLMPromptTriggerNodeType {
-    return node.type === 'channel_trigger' || isLLMPromptTriggerNodeType(node)
+): node is
+    | ChannelTriggerNodeType
+    | LLMPromptTriggerNodeType
+    | ReusableLLMPromptTriggerNodeType {
+    return (
+        node.type === 'channel_trigger' ||
+        isLLMPromptTriggerNodeType(node) ||
+        isReusableLLMPromptTriggerNodeType(node)
+    )
 }
 
 export type AutomatedMessageNodeType = Node<
@@ -161,7 +197,12 @@ export type ShopperAuthenticationNodeType = Node<
 
 export type EndNodeType = Node<
     {
-        action: 'ask-for-feedback' | 'create-ticket' | 'end'
+        action:
+            | 'ask-for-feedback'
+            | 'create-ticket'
+            | 'end'
+            | 'end-success'
+            | 'end-failure'
         ticketTags?: string[] | null
         ticketAssigneeUserId?: number | null
         ticketAssigneeTeamId?: number | null
@@ -308,6 +349,7 @@ export type SkipChargeNodeType = Node<
 export type VisualBuilderNode =
     | ChannelTriggerNodeType
     | LLMPromptTriggerNodeType
+    | ReusableLLMPromptTriggerNodeType
     | MultipleChoicesNodeType
     | AutomatedMessageNodeType
     | TextReplyNodeType

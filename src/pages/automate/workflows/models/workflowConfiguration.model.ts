@@ -33,6 +33,7 @@ import {
     ReshipForFreeNodeType,
     RefundShippingCostsNodeType,
     ReplaceItemNodeType,
+    ReusableLLMPromptTriggerNodeType,
 } from './visualBuilderGraph.types'
 import {
     MessageContent,
@@ -109,11 +110,17 @@ function injectTkeysInChoicesIfNotExist(
 
 export function getTriggerNode(
     c: WorkflowConfiguration
-): ChannelTriggerNodeType | LLMPromptTriggerNodeType {
+):
+    | ChannelTriggerNodeType
+    | LLMPromptTriggerNodeType
+    | ReusableLLMPromptTriggerNodeType {
     const trigger = c.triggers?.[0]
     const entrypoint = c.entrypoints?.[0]
 
-    if (trigger?.kind === 'llm-prompt' && entrypoint) {
+    if (
+        trigger?.kind === 'llm-prompt' &&
+        entrypoint?.kind === 'llm-conversation'
+    ) {
         let conditionsType: LLMPromptTriggerNodeType['data']['conditionsType'] =
             null
         let conditions: LLMPromptTriggerNodeType['data']['conditions'] = []
@@ -139,6 +146,55 @@ export function getTriggerNode(
                 deactivated_datetime: entrypoint.deactivated_datetime,
                 inputs: [
                     ...trigger.settings.custom_inputs,
+                    ...trigger.settings.object_inputs
+                        .filter(
+                            (
+                                input
+                            ): input is Extract<
+                                Extract<
+                                    NonNullable<
+                                        WorkflowConfiguration['triggers']
+                                    >[number],
+                                    {kind: 'llm-prompt'}
+                                >['settings']['object_inputs'][number],
+                                {kind: 'product'}
+                            > => input.kind === 'product'
+                        )
+                        .map((input) => _omit(input, ['integration_id'])),
+                ],
+                conditionsType,
+                conditions,
+            },
+        }
+    }
+
+    if (
+        trigger?.kind === 'reusable-llm-prompt' &&
+        entrypoint?.kind === 'reusable-llm-prompt-call-step'
+    ) {
+        let conditionsType: ReusableLLMPromptTriggerNodeType['data']['conditionsType'] =
+            null
+        let conditions: LLMPromptTriggerNodeType['data']['conditions'] = []
+
+        if (entrypoint.settings.conditions) {
+            if (entrypoint.settings.conditions['or']) {
+                conditionsType = 'or'
+                conditions = entrypoint.settings.conditions['or']
+            } else if (entrypoint.settings.conditions['and']) {
+                conditionsType = 'and'
+                conditions = entrypoint.settings.conditions['and']
+            }
+        }
+
+        return {
+            ...buildNodeCommonProperties(),
+            id: 'trigger_button',
+            type: 'reusable_llm_prompt_trigger',
+            data: {
+                requires_confirmation:
+                    entrypoint.settings.requires_confirmation,
+                inputs: [
+                    ...trigger.settings.custom_inputs,
                     ...trigger.settings.object_inputs.filter(
                         (
                             input
@@ -147,7 +203,7 @@ export function getTriggerNode(
                                 NonNullable<
                                     WorkflowConfiguration['triggers']
                                 >[number],
-                                {kind: 'llm-prompt'}
+                                {kind: 'reusable-llm-prompt'}
                             >['settings']['object_inputs'][number],
                             {kind: 'product'}
                         > => input.kind === 'product'
@@ -306,6 +362,28 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[step.id] = n.id
             nodes.push(n)
+        } else if (step.kind === 'end' && step?.settings?.success) {
+            const n: EndNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'end',
+                data: {
+                    action: 'end-success',
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'end' && step?.settings?.success === false) {
+            const n: EndNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'end',
+                data: {
+                    action: 'end-failure',
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
         } else if (step.kind === 'end') {
             const n: EndNodeType = {
                 ...buildNodeCommonProperties(),
@@ -364,6 +442,19 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                                   (output) =>
                                       variablesOutputPaths.has(output.path)
                               ),
+                          }
+                        : {}),
+                    ...(trigger?.kind === 'reusable-llm-prompt'
+                        ? {
+                              outputs: trigger.settings.outputs
+                                  .filter((output) =>
+                                      variablesOutputPaths.has(output.path)
+                                  )
+                                  .map((output) => ({
+                                      id: output.id,
+                                      path: output.path,
+                                      description: output.description,
+                                  })),
                           }
                         : {}),
                 },
@@ -826,10 +917,14 @@ export class WorkflowConfigurationBuilder {
         )
     }
 
-    insertHttpRequestConditionAndEndStepAndSelect(type: 'error' | 'success') {
+    insertHttpRequestConditionAndEndStepAndSelect(
+        type: 'error' | 'success',
+        settings?: WorkflowStepEnd['settings']
+    ) {
         const step: WorkflowStepEnd = {
             id: ulid(),
             kind: 'end',
+            settings,
         }
         const label = type === 'error' ? 'Error' : 'Success'
         this.insertConditionsAndStepTargetAndSelect(

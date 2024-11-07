@@ -489,7 +489,7 @@ const CancelOrderMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -507,22 +507,6 @@ const CancelOrderMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath('cancel_order', visualBuilderGraph, nodeId)
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'refund_order',
-                            visualBuilderGraph,
-                            nodeId
-                        ) ||
-                        !isNodeUniquePerPath(
-                            'update_shipping_address',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Refund order or Update shipping address step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -540,7 +524,7 @@ const RefundOrderMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -558,22 +542,6 @@ const RefundOrderMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath('refund_order', visualBuilderGraph, nodeId)
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'cancel_order',
-                            visualBuilderGraph,
-                            nodeId
-                        ) ||
-                        !isNodeUniquePerPath(
-                            'update_shipping_address',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Cancel order or Update shipping address step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -591,7 +559,7 @@ const UpdateShippingAddressMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -609,26 +577,6 @@ const UpdateShippingAddressMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath(
-                    'update_shipping_address',
-                    visualBuilderGraph,
-                    nodeId
-                )
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'refund_order',
-                            visualBuilderGraph,
-                            nodeId
-                        ) ||
-                        !isNodeUniquePerPath(
-                            'cancel_order',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Cancel order or Refund order step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -746,7 +694,7 @@ const ReshipForFreeMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -764,26 +712,6 @@ const ReshipForFreeMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath(
-                    'reship_for_free',
-                    visualBuilderGraph,
-                    nodeId
-                )
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'refund_order',
-                            visualBuilderGraph,
-                            nodeId
-                        ) ||
-                        !isNodeUniquePerPath(
-                            'update_shipping_address',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Refund order or Update shipping address step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -802,7 +730,7 @@ const RefundShippingCostsMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -820,26 +748,6 @@ const RefundShippingCostsMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath(
-                    'refund_shipping_costs',
-                    visualBuilderGraph,
-                    nodeId
-                )
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'refund_order',
-                            visualBuilderGraph,
-                            nodeId
-                        ) ||
-                        !isNodeUniquePerPath(
-                            'cancel_order',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Refund order or Cancel order step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -855,7 +763,7 @@ const CancelSubscriptionMenuItem = ({
     customerId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -872,21 +780,6 @@ const CancelSubscriptionMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath(
-                    'cancel_subscription',
-                    visualBuilderGraph,
-                    nodeId
-                )
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'skip_charge',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Skip next subscription shipment step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -902,7 +795,7 @@ const SkipChargeMenuItem = ({
     customerId: string
     integrationId: string
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const {dispatch} = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -919,17 +812,6 @@ const SkipChargeMenuItem = ({
                 })
             }}
             floatingRef={floatingRef}
-            disabledText={
-                !isNodeUniquePerPath('skip_charge', visualBuilderGraph, nodeId)
-                    ? 'This step can only be used once per path in a Flow.'
-                    : !isNodeUniquePerPath(
-                            'cancel_subscription',
-                            visualBuilderGraph,
-                            nodeId
-                        )
-                      ? 'This step cannot be used if Cancel subscription step was already added.'
-                      : undefined
-            }
         />
     )
 }
@@ -1001,6 +883,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
                         />
                     </>
                 )
+            case 'reusable_llm_prompt_trigger':
             case 'llm_prompt_trigger':
                 return (
                     <>

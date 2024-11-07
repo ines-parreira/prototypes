@@ -116,6 +116,9 @@ export type WorkflowStepHttpRequest = {
 export type WorkflowStepEnd = {
     id: string
     kind: 'end'
+    settings?: {
+        success: boolean
+    } | null
 }
 
 export type WorkflowStepOrderLineItemSelection = {
@@ -348,19 +351,67 @@ export type WorkflowConfiguration = {
               }
           }
         | {
+              kind: 'reusable-llm-prompt'
+              settings: {
+                  custom_inputs: {
+                      id: string
+                      name: string
+                      instructions: string
+                      data_type: 'string' | 'number' | 'date' | 'boolean'
+                  }[]
+                  object_inputs: (
+                      | {
+                            kind: 'customer'
+                        }
+                      | {
+                            kind: 'order'
+                        }
+                      | {
+                            kind: 'product'
+                            name: string
+                            instructions: string
+                            id: string
+                        }
+                  )[]
+                  outputs: {
+                      id: string
+                      name: string
+                      description: string
+                      path: string
+                      data_type?:
+                          | 'string'
+                          | 'number'
+                          | 'date'
+                          | 'boolean'
+                          | null
+                  }[]
+              }
+          }
+        | {
               kind: 'channel'
               settings: Record<string, unknown>
           }
     )[]
-    entrypoints?: {
-        deactivated_datetime?: string | null
-        kind: 'llm-conversation'
-        trigger: 'llm-prompt'
-        settings: {
-            requires_confirmation: boolean
-            instructions: string
-        }
-    }[]
+    entrypoints?: (
+        | {
+              deactivated_datetime?: string | null
+              kind: 'llm-conversation'
+              trigger: 'llm-prompt'
+              settings: {
+                  requires_confirmation: boolean
+                  instructions: string
+              }
+          }
+        | {
+              deactivated_datetime?: string | null
+              kind: 'reusable-llm-prompt-call-step'
+              trigger: 'reusable-llm-prompt'
+              settings: {
+                  requires_confirmation: boolean
+                  conditions?: ConditionsSchema | null
+              }
+          }
+    )[]
     apps?: (
         | {
               type: 'shopify'

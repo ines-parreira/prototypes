@@ -1,10 +1,13 @@
 import {Label} from '@gorgias/merchant-ui-kit'
 import Immutable from 'immutable'
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import {
+    EndNodeType,
+    isTriggerNodeType,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
@@ -23,7 +26,7 @@ type EndNodeEditorProps = {
 export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
-    const {dispatch} = useVisualBuilderContext()
+    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
     const handleAddTag = (tag: string) => {
         const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
             nodeInEdition.data
@@ -59,6 +62,24 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     const ticketAssigneeTeam = teams.find(
         (t) => t?.get('id') === nodeInEdition.data.ticketAssigneeTeamId
     )
+
+    const triggerNode = useMemo(
+        () => visualBuilderGraph.nodes.find(isTriggerNodeType)!,
+        [visualBuilderGraph.nodes]
+    )
+
+    const actionOptions = useMemo<EndNodeType['data']['action'][]>(() => {
+        switch (triggerNode.type) {
+            case 'llm_prompt_trigger':
+            case 'reusable_llm_prompt_trigger':
+                return ['end-success', 'end-failure']
+            case 'channel_trigger':
+                return ['ask-for-feedback', 'create-ticket', 'end']
+            default:
+                return []
+        }
+    }, [triggerNode.type])
+
     return (
         <>
             <NodeEditorDrawerHeader nodeInEdition={nodeInEdition} />
@@ -67,6 +88,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                     <div className={css.formField}>
                         <Label className={css.label}>Action</Label>
                         <EndNodeTypeSelect
+                            options={actionOptions}
                             value={nodeInEdition.data.action}
                             onChange={(action) => {
                                 const {

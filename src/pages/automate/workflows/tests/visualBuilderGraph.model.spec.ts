@@ -408,6 +408,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+
     it('should transform graph with a reship for free step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration({
             name: 'Reship for free',
@@ -548,6 +549,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+
     it('should transform graph with a refund shipping costs step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration({
             name: 'Refund shipping costs',
@@ -688,6 +690,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             },
         ])
     })
+
     it('should transform graph with a replace item step', () => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration({
             name: 'Replace item',
@@ -703,16 +706,12 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                         inputs: [
                             {
                                 kind: 'product',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
                                 id: 'product1',
                                 name: 'Product to replace',
                                 instructions: 'Select the product to replace',
                             },
                             {
                                 kind: 'product',
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
                                 id: 'product2',
                                 name: 'Product to replace with',
                                 instructions:
@@ -895,6 +894,279 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
             {
                 id: 'end_failure',
                 kind: 'end',
+            },
+        ])
+    })
+
+    it('should transform graph with reusable LLM prompt trigger', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'Reusable LLM prompt trigger',
+            available_languages: [],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'reusable_llm_prompt_trigger',
+                    data: {
+                        requires_confirmation: false,
+                        inputs: [
+                            {
+                                data_type: 'string',
+                                id: 'input1',
+                                name: 'Input 1',
+                                instructions: 'some instructions',
+                            },
+                        ],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'http_request1',
+                    type: 'http_request',
+                    data: {
+                        name: '',
+                        url: 'https://example.com?order_name={{objects.order.name}}',
+                        method: 'GET',
+                        headers: [],
+                        variables: [
+                            {
+                                id: 'variable1',
+                                name: 'test',
+                                jsonpath: '$.string',
+                                data_type: 'string',
+                            },
+                        ],
+                        json: null,
+                        formUrlencoded: null,
+                        bodyContentType: null,
+                        outputs: [
+                            {
+                                id: 'output1',
+                                path: 'steps_state.http_request1.content.variable1',
+                                description: 'some description',
+                            },
+                        ],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_success',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_failure',
+                    type: 'end',
+                    data: {
+                        action: 'end',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'trigger',
+                    target: 'http_request1',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'http_request1',
+                    target: 'end_success',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'http_request1',
+                    target: 'end_failure',
+                },
+            ],
+            wfConfigurationOriginal: {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: 'Reusable LLM prompt trigger',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [
+                    {
+                        type: 'shopify',
+                    },
+                ],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+        expect(configuration.entrypoints).toEqual([
+            {
+                kind: 'reusable-llm-prompt-call-step',
+                trigger: 'reusable-llm-prompt',
+                settings: {
+                    requires_confirmation: false,
+                    conditions: null,
+                },
+                deactivated_datetime: null,
+            },
+        ])
+        expect(configuration.triggers).toEqual([
+            {
+                kind: 'reusable-llm-prompt',
+                settings: {
+                    custom_inputs: [
+                        {
+                            data_type: 'string',
+                            id: 'input1',
+                            name: 'Input 1',
+                            instructions: 'some instructions',
+                        },
+                    ],
+                    object_inputs: [
+                        {
+                            kind: 'customer',
+                        },
+                        {
+                            kind: 'order',
+                        },
+                    ],
+                    outputs: [
+                        {
+                            id: 'output1',
+                            name: 'test',
+                            path: 'steps_state.http_request1.content.variable1',
+                            description: 'some description',
+                            data_type: 'string',
+                        },
+                    ],
+                },
+            },
+        ])
+    })
+
+    it('should transform graph with end success/failure actions', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration({
+            name: 'Reusable LLM prompt trigger',
+            available_languages: [],
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'trigger',
+                    type: 'reusable_llm_prompt_trigger',
+                    data: {
+                        requires_confirmation: false,
+                        inputs: [],
+                        conditionsType: null,
+                        conditions: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'http_request1',
+                    type: 'http_request',
+                    data: {
+                        name: '',
+                        url: 'https://example.com',
+                        method: 'GET',
+                        headers: [],
+                        variables: [],
+                        json: null,
+                        formUrlencoded: null,
+                        bodyContentType: null,
+                        outputs: [],
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_success',
+                    type: 'end',
+                    data: {
+                        action: 'end-success',
+                    },
+                },
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'end_failure',
+                    type: 'end',
+                    data: {
+                        action: 'end-failure',
+                    },
+                },
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'trigger',
+                    target: 'http_request1',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'http_request1',
+                    target: 'end_success',
+                },
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'http_request1',
+                    target: 'end_failure',
+                },
+            ],
+            wfConfigurationOriginal: {
+                internal_id: '01J7ZTERASHHCT60ZJVYSBS3WZ',
+                id: '01J7ZTERAST0PVVPF347XA37FR',
+                name: 'Reusable LLM prompt trigger',
+                is_draft: false,
+                initial_step_id: 'trigger',
+                entrypoint: null,
+                available_languages: [],
+                steps: [],
+                transitions: [],
+                updated_datetime: '2024-09-17T11:18:00.201Z',
+                triggers: [],
+                entrypoints: [],
+                apps: [
+                    {
+                        type: 'shopify',
+                    },
+                ],
+            },
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+        })
+
+        expect(configuration.steps).toEqual([
+            {
+                id: 'http_request1',
+                kind: 'http-request',
+                settings: {
+                    headers: {},
+                    method: 'GET',
+                    name: '',
+                    url: 'https://example.com',
+                    variables: [],
+                },
+            },
+            {
+                id: 'end_success',
+                kind: 'end',
+                settings: {
+                    success: true,
+                },
+            },
+            {
+                id: 'end_failure',
+                kind: 'end',
+                settings: {
+                    success: false,
+                },
             },
         ])
     })

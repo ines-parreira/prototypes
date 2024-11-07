@@ -127,9 +127,9 @@ function insertCondition(graph: VisualBuilderGraph, beforeEndNodeId: string) {
         if (!edge) return
         const conditionsNode = buildConditionsNode()
         const endNode = buildEndNode(
-            triggerNode.type === 'llm_prompt_trigger'
-                ? 'end'
-                : 'ask-for-feedback'
+            triggerNode.type === 'channel_trigger'
+                ? 'ask-for-feedback'
+                : 'end-success'
         )
         draft.nodes.push(conditionsNode, endNode)
         edge.target = conditionsNode.id
@@ -200,9 +200,9 @@ function addConditionBranch(
 
         draft.nodes.push(
             buildEndNode(
-                triggerNode.type === 'llm_prompt_trigger'
-                    ? 'end'
-                    : 'ask-for-feedback'
+                triggerNode.type === 'channel_trigger'
+                    ? 'ask-for-feedback'
+                    : 'end-success'
             )
         )
         const edges = draft.edges.filter(

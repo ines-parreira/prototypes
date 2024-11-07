@@ -82,13 +82,11 @@ const ActionFormInput = ({
                                     ? input
                                     : _omit(input, ['data_type'])),
                                 kind: nextValue,
-                                integration_id:
-                                    '{{store.helpdesk_integration_id}}',
                             })
                         } else {
                             onChange({
                                 ...('kind' in input
-                                    ? _omit(input, ['kind', 'integration_id'])
+                                    ? _omit(input, ['kind'])
                                     : input),
                                 data_type: nextValue as
                                     | 'string'

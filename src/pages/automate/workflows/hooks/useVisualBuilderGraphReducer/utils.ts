@@ -499,7 +499,11 @@ export function computeNodesPositions(
             const width = node.data.width || nodeWidth
             const height =
                 node.data.height ||
-                (node.data.type === 'shopper_authentication' ? 80 : nodeHeight)
+                (node.data.type === 'shopper_authentication'
+                    ? 80
+                    : node.data.type === 'reusable_llm_prompt_trigger'
+                      ? 48
+                      : nodeHeight)
 
             return [width, height + nodeGap * 2]
         },

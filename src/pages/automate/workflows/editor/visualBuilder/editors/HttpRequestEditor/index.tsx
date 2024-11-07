@@ -308,7 +308,9 @@ export default function HttpRequestEditor({
                                     }
                                     allowFilters={
                                         triggerNode.type ===
-                                        'llm_prompt_trigger'
+                                            'llm_prompt_trigger' ||
+                                        triggerNode.type ===
+                                            'reusable_llm_prompt_trigger'
                                     }
                                 />
                             )}
@@ -379,11 +381,13 @@ export default function HttpRequestEditor({
                             onAdd={handleAddVariable}
                         />
                     </div>
-                    {triggerNode.type === 'llm_prompt_trigger' && (
+                    {(triggerNode.type === 'llm_prompt_trigger' ||
+                        triggerNode.type === 'reusable_llm_prompt_trigger') && (
                         <div className={css.formField}>
                             <Label>
-                                Request results explanation for AI Agent
-                                (optional)
+                                {triggerNode.type === 'llm_prompt_trigger'
+                                    ? 'Request results explanation for AI Agent (optional)'
+                                    : 'Action output variables (optional)'}
                             </Label>
                             <Outputs
                                 nodeId={nodeInEdition.id}

@@ -336,7 +336,7 @@ export const useGetStoreWorkflowsConfigurations = ({
 }: {
     storeName: string
     storeType: string
-    triggers: ['llm-prompt']
+    triggers: ['llm-prompt'] | ['reusable-llm-prompt']
 }) => {
     return useQuery({
         queryKey: storeWorkflowsConfigurationDefinitionKeys.list({

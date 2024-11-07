@@ -14,7 +14,7 @@ import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTempla
 import useApps from './hooks/useApps'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
-import {ActionTemplate, App} from './types'
+import {App} from './types'
 
 const ActionsPlatformTemplatesView = () => {
     const {
@@ -34,7 +34,7 @@ const ActionsPlatformTemplatesView = () => {
     const {orderDirection, orderBy, orderParam, toggleOrderBy} =
         useOrderBy<'updated_datetime'>('updated_datetime')
 
-    const filteredTemplates = useMemo<ActionTemplate[]>(() => {
+    const filteredTemplates = useMemo(() => {
         const nameLowerCase = name.toLocaleLowerCase().trim()
 
         return templates.filter((template) => {
@@ -87,6 +87,11 @@ const ActionsPlatformTemplatesView = () => {
                 {
                     route: '/app/automation/actions-platform',
                     title: 'Templates',
+                    exact: true,
+                },
+                {
+                    route: '/app/automation/actions-platform/steps',
+                    title: 'Steps',
                     exact: true,
                 },
                 {

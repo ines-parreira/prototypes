@@ -22,6 +22,8 @@ import {
     isMultipleChoicesNodeType,
     isConditionsNodeType,
     isHttpRequestNodeType,
+    LLMPromptTriggerNodeType,
+    ReusableLLMPromptTriggerNodeType,
 } from './visualBuilderGraph.types'
 import {
     WorkflowConfiguration,
@@ -225,7 +227,7 @@ export function cleanConditionsFromEmptyVariables(
     return conditions
 }
 
-function setObjectInputs(
+function setLLMPromptObjectInputs(
     g: VisualBuilderGraph,
     node: VisualBuilderNode,
     trigger: Extract<
@@ -320,6 +322,85 @@ function setObjectInputs(
         })
 }
 
+function setReusableLLMPromptObjectInputs(
+    g: VisualBuilderGraph,
+    node: VisualBuilderNode,
+    trigger: Extract<
+        NonNullable<WorkflowConfiguration['triggers']>[number],
+        {kind: 'reusable-llm-prompt'}
+    >
+) {
+    const variables = extractVariablesFromNode(node)
+    const availableVariables = getWorkflowVariableListForNode(g, node.id)
+
+    variables
+        .map((variable) => parseWorkflowVariable(variable, availableVariables))
+        .forEach((variable) => {
+            switch (variable?.nodeType) {
+                case 'shopper_authentication':
+                    {
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'customer'
+                            )
+                        ) {
+                            const index =
+                                trigger.settings.object_inputs.findIndex(
+                                    (input) => input.kind === 'order'
+                                )
+
+                            if (index !== -1) {
+                                trigger.settings.object_inputs.splice(
+                                    index,
+                                    0,
+                                    {kind: 'customer'}
+                                )
+                            } else {
+                                trigger.settings.object_inputs.push({
+                                    kind: 'customer',
+                                })
+                            }
+                        }
+                    }
+                    break
+                case 'order_selection':
+                    {
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'customer'
+                            )
+                        ) {
+                            const index =
+                                trigger.settings.object_inputs.findIndex(
+                                    (input) => input.kind === 'order'
+                                )
+
+                            if (index !== -1) {
+                                trigger.settings.object_inputs.splice(
+                                    index,
+                                    0,
+                                    {kind: 'customer'}
+                                )
+                            } else {
+                                trigger.settings.object_inputs.push({
+                                    kind: 'customer',
+                                })
+                            }
+                        }
+
+                        if (
+                            trigger.settings.object_inputs.every(
+                                (input) => input.kind !== 'order'
+                            )
+                        ) {
+                            trigger.settings.object_inputs.push({kind: 'order'})
+                        }
+                    }
+                    break
+            }
+        })
+}
+
 function setStaticInputs(
     c: WorkflowConfiguration,
     inputs: Exclude<VisualBuilderGraph['inputs'], undefined | null>,
@@ -377,19 +458,22 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                 >['settings']['custom_inputs'][number] =>
                                     'data_type' in input
                             ),
-                            object_inputs: node.data.inputs.filter(
-                                (
-                                    input
-                                ): input is Extract<
-                                    Extract<
-                                        NonNullable<
-                                            WorkflowConfiguration['triggers']
-                                        >[number],
-                                        {kind: 'llm-prompt'}
-                                    >['settings']['object_inputs'][number],
-                                    {kind: 'product'}
-                                > => 'kind' in input && input.kind === 'product'
-                            ),
+                            object_inputs: node.data.inputs
+                                .filter(
+                                    (
+                                        input
+                                    ): input is Extract<
+                                        LLMPromptTriggerNodeType['data']['inputs'][number],
+                                        {kind: 'product'}
+                                    > =>
+                                        'kind' in input &&
+                                        input.kind === 'product'
+                                )
+                                .map((input) => ({
+                                    ...input,
+                                    integration_id:
+                                        '{{store.helpdesk_integration_id}}',
+                                })),
                             conditions:
                                 node.data.conditionsType === 'or'
                                     ? {
@@ -416,6 +500,58 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                             instructions: node.data.instructions,
                         },
                         deactivated_datetime: node.data.deactivated_datetime,
+                    },
+                ]
+                return
+            } else if (node.type === 'reusable_llm_prompt_trigger') {
+                c.triggers = [
+                    {
+                        kind: 'reusable-llm-prompt',
+                        settings: {
+                            custom_inputs: node.data.inputs.filter(
+                                (
+                                    input
+                                ): input is Extract<
+                                    NonNullable<
+                                        WorkflowConfiguration['triggers']
+                                    >[number],
+                                    {kind: 'reusable-llm-prompt'}
+                                >['settings']['custom_inputs'][number] =>
+                                    'data_type' in input
+                            ),
+                            object_inputs: node.data.inputs.filter(
+                                (
+                                    input
+                                ): input is Extract<
+                                    ReusableLLMPromptTriggerNodeType['data']['inputs'][number],
+                                    {kind: 'product'}
+                                > => 'kind' in input && input.kind === 'product'
+                            ),
+                            outputs: [],
+                        },
+                    },
+                ]
+                c.entrypoints = [
+                    {
+                        kind: 'reusable-llm-prompt-call-step',
+                        trigger: 'reusable-llm-prompt',
+                        settings: {
+                            requires_confirmation:
+                                node.data.requires_confirmation,
+                            conditions:
+                                node.data.conditionsType === 'or'
+                                    ? {
+                                          [node.data.conditionsType]:
+                                              node.data.conditions,
+                                      }
+                                    : node.data.conditionsType === 'and'
+                                      ? {
+                                            [node.data.conditionsType]:
+                                                node.data.conditions,
+                                        }
+                                      : null,
+                        },
+                        deactivated_datetime: null,
                     },
                 ]
                 return
@@ -517,6 +653,32 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 }
                 c.steps.push(step)
                 stepIdByNodeId[node.id] = step.id
+            } else if (
+                node.type === 'end' &&
+                node.data.action === 'end-success'
+            ) {
+                const step: WorkflowStepEnd = {
+                    id: node.id,
+                    kind: 'end',
+                    settings: {
+                        success: true,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+            } else if (
+                node.type === 'end' &&
+                node.data.action === 'end-failure'
+            ) {
+                const step: WorkflowStepEnd = {
+                    id: node.id,
+                    kind: 'end',
+                    settings: {
+                        success: false,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
             } else if (node.type === 'conditions') {
                 const step: WorkflowStepConditions = {
                     id: node.id,
@@ -579,11 +741,41 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 stepIdByNodeId[node.id] = step.id
 
                 const trigger = c.triggers?.[0]
+                const variablesByOutputPath = _keyBy(
+                    step.settings.variables,
+                    (variable) =>
+                        `steps_state.${step.id}.content.${variable.id}`
+                )
 
                 if (trigger?.kind === 'llm-prompt' && node.data.outputs) {
-                    trigger.settings.outputs.push(...node.data.outputs)
+                    trigger.settings.outputs.push(
+                        ...node.data.outputs.filter(
+                            (output) => output.path in variablesByOutputPath
+                        )
+                    )
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (
+                    trigger?.kind === 'reusable-llm-prompt' &&
+                    node.data.outputs
+                ) {
+                    trigger.settings.outputs.push(
+                        ...node.data.outputs
+                            .filter(
+                                (output) => output.path in variablesByOutputPath
+                            )
+                            .map((output) => ({
+                                ...output,
+                                name: variablesByOutputPath[output.path].name,
+                                data_type:
+                                    variablesByOutputPath[output.path]
+                                        .data_type,
+                            }))
+                    )
+
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'shopper_authentication') {
                 const step: WorkflowStepShopperAuthentication = {
@@ -629,7 +821,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'refund_order') {
                 const step: WorkflowStepRefundOrder = {
@@ -653,7 +849,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'update_shipping_address') {
                 const step: WorkflowStepUpdateShippingAddress = {
@@ -687,7 +887,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'remove_item') {
                 const step: WorkflowStepRemoveItem = {
@@ -713,7 +917,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'replace_item') {
                 const step: WorkflowStepReplaceItem = {
@@ -742,7 +950,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'create_discount_code') {
                 // TODO remove when UI for merchant inputs is implemented
@@ -805,7 +1017,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.discount_code`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'reship_for_free') {
                 const step: WorkflowStepReshipForFree = {
@@ -829,7 +1045,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'refund_shipping_costs') {
                 const step: WorkflowStepRefundShippingCosts = {
@@ -853,7 +1073,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'cancel_subscription') {
                 const step: WorkflowStepCancelSubscription = {
@@ -878,7 +1102,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else if (node.type === 'skip_charge') {
                 const step: WorkflowStepSkipCharge = {
@@ -903,7 +1131,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         path: `steps_state.${node.id}.success`,
                     })
 
-                    setObjectInputs(g, node, trigger)
+                    setLLMPromptObjectInputs(g, node, trigger)
+                }
+
+                if (trigger?.kind === 'reusable-llm-prompt') {
+                    setReusableLLMPromptObjectInputs(g, node, trigger)
                 }
             } else {
                 return
