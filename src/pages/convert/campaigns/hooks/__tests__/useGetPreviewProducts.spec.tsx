@@ -5,6 +5,7 @@ import {AttachmentEnum} from 'common/types'
 import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
+    ProductStatus,
 } from 'constants/integrations/types/shopify'
 import {campaignProductAttachment} from 'fixtures/campaign'
 import {shopifyIntegration} from 'fixtures/integrations'
@@ -169,6 +170,61 @@ describe('useGetPreviewProducts', () => {
                 data: {
                     ...product_2.data,
                     image: null,
+                },
+            },
+        ]
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: shopifyProducts,
+                        },
+                    },
+                ],
+            },
+            hasNextPage: false,
+            fetchNextPage: mockFetchNextPage,
+        } as any)
+        const productRecommendations: CampaignProductRecommendation[] = [
+            {
+                contentType: AttachmentEnum.ProductRecommendation,
+                name: 'Yellow shirt',
+                extra: {
+                    id: '01J55AAS89MXWKTTDWK16J3MBA',
+                    scenario: ProductRecommendationScenario.SimilarSeen,
+                },
+            },
+        ]
+
+        const {result} = renderHook(() =>
+            useGetPreviewProducts(
+                storeIntegration,
+                productRecommendations,
+                [],
+                productCount
+            )
+        )
+
+        expect(result.current).toEqual([])
+        expect(pickNRandomShopifyProductsMock).not.toHaveBeenCalled()
+    })
+
+    it('should not return draft and not published products', () => {
+        const [product_1, product_2] = shopifyProductResult()
+        const shopifyProducts = [
+            {
+                ...product_1,
+                data: {
+                    ...product_1.data,
+                    published_at: null,
+                },
+            },
+            {
+                ...product_2,
+                data: {
+                    ...product_2.data,
+                    status: ProductStatus.Draft,
                 },
             },
         ]

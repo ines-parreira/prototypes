@@ -19,6 +19,10 @@ jest.mock('common/segment', () => ({
         ConvertApplySuggestionClicked: 'ConvertApplySuggestionClicked',
     },
 }))
+jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('state/currentAccount/selectors', () => ({
+    getCurrentAccountId: jest.fn().mockReturnValue(111),
+}))
 
 const logEventMock = assumeMock(logEvent)
 
@@ -115,6 +119,7 @@ describe('AICopyAssistant', () => {
             expect(logEventMock).toHaveBeenCalledWith(
                 'ConvertApplySuggestionClicked',
                 {
+                    accountId: 111,
                     shopId: 123,
                     campaignId: defaultProps.campaign.id,
                     context: expect.objectContaining({

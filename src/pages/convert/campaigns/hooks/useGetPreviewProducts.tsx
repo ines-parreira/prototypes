@@ -1,7 +1,7 @@
 import {Map, fromJS} from 'immutable'
 import {useEffect, useMemo, useState} from 'react'
 
-import {Product} from 'constants/integrations/types/shopify'
+import {Product, ProductStatus} from 'constants/integrations/types/shopify'
 import {useListProducts} from 'models/integration/queries'
 import {IntegrationDataItem} from 'models/integration/types'
 import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
@@ -33,6 +33,8 @@ export const useGetPreviewProducts = (
             return (
                 !item.deleted_datetime &&
                 !!item.data.image &&
+                !!item.data.published_at &&
+                item.data.status === ProductStatus.Active &&
                 isProductAvailable(item.data)
             )
         })

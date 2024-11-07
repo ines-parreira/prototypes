@@ -156,6 +156,12 @@ export enum EditOrderAction {
     RemoveItemDiscount = 'removeItemDiscount',
 }
 
+export enum ProductStatus {
+    Active = 'active',
+    Archived = 'archived',
+    Draft = 'draft',
+}
+
 export type TaxLine = {
     title: string
     rate: number
@@ -381,11 +387,13 @@ export type Product = {
     id: number
     title: string
     created_at: string
+    published_at?: string
     image: Maybe<Image>
     images: Array<Image>
     options: Array<Record<string, any>>
     variants: Variant[]
     handle?: string
+    status?: ProductStatus
 }
 
 export type DraftOrderInvoice = {
