@@ -1,11 +1,8 @@
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {
-    enabledEvents,
-    ticketMessageCreatedEvents,
-} from 'common/notifications/data'
-import {Settings} from 'common/notifications/types'
+import {categories, notifications} from '../../data'
+import {Settings} from '../../types'
 
 import EventSettings from '../EventSettings'
 
@@ -23,9 +20,6 @@ jest.mock(
             </select>
         )
 )
-
-const mockOnChangeChannel = jest.fn()
-const mockOnChangeSound = jest.fn()
 
 const settings: Settings = {
     volume: 5,
@@ -57,15 +51,19 @@ const settings: Settings = {
     },
 }
 
-describe('<EventSettings/>', () => {
-    it.each(enabledEvents.map((event) => [event.type, event.label]))(
+const notificationsWithSettings = categories
+    .reduce((acc, c) => [...acc, ...(c.notifications || [])], [] as string[])
+    .map((n) => notifications[n])
+
+describe('EventSettings', () => {
+    it.each(notificationsWithSettings.map((n) => [n.type, n.settings?.label]))(
         'should render event %s',
         (_, label) => {
             const {getByText} = render(
                 <EventSettings
                     settings={settings}
-                    onChangeChannel={mockOnChangeChannel}
-                    onChangeSound={mockOnChangeSound}
+                    onChangeChannel={jest.fn()}
+                    onChangeSound={jest.fn()}
                 />
             )
 
@@ -73,90 +71,43 @@ describe('<EventSettings/>', () => {
         }
     )
 
-    it('should call a function to handle a channel change for ticket updates', () => {
+    it('should call a function to handle a channel change', () => {
+        const onChangeChannel = jest.fn()
+
         const {getAllByRole} = render(
             <EventSettings
                 settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
+                onChangeChannel={onChangeChannel}
+                onChangeSound={jest.fn()}
             />
         )
 
         const checkbox = getAllByRole('checkbox')[1]
         fireEvent.click(checkbox)
 
-        expect(mockOnChangeChannel).toHaveBeenCalledWith(
+        expect(onChangeChannel).toHaveBeenCalledWith(
             'user.mentioned',
             'in_app_feed',
             false
         )
     })
 
-    it('should call a function to handle a sound change for ticket updates', () => {
+    it('should call a function to handle a sound change', () => {
+        const onChangeSound = jest.fn()
+
         const {getAllByRole} = render(
             <EventSettings
                 settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
+                onChangeChannel={jest.fn()}
+                onChangeSound={onChangeSound}
             />
         )
 
         const combobox = getAllByRole('combobox')[0]
         fireEvent.change(combobox, {target: {value: 'sound 1'}})
 
-        expect(mockOnChangeSound).toHaveBeenCalledWith(
+        expect(onChangeSound).toHaveBeenCalledWith(
             'legacy-chat-and-messaging',
-            'sound 1'
-        )
-    })
-
-    it.each(
-        ticketMessageCreatedEvents.map((event) => [event.type, event.label])
-    )('should render ticket %s event', (_, label) => {
-        const {getByText} = render(
-            <EventSettings
-                settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
-            />
-        )
-
-        expect(getByText(label as string)).toBeInTheDocument()
-    })
-
-    it('should call a function to handle a channel change for new message updates', () => {
-        const {getAllByRole} = render(
-            <EventSettings
-                settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
-            />
-        )
-
-        const checkbox = getAllByRole('checkbox')[5]
-        fireEvent.click(checkbox)
-
-        expect(mockOnChangeChannel).toHaveBeenCalledWith(
-            'ticket-message.created.chat',
-            'in_app_feed',
-            true
-        )
-    })
-
-    it('should call a function to handle a sound change for new message updates', () => {
-        const {getAllByRole} = render(
-            <EventSettings
-                settings={settings}
-                onChangeChannel={mockOnChangeChannel}
-                onChangeSound={mockOnChangeSound}
-            />
-        )
-
-        const combobox = getAllByRole('combobox')[5]
-        fireEvent.change(combobox, {target: {value: 'sound 1'}})
-
-        expect(mockOnChangeSound).toHaveBeenCalledWith(
-            'ticket-message.created.chat',
             'sound 1'
         )
     })

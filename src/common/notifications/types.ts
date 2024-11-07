@@ -14,18 +14,6 @@ export type Channel = {
     label: ReactNode
 }
 
-export type Event = {
-    enabled: boolean
-    label: ReactNode
-    type: NotificationType
-    icon?: string
-    tooltip?: string
-}
-
-export type LegacyEvent = Omit<Event, 'type'> & {
-    type: LegacyNotificationType
-}
-
 export type Ticket = {
     id: number
     channel: TicketChannel
@@ -90,19 +78,17 @@ export type Notification =
           payload: PayloadWithSender
       })
 
-export type NotificationType = Notification['type']
-
-export type LegacyNotificationType = 'legacy-chat-and-messaging'
-
 export type RawNotification = UnionOmit<Notification, 'id'>
+
+export type Setting = {
+    channels: {[k in ChannelType]?: boolean}
+    sound: '' | SoundValue
+}
 
 export type Settings = {
     volume: number
     events: {
-        [notificationType: string]: {
-            sound: '' | SoundValue
-            channels: {[k in ChannelType]?: boolean}
-        }
+        [notificationType: string]: Setting
     }
 }
 
@@ -117,14 +103,10 @@ export type CategoryConfig = {
 export type NotificationConfig = {
     type: string
     component: ComponentType<{notification: Notification} & ParentProps>
+    workflow: string
     settings?: {
         label: string
         icon?: string
         tooltip?: string
     }
-}
-
-export type Setting = {
-    channels: {[k in ChannelType]?: boolean}
-    sound: '' | SoundValue
 }

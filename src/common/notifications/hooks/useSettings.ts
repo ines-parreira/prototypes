@@ -11,26 +11,17 @@ import {defaultSound, SoundValue} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {getNotificationSettings} from 'state/currentUser/selectors'
 
-import {
-    channels,
-    events,
-    legacyEvent,
-    ticketMessageCreatedEvents,
-    workflowMap,
-} from '../data'
-import {Settings, Event} from '../types'
+import {categories, channels, notifications} from '../data'
+import type {NotificationConfig, Settings} from '../types'
 
-const baseEvents = [legacyEvent, ...events]
+const notificationsWithSettings = categories
+    .reduce((acc, c) => [...acc, ...(c.notifications || [])], [] as string[])
+    .map((n) => notifications[n])
 
 export default function useSettings() {
     const dispatch = useAppDispatch()
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
-
-    const allEvents = useMemo(
-        () => [...baseEvents, ...ticketMessageCreatedEvents],
-        []
-    )
 
     const [{loading: isFetchingKnockPreferences}, getKnockPreferences] =
         useAsyncFn(async () => {
@@ -46,29 +37,29 @@ export default function useSettings() {
     const initializeSettings = useCallback(async () => {
         const preferences = await getKnockPreferences()
 
-        const allEvents = [...baseEvents, ...ticketMessageCreatedEvents]
-
         const notificationSound =
             allSettings?.data.notification_sound || defaultSound
 
         const setting = {
             volume: notificationSound.volume,
-            events: allEvents.reduce(
-                (eventsAcc, event) => {
+            events: notificationsWithSettings.reduce(
+                (eventsAcc, config) => {
                     const eventSettings = allSettings?.data.events?.[
-                        event.type
+                        config.type
                     ] || {sound: defaultSound.sound}
 
                     const workflowPreferences =
-                        event.type !== 'legacy-chat-and-messaging'
-                            ? preferences.workflows?.[workflowMap[event.type]]
+                        config.type !== 'legacy-chat-and-messaging'
+                            ? preferences.workflows?.[
+                                  notifications[config.type].workflow
+                              ]
                             : undefined
 
                     return {
                         ...eventsAcc,
-                        [event.type]: {
+                        [config.type]: {
                             sound:
-                                event.type === 'legacy-chat-and-messaging'
+                                config.type === 'legacy-chat-and-messaging'
                                     ? notificationSound.enabled
                                         ? notificationSound.sound
                                         : ''
@@ -77,7 +68,7 @@ export default function useSettings() {
                                 (channelsAcc, channel) => ({
                                     ...channelsAcc,
                                     [channel.type]:
-                                        event.type ===
+                                        config.type ===
                                         'legacy-chat-and-messaging'
                                             ? true
                                             : !workflowPreferences ||
@@ -89,7 +80,7 @@ export default function useSettings() {
                                                     channel.type
                                                 ],
                                 }),
-                                eventsAcc[event.type]?.channels || {}
+                                eventsAcc[config.type]?.channels || {}
                             ),
                         },
                     }
@@ -158,16 +149,16 @@ export default function useSettings() {
                             : defaultSound.sound,
                     volume: settings.volume,
                 },
-                events: allEvents
+                events: notificationsWithSettings
                     .filter(
-                        (event): event is Event =>
-                            event.type !== 'legacy-chat-and-messaging'
+                        (config): config is NotificationConfig =>
+                            config.type !== 'legacy-chat-and-messaging'
                     )
                     .reduce(
-                        (acc, event) => ({
+                        (acc, config) => ({
                             ...acc,
-                            [event.type]: {
-                                sound: settings.events[event.type].sound,
+                            [config.type]: {
+                                sound: settings.events[config.type].sound,
                             },
                         }),
                         {}
@@ -183,20 +174,20 @@ export default function useSettings() {
                     [k: string]: boolean
                 }
             }
-        } = allEvents
+        } = notificationsWithSettings
             .filter(
-                (event): event is Event =>
-                    event.type !== 'legacy-chat-and-messaging'
+                (config): config is NotificationConfig =>
+                    config.type !== 'legacy-chat-and-messaging'
             )
             .reduce(
-                (eventsAcc, event) => ({
+                (eventsAcc, config) => ({
                     ...eventsAcc,
-                    [workflowMap[event.type]]: {
+                    [notifications[config.type].workflow]: {
                         channel_types: channels.reduce(
                             (channelsAcc, channel) => ({
                                 ...channelsAcc,
                                 [channel.type]:
-                                    settings.events[event.type].channels[
+                                    settings.events[config.type].channels[
                                         channel.type
                                     ],
                             }),
@@ -224,7 +215,7 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
-    }, [allEvents, allSettings, dispatch, knockClient, settings])
+    }, [allSettings, dispatch, knockClient, settings])
 
     return useMemo(
         () => ({

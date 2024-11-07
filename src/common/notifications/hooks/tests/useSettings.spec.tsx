@@ -6,13 +6,13 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ticketMessageCreatedEvents} from 'common/notifications/data'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {submitSetting} from 'state/currentUser/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
 
+import {categories, notifications} from '../../data'
 import useSettings from '../useSettings'
 
 jest.mock('@knocklabs/react', () => ({
@@ -56,6 +56,10 @@ const mockSetKnockPreferences = jest.fn()
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
+const notificationsWithSettings = categories
+    .reduce((acc, c) => [...acc, ...(c.notifications || [])], [] as string[])
+    .map((n) => notifications[n])
+
 describe('useSettings', () => {
     beforeEach(() => {
         variationMock.mockImplementation(() => true)
@@ -85,13 +89,15 @@ describe('useSettings', () => {
         expect(result.current).toHaveProperty('onChangeVolume')
     })
 
-    it.each(ticketMessageCreatedEvents.map((event) => [event.type]))(
+    it.each(notificationsWithSettings.map((config) => [config.type]))(
         'should include %s event',
-        async (eventType) => {
+        async (notificationType) => {
             const {result, waitForNextUpdate} = renderHook(() => useSettings())
             await act(async () => await waitForNextUpdate())
 
-            expect(result.current.settings.events[eventType]).toBeDefined()
+            expect(
+                result.current.settings.events[notificationType]
+            ).toBeDefined()
         }
     )
 
