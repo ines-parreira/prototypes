@@ -1,5 +1,6 @@
 import {User} from 'config/types/user'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
+import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
@@ -13,6 +14,7 @@ import {
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     COMMUNICATION_SKILLS_LABEL,
+    LANGUAGE_PROFICIENCY_SKILLS_LABEL,
     RESOLUTION_COMPLETENESS_LABEL,
     REVIEWED_CLOSED_TICKETS_LABEL,
     TrendCardConfig,
@@ -26,6 +28,7 @@ export enum AutoQAAgentsTableColumn {
     ReviewedClosedTickets = 'auto_qa_table_reviewed_closed_tickets',
     ResolutionCompleteness = 'auto_qa_table_resolution_completeness',
     CommunicationSkills = 'auto_qa_table_communication_skills',
+    LanguageProficiency = 'auto_qa_table_language_proficiency',
 }
 
 export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER = [
@@ -35,6 +38,11 @@ export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER = [
     AutoQAAgentsTableColumn.CommunicationSkills,
 ]
 
+export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE = [
+    ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
+    AutoQAAgentsTableColumn.LanguageProficiency,
+]
+
 export const TableLabels: Record<AutoQAAgentsTableColumn, string> = {
     [AutoQAAgentsTableColumn.AgentName]: 'Agent',
     [AutoQAAgentsTableColumn.ResolutionCompleteness]:
@@ -42,6 +50,8 @@ export const TableLabels: Record<AutoQAAgentsTableColumn, string> = {
     [AutoQAAgentsTableColumn.ReviewedClosedTickets]:
         REVIEWED_CLOSED_TICKETS_LABEL,
     [AutoQAAgentsTableColumn.CommunicationSkills]: COMMUNICATION_SKILLS_LABEL,
+    [AutoQAAgentsTableColumn.LanguageProficiency]:
+        LANGUAGE_PROFICIENCY_SKILLS_LABEL,
 }
 
 export const AutoQAAgentsColumnConfig: Record<
@@ -74,6 +84,11 @@ export const AutoQAAgentsColumnConfig: Record<
         format: TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.CommunicationSkills].hint,
     },
+    [AutoQAAgentsTableColumn.LanguageProficiency]: {
+        title: TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
+        format: TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat,
+        hint: TrendCardConfig[AutoQAMetric.LanguageProficiency].hint,
+    },
 }
 
 export const getQuery = (
@@ -92,6 +107,8 @@ export const getQuery = (
             return useReviewedClosedTicketsPerAgent
         case AutoQAAgentsTableColumn.CommunicationSkills:
             return useCommunicationSkillsPerAgent
+        case AutoQAAgentsTableColumn.LanguageProficiency:
+            return useLanguageProficiencyPerAgent
     }
 }
 

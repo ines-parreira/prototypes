@@ -3,6 +3,7 @@ import {DrillDownReportingQuery} from 'models/job/types'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {
@@ -211,6 +212,11 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 communicationSkillsDrillDownQueryFactory
             )
+        case AutoQAAgentsTableColumn.LanguageProficiency:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                languageProficiencyDrillDownQueryFactory
+            )
         case AutoQAAgentsTableColumn.ReviewedClosedTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
@@ -220,6 +226,8 @@ export const getDrillDownQuery = (
             return resolutionCompletenessDrillDownQueryFactory
         case AutoQAMetric.CommunicationSkills:
             return communicationSkillsDrillDownQueryFactory
+        case AutoQAMetric.LanguageProficiency:
+            return languageProficiencyDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:

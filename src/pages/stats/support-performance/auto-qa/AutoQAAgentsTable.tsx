@@ -1,7 +1,11 @@
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 import {useDispatch} from 'react-redux'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
@@ -30,6 +34,7 @@ import {
     getQuery,
     getDrillDownMetricData,
     AutoQAAgentsTableColumn,
+    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     getHeatmapMode,
@@ -60,6 +65,8 @@ const getSortingQuery = (
 }
 
 export const AutoQAAgentsTable = () => {
+    const isAutoQaLanguageProficiency =
+        !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
     const dispatch = useDispatch()
     const {
         currentPage,
@@ -84,82 +91,81 @@ export const AutoQAAgentsTable = () => {
         }
     }
 
+    const tableColumns = isAutoQaLanguageProficiency
+        ? AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE
+        : AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER
+
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
                 <TableWrapper className={css.table} style={{width}}>
                     <TableHead>
-                        {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER.map(
-                            (column, index) => (
-                                <AgentsHeaderCellContent
-                                    key={`header-cell-${column}`}
-                                    title={TableLabels[column]}
-                                    hint={AutoQAAgentsColumnConfig[column].hint}
-                                    useSortingQuery={getSortingQuery(
-                                        column,
-                                        statsFilters
-                                    )}
-                                    width={getColumnWidth(column)}
-                                    justifyContent={getColumnAlignment(column)}
-                                    className={classNames(css.BodyCell, {
-                                        [css.withShadow]:
-                                            index === 0 && isTableScrolled,
-                                    })}
-                                ></AgentsHeaderCellContent>
-                            )
-                        )}
+                        {tableColumns.map((column, index) => (
+                            <AgentsHeaderCellContent
+                                key={`header-cell-${column}`}
+                                title={TableLabels[column]}
+                                hint={AutoQAAgentsColumnConfig[column].hint}
+                                useSortingQuery={getSortingQuery(
+                                    column,
+                                    statsFilters
+                                )}
+                                width={getColumnWidth(column)}
+                                justifyContent={getColumnAlignment(column)}
+                                className={classNames(css.BodyCell, {
+                                    [css.withShadow]:
+                                        index === 0 && isTableScrolled,
+                                })}
+                            ></AgentsHeaderCellContent>
+                        ))}
                     </TableHead>
                     <TableBody>
                         {paginatedAgents.map((agent) => (
                             <TableBodyRow key={agent.id}>
-                                {AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER.map(
-                                    (column) => (
-                                        <React.Fragment key={column}>
-                                            {React.createElement(
-                                                getTableCell(column),
-                                                {
-                                                    agent,
-                                                    useMetricPerAgentQueryHook:
-                                                        getQuery(column),
-                                                    metricFormat:
-                                                        AutoQAAgentsColumnConfig[
+                                {tableColumns.map((column) => (
+                                    <React.Fragment key={column}>
+                                        {React.createElement(
+                                            getTableCell(column),
+                                            {
+                                                agent,
+                                                useMetricPerAgentQueryHook:
+                                                    getQuery(column),
+                                                metricFormat:
+                                                    AutoQAAgentsColumnConfig[
+                                                        column
+                                                    ].format,
+                                                drillDownMetricData:
+                                                    getDrillDownMetricData(
+                                                        column,
+                                                        agent
+                                                    ),
+                                                statsFilters: statsFilters,
+                                                isHeatmapMode: isHeatmapMode,
+                                                isSortingMetricLoading:
+                                                    isSortingLoading,
+                                                bodyCellProps: {
+                                                    width: getColumnWidth(
+                                                        column
+                                                    ),
+                                                    justifyContent:
+                                                        getColumnAlignment(
                                                             column
-                                                        ].format,
-                                                    drillDownMetricData:
-                                                        getDrillDownMetricData(
-                                                            column,
-                                                            agent
                                                         ),
-                                                    statsFilters: statsFilters,
-                                                    isHeatmapMode:
-                                                        isHeatmapMode,
-                                                    isSortingMetricLoading:
-                                                        isSortingLoading,
-                                                    bodyCellProps: {
-                                                        width: getColumnWidth(
-                                                            column
-                                                        ),
-                                                        justifyContent:
-                                                            getColumnAlignment(
-                                                                column
-                                                            ),
-                                                        className: classNames(
-                                                            css.BodyCell,
-                                                            {
-                                                                [css.withShadow]:
-                                                                    column ===
-                                                                        AutoQAAgentsTableColumn.AgentName &&
-                                                                    isTableScrolled,
-                                                            }
-                                                        ),
-                                                        innerClassName:
-                                                            css.BodyCellContent,
-                                                    },
-                                                }
-                                            )}
-                                        </React.Fragment>
-                                    )
-                                )}
+                                                    className: classNames(
+                                                        css.BodyCell,
+                                                        {
+                                                            [css.withShadow]:
+                                                                column ===
+                                                                    AutoQAAgentsTableColumn.AgentName &&
+                                                                isTableScrolled,
+                                                        }
+                                                    ),
+                                                    innerClassName:
+                                                        css.BodyCellContent,
+                                                },
+                                            }
+                                        )}
+                                    </React.Fragment>
+                                ))}
                             </TableBodyRow>
                         ))}
                     </TableBody>

@@ -1,4 +1,5 @@
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
@@ -10,6 +11,7 @@ export const REVIEWED_CLOSED_TICKETS_LABEL = 'Reviewed tickets'
 export const RESOLUTION_COMPLETENESS_LABEL = 'Resolution completeness rate'
 export const RESOLUTION_COMPLETENESS_SHORT_LABEL = 'Resolution'
 export const COMMUNICATION_SKILLS_LABEL = 'Communication'
+export const LANGUAGE_PROFICIENCY_SKILLS_LABEL = 'Language proficiency'
 export const COMPLETENESS_STATUS_COMPLETE = 'Complete'
 export const COMPLETENESS_STATUS_INCOMPLETE = 'Incomplete'
 
@@ -55,5 +57,16 @@ export const TrendCardConfig: Record<
         metricFormat: 'decimal',
         useTrend: useCommunicationSkillsTrend,
         drillDownMetric: AutoQAMetric.CommunicationSkills,
+    },
+    [AutoQAMetric.LanguageProficiency]: {
+        title: LANGUAGE_PROFICIENCY_SKILLS_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent showed high proficiency in the language of the conversation: flawless spelling, grammar, syntax. \n \nThe score (1-5) is computed by AI on closed tickets with at least 1 customer message and 1 agent message.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useLanguageProficiencyTrend,
+        drillDownMetric: AutoQAMetric.LanguageProficiency,
     },
 }

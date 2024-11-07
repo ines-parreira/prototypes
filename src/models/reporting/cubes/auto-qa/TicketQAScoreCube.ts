@@ -39,6 +39,7 @@ export type TicketQAScoreTimeDimension =
 export enum TicketQAScoreDimensionName {
     CommunicationSkills = 'communication_skills',
     ResolutionCompleteness = 'resolution_completeness',
+    LanguageProficiency = 'language_proficiency',
 }
 
 type TicketQAScoreCube = Cube<

@@ -91,6 +91,7 @@ export type AutoQAAgentMetric =
     | AutoQAAgentsTableColumn.ResolutionCompleteness
     | AutoQAAgentsTableColumn.ReviewedClosedTickets
     | AutoQAAgentsTableColumn.CommunicationSkills
+    | AutoQAAgentsTableColumn.LanguageProficiency
 
 export type AutoQAAgentMetrics = {
     metricName: AutoQAAgentMetric
@@ -368,7 +369,8 @@ export const getDrillDownMetricColumn = (
     } else if (
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAMetric.CommunicationSkills ||
-        metricData.metricName === AutoQAMetric.ResolutionCompleteness
+        metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
+        metricData.metricName === AutoQAMetric.LanguageProficiency
     ) {
         metricTitle = TrendCardConfig[metricData.metricName].title
         metricValueFormat = TrendCardConfig[metricData.metricName].metricFormat
@@ -376,7 +378,9 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === AutoQAAgentsTableColumn.CommunicationSkills ||
         metricData.metricName ===
             AutoQAAgentsTableColumn.ResolutionCompleteness ||
-        metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
+        metricData.metricName ===
+            AutoQAAgentsTableColumn.ReviewedClosedTickets ||
+        metricData.metricName === AutoQAAgentsTableColumn.LanguageProficiency
     ) {
         metricTitle = AutoQAAgentsColumnConfig[metricData.metricName].title
         metricValueFormat =

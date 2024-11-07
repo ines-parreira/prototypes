@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -6,6 +7,8 @@ import {agents} from 'fixtures/agents'
 import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
@@ -33,6 +36,16 @@ jest.mock(
 )
 const useResolutionCompletenessPerAgentMock = assumeMock(
     useResolutionCompletenessPerAgent
+)
+jest.mock(
+    'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
+)
+const useLanguageProficiencyTrendMock = assumeMock(useLanguageProficiencyTrend)
+jest.mock(
+    'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+)
+const useLanguageProficiencyPerAgentMock = assumeMock(
+    useLanguageProficiencyPerAgent
 )
 jest.mock(
     'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
@@ -84,6 +97,8 @@ describe('useAutoQAMetrics', () => {
     useResolutionCompletenessTrendMock.mockReturnValue(someTrendData)
     useReviewedClosedTicketsPerAgentMock.mockReturnValue(someMetricData)
     useReviewedClosedTicketsTrendMock.mockReturnValue(someTrendData)
+    useLanguageProficiencyPerAgentMock.mockReturnValue(someMetricData)
+    useLanguageProficiencyTrendMock.mockReturnValue(someTrendData)
     useNewStatsFiltersMock.mockReturnValue({
         cleanStatsFilters: initialState.filters,
         userTimezone: 'UTC',
@@ -108,6 +123,8 @@ describe('useAutoQAMetrics', () => {
                 resolutionCompletenessTrend: someTrendData,
                 reviewedClosedTicketsPerAgent: someMetricData,
                 reviewedClosedTicketsTrend: someTrendData,
+                languageProficiencyPerAgent: someMetricData,
+                languageProficiencyTrend: someTrendData,
             },
             isLoading: false,
             period: initialState.filters.period,
@@ -137,6 +154,8 @@ describe('useAutoQAMetrics', () => {
                 resolutionCompletenessTrend: someTrendData,
                 reviewedClosedTicketsPerAgent: someMetricData,
                 reviewedClosedTicketsTrend: loadingTrendData,
+                languageProficiencyPerAgent: someMetricData,
+                languageProficiencyTrend: someTrendData,
             },
             isLoading: true,
             period: initialState.filters.period,

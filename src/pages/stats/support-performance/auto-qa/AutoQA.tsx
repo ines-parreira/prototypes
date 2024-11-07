@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,6 +17,7 @@ import {AutoQAAgentsCardExtra} from 'pages/stats/support-performance/auto-qa/Aut
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
@@ -36,9 +38,13 @@ export default function AutoQA() {
 
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const isAutoQaLanguageProficiency =
+        !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
     const autoQAOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
         AUTO_QA_OPTIONAL_FILTERS
     )
+
+    const trendCardColumnWidth = isAutoQaLanguageProficiency ? 3 : 4
 
     return (
         <div className="full-width">
@@ -74,21 +80,36 @@ export default function AutoQA() {
                     </DashboardSection>
                 )}
                 <DashboardSection>
-                    <DashboardGridCell size={getGridCellSize(4)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(trendCardColumnWidth)}
+                    >
                         <ReviewedClosedTicketsTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(4)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(trendCardColumnWidth)}
+                    >
                         <ResolutionCompletenessTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>
-                    <DashboardGridCell size={getGridCellSize(4)}>
+                    <DashboardGridCell
+                        size={getGridCellSize(trendCardColumnWidth)}
+                    >
                         <CommunicationSkillsTrendCard
                             isAnalyticsNewFilters={isAnalyticsNewFilters}
                         />
                     </DashboardGridCell>
+                    {isAutoQaLanguageProficiency && (
+                        <DashboardGridCell
+                            size={getGridCellSize(trendCardColumnWidth)}
+                        >
+                            <LanguageProficiencyTrendCard
+                                isAnalyticsNewFilters={isAnalyticsNewFilters}
+                            />
+                        </DashboardGridCell>
+                    )}
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <ChartCard
                             title={AGENT_PERFORMANCE_SECTION_TITLE}

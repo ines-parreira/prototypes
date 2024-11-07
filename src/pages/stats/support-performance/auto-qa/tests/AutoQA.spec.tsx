@@ -14,6 +14,7 @@ import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performan
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
 import {assumeMock, renderWithStore} from 'utils/testing'
@@ -45,6 +46,12 @@ jest.mock(
 const CommunicationSkillsTrendCardMock = assumeMock(
     CommunicationSkillsTrendCard
 )
+jest.mock(
+    'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
+)
+const LanguageProficiencyTrendCardMock = assumeMock(
+    LanguageProficiencyTrendCard
+)
 jest.mock('pages/stats/support-performance/auto-qa/AutoQAAgentsTable')
 const AutoQAAgentsTableMock = assumeMock(AutoQAAgentsTable)
 jest.mock(
@@ -72,6 +79,7 @@ describe('AutoQA', () => {
         )
         ResolutionCompletenessTrendCardMock.mockImplementation(componentMock)
         CommunicationSkillsTrendCardMock.mockImplementation(componentMock)
+        LanguageProficiencyTrendCardMock.mockImplementation(componentMock)
         AutoQAAgentsTableMock.mockImplementation(componentMock)
         AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
             componentMock
@@ -100,6 +108,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         CommunicationSkillsTrendCardMock.mockImplementation(() => <div />)
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
         })
     })
 
@@ -110,11 +119,22 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
         expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
         expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
+        expect(LanguageProficiencyTrendCardMock).toHaveBeenCalled()
         expect(AutoQAAgentsTableMock).toHaveBeenCalled()
         expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
         AUTO_QA_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(screen.getByText(optionalFilter)).toBeTruthy()
         })
+    })
+
+    it('should render without Language Proficiency', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
+        })
+        renderWithStore(<AutoQA />, {})
+
+        expect(LanguageProficiencyTrendCardMock).not.toHaveBeenCalled()
     })
 
     it('should render AutoQA page with optional filters and Score filter added', () => {

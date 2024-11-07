@@ -3,6 +3,8 @@ import {useMemo} from 'react'
 import {User} from 'config/types/user'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
@@ -28,6 +30,10 @@ export const useAutoQAMetrics = () => {
         cleanStatsFilters,
         userTimezone
     )
+    const languageProficiencyTrend = useLanguageProficiencyTrend(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const resolutionCompletenessPerAgent = useResolutionCompletenessPerAgent(
         cleanStatsFilters,
@@ -41,23 +47,31 @@ export const useAutoQAMetrics = () => {
         cleanStatsFilters,
         userTimezone
     )
+    const languageProficiencyPerAgent = useLanguageProficiencyPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return [
             reviewedClosedTicketsTrend,
             resolutionCompletenessTrend,
             communicationSkillsTrend,
+            languageProficiencyTrend,
             resolutionCompletenessPerAgent,
             reviewedClosedTicketsPerAgent,
             communicationSkillsPerAgent,
+            languageProficiencyPerAgent,
         ].some((data) => data.isFetching)
     }, [
         communicationSkillsPerAgent,
         communicationSkillsTrend,
+        languageProficiencyTrend,
         resolutionCompletenessPerAgent,
         resolutionCompletenessTrend,
         reviewedClosedTicketsPerAgent,
         reviewedClosedTicketsTrend,
+        languageProficiencyPerAgent,
     ])
 
     return {
@@ -69,6 +83,8 @@ export const useAutoQAMetrics = () => {
             resolutionCompletenessTrend,
             reviewedClosedTicketsPerAgent,
             reviewedClosedTicketsTrend,
+            languageProficiencyPerAgent,
+            languageProficiencyTrend,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

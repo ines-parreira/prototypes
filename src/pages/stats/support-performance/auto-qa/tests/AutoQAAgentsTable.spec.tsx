@@ -1,10 +1,14 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {agents} from 'fixtures/agents'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
@@ -16,6 +20,7 @@ import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/Age
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
+    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
@@ -79,34 +84,67 @@ const cellMock = () => <div />
 
 describe('<AutoQAAgentsTable />', () => {
     const currentPage = 2
-    getSortedAutoQAAgentsMock.mockReturnValue(agents)
     const paginatedAgents = agents.slice(1)
-    getPaginatedAutoQAAgentsMock.mockReturnValue({
-        agents: paginatedAgents,
-        allAgents: agents,
-        currentPage,
-        perPage: 1,
-    })
     const filters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
         },
     }
-    getPageStatsFiltersMock.mockReturnValue(filters as any)
-    useNewStatsFiltersMock.mockReturnValue({
-        cleanStatsFilters: filters,
-        userTimezone: 'UTC',
-        isAnalyticsNewFilters: false,
-        granularity: ReportingGranularity.Day,
+    beforeEach(() => {
+        getSortedAutoQAAgentsMock.mockReturnValue(agents)
+        getPaginatedAutoQAAgentsMock.mockReturnValue({
+            agents: paginatedAgents,
+            allAgents: agents,
+            currentPage,
+            perPage: 1,
+        })
+        getPageStatsFiltersMock.mockReturnValue(filters as any)
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: filters,
+            userTimezone: 'UTC',
+            isAnalyticsNewFilters: false,
+            granularity: ReportingGranularity.Day,
+        })
+        getHeatmapModeMock.mockReturnValue(false)
+        isSortingMetricLoadingMock.mockReturnValue(false)
+        AgentsCellContentMock.mockImplementation(cellMock)
+        AgentsHeaderCellContentMock.mockImplementation(cellMock)
+        AgentsTableSummaryCellMock.mockImplementation(cellMock)
+        mockFlags({
+            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+        })
     })
-    getHeatmapModeMock.mockReturnValue(false)
-    isSortingMetricLoadingMock.mockReturnValue(false)
-    AgentsCellContentMock.mockImplementation(cellMock)
-    AgentsHeaderCellContentMock.mockImplementation(cellMock)
-    AgentsTableSummaryCellMock.mockImplementation(cellMock)
 
     it('should render the table title, table header and rows', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <AutoQAAgentsTable />
+            </Provider>
+        )
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE.forEach((column) => {
+            expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    title: TableLabels[column],
+                }),
+                {}
+            )
+        })
+
+        expect(AgentsCellContentMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                agent: paginatedAgents[0],
+            }),
+            {}
+        )
+    })
+
+    it('should render the table without Language Proficiency', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
+        })
         render(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />

@@ -46,6 +46,8 @@ export interface AutoQAReportData {
     resolutionCompletenessTrend: MetricTrend
     reviewedClosedTicketsPerAgent: MetricWithDecile
     reviewedClosedTicketsTrend: MetricTrend
+    languageProficiencyPerAgent: MetricWithDecile
+    languageProficiencyTrend: MetricTrend
 }
 
 export const AGENT_ID_DIMENSION = TicketDimension.AssigneeUserId
@@ -126,6 +128,12 @@ export const saveReport = async (
             idField: AGENT_ID_DIMENSION,
             metricField: TicketQAScoreMeasure.AverageScore,
         },
+        [AutoQAAgentsTableColumn.LanguageProficiency]: {
+            column: AutoQAAgentsTableColumn.LanguageProficiency,
+            metricData: data.languageProficiencyPerAgent,
+            idField: AGENT_ID_DIMENSION,
+            metricField: TicketQAScoreMeasure.AverageScore,
+        },
     }
 
     const previousPeriod = getPreviousPeriod(period)
@@ -177,6 +185,17 @@ export const saveReport = async (
             formatTrendMetric(
                 AutoQAMetric.CommunicationSkills,
                 data.communicationSkillsTrend.data?.prevValue
+            ),
+        ],
+        [
+            TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
+            formatTrendMetric(
+                AutoQAMetric.LanguageProficiency,
+                data.languageProficiencyTrend.data?.value
+            ),
+            formatTrendMetric(
+                AutoQAMetric.CommunicationSkills,
+                data.languageProficiencyTrend.data?.prevValue
             ),
         ],
     ]

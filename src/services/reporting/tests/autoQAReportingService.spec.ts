@@ -9,6 +9,7 @@ import {
 } from 'pages/stats/common/utils'
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
+    AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
     TableLabels,
@@ -46,9 +47,11 @@ describe('autoQAReportingService', () => {
     const defaultData = {
         agents: [],
         communicationSkillsPerAgent: {data: null},
+        languageProficiencyPerAgent: {data: null},
         resolutionCompletenessPerAgent: {data: null},
         reviewedClosedTicketsPerAgent: {data: null},
         communicationSkillsTrend: {data: undefined},
+        languageProficiencyTrend: {data: undefined},
         resolutionCompletenessTrend: {data: undefined},
         reviewedClosedTicketsTrend: {data: undefined},
     } as any
@@ -108,6 +111,7 @@ describe('autoQAReportingService', () => {
         }
 
         const agentACommunicationSkills = 5
+        const agentALanguageProficiency = 4
         const agentAResolutionCompleteness = 0.65
         const agentAReviewedTickets = 3
         const data = {
@@ -116,6 +120,11 @@ describe('autoQAReportingService', () => {
                 agentA.id,
                 TicketQAScoreMeasure.AverageScore,
                 agentACommunicationSkills
+            ),
+            languageProficiencyPerAgent: exampleData(
+                agentA.id,
+                TicketQAScoreMeasure.AverageScore,
+                agentALanguageProficiency
             ),
             resolutionCompletenessPerAgent: exampleData(
                 agentA.id,
@@ -128,17 +137,22 @@ describe('autoQAReportingService', () => {
                 agentAReviewedTickets
             ),
             communicationSkillsTrend: exampleTrendData,
+            languageProficiencyTrend: exampleTrendData,
             resolutionCompletenessTrend: exampleTrendData,
             reviewedClosedTicketsTrend: exampleTrendData,
         }
-        await saveReport(data, AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER, period)
+        await saveReport(
+            data,
+            AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+            period
+        )
 
         const headers = [
             'Metric',
             `${startDate} - ${endDate}`,
             `${previousStartDate} - ${previousEndDate}`,
         ]
-        expect(createCsvSpy).toHaveBeenNthCalledWith(1, [
+        expect(createCsvSpy).toHaveBeenCalledWith([
             headers,
             [
                 TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
@@ -179,14 +193,28 @@ describe('autoQAReportingService', () => {
                         .metricFormat
                 ),
             ],
+            [
+                TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.LanguageProficiency]
+                        .metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.LanguageProficiency]
+                        .metricFormat
+                ),
+            ],
         ])
 
-        expect(createCsvSpy).toHaveBeenNthCalledWith(2, [
+        expect(createCsvSpy).toHaveBeenCalledWith([
             [
                 TableLabels[AutoQAAgentsTableColumn.AgentName],
                 TableLabels[AutoQAAgentsTableColumn.ReviewedClosedTickets],
                 TableLabels[AutoQAAgentsTableColumn.ResolutionCompleteness],
                 TableLabels[AutoQAAgentsTableColumn.CommunicationSkills],
+                TableLabels[AutoQAAgentsTableColumn.LanguageProficiency],
             ],
             [
                 agents[0].name,
@@ -208,9 +236,16 @@ describe('autoQAReportingService', () => {
                         AutoQAAgentsTableColumn.CommunicationSkills
                     ].format
                 ),
+                formatMetricValue(
+                    agentALanguageProficiency,
+                    AutoQAAgentsColumnConfig[
+                        AutoQAAgentsTableColumn.LanguageProficiency
+                    ].format
+                ),
             ],
             [
                 agents[1].name,
+                NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,

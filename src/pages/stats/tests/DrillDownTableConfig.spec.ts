@@ -118,6 +118,9 @@ describe('getDrillDownQuery', () => {
             metricName: AutoQAMetric.CommunicationSkills,
         },
         {
+            metricName: AutoQAMetric.LanguageProficiency,
+        },
+        {
             metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
             perAgentId: 123,
         },
@@ -127,6 +130,10 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: AutoQAAgentsTableColumn.CommunicationSkills,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.LanguageProficiency,
             perAgentId: 123,
         },
     ]
