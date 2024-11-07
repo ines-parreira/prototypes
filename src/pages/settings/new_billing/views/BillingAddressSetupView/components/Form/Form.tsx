@@ -1,5 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {FormEventHandler, HTMLProps, useRef} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 import {useEmailInputField} from 'pages/settings/new_billing/components/EmailInputField/useEmailInputField'
@@ -12,6 +14,8 @@ import css from './Form.less'
 export const Form: React.FC<
     Omit<HTMLProps<HTMLFormElement>, 'onSubmit' | 'onChange' | 'ref'>
 > = ({children, ...props}) => {
+    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
+
     const formRef = useRef<HTMLFormElement>(null)
 
     const addressElement = useStripeAddressElement()
@@ -45,7 +49,9 @@ export const Form: React.FC<
                     className={css.submitButton}
                     isLoading={submitBillingAddress.isLoading}
                 >
-                    Set Address
+                    {isTaxIdFieldEnabled
+                        ? 'Save Billing Information'
+                        : ' Set Address'}
                 </Button>
                 {addressElement.error ? (
                     <Caption error={addressElement.error} />

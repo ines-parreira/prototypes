@@ -6,9 +6,11 @@ import {
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {AxiosError} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {reportError} from 'utils/errors'
@@ -196,6 +198,36 @@ describe('BillingAddressSetupView::Form', () => {
                     '/app/settings/billing/payment'
                 )
             })
+        })
+    })
+
+    describe("should show the correct submit button content based on the 'BillingTaxIdField' feature flag", () => {
+        it("should display 'Set Address' when the feature flag is disabled", () => {
+            mockFlags({[FeatureFlagKey.BillingTaxIdField]: false})
+
+            renderForm()
+
+            expect(
+                screen.getByRole('button', {name: 'Set Address'})
+            ).toBeVisible()
+
+            expect(
+                screen.queryByRole('button', {name: 'Save Billing Information'})
+            ).not.toBeInTheDocument()
+        })
+
+        it("should display 'Save Billing Information' when the feature flag is enabled", () => {
+            mockFlags({[FeatureFlagKey.BillingTaxIdField]: true})
+
+            renderForm()
+
+            expect(
+                screen.queryByRole('button', {name: 'Set Address'})
+            ).not.toBeInTheDocument()
+
+            expect(
+                screen.getByRole('button', {name: 'Save Billing Information'})
+            ).toBeVisible()
         })
     })
 })
