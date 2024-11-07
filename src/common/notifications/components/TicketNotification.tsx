@@ -35,8 +35,9 @@ export default function TicketNotification({notification, ...props}: Props) {
             url={`/app/ticket/${ticket.id}`}
         >
             <Subtitle>
-                <Subject>{ticket.subject}</Subject>
-                {!!sender && (
+                {/* the extra space here is intentional */}
+                <Subject>{ticket.subject} </Subject>
+                {!!sender?.name && (
                     <>
                         {' '}
                         from <strong>{sender.name}</strong>
