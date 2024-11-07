@@ -72,7 +72,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     }
                     placeholder="415 859 3010"
                     type="tel"
-                    value={value.shipping.phone}
+                    value={value.shipping.phone ?? ''}
                 />
             </div>
             <InputField

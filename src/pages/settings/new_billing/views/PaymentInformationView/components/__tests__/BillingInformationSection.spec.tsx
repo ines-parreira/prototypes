@@ -71,7 +71,7 @@ describe('BillingInformationSection', () => {
                             state: '',
                         },
                         name: '',
-                        phone: '',
+                        phone: null,
                     },
                 })
             })

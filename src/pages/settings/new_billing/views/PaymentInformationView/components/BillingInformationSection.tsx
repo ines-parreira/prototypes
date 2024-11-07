@@ -62,9 +62,12 @@ const Content: React.FC = () => {
     )
 }
 
-const DataRow: React.FC<{label: string; value: string}> = ({label, value}) => (
+const DataRow: React.FC<{label: string; value?: string | null}> = ({
+    label,
+    value,
+}) => (
     <div>
-        <strong>{label}:</strong> {value.length ? value : '-'}
+        <strong>{label}:</strong> {value?.length ? value : '-'}
     </div>
 )
 
