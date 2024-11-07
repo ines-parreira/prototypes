@@ -3487,6 +3487,111 @@
                 "tags": ["auth"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/file-ingestion": {
+            "post": {
+                "operationId": "createFileIngestion",
+                "summary": "Create and start file ingestion",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFileIngestionLogDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileIngestionLogDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["file-ingestion"]
+            },
+            "get": {
+                "operationId": "getFileIngestion",
+                "summary": "List file ingestion logs",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "ids",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of numeric ids in the form ids=1&ids=2...",
+                        "schema": {"type": "array", "items": {"type": "number"}}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RetrieveFileIngestionLogDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["file-ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/file-ingestion/{file_ingestion_id}": {
+            "delete": {
+                "operationId": "deleteFileIngestion",
+                "summary": "Delete file ingestion",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "file_ingestion_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileIngestionLogDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["file-ingestion"]
+            }
+        },
         "/api/help-center/google-fonts": {
             "get": {
                 "operationId": "listGoogleFonts",
@@ -7791,6 +7896,84 @@
                     "token_type": {"type": "string"}
                 },
                 "required": ["access_token", "token_type"]
+            },
+            "CreateFileIngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "filename": {"type": "string"},
+                    "type": {"type": "string"},
+                    "size_bytes": {"type": "number"},
+                    "google_storage_url": {"type": "string"}
+                },
+                "required": [
+                    "filename",
+                    "type",
+                    "size_bytes",
+                    "google_storage_url"
+                ]
+            },
+            "FileIngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number"},
+                    "help_center_id": {"type": "number"},
+                    "snippets_article_ids": {
+                        "type": "array",
+                        "items": {"type": "number"}
+                    },
+                    "filename": {"type": "string"},
+                    "type": {"type": "string"},
+                    "size_bytes": {"type": "number"},
+                    "google_storage_url": {"type": "string"},
+                    "status": {
+                        "enum": ["FAILED", "PENDING", "SUCCESSFUL"],
+                        "type": "string"
+                    },
+                    "meta": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "help_center_id",
+                    "snippets_article_ids",
+                    "filename",
+                    "type",
+                    "size_bytes",
+                    "google_storage_url",
+                    "status",
+                    "meta"
+                ]
+            },
+            "RetrieveFileIngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number"},
+                    "help_center_id": {"type": "number"},
+                    "filename": {"type": "string"},
+                    "google_storage_url": {"type": "string"},
+                    "status": {
+                        "enum": ["FAILED", "PENDING", "SUCCESSFUL"],
+                        "type": "string"
+                    },
+                    "uploaded_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "help_center_id",
+                    "filename",
+                    "google_storage_url",
+                    "status",
+                    "uploaded_datetime"
+                ]
             },
             "AIGuidanceDto": {
                 "type": "object",

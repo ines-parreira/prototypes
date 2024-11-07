@@ -203,3 +203,31 @@ export const deleteArticleIngestionLog = async (
 
     return response
 }
+
+export const createFileIngestion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.CreateFileIngestion.PathParameters,
+    data: Paths.CreateFileIngestion.RequestBody
+) => {
+    if (!client) return null
+    const response = await client.createFileIngestion(pathParams, data)
+    return response
+}
+
+export const getFileIngestion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetFileIngestion.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.getFileIngestion(pathParams)
+    return response
+}
+
+export const deleteFileIngestion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.DeleteFileIngestion.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.deleteFileIngestion(pathParams)
+    return response
+}

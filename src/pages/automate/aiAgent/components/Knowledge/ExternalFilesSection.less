@@ -8,14 +8,36 @@
         gap: @layout-spacing-s;
     }
 
-    .section {
+    .title {
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .fileList {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 0;
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        gap: @layout-spacing-xs;
+    }
+
+    .fileListItem {
+        background-color: var(--neutral-grey-1);
+        border-radius: @layout-spacing-xxs;
+        padding: @layout-spacing-xs @layout-spacing-xs @layout-spacing-xs
+            @layout-spacing-s;
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .fileListItemName {
+        font-weight: 500;
+        flex-grow: 1;
     }
 
     .buttonInfo {
         .caption-regular();
         color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-xs;
     }
 }

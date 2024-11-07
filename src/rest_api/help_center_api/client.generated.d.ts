@@ -1231,6 +1231,12 @@ declare namespace Components {
     export interface CreateCustomDomainDto {
       hostname: string;
     }
+    export interface CreateFileIngestionLogDto {
+      filename: string;
+      type: string;
+      size_bytes: number;
+      google_storage_url: string;
+    }
     export interface CreateHelpCenterTranslationDto {
       /**
        * The locale of the translation.
@@ -1546,6 +1552,26 @@ declare namespace Components {
        * acme-support@gorgias.xyz
        */
       email: string;
+    }
+    export interface FileIngestionLogDto {
+      id: number;
+      help_center_id: number;
+      snippets_article_ids: number[];
+      filename: string;
+      type: string;
+      size_bytes: number;
+      google_storage_url: string;
+      status: "FAILED" | "PENDING" | "SUCCESSFUL";
+      meta: {
+        /**
+         * Gorgias account domain name
+         */
+        "x-gorgias-domain": string | null;
+        /**
+         * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
+         */
+        "x-execution-id": string | null;
+      } | null;
     }
     export interface GetHelpCenterDto {
       /**
@@ -2123,6 +2149,14 @@ declare namespace Components {
       usageTotalUsd: number;
       usageUsd: {
       };
+    }
+    export interface RetrieveFileIngestionLogDto {
+      id: number;
+      help_center_id: number;
+      filename: string;
+      google_storage_url: string;
+      status: "FAILED" | "PENDING" | "SUCCESSFUL";
+      uploaded_datetime: string; // date-time
     }
     export interface SignedPostPolicyDto {
       url: string;
@@ -2832,6 +2866,18 @@ declare namespace Paths {
       export type $201 = Components.Schemas.CustomDomain;
     }
   }
+  namespace CreateFileIngestion {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.CreateFileIngestionLogDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.FileIngestionLogDto;
+    }
+  }
   namespace CreateHelpCenter {
     export type RequestBody = Components.Schemas.CreateHelpCenterWithAccountIdDto;
     namespace Responses {
@@ -3000,6 +3046,19 @@ declare namespace Paths {
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
       hostname: Parameters.Hostname;
+    }
+  }
+  namespace DeleteFileIngestion {
+    namespace Parameters {
+      export type FileIngestionId = number;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      file_ingestion_id: Parameters.FileIngestionId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.FileIngestionLogDto;
     }
   }
   namespace DeleteHelpCenter {
@@ -3301,6 +3360,21 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.ExtraHTML;
+    }
+  }
+  namespace GetFileIngestion {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type Ids = number[];
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export interface QueryParameters {
+      ids?: Parameters.Ids;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.RetrieveFileIngestionLogDto[];
     }
   }
   namespace GetHelpCenter {
@@ -4912,6 +4986,30 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
   /**
+   * getFileIngestion - List file ingestion logs
+   */
+  'getFileIngestion'(
+    parameters?: Parameters<Paths.GetFileIngestion.PathParameters & Paths.GetFileIngestion.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetFileIngestion.Responses.$200>
+  /**
+   * createFileIngestion - Create and start file ingestion
+   */
+  'createFileIngestion'(
+    parameters?: Parameters<Paths.CreateFileIngestion.PathParameters> | null,
+    data?: Paths.CreateFileIngestion.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateFileIngestion.Responses.$201>
+  /**
+   * deleteFileIngestion - Delete file ingestion
+   */
+  'deleteFileIngestion'(
+    parameters?: Parameters<Paths.DeleteFileIngestion.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
+  /**
    * listGoogleFonts - List google fonts
    */
   'listGoogleFonts'(
@@ -6007,6 +6105,34 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/file-ingestion']: {
+    /**
+     * createFileIngestion - Create and start file ingestion
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateFileIngestion.PathParameters> | null,
+      data?: Paths.CreateFileIngestion.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateFileIngestion.Responses.$201>
+    /**
+     * getFileIngestion - List file ingestion logs
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetFileIngestion.PathParameters & Paths.GetFileIngestion.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetFileIngestion.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/file-ingestion/{file_ingestion_id}']: {
+    /**
+     * deleteFileIngestion - Delete file ingestion
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteFileIngestion.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DeleteFileIngestion.Responses.$200>
   }
   ['/api/help-center/google-fonts']: {
     /**

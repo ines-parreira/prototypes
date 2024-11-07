@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 
@@ -35,6 +37,24 @@ describe('CheckPlaygroundPrerequisites', () => {
 
         expect(screen.getByRole('alert')).toHaveTextContent(
             'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+        )
+
+        expect(screen.getByText('Add Knowledge')).toHaveAttribute(
+            'to',
+            '/app/automation/shopify/it-shop/ai-agent?section=knowledge'
+        )
+    })
+
+    it('renders MissingKnowledgeSourceAlert with the correct link when the feature flag is on', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('Add Knowledge')).toHaveAttribute(
+            'to',
+            '/app/automation/shopify/it-shop/ai-agent/knowledge'
         )
     })
 

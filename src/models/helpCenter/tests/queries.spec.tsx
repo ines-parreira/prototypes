@@ -20,6 +20,9 @@ import {
     useGetHelpCenterList,
     useGetArticleIngestionLogs,
     useStartArticleIngestion,
+    useCreateFileIngestion,
+    useGetFileIngestion,
+    useDeleteFileIngestion,
 } from '../queries'
 import * as resources from '../resources'
 
@@ -34,6 +37,9 @@ const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
 const getHelpCenterList = jest.spyOn(resources, 'getHelpCenterList')
 const getArticleIngestionLogs = jest.spyOn(resources, 'getArticleIngestionLogs')
 const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
+const createFileIngestion = jest.spyOn(resources, 'createFileIngestion')
+const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
+const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -359,6 +365,108 @@ describe('queries', () => {
                 undefined,
                 {help_center_id: helpCenterId},
                 {links: []},
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useCreateFileIngestion', () => {
+        it('should return correct data on success', async () => {
+            createFileIngestion.mockReturnValue(Promise.resolve(null))
+            const {result, waitFor} = renderHook(
+                () => useCreateFileIngestion(),
+                {wrapper}
+            )
+
+            await result.current.mutateAsync([
+                undefined,
+                {help_center_id: helpCenterId},
+                {
+                    filename: 'my-file.pdf',
+                    type: 'pdf',
+                    size_bytes: 999999,
+                    google_storage_url: 'https://cdn.google.com',
+                },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
+        })
+    })
+
+    describe('useGetFileIngestion', () => {
+        it('should return correct data on success', async () => {
+            getFileIngestion.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const {result, waitFor} = renderHook(
+                () => useGetFileIngestion({help_center_id: helpCenterId}, {}),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should call the api with the correct ids', () => {
+            getFileIngestion.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            renderHook(
+                () =>
+                    useGetFileIngestion(
+                        {help_center_id: helpCenterId, ids: [3, 7, 8]},
+                        {}
+                    ),
+                {
+                    wrapper,
+                }
+            )
+            expect(getFileIngestion).toHaveBeenCalledWith(
+                {},
+                {
+                    help_center_id: 1,
+                    ids: [3, 7, 8],
+                }
+            )
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getFileIngestion.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useGetFileIngestion(
+                        {help_center_id: helpCenterId},
+                        {enabled: false}
+                    ),
+                {
+                    wrapper,
+                }
+            )
+            expect(getFileIngestion).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useDeleteFileIngestion', () => {
+        it('should return correct data on success', async () => {
+            deleteFileIngestion.mockReturnValue(Promise.resolve(null))
+            const {result, waitFor} = renderHook(
+                () => useDeleteFileIngestion(),
+                {wrapper}
+            )
+
+            await result.current.mutateAsync([
+                undefined,
+                {help_center_id: helpCenterId, file_ingestion_id: 34},
             ])
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))

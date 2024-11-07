@@ -16,6 +16,9 @@ import {StoreConfiguration} from 'models/aiAgent/types'
 import {
     useGetHelpCenterList,
     useGetArticleIngestionLogs,
+    useCreateFileIngestion,
+    useDeleteFileIngestion,
+    useGetFileIngestion,
 } from 'models/helpCenter/queries'
 import {AiAgentKnowledgeContainer} from 'pages/automate/aiAgent/AiAgentKnowledgeContainer'
 import {usePublicResourcesPooling} from 'pages/automate/aiAgent/hooks/usePublicResourcesPooling'
@@ -55,6 +58,10 @@ jest.mock('pages/automate/aiAgent/hooks/usePublicResourcesMutation', () => ({
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 const mockUseGetArticleIngestionLogs = assumeMock(useGetArticleIngestionLogs)
+
+const mockUseCreateFileIngestion = assumeMock(useCreateFileIngestion)
+const mockUseGetFileIngestion = assumeMock(useGetFileIngestion)
+const mockUseDeleteFileIngestion = assumeMock(useDeleteFileIngestion)
 
 const mockCreateStoreConfiguration = jest.fn()
 const mockUpsertStoreConfiguration = jest.fn()
@@ -159,6 +166,18 @@ const renderComponent = ({
             {id: 2, status: 'SUCCESSFUL', url: 'http://my-shop.com/knowledge'},
         ],
     } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+    mockUseCreateFileIngestion.mockReturnValue({
+        mutateAsync: jest.fn(),
+    } as unknown as ReturnType<typeof useCreateFileIngestion>)
+
+    mockUseDeleteFileIngestion.mockReturnValue({
+        mutateAsync: jest.fn(),
+    } as unknown as ReturnType<typeof useDeleteFileIngestion>)
+
+    mockUseGetFileIngestion.mockReturnValue({
+        data: [],
+    } as unknown as ReturnType<typeof useGetFileIngestion>)
 
     mockedUsePublicResourcesPooling.mockReturnValue({
         articleIngestionLogsStatus: ['SUCCESSFUL', 'SUCCESSFUL'],

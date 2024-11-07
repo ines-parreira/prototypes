@@ -1,5 +1,5 @@
 import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -34,6 +34,10 @@ export const AiAgentKnowledgeContainer = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const dispatch = useAppDispatch()
+    const [externalFilesIsLoading, setExternalFilesIsLoading] = useState(false)
+    const [hasExternalFiles, setHasExternalFiles] = useState<boolean | null>(
+        null
+    )
 
     const {shopName} = useParams<{
         shopName: string
@@ -149,21 +153,27 @@ export const AiAgentKnowledgeContainer = () => {
         dispatch,
     ])
 
-    const handlePublicURLsChange = useCallback(
-        (publicURLs: string[]) => {
-            setPublicUrls(publicURLs)
+    const handlePublicURLsChange = useCallback((publicURLs: string[]) => {
+        setPublicUrls(publicURLs)
+    }, [])
 
-            // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
-            if (
-                publicURLs.length === 0 &&
-                storeConfiguration?.helpCenterId === null &&
-                storeConfiguration?.deactivatedDatetime === null
-            ) {
-                void deactivateAiAgent()
-            }
-        },
-        [deactivateAiAgent, storeConfiguration]
-    )
+    // Deactivate AI Agent in some situations
+    useEffect(() => {
+        if (
+            hasExternalFiles === false &&
+            publicUrls.length === 0 &&
+            storeConfiguration?.helpCenterId === null &&
+            storeConfiguration?.deactivatedDatetime === null
+        ) {
+            void deactivateAiAgent()
+        }
+    }, [
+        deactivateAiAgent,
+        hasExternalFiles,
+        publicUrls.length,
+        storeConfiguration?.deactivatedDatetime,
+        storeConfiguration?.helpCenterId,
+    ])
 
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return <Loader data-testid="loader" />
@@ -209,14 +219,26 @@ export const AiAgentKnowledgeContainer = () => {
                             />
                         ) : null}
 
-                        <ExternalFilesSection />
+                        {snippetHelpCenter && (
+                            <ExternalFilesSection
+                                helpCenterId={snippetHelpCenter.id}
+                                onLoadingStateChange={(isLoading) =>
+                                    setExternalFilesIsLoading(isLoading)
+                                }
+                                onEmptyStateChange={(isEmpty) =>
+                                    setHasExternalFiles(!isEmpty)
+                                }
+                            />
+                        )}
                     </div>
                 </ConfigurationSection>
 
                 <div className={css.buttons}>
                     <Button
                         intent="primary"
-                        isLoading={isPendingCreateOrUpdate}
+                        isLoading={
+                            isPendingCreateOrUpdate || externalFilesIsLoading
+                        }
                         onClick={onSubmit}
                     >
                         Save Changes
@@ -225,7 +247,11 @@ export const AiAgentKnowledgeContainer = () => {
                     <Button
                         intent="secondary"
                         onClick={resetForm}
-                        isDisabled={!isFormDirty || isPendingCreateOrUpdate}
+                        isDisabled={
+                            !isFormDirty ||
+                            isPendingCreateOrUpdate ||
+                            externalFilesIsLoading
+                        }
                     >
                         Cancel
                     </Button>

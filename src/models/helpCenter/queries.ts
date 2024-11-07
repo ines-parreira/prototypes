@@ -23,6 +23,9 @@ import {
     getArticleIngestionLogs,
     startArticleIngestion,
     deleteArticleIngestionLog,
+    createFileIngestion,
+    getFileIngestion,
+    deleteFileIngestion,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -63,6 +66,15 @@ export const helpCenterKeys = {
         [
             ...helpCenterKeys.detail(helpCenterId),
             'article-ingestion-logs',
+            queryParams,
+        ].filter(Boolean),
+    fileIngestions: (
+        helpCenterId: number,
+        queryParams?: Paths.GetFileIngestion.QueryParameters
+    ) =>
+        [
+            ...helpCenterKeys.detail(helpCenterId),
+            'file-ingestions',
             queryParams,
         ].filter(Boolean),
 }
@@ -357,6 +369,49 @@ export const useDeleteArticleIngestionLog = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             deleteArticleIngestionLog(client, pathParams),
+        ...overrides,
+    })
+}
+
+export const useCreateFileIngestion = (
+    overrides?: MutationOverrides<typeof createFileIngestion>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            createFileIngestion(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useGetFileIngestion = (
+    pathParams: Paths.GetFileIngestion.PathParameters &
+        Paths.GetFileIngestion.QueryParameters,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getFileIngestion>>>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => getFileIngestion(helpCenterClient, pathParams),
+        queryKey: helpCenterKeys.fileIngestions(
+            pathParams.help_center_id,
+            pathParams.ids ? {ids: pathParams.ids} : undefined
+        ),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useDeleteFileIngestion = (
+    overrides?: MutationOverrides<typeof deleteFileIngestion>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteFileIngestion(client, pathParams),
         ...overrides,
     })
 }
