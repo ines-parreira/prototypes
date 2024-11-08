@@ -2,7 +2,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
 import {advancedMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {CouponSummary} from 'models/billing/types'
+import {CouponSummary, ProductType} from 'models/billing/types'
 import {getPlanDescription} from 'models/billing/utils'
 import {assumeMock} from 'utils/testing'
 
@@ -120,6 +120,7 @@ describe('ProductCardForCoupon', () => {
             amount_off_in_cents: null,
             amount_off_decimal: null,
             percent_off: 15,
+            products: [ProductType.Helpdesk],
         }
         render(
             <ProductCardForCoupon

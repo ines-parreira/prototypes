@@ -119,6 +119,7 @@ export type CouponSummary = {
     amount_off_in_cents: number | null
     amount_off_decimal: string | null
     percent_off: number | null
+    products: ProductType[]
 }
 
 type ProductUsage = {
@@ -170,6 +171,7 @@ export type SubscriptionSummary = {
 
 type CustomerSummary = {
     trial_extended_until: string | null // isoformatted datetime
+    coupon: CouponSummary | null
 }
 
 export type CurrentPlans = {

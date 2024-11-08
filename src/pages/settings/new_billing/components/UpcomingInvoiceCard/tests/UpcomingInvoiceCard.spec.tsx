@@ -6,6 +6,7 @@ import React from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     CouponSummary,
+    ProductType,
     ProductUsages,
     SubscriptionStatus,
     UpcomingInvoiceSummary,
@@ -34,6 +35,7 @@ const coupon: CouponSummary = {
     amount_off_in_cents: null,
     amount_off_decimal: null,
     percent_off: 15,
+    products: [ProductType.Helpdesk, ProductType.Automation],
 }
 
 const usages: ProductUsages = {

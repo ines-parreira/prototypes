@@ -15,6 +15,7 @@ import {
     BillingState,
     CouponSummary,
     PlanInterval,
+    ProductType,
     ProductUsages,
     SubscriptionStatus,
     SubscriptionSummary,
@@ -37,6 +38,7 @@ const hdAoCoupon: CouponSummary = {
     amount_off_in_cents: null,
     amount_off_decimal: null,
     percent_off: 15,
+    products: [ProductType.Helpdesk, ProductType.Automation],
 }
 
 const usages: ProductUsages = {
@@ -88,6 +90,7 @@ const paying: BillingState = {
     subscription: subscription,
     customer: {
         trial_extended_until: null,
+        coupon: null,
     },
     current_plans: {
         helpdesk: basicMonthlyHelpdeskPlan,
@@ -108,6 +111,7 @@ const trial: BillingState = {
     },
     customer: {
         trial_extended_until: null,
+        coupon: null,
     },
     current_plans: {
         helpdesk: proMonthlyHelpdeskPlan,

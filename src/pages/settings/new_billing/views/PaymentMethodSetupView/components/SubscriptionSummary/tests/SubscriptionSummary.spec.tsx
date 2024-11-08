@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import {QueryClientProvider} from '@tanstack/react-query'
 import {screen, fireEvent, waitFor} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import useSessionStorage from 'hooks/useSessionStorage'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {
@@ -28,6 +32,7 @@ jest.mock('react-router-dom', () => ({
         push: jest.fn(),
     })),
 }))
+const queryClient = mockQueryClient()
 
 const selectedPlans: SelectedPlans = {
     [ProductType.Helpdesk]: {
@@ -65,7 +70,11 @@ const renderSubscriptionSummary = () => {
         handleSubmit: jest.fn().mockResolvedValue(null),
     }
 
-    const result = renderWithRouter(<SubscriptionSummary {...props} />)
+    const result = renderWithRouter(
+        <QueryClientProvider client={queryClient}>
+            <SubscriptionSummary {...props} />
+        </QueryClientProvider>
+    )
 
     return {
         ...result,
@@ -79,6 +88,9 @@ describe('SubscriptionSummary Component', () => {
         assumeMock(useBillingPlans).mockReturnValue(
             defaultUseBillingPlansMockReturnValue
         )
+        mockFlags({
+            [FeatureFlagKey.BillingSummaryTotalWithCoupons]: false,
+        })
     })
 
     it('should not render if the user is not trialing and there are no selected plans', () => {

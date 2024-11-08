@@ -38,6 +38,7 @@ export enum FeatureFlagKey {
     BillingStripeElementsPaymentIntegration = 'billing-stripe-elements-payment-integration',
     BillingTaxIdField = 'billing-tax-id-field',
     BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
+    BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',
