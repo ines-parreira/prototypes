@@ -35,6 +35,7 @@ describe('FiltersEditableTitle', () => {
                 isEditMode={false}
                 title="Filter title"
                 toggleIsEditMode={() => {}}
+                onChange={jest.fn()}
             />
         )
 
@@ -57,6 +58,7 @@ describe('FiltersEditableTitle', () => {
                     title=""
                     toggleIsEditMode={toggleIsEditModeMock}
                     errorType="non-existent"
+                    onChange={jest.fn()}
                 />
             )
 
@@ -78,6 +80,7 @@ describe('FiltersEditableTitle', () => {
                 title=""
                 toggleIsEditMode={() => {}}
                 errorType="non-existent"
+                onChange={jest.fn()}
             />
         )
 
@@ -97,6 +100,7 @@ describe('FiltersEditableTitle', () => {
                 title="Filter title"
                 toggleIsEditMode={toggleIsEditModeMock}
                 errorType="non-existent"
+                onChange={jest.fn()}
             />
         )
 

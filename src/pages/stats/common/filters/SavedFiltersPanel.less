@@ -1,0 +1,38 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .wrapper {
+        padding: @layout-spacing-s;
+    }
+    .wrapper,
+    .collapse {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .closeIcon,
+    .collapseIcon {
+        color: var(--neutral-grey-4);
+    }
+
+    .titleRow {
+        display: flex;
+        gap: @layout-spacing-xs;
+        justify-content: space-between;
+
+        :nth-child(2) {
+            flex-grow: 1;
+        }
+    }
+
+    .title {
+        flex-grow: 1;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: @layout-spacing-xxs;
+    }
+}

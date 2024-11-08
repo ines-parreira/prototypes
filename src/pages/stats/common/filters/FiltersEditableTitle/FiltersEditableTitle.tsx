@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import InputField from 'pages/common/forms/input/InputField'
@@ -14,6 +14,7 @@ type Props = {
     error?: string
     title: string
     errorType?: 'not-applicable' | 'non-existent'
+    onChange: (value: string) => void
 }
 
 const PLACEHOLDER = 'Name Filter'
@@ -55,12 +56,11 @@ export const FiltersEditableTitle = ({
     isEditMode,
     toggleIsEditMode,
     errorType,
+    onChange,
 }: Props) => {
-    const [value, setValue] = useState(title)
-
     const currentUser = useAppSelector(getCurrentUser)
 
-    const prefix = getPrefixIcon(value)
+    const prefix = getPrefixIcon(title)
     const isCurrentUserAdmin = isAdmin(currentUser)
 
     const tooltipContent = useMemo(
@@ -71,8 +71,8 @@ export const FiltersEditableTitle = ({
     return isEditMode ? (
         <InputField
             inputClassName={classNames(css.title, css.editMode)}
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={title}
+            onChange={onChange}
             placeholder={PLACEHOLDER}
             prefix={prefix}
             error={error}
@@ -83,7 +83,7 @@ export const FiltersEditableTitle = ({
             onClick={() => toggleIsEditMode(true)}
         >
             {prefix}
-            <span className={css.title}>{value}</span>
+            <span className={css.title}>{title}</span>
             {errorType && (
                 <FilterWarningIcon
                     tooltip={tooltipContent}

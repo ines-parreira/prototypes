@@ -102,3 +102,14 @@ export const SavedFilterComponentMap: Record<
         ResolutionCompletenessFilterWithSavedState,
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithSavedState,
 }
+
+export const SAVABLE_FILTERS = [
+    FilterKey.CustomFields,
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    FilterKey.Score,
+    FilterKey.Campaigns,
+    FilterKey.CampaignStatuses,
+]

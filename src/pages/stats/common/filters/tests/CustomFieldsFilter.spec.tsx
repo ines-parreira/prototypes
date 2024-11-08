@@ -454,13 +454,13 @@ describe('CustomFieldsFilterWithSavedState', () => {
                     ...filtersSlice.initialState,
                     savedFilterDraft: {
                         name: 'some filter draft',
-                        filters: [
+                        filter_group: [
                             {
                                 member: FilterKey.CustomFields,
                                 values: [
                                     {
                                         operator: LogicalOperatorEnum.ONE_OF,
-                                        customFieldId: customFieldId,
+                                        custom_field_id: customFieldId,
                                         values: [customFieldValue],
                                     },
                                 ],

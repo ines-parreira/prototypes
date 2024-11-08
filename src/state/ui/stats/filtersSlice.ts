@@ -13,6 +13,7 @@ import {
     StatsFiltersWithLogicalOperator,
     TagsSavedFilter,
 } from 'models/stat/types'
+import {withoutEmptyFilters} from 'pages/stats/common/filters/helpers'
 import {
     fromLegacyStatsFilters,
     isCustomFieldSavedFilter,
@@ -58,7 +59,7 @@ export const filtersSlice = createSlice({
         initialiseSavedFilterDraft(state) {
             state.savedFilterDraft = {
                 name: EMPTY_DRAFT_NAME,
-                filters: [],
+                filter_group: [],
             }
         },
         initialiseSavedFilterDraftFromFilters(
@@ -67,15 +68,17 @@ export const filtersSlice = createSlice({
         ) {
             state.savedFilterDraft = {
                 name: EMPTY_DRAFT_NAME,
-                filters: savedFilterDraftFiltersFromFiltersWithLogicalOperators(
-                    action.payload
-                ),
+                filter_group:
+                    savedFilterDraftFiltersFromFiltersWithLogicalOperators(
+                        action.payload
+                    ),
             }
         },
         initialiseSavedFilterDraftFromSavedFilter(
             state,
             action: PayloadAction<SavedFilter>
         ) {
+            state.appliedSavedFilterId = null
             state.savedFilterDraft = action.payload
         },
         duplicateSavedFilterDraftFromSavedFilter(
@@ -84,22 +87,24 @@ export const filtersSlice = createSlice({
         ) {
             state.savedFilterDraft = {
                 name: `${COPY_OF_DRAFT_NAME}${action.payload.name}`,
-                filters: action.payload.filters,
+                filter_group: action.payload.filter_group,
             }
         },
         clearSavedFilterDraft(state) {
             state.savedFilterDraft = null
         },
-        applySavedFilters(state, action: PayloadAction<number>) {
-            state.appliedSavedFilterId = action.payload
+        applySavedFilter(state, action: PayloadAction<SavedFilter>) {
+            state.appliedSavedFilterId = action.payload.id
+            state.savedFilterDraft = action.payload
         },
         unapplySavedFilter(state) {
             state.appliedSavedFilterId = null
+            state.savedFilterDraft = null
         },
         updateSavedFilterDraftName(state, action: PayloadAction<string>) {
             state.savedFilterDraft = {
                 name: action.payload,
-                filters: state.savedFilterDraft?.filters ?? [],
+                filter_group: state.savedFilterDraft?.filter_group ?? [],
             }
         },
         upsertSavedFilterFilter(
@@ -111,13 +116,13 @@ export const filtersSlice = createSlice({
             if (state.savedFilterDraft === null) {
                 state.savedFilterDraft = {
                     name: EMPTY_DRAFT_NAME,
-                    filters: [action.payload],
+                    filter_group: [action.payload],
                 }
             } else {
-                const otherFilters = state.savedFilterDraft.filters.filter(
+                const otherFilters = state.savedFilterDraft.filter_group.filter(
                     (filter) => filter.member !== action.payload.member
                 )
-                state.savedFilterDraft.filters = [
+                state.savedFilterDraft.filter_group = [
                     action.payload,
                     ...otherFilters,
                 ]
@@ -130,33 +135,46 @@ export const filtersSlice = createSlice({
             if (state.savedFilterDraft === null) {
                 state.savedFilterDraft = {
                     name: EMPTY_DRAFT_NAME,
-                    filters: [
+                    filter_group: [
                         {
                             member: FilterKey.CustomFields,
-                            values: [action.payload],
+                            values: [
+                                {
+                                    ...action.payload,
+                                    custom_field_id:
+                                        action.payload.customFieldId,
+                                },
+                            ],
                         },
                     ],
                 }
             } else {
-                const otherFilters = state.savedFilterDraft.filters.filter(
+                const otherFilters = state.savedFilterDraft.filter_group.filter(
                     (filter) => filter.member !== FilterKey.CustomFields
                 )
 
                 const existingCustomFieldFilter =
-                    state.savedFilterDraft.filters.find(
+                    state.savedFilterDraft.filter_group.find(
                         isCustomFieldSavedFilter
                     )
 
                 const otherValues =
                     existingCustomFieldFilter?.values.filter(
-                        (v) => v.customFieldId !== action.payload.customFieldId
+                        (v) =>
+                            v.custom_field_id !== action.payload.customFieldId
                     ) ?? []
 
                 const updatedFilter: CustomFieldSavedFilter = {
                     member: FilterKey.CustomFields,
-                    values: [...otherValues, action.payload],
+                    values: [
+                        ...otherValues,
+                        {
+                            ...action.payload,
+                            custom_field_id: action.payload.customFieldId,
+                        },
+                    ],
                 }
-                state.savedFilterDraft.filters = [
+                state.savedFilterDraft.filter_group = [
                     updatedFilter,
                     ...otherFilters,
                 ]
@@ -167,8 +185,8 @@ export const filtersSlice = createSlice({
             action: PayloadAction<SavedFilterSupportedFilters>
         ) {
             if (state.savedFilterDraft !== null) {
-                state.savedFilterDraft.filters =
-                    state.savedFilterDraft.filters.filter(
+                state.savedFilterDraft.filter_group =
+                    state.savedFilterDraft.filter_group.filter(
                         (filter) => filter.member !== action.payload.member
                     )
             }
@@ -182,7 +200,7 @@ export const {
     initialiseSavedFilterDraftFromSavedFilter,
     duplicateSavedFilterDraftFromSavedFilter,
     clearSavedFilterDraft,
-    applySavedFilters,
+    applySavedFilter,
     unapplySavedFilter,
     updateSavedFilterDraftName,
     upsertSavedFilterFilter,
@@ -207,7 +225,7 @@ export const getCanSaveFilter = createSelector(
     (state) =>
         state.savedFilterDraft !== null &&
         state.savedFilterDraft.name !== '' &&
-        state.savedFilterDraft.filters.length > 0
+        withoutEmptyFilters(state.savedFilterDraft.filter_group).length > 0
 )
 
 export const getIsSavedFilterApplied = createSelector(

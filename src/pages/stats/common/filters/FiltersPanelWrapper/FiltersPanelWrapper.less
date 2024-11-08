@@ -1,7 +1,16 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
+    .outerWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: calc(@layout-spacing-m / 2);
+    }
+
     .wrapper {
         display: flex;
         justify-content: space-between;
-        gap: 48px;
+        gap: @layout-spacing-xl;
     }
 }

@@ -234,7 +234,7 @@ export const getSavedFiltersWithLogicalOperators = createSelector(
         return {
             period: statsFilters.period,
             ...statsFiltersWithLogicalOperatorsFromSavedFilters(
-                savedFilterDraft?.filters
+                savedFilterDraft?.filter_group
             ),
         }
     }
@@ -249,11 +249,11 @@ export const getCustomFieldFilterById = (customFieldId: number) =>
 export const getCustomFieldSavedFilterById = (customFieldId: number) =>
     createSelector(getSavedFilterDraft, (savedFilterDraft) => {
         const customFieldsFilter: CustomFieldSavedFilter | undefined =
-            savedFilterDraft?.filters.find<CustomFieldSavedFilter>(
+            savedFilterDraft?.filter_group.find<CustomFieldSavedFilter>(
                 isCustomFieldSavedFilter
             )
 
-        return customFieldsFilter?.values.find(
-            (csFilter) => csFilter.customFieldId === customFieldId
-        )
+        return customFieldsFilter?.values
+            .map((v) => ({...v, customFieldId: v.custom_field_id}))
+            .find((csFilter) => csFilter.custom_field_id === customFieldId)
     })

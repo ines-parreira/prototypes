@@ -71,6 +71,11 @@ export interface CustomFieldFilter extends WithLogicalOperator<string> {
     customFieldId: number
 }
 
+export interface SavedFilterCustomFieldFilter
+    extends WithLogicalOperator<string> {
+    custom_field_id: number
+}
+
 export enum TagFilterInstanceId {
     First = 'first',
     Second = 'second',
@@ -135,7 +140,7 @@ export type SavedFilterWithLogicalOperator = {
 
 export type CustomFieldSavedFilter = {
     member: FilterKey.CustomFields
-    values: CustomFieldFilter[]
+    values: SavedFilterCustomFieldFilter[]
 }
 
 export type TagsSavedFilter = {
@@ -154,7 +159,7 @@ export type SavedFilterSupportedFilters =
 
 export type SavedFilterDraft = {
     name: string
-    filters: SavedFilterSupportedFilters[]
+    filter_group: SavedFilterSupportedFilters[]
 }
 
 export type StatsFiltersWithLogicalOperator = {

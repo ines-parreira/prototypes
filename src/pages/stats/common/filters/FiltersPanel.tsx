@@ -1,5 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import _isEqual from 'lodash/isEqual'
+
 import React, {
     ComponentProps,
     ComponentType,
@@ -9,11 +11,13 @@ import React, {
     useMemo,
     useState,
 } from 'react'
+
 import {connect} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import usePrevious from 'hooks/usePrevious'
+
 import {
     FilterComponentKey,
     FilterKey,
@@ -30,12 +34,14 @@ import {FilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
+    getFilterSettings,
 } from 'pages/stats/common/filters/helpers'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+
 import {RootState} from 'state/types'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
@@ -62,8 +68,6 @@ export type FiltersPanelProps = {
         ComponentType<any>
     >
 }
-
-export const UNSUPPORTED_FILTER_PLACEHOLDER = 'placeholder'
 
 export function isFilterTypeWithValues(
     type: FilterKey | FilterComponentKey
@@ -355,48 +359,6 @@ export const FiltersPanelComponent = ({
         []
     )
 
-    return (
-        <FiltersPanelUI
-            optionalFiltersToRender={optionalFiltersToRender}
-            persistentFiltersToRender={persistentFiltersToRender}
-            setActiveFilters={setActiveFilters}
-            activeFilters={activeFilters}
-            filterSettingsOverrides={filterSettingsOverrides}
-            handleOnClick={handleOnClick}
-            filterComponentMap={filterComponentMap}
-        />
-    )
-}
-
-export const FiltersPanel = connect((state: RootState) => ({
-    cleanStatsFilters:
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
-            .cleanStatsFilters,
-    filterComponentMap: FilterComponentMap,
-}))(FiltersPanelComponent)
-
-type FiltersPanelUIProps = {
-    optionalFiltersToRender: ActiveFilter[]
-    persistentFiltersToRender: ActiveFilter[]
-    setActiveFilters: (filters: ActiveFilter[]) => void
-    activeFilters: ActiveFilter[]
-    filterSettingsOverrides?: FilterSettingOverrides
-    handleOnClick: (value: string) => void
-    filterComponentMap: Record<
-        FilterKey | FilterComponentKey,
-        ComponentType<any>
-    >
-}
-
-export const FiltersPanelUI = ({
-    persistentFiltersToRender,
-    optionalFiltersToRender,
-    setActiveFilters,
-    activeFilters,
-    filterSettingsOverrides,
-    filterComponentMap,
-    handleOnClick,
-}: FiltersPanelUIProps) => {
     const options = useMemo(
         () => activeFiltersToOptions(activeFilters),
         [activeFilters]
@@ -455,19 +417,9 @@ export const FiltersPanelUI = ({
     )
 }
 
-const getFilterSettings = (
-    filterKey: string,
-    settings?: {
-        [FilterKey.Period]?: ComponentProps<typeof PeriodFilterWithState>
-        [FilterKey.Channels]?: ComponentProps<typeof ChannelsFilterWithState>
-    }
-) => {
-    switch (filterKey) {
-        case FilterKey.Period:
-            return settings?.[FilterKey.Period]
-        case FilterKey.Channels:
-            return settings?.[FilterKey.Channels]
-        default:
-            return undefined
-    }
-}
+export const FiltersPanel = connect((state: RootState) => ({
+    cleanStatsFilters:
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
+            .cleanStatsFilters,
+    filterComponentMap: FilterComponentMap,
+}))(FiltersPanelComponent)

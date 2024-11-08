@@ -6,6 +6,7 @@ import {
     AggregationWindow,
     CustomFieldFilter,
     CustomFieldSavedFilter,
+    SavedFilterCustomFieldFilter,
     FilterKey,
     LegacyStatsFilters,
     Period,
@@ -216,8 +217,8 @@ export const fromFiltersWithLogicalOperators = (
 
 export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
     statsFilters: StatsFiltersWithLogicalOperator
-): SavedFilterDraft['filters'] =>
-    Object.values(FilterKey).reduce<SavedFilterDraft['filters']>(
+): SavedFilterDraft['filter_group'] =>
+    Object.values(FilterKey).reduce<SavedFilterDraft['filter_group']>(
         (acc, filter) => {
             switch (filter) {
                 case FilterKey.Period:
@@ -244,17 +245,16 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                     ) {
                         acc.push({
                             member: filter,
-                            values: currentFilter.reduce<CustomFieldFilter[]>(
-                                (accumulator, value) => {
-                                    accumulator.push({
-                                        customFieldId: value.customFieldId,
-                                        values: value.values,
-                                        operator: value.operator,
-                                    })
-                                    return accumulator
-                                },
-                                []
-                            ),
+                            values: currentFilter.reduce<
+                                SavedFilterCustomFieldFilter[]
+                            >((accumulator, value) => {
+                                accumulator.push({
+                                    custom_field_id: value.customFieldId,
+                                    values: value.values,
+                                    operator: value.operator,
+                                })
+                                return accumulator
+                            }, []),
                         })
                     }
                     break
@@ -276,14 +276,19 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
     )
 
 export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
-    filters: SavedFilterDraft['filters'] | undefined
+    filters: SavedFilterDraft['filter_group'] | undefined
 ): Omit<StatsFiltersWithLogicalOperator, 'period'> =>
     filters === undefined
         ? {}
         : filters.reduce<Omit<StatsFiltersWithLogicalOperator, 'period'>>(
               (statsFilters, savedFilter) => {
                   if (savedFilter.member === FilterKey.CustomFields) {
-                      statsFilters[savedFilter.member] = savedFilter.values
+                      statsFilters[savedFilter.member] = savedFilter.values.map(
+                          (v) => ({
+                              ...v,
+                              customFieldId: v.custom_field_id,
+                          })
+                      )
                   } else if (savedFilter.member === FilterKey.Tags) {
                       statsFilters[savedFilter.member] = savedFilter.values.map(
                           (filter, index) => ({

@@ -340,12 +340,12 @@ describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
                 {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['123'],
-                    customFieldId: 890,
+                    custom_field_id: 890,
                 },
                 {
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
                     values: [],
-                    customFieldId: 456,
+                    custom_field_id: 456,
                 },
             ],
         })
@@ -362,7 +362,7 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
         const customFieldFilter = {
             operator: LogicalOperatorEnum.ONE_OF,
             values: ['Some::value'],
-            customFieldId: 123,
+            custom_field_id: 123,
         }
         const tagFilter = {
             operator: LogicalOperatorEnum.ONE_OF,
@@ -382,7 +382,7 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
         }
         const savedFiltersDraft: SavedFilterDraft = {
             name: 'someName',
-            filters: [
+            filter_group: [
                 {
                     member: FilterKey.CustomFields,
                     values: [customFieldFilter],
@@ -404,10 +404,12 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
 
         expect(
             statsFiltersWithLogicalOperatorsFromSavedFilters(
-                savedFiltersDraft.filters
+                savedFiltersDraft.filter_group
             )
         ).toEqual({
-            [FilterKey.CustomFields]: [customFieldFilter],
+            [FilterKey.CustomFields]: [
+                {...customFieldFilter, customFieldId: 123},
+            ],
             [FilterKey.Tags]: [
                 {
                     ...tagFilter,

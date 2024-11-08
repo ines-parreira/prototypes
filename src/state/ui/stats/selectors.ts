@@ -67,7 +67,7 @@ export const getStatsFiltersFromSavedFilters = createSelector(
     (statsFilters, savedFilterDraft) => {
         const filtersFromSavedFilter =
             statsFiltersWithLogicalOperatorsFromSavedFilters(
-                savedFilterDraft?.filters ?? []
+                savedFilterDraft?.filter_group ?? []
             )
         return {
             period: statsFilters.cleanStatsFilters.period,

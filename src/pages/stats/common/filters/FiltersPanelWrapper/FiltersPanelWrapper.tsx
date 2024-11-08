@@ -9,10 +9,9 @@ import {
 import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
 import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {SavedFiltersPanel} from 'pages/stats/common/filters/SavedFiltersPanel'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 
 export const FiltersPanelWrapper = ({
-    optionalFilters,
+    optionalFilters = [],
     filterSettingsOverrides,
     persistentFilters,
 }: Omit<
@@ -23,7 +22,7 @@ export const FiltersPanelWrapper = ({
         !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
 
     return (
-        <>
+        <div className={css.outerWrapper}>
             <div className={css.wrapper}>
                 <FiltersPanel
                     filterSettingsOverrides={filterSettingsOverrides}
@@ -31,21 +30,11 @@ export const FiltersPanelWrapper = ({
                     persistentFilters={persistentFilters}
                 />
                 {isAnalyticsSavedFilters && (
-                    <SavedFiltersActions
-                        optionalFilters={optionalFilters}
-                        savedFilters={[]}
-                        onSaveFilters={() => {}}
-                    />
+                    <SavedFiltersActions optionalFilters={optionalFilters} />
                 )}
             </div>
-            {isAnalyticsSavedFilters && (
-                <div>
-                    <CampaignStatsFilters>
-                        <SavedFiltersPanel />
-                    </CampaignStatsFilters>
-                </div>
-            )}
-        </>
+            {isAnalyticsSavedFilters && <SavedFiltersPanel />}
+        </div>
     )
 }
 

@@ -1,13 +1,20 @@
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
 import {
+    CustomFieldSavedFilter,
+    FilterKey,
+    SavedFilterWithLogicalOperator,
+    TagsSavedFilter,
+} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
     filterChannels,
     logSegmentEvent,
+    withoutEmptyFilters,
 } from 'pages/stats/common/filters/helpers'
 import {Channel} from 'services/channels'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 const mockedChannels = [
     {
@@ -87,5 +94,70 @@ describe('logSegmentEvent', () => {
                 logical_operator: null,
             })
         )
+    })
+})
+
+describe('withoutEmptyFilters', () => {
+    const agentsEmptySavedFilter: SavedFilterWithLogicalOperator = {
+        member: FilterKey.Agents,
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: [],
+    }
+    const customFieldEmptySavedFilter: CustomFieldSavedFilter = {
+        member: FilterKey.CustomFields,
+        values: [
+            {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+                custom_field_id: 1,
+            },
+            {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['123'],
+                custom_field_id: 2,
+            },
+        ],
+    }
+    const tagsEmptySavedFilter: TagsSavedFilter = {
+        member: FilterKey.Tags,
+        values: [
+            {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+            },
+            {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: ['A'],
+            },
+        ],
+    }
+    it('should remove filters without values', () => {
+        const savedFilterFilterGroup = [
+            agentsEmptySavedFilter,
+            customFieldEmptySavedFilter,
+            tagsEmptySavedFilter,
+        ]
+
+        expect(withoutEmptyFilters(savedFilterFilterGroup)).toEqual([
+            {
+                member: FilterKey.CustomFields,
+                values: [
+                    {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['123'],
+                        custom_field_id: 2,
+                    },
+                ],
+            },
+            {
+                member: FilterKey.Tags,
+                values: [
+                    {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: ['A'],
+                    },
+                ],
+            },
+        ])
     })
 })

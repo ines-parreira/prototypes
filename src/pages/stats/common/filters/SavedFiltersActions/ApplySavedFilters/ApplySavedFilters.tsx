@@ -1,4 +1,6 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
+
+import {useDispatch} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SavedFilter} from 'models/stat/types'
@@ -9,14 +11,19 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
+import {
+    applySavedFilter,
+    initialiseSavedFilterDraft,
+} from 'state/ui/stats/filtersSlice'
 
 type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
 type Props = {
-    savedFilters: Array<SavedFilterType>
+    savedFilters: Array<SavedFilter>
     isAdmin: boolean
 }
 
+export const CREATE_SAVED_FILTERS_LABEL = 'Create Saved Filters'
 export const NO_FILTERS_CONTENT =
     'No Saved Filters available. Create the first Saved Filter to share across teams'
 export const NOT_ADMIN_CONTENT =
@@ -33,6 +40,20 @@ const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
 const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
+    const dispatch = useDispatch()
+    const createSavedFilterHandler = () => {
+        dispatch(initialiseSavedFilterDraft())
+        setToggleDropdown(false)
+    }
+
+    const applySavedFilterHandler = useCallback(
+        (filter: SavedFilter) => {
+            logSavedFilterSelection(filter)
+            dispatch(applySavedFilter(filter))
+            setToggleDropdown(false)
+        },
+        [dispatch]
+    )
 
     const content = useMemo(() => {
         if (!savedFilters.length) {
@@ -47,7 +68,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             return (
                 <DropdownItem
                     key={filter.id}
-                    onClick={() => logSavedFilterSelection(filter)}
+                    onClick={() => applySavedFilterHandler(filter)}
                     option={{
                         label: filter.name,
                         value: filter.id,
@@ -57,7 +78,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
                 </DropdownItem>
             )
         })
-    }, [savedFilters, isAdmin])
+    }, [savedFilters, isAdmin, applySavedFilterHandler])
 
     return (
         <>
@@ -80,8 +101,12 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             >
                 <DropdownBody>{content}</DropdownBody>
                 <DropdownFooter>
-                    <Button fillStyle="ghost" isDisabled={!isAdmin}>
-                        Create Saved Filters
+                    <Button
+                        fillStyle="ghost"
+                        isDisabled={!isAdmin}
+                        onClick={createSavedFilterHandler}
+                    >
+                        {CREATE_SAVED_FILTERS_LABEL}
                     </Button>
                 </DropdownFooter>
             </Dropdown>

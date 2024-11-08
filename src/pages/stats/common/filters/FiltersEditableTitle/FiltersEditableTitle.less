@@ -1,11 +1,11 @@
 @import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
     .wrapper {
         display: flex;
         align-items: center;
-        margin-top: 5px;
-        gap: 7px;
+        gap: @layout-spacing-xxs;
     }
 
     .title {

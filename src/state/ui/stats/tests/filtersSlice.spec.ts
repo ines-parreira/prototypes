@@ -16,7 +16,7 @@ import {
     statFiltersWithLogicalOperatorsCleanWithPayload,
 } from 'state/ui/stats/actions'
 import {
-    applySavedFilters,
+    applySavedFilter,
     clearSavedFilterDraft,
     COPY_OF_DRAFT_NAME,
     initialiseSavedFilterDraft,
@@ -124,7 +124,7 @@ describe('filtersSlice', () => {
 
             expect(newState.savedFilterDraft).toEqual({
                 name: EMPTY_DRAFT_NAME,
-                filters: [],
+                filter_group: [],
             })
         })
 
@@ -132,7 +132,7 @@ describe('filtersSlice', () => {
             const savedFilter: SavedFilter = {
                 id: 123,
                 name: 'Some name',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const newState = filtersSlice.reducer(
                 initialState,
@@ -141,7 +141,7 @@ describe('filtersSlice', () => {
 
             expect(newState.savedFilterDraft).toEqual({
                 name: `${COPY_OF_DRAFT_NAME}${savedFilter.name}`,
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             })
         })
 
@@ -149,7 +149,7 @@ describe('filtersSlice', () => {
             const savedFilter: SavedFilter = {
                 id: 123,
                 name: 'Some name',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const newState = filtersSlice.reducer(
                 initialState,
@@ -177,7 +177,7 @@ describe('filtersSlice', () => {
 
             expect(newState.savedFilterDraft).toEqual({
                 name: EMPTY_DRAFT_NAME,
-                filters: [
+                filter_group: [
                     {
                         member: FilterKey.Agents,
                         operator: LogicalOperatorEnum.ONE_OF,
@@ -191,7 +191,7 @@ describe('filtersSlice', () => {
             const savedFilter: SavedFilter = {
                 id: 123,
                 name: 'Some name',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const state: FiltersSliceState = {
                 ...initialState,
@@ -207,14 +207,19 @@ describe('filtersSlice', () => {
         })
 
         it('should applySavedFilter', () => {
-            const savedFilterId = 123
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: 'Some name',
+                filter_group: [agentsSavedFilter],
+            }
 
             const newState = filtersSlice.reducer(
                 initialState,
-                applySavedFilters(savedFilterId)
+                applySavedFilter(savedFilter)
             )
 
-            expect(newState.appliedSavedFilterId).toEqual(savedFilterId)
+            expect(newState.appliedSavedFilterId).toEqual(savedFilter.id)
+            expect(newState.savedFilterDraft).toEqual(savedFilter)
         })
 
         it('should unapplySavedFilter', () => {
@@ -240,7 +245,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [],
+                    filter_group: [],
                 },
             }
 
@@ -249,7 +254,7 @@ describe('filtersSlice', () => {
                 upsertSavedFilterFilter(filter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([filter])
+            expect(newState.savedFilterDraft?.filter_group).toEqual([filter])
         })
 
         it('should crate a draft and add a filter upsertSavedFilterFilter', () => {
@@ -269,7 +274,7 @@ describe('filtersSlice', () => {
                 upsertSavedFilterFilter(filter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([filter])
+            expect(newState.savedFilterDraft?.filter_group).toEqual([filter])
         })
 
         it('should update a filter at the beginning upsertSavedFilterFilter', () => {
@@ -277,7 +282,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [agentsSavedFilter],
+                    filter_group: [agentsSavedFilter],
                 },
             }
             const newAgentsSavedFilter = {
@@ -290,7 +295,7 @@ describe('filtersSlice', () => {
                 upsertSavedFilterFilter(newAgentsSavedFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
                 newAgentsSavedFilter,
             ])
         })
@@ -300,7 +305,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [agentsSavedFilter],
+                    filter_group: [agentsSavedFilter],
                 },
             }
 
@@ -309,7 +314,7 @@ describe('filtersSlice', () => {
                 upsertSavedFilterFilter(channelsFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
                 channelsFilter,
                 agentsSavedFilter,
             ])
@@ -331,8 +336,16 @@ describe('filtersSlice', () => {
                 upsertSavedFilterCustomFieldFilter(customFieldFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
-                {member: FilterKey.CustomFields, values: [customFieldFilter]},
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
+                {
+                    member: FilterKey.CustomFields,
+                    values: [
+                        {
+                            ...customFieldFilter,
+                            custom_field_id: customFieldFilter.customFieldId,
+                        },
+                    ],
+                },
             ])
         })
 
@@ -341,7 +354,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [],
+                    filter_group: [],
                 },
             }
             const customFieldFilter = {
@@ -355,8 +368,16 @@ describe('filtersSlice', () => {
                 upsertSavedFilterCustomFieldFilter(customFieldFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
-                {member: FilterKey.CustomFields, values: [customFieldFilter]},
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
+                {
+                    member: FilterKey.CustomFields,
+                    values: [
+                        {
+                            ...customFieldFilter,
+                            custom_field_id: customFieldFilter.customFieldId,
+                        },
+                    ],
+                },
             ])
         })
 
@@ -364,11 +385,11 @@ describe('filtersSlice', () => {
             const currentFilter = {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['Some::value'],
-                customFieldId: 123,
+                custom_field_id: 123,
             }
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
-                filters: [
+                filter_group: [
                     {
                         member: FilterKey.CustomFields,
                         values: [currentFilter],
@@ -390,10 +411,16 @@ describe('filtersSlice', () => {
                 upsertSavedFilterCustomFieldFilter(customFieldFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
                 {
                     member: FilterKey.CustomFields,
-                    values: [currentFilter, customFieldFilter],
+                    values: [
+                        currentFilter,
+                        {
+                            ...customFieldFilter,
+                            custom_field_id: customFieldFilter.customFieldId,
+                        },
+                    ],
                 },
             ])
         })
@@ -402,11 +429,11 @@ describe('filtersSlice', () => {
             const currentFilter = {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['Some::value'],
-                customFieldId: 123,
+                custom_field_id: 123,
             }
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
-                filters: [
+                filter_group: [
                     {
                         member: FilterKey.CustomFields,
                         values: [currentFilter],
@@ -429,10 +456,15 @@ describe('filtersSlice', () => {
                 upsertSavedFilterCustomFieldFilter(customFieldFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
                 {
                     member: FilterKey.CustomFields,
-                    values: [customFieldFilter],
+                    values: [
+                        {
+                            ...customFieldFilter,
+                            custom_field_id: customFieldFilter.customFieldId,
+                        },
+                    ],
                 },
             ])
         })
@@ -442,7 +474,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [agentsSavedFilter],
+                    filter_group: [agentsSavedFilter],
                 },
             }
             const newName = 'newName'
@@ -469,7 +501,7 @@ describe('filtersSlice', () => {
 
             expect(newState.savedFilterDraft).toEqual({
                 name: newName,
-                filters: [],
+                filter_group: [],
             })
         })
 
@@ -484,7 +516,7 @@ describe('filtersSlice', () => {
                 ...initialState,
                 savedFilterDraft: {
                     name: 'someName',
-                    filters: [channelsFilter, agentFilter],
+                    filter_group: [channelsFilter, agentFilter],
                 },
             }
 
@@ -493,7 +525,9 @@ describe('filtersSlice', () => {
                 removeFilterFromSavedFilterDraft(agentFilter)
             )
 
-            expect(newState.savedFilterDraft?.filters).toEqual([channelsFilter])
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
+                channelsFilter,
+            ])
         })
 
         it('should do nothing if no filter on removedSavedFilterFilter', () => {
@@ -519,7 +553,7 @@ describe('filtersSlice', () => {
         it('should return true is savedFilter exists', () => {
             const savedFilterDraft = {
                 name: 'someName',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const state = {
                 ui: {
@@ -538,7 +572,7 @@ describe('filtersSlice', () => {
         it('should return savedFilter', () => {
             const savedFilterDraft = {
                 name: 'someName',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const state = {
                 ui: {
@@ -557,7 +591,7 @@ describe('filtersSlice', () => {
         it('should return true if savedFilter has a name and at least one filter', () => {
             const savedFilterDraft = {
                 name: 'someName',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const state = {
                 ui: {
@@ -576,7 +610,7 @@ describe('filtersSlice', () => {
         it('should return false if savedFilter has no filters', () => {
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
-                filters: [],
+                filter_group: [],
             }
             const state = {
                 ui: {
@@ -595,7 +629,7 @@ describe('filtersSlice', () => {
         it('should return false if savedFilter has empty name', () => {
             const savedFilterDraft: SavedFilterDraft = {
                 name: '',
-                filters: [agentsSavedFilter],
+                filter_group: [agentsSavedFilter],
             }
             const state = {
                 ui: {

@@ -43,6 +43,12 @@ const FiltersPanelWithSavedFilters: StoryFn<
     appQueryClient.setQueryData(customFieldDefinitionKeys.list(activeParams), {
         data: customFieldsMockResponse,
     })
+    appQueryClient.setQueryData(['savedFilters', 'listAnalyticsFilters'], {
+        data: [
+            {id: 1, name: 'Temp Filter 1', filter_group: []},
+            {id: 2, name: 'Temp Filter 2', filter_group: []},
+        ],
+    })
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={configureMockStore([thunk])(defaultState)}>
@@ -60,11 +66,6 @@ Default.args = {
         FilterKey.Channels,
         FilterKey.Agents,
     ],
-    savedFilters: [
-        {id: 1, name: 'Temp Filter 1'},
-        {id: 2, name: 'Temp Filter 2'},
-    ],
-    onSaveFilters: () => {},
 }
 
 export default storyConfig
