@@ -103,6 +103,7 @@ export type CategoryConfig = {
 export type NotificationConfig = {
     type: string
     component: ComponentType<{notification: Notification} & ParentProps>
+    mapType?: (notification: Notification) => string
     workflow: string
     settings?: {
         label: string

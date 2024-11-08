@@ -3,6 +3,7 @@ import TicketNotification from './components/TicketNotification'
 import UserMentionedNotification from './components/UserMentionedNotification'
 
 import {CategoryConfig, Channel, NotificationConfig} from './types'
+import mapTicketMessageCreatedType from './utils/mapTicketMessageCreatedType'
 
 export const channels: Channel[] = [
     {
@@ -168,6 +169,7 @@ export const notifications: Record<string, NotificationConfig> = {
     'ticket-message.created': {
         type: 'ticket-message.created',
         component: TicketNotification,
+        mapType: mapTicketMessageCreatedType,
         workflow: 'ticket-message-created',
         settings: {
             icon: 'api',

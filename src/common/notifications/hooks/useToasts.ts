@@ -1,12 +1,12 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import getNotificationSound from 'common/notifications/utils/getNotificationSound'
 import useAppSelector from 'hooks/useAppSelector'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
 import {getNotificationSettings} from 'state/currentUser/selectors'
 
 import {Notification} from '../types'
+import getNotificationConfig from '../utils/getNotificationConfig'
 
 import useNotifications from './useNotifications'
 
@@ -45,7 +45,11 @@ export default function useToasts() {
 
     const handleNotificationReceived = useCallback(
         (notification: Notification) => {
-            const sound = getNotificationSound(notification, eventSettings)
+            const config = getNotificationConfig(notification)
+            let sound = eventSettings[config.workflow]?.sound
+            if (sound === undefined) {
+                sound = defaultSound.sound
+            }
             if (sound) {
                 notificationSounds.play(sound, notificationVolume)
             }

@@ -2,8 +2,8 @@ import React, {MouseEvent, useCallback} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
-import {notifications} from '../data'
 import {Notification} from '../types'
+import getNotificationConfig from '../utils/getNotificationConfig'
 
 import css from './Toast.less'
 
@@ -22,7 +22,7 @@ export default function Toast({notification, onClick, onDismiss}: Props) {
         [onDismiss]
     )
 
-    const config = notifications[notification.type]
+    const config = getNotificationConfig(notification)
     if (!config) return null
 
     const Component = config.component

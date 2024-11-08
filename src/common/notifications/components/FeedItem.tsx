@@ -4,8 +4,8 @@ import React from 'react'
 import IconButton from 'pages/common/components/button/IconButton'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
-import {notifications} from '../data'
 import {Notification} from '../types'
+import getNotificationConfig from '../utils/getNotificationConfig'
 
 import css from './FeedItem.less'
 
@@ -20,7 +20,7 @@ export default React.memo(function FeedItem({
     onClick,
     onToggleRead,
 }: Props) {
-    const config = notifications[notification.type]
+    const config = getNotificationConfig(notification)
     if (!config) return null
 
     const Component = config.component
