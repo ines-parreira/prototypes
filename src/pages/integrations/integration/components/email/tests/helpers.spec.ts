@@ -21,6 +21,7 @@ import {
     isSendgridEmailIntegration,
     isSingleSenderVerificationInProgress,
     isSingleSenderVerified,
+    parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
     removeDomainFromDNSRecord,
 } from '../helpers'
@@ -419,49 +420,66 @@ describe('helpers', () => {
                 records
             )
         })
-        it('removes the trailing dot from current values of CNAME records', async () => {
-            mockedServer.onGet('https://dns.google/resolve').reply((config) => {
-                const {name} = config.params as {
-                    name: string
-                }
-                return [
-                    200,
-                    {
-                        Status: 0,
-                        Answer: [
-                            {
-                                name: name,
-                                TTL: 100,
-                                type: 5,
-                                data: `resolved.${name}.with-trailing-dot.`,
-                            },
-                        ],
-                    },
-                ]
-            })
+    })
 
+    describe('parseRecordsCurrentValues', () => {
+        it('should remove dots from CNAME records current value', () => {
             const records = [
                 {
                     host: 'gor._domainkey.gorgias.com',
                     record_type: 'CNAME',
+                    current_values: ['resolved.gor._domainkey.gorgias.com.'],
                 },
                 {
                     host: 'gor2._domainkey.gorgias.com',
                     record_type: 'CNAME',
+                    current_values: ['resolved.gor2._domainkey.gorgias.com.'],
                 },
                 {
                     host: 'em6641.gorgias.com',
                     record_type: 'CNAME',
+                    current_values: ['resolved.em6641.gorgias.com.'],
                 },
             ] as DomainDNSRecord[]
 
-            const populatedRecords =
-                await populateCurrentValuesForDNSRecords(records)
-            populatedRecords.forEach((record) => {
+            const parsedRecords = parseRecordsCurrentValues(records)
+            parsedRecords.forEach((record) => {
                 expect(record.current_values).toEqual([
-                    `resolved.${record.host}.with-trailing-dot`,
+                    `resolved.${record.host}`,
                 ])
             })
+        })
+
+        it('should remove the priority from MX records current value', () => {
+            const records = [
+                {
+                    host: 'gorgias.com',
+                    record_type: 'MX',
+                    current_values: ['10 mx1.gorgias.com.'],
+                },
+            ] as DomainDNSRecord[]
+
+            const parsedRecords = parseRecordsCurrentValues(records)
+
+            expect(parsedRecords[0].current_values).toEqual([
+                'mx1.gorgias.com.',
+            ])
+        })
+
+        it('should return the same current values for TXT records', () => {
+            const records = [
+                {
+                    host: 'gorgias.com',
+                    record_type: 'TXT',
+                    current_values: ['v=spf1 include:_spf.google.com ~all'],
+                },
+            ] as DomainDNSRecord[]
+
+            const parsedRecords = parseRecordsCurrentValues(records)
+
+            expect(parsedRecords[0].current_values).toEqual([
+                'v=spf1 include:_spf.google.com ~all',
+            ])
         })
     })
 })

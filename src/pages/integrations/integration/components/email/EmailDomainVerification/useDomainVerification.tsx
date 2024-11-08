@@ -12,7 +12,10 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {populateCurrentValuesForDNSRecords} from '../helpers'
+import {
+    parseRecordsCurrentValues,
+    populateCurrentValuesForDNSRecords,
+} from '../helpers'
 
 const DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS = 60
 const DOMAIN_REFETCH_INTERVAL = 5000
@@ -69,9 +72,11 @@ export function useDomainVerification(
                 return
             }
 
-            const records = await populateCurrentValuesForDNSRecords(
-                domain.data?.sending_dns_records ?? []
-            )
+            const recordsWithCurrentValues =
+                await populateCurrentValuesForDNSRecords(
+                    domain.data?.sending_dns_records ?? []
+                )
+            const records = parseRecordsCurrentValues(recordsWithCurrentValues)
 
             setDomain({
                 ...domain,

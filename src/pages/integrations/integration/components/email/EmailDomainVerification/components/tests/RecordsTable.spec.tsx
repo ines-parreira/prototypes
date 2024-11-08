@@ -2,10 +2,16 @@ import {EmailDomain} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import {assumeMock} from 'utils/testing'
+
 import * as helpers from '../../../helpers'
 import * as hook from '../../useDomainVerification'
-
+import RecordDiffStatus from '../RecordDiffStatus'
 import RecordsTable from '../RecordsTable'
+
+jest.mock('../RecordDiffStatus')
+
+const RecordDiffStatusMock = assumeMock(RecordDiffStatus)
 
 const domain: EmailDomain = {
     name: 'gorgias.com',
@@ -52,6 +58,10 @@ const defaultHookState: hook.UseDomainVerificationRequestHookResult = {
 }
 
 describe('RecordsTable component', () => {
+    beforeEach(() => {
+        RecordDiffStatusMock.mockReturnValue(<div>StatusDiff</div>)
+    })
+
     it('should render a list of DNS records (with the domain names replaced)', () => {
         jest.spyOn(hook, 'useDomainVerification').mockImplementation(
             () => defaultHookState
@@ -69,11 +79,7 @@ describe('RecordsTable component', () => {
 
         expect(screen.getByText('mx.sendgrid.desired-a')).toBeInTheDocument()
         expect(screen.getByText('mx.sendgrid.desired-b')).toBeInTheDocument()
-        expect(screen.getByText('mx.sendgrid.current-a')).toBeInTheDocument()
-        expect(screen.getByText('mx.sendgrid.current-b')).toBeInTheDocument()
-
-        expect(screen.getAllByText('check_circle')).toHaveLength(2)
-        expect(screen.getAllByText('close')).toHaveLength(1)
+        expect(screen.getAllByText('StatusDiff')).toHaveLength(3)
     })
 
     it('should populate the current values for the DNS records', () => {

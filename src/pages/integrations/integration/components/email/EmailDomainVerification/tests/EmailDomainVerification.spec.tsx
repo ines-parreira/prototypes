@@ -11,8 +11,10 @@ import thunk from 'redux-thunk'
 import {UserRole} from 'config/types/user'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 import * as helpers from '../../helpers'
+import RecordsTable from '../components/RecordsTable'
 import EmailDomainVerification from '../EmailDomainVerification'
 import * as hook from '../useDomainVerification'
 
@@ -21,6 +23,11 @@ const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock(
+    'pages/integrations/integration/components/email/EmailDomainVerification/components/RecordsTable'
+)
+
+const RecordsTableMock = assumeMock(RecordsTable)
 
 describe('<EmailDomainVerification/>', () => {
     const minProps: ComponentProps<typeof EmailDomainVerification> = {
@@ -62,6 +69,10 @@ describe('<EmailDomainVerification/>', () => {
         verifyDomain: jest.fn(),
         deleteDomain: jest.fn(),
     }
+
+    beforeEach(() => {
+        RecordsTableMock.mockReturnValue(<div>RecordsTable</div>)
+    })
 
     const renderComponent = (props = {}) =>
         render(
@@ -123,10 +134,13 @@ describe('<EmailDomainVerification/>', () => {
                 'The domain gorgias.com has been verified.'
             )
 
-            expect(screen.getByText('txt')).toBeInTheDocument()
-            expect(screen.getByText('m1._domainkey')).toBeInTheDocument()
-            expect(screen.getByText('k=rsa; p=EXPECTED')).toBeInTheDocument()
-            expect(screen.getByText('k=rsa; p=CURRENT')).toBeInTheDocument()
+            expect(screen.getByText('RecordsTable')).toBeInTheDocument()
+            expect(RecordsTableMock).toHaveBeenCalledWith(
+                {
+                    domainName: 'gorgias.com',
+                },
+                {}
+            )
         })
 
         it('should render the correct records list page when domain is not verified', () => {
@@ -143,10 +157,13 @@ describe('<EmailDomainVerification/>', () => {
                 'The domain gorgias.com has not yet been verified.'
             )
 
-            expect(screen.getByText('txt')).toBeInTheDocument()
-            expect(screen.getByText('m1._domainkey')).toBeInTheDocument()
-            expect(screen.getByText('k=rsa; p=EXPECTED')).toBeInTheDocument()
-            expect(screen.getByText('k=rsa; p=CURRENT')).toBeInTheDocument()
+            expect(screen.getByText('RecordsTable')).toBeInTheDocument()
+            expect(RecordsTableMock).toHaveBeenCalledWith(
+                {
+                    domainName: 'gorgias.com',
+                },
+                {}
+            )
         })
     })
 

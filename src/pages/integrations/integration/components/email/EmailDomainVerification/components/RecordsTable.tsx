@@ -17,7 +17,7 @@ type Props = {
 }
 
 const RecordsTable = ({domainName}: Props) => {
-    const {domain, isPending, isRequested} = useDomainVerification(domainName)
+    const {domain} = useDomainVerification(domainName)
 
     const records = removeDomainFromDNSRecords(
         domain?.data.sending_dns_records ?? [],
@@ -28,25 +28,16 @@ const RecordsTable = ({domainName}: Props) => {
         <TableWrapper className={css.recordsTable}>
             <TableHead>
                 <HeaderCellProperty
-                    title="Status"
-                    className={css.statusHeader}
-                />
-                <HeaderCellProperty
                     title="Type"
                     className={css.recordTypeHeader}
                 />
                 <HeaderCellProperty title="Host" />
                 <HeaderCellProperty title="Value" />
-                <HeaderCellProperty title="Current Values" />
+                <HeaderCellProperty title="Status" />
             </TableHead>
             <TableBody>
                 {records.map((record: EmailDNSRecord, index: number) => (
-                    <RecordItem
-                        key={index}
-                        record={record}
-                        isPending={isPending}
-                        isRequested={isRequested}
-                    />
+                    <RecordItem key={index} record={record} />
                 ))}
             </TableBody>
         </TableWrapper>

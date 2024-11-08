@@ -129,6 +129,29 @@ export function removeDomainFromDNSRecords(
     return records.map((record) => removeDomainFromDNSRecord(record, domain))
 }
 
+export const parseRecordsCurrentValues = (
+    records: DomainDNSRecord[]
+): DomainDNSRecord[] => {
+    return records.map((record) => {
+        const parsedValues = record.current_values?.map((value) => {
+            switch (record.record_type.toLowerCase()) {
+                case DNSRecordType.CNAME:
+                    return value.replace(/\.$/, '')
+                case DNSRecordType.MX: {
+                    const [, host] = value.split(' ')
+
+                    return host
+                }
+                case DNSRecordType.TXT:
+                default:
+                    return value
+            }
+        })
+
+        return {...record, current_values: parsedValues}
+    })
+}
+
 export async function populateCurrentValuesForDNSRecords(
     records: DomainDNSRecord[]
 ): Promise<DomainDNSRecord[]> {
@@ -141,12 +164,8 @@ export async function populateCurrentValuesForDNSRecords(
                             return {
                                 ...record,
                                 current_values:
-                                    response?.map((answer) =>
-                                        record.record_type.toLowerCase() ===
-                                        DNSRecordType.CNAME
-                                            ? answer.data.replace(/\.$/, '')
-                                            : answer.data
-                                    ) ?? [],
+                                    response?.map((answer) => answer.data) ??
+                                    [],
                             }
                         }
 

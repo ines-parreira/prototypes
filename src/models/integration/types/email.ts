@@ -59,7 +59,7 @@ export type DomainDNSRecord = {
     record_type: string
     host: string
     value: string
-    current_values: Array<string>
+    current_values?: Array<string>
 }
 
 export type EmailDomain = {

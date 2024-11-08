@@ -18,7 +18,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {populateCurrentValuesForDNSRecords} from '../../helpers'
+import {
+    populateCurrentValuesForDNSRecords,
+    parseRecordsCurrentValues,
+} from '../../helpers'
 import {
     UseDomainVerificationRequestHookOptions,
     useDomainVerification,
@@ -37,9 +40,13 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 const getDomainMock = assumeMock(getEmailIntegrationDomain)
 const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
 
-assumeMock(populateCurrentValuesForDNSRecords).mockImplementation((records) =>
+const populateCurrentValuesForDNSRecordsMock = assumeMock(
+    populateCurrentValuesForDNSRecords
+)
+populateCurrentValuesForDNSRecordsMock.mockImplementation((records) =>
     Promise.resolve(records)
 )
+const parseRecordsCurrentValuesMock = assumeMock(parseRecordsCurrentValues)
 
 const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
     name: 'gorgias.com',
@@ -74,6 +81,7 @@ describe('useDomainVerification()', () => {
     beforeEach(() => {
         queryClient.clear()
         localStorage.clear()
+        parseRecordsCurrentValuesMock.mockImplementation((records) => records)
     })
 
     it('should have an initial state', async () => {
@@ -130,6 +138,12 @@ describe('useDomainVerification()', () => {
             getDomainMock.mockReturnValue(
                 Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
             )
+            parseRecordsCurrentValuesMock.mockImplementation((records) =>
+                records.map((record) => ({
+                    ...record,
+                    current_values: ['parsed'],
+                }))
+            )
 
             const {result, waitForValueToChange} = render()
 
@@ -137,7 +151,19 @@ describe('useDomainVerification()', () => {
             expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
                 domain.data.sending_dns_records
             )
-            expect(result.current.domain).toEqual(domain)
+            expect(parseRecordsCurrentValues).toHaveBeenCalledWith(
+                domain.data.sending_dns_records
+            )
+            const parsedRecords =
+                parseRecordsCurrentValuesMock.mock.results.slice(-1)[0].value
+
+            expect(result.current.domain).toEqual({
+                ...domain,
+                data: {
+                    ...domain.data,
+                    sending_dns_records: parsedRecords,
+                },
+            })
         })
 
         it('should call populate with an empty array if records are undefined', async () => {
