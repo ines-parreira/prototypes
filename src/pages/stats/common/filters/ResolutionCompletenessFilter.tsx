@@ -12,14 +12,10 @@ import {
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
-import {
-    getPageStatsFiltersWithLogicalOperators,
-    getSavedFiltersWithLogicalOperators,
-} from 'state/stats/selectors'
+import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 const COMPLETION_OPTIONS = [
     {value: '1', label: 'Complete'},
@@ -136,21 +132,5 @@ export const ResolutionCompletenessFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
-)(ResolutionCompletenessFilter)
-
-export const ResolutionCompletenessFilterWithSavedState = connect(
-    (state: RootState) => ({
-        value: getSavedFiltersWithLogicalOperators(state)[
-            FilterKey.ResolutionCompleteness
-        ],
-    }),
-    {
-        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
-            upsertSavedFilterFilter({
-                member: FilterKey.ResolutionCompleteness,
-                operator: filter.operator,
-                values: filter.values.map(String),
-            }),
     }
 )(ResolutionCompletenessFilter)

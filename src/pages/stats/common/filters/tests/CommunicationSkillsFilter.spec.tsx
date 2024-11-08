@@ -16,7 +16,6 @@ import {
 import {
     CommunicationSkillsFilter,
     CommunicationSkillsFilterWithState,
-    CommunicationSkillsFilterWithSavedState,
     MAX_SCORE_VALUE,
 } from 'pages/stats/common/filters/CommunicationSkillsFilter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
@@ -260,25 +259,6 @@ describe('CommunicationSkillsFilter', () => {
 
             renderWithStore(
                 <CommunicationSkillsFilterWithState />,
-                defaultState
-            )
-
-            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
-
-            expect(
-                screen.getByText(FilterLabels[FilterKey.CommunicationSkills])
-            ).toBeInTheDocument()
-            expect(spy).toHaveBeenCalled()
-        })
-    })
-
-    describe('CommunicationSkillsFilterWithSavedState', () => {
-        it('should render CommunicationSkillsFilterWithSavedState component', () => {
-            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
-
-            renderWithStore(
-                <CommunicationSkillsFilterWithSavedState />,
                 defaultState
             )
 

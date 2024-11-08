@@ -132,8 +132,6 @@ export type SavedFilterWithLogicalOperator = {
         | FilterKey.LocaleCodes
         | FilterKey.Score
         | FilterKey.SlaPolicies
-        | FilterKey.CommunicationSkills
-        | FilterKey.ResolutionCompleteness
     operator: LogicalOperatorEnum
     values: string[]
 }

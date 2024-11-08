@@ -187,6 +187,8 @@ describe('FiltersPanel', () => {
         FilterKey.LocaleCodes,
         FilterKey.Period,
         FilterKey.SlaPolicies,
+        FilterKey.CommunicationSkills,
+        FilterKey.ResolutionCompleteness,
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.CustomField,
         FilterComponentKey.PhoneIntegrations,
