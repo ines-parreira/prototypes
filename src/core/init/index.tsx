@@ -1,3 +1,4 @@
+import './initNotifications'
 import './initQueryClient'
 import './initSocketManager'
 

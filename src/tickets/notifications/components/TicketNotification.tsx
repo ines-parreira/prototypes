@@ -1,17 +1,13 @@
 import React from 'react'
 
-import {Notification} from '../types'
-import Excerpt from './Excerpt'
-import NotificationContent from './NotificationContent'
-import type {ParentProps} from './NotificationContent'
-import Subject from './Subject'
-import Subtitle from './Subtitle'
+import {Content, Excerpt, Subject, Subtitle} from 'common/notifications'
+import type {ContentProps, Notification} from 'common/notifications'
 
 type Props = {
     notification: Notification
-} & ParentProps
+} & ContentProps
 
-const subIcons: Record<string, ParentProps['subIcon']> = {
+const subIcons: Record<string, ContentProps['subIcon']> = {
     'ticket.assigned': {family: 'fill', name: 'person'},
     'ticket.snooze-expired': {name: 'snooze'},
 }
@@ -27,7 +23,7 @@ export default function TicketNotification({notification, ...props}: Props) {
     const {sender, ticket} = notification.payload
 
     return (
-        <NotificationContent
+        <Content
             {...props}
             icon={{status: ticket.status, type: ticket.channel}}
             subIcon={subIcons[notification.type]}
@@ -45,6 +41,6 @@ export default function TicketNotification({notification, ...props}: Props) {
                 )}
             </Subtitle>
             {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
-        </NotificationContent>
+        </Content>
     )
 }

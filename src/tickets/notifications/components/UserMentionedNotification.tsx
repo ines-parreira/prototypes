@@ -1,15 +1,11 @@
 import React from 'react'
 
-import type {Notification} from '../types'
-import Excerpt from './Excerpt'
-import NotificationContent from './NotificationContent'
-import type {ParentProps} from './NotificationContent'
-import Subject from './Subject'
-import Subtitle from './Subtitle'
+import {Content, Excerpt, Subject, Subtitle} from 'common/notifications'
+import type {ContentProps, Notification} from 'common/notifications'
 
 type Props = {
     notification: Notification
-} & ParentProps
+} & ContentProps
 
 export default function UserMentionedNotification({
     notification,
@@ -20,7 +16,7 @@ export default function UserMentionedNotification({
     const {sender, ticket} = notification.payload
 
     return (
-        <NotificationContent
+        <Content
             {...props}
             icon={{type: ticket.channel}}
             subIcon={{color: '--feedback-warning-3', name: 'alternate_email'}}
@@ -38,6 +34,6 @@ export default function UserMentionedNotification({
                 <Subject>{ticket.subject}</Subject>
             </Subtitle>
             {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
-        </NotificationContent>
+        </Content>
     )
 }

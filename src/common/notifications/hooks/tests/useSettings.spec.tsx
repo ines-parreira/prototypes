@@ -30,6 +30,45 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 const submitSettingMock = submitSetting as jest.Mock
 const useAppSelectorMock = useAppSelector as jest.Mock
 
+jest.mock('../../data', () => ({
+    ...jest.requireActual<typeof import('../../data')>('../../data'),
+    categories: [
+        {
+            type: 'ticket-updates',
+            label: 'Ticket updates',
+            description: 'Get notified when one of these events happen:',
+            typeLabel: 'Event',
+            notifications: ['legacy-chat-and-messaging', 'user.mentioned'],
+        },
+        {
+            type: 'empty-category',
+            label: 'Empty category',
+            description: 'Category to test a category with no notifications',
+            typeLabel: 'Event',
+        },
+    ],
+    notifications: {
+        'legacy-chat-and-messaging': {
+            type: 'legacy-chat-and-messaging',
+            component: () => null,
+            workflow: '',
+            settings: {
+                type: 'ticket-updates',
+                label: 'Chat & messaging tickets',
+            },
+        },
+        'user.mentioned': {
+            type: 'user.mentioned',
+            component: () => null,
+            workflow: 'user-mentioned',
+            settings: {
+                type: 'ticket-updates',
+                label: 'Mentioned in an internal note',
+            },
+        },
+    },
+}))
+
 const notificationPreferences = {
     data: {
         notification_sound: {

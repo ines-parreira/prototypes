@@ -77,6 +77,23 @@ jest.mock(
         }) as Record<string, unknown>
 )
 
+jest.mock(
+    '../FeedItem',
+    () =>
+        ({
+            onClick,
+            onToggleRead,
+        }: {
+            onClick: () => void
+            onToggleRead: () => void
+        }) => (
+            <div onClick={onClick}>
+                <p>You’ve been assigned to a ticket</p>
+                <button onClick={onToggleRead}>check_box</button>
+            </div>
+        )
+)
+
 describe('<Button />', () => {
     beforeEach(() => {
         mockUseFeedStore.mockReturnValue(0)

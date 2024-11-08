@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
 
-import type {Notification} from '../../types'
+import type {Notification} from 'common/notifications'
+
 import mapTicketMessageCreatedType from '../mapTicketMessageCreatedType'
 
 describe('mapTicketMessageCreatedType', () => {

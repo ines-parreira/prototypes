@@ -14,14 +14,21 @@ import {getNotificationSettings} from 'state/currentUser/selectors'
 import {categories, channels, notifications} from '../data'
 import type {NotificationConfig, Settings} from '../types'
 
-const notificationsWithSettings = categories
-    .reduce((acc, c) => [...acc, ...(c.notifications || [])], [] as string[])
-    .map((n) => notifications[n])
-
 export default function useSettings() {
     const dispatch = useAppDispatch()
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)
+
+    const notificationsWithSettings = useMemo(
+        () =>
+            categories
+                .reduce(
+                    (acc, c) => [...acc, ...(c.notifications || [])],
+                    [] as string[]
+                )
+                .map((n) => notifications[n]),
+        []
+    )
 
     const [{loading: isFetchingKnockPreferences}, getKnockPreferences] =
         useAsyncFn(async () => {
@@ -90,7 +97,7 @@ export default function useSettings() {
         }
 
         setSettings(setting)
-    }, [getKnockPreferences, allSettings])
+    }, [allSettings, getKnockPreferences, notificationsWithSettings])
 
     useEffectOnce(() => {
         void initializeSettings()
@@ -215,7 +222,13 @@ export default function useSettings() {
         ])
 
         logEvent(SegmentEvent.NotificationSettingsUpdated, settings)
-    }, [allSettings, dispatch, knockClient, settings])
+    }, [
+        allSettings,
+        dispatch,
+        knockClient,
+        notificationsWithSettings,
+        settings,
+    ])
 
     return useMemo(
         () => ({

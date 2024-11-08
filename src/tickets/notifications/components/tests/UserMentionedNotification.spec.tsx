@@ -2,8 +2,8 @@ import {render} from '@testing-library/react'
 import React from 'react'
 
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import type {Notification} from 'common/notifications'
 
-import type {Notification} from '../../types'
 import UserMentionedNotification from '../UserMentionedNotification'
 
 const notification = {

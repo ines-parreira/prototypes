@@ -2,15 +2,12 @@ import React from 'react'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 
-import type {Notification} from '../types'
-import Excerpt from './Excerpt'
-import NotificationContent from './NotificationContent'
-import type {ParentProps} from './NotificationContent'
-import Subtitle from './Subtitle'
+import {Content, Excerpt, Subtitle} from 'common/notifications'
+import type {ContentProps, Notification} from 'common/notifications'
 
 type Props = {
     notification: Notification
-} & ParentProps
+} & ContentProps
 
 export default function DomainVerificationNotification({
     notification,
@@ -21,7 +18,7 @@ export default function DomainVerificationNotification({
     const {domain} = notification.payload
 
     return (
-        <NotificationContent
+        <Content
             {...props}
             icon={{type: TicketMessageSourceType.SystemMessage}}
             title="Domain verification complete"
@@ -34,6 +31,6 @@ export default function DomainVerificationNotification({
                 Your domain has been verified! You can now send emails with
                 Gorgias using addresses ending in @{domain}.
             </Excerpt>
-        </NotificationContent>
+        </Content>
     )
 }

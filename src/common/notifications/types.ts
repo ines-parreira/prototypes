@@ -106,6 +106,7 @@ export type NotificationConfig = {
     mapType?: (notification: Notification) => string
     workflow: string
     settings?: {
+        type: string
         label: string
         icon?: string
         tooltip?: string

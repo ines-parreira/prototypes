@@ -1,7 +1,8 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import type {Notification} from '../../types'
+import type {Notification} from 'common/notifications'
+
 import DomainVerificationNotification from '../DomainVerificationNotification'
 
 const notification = {
