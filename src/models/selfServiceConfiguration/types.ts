@@ -127,7 +127,7 @@ export type SelfServiceConfiguration = {
     shopName: string
     createdDatetime: string
     updatedDatetime: string
-    deactivatedDatetime: Maybe<string>
+    deletedDatetime: Maybe<string>
     reportIssuePolicy: SelfServiceConfigurationReportIssuePolicy
     trackOrderPolicy: SelfServiceConfigurationTrackOrderPolicy
     cancelOrderPolicy: SelfServiceConfigurationCancelOrderPolicy

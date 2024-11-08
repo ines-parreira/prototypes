@@ -62,7 +62,7 @@ const mockSelfServiceConfigurations: SelfServiceConfiguration = {
     shopName: 'test-shop',
     createdDatetime: '2023-11-15 19:00:00.000000',
     updatedDatetime: '2023-11-15 19:00:00.000000',
-    deactivatedDatetime: null,
+    deletedDatetime: null,
     reportIssuePolicy: {
         enabled: true,
         cases: [],

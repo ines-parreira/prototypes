@@ -31,7 +31,7 @@ export const selfServiceConfigurationFixture = {
     shopName: 'acme',
     createdDatetime: '2023-02-21T19:21:06.804Z',
     updatedDatetime: '2023-02-21T19:21:06.804Z',
-    deactivatedDatetime: null,
+    deletedDatetime: null,
     reportIssuePolicy: {
         cases: [],
         enabled: true,

@@ -25,7 +25,7 @@ const createSelfServiceConfigurationFixtures = (
         shopName: `mystore${i + 1}`,
         createdDatetime: '2021-01-26T00:29:00Z',
         updatedDatetime: '2021-01-26T00:29:30Z',
-        deactivatedDatetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
+        deletedDatetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
         reportIssuePolicy: {
             enabled: false,
             cases: [],

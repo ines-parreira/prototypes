@@ -32,7 +32,7 @@ export const AutoReplyWismoEditor = ({
         () =>
             selfServiceConfigurations?.find(
                 (configuration) =>
-                    !configuration.deactivatedDatetime &&
+                    !configuration.deletedDatetime &&
                     configuration.trackOrderPolicy.enabled &&
                     !configuration.trackOrderPolicy.unfulfilledMessage?.text
             ),

@@ -9,7 +9,7 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
     shopName: 'mystore',
     createdDatetime: '2021-02-07T06:07:46.097905+00:00',
     updatedDatetime: '2021-02-07T09:07:46.097905+00:00',
-    deactivatedDatetime: null,
+    deletedDatetime: null,
     reportIssuePolicy: {
         enabled: false,
         cases: [],
@@ -36,7 +36,7 @@ export const selfServiceConfiguration2: SelfServiceConfiguration = {
     shopName: 'otherstore',
     createdDatetime: '2021-02-20T08:15:46.097905+00:00',
     updatedDatetime: '2021-02-20T08:20:46.097905+00:00',
-    deactivatedDatetime: '2021-02-20T08:30:46.097905+00:00',
+    deletedDatetime: '2021-02-20T08:30:46.097905+00:00',
     reportIssuePolicy: {
         enabled: true,
         cases: [],

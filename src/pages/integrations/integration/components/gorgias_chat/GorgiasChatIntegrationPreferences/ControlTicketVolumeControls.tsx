@@ -46,7 +46,7 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
         isLoading ||
         !!(
             articleRecommendationEnabled &&
-            !selfServiceConfiguration?.deactivatedDatetime &&
+            !selfServiceConfiguration?.deletedDatetime &&
             selfServiceConfiguration?.articleRecommendationHelpCenterId &&
             helpCenterArticlesCount
         )
