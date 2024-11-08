@@ -21,6 +21,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {getIntegrationConfig} from 'state/integrations/helpers'
@@ -111,7 +112,9 @@ export default function PhoneIntegrationsList({
     if (!sortedRows.length) {
         return (
             <SettingsPageContainer>
-                <p>You have no integration of this type at the moment.</p>
+                <SettingsContent>
+                    <p>You have no integration of this type at the moment.</p>
+                </SettingsContent>
             </SettingsPageContainer>
         )
     }

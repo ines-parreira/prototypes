@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {bindActionCreators} from 'redux'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -46,7 +48,8 @@ import AircallIntegrationCreate from './components/aircall/AircallIntegrationCre
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 
 import BigCommerce from './components/bigcommerce/BigCommerce'
-import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
+import DEPRECATED_EmailDomainVerificationContainer from './components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer'
+import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
@@ -111,6 +114,8 @@ export const IntegrationDetail = ({
     }>()
 
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
+    const isNewDomainVerificationEnabled =
+        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
@@ -640,10 +645,22 @@ export const IntegrationDetail = ({
                         )
                     }
 
+                    if (
+                        isNewDomainVerificationEnabled &&
+                        (extra === Tab.EmailDomainVerification ||
+                            extra === Tab.EmailOutboundVerification)
+                    ) {
+                        return (
+                            <EmailIntegrationLayout integration={integration}>
+                                <EmailDomainVerification />
+                            </EmailIntegrationLayout>
+                        )
+                    }
+
                     if (extra === Tab.EmailDomainVerification) {
                         return (
                             <EmailIntegrationLayout integration={integration}>
-                                <EmailDomainVerificationContainer
+                                <DEPRECATED_EmailDomainVerificationContainer
                                     integration={integration.toJS()}
                                     loading={loading.toJS()}
                                 />

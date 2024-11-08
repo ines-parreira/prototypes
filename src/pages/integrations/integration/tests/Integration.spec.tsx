@@ -1,10 +1,12 @@
+import {EmailProvider} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -27,6 +29,19 @@ jest.mock('../components/bigcommerce/BigCommerce', () => () => (
 jest.mock('../components/email/EmailIntegrationList', () => () => (
     <div>EmailIntegrationList</div>
 ))
+jest.mock(
+    '../components/email/EmailDomainVerification/EmailDomainVerification',
+    () => () => <div>EmailDomainVerification</div>
+)
+jest.mock(
+    '../components/email/EmailOutboundVerification/EmailOutboundVerification',
+    () => () => <div>EmailOutboundVerification</div>
+)
+jest.mock(
+    '../components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer',
+    () => () => <div>DEPRECATED_EmailDomainVerificationContainer</div>
+)
+
 jest.mock(
     '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate',
     () => () => <div>EmailIntegrationUpdate</div>
@@ -143,15 +158,10 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ]),
 }))
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
-jest.mock('common/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
-mockUseFlag.mockReturnValue(false)
 
 describe('<IntegrationDetail />', () => {
     const minProps = {
@@ -199,6 +209,12 @@ describe('<IntegrationDetail />', () => {
             domain: 'acme',
         }),
     }
+
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.NewDomainVerification]: false,
+        })
+    })
 
     it.each([
         [IntegrationType.Aircall],
@@ -446,9 +462,105 @@ describe('<IntegrationDetail />', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render Domain verification tab when new-domain-verification FF is off and provider is mailgun', () => {
+            const {getByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail
+                            {...minProps}
+                            integrations={fromJS({
+                                integration: {
+                                    meta: {
+                                        provider: EmailProvider.Mailgun,
+                                    },
+                                },
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailDomainVerification}`,
+                }
+            )
+
+            expect(
+                getByText('DEPRECATED_EmailDomainVerificationContainer')
+            ).toBeInTheDocument()
+        })
+
+        it('should render Outbound verification tab when new-domain-verification FF is off and provider is Sendgrid', () => {
+            const props = {
+                ...minProps,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                        type: 'email',
+                        meta: {
+                            verified: true,
+                            provider: EmailProvider.Sendgrid,
+                        },
+                    },
+                }),
+            }
+
+            const {getByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...props} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOutboundVerification}`,
+                }
+            )
+
+            expect(getByText('EmailOutboundVerification')).toBeInTheDocument()
+        })
+
+        it.each([
+            {provider: EmailProvider.Mailgun, tab: Tab.EmailDomainVerification},
+            {
+                provider: EmailProvider.Sendgrid,
+                tab: Tab.EmailOutboundVerification,
+            },
+        ])(
+            'should render the domain verification tab when new-domain-verification FF is on',
+            ({provider, tab}) => {
+                mockFlags({
+                    [FeatureFlagKey.NewDomainVerification]: true,
+                })
+
+                const props = {
+                    ...minProps,
+                    integrations: fromJS({
+                        integration: {
+                            id: 1,
+                            type: 'email',
+                            meta: {verified: true, provider},
+                        },
+                    }),
+                }
+
+                const {getByText} = renderWithRouter(
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={store}>
+                            <IntegrationDetail {...props} />
+                        </Provider>
+                    </QueryClientProvider>,
+                    {
+                        path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                        route: `/channels/${IntegrationType.Email}/1/${tab}`,
+                    }
+                )
+
+                expect(getByText('EmailDomainVerification')).toBeInTheDocument()
+            }
+        )
+
         describe('new onboarding', () => {
             it('should render the new onboarding for the onboarding route', () => {
-                mockUseFlag.mockReturnValue(true)
                 const {getByText} = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <Provider store={store}>
@@ -466,7 +578,6 @@ describe('<IntegrationDetail />', () => {
             })
 
             it('should render the new onboarding for the update route when an email integration is unverified', () => {
-                mockUseFlag.mockReturnValue(true)
                 const props = {
                     ...minProps,
                     integrations: fromJS({

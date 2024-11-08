@@ -38,6 +38,7 @@ import VoiceIntegrationPreferencesTranscription from 'pages/integrations/integra
 import {useNotificationTextForRemovalMessage} from 'pages/integrations/integration/hooks/useNotificationTextForRemovalMessage'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
+import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {
@@ -210,96 +211,100 @@ export default function VoiceIntegrationPreferences({
 
     return (
         <SettingsPageContainer>
-            <Form onSubmit={handleSubmit} className={css.form}>
-                <div>
-                    <Label htmlFor="title" className="control-label">
-                        App title
-                    </Label>
-                    <EmojiTextInput
-                        id="title"
-                        value={title}
-                        emoji={emoji}
-                        placeholder="Ex: Company Support Line"
-                        required
-                        onChange={setTitle}
-                        onEmojiChange={setEmoji}
-                    />
-                </div>
-                <div className={css.formSection}>
-                    <h2
-                        className={classNames(
-                            settingsCss.headingSection,
-                            css.sectionHeader
-                        )}
-                    >
-                        Phone number
-                    </h2>
+            <SettingsContent>
+                <Form onSubmit={handleSubmit} className={css.form}>
+                    <div>
+                        <Label htmlFor="title" className="control-label">
+                            App title
+                        </Label>
+                        <EmojiTextInput
+                            id="title"
+                            value={title}
+                            emoji={emoji}
+                            placeholder="Ex: Company Support Line"
+                            required
+                            onChange={setTitle}
+                            onEmojiChange={setEmoji}
+                        />
+                    </div>
+                    <div className={css.formSection}>
+                        <h2
+                            className={classNames(
+                                settingsCss.headingSection,
+                                css.sectionHeader
+                            )}
+                        >
+                            Phone number
+                        </h2>
 
-                    <div className={css.appRow}>
-                        {phoneNumber && (
-                            <PhoneNumberTitle phoneNumber={phoneNumber} />
-                        )}
-                        <div className={css.appLink}>
-                            <Link
-                                to={`/app/settings/phone-numbers/${integration.meta.phone_number_id}`}
-                            >
-                                Manage Phone Number
-                            </Link>
+                        <div className={css.appRow}>
+                            {phoneNumber && (
+                                <PhoneNumberTitle phoneNumber={phoneNumber} />
+                            )}
+                            <div className={css.appLink}>
+                                <Link
+                                    to={`/app/settings/phone-numbers/${integration.meta.phone_number_id}`}
+                                >
+                                    Manage Phone Number
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className={css.formSection}>
-                    <VoiceIntegrationPreferencesInboundCalls
-                        isIvr={isIvr}
-                        preferences={preferences}
-                        onPreferencesChange={handlePreferencesChange}
-                        phoneTeamId={phoneTeamId}
-                        onPhoneTeamIdChange={setPhoneTeamId}
-                        integrationPreferences={integration.meta.preferences}
-                        errors={validationErrors}
-                    />
-                </div>
-
-                {!isIvr && (
-                    <>
-                        <VoiceIntegrationPreferencesCallRecordings
+                    <div className={css.formSection}>
+                        <VoiceIntegrationPreferencesInboundCalls
+                            isIvr={isIvr}
                             preferences={preferences}
                             onPreferencesChange={handlePreferencesChange}
+                            phoneTeamId={phoneTeamId}
+                            onPhoneTeamIdChange={setPhoneTeamId}
+                            integrationPreferences={
+                                integration.meta.preferences
+                            }
+                            errors={validationErrors}
                         />
-                        <VoiceIntegrationPreferencesTranscription
-                            preferences={preferences}
-                            onPreferencesChange={handlePreferencesChange}
-                        />
-                    </>
-                )}
-                <div>
-                    <Button
-                        type="submit"
-                        isDisabled={!isInitialized || !isSubmittable}
-                        isLoading={isLoading}
-                    >
-                        Save changes
-                    </Button>
-                    <ConfirmButton
-                        className="float-right"
-                        intent="destructive"
-                        fillStyle="ghost"
-                        isDisabled={!isInitialized}
-                        isLoading={isDeleting}
-                        onConfirm={handleDelete}
-                        confirmationContent={confirmationContent}
-                    >
-                        <ButtonIconLabel icon="delete">
-                            Delete integration
-                        </ButtonIconLabel>
-                    </ConfirmButton>
-                </div>
-            </Form>
-            <UnsavedChangesPrompt
-                onSave={() => handleSubmit()}
-                when={isSubmittable}
-            />
+                    </div>
+
+                    {!isIvr && (
+                        <>
+                            <VoiceIntegrationPreferencesCallRecordings
+                                preferences={preferences}
+                                onPreferencesChange={handlePreferencesChange}
+                            />
+                            <VoiceIntegrationPreferencesTranscription
+                                preferences={preferences}
+                                onPreferencesChange={handlePreferencesChange}
+                            />
+                        </>
+                    )}
+                    <div>
+                        <Button
+                            type="submit"
+                            isDisabled={!isInitialized || !isSubmittable}
+                            isLoading={isLoading}
+                        >
+                            Save changes
+                        </Button>
+                        <ConfirmButton
+                            className="float-right"
+                            intent="destructive"
+                            fillStyle="ghost"
+                            isDisabled={!isInitialized}
+                            isLoading={isDeleting}
+                            onConfirm={handleDelete}
+                            confirmationContent={confirmationContent}
+                        >
+                            <ButtonIconLabel icon="delete">
+                                Delete integration
+                            </ButtonIconLabel>
+                        </ConfirmButton>
+                    </div>
+                </Form>
+                <UnsavedChangesPrompt
+                    onSave={() => handleSubmit()}
+                    when={isSubmittable}
+                />
+            </SettingsContent>
         </SettingsPageContainer>
     )
 }

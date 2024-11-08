@@ -6,7 +6,7 @@ import {EmailIntegration} from 'models/integration/types'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 
-import EmailDomainVerification from '../EmailDomainVerification/EmailDomainVerification'
+import DEPRECATED_EmailDomainVerification from '../EmailDomainVerification/DEPRECATED_EmailDomainVerification'
 import BackButton from './BackButton'
 import EmailVerification from './EmailVerification'
 import SingleSenderVerification from './SingleSenderVerification/SingleSenderVerification'
@@ -39,7 +39,7 @@ export default function EmailOutboundVerification({
                 <Route exact path={`${baseURL}/domain`}>
                     <>
                         <BackButton baseURL={baseURL} />
-                        <EmailDomainVerification
+                        <DEPRECATED_EmailDomainVerification
                             integration={integration}
                             onDeleteDomain={() => history.push(baseURL)}
                         />

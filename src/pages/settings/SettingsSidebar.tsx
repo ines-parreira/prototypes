@@ -11,6 +11,8 @@ export default function SettingsSidebar({
     className?: string
 }): JSX.Element {
     return (
-        <div className={classnames(css.container, className)}>{children}</div>
+        <div className={classnames(css.container, className)}>
+            <div className={css.content}>{children}</div>
+        </div>
     )
 }

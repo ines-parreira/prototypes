@@ -1,9 +1,11 @@
-@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
-    .buttonGroup {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: @layout-spacing-m;
+    .pageContainer {
+        height: 100%;
+    }
+
+    .sidebar {
+        background: var(--neutral-grey-1);
     }
 }
