@@ -152,8 +152,6 @@ module.exports = {
 
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
     setupFilesAfterEnv: [
-        'jest-enzyme/lib/index.js',
-        '<rootDir>/tests/jest-enzyme-setup.ts',
         './tests/setup.tsx',
     ],
 

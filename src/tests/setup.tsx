@@ -4,8 +4,6 @@ import {setImmediate} from 'timers'
 import {TextEncoder, TextDecoder} from 'util'
 
 import MutationObserver from '@sheerun/mutationobserver-shim'
-import Enzyme from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'
 import {MomentTimezone} from 'moment-timezone'
@@ -23,8 +21,6 @@ import history from '../pages/history'
 import {mockQueryClient} from './reactQueryTestingUtils'
 
 import './customMatchers'
-
-Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
