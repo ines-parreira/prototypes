@@ -18,7 +18,7 @@ describe('useAiAgentNavigation', () => {
         jest.resetAllMocks()
 
         useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: false,
+            [FeatureFlagKey.AiAgentKnowledgeTab]: false,
         })
     })
 
@@ -76,7 +76,7 @@ describe('useAiAgentNavigation', () => {
 
     it('should add Knowledge to navbar if feature flag is on', () => {
         useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
         })
 
         const {result} = renderHook(() =>

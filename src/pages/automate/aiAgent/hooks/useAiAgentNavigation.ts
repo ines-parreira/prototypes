@@ -8,8 +8,8 @@ import {ACTIONS} from 'pages/automate/common/components/constants'
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showAutomateActions = useShowAutomateActions()
 
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const routes = useMemo(
         () => ({
@@ -52,7 +52,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
-            ...(isAiAgentSnippetsFromExternalFilesEnabled
+            ...(isAiAgentKnowledgeTabEnabled
                 ? [
                       {
                           route: routes.knowledge,
@@ -81,7 +81,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Test',
             },
         ],
-        [isAiAgentSnippetsFromExternalFilesEnabled, routes, showAutomateActions]
+        [isAiAgentKnowledgeTabEnabled, routes, showAutomateActions]
     )
 
     return {headerNavbarItems, routes}

@@ -257,8 +257,8 @@ export const StoreConfigForm = ({
             : INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
     )
 
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const aiAgentMode = useMemo(() => {
         if (isAIAgentToggled) {
@@ -631,7 +631,7 @@ export const StoreConfigForm = ({
                     />
                 </section>
 
-                {!isAiAgentSnippetsFromExternalFilesEnabled && (
+                {!isAiAgentKnowledgeTabEnabled && (
                     <ConfigurationSection
                         title="Knowledge"
                         isRequired

@@ -630,7 +630,7 @@ describe('<Routes/>', () => {
 
         it('should render knowledge page', () => {
             mockFlags({
-                [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+                [FeatureFlagKey.AiAgentKnowledgeTab]: true,
             })
 
             render(

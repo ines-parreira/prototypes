@@ -781,8 +781,8 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
 
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
@@ -893,7 +893,7 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             />
                         </AiAgentErrorBoundary>
                     )}
-                    {isAiAgentSnippetsFromExternalFilesEnabled && (
+                    {isAiAgentKnowledgeTabEnabled && (
                         <AiAgentErrorBoundary
                             section="ai-agent-knowledge"
                             team={OBS_ADOPT_SENTRY_TEAM}

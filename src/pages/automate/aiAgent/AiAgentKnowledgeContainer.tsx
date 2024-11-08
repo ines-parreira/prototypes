@@ -1,8 +1,10 @@
 import {Label} from '@gorgias/merchant-ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
@@ -31,6 +33,9 @@ import {INITIAL_FORM_VALUES} from './constants'
 import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 
 export const AiAgentKnowledgeContainer = () => {
+    const isAiAgentSnippetsFromExternalFilesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const dispatch = useAppDispatch()
@@ -219,17 +224,18 @@ export const AiAgentKnowledgeContainer = () => {
                             />
                         ) : null}
 
-                        {snippetHelpCenter && (
-                            <ExternalFilesSection
-                                helpCenterId={snippetHelpCenter.id}
-                                onLoadingStateChange={(isLoading) =>
-                                    setExternalFilesIsLoading(isLoading)
-                                }
-                                onEmptyStateChange={(isEmpty) =>
-                                    setHasExternalFiles(!isEmpty)
-                                }
-                            />
-                        )}
+                        {isAiAgentSnippetsFromExternalFilesEnabled &&
+                            snippetHelpCenter && (
+                                <ExternalFilesSection
+                                    helpCenterId={snippetHelpCenter.id}
+                                    onLoadingStateChange={(isLoading) =>
+                                        setExternalFilesIsLoading(isLoading)
+                                    }
+                                    onEmptyStateChange={(isEmpty) =>
+                                        setHasExternalFiles(!isEmpty)
+                                    }
+                                />
+                            )}
                     </div>
                 </ConfigurationSection>
 
