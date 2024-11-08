@@ -85,11 +85,11 @@ const getFileExtensionByFileMimeType = (mimeType: string): string => {
 export const uploadAttachments = async (
     files: File[],
     channelInfo: ChannelInfo
-): Promise<GenericAttachment[]> => {
+): Promise<Array<GenericAttachment & {google_storage_key: string}>> => {
     // 1. generate signed url
     const client = await getHelpCenterClient()
 
-    const uploadAttachment = async (file: File): Promise<GenericAttachment> => {
+    const uploadAttachment = async (file: File): Promise<GenericAttachment & {google_storage_key: string}> => {
         const fileType = file.type ?? getFileTypeForFirefox(file.name)
         const res = await client.getAttachmentUploadPolicy(
             {},
@@ -134,6 +134,7 @@ export const uploadAttachments = async (
             size: file.size,
             url: attachmentUrl,
             type: `${channelInfo.type}_attachment`,
+            google_storage_key: inferredFields.key,
         }
     }
 

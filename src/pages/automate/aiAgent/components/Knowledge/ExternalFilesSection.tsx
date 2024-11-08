@@ -98,16 +98,11 @@ export const ExternalFilesSection = ({
                 id: helpCenterId,
                 type: 'HC',
             }).then((response) => response[0])
-
-            const parsedUrl = new URL(uploadedFile.url)
-            const parts = parsedUrl.pathname.split('/')
-            const filePath = parts.slice(1, parts.length).join('/')
-
             await ingestFile({
                 filename: uploadedFile.name,
                 type: uploadedFile.type,
                 size_bytes: uploadedFile.size,
-                google_storage_url: `https://storage.googleapis.com/${filePath}`,
+                google_storage_url: uploadedFile.google_storage_key,
             })
         } catch (e) {
             setIsLoading(false)

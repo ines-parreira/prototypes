@@ -67,6 +67,7 @@ describe('ExternalFilesSection', () => {
                 content_type: 'application/pdf',
                 size: 123456,
                 url: 'https://attachments.gorgias.rehab/test.pdf',
+                google_storage_key: 'test.pdf',
             },
         ])
 
@@ -87,7 +88,7 @@ describe('ExternalFilesSection', () => {
                 filename: 'test.pdf',
                 type: 'pdf',
                 size_bytes: 123456,
-                google_storage_url: 'https://storage.googleapis.com/test.pdf',
+                google_storage_url: 'test.pdf',
             })
         })
     })
