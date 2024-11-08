@@ -1,5 +1,5 @@
 import {
-    TicketChannel,
+    LegacyChannelSlug,
     useGetCustomer,
     useUpdateCustomer,
 } from '@gorgias/api-queries'
@@ -143,7 +143,7 @@ describe('NewPhoneNumber', () => {
                 data: {
                     channels: [
                         {
-                            type: TicketChannel.Phone,
+                            type: LegacyChannelSlug.Phone,
                             address: '1234567890',
                             preferred: false,
                         },

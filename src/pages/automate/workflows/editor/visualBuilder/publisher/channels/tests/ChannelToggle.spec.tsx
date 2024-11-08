@@ -1,4 +1,4 @@
-import {TicketChannel} from '@gorgias/api-queries'
+import {LegacyChannelSlug} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, screen} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -38,7 +38,7 @@ const defaultWorkflowConfiguration = {
 } as WorkflowConfiguration
 
 const helpCenterChannel = {
-    type: TicketChannel.HelpCenter,
+    type: LegacyChannelSlug.HelpCenter,
     value: {
         id: 'HelpCenter-1',
         name: 'Default HelpCenter Integration',
@@ -46,7 +46,7 @@ const helpCenterChannel = {
     },
 }
 const chatChannel = {
-    type: TicketChannel.Chat,
+    type: LegacyChannelSlug.Chat,
     value: {
         id: 'Chat-1',
         name: 'Default Chat Integration',

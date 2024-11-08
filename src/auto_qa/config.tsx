@@ -1,17 +1,31 @@
-import {TicketQAScoreDimensionName} from '@gorgias/api-queries'
+import {
+    TicketQAScoreDimension,
+    TicketQAScoreDimensionName,
+} from '@gorgias/api-queries'
 import cn from 'classnames'
 import React from 'react'
 
 import css from './config.less'
 import type {DimensionConfig} from './types'
 
-export const dimensionOrder: TicketQAScoreDimensionName[] = [
+export const dimensionOrder: SupportedTicketQADimensionName[] = [
     TicketQAScoreDimensionName.ResolutionCompleteness,
     TicketQAScoreDimensionName.CommunicationSkills,
 ]
 
+export type SupportedTicketQADimensionName =
+    | typeof TicketQAScoreDimensionName.ResolutionCompleteness
+    | typeof TicketQAScoreDimensionName.CommunicationSkills
+
+export type SupportedTicketQAScoreDimension = Exclude<
+    TicketQAScoreDimension,
+    'name'
+> & {
+    name: SupportedTicketQADimensionName
+}
+
 export const dimensionConfig: Record<
-    TicketQAScoreDimensionName,
+    SupportedTicketQADimensionName,
     DimensionConfig
 > = {
     [TicketQAScoreDimensionName.CommunicationSkills]: {

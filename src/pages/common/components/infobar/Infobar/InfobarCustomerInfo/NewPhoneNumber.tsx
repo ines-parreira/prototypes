@@ -1,5 +1,5 @@
 import {
-    TicketChannel,
+    LegacyChannelSlug,
     UpdateCustomerBodyChannelsItem,
     useGetCustomer,
     useUpdateCustomer,
@@ -98,7 +98,7 @@ export default function NewPhoneNumber({customerId}: Props) {
                     ...((customerDetails?.data
                         ?.channels as UpdateCustomerBodyChannelsItem[]) || []),
                     {
-                        type: TicketChannel.Phone,
+                        type: LegacyChannelSlug.Phone,
                         address: phoneNumber,
                         preferred: false,
                     },
@@ -120,7 +120,7 @@ export default function NewPhoneNumber({customerId}: Props) {
         <>
             <div className={css.customerChannel}>
                 <SourceIcon
-                    type={TicketChannel.Phone}
+                    type={LegacyChannelSlug.Phone}
                     className="uncolored mr-2"
                 />
                 <a href="#" onClick={() => setIsModalOpen(true)}>

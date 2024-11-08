@@ -8,7 +8,7 @@ import {useCallback, useMemo, useRef, useState} from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
-import {dimensionOrder} from '../config'
+import {dimensionOrder, SupportedTicketQAScoreDimension} from '../config'
 import type {DimensionSummary} from '../types'
 
 import useSaveState from './useSaveState'
@@ -92,7 +92,7 @@ export default function useAutoQA(ticketId: number) {
         [data]
     )
 
-    const dimensions = useMemo(
+    const dimensions: SupportedTicketQAScoreDimension[] = useMemo(
         () =>
             dimensionOrder
                 .filter((name) => !!dimensionsMap[name])
@@ -101,7 +101,7 @@ export default function useAutoQA(ticketId: number) {
                         ({
                             ...dimensionsMap[name],
                             ...values[name],
-                        }) as TicketQAScoreDimension
+                        }) as SupportedTicketQAScoreDimension
                 ),
         [dimensionsMap, values]
     )

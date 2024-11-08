@@ -1,4 +1,4 @@
-import {TicketChannel} from '@gorgias/api-queries'
+import {LegacyChannelSlug} from '@gorgias/api-queries'
 import {render} from '@testing-library/react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
@@ -80,7 +80,7 @@ describe('ConnectedChannelAccordionBodyChat', () => {
 
         expect(WorkflowsFeatureList).toHaveBeenCalledWith(
             expect.objectContaining({
-                channelType: TicketChannel.Chat,
+                channelType: LegacyChannelSlug.Chat,
                 channelId: 'chat-app-1',
                 integrationId: 'channel-1',
                 entrypoints: [{id: 'workflow-1'}],
