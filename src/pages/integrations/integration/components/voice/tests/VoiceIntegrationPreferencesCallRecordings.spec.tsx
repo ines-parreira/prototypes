@@ -32,7 +32,7 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
 
         expect(getByText('Call Recording')).toBeInTheDocument()
         expect(
-            getByText('Automatically record and store all customer calls')
+            getByText('Automatically record and store all customer calls.')
         ).toBeInTheDocument()
         expect(getByText('Inbound calls')).toBeInTheDocument()
         expect(getByText('Outbound calls')).toBeInTheDocument()

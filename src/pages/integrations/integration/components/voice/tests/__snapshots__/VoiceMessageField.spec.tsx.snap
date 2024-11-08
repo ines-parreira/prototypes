@@ -6,14 +6,15 @@ exports[`<VoiceMessageField /> should render 1`] = `
 >
   <label
     class="Label--label--QAnfT label"
-    for="voice_recording"
+    for="text_to_speech"
   >
     <input
+      checked=""
       class="input"
-      id="voice_recording"
+      id="text_to_speech"
       type="radio"
     />
-    Insert Voice Recording
+    Text To Speech
   </label>
 </div>
 `;

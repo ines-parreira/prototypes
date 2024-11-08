@@ -3,6 +3,7 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Caption from 'pages/common/forms/Caption/Caption'
 import {replaceAttachmentURL} from 'utils'
 
 import css from './VoiceMessageField.less'
@@ -15,6 +16,7 @@ type PropsVoiceRecordingInput = {
     uploadLabel?: string
     replaceLabel?: string
     className?: string
+    maxSize?: number
 }
 
 export default function VoiceRecordingInput({
@@ -23,6 +25,7 @@ export default function VoiceRecordingInput({
     uploadLabel = 'Select file',
     replaceLabel = 'Select file',
     className = css.optionContent,
+    maxSize,
 }: PropsVoiceRecordingInput) {
     const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
 
@@ -59,6 +62,9 @@ export default function VoiceRecordingInput({
                         {voiceRecordingPath ? replaceLabel : uploadLabel}
                     </ButtonIconLabel>
                 </Button>
+                <Caption className={css.caption}>
+                    Supported file: .mp3 {maxSize && ` (Max ${maxSize}MB)`}
+                </Caption>
             </div>
         </div>
     )

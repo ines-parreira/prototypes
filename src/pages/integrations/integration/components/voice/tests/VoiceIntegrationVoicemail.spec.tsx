@@ -124,7 +124,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
         const {getByLabelText, getByText, getByRole} =
             renderVoiceIntegrationVoicemail({} as RootState, ivrIntegration)
 
-        expect(getByText('Voice recording')).toBeInTheDocument()
+        expect(getByText('Custom recording')).toBeInTheDocument()
         expect(getByText('Text To Speech')).toBeInTheDocument()
         expect(getByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()
@@ -145,7 +145,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
                 standardIntegration
             )
         expect(getByText('During business hours')).toBeInTheDocument()
-        expect(getByText('Voice recording')).toBeInTheDocument()
+        expect(getByText('Custom recording')).toBeInTheDocument()
         expect(getByText('Text To Speech')).toBeInTheDocument()
         expect(getByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()

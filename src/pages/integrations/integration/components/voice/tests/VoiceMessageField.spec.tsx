@@ -61,7 +61,7 @@ describe('<VoiceMessageField />', () => {
         })
     })
 
-    it('should allow inserting a voice recording', async () => {
+    it('should allow inserting a custom recording', async () => {
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',
         })
@@ -90,9 +90,11 @@ describe('<VoiceMessageField />', () => {
                 new_voice_recording_file_type: 'audio/mpeg',
             })
         })
+
+        expect(container).toHaveTextContent('Supported file: .mp3 (Max 2MB)')
     })
 
-    it('should validate voice recording duration if given a maxRecordingDuration prop', async () => {
+    it('should validate custom recording duration if given a maxRecordingDuration prop', async () => {
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',
         })
@@ -182,8 +184,8 @@ describe('<VoiceMessageField horizontal="true" />', () => {
 
     it('should render', () => {
         const {getByLabelText} = renderComponent()
-        expect(getByLabelText('Voice recording')).toBeInTheDocument()
         expect(getByLabelText('Text To Speech')).toBeInTheDocument()
+        expect(getByLabelText('Custom recording')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeInTheDocument()
     })
 
@@ -238,7 +240,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should allow inserting a voice recording', async () => {
+    it('should allow inserting a custom recording', async () => {
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',
         })
@@ -264,6 +266,8 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                 new_voice_recording_file_type: 'audio/mpeg',
             })
         })
+
+        expect(container).toHaveTextContent('Supported file: .mp3 (Max 2MB)')
     })
 
     it('should allow setting no voice message', () => {

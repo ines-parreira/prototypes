@@ -30,7 +30,7 @@ export default function VoiceIntegrationPreferencesCallRecordings({
                 >
                     Call Recording
                 </h2>
-                <p>Automatically record and store all customer calls</p>
+                <p>Automatically record and store all customer calls.</p>
             </div>
             <div>
                 <Label className="control-label">Inbound calls</Label>

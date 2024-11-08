@@ -1,4 +1,7 @@
 // Update these statuspage components as well when you add a new integration here:
+
+import {VoiceMessageNone} from './types'
+
 // src/services/statusPageManager/constants.ts
 export enum IntegrationType {
     Email = 'email',
@@ -59,6 +62,10 @@ export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.Twitter,
     IntegrationType.Yotpo,
 ])
+
+export const DEFAULT_GREETING_MESSAGE: VoiceMessageNone = {
+    voice_message_type: VoiceMessageType.None,
+}
 
 export const DEFAULT_VOICE_MESSAGE = {
     voice_message_type: VoiceMessageType.TextToSpeech,

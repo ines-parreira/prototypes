@@ -1,0 +1,17 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .section {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .sectionTitle {
+        .heading-subsection-semibold();
+    }
+
+    .sectionSubtitle {
+        margin-top: -@layout-spacing-xs;
+        margin-bottom: @layout-spacing-m;
+    }
+}

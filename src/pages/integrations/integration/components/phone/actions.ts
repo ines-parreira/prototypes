@@ -74,10 +74,6 @@ export const updatePhoneGreetingMessageConfiguration =
             )
             .then(
                 () => {
-                    void fetchIntegration(
-                        integrationId.toString(),
-                        IntegrationType.Phone
-                    )(dispatch)
                     return dispatch(
                         notify({
                             status: NotificationStatus.Success,

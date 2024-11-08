@@ -1,6 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react'
 
-import {TEXT_TO_SPEECH_MAX_LENGTH} from 'models/integration/constants'
+import {
+    MAX_VOICE_RECORDING_FILE_SIZE_MB,
+    TEXT_TO_SPEECH_MAX_LENGTH,
+} from 'models/integration/constants'
 import {
     VoiceMessage,
     VoiceMessageRecording,
@@ -90,14 +93,12 @@ const VoiceMessageField = ({
         return (
             <>
                 <div className={css.horizontalRadioButtons}>
-                    <VoiceRecordingRadioButton
+                    <TextToSpeechRadioButton
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
-                        label={'Voice recording'}
-                        caption={'Max 2MB, mp3 only'}
                         id={radioButtonId}
                     />
-                    <TextToSpeechRadioButton
+                    <CustomRecordingRadioButton
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
                         id={radioButtonId}
@@ -118,6 +119,7 @@ const VoiceMessageField = ({
                         className={css.optionContentHorizontal}
                         replaceLabel={'Replace File'}
                         uploadLabel={'Upload File'}
+                        maxSize={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                     />
                 )}
                 {value.voice_message_type === VoiceMessageType.TextToSpeech && (
@@ -133,7 +135,18 @@ const VoiceMessageField = ({
 
     return (
         <>
-            <VoiceRecordingRadioButton
+            <TextToSpeechRadioButton
+                selectedVoiceMessageType={value.voice_message_type}
+                onChange={handleVoiceMessageTypeChange}
+                id={radioButtonId}
+            />
+            {value.voice_message_type === VoiceMessageType.TextToSpeech && (
+                <TextToSpeechRecordingInput
+                    onChange={onChange}
+                    selectedValue={value}
+                />
+            )}
+            <CustomRecordingRadioButton
                 selectedVoiceMessageType={value.voice_message_type}
                 onChange={handleVoiceMessageTypeChange}
                 id={radioButtonId}
@@ -144,17 +157,7 @@ const VoiceMessageField = ({
                     onVoiceRecordingUpload={handleVoiceRecordingUpload}
                     replaceLabel={'Replace File'}
                     uploadLabel={'Upload File'}
-                />
-            )}
-            <TextToSpeechRadioButton
-                selectedVoiceMessageType={value.voice_message_type}
-                onChange={handleVoiceMessageTypeChange}
-                id={radioButtonId}
-            />
-            {value.voice_message_type === VoiceMessageType.TextToSpeech && (
-                <TextToSpeechRecordingInput
-                    onChange={onChange}
-                    selectedValue={value}
+                    maxSize={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                 />
             )}
             {allowNone && (
@@ -214,10 +217,10 @@ const TextToSpeechRadioButton = ({
     )
 }
 
-const VoiceRecordingRadioButton = ({
+const CustomRecordingRadioButton = ({
     selectedVoiceMessageType,
     onChange,
-    label = 'Insert Voice Recording',
+    label = 'Custom recording',
     caption = '',
     id = '',
 }: VoiceMessageRadioButtonProps) => {

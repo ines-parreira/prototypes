@@ -123,7 +123,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         expect(screen.getByText('Call Recording')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Automatically record and store all customer calls'
+                'Automatically record and store all customer calls.'
             )
         ).toBeInTheDocument()
 

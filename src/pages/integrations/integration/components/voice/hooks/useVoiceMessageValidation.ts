@@ -290,11 +290,53 @@ export default function useVoiceMessageValidation() {
         }
     }
 
+    const areVoiceMessagesTheSame = (
+        voiceMessage: VoiceMessage,
+        other: VoiceMessage
+    ) => {
+        if (
+            voiceMessage.voice_message_type === VoiceMessageType.TextToSpeech &&
+            other.voice_message_type === VoiceMessageType.TextToSpeech
+        ) {
+            return (
+                voiceMessage.text_to_speech_content ===
+                other.text_to_speech_content
+            )
+        }
+
+        if (
+            voiceMessage.voice_message_type ===
+                VoiceMessageType.VoiceRecording &&
+            other.voice_message_type === VoiceMessageType.VoiceRecording
+        ) {
+            if (
+                voiceMessage.new_voice_recording_file ||
+                other.new_voice_recording_file
+            ) {
+                return false
+            }
+            return (
+                voiceMessage.voice_recording_file_path ===
+                other.voice_recording_file_path
+            )
+        }
+
+        if (
+            voiceMessage.voice_message_type === VoiceMessageType.None &&
+            other.voice_message_type === VoiceMessageType.None
+        ) {
+            return true
+        }
+
+        return false
+    }
+
     return {
         validateVoiceRecordingUpload,
         canPayloadBeSubmitted,
         cleanUpPayload,
         isValidTextToSpeech,
         cleanUpIvrPayload,
+        areVoiceMessagesTheSame,
     }
 }

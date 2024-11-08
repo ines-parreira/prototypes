@@ -8,6 +8,7 @@ import {IvrMenuActionType, VoiceMessageType} from 'models/integration/constants'
 import {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
+    VoiceMessage,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
 
@@ -20,6 +21,18 @@ const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')
 const wrapper = ({children}: {children: React.ReactNode}) => (
     <Provider store={mockStore}>{children}</Provider>
 )
+
+const voiceMessageWithNewAudioFile: VoiceMessage = {
+    voice_message_type: VoiceMessageType.VoiceRecording,
+    voice_recording_file_path: 'example.mp3',
+    new_voice_recording_file: 'data:audio/mpeg;base64,SUQzBAAAAAAAf1',
+    new_voice_recording_file_name: 'new_upload.mp3',
+    new_voice_recording_file_type: 'audio/mpeg',
+}
+const baseVoiceMessage: VoiceMessage = {
+    voice_message_type: VoiceMessageType.VoiceRecording,
+    voice_recording_file_path: 'example.mp3',
+}
 
 describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     afterEach(() => {
@@ -587,4 +600,136 @@ describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
         const {result} = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
+})
+
+describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderAreVoiceMessagesTheSame = (
+        voiceMessage: VoiceMessage,
+        other: VoiceMessage
+    ) =>
+        renderHook(
+            () => {
+                const {areVoiceMessagesTheSame} = useVoiceMessageValidation()
+                return areVoiceMessagesTheSame(voiceMessage, other)
+            },
+            {
+                wrapper,
+            }
+        )
+
+    it('should not be the same when they have different type', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.None,
+            },
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it('should be the same when they are both none', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.None,
+            },
+            {
+                voice_message_type: VoiceMessageType.None,
+            }
+        )
+        expect(result.current).toBe(true)
+    })
+
+    it('should be the same when they are both TTS and have the same text', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            }
+        )
+        expect(result.current).toBe(true)
+    })
+
+    it('should not be the same when they are both TTS but have different text', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Ciao!',
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it('should be the same when they are both custom recording and have the same audio file URL', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'example.mp3',
+            },
+            {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'example.mp3',
+            }
+        )
+        expect(result.current).toBe(true)
+    })
+
+    it('should not be the same when they are both custom recording but have different audio file URL', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'example.mp3',
+            },
+            {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'new_upload.mp3',
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it('should not be the same when they are both TTS but have different text', () => {
+        const {result} = renderAreVoiceMessagesTheSame(
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Ciao!',
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it.each([
+        {
+            voiceMessage: voiceMessageWithNewAudioFile,
+            other: baseVoiceMessage,
+        },
+        {
+            voiceMessage: baseVoiceMessage,
+            other: voiceMessageWithNewAudioFile,
+        },
+    ])(
+        'should not be the same when they are both custom recording and have the same audio file URL, but one of them has new file data',
+        ({voiceMessage, other}) => {
+            const {result} = renderAreVoiceMessagesTheSame(voiceMessage, other)
+            expect(result.current).toBe(false)
+        }
+    )
 })

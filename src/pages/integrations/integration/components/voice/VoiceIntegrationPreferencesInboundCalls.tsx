@@ -171,7 +171,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                                         },
                                     })
                                 }
-                                caption="Time before a call is forwarded to voicemail"
+                                caption="Time before a call is forwarded to voicemail."
                             >
                                 Enable wait time
                             </ToggleInput>
