@@ -66,7 +66,7 @@ describe('ExternalFilesSection', () => {
                 type: 'pdf',
                 content_type: 'application/pdf',
                 size: 123456,
-                url: 'https://cdn.google.com/test.pdf',
+                url: 'https://attachments.gorgias.rehab/test.pdf',
             },
         ])
 
@@ -87,7 +87,7 @@ describe('ExternalFilesSection', () => {
                 filename: 'test.pdf',
                 type: 'pdf',
                 size_bytes: 123456,
-                google_storage_url: 'https://cdn.google.com/test.pdf',
+                google_storage_url: 'https://storage.googleapis.com/test.pdf',
             })
         })
     })
@@ -100,7 +100,8 @@ describe('ExternalFilesSection', () => {
                     help_center_id: 1,
                     filename: 'test.pdf',
                     status: 'PENDING',
-                    google_storage_url: 'https://cdn.google.com/test.pdf',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
                 },
                 {
@@ -108,7 +109,8 @@ describe('ExternalFilesSection', () => {
                     help_center_id: 1,
                     filename: 'test2.pdf',
                     status: 'FAILED',
-                    google_storage_url: 'https://cdn.google.com/test2.pdf',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test2.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
                 },
                 {
@@ -116,7 +118,8 @@ describe('ExternalFilesSection', () => {
                     help_center_id: 1,
                     filename: 'test3.pdf',
                     status: 'SUCCESSFUL',
-                    google_storage_url: 'https://cdn.google.com/tes3.pdf',
+                    google_storage_url:
+                        'https://storage.googleapis.com/tes3.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
                 },
             ],
@@ -158,7 +161,8 @@ describe('ExternalFilesSection', () => {
                     help_center_id: 1,
                     filename: 'test.pdf',
                     status: 'FAILED',
-                    google_storage_url: 'https://cdn.google.com/test.pdf',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
                 },
             ],
@@ -181,7 +185,8 @@ describe('ExternalFilesSection', () => {
                     help_center_id: 1,
                     filename: 'test.pdf',
                     status: 'SUCCESSFUL',
-                    google_storage_url: 'https://cdn.google.com/test.pdf',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
                     uploaded_datetime: '2024-11-04T19:24:08Z',
                 },
             ],
@@ -202,7 +207,7 @@ describe('ExternalFilesSection', () => {
                 help_center_id: 1,
                 filename: `test-${i + 1}.pdf`,
                 status: 'SUCCESSFUL',
-                google_storage_url: `https://cdn.google.com/test-${i + 1}.pdf`,
+                google_storage_url: `https://storage.googleapis.com/test-${i + 1}.pdf`,
                 uploaded_datetime: '2024-11-04T19:24:08Z',
             })),
         })
