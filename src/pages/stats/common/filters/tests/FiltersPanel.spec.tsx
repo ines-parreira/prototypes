@@ -188,6 +188,7 @@ describe('FiltersPanel', () => {
         FilterKey.Period,
         FilterKey.SlaPolicies,
         FilterKey.CommunicationSkills,
+        FilterKey.LanguageProficiency,
         FilterKey.ResolutionCompleteness,
         FilterComponentKey.BusiestTimesMetricSelectFilter,
         FilterComponentKey.CustomField,

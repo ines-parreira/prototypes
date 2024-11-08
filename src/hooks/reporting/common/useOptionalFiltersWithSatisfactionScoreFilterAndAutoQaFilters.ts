@@ -13,6 +13,8 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
         const analyticsNewCSATFilter =
             !!useFlags()[FeatureFlagKey.AnalyticsNewCSATFilter]
         const autoQaFilters = !!useFlags()[FeatureFlagKey.AutoQAFilters]
+        const autoQaLanguageProficiency =
+            !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
         return [
             ...optionalFilters,
             ...(analyticsNewCSATFilter ? [FilterKey.Score] : []),
@@ -21,6 +23,9 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
                       FilterKey.CommunicationSkills,
                       FilterKey.ResolutionCompleteness,
                   ]
+                : []),
+            ...(autoQaFilters && autoQaLanguageProficiency
+                ? [FilterKey.LanguageProficiency]
                 : []),
         ]
     }

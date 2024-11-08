@@ -224,6 +224,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                 case FilterKey.Period:
                 case FilterKey.AggregationWindow:
                 case FilterKey.CommunicationSkills:
+                case FilterKey.LanguageProficiency:
                 case FilterKey.ResolutionCompleteness:
                     break
                 case FilterKey.Tags: {

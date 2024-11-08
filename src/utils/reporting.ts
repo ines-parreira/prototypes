@@ -64,6 +64,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     score: TicketMember.SurveyScore,
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
+    languageProficiency: TicketMember.LanguageProficiencyScore,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -89,6 +90,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     score: TicketMember.SurveyScore,
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
+    languageProficiency: TicketMember.LanguageProficiencyScore,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
@@ -172,6 +174,7 @@ export const statsFiltersToReportingFilters = (
         score,
         resolutionCompleteness,
         communicationSkills,
+        languageProficiency,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -248,6 +251,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(communicationSkills) && members.communicationSkills) {
         filters = addOptionalFilter(filters, communicationSkills, {
             member: members.communicationSkills,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(languageProficiency) && members.languageProficiency) {
+        filters = addOptionalFilter(filters, languageProficiency, {
+            member: members.languageProficiency,
             operator: ReportingFilterOperator.Equals,
         })
     }

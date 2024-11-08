@@ -192,20 +192,21 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
         integrationsStatsFilter
     ): StatsFiltersWithLogicalOperator => {
         const {
-            aggregationWindow,
-            channels,
-            customFields,
             agents,
-            period,
-            tags,
-            helpCenters,
-            localeCodes,
-            score,
+            aggregationWindow,
             campaigns,
             campaignStatuses,
-            slaPolicies,
+            channels,
             communicationSkills,
+            customFields,
+            helpCenters,
+            languageProficiency,
+            localeCodes,
+            period,
             resolutionCompleteness,
+            score,
+            slaPolicies,
+            tags,
         } = statsFilters
         return {
             aggregationWindow,
@@ -223,6 +224,7 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
             slaPolicies,
             communicationSkills,
             resolutionCompleteness,
+            languageProficiency,
         }
     }
 )

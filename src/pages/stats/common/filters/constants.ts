@@ -32,6 +32,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.Score]: 'Satisfaction score',
     [FilterKey.SlaPolicies]: 'Report on',
     [FilterKey.CommunicationSkills]: 'Communication skill',
+    [FilterKey.LanguageProficiency]: 'Language proficiency',
     [FilterKey.ResolutionCompleteness]: 'Resolution completeness',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Report on',
     [FilterComponentKey.CustomField]: 'Report on',
@@ -72,6 +73,11 @@ export const scoreFilterLogicalOperators = [
 ]
 
 export const communicationSkillsFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const languageProficiencyFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]

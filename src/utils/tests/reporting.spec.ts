@@ -57,6 +57,7 @@ describe('reporting utils', () => {
                     score: ['3', '4'],
                     resolutionCompleteness: ['3', '4'],
                     communicationSkills: ['3', '4'],
+                    languageProficiency: ['3', '4'],
                 })
             ).toEqual([
                 {
@@ -101,6 +102,11 @@ describe('reporting utils', () => {
                 },
                 {
                     member: TicketMember.CommunicationSkillsScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.LanguageProficiencyScore,
                     operator: ReportingFilterOperator.Equals,
                     values: ['3', '4'],
                 },

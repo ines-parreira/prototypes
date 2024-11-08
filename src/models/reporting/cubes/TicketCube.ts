@@ -28,6 +28,9 @@ export enum TicketDimension {
     IsTrashed = 'TicketEnriched.isTrashed',
     IsSpam = 'TicketEnriched.isSpam',
     SurveyScore = 'TicketEnriched.surveyScore',
+    ResolutionCompletenessScore = 'TicketEnriched.resolutionCompletenessScore',
+    CommunicationSkillsScore = 'TicketEnriched.communicationSkillsScore',
+    LanguageProficiencyScore = 'TicketEnriched.languageProficiencyScore',
 }
 
 export enum TicketSegment {
@@ -56,6 +59,7 @@ export enum TicketMember {
     SurveyScore = 'TicketEnriched.surveyScore',
     ResolutionCompletenessScore = 'TicketEnriched.resolutionCompletenessScore',
     CommunicationSkillsScore = 'TicketEnriched.communicationSkillsScore',
+    LanguageProficiencyScore = 'TicketEnriched.languageProficiencyScore',
 }
 
 export type TicketTimeDimensions =

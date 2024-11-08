@@ -25,6 +25,7 @@ export const isFilterFilled = (
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
         case FilterKey.CommunicationSkills:
+        case FilterKey.LanguageProficiency:
         case FilterKey.ResolutionCompleteness:
             return !_isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:

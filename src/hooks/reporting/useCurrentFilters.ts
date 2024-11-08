@@ -27,16 +27,17 @@ export const getValidator = (
         case FilterKey.AggregationWindow:
             return isAggregationWindowFilter
         case FilterKey.Agents:
-        case FilterKey.CampaignStatuses:
         case FilterKey.Campaigns:
+        case FilterKey.CampaignStatuses:
         case FilterKey.Channels:
+        case FilterKey.CommunicationSkills:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
+        case FilterKey.LanguageProficiency:
         case FilterKey.LocaleCodes:
+        case FilterKey.ResolutionCompleteness:
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
-        case FilterKey.CommunicationSkills:
-        case FilterKey.ResolutionCompleteness:
             return isFilterWithLogicalOperator
     }
 }

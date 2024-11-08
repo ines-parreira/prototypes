@@ -28,6 +28,7 @@ import {
     IntegrationsFilterWithState,
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
+import {LanguageProficiencyFilterWithState} from 'pages/stats/common/filters/LanguageProficiencyFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 import {ResolutionCompletenessFilterWithState} from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import {
@@ -49,26 +50,27 @@ export const FilterComponentMap: Record<
     FilterKey | FilterComponentKey,
     ComponentType<any>
 > = {
-    [FilterKey.Period]: PeriodFilterWithState,
-    [FilterKey.CustomFields]: CustomFieldsFilterWithState,
-    [FilterKey.Channels]: ChannelsFilterWithState,
-    [FilterKey.Integrations]: IntegrationsFilterWithState,
-    [FilterComponentKey.PhoneIntegrations]: PhoneIntegrationsFilterWithState,
-    [FilterKey.Agents]: AgentsFiltersWithState,
-    [FilterKey.Tags]: TagsFilterWithState,
-    [FilterKey.HelpCenters]: HelpCenterFilterWithState,
-    [FilterKey.LocaleCodes]: HelpCenterLanguageFilterWithState,
-    [FilterKey.SlaPolicies]: SLAPolicyFilterWithState,
-    [FilterKey.Score]: ScoreFiltersWithState,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]:
         BusiestTimesMetricSelectFilter,
     [FilterComponentKey.CustomField]: CustomFieldFilter,
+    [FilterComponentKey.PhoneIntegrations]: PhoneIntegrationsFilterWithState,
+    [FilterComponentKey.Store]: StoreFilterFromContext,
+    [FilterKey.Agents]: AgentsFiltersWithState,
+    [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
     [FilterKey.Campaigns]: CampaignsFilterFromContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
-    [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
-    [FilterComponentKey.Store]: StoreFilterFromContext,
-    [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilterWithState,
+    [FilterKey.Channels]: ChannelsFilterWithState,
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
+    [FilterKey.CustomFields]: CustomFieldsFilterWithState,
+    [FilterKey.HelpCenters]: HelpCenterFilterWithState,
+    [FilterKey.Integrations]: IntegrationsFilterWithState,
+    [FilterKey.LanguageProficiency]: LanguageProficiencyFilterWithState,
+    [FilterKey.LocaleCodes]: HelpCenterLanguageFilterWithState,
+    [FilterKey.Period]: PeriodFilterWithState,
+    [FilterKey.ResolutionCompleteness]: ResolutionCompletenessFilterWithState,
+    [FilterKey.Score]: ScoreFiltersWithState,
+    [FilterKey.SlaPolicies]: SLAPolicyFilterWithState,
+    [FilterKey.Tags]: TagsFilterWithState,
 }
 
 export const SavedFilterComponentMap: Record<
@@ -84,16 +86,17 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Campaigns]: CampaignsFilterFromSavedContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromSavedContext,
     [FilterKey.AggregationWindow]: () => null,
+    [FilterKey.CommunicationSkills]: () => null,
     [FilterKey.HelpCenters]: () => null,
+    [FilterKey.LanguageProficiency]: () => null,
     [FilterKey.LocaleCodes]: () => null,
     [FilterKey.Period]: () => null,
+    [FilterKey.ResolutionCompleteness]: () => null,
     [FilterKey.SlaPolicies]: () => null,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,
     [FilterComponentKey.PhoneIntegrations]: () => null,
     [FilterComponentKey.Store]: () => null,
-    [FilterKey.ResolutionCompleteness]: () => null,
-    [FilterKey.CommunicationSkills]: () => null,
 }
 
 export const SAVABLE_FILTERS = [

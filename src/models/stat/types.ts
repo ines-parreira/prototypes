@@ -9,16 +9,17 @@ export enum FilterKey {
     Campaigns = 'campaigns',
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
+    CommunicationSkills = 'communicationSkills',
     CustomFields = 'customFields',
     HelpCenters = 'helpCenters',
     Integrations = 'integrations',
+    LanguageProficiency = 'languageProficiency',
     LocaleCodes = 'localeCodes',
     Period = 'period',
+    ResolutionCompleteness = 'resolutionCompleteness',
     Score = 'score',
     SlaPolicies = 'slaPolicies',
     Tags = 'tags',
-    CommunicationSkills = 'communicationSkills',
-    ResolutionCompleteness = 'resolutionCompleteness',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -51,6 +52,7 @@ export type StaticFilter =
     | FilterKey.Score
     | FilterKey.SlaPolicies
     | FilterKey.CommunicationSkills
+    | FilterKey.LanguageProficiency
     | FilterKey.ResolutionCompleteness
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
@@ -87,20 +89,21 @@ export interface TagFilter extends WithLogicalOperator<number> {
 
 export type LegacyStatsFilters = {
     [FilterKey.Agents]?: number[]
+    [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.Campaigns]?: string[]
     [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Channels]?: string[]
+    [FilterKey.CommunicationSkills]?: string[]
     [FilterKey.CustomFields]?: string[]
     [FilterKey.HelpCenters]?: number[]
     [FilterKey.Integrations]?: number[]
+    [FilterKey.LanguageProficiency]?: string[]
     [FilterKey.LocaleCodes]?: string[]
-    [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.Period]: Period
+    [FilterKey.ResolutionCompleteness]?: string[]
     [FilterKey.Score]?: string[]
     [FilterKey.SlaPolicies]?: string[]
     [FilterKey.Tags]?: number[]
-    [FilterKey.CommunicationSkills]?: string[]
-    [FilterKey.ResolutionCompleteness]?: string[]
 }
 
 export type AgentOnlyFilters<T> = T extends any
@@ -162,20 +165,21 @@ export type SavedFilterDraft = {
 
 export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Agents]?: WithLogicalOperator<number>
+    [FilterKey.AggregationWindow]?: AggregationWindow
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Channels]?: WithLogicalOperator<string>
+    [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
     [FilterKey.CustomFields]?: CustomFieldFilter[]
     [FilterKey.HelpCenters]?: WithLogicalOperator<number>
     [FilterKey.Integrations]?: WithLogicalOperator<number>
+    [FilterKey.LanguageProficiency]?: WithLogicalOperator<string>
     [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
     [FilterKey.Period]: Period
+    [FilterKey.ResolutionCompleteness]?: WithLogicalOperator<string>
     [FilterKey.Score]?: WithLogicalOperator<string>
     [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
     [FilterKey.Tags]?: TagFilter[]
-    [FilterKey.AggregationWindow]?: AggregationWindow
-    [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
-    [FilterKey.ResolutionCompleteness]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator

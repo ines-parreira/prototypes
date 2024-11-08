@@ -55,4 +55,24 @@ describe('useGetOptionalFilters', () => {
             FilterKey.ResolutionCompleteness,
         ])
     })
+
+    it('should return the optional filters with LanguageProficiency', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQAFilters]: true,
+            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+        })
+
+        const {result} = renderHook(() =>
+            useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
+                FilterKey.Channels,
+            ] as OptionalFilter[])
+        )
+
+        expect(result.current).toEqual([
+            FilterKey.Channels,
+            FilterKey.CommunicationSkills,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.LanguageProficiency,
+        ])
+    })
 })
