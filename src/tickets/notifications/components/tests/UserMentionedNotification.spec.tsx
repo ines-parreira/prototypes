@@ -4,6 +4,7 @@ import React from 'react'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import type {Notification} from 'common/notifications'
 
+import type {TicketPayload} from '../../types'
 import UserMentionedNotification from '../UserMentionedNotification'
 
 const notification = {
@@ -29,18 +30,9 @@ const notification = {
             subject: 'Awesome ticket subject',
         },
     },
-} as unknown as Notification
+} as unknown as Notification<TicketPayload>
 
 describe('UserMentionedNotification', () => {
-    it('should return null if an invalid notification is sent', () => {
-        const {container} = render(
-            <UserMentionedNotification
-                notification={{type: 'ticket-message.created'} as Notification}
-            />
-        )
-        expect(container).toBeEmptyDOMElement()
-    })
-
     it('should render the notification with a sender', () => {
         const {getByText} = render(
             <UserMentionedNotification notification={notification} />
@@ -59,12 +51,10 @@ describe('UserMentionedNotification', () => {
     it('should render the notification without a sender', () => {
         const {getByText} = render(
             <UserMentionedNotification
-                notification={
-                    {
-                        ...notification,
-                        payload: {...notification.payload, sender: undefined},
-                    } as Notification
-                }
+                notification={{
+                    ...notification,
+                    payload: {...notification.payload, sender: undefined},
+                }}
             />
         )
         expect(getByText('New mention')).toBeInTheDocument()

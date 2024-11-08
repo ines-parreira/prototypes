@@ -1,6 +1,7 @@
 import {TicketChannel} from 'business/types/ticket'
+import type {Notification} from 'common/notifications'
 
-import type {Notification, PayloadWithSender} from 'common/notifications'
+import type {TicketPayload} from '../types'
 
 const channelTypeMap: Partial<Record<TicketChannel, string>> = {
     [TicketChannel.Aircall]: 'ticket-message.created.aircall',
@@ -21,8 +22,8 @@ const channelTypeMap: Partial<Record<TicketChannel, string>> = {
 }
 
 export default function mapTicketMessageCreatedType(
-    notification: Notification
+    notification: Notification<TicketPayload>
 ) {
-    const {channel} = (notification.payload as PayloadWithSender).ticket
+    const {channel} = notification.payload.ticket
     return channelTypeMap[channel] || notification.type
 }

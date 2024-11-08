@@ -9,4 +9,4 @@ export const channels: Channel[] = [
 
 export const categories: CategoryConfig[] = []
 
-export const notifications: Record<string, NotificationConfig> = {}
+export const notifications: Record<string, NotificationConfig<any>> = {}

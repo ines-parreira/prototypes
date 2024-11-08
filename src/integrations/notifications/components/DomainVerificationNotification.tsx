@@ -5,16 +5,16 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {Content, Excerpt, Subtitle} from 'common/notifications'
 import type {ContentProps, Notification} from 'common/notifications'
 
+import type {EmailDomainPayload} from '../types'
+
 type Props = {
-    notification: Notification
+    notification: Notification<EmailDomainPayload>
 } & ContentProps
 
 export default function DomainVerificationNotification({
     notification,
     ...props
 }: Props) {
-    if (!('domain' in notification.payload)) return null
-
     const {domain} = notification.payload
 
     return (

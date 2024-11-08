@@ -2,6 +2,7 @@ import {registerCategory, registerNotification} from 'common/notifications'
 
 import TicketNotification from './components/TicketNotification'
 import UserMentionedNotification from './components/UserMentionedNotification'
+import type {TicketPayload} from './types'
 import mapTicketMessageCreatedType from './utils/mapTicketMessageCreatedType'
 
 registerCategory({
@@ -19,7 +20,7 @@ registerNotification({
         label: 'Chat & messaging tickets',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'user.mentioned',
     component: UserMentionedNotification,
     workflow: 'user-mentioned',
@@ -28,7 +29,7 @@ registerNotification({
         label: 'Mentioned in an internal note',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket.snooze-expired',
     component: TicketNotification,
     workflow: 'ticket-snooze-expired',
@@ -37,7 +38,7 @@ registerNotification({
         label: 'Snooze expired',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket.assigned',
     component: TicketNotification,
     workflow: 'ticket-assigned',
@@ -54,7 +55,7 @@ registerCategory({
         'Get notified when you receive new messages from these channels.',
     typeLabel: 'Message channel',
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.email',
     component: TicketNotification,
     workflow: 'ticket-message-created-email',
@@ -64,7 +65,7 @@ registerNotification({
         label: 'Email',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.chat',
     component: TicketNotification,
     workflow: 'ticket-message-created-chat',
@@ -74,7 +75,7 @@ registerNotification({
         label: 'Chat',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.phone',
     component: TicketNotification,
     workflow: 'ticket-message-created-phone',
@@ -86,7 +87,7 @@ registerNotification({
             'This setting only controls the messages sent after the original phone call.',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.sms',
     component: TicketNotification,
     workflow: 'ticket-message-created-sms',
@@ -96,7 +97,7 @@ registerNotification({
         label: 'SMS',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.facebook',
     component: TicketNotification,
     workflow: 'ticket-message-created-facebook',
@@ -108,7 +109,7 @@ registerNotification({
             'Facebook includes Messenger, comments, mentions and recommendations.',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.instagram',
     component: TicketNotification,
     workflow: 'ticket-message-created-instagram',
@@ -120,7 +121,7 @@ registerNotification({
             'Instagram includes Ad comments, comments, direct messages and mentions.',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.whatsapp',
     component: TicketNotification,
     workflow: 'ticket-message-created-whatsapp',
@@ -130,7 +131,7 @@ registerNotification({
         label: 'WhatsApp',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.yotpo',
     component: TicketNotification,
     workflow: 'ticket-message-created-yotpo',
@@ -140,7 +141,7 @@ registerNotification({
         label: 'Yotpo',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created.aircall',
     component: TicketNotification,
     workflow: 'ticket-message-created-aircall',
@@ -150,7 +151,7 @@ registerNotification({
         label: 'Aircall',
     },
 })
-registerNotification({
+registerNotification<TicketPayload>({
     type: 'ticket-message.created',
     component: TicketNotification,
     mapType: mapTicketMessageCreatedType,

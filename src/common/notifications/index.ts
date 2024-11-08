@@ -11,4 +11,4 @@ export {default as registerCategory} from './registerCategory'
 export {default as registerNotification} from './registerNotification'
 
 export type {ParentProps as ContentProps} from './components/NotificationContent'
-export type {Notification, PayloadWithSender} from './types'
+export type {Notification} from './types'

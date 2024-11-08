@@ -3,8 +3,10 @@ import React from 'react'
 import {Content, Excerpt, Subject, Subtitle} from 'common/notifications'
 import type {ContentProps, Notification} from 'common/notifications'
 
+import type {TicketPayload} from '../types'
+
 type Props = {
-    notification: Notification
+    notification: Notification<TicketPayload>
 } & ContentProps
 
 const subIcons: Record<string, ContentProps['subIcon']> = {
@@ -18,8 +20,6 @@ const titleOverrides: Record<string, string> = {
 }
 
 export default function TicketNotification({notification, ...props}: Props) {
-    if (!('ticket' in notification.payload)) return null
-
     const {sender, ticket} = notification.payload
 
     return (

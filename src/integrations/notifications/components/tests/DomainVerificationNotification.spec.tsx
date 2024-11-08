@@ -3,6 +3,7 @@ import React from 'react'
 
 import type {Notification} from 'common/notifications'
 
+import type {EmailDomainPayload} from '../../types'
 import DomainVerificationNotification from '../DomainVerificationNotification'
 
 const notification = {
@@ -14,23 +15,9 @@ const notification = {
     payload: {
         domain: 'example.com',
     },
-} as unknown as Notification
+} as Notification<EmailDomainPayload>
 
 describe('UserMentionedNotification', () => {
-    it('should return null if an invalid notification is sent', () => {
-        const {container} = render(
-            <DomainVerificationNotification
-                notification={
-                    {
-                        type: 'ticket-message.created',
-                        payload: {},
-                    } as Notification
-                }
-            />
-        )
-        expect(container).toBeEmptyDOMElement()
-    })
-
     it('should render the notification with a sender', () => {
         const {getByText} = render(
             <DomainVerificationNotification notification={notification} />

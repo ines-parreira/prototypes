@@ -3,16 +3,16 @@ import React from 'react'
 import {Content, Excerpt, Subject, Subtitle} from 'common/notifications'
 import type {ContentProps, Notification} from 'common/notifications'
 
+import type {TicketPayload} from '../types'
+
 type Props = {
-    notification: Notification
+    notification: Notification<TicketPayload>
 } & ContentProps
 
 export default function UserMentionedNotification({
     notification,
     ...props
 }: Props) {
-    if (notification.type !== 'user.mentioned') return null
-
     const {sender, ticket} = notification.payload
 
     return (

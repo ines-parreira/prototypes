@@ -1,4 +1,4 @@
-import type {Notification, PayloadWithSender} from '../../types'
+import type {Notification} from '../../types'
 
 import getNotificationConfig from '../getNotificationConfig'
 
@@ -6,8 +6,8 @@ jest.mock('../../data', () => ({
     notifications: {
         'ticket-message.created': {
             type: 'ticket-message.created',
-            mapType: (n: Notification) => {
-                const {channel} = (n.payload as PayloadWithSender).ticket
+            mapType: (n: Notification<{ticket: {channel: string}}>) => {
+                const {channel} = n.payload.ticket
                 return channel === 'chat'
                     ? 'ticket-message.created.chat'
                     : channel === 'email'
