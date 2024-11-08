@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -26,9 +26,10 @@ export const TAGS_OPTIONAL_FILTERS = [
 ]
 
 export function Tags() {
-    const tagsOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
-        TAGS_OPTIONAL_FILTERS
-    )
+    const tagsOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
+            TAGS_OPTIONAL_FILTERS
+        )
     const getGridCellSize = useGridSize()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     useCleanStatsFiltersWithLogicalOperators(statsFilters)

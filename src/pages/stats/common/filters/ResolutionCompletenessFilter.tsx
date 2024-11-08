@@ -1,8 +1,7 @@
 import noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -53,24 +52,28 @@ export function ResolutionCompletenessFilter({
         },
     ]
 
-    const selectedOptions: DropdownOption[] = useMemo(
-        () =>
-            COMPLETION_OPTIONS.filter(
-                (option) => option.value === value.values[0]
-            ),
-        [value]
+    const handleFilterValuesChange = useCallback(
+        (values: string[]) => {
+            dispatchUpdate({
+                values,
+                operator: value.operator,
+            })
+        },
+        [dispatchUpdate, value.operator]
     )
 
-    const handleFilterValuesChange = useCallback(
-        (filterValues: DropdownOption | undefined) => {
-            dispatchUpdate(
-                withLogicalOperator(
-                    [String(filterValues?.value)],
-                    value.operator
-                )
+    const onOptionChange = (opt: DropdownOption) => {
+        if (value.values.includes(opt.value)) {
+            handleFilterValuesChange(
+                value.values.filter((val) => val !== opt.value)
             )
-        },
-        [dispatchUpdate, value]
+        } else {
+            handleFilterValuesChange([...value.values, opt.value])
+        }
+    }
+
+    const selectedOptions = COMPLETION_OPTIONS.filter((option) =>
+        value.values.includes(option.value)
     )
 
     const handleDropdownClosed = () => {
@@ -93,17 +96,23 @@ export function ResolutionCompletenessFilter({
             filterName={FilterLabels[FilterKey.ResolutionCompleteness]}
             selectedOptions={selectedOptions}
             filterOptionGroups={filterOptions}
-            onChangeOption={handleFilterValuesChange}
+            onChangeOption={onOptionChange}
             logicalOperators={resolutionCompletenessFilterLogicalOperators}
             onChangeLogicalOperator={handleFilterOperatorChange}
-            onSelectAll={noop}
-            onRemoveAll={noop}
+            onSelectAll={() => {
+                handleFilterValuesChange(
+                    COMPLETION_OPTIONS.map((option) => option.value)
+                )
+            }}
+            onRemoveAll={() => {
+                handleFilterValuesChange([])
+            }}
             onDropdownOpen={dispatchStatFiltersDirty}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
             showSearch={false}
-            isMultiple={false}
-            showQuickSelect={false}
+            isMultiple={true}
+            showQuickSelect={true}
             onRemove={() => {
                 dispatchUpdate(emptyFilter)
 

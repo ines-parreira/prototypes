@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
@@ -33,7 +33,7 @@ export function SupportPerformanceTicketInsights() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const supportPerformanceTicketInsightsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilter(
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             TICKET_INSIGHTS_OPTIONAL_FILTERS
         )
     const selectedCustomField = useAppSelector(getSelectedCustomField)

@@ -1,7 +1,6 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -112,6 +111,12 @@ describe('<SupportPerformanceTicketInsights />', () => {
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
+
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: false,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            [FeatureFlagKey.AutoQAFilters]: false,
+        })
     })
 
     it('should render the page title', () => {
@@ -170,9 +175,29 @@ describe('<SupportPerformanceTicketInsights />', () => {
         })
     })
 
-    it('should render the CustomFieldSelect', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+    it('should render the Filters Panel with default optional filters and a Resolution Completeness and Communication Skills filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedTicketInsightsOptionalFilters = [
+            ...TICKET_INSIGHTS_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
+        ]
 
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceTicketInsights />
+            </Provider>
+        )
+
+        extendedTicketInsightsOptionalFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render the CustomFieldSelect', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />

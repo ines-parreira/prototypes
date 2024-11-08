@@ -1,9 +1,8 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -40,9 +39,10 @@ export default function AutoQA() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const isAutoQaLanguageProficiency =
         !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
-    const autoQAOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
-        AUTO_QA_OPTIONAL_FILTERS
-    )
+    const autoQAOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
+            AUTO_QA_OPTIONAL_FILTERS
+        )
 
     const trendCardColumnWidth = isAutoQaLanguageProficiency ? 3 : 4
 

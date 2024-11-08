@@ -1,5 +1,4 @@
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -64,6 +63,8 @@ describe('ChannelsReport', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: false,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            [FeatureFlagKey.AutoQAFilters]: false,
         })
     })
 
@@ -108,6 +109,24 @@ describe('ChannelsReport', () => {
         const extendedChannelsReportFilters = [
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
             FilterKey.Score,
+        ]
+
+        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
+
+        extendedChannelsReportFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render channels report component with filters panel, default optional filters and a Resolution Completeness and Communication Skills filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedChannelsReportFilters = [
+            ...CHANNEL_REPORT_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
         ]
 
         const {getByText} = renderWithStore(<ChannelsReport />, defaultState)

@@ -164,4 +164,30 @@ describe('SupportPerformanceAgents', () => {
             expect(getByText(filter)).toBeInTheDocument()
         })
     })
+
+    it('should render New FiltersPanel and resolution completeness and communication skills filters should be present in the FiltersPanel', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedOptionalFilters = [
+            ...AGENTS_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
+        ]
+
+        const {getByText} = render(
+            <MemoryRouter>
+                <SupportPerformanceAgents />
+            </MemoryRouter>
+        )
+
+        expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
+            expect.objectContaining({hidden: true}),
+            {}
+        )
+        extendedOptionalFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+    })
 })

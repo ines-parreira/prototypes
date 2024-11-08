@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -46,9 +46,8 @@ export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
 export default function SupportPerformanceOverview() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const isAutoQaFiltersEnabled = !!useFlags()[FeatureFlagKey.AutoQAFilters]
     const supportPerformanceOverviewOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilter(
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS
         )
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
@@ -97,12 +96,6 @@ export default function SupportPerformanceOverview() {
                                 ]}
                                 optionalFilters={[
                                     ...supportPerformanceOverviewOptionalFilters,
-                                    ...(isAutoQaFiltersEnabled
-                                        ? [
-                                              FilterKey.CommunicationSkills,
-                                              FilterKey.ResolutionCompleteness,
-                                          ]
-                                        : []),
                                 ]}
                                 filterSettingsOverrides={{
                                     [FilterKey.Period]: {

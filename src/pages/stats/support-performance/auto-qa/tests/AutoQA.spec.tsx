@@ -1,6 +1,5 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -145,6 +144,25 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         const extendedAutoQAFilters = [
             ...AUTO_QA_OPTIONAL_FILTERS,
             FilterKey.Score,
+        ]
+
+        renderWithStore(<AutoQA />, {})
+
+        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
+        extendedAutoQAFilters.forEach((optionalFilter) => {
+            expect(screen.getByText(optionalFilter)).toBeTruthy()
+        })
+    })
+
+    it('should render AutoQA page with optional filters and Resolution Completeness and Communication Skills filters added', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedAutoQAFilters = [
+            ...AUTO_QA_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
         ]
 
         renderWithStore(<AutoQA />, {})

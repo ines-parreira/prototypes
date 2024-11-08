@@ -2,7 +2,6 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -84,7 +83,11 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 
 describe('VoiceOverview', () => {
     beforeEach(() => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: false})
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            [FeatureFlagKey.AutoQAFilters]: false,
+        })
     })
 
     const renderVoiceOverview = (featureEnabled = true) => {
@@ -206,6 +209,24 @@ describe('VoiceOverview', () => {
         const extendedVoiceOverviewFilters = [
             ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
             FilterKey.Score,
+        ]
+
+        const {getByText} = renderVoiceOverview()
+
+        extendedVoiceOverviewFilters.forEach((filter) => {
+            expect(getByText(filter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render new filters panel when feature flag is enabled and add Resolution Completeness and Communication Skills filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedVoiceOverviewFilters = [
+            ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
         ]
 
         const {getByText} = renderVoiceOverview()

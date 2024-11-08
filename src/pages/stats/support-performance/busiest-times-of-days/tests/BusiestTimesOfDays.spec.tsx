@@ -1,6 +1,5 @@
 import {screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -103,6 +102,27 @@ describe('BusiestTimesOfDays page', () => {
         const extendedBusiestTimeOfDaysOptionalFilters = [
             ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
             FilterKey.Score,
+        ]
+
+        const {getByText} = renderWithStore(
+            <BusiestTimesOfDays />,
+            defaultState
+        )
+
+        extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should render FiltersPanel with New Filters and Resolution Completeness and Communication Skills filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedBusiestTimeOfDaysOptionalFilters = [
+            ...BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
         ]
 
         const {getByText} = renderWithStore(

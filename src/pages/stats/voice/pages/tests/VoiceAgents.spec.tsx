@@ -98,7 +98,11 @@ const renderVoiceAgents = (featureEnabled = true) => {
 
 describe('VoiceAgents with the new filters', () => {
     beforeAll(() => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: true})
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
     })
 
     it('should render page when AnalyticsNewFiltersVoice is true', () => {
@@ -140,6 +144,34 @@ describe('VoiceAgents with the new filters', () => {
         ).toBeInTheDocument()
         expect(
             getAllByText(FilterLabels[FilterKey.Score])[0]
+        ).toBeInTheDocument()
+    })
+
+    it('should render Filters Panel with Resolution Completeness and Communication Skills filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+
+        const {getByText, getAllByText} = renderVoiceAgents()
+        expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
+
+        fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
+
+        expect(
+            getByText(FilterLabels[FilterKey.Integrations])
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Tags])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.Agents])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.ResolutionCompleteness])[0]
+        ).toBeInTheDocument()
+        expect(
+            getAllByText(FilterLabels[FilterKey.CommunicationSkills])[0]
         ).toBeInTheDocument()
     })
 })

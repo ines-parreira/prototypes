@@ -7,6 +7,8 @@ import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {
     FILTER_CLEAR_ICON,
+    FILTER_DESELECT_ALL_LABEL,
+    FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
@@ -134,6 +136,63 @@ describe('ResolutionCompletenessFilter', () => {
             operator: LogicalOperatorEnum.NOT_ONE_OF,
             values: [],
         })
+    })
+
+    it('should select all options when "Select all" is clicked', () => {
+        renderComponent()
+
+        fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        fireEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['1', '0'],
+        })
+    })
+
+    it('should deselect all options when "Deselect all" is clicked', () => {
+        renderWithStore(
+            <ResolutionCompletenessFilter
+                onRemove={mockedRemove}
+                value={withLogicalOperator(['0', '1'])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            defaultState
+        )
+
+        fireEvent.click(
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        )
+        fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [],
+        })
+    })
+
+    it('should dispatch the right actions on options deselection', () => {
+        const {rerenderComponent} = renderComponent()
+
+        rerenderComponent(
+            <ResolutionCompletenessFilter
+                onRemove={mockedRemove}
+                value={withLogicalOperator(['1'])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            defaultState
+        )
+
+        fireEvent.click(
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        )
+        fireEvent.click(screen.getAllByText('Complete')[1])
+
+        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
     })
 
     describe('ResolutionCompletenessFilterWithState', () => {

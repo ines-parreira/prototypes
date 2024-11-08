@@ -4,7 +4,7 @@ import React, {useMemo, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
@@ -76,7 +76,7 @@ function VoiceOverview() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
     const voiceOverviewOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilter(
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             VOICE_OVERVIEW_OPTIONAL_FILTERS
         )
 

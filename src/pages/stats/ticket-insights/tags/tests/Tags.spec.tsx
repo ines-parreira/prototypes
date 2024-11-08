@@ -60,6 +60,11 @@ describe('<Tags>', () => {
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
+
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+            [FeatureFlagKey.AutoQAFilters]: false,
+        })
     })
 
     it('should render new tags page', () => {
@@ -83,6 +88,22 @@ describe('<Tags>', () => {
         const extendedTagsOptionalFilters = [
             ...TAGS_OPTIONAL_FILTERS,
             FilterKey.Score,
+        ]
+        const {getByText} = renderWithStore(<Tags />, defaultState)
+
+        extendedTagsOptionalFilters.forEach((optionalFilter) => {
+            expect(getByText(optionalFilter)).toBeInTheDocument()
+        })
+    })
+
+    it('should contain filters panel component and Resolution Completeness and Communication Skills filters should be one of the optional filters', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQAFilters]: true,
+        })
+        const extendedTagsOptionalFilters = [
+            ...TAGS_OPTIONAL_FILTERS,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.CommunicationSkills,
         ]
         const {getByText} = renderWithStore(<Tags />, defaultState)
 

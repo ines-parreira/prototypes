@@ -2,7 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -32,9 +32,10 @@ export function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const SLAsOptionalFilters = useOptionalFiltersWithSatisfactionScoreFilter(
-        SERVICE_LEVEL_OPTIONAL_FILTERS
-    )
+    const SLAsOptionalFilters =
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
+            SERVICE_LEVEL_OPTIONAL_FILTERS
+        )
     return (
         <WithSlaEmptyState>
             <div className="full-width">

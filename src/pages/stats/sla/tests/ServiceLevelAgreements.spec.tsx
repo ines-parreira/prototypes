@@ -1,6 +1,5 @@
 import {render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps, PropsWithChildren} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -149,6 +148,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
+                [FeatureFlagKey.AutoQAFilters]: false,
             })
         })
 
@@ -177,6 +177,26 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
             const filtersWithScore = [
                 ...SERVICE_LEVEL_OPTIONAL_FILTERS,
                 FilterKey.Score,
+            ]
+            filtersWithScore.forEach((filter) => {
+                expect(getByText(filter)).toBeInTheDocument()
+            })
+        })
+
+        it('should show New Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+                [FeatureFlagKey.AutoQAFilters]: true,
+            })
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <ServiceLevelAgreements />
+                </Provider>
+            )
+            const filtersWithScore = [
+                ...SERVICE_LEVEL_OPTIONAL_FILTERS,
+                FilterKey.ResolutionCompleteness,
+                FilterKey.CommunicationSkills,
             ]
             filtersWithScore.forEach((filter) => {
                 expect(getByText(filter)).toBeInTheDocument()

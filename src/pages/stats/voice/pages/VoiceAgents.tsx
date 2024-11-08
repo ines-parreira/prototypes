@@ -4,7 +4,7 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PaywallConfig, paywallConfigs} from 'config/paywalls'
-import {useOptionalFiltersWithSatisfactionScoreFilter} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilter'
+import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGridSize} from 'hooks/useGridSize'
@@ -52,7 +52,7 @@ function VoiceAgents() {
     const isVoiceAgentsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
     const voiceAgentsOptionalFilters =
-        useOptionalFiltersWithSatisfactionScoreFilter(
+        useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             VOICE_AGENTS_OPTIONAL_FILTERS
         )
 
