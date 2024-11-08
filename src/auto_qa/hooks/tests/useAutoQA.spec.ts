@@ -5,6 +5,10 @@ import {
 } from '@gorgias/api-queries'
 import {act, renderHook} from '@testing-library/react-hooks'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import useAutoQA from '../useAutoQA'
 
 jest.mock('@gorgias/api-queries', () => ({
@@ -24,6 +28,10 @@ const refetchMock = jest.fn()
 describe('useAutoQA', () => {
     beforeEach(() => {
         jest.useRealTimers()
+
+        mockFlags({
+            [FeatureFlagKey.AutoQaLanguageProficiency]: false,
+        })
 
         useListTicketQaScoreDimensionsMock.mockReturnValue({
             data: {
@@ -49,6 +57,16 @@ describe('useAutoQA', () => {
                                 name: TicketQAScoreDimensionName.CommunicationSkills,
                                 prediction: 4,
                                 explanation: 'Beepity-boopity',
+                            },
+                            {
+                                id: 3,
+                                ticket_id: 1,
+                                user_id: null,
+                                created_datetime: '2024-01-20T10:00:00Z',
+                                updated_datetime: '2024-01-21T10:00:00Z',
+                                name: TicketQAScoreDimensionName.LanguageProficiency,
+                                prediction: 4,
+                                explanation: 'Boopity-boop',
                             },
                         ],
                     },
@@ -82,6 +100,26 @@ describe('useAutoQA', () => {
             }),
             expect.objectContaining({
                 name: TicketQAScoreDimensionName.CommunicationSkills,
+            }),
+        ])
+    })
+
+    it('should return the dimensions containing Language Proficiency', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+        })
+
+        const {result} = renderHook(() => useAutoQA(1))
+
+        expect(result.current.dimensions).toEqual([
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.ResolutionCompleteness,
+            }),
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.CommunicationSkills,
+            }),
+            expect.objectContaining({
+                name: TicketQAScoreDimensionName.LanguageProficiency,
             }),
         ])
     })

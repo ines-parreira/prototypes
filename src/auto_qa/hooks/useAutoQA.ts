@@ -4,16 +4,29 @@ import {
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
+
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useCallback, useMemo, useRef, useState} from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
-import {dimensionOrder, SupportedTicketQAScoreDimension} from '../config'
+import {
+    dimensionOrder,
+    SupportedTicketQAScoreDimension,
+    dimensionOrderWithLanguageProficiency,
+} from '../config'
 import type {DimensionSummary} from '../types'
 
 import useSaveState from './useSaveState'
 
 export default function useAutoQA(ticketId: number) {
+    const isAutoQaLanguageProficiency =
+        !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
+    const supportedDimensionsOrder = isAutoQaLanguageProficiency
+        ? dimensionOrderWithLanguageProficiency
+        : dimensionOrder
     const {data, isError, isLoading, refetch} =
         useListTicketQaScoreDimensions(ticketId)
     const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
@@ -94,7 +107,7 @@ export default function useAutoQA(ticketId: number) {
 
     const dimensions: SupportedTicketQAScoreDimension[] = useMemo(
         () =>
-            dimensionOrder
+            supportedDimensionsOrder
                 .filter((name) => !!dimensionsMap[name])
                 .map(
                     (name) =>
@@ -103,7 +116,7 @@ export default function useAutoQA(ticketId: number) {
                             ...values[name],
                         }) as SupportedTicketQAScoreDimension
                 ),
-        [dimensionsMap, values]
+        [dimensionsMap, supportedDimensionsOrder, values]
     )
 
     useDebouncedEffect(

@@ -13,9 +13,13 @@ export const dimensionOrder: SupportedTicketQADimensionName[] = [
     TicketQAScoreDimensionName.CommunicationSkills,
 ]
 
+export const dimensionOrderWithLanguageProficiency: TicketQAScoreDimensionName[] =
+    [...dimensionOrder, TicketQAScoreDimensionName.LanguageProficiency]
+
 export type SupportedTicketQADimensionName =
     | typeof TicketQAScoreDimensionName.ResolutionCompleteness
     | typeof TicketQAScoreDimensionName.CommunicationSkills
+    | typeof TicketQAScoreDimensionName.LanguageProficiency
 
 export type SupportedTicketQAScoreDimension = Exclude<
     TicketQAScoreDimension,
@@ -44,5 +48,13 @@ export const dimensionConfig: Record<
             {label: 'Complete', value: 1},
         ],
         tooltip: 'Did the agent address ALL issues brought up by the customer?',
+    },
+    [TicketQAScoreDimensionName.LanguageProficiency]: {
+        autoExpandThreshold: 4,
+        label: 'Language',
+        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
+        tooltip:
+            'On a scale of 1 to 5, 5 being best, did the agent display high proficiency in the language of the conversation: flawless spelling, grammar, syntax?',
     },
 }
