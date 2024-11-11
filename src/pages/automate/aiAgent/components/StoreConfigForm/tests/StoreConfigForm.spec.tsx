@@ -553,8 +553,8 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
         expect(
-            screen.getByText('This response was created by AI')
-        ).toBeInTheDocument()
+            screen.getAllByText('This response was created by AI').length
+        ).toBeGreaterThan(0)
     })
 
     it('should not render error when email channel is disabled and multichannel enabled', () => {

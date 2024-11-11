@@ -5,7 +5,9 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
 import {getAIGuidanceFixture} from 'pages/automate/aiAgent/fixtures/aiGuidance.fixture'
+import {customToneOfVoicePreviewFixture} from 'pages/automate/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -15,12 +17,14 @@ import {
     useGetAIGeneratedGuidances,
     useGetWelcomePageAcknowledged,
     useCreateWelcomePageAcknowledged,
+    useGenerateCustomToneOfVoicePreview,
 } from '../queries'
 import {
     createWelcomePageAcknowledged,
     getWelcomePageAcknowledged,
 } from '../resources/account-configuration'
 import * as guidanceResources from '../resources/guidances'
+import {createContextAndGenerateCustomToneOfVoicePreview} from '../resources/message-processing'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -29,6 +33,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 jest.mock('models/aiAgent/resources/account-configuration', () => ({
     createWelcomePageAcknowledged: jest.fn(),
     getWelcomePageAcknowledged: jest.fn(),
+}))
+
+jest.mock('models/aiAgent/resources/message-processing', () => ({
+    createContextAndGenerateCustomToneOfVoicePreview: jest.fn(),
 }))
 
 mockFlags({
@@ -198,6 +206,40 @@ describe('queries', () => {
             ).mutationFn
 
             await expect(mutationFn([storeName])).resolves.toEqual(mockData)
+        })
+    })
+
+    describe('useGenerateCustomToneOfVoicePreview', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const overrides = {cacheTime: 2000, retry: true}
+            const mockData = {
+                ai_answer:
+                    'Our return policy typically allows returns within a certain timeframe from the purchase date, provided the items are in their original condition. ',
+            }
+
+            ;(
+                createContextAndGenerateCustomToneOfVoicePreview as jest.Mock
+            ).mockResolvedValue(mockData)
+
+            renderHook(() => useGenerateCustomToneOfVoicePreview(overrides), {
+                wrapper,
+            })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                cacheTime: 2000,
+                retry: true,
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (args: CreatePlaygroundBody) => any
+                }
+            ).mutationFn
+
+            await expect(
+                mutationFn(customToneOfVoicePreviewFixture)
+            ).resolves.toEqual(mockData)
         })
     })
 })

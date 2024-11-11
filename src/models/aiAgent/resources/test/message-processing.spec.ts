@@ -2,14 +2,33 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
 
+import {customToneOfVoicePreviewFixture} from 'pages/automate/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+
 import authClient from '../../../../models/api/resources'
 import {
     apiClient,
     createBaseUrl,
+    createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from '../message-processing'
 
 describe('message-processing', () => {
+    let authServer: MockAdapter
+    let apiServer: MockAdapter
+
+    beforeAll(() => {
+        authServer = new MockAdapter(authClient)
+        authServer.onPost(`/gorgias-apps/auth`).reply(200, {
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Gfx6VO9tcxwk6xqx9yYzSfebfeakZp5JYIgP_edcw_A',
+        })
+
+        apiServer = new MockAdapter(apiClient)
+    })
+
+    afterAll(() => {
+        authServer.reset()
+        apiServer.reset()
+    })
     describe('createBaseUrl', () => {
         it('creates the production url', () => {
             expect(createBaseUrl(true)).toBe('https://aiagent.gorgias.help')
@@ -27,18 +46,6 @@ describe('message-processing', () => {
     })
 
     describe('createContextAndSubmitPlaygroundTicket', () => {
-        let apiServer: MockAdapter
-        let authServer: MockAdapter
-
-        beforeAll(() => {
-            authServer = new MockAdapter(authClient)
-            authServer.onPost(`/gorgias-apps/auth`).reply(200, {
-                token: 'token',
-            })
-
-            apiServer = new MockAdapter(apiClient)
-        })
-
         it('should call submitAiAgentTicket with the correct body', async () => {
             apiServer.onPost('/api/interaction/start').reply(200)
 
@@ -68,6 +75,20 @@ describe('message-processing', () => {
 
             await expect(
                 createContextAndSubmitPlaygroundTicket(body)
+            ).resolves.toEqual(expect.objectContaining({status: 200}))
+        })
+    })
+
+    describe('createContextAndGenerateCustomToneOfVoicePreview', () => {
+        it('should call generateCustomToneOfVoicePreview with the correct body', async () => {
+            apiServer
+                .onPost('/api/interaction/generate-custom-tov-preview')
+                .reply(200)
+
+            await expect(
+                createContextAndGenerateCustomToneOfVoicePreview(
+                    customToneOfVoicePreviewFixture
+                )
             ).resolves.toEqual(expect.objectContaining({status: 200}))
         })
     })

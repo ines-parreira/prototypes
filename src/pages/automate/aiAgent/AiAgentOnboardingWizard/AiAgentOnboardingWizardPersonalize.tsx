@@ -21,6 +21,7 @@ import {
     AiAgentChannel,
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
+import useCustomToneOfVoicePreview from '../hooks/useCustomToneOfVoicePreview'
 import {FormValues} from '../types'
 import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
 import css from './AiAgentOnboardingWizardPersonalize.less'
@@ -50,6 +51,16 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         isLoading,
     } = useAiAgentOnboardingWizard({
         step,
+    })
+
+    const {
+        latestCustomToneOfVoicePreview,
+        onGenerateCustomToneOfVoicePreview,
+        isLoading: isCustomToneOfVoicePreviewLoading,
+        isError,
+    } = useCustomToneOfVoicePreview({
+        customToneOfVoice: formValues.customToneOfVoiceGuidance ?? '',
+        shopName,
     })
 
     const isAiAgentChatEnabled: boolean | undefined =
@@ -165,6 +176,16 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                         customToneOfVoiceGuidance={
                             formValues.customToneOfVoiceGuidance
                         }
+                        customToneOfVoicePreview={
+                            latestCustomToneOfVoicePreview
+                        }
+                        isLoadingCustomToneOfVoicePreview={
+                            isCustomToneOfVoicePreviewLoading
+                        }
+                        onGenerateCustomToneOfVoicePreview={
+                            onGenerateCustomToneOfVoicePreview
+                        }
+                        isError={isError}
                     />
                 }
             >

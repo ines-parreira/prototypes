@@ -1,6 +1,11 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
+    .container {
+        // Remove grid from the Automation component
+        display: block;
+    }
+
     .warningContainer {
         max-width: 728px;
         margin-bottom: @layout-spacing-m;

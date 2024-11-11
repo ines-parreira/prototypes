@@ -20,7 +20,10 @@ import {
     upsertStoreConfiguration,
 } from './resources/account-configuration'
 import {getAIGeneratedGuidances} from './resources/guidances'
-import {createContextAndSubmitPlaygroundTicket} from './resources/message-processing'
+import {
+    createContextAndGenerateCustomToneOfVoicePreview,
+    createContextAndSubmitPlaygroundTicket,
+} from './resources/message-processing'
 import {GetStoreConfigurationParams} from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
@@ -216,3 +219,15 @@ export const useCreateWelcomePageAcknowledged = (
         ...overrides,
     })
 }
+
+// Custom tone of voice preview
+export const useGenerateCustomToneOfVoicePreview = (
+    overrides?: MutationOverrides<
+        typeof createContextAndGenerateCustomToneOfVoicePreview
+    >
+) =>
+    useMutation({
+        mutationFn: (body) =>
+            createContextAndGenerateCustomToneOfVoicePreview(...body),
+        ...overrides,
+    })

@@ -166,3 +166,8 @@ export const ARTICLE_INGESTION_LOGS_STATUS = {
 
 export type ArticleIngestionLogsStatus =
     (typeof ARTICLE_INGESTION_LOGS_STATUS)[keyof typeof ARTICLE_INGESTION_LOGS_STATUS]
+
+export const AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET = {
+    subject: 'Return policy',
+    bodyText: 'What is your return policy?',
+}

@@ -23,6 +23,7 @@ import {
     ToneOfVoice,
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
+import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
 import {FormValues} from '../../types'
 import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
@@ -47,7 +48,12 @@ jest.mock(
         ),
     })
 )
+
 const mockUseAiAgentOnboardingWizard = jest.mocked(useAiAgentOnboardingWizard)
+
+jest.mock('../../hooks/useCustomToneOfVoicePreview')
+
+const mockuseCustomToneofVoicePreview = jest.mocked(useCustomToneOfVoicePreview)
 
 const QueryClientProvider = mockQueryClientProvider()
 const defaultState = {}
@@ -123,6 +129,13 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             updateValue: jest.fn(),
             storeConfiguration: undefined,
             isUpdateWizardSetup: false,
+        })
+
+        mockuseCustomToneofVoicePreview.mockReturnValue({
+            latestCustomToneOfVoicePreview: '',
+            onGenerateCustomToneOfVoicePreview: jest.fn(),
+            isLoading: false,
+            isError: false,
         })
 
         mockUseAppSelector.mockReturnValue([])

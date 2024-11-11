@@ -16,6 +16,12 @@
             margin-bottom: @layout-spacing-s;
         }
 
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
         .banner {
             flex-shrink: 0;
         }
@@ -48,5 +54,25 @@
         justify-content: center;
         margin-top: @layout-spacing-s;
         color: var(--neutral-grey-4);
+    }
+
+    .messageSkeleton {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        flex-direction: column;
+    }
+
+    .generatePreviewButton {
+        display: flex;
+        margin: auto;
+        margin-top: @layout-spacing-m;
+    }
+
+    .icon {
+        margin-right: @layout-spacing-xxs;
+    }
+
+    .errorMessage {
+        color: var(--feedback-error);
     }
 }

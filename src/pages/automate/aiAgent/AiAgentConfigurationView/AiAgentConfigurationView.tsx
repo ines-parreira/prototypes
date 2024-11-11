@@ -74,7 +74,7 @@ export const AiAgentConfigurationView = ({
         !integration.meta.oauth.scope.includes(READ_FULFILLMENTS_PERMISSION)
 
     return (
-        <AiAgentLayout shopName={shopName}>
+        <AiAgentLayout shopName={shopName} className={css.container}>
             <div>
                 {integrationNeedMorePermissions && (
                     <div className={css.warningContainer}>

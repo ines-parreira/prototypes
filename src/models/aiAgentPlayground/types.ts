@@ -10,6 +10,7 @@ export type CreatePlaygroundMessage = {
 
 export type CreatePlaygroundOptions = {
     shopName: string
+    customToneOfVoice?: string
 }
 
 export type CreatePlaygroundBody = {
@@ -242,4 +243,8 @@ export enum ProcessingStatus {
 export enum PlaygroundStep {
     INPUT = 'input',
     OUTPUT = 'output',
+}
+
+export type AiAgentCustomToneOfVoiceResponse = {
+    ai_answer: string
 }

@@ -81,7 +81,7 @@ describe('TicketPreview', () => {
         expect(screen.getByText(signature)).toBeInTheDocument()
     })
 
-    it('renders the custom tone of voice message correctly', () => {
+    it('renders the default message for custom tone of voice and button to generate preview', () => {
         render(
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Custom}
@@ -92,9 +92,86 @@ describe('TicketPreview', () => {
 
         expect(
             screen.getByText(
-                '[Preview for custom tone of voice is not available yet, but coming soon!]'
+                "Click 'Generate Preview' to view a response using your custom tone of voice"
             )
         ).toBeInTheDocument()
+        expect(screen.getByText('Generate preview')).toBeInTheDocument()
         expect(screen.getByText(signature)).toBeInTheDocument()
+    })
+
+    it('renders the preview message for custom tone of voice', () => {
+        render(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                customToneOfVoicePreview={
+                    'This is a custom tone of voice preview'
+                }
+                onGenerateCustomToneOfVoicePreview={() => {}}
+            />
+        )
+
+        expect(
+            screen.getByText('This is a custom tone of voice preview')
+        ).toBeInTheDocument()
+    })
+
+    it('renders the default message for custom tone of voice and disables button', () => {
+        render(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance=""
+                onGenerateCustomToneOfVoicePreview={() => {}}
+            />
+        )
+
+        const generatePreviewBtn = screen.getByText('Generate preview')
+
+        expect(
+            screen.getByText(
+                "Click 'Generate Preview' to view a response using your custom tone of voice"
+            )
+        ).toBeInTheDocument()
+        expect(generatePreviewBtn).toBeInTheDocument()
+        expect(generatePreviewBtn).toBeAriaDisabled()
+    })
+
+    it('renders the error message for custom tone of voice', () => {
+        render(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                isError
+                onGenerateCustomToneOfVoicePreview={() => {}}
+            />
+        )
+
+        expect(
+            screen.getByText(
+                'Preview could not be generated. Make sure instructions are not vague or contradictory and try again.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('renders the skeleton for for custom tone of voice and disables button', () => {
+        render(
+            <TicketPreview
+                toneOfVoice={ToneOfVoice.Custom}
+                signature={signature}
+                customToneOfVoiceGuidance="This is a custom tone of voice guidance"
+                isLoadingCustomToneOfVoicePreview
+                onGenerateCustomToneOfVoicePreview={() => {}}
+            />
+        )
+        const generatePreviewBtn = screen.getByText('Generate preview')
+        const skeletonElement = document.querySelector(
+            '.react-loading-skeleton'
+        )
+        expect(skeletonElement).toBeInTheDocument()
+
+        expect(generatePreviewBtn).toBeAriaDisabled()
     })
 })

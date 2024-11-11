@@ -59,8 +59,8 @@ export const TICKET_PREVIEW: Record<
         message: (
             <div>
                 <i>
-                    [Preview for custom tone of voice is not available yet, but
-                    coming soon!]
+                    Click 'Generate Preview' to view a response using your
+                    custom tone of voice
                 </i>
             </div>
         ),
