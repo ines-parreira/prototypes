@@ -179,7 +179,7 @@ Build production:
     - .deploy
     - .staging_env
 
-# Deploy staging:
+# Deploy staging (removed):
 #   extends: .deploy staging
 #   variables:
 #     CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
@@ -243,13 +243,13 @@ Create preview release:
   variables:
     SENTRY_PROJECT: 'helpdesk-staging'
 
-Create staging release:
-  extends: .sentry release
-  dependencies: [Build staging]
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "staging"
-  variables:
-    SENTRY_PROJECT: 'helpdesk-staging'
+# Create staging release:
+#   extends: .sentry release
+#   dependencies: [Build staging]
+#   rules:
+#     - if: $CI_COMMIT_REF_NAME == "staging"
+#   variables:
+#     SENTRY_PROJECT: 'helpdesk-staging'
 
 Create production release:
   extends: .sentry release

@@ -80,6 +80,8 @@ jobs:
 
       - name: Publish assets and build
         shell: bash
+        env:
+          GCLOUD_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
         run: |
           # gorgi uses this file to check for release blocks in deployment conductor
           cat <<EOF > key.json
