@@ -1,0 +1,126 @@
+name: Deploy app
+
+on:
+  workflow_call:
+    inputs:
+      cache-key:
+        description: Node modules cache key
+        type: string
+        required: true
+      node-version:
+        description: Node version
+        type: string
+        required: true
+      gcloud-project:
+        description: GCloud project
+        type: string
+        required: true
+      bucket:
+        description: GCloud storage URL
+        type: string
+        required: true
+      bucket-path:
+        description: Path in the GCloud storage to upload the assets and build
+        type: string
+        required: true
+      kube-context:
+        description: Kubernetes context
+        type: string
+        required: true
+      assets-dir:
+        description: Assets directory
+        type: string
+        required: true
+      build-dir:
+        description: Build directory
+        type: string
+        required: true
+      artifact:
+        description: Build artifact name
+        type: string
+        required: true
+      sentry-project:
+        description: Sentry project
+        type: string
+        required: true
+      release:
+        description: Release version
+        type: string
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: gh-actions-default-runner-set
+    container:
+      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
+      credentials:
+        username: _json_key
+        password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Download the artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ inputs.build-dir }}
+          name: ${{ inputs.artifact }}
+
+      - name: Publish assets and build
+        shell: bash
+        run: |
+          # gorgi uses this file to check for release blocks in deployment conductor
+          cat <<EOF > key.json
+            ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} --key-file=key.json --project=${{ inputs.gcloud-project }}
+
+          . deployment/bin/deploy-utils.sh
+          . deploy-argo-utils.sh
+          find_and_publish_to_gcs ${{ inputs.assets-dir }} ${{ inputs.bucket }}/${{ inputs.bucket-path }}/assets
+          find_and_publish_to_gcs ${{ inputs.build-dir }} ${{ inputs.bucket }}/${{ inputs.bucket-path }}/build
+          setup_helpdesk_kubecontext ${{ inputs.kube-context }}
+          publish_manifest_configmap ${{ inputs.kube-context }} default ${{ inputs.build-dir }} /${{inputs.bucket-path }}/build
+
+  create-release:
+    name: Create release
+    needs: deploy
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Create sentry release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ inputs.sentry-project }}
+        shell: bash
+        run: |
+          yarn sentry-cli releases new "${{ inputs.release }}"
+          yarn sentry-cli releases set-commits "${{ inputs.release }}" --auto --ignore-missing
+          yarn sentry-cli releases files "${{ inputs.release }}" upload-sourcemaps "${{ inputs.build-dir }}"
+          yarn sentry-cli releases finalize "${{ inputs.release }}"

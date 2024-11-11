@@ -1,0 +1,92 @@
+name: Quality check
+
+on:
+  workflow_call:
+    inputs:
+      cache-key:
+        description: Cache key for the node_modules
+        type: string
+        required: true
+      node-version:
+        description: Node.js version
+        type: string
+        required: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: gh-actions-default-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Lint
+        run: yarn lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Typecheck
+        run: yarn types
+
+  tests:
+    name: Tests
+    runs-on: gh-actions-large-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        job-index: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Tests
+        run: yarn test:ci:cover --shard "${{ matrix.job-index }}/8"
+
+      - name: Upload codecov report
+        run: |
+          cat ./codecov_pgp_key.asc | gpg --no-default-keyring --keyring trustedb.gpg --import
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+          curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+          gpg --keyring ~/.gnupg/trustedb.gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
+          shasum -a 256 -c codecov.SHA256SUM
+          chmod +x codecov
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }}

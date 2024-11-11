@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      cache-key:
+        description: Node modules cache key
+        required: true
+        type: string
+      node-version:
+        description: Node version
+        required: true
+        type: string
+      assets-url:
+        description: Assets URL
+        required: true
+        type: string
+      release:
+        description: Release version
+        required: true
+        type: string
+      build-dir:
+        description: Path to the build dir
+        required: true
+        type: string
+      artifact:
+        description: Build artifact name
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build
+    runs-on: gh-actions-default-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: ${{ inputs.cache-key }}
+          path: node_modules
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Build
+        env:
+          GORGIAS_ASSETS_URL: ${{ inputs.assets-url }}
+          WEB_APP_RELEASE: ${{ inputs.release }}
+        run: yarn build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ inputs.build-dir }}
+          name: ${{ inputs.artifact }}

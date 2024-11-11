@@ -179,11 +179,11 @@ Build production:
     - .deploy
     - .staging_env
 
-Deploy staging:
-  extends: .deploy staging
-  variables:
-    CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
-  <<: *gitlab_environment
+# Deploy staging:
+#   extends: .deploy staging
+#   variables:
+#     CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
+#   <<: *gitlab_environment
 
 .deploy production:
   dependencies: [Build production]
