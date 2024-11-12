@@ -1,8 +1,19 @@
+import _cloneDeep from 'lodash/cloneDeep'
+
 import {
     AutomatedMessageNodeType,
+    CancelOrderNodeType,
+    CancelSubscriptionNodeType,
     ChannelTriggerNodeType,
+    EndNodeType,
     FileUploadNodeType,
+    OrderLineItemSelectionNodeType,
+    OrderSelectionNodeType,
+    RefundOrderNodeType,
+    ShopperAuthenticationNodeType,
+    SkipChargeNodeType,
     TextReplyNodeType,
+    UpdateShippingAddressNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     visualBuilderGraphLlmPromptTriggerFixture,
@@ -12,18 +23,66 @@ import {
 import {baseReducer} from '../baseReducer'
 
 describe('baseReducer', () => {
-    test('SET_CHANNEL_TRIGGER_LABEL', () => {
-        const g = visualBuilderGraphSimpleChoicesFixture
-        const nextG = baseReducer(g, {
-            type: 'SET_CHANNEL_TRIGGER_LABEL',
-            channelTriggerNodeId: 'trigger_button1',
-            label: 'new entrypoint',
-        })
-        expect(
-            nextG.nodes.find(
+    describe('SET_CHANNEL_TRIGGER_LABEL', () => {
+        test('Invalid graph without trigger node, and does not update anything', () => {
+            const g = _cloneDeep(visualBuilderGraphSimpleChoicesFixture)
+            const channelTriggerIndex = g.nodes.findIndex(
                 (n): n is ChannelTriggerNodeType => n.type === 'channel_trigger'
-            )?.data.label
-        ).toEqual('new entrypoint')
+            )
+            expect(channelTriggerIndex).not.toBe(-1)
+            g.nodes.splice(channelTriggerIndex, 1)
+            const nextG = baseReducer(g, {
+                type: 'SET_CHANNEL_TRIGGER_LABEL',
+                channelTriggerNodeId: 'trigger_button1',
+                label: 'new entrypoint',
+            })
+            expect(
+                nextG.nodes.find(
+                    (n): n is ChannelTriggerNodeType =>
+                        n.type === 'channel_trigger'
+                )
+            ).toBeUndefined()
+        })
+
+        test('Sets label and does not sync flow name', () => {
+            const g = visualBuilderGraphSimpleChoicesFixture
+            const nextG = baseReducer(g, {
+                type: 'SET_CHANNEL_TRIGGER_LABEL',
+                channelTriggerNodeId: 'trigger_button1',
+                label: 'new entrypoint',
+            })
+            expect(
+                nextG.nodes.find(
+                    (n): n is ChannelTriggerNodeType =>
+                        n.type === 'channel_trigger'
+                )?.data.label
+            ).toEqual('new entrypoint')
+            expect(nextG.name).toEqual(g.name)
+        })
+
+        test('Sets label and does sync flow name', () => {
+            const g = visualBuilderGraphSimpleChoicesFixture
+            const nextG = baseReducer(
+                // Sync names to start, by setting flow to entry point label
+                baseReducer(g, {
+                    type: 'SET_NAME',
+                    name: 'entrypoint',
+                }),
+                {
+                    // Now update channel label, and flow name will update to match
+                    type: 'SET_CHANNEL_TRIGGER_LABEL',
+                    channelTriggerNodeId: 'trigger_button1',
+                    label: 'entrypoint new',
+                }
+            )
+            expect(
+                nextG.nodes.find(
+                    (n): n is ChannelTriggerNodeType =>
+                        n.type === 'channel_trigger'
+                )?.data.label
+            ).toEqual('entrypoint new')
+            expect(nextG.name).toEqual('entrypoint new')
+        })
     })
 
     test('SET_AUTOMATED_MESSAGE_CONTENT', () => {
@@ -445,5 +504,384 @@ describe('baseReducer', () => {
                     n.data.quantity === '1'
             )
         ).toBeDefined()
+    })
+
+    test('INSERT_SKIP_CHARGE_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_SKIP_CHARGE_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+        const node = nextG.nodes.find(
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.customerId).toBe('customerId')
+        expect(node?.data.integrationId).toBe('integrationId')
+    })
+
+    test('SET_SKIP_CHARGE_NODE_SETTINGS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_SKIP_CHARGE_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+        let node = nextG.nodes.find(
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.subscriptionId).toBe('')
+        expect(node?.data.chargeId).toBe('')
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_SKIP_CHARGE_NODE_SETTINGS',
+            skipChargeNodeId: node?.id || '',
+            subscriptionId: 'subscription',
+            chargeId: 'charge',
+        })
+
+        node = nextG.nodes.find(
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+        )
+        expect(node?.data.subscriptionId).toBe('subscription')
+        expect(node?.data.chargeId).toBe('charge')
+    })
+
+    test('SET_BRANCH_IDS_EDITING', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'SET_BRANCH_IDS_EDITING',
+            branchIds: ['branch-id-1'],
+        })
+        expect(nextG.branchIdsEditing.length).toBe(1)
+        expect(nextG.branchIdsEditing[0]).toBe('branch-id-1')
+    })
+
+    test('ADD_BRANCH_ID_EDITING', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        expect(g.branchIdsEditing.length).toBe(0)
+        let nextG = baseReducer(g, {
+            type: 'ADD_BRANCH_ID_EDITING',
+            branchId: 'branch-id-1',
+        })
+        expect(nextG.branchIdsEditing.length).toBe(1)
+        expect(nextG.branchIdsEditing[0]).toBe('branch-id-1')
+
+        nextG = baseReducer(nextG, {
+            type: 'ADD_BRANCH_ID_EDITING',
+            branchId: 'branch-id-2',
+        })
+        expect(nextG.branchIdsEditing.length).toBe(2)
+        expect(nextG.branchIdsEditing[1]).toBe('branch-id-2')
+    })
+
+    test('CLOSE_EDITOR', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        expect(g.nodeEditingId).toBe(null)
+        let nextG = baseReducer(g, {
+            type: 'SET_NODE_EDITING_ID',
+            nodeId: 'conditions1',
+        })
+        expect(nextG.nodeEditingId).toBe('conditions1')
+
+        // Closing editor will clear editing
+        nextG = baseReducer(nextG, {
+            type: 'CLOSE_EDITOR',
+        })
+        expect(nextG.nodeEditingId).toBe(null)
+    })
+
+    test('SET_NODE_EDITING_ID', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        expect(g.nodeEditingId).toBe(null)
+        let nextG = baseReducer(g, {
+            type: 'SET_NODE_EDITING_ID',
+            nodeId: 'conditions1',
+        })
+        expect(nextG.nodeEditingId).toBe('conditions1')
+
+        // Since it's the same, it does not change
+        nextG = baseReducer(nextG, {
+            type: 'SET_NODE_EDITING_ID',
+            nodeId: 'conditions1',
+        })
+        expect(nextG.nodeEditingId).toBe('conditions1')
+    })
+
+    test('INSERT_UPDATE_SHIPPING_ADDRESS_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            orderExternalId: 'external',
+            integrationId: 'integrationId',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is UpdateShippingAddressNodeType =>
+                n.type === 'update_shipping_address'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            orderExternalId: 'external',
+            integrationId: 'integrationId',
+        })
+
+        let node = nextG.nodes.find(
+            (n): n is UpdateShippingAddressNodeType =>
+                n.type === 'update_shipping_address'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.name).toBe('')
+        expect(node?.data.address1).toBe('')
+        expect(node?.data.address2).toBe('')
+        expect(node?.data.city).toBe('')
+        expect(node?.data.zip).toBe('')
+        expect(node?.data.province).toBe('')
+        expect(node?.data.country).toBe('')
+        expect(node?.data.phone).toBe('')
+        expect(node?.data.lastName).toBe('')
+        expect(node?.data.firstName).toBe('')
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_UPDATE_SHIPPING_ADDRESS_NODE_SETTINGS',
+            updateShippingAddressNodeId: node?.id || '',
+            name: 'name',
+            address1: 'address1',
+            address2: 'address2',
+            city: 'city',
+            zip: 'zip',
+            province: 'province',
+            country: 'country',
+            phone: 'phone',
+            lastName: 'lastName',
+            firstName: 'firstName',
+        })
+        node = nextG.nodes.find(
+            (n): n is UpdateShippingAddressNodeType =>
+                n.type === 'update_shipping_address'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.name).toBe('name')
+        expect(node?.data.address1).toBe('address1')
+        expect(node?.data.address2).toBe('address2')
+        expect(node?.data.city).toBe('city')
+        expect(node?.data.zip).toBe('zip')
+        expect(node?.data.province).toBe('province')
+        expect(node?.data.country).toBe('country')
+        expect(node?.data.phone).toBe('phone')
+        expect(node?.data.lastName).toBe('lastName')
+        expect(node?.data.firstName).toBe('firstName')
+    })
+
+    test('INSERT_CANCEL_SUBSCRIPTION_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_CANCEL_SUBSCRIPTION_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is CancelSubscriptionNodeType =>
+                n.type === 'cancel_subscription'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.customerId).toBe('customerId')
+        expect(node?.data.integrationId).toBe('integrationId')
+    })
+
+    test('SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_CANCEL_SUBSCRIPTION_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+        })
+
+        let node = nextG.nodes.find(
+            (n): n is CancelSubscriptionNodeType =>
+                n.type === 'cancel_subscription'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.reason).toBe('')
+        expect(node?.data.subscriptionId).toBe('')
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_CANCEL_SUBSCRIPTION_NODE_SETTINGS',
+            cancelSubscriptionNodeId: node?.id || '',
+            subscriptionId: 'subscription',
+            reason: 'reason',
+        })
+
+        node = nextG.nodes.find(
+            (n): n is CancelSubscriptionNodeType =>
+                n.type === 'cancel_subscription'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.reason).toBe('reason')
+        expect(node?.data.subscriptionId).toBe('subscription')
+    })
+
+    test('INSERT_REFUND_ORDER_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_REFUND_ORDER_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+            orderExternalId: 'orderExternalId',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is RefundOrderNodeType => n.type === 'refund_order'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('INSERT_CANCEL_ORDER_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_CANCEL_ORDER_NODE',
+            beforeNodeId: 'automated_message2',
+            customerId: 'customerId',
+            integrationId: 'integrationId',
+            orderExternalId: 'orderExternalId',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is CancelOrderNodeType => n.type === 'cancel_order'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('INSERT_SHOPPER_AUTHENTICATION_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_SHOPPER_AUTHENTICATION_NODE',
+            beforeNodeId: 'automated_message2',
+            storeIntegrationId: 0,
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is ShopperAuthenticationNodeType =>
+                n.type === 'shopper_authentication'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('INSERT_ORDER_LINE_ITEM_SELECTION_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE',
+            beforeNodeId: 'automated_message2',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is OrderLineItemSelectionNodeType =>
+                n.type === 'order_line_item_selection'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('SET_ORDER_LINE_ITEM_SELECTION_CONTENT', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE',
+            beforeNodeId: 'automated_message2',
+        })
+
+        let node = nextG.nodes.find(
+            (n): n is OrderLineItemSelectionNodeType =>
+                n.type === 'order_line_item_selection'
+        )
+        expect(node).toBeDefined()
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_ORDER_LINE_ITEM_SELECTION_CONTENT',
+            orderLineItemSelectionNodeId: node?.id || '',
+            content: {
+                html: '<p>Hello</p>',
+                text: 'Hello',
+            },
+        })
+
+        node = nextG.nodes.find(
+            (n): n is OrderLineItemSelectionNodeType =>
+                n.type === 'order_line_item_selection'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.content.text).toBe('Hello')
+    })
+
+    test('INSERT_ORDER_SELECTION_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_ORDER_SELECTION_NODE',
+            beforeNodeId: 'automated_message2',
+        })
+
+        const node = nextG.nodes.find(
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+        )
+        expect(node).toBeDefined()
+    })
+
+    test('SET_ORDER_SELECTION_CONTENT', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let nextG = baseReducer(g, {
+            type: 'INSERT_ORDER_SELECTION_NODE',
+            beforeNodeId: 'automated_message2',
+        })
+
+        let node = nextG.nodes.find(
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+        )
+        expect(node).toBeDefined()
+
+        nextG = baseReducer(nextG, {
+            type: 'SET_ORDER_SELECTION_CONTENT',
+            orderSelectionNodeId: node?.id || '',
+            content: {
+                html: '<p>Hello</p>',
+                text: 'Hello',
+            },
+        })
+        node = nextG.nodes.find(
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+        )
+        expect(node).toBeDefined()
+        expect(node?.data.content.text).toBe('Hello')
+    })
+
+    test('SET_END_NODE_SETTINGS', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        let node = g.nodes.find((n): n is EndNodeType => n.id === 'end3')
+        expect(node?.data.action).toBe('ask-for-feedback')
+        const nextG = baseReducer(g, {
+            type: 'SET_END_NODE_SETTINGS',
+            endNodeId: 'end3',
+            settings: {
+                action: 'create-ticket',
+            },
+        })
+
+        node = nextG.nodes.find((n): n is EndNodeType => n.id === 'end3')
+        expect(node).toBeDefined()
+        expect(node?.data.action).toBe('create-ticket')
     })
 })

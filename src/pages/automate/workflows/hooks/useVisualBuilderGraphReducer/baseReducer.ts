@@ -308,7 +308,13 @@ export function baseReducer(
                         n.id === action.channelTriggerNodeId &&
                         n.type === 'channel_trigger'
                 )
-                if (node) node.data.label = action.label
+                if (node) {
+                    // If the name of the flow is the same as the channel label, sync changes between them.
+                    if (draft.name === node.data.label) {
+                        draft.name = action.label
+                    }
+                    node.data.label = action.label
+                }
             })
         case 'SET_AUTOMATED_MESSAGE_CONTENT':
             return produce(graph, (draft) => {
