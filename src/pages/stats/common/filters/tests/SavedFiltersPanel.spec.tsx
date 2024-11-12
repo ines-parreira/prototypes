@@ -4,6 +4,7 @@ import {
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {within} from '@testing-library/dom'
 import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
@@ -20,10 +21,12 @@ import {
     CANCEL_BUTTON_LABEL,
     COLLAPSE_CLOSED_ICON,
     COLLAPSE_OPEN_ICON,
+    DELETE_CONFIRMATION_BUTTON_LABEL,
     DELETE_FILTER_ACTION_LABEL,
     DUPLICATE_FILTER_ACTION_LABEL,
     FILTER_DELETED_ERROR_MESSAGE,
     FILTER_SAVED_ERROR_MESSAGE,
+    getDeleteConfirmationTitle,
     SAVE_BUTTON_LABEL,
     SavedFiltersPanel,
     UNAPPLY_FILTER_ICON,
@@ -428,7 +431,7 @@ describe('SavedFiltersPanel', () => {
         )
     })
 
-    it('should delete Saved Filter ', () => {
+    it('should delete Saved Filter after confirmation', () => {
         const mutateMock = jest.fn().mockResolvedValue({})
         useDeleteAnalyticsFilterMock.mockReturnValue({
             mutateAsync: mutateMock,
@@ -473,8 +476,73 @@ describe('SavedFiltersPanel', () => {
                 name: new RegExp(DELETE_FILTER_ACTION_LABEL),
             })
         )
+        userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
 
         expect(mutateMock).toHaveBeenCalled()
+    })
+
+    it('should close confirmation modal on Canceled confirmation', async () => {
+        const mutateMock = jest.fn().mockResolvedValue({})
+        useDeleteAnalyticsFilterMock.mockReturnValue({
+            mutateAsync: mutateMock,
+        } as any)
+        const savedFilterName = 'Some Name draft'
+        const savedFilterDraft: SavedFilter = {
+            id: 123,
+            name: savedFilterName,
+            filter_group: [],
+        }
+        const state = {
+            stats: statsSlice.initialState,
+            integrations: fromJS({
+                integration: {
+                    id: 1,
+                },
+            }),
+            ui: {
+                stats: {
+                    filters: {
+                        ...initialState,
+                        savedFilterDraft,
+                        appliedSavedFilterId: 123,
+                    },
+                },
+            },
+        } as RootState
+
+        renderWithStore(
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <SavedFiltersPanel />
+                </QueryClientProvider>
+            </MemoryRouter>,
+            state
+        )
+
+        userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+        userEvent.click(screen.getByText(SAVED_FILTER_ACTIONS_MENU_ICON))
+        userEvent.click(
+            screen.getByRole('option', {
+                name: new RegExp(DELETE_FILTER_ACTION_LABEL),
+            })
+        )
+        const confirmationModal = screen.getByRole('dialog')
+        expect(confirmationModal).toBeInTheDocument()
+        expect(
+            within(confirmationModal).getByText(
+                getDeleteConfirmationTitle(savedFilterName)
+            )
+        ).toBeInTheDocument()
+        userEvent.click(
+            within(confirmationModal).getByText(CANCEL_BUTTON_LABEL)
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(getDeleteConfirmationTitle(savedFilterName))
+            ).not.toBeInTheDocument()
+            expect(mutateMock).not.toHaveBeenCalled()
+        })
     })
 
     it('should notify about failed delete of the Saved Filter ', async () => {
@@ -522,6 +590,7 @@ describe('SavedFiltersPanel', () => {
                 name: new RegExp(DELETE_FILTER_ACTION_LABEL),
             })
         )
+        userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
 
         expect(mutateMock).toHaveBeenCalled()
         await waitFor(() => {

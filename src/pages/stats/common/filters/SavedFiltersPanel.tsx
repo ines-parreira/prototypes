@@ -17,6 +17,7 @@ import {SavedFilter, SavedFilterDraft} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
+import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
 import {withoutEmptyFilters} from 'pages/stats/common/filters/helpers'
@@ -44,12 +45,18 @@ export const FILTER_DELETED_ERROR_MESSAGE = 'Filter not deleted!'
 
 export const SAVE_BUTTON_LABEL = 'Save'
 export const CANCEL_BUTTON_LABEL = 'Cancel'
+export const DELETE_CONFIRMATION_BUTTON_LABEL = 'Delete'
 export const COLLAPSE_OPEN_ICON = 'arrow_drop_down'
 export const COLLAPSE_CLOSED_ICON = 'arrow_right'
 export const UNAPPLY_FILTER_ICON = 'close'
 
 export const DUPLICATE_FILTER_ACTION_LABEL = 'Duplicate Filter'
 export const DELETE_FILTER_ACTION_LABEL = 'Delete Filter'
+
+export const getDeleteConfirmationTitle = (savedFilterName: string) =>
+    `Delete ${savedFilterName}?`
+const getDeleteConfirmationContent = (savedFilterName: string) =>
+    `Deleting ${savedFilterName} will remove it from Saved Filters for all users. This action cannot be undone.`
 
 const isSavedFilter = (
     savedFilter: SavedFilterDraft | SavedFilter | null
@@ -68,6 +75,8 @@ export const SavedFiltersPanel = () => {
         savedFilterDraft !== null && !isSavedFilterApplied
 
     const [isEditMode, setIsEditMode] = useState(isEditingSavedFilterDraft)
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
+        useState(false)
     const toggleIsEditMode = () => {
         setIsEditMode(!isEditMode)
     }
@@ -219,22 +228,48 @@ export const SavedFiltersPanel = () => {
                             />
                             {(isEditMode || isEditingSavedFilterDraft) &&
                             savedFilter ? (
-                                <SavedFilterMenu
-                                    actions={[
-                                        {
-                                            label: DUPLICATE_FILTER_ACTION_LABEL,
-                                            callback: () =>
-                                                duplicateSavedFilterHandler(
-                                                    savedFilter
-                                                ),
-                                        },
-                                        {
-                                            label: DELETE_FILTER_ACTION_LABEL,
-                                            callback: () =>
-                                                deleteHandler(savedFilter),
-                                        },
-                                    ]}
-                                />
+                                <>
+                                    <ConfirmationModal
+                                        confirmIntent={'destructive'}
+                                        confirmText={
+                                            DELETE_CONFIRMATION_BUTTON_LABEL
+                                        }
+                                        title={getDeleteConfirmationTitle(
+                                            savedFilter.name
+                                        )}
+                                        onConfirm={() => {
+                                            deleteHandler(savedFilter)
+                                            setIsConfirmationModalOpen(false)
+                                        }}
+                                        isOpen={isConfirmationModalOpen}
+                                        onClose={() => {
+                                            setIsConfirmationModalOpen(false)
+                                        }}
+                                        className={css.confirmationModal}
+                                    >
+                                        {getDeleteConfirmationContent(
+                                            savedFilter.name
+                                        )}
+                                    </ConfirmationModal>
+                                    <SavedFilterMenu
+                                        actions={[
+                                            {
+                                                label: DUPLICATE_FILTER_ACTION_LABEL,
+                                                callback: () =>
+                                                    duplicateSavedFilterHandler(
+                                                        savedFilter
+                                                    ),
+                                            },
+                                            {
+                                                label: DELETE_FILTER_ACTION_LABEL,
+                                                callback: () =>
+                                                    setIsConfirmationModalOpen(
+                                                        true
+                                                    ),
+                                            },
+                                        ]}
+                                    />
+                                </>
                             ) : (
                                 <IconButton
                                     onClick={unApplyFilterHandler}

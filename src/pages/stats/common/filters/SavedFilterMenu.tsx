@@ -37,6 +37,7 @@ export const SavedFilterMenu = ({actions}: Props) => {
                 ref={toggleRef}
                 className={css.button}
                 fillStyle="ghost"
+                id="saved-filter-actions-button"
                 intent="secondary"
                 onClick={handleClick}
                 size="medium"
