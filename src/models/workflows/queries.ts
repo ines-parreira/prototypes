@@ -664,3 +664,17 @@ export const useGetConfigurationExecutionLogs = (
         ...overrides,
     })
 }
+
+export const useUpsertAccountOauth2Token = (
+    overrides?: MutationOverrides<
+        OperationMethods['AccountOauth2TokenController_upsert']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.AccountOauth2TokenController_upsert(...params)
+        },
+        ...overrides,
+    })
+}

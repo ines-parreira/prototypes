@@ -11,11 +11,15 @@ import {ulid} from 'ulidx'
 
 import {useFlag} from 'common/flags'
 import {shopifyIntegration} from 'fixtures/integrations'
-import {useGetStoreApps} from 'models/workflows/queries'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    useGetStoreApps,
+    useUpsertAccountOauth2Token,
+} from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import useAddStoreApp from '../../hooks/useAddStoreApp'
 import useDeleteAction from '../../hooks/useDeleteAction'
@@ -33,6 +37,7 @@ jest.mock('models/workflows/queries')
 jest.mock('../../hooks/useAddStoreApp')
 jest.mock('../../hooks/useUpsertAction')
 jest.mock('../../hooks/useDeleteAction')
+jest.mock('hooks/useAppDispatch')
 
 const mockUseFlag = useFlag as jest.Mock
 
@@ -50,8 +55,12 @@ const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
+const mockUseUpsertAccountOauth2Token = assumeMock(useUpsertAccountOauth2Token)
+const useAppDispatchMock = assumeMock(useAppDispatch)
 
 describe('<TemplateActionForm />', () => {
+    const dispatchMock = jest.fn()
+
     beforeEach(() => {
         jest.resetAllMocks()
 
@@ -59,9 +68,16 @@ describe('<TemplateActionForm />', () => {
         mockUseFlag.mockReturnValue(true)
         mockUseApps.mockReturnValue({
             isLoading: false,
-            apps: [],
+            apps: [
+                {
+                    icon: 'https://ok.com/1.png',
+                    id: 'test',
+                    name: 'My test app',
+                    type: 'app',
+                },
+            ],
             actionsApps: [],
-        })
+        } as unknown as ReturnType<typeof useApps>)
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,
@@ -77,6 +93,12 @@ describe('<TemplateActionForm />', () => {
             isLoading: false,
             isSuccess: false,
         } as unknown as ReturnType<typeof useDeleteAction>)
+        mockUseUpsertAccountOauth2Token.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAccountOauth2Token>)
+        useAppDispatchMock.mockReturnValue(dispatchMock)
     })
 
     it('should render template Action form', () => {
@@ -761,5 +783,322 @@ describe('<TemplateActionForm />', () => {
         expect(
             screen.getByText('An Action already exists with this name.')
         ).toBeVisible()
+    })
+
+    it('should create refresh token if authentication type is oauth2-token', async () => {
+        const accountOauth2TokenMock = jest.fn().mockResolvedValue({
+            data: {id: 'some-id'},
+        })
+        mockUseUpsertAccountOauth2Token.mockImplementation(
+            () =>
+                ({
+                    mutateAsync: accountOauth2TokenMock,
+                    isLoading: false,
+                    isSuccess: true,
+                }) as unknown as ReturnType<typeof useUpsertAccountOauth2Token>
+        )
+        const apps = [
+            {
+                account_oauth2_token_id: '01JBVWMCF2XT3RZNG4AG6Y1R5E',
+                app_id: '61970bba4c685a1264c2d0fa',
+                refresh_token: 'dsadasd',
+                api_key: '123',
+                type: 'app' as const,
+            },
+        ]
+        mockUseApps.mockReturnValue({
+            isLoading: false,
+            apps: apps,
+            actionsApps: [
+                {
+                    id: apps[0].app_id,
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://www.example.com',
+                        refresh_token_url: 'https://www.refresh.com',
+                    },
+                },
+            ],
+        } as unknown as ReturnType<typeof useApps>)
+
+        const configuration: WorkflowConfiguration = {
+            internal_id: ulid(),
+            id: ulid(),
+            name: 'test',
+            initial_step_id: null,
+            available_languages: [],
+            is_draft: false,
+            apps: apps,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+        }
+        const template: TemplateConfiguration = {
+            name: 'test',
+            internal_id: ulid(),
+            id: ulid(),
+            initial_step_id: '',
+            is_draft: false,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+            available_languages: [],
+            created_datetime: new Date().toISOString(),
+            updated_datetime: new Date().toISOString(),
+            apps: apps,
+        }
+
+        const history = createMemoryHistory({
+            initialEntries: ['/shopify/shopify-store/ai-agent/actions/new'],
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={configuration}
+                        template={template}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
+                history,
+            }
+        )
+
+        act(() => {
+            fireEvent.change(
+                screen.getByLabelText('Action name', {exact: false}),
+                {
+                    target: {value: 'Action name'},
+                }
+            )
+        })
+        act(() => {
+            fireEvent.change(
+                screen.getByLabelText('Action description', {exact: false}),
+                {
+                    target: {value: 'Action description'},
+                }
+            )
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Create Action'})
+            ).toBeAriaEnabled()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create Action'))
+        })
+
+        expect(accountOauth2TokenMock).toHaveBeenCalledWith([
+            undefined,
+            {
+                refresh_token: apps[0].refresh_token,
+                id: apps[0].account_oauth2_token_id,
+            },
+        ])
+        expect(dispatchMock).not.toHaveBeenCalled()
+    })
+    it('should fail and notify merchant of refresh token failure', async () => {
+        const accountOauth2TokenMock = jest.fn().mockRejectedValue({})
+        mockUseUpsertAccountOauth2Token.mockImplementation(
+            () =>
+                ({
+                    mutateAsync: accountOauth2TokenMock,
+                    isLoading: false,
+                    isSuccess: true,
+                }) as unknown as ReturnType<typeof useUpsertAccountOauth2Token>
+        )
+        const apps = [
+            {
+                account_oauth2_token_id: '01JBVWMCF2XT3RZNG4AG6Y1R5E',
+                app_id: '61970bba4c685a1264c2d0fa',
+                refresh_token: 'dsadasd',
+                api_key: '123',
+                type: 'app' as const,
+            },
+        ]
+        mockUseApps.mockReturnValue({
+            isLoading: false,
+            apps: apps,
+            actionsApps: [
+                {
+                    id: apps[0].app_id,
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://www.example.com',
+                        refresh_token_url: 'https://www.refresh.com',
+                    },
+                },
+            ],
+        } as unknown as ReturnType<typeof useApps>)
+
+        const configuration: WorkflowConfiguration = {
+            internal_id: ulid(),
+            id: ulid(),
+            name: 'test',
+            initial_step_id: null,
+            available_languages: [],
+            is_draft: false,
+            apps: apps,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+        }
+        const template: TemplateConfiguration = {
+            name: 'test',
+            internal_id: ulid(),
+            id: ulid(),
+            initial_step_id: '',
+            is_draft: false,
+            entrypoints: [
+                {
+                    kind: 'llm-conversation',
+                    trigger: 'llm-prompt',
+                    settings: {
+                        instructions: 'test',
+                        requires_confirmation: false,
+                    },
+                    deactivated_datetime: null,
+                },
+            ],
+            triggers: [
+                {
+                    kind: 'llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            steps: [],
+            transitions: [],
+            available_languages: [],
+            created_datetime: new Date().toISOString(),
+            updated_datetime: new Date().toISOString(),
+            apps: apps,
+        }
+
+        const history = createMemoryHistory({
+            initialEntries: ['/shopify/shopify-store/ai-agent/actions/new'],
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TemplateActionForm
+                        configuration={configuration}
+                        template={template}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new',
+                history,
+            }
+        )
+
+        act(() => {
+            fireEvent.change(
+                screen.getByLabelText('Action name', {exact: false}),
+                {
+                    target: {value: 'Action name'},
+                }
+            )
+        })
+        act(() => {
+            fireEvent.change(
+                screen.getByLabelText('Action description', {exact: false}),
+                {
+                    target: {value: 'Action description'},
+                }
+            )
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Create Action'})
+            ).toBeAriaEnabled()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Create Action'))
+        })
+
+        expect(accountOauth2TokenMock).toHaveBeenCalledWith([
+            undefined,
+            {
+                refresh_token: apps[0].refresh_token,
+                id: apps[0].account_oauth2_token_id,
+            },
+        ])
+        expect(
+            mockUseUpsertAction('create', 'shopify-store', 'shopify').mutate
+        ).not.toHaveBeenCalled()
     })
 })

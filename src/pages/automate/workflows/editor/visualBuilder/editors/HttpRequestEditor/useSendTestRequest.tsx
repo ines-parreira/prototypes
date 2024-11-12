@@ -21,6 +21,43 @@ const renderWithVariables = (
 const corsProxyBaseUrl = 'https://cors-proxy.gorgias.workers.dev'
 const corsProxyKey = '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86'
 
+async function fetchToken(
+    refreshTokenUrl: string,
+    refreshToken: string
+): Promise<string> {
+    try {
+        const body = JSON.stringify({
+            refresh_token: refreshToken,
+            grant_type: 'refresh_token',
+        })
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-gorgias-cors-proxy-key': corsProxyKey,
+            },
+            body,
+        }
+
+        const tokenResponse = await fetch(
+            `${corsProxyBaseUrl}/${refreshTokenUrl}`,
+            requestOptions
+        )
+
+        if (!tokenResponse.ok) {
+            throw new Error(`HTTP error! Status: ${tokenResponse.status}`)
+        }
+
+        const token: {
+            access_token: string
+        } = await tokenResponse.json()
+        return `Bearer ${token.access_token}`
+    } catch (error) {
+        console.error('Error fetching token:', error)
+        throw error
+    }
+}
+
 const useSendTestRequest = (
     config: Pick<
         HttpRequestNodeType['data'],
@@ -38,7 +75,11 @@ const useSendTestRequest = (
     const [isLoading, setIsLoading] = useState(false)
 
     const sendTestRequest = useCallback(
-        async (variables: Record<string, string> = {}) => {
+        async (
+            variables: Record<string, string> = {},
+            refreshToken?: string,
+            refreshTokenUrl?: string
+        ) => {
             setIsLoading(true)
 
             try {
@@ -73,6 +114,15 @@ const useSendTestRequest = (
 
                 if (config.bodyContentType) {
                     headers['content-type'] = config.bodyContentType
+                }
+
+                if (refreshTokenUrl && refreshToken) {
+                    if (refreshTokenUrl) {
+                        headers['authorization'] = await fetchToken(
+                            refreshTokenUrl,
+                            refreshToken
+                        )
+                    }
                 }
 
                 headers['x-gorgias-cors-proxy-key'] = corsProxyKey

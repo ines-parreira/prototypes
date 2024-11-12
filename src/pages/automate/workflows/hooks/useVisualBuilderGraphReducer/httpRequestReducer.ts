@@ -62,6 +62,10 @@ export type VisualBuilderHttpRequestAction =
           index: number
       }
     | {
+          type: 'TOGGLE_OAUTH2_SETTINGS'
+          httpRequestNodeId: string
+      }
+    | {
           type: 'SET_HTTP_REQUEST_BODY_CONTENT_TYPE'
           httpRequestNodeId: string
           bodyContentType: NonNullable<
@@ -157,6 +161,7 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     ADD_HTTP_REQUEST_OUTPUT: true,
     SET_HTTP_REQUEST_OUTPUT: true,
     DELETE_HTTP_REQUEST_OUTPUT: true,
+    TOGGLE_OAUTH2_SETTINGS: true,
 }
 
 export function isVisualBuilderHttpRequestAction(action: {
@@ -251,6 +256,27 @@ export function httpRequestReducer(
                 )
                 if (node && node.data.headers[action.index]) {
                     node.data.headers.splice(action.index, 1)
+                }
+            })
+        case 'TOGGLE_OAUTH2_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request'
+                )
+                if (node) {
+                    if (
+                        node.data.oauth2TokenSettings === null &&
+                        graph.apps?.[0]?.type === 'app'
+                    ) {
+                        node.data.oauth2TokenSettings = {
+                            account_oauth2_token_id: `{{apps.${graph.apps?.[0]?.app_id}.account_oauth2_token_id}}`,
+                            refresh_token_url: `{{apps.${graph.apps?.[0]?.app_id}.refresh_token_url}}`,
+                        }
+                    } else {
+                        node.data.oauth2TokenSettings = null
+                    }
                 }
             })
         case 'SET_HTTP_REQUEST_BODY_CONTENT_TYPE':

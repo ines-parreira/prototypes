@@ -1,0 +1,91 @@
+import {render, screen, fireEvent} from '@testing-library/react'
+import React from 'react'
+
+import '@testing-library/jest-dom/extend-expect'
+
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+
+import TestRequestInputs from '../TestRequestInputs'
+
+const mockOnSendTestRequest = jest.fn()
+const mockOnClose = jest.fn()
+
+const defaultProps = {
+    isLoading: false,
+    inputs: [
+        {
+            name: 'Input 1',
+            value: 'input1',
+            nodeType: 'text_reply' as const,
+            type: 'string',
+        } as WorkflowVariable,
+        {
+            name: 'Input 2',
+            value: 'input2',
+            nodeType: 'text_reply' as const,
+            type: 'string',
+        } as WorkflowVariable,
+    ],
+    refreshTokenUrl: 'https://example.com/token',
+    onSendTestRequest: mockOnSendTestRequest,
+    onClose: mockOnClose,
+}
+
+describe('TestRequestInputs Component', () => {
+    it('renders correctly', () => {
+        render(<TestRequestInputs {...defaultProps} />)
+
+        // Check for ModalHeader
+        expect(
+            screen.getByText('Enter refresh token to test request')
+        ).toBeInTheDocument()
+
+        // Check for Refresh Token input
+        expect(screen.getByLabelText('Refresh Token')).toBeInTheDocument()
+
+        // Check for Input Fields
+        defaultProps.inputs.forEach((input) => {
+            expect(screen.getByLabelText(input.name)).toBeInTheDocument()
+        })
+
+        // Check for buttons
+        expect(screen.getByText('Close')).toBeInTheDocument()
+        expect(screen.getByText('Continue')).toBeInTheDocument()
+    })
+
+    it('calls onClose when Close button is clicked', () => {
+        render(<TestRequestInputs {...defaultProps} />)
+
+        fireEvent.click(screen.getByText('Close'))
+
+        expect(mockOnClose).toHaveBeenCalled()
+    })
+
+    it('calls onSendTestRequest with correct values when Continue button is clicked', () => {
+        render(<TestRequestInputs {...defaultProps} />)
+
+        // Fill in Refresh Token
+        fireEvent.change(screen.getByLabelText('Refresh Token'), {
+            target: {value: 'sample-refresh-token'},
+        })
+
+        // Fill in Input Fields
+        defaultProps.inputs.forEach((input) => {
+            fireEvent.change(screen.getByLabelText(input.name), {
+                target: {value: `value for ${input.name}`},
+            })
+        })
+
+        // Click Continue button
+        fireEvent.click(screen.getByText('Continue'))
+
+        expect(mockOnSendTestRequest).toHaveBeenCalledWith(
+            {
+                input1: 'value for Input 1',
+                input2: 'value for Input 2',
+            },
+            'sample-refresh-token',
+            'https://example.com/token'
+        )
+    })
+})

@@ -183,6 +183,10 @@ export type HttpRequestNodeType = Node<
             description: string
         }[]
         isGreyedOut?: boolean | null
+        oauth2TokenSettings?: {
+            account_oauth2_token_id: string
+            refresh_token_url: string
+        } | null
     },
     'http_request'
 >
@@ -392,6 +396,8 @@ export type VisualBuilderGraph = {
         | {
               app_id: string
               api_key?: string | null
+              refresh_token?: string | null
+              account_oauth2_token_id?: string | null
               type: 'app'
           }
     )[]

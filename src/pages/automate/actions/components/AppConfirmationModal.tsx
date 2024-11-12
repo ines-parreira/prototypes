@@ -19,8 +19,8 @@ type Props = {
     templateName: string
     templateDescription?: string | null
     actionAppConfiguration: Extract<ActionAppConfiguration, {type: 'app'}>
-    apiKey?: string
-    onConfirm: (apiKey: string) => void
+    value?: string
+    onConfirm: (value: string, key: 'api_key' | 'refresh_token') => void
     setOpen: (isOpen: boolean) => void
     isOpen: boolean
 }
@@ -29,7 +29,7 @@ export default function AppConfirmationModal({
     actionAppConnected,
     onConfirm,
     actionAppConfiguration,
-    apiKey = '',
+    value = '',
     templateId,
     templateName,
     templateDescription,
@@ -39,18 +39,18 @@ export default function AppConfirmationModal({
     const {apps} = useApps()
 
     const [step, setStep] = useState<'details' | 'input'>(
-        !apiKey ? 'details' : 'input'
+        !value ? 'details' : 'input'
     )
 
-    const [apiKeyInput, setApiKeyInput] = useState(apiKey)
+    const [inputValue, setInputValue] = useState(value)
 
-    const isDirty = apiKeyInput !== apiKey
+    const isDirty = inputValue !== value
 
     useEffect(() => {
         if (!isOpen) {
-            setApiKeyInput(apiKey)
+            setInputValue(value)
         }
-    }, [apiKey, actionAppConfiguration.type, isOpen])
+    }, [value, actionAppConfiguration.type, isOpen])
 
     const authSettingsUrl = actionAppConnected?.auth_settings.url
 
@@ -61,6 +61,26 @@ export default function AppConfirmationModal({
         () => apps.find((app) => app.id === actionAppConfiguration.app_id),
         [actionAppConfiguration, apps]
     )
+
+    const isAppTypeOauth2Token = useMemo(
+        () => actionAppConnected?.auth_type === 'oauth2-token',
+        [actionAppConnected?.auth_type]
+    )
+
+    const inputConfig = useMemo(() => {
+        if (!app) return null
+        if (isAppTypeOauth2Token)
+            return {
+                description: `Enter the refresh token from your ${app.name} account`,
+                label: 'Refresh token',
+                inputDescription: `Find your refresh token in ${app.name}.`,
+            }
+        return {
+            description: `Enter the API key from your ${app.name} account.`,
+            label: 'API key',
+            inputDescription: `Find your API key in ${app.name}.`,
+        }
+    }, [app, isAppTypeOauth2Token])
 
     useEffect(() => {
         if (step === 'input' && app) {
@@ -93,44 +113,42 @@ export default function AppConfirmationModal({
                         )}
                     </>
                 ) : (
-                    <>
-                        {app && (
-                            <span>
-                                Enter the API key from your {app.name} account.
-                            </span>
-                        )}
-                        <div className={css.inputContainer}>
-                            <InputField
-                                label="API key"
-                                isRequired
-                                type="text"
-                                value={apiKeyInput}
-                                onChange={setApiKeyInput}
-                            />
-                            {authSettingsUrl && app && (
-                                <div>
-                                    <a
-                                        href={authSettingsUrl}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                    >
-                                        Find your API key in {app.name}.
-                                    </a>
-                                </div>
-                            )}
-                        </div>
-                    </>
+                    inputConfig && (
+                        <>
+                            {app && <span>{inputConfig.description}</span>}
+                            <div className={css.inputContainer}>
+                                <InputField
+                                    label={inputConfig.label}
+                                    isRequired
+                                    type="text"
+                                    value={inputValue}
+                                    onChange={setInputValue}
+                                />
+                                {authSettingsUrl && app && (
+                                    <div>
+                                        <a
+                                            href={authSettingsUrl}
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                        >
+                                            {inputConfig.inputDescription}
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )
                 )}
             </ModalBody>
             <ModalActionsFooter
                 extra={
-                    apiKey &&
+                    value &&
                     step === 'input' && (
                         <Button
                             isDisabled={!isDirty}
                             intent="destructive"
                             fillStyle="ghost"
-                            onClick={() => setApiKeyInput(apiKey)}
+                            onClick={() => setInputValue(value)}
                         >
                             Discard changes
                         </Button>
@@ -151,14 +169,19 @@ export default function AppConfirmationModal({
                     </Button>
                 ) : (
                     <Button
-                        isDisabled={!apiKeyInput}
+                        isDisabled={!inputValue}
                         intent="primary"
                         onClick={() => {
-                            onConfirm(apiKeyInput)
+                            onConfirm(
+                                inputValue,
+                                isAppTypeOauth2Token
+                                    ? 'refresh_token'
+                                    : 'api_key'
+                            )
                             setOpen(false)
                         }}
                     >
-                        {!apiKey ? 'Continue' : 'Save Changes'}
+                        {!value ? 'Continue' : 'Save Changes'}
                     </Button>
                 )}
             </ModalActionsFooter>

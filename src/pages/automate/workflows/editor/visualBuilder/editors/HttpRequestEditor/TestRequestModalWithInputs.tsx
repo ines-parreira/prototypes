@@ -10,8 +10,13 @@ import TestRequestResult from './TestRequestResult'
 type Props = {
     isLoading: boolean
     isOpen: boolean
+    refreshTokenUrl?: string
     onClose: () => void
-    sendTestRequest: (variables?: Record<string, string>) => Promise<void>
+    sendTestRequest: (
+        variables: Record<string, string>,
+        refreshToken?: string,
+        refreshTokenUrl?: string
+    ) => Promise<void>
     onReset: () => void
     variables: HttpRequestNodeType['data']['variables']
     result: HttpRequestNodeType['data']['testRequestResult']
@@ -29,6 +34,7 @@ type Props = {
 const TestRequestModalWithInputs = ({
     isLoading,
     isOpen,
+    refreshTokenUrl,
     nodeId,
     onClose,
     sendTestRequest,
@@ -59,6 +65,7 @@ const TestRequestModalWithInputs = ({
                 <TestRequestInputs
                     isLoading={isLoading}
                     inputs={inputs}
+                    refreshTokenUrl={refreshTokenUrl}
                     onSendTestRequest={sendTestRequest}
                     onClose={onClose}
                 />

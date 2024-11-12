@@ -2,14 +2,21 @@ import {screen, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
 import React from 'react'
 
+import {Provider} from 'react-redux'
+
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {shopifyIntegration} from 'fixtures/integrations'
 import {
     useGetActionsApp,
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
+    useUpsertAccountOauth2Token,
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
 import CreateActionFormView from '../CreateActionFormView'
@@ -49,7 +56,7 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
-
+const mockUseUpsertAccountOauth2Token = jest.mocked(useUpsertAccountOauth2Token)
 mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
     data: [
         {
@@ -154,7 +161,12 @@ mockUseApps.mockReturnValue({
 mockUseEnableAiAgent.mockReturnValue({
     updateSettingsAfterAiAgentEnabled: jest.fn(),
 })
-
+mockUseUpsertAccountOauth2Token.mockReturnValue({
+    mutateAsync: jest.fn(),
+    isLoading: false,
+    isSuccess: false,
+} as unknown as ReturnType<typeof useUpsertAccountOauth2Token>)
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 describe('<CreateActionFormView />', () => {
     it('should render template action form with prefilled API key', () => {
         const history = createMemoryHistory()
@@ -166,11 +178,16 @@ describe('<CreateActionFormView />', () => {
 
         const replaceStateSpy = jest.spyOn(globalThis.history, 'replaceState')
 
-        renderWithRouter(<CreateActionFormView />, {
-            history,
-            path: '/:shopType/:shopName/ai-agent/actions/new',
-            route: '/shopify/acme/ai-agent/actions/new?template_id=testid1',
-        })
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <CreateActionFormView />
+            </Provider>,
+            {
+                history,
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/acme/ai-agent/actions/new?template_id=testid1',
+            }
+        )
 
         expect(screen.queryByText('Action details')).not.toBeInTheDocument()
         expect(
@@ -182,10 +199,15 @@ describe('<CreateActionFormView />', () => {
     it('should render template action form', async () => {
         mockUseGetActionAppIntegration.mockReturnValue(shopifyIntegration)
 
-        renderWithRouter(<CreateActionFormView />, {
-            path: '/:shopType/:shopName/ai-agent/actions/new',
-            route: '/shopify/shopify-store/ai-agent/actions/new?template_id=testid2',
-        })
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <CreateActionFormView />
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/new',
+                route: '/shopify/shopify-store/ai-agent/actions/new?template_id=testid2',
+            }
+        )
 
         expect(screen.getByDisplayValue('test2')).toBeInTheDocument()
         expect(

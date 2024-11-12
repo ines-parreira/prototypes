@@ -190,7 +190,7 @@ const TestRequestResult = ({
                             path: variable.jsonpath,
                             json,
                         })
-                        const value = rawValue[0]
+                        const value = rawValue ? rawValue[0] : ''
 
                         return (
                             <div key={variable.id} className={css.variable}>

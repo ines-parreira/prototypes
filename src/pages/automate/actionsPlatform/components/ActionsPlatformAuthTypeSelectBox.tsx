@@ -34,6 +34,7 @@ const ActionsPlatformAuthTypeSelectBox = ({
             <Label isRequired>Authentication method</Label>
             <SelectInputBox
                 floating={floatingRef}
+                placeholder="Select an Authentication method"
                 ref={targetRef}
                 onToggle={setIsOpen}
                 isDisabled={isDisabled}

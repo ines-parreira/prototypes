@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 
@@ -6,12 +6,13 @@ import {IntegrationType} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import InputField from 'pages/common/forms/input/InputField'
 
 import {ActionsApp, App} from '../types'
 import css from './ActionsPlatformAppForm.less'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
+
+import UrlInput from './UrlInput'
 
 type Props = {
     value?: ActionsApp
@@ -28,50 +29,24 @@ const ActionsPlatformAppForm = ({
 }: Props) => {
     const history = useHistory()
 
-    const {control, reset, getValues, formState} = useForm<ActionsApp>({
-        defaultValues: {auth_type: 'api-key'},
-        values: value,
-    })
+    const {control, reset, getValues, formState, watch, register, unregister} =
+        useForm<ActionsApp>({
+            defaultValues: {auth_type: 'api-key'},
+            values: value,
+        })
+    const authType = watch('auth_type')
+    useEffect(() => {
+        if (
+            value?.auth_type === 'oauth2-token' ||
+            authType === 'oauth2-token'
+        ) {
+            register('auth_settings.refresh_token_url')
+        } else {
+            unregister('auth_settings.refresh_token_url')
+        }
+    }, [register, unregister, authType, value?.auth_type])
 
     const isNewActionsApp = !value
-
-    const renderAuthSettings = () => {
-        switch (getValues('auth_type')) {
-            case 'api-key':
-                return (
-                    <Controller
-                        control={control}
-                        name="auth_settings.url"
-                        rules={{
-                            required: true,
-                            validate: (value) => {
-                                if (!value) {
-                                    return false
-                                }
-
-                                try {
-                                    new URL(value)
-
-                                    return true
-                                } catch {
-                                    return false
-                                }
-                            },
-                        }}
-                        render={({field: {value, onChange}}) => (
-                            <InputField
-                                isRequired
-                                label="Instructions URL"
-                                value={value ?? ''}
-                                onChange={onChange}
-                                caption="URL with instructions on how to find an API key."
-                                placeholder="https://link.gorgias.com/xyz"
-                            />
-                        )}
-                    />
-                )
-        }
-    }
 
     return (
         <>
@@ -117,7 +92,20 @@ const ActionsPlatformAppForm = ({
                         />
                     )}
                 />
-                {renderAuthSettings()}
+                <UrlInput
+                    control={control}
+                    name={'auth_settings.url'}
+                    label={'Instructions URL'}
+                    caption={'URL with instructions on how to find an API key.'}
+                    placeholder={'https://link.gorgias.com/xyz'}
+                />
+                {authType === 'oauth2-token' && (
+                    <UrlInput
+                        control={control}
+                        name={'auth_settings.refresh_token_url'}
+                        label={'Token refresh endpoint'}
+                    />
+                )}
             </div>
             <div className={css.actions}>
                 <Button

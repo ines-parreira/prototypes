@@ -416,6 +416,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     name: step.settings.name,
                     url: step.settings.url,
                     method: step.settings.method,
+                    oauth2TokenSettings: step.settings.oauth2_token_settings,
                     headers: Object.entries(
                         _omit(step.settings.headers ?? {}, 'content-type')
                     ).map(([name, value]) => ({name, value})),

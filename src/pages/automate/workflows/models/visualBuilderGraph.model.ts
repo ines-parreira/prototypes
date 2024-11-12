@@ -728,6 +728,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         method: node.data.method,
                         headers,
                         body,
+                        oauth2_token_settings: node.data.oauth2TokenSettings,
                         variables: node.data.variables.map((variable) => ({
                             ...variable,
                             data_type:

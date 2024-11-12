@@ -701,6 +701,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export type GetAppResponseDto = {
@@ -1806,6 +1807,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export interface GetWfConfigurationTemplateResponseDto {
@@ -2269,6 +2271,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[];
     }
     export interface GetWfConfigurationTranslationsResponseDto {
@@ -4234,6 +4237,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }[];
     export type ListStoreWfEntrypointsResponseDto = {
@@ -4755,6 +4759,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[];
     }[];
     export type ListWfConfigurationsResponseDto = {
@@ -8871,6 +8876,15 @@ declare namespace Components {
         };
       } | null;
     };
+    export interface UpsertAccountOauth2TokenRequestBodyDto {
+      id?: string | null;
+      refresh_token: string;
+    }
+    export interface UpsertAccountOauth2TokenRequestResponseBodyDto {
+      id: string;
+      refresh_token: string;
+      account_id: number;
+    }
     export interface UpsertAppRequestBodyDto {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
@@ -9581,6 +9595,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export interface UpsertStoreWfConfigurationResponseDto {
@@ -10273,6 +10288,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export interface UpsertWfConfigurationRequestDto {
@@ -10960,6 +10976,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export interface UpsertWfConfigurationResponseDto {
@@ -11652,6 +11669,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[] | null;
     }
     export interface UpsertWfConfigurationTemplateRequestDto {
@@ -12111,6 +12129,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[];
     }
     export interface UpsertWfConfigurationTemplateResponseDto {
@@ -12574,6 +12593,7 @@ declare namespace Components {
         api_key?: string | null;
         account_oauth2_token_id?: string | null;
         type: "app";
+        refresh_token?: string | null;
       })[];
     }
     export interface UpsertWfConfigurationTranslationsRequestBodyDto {
@@ -12588,6 +12608,12 @@ declare namespace Components {
   }
 }
 declare namespace Paths {
+  namespace AccountOauth2TokenControllerUpsert {
+    export type RequestBody = Components.Schemas.UpsertAccountOauth2TokenRequestBodyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertAccountOauth2TokenRequestResponseBodyDto;
+    }
+  }
   namespace AppControllerDelete {
     namespace Parameters {
       export type Id = string;
@@ -13344,6 +13370,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
+   * AccountOauth2TokenController_upsert
+   */
+  'AccountOauth2TokenController_upsert'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.AccountOauth2TokenControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AccountOauth2TokenControllerUpsert.Responses.$201>
+  /**
    * HealthController_check
    */
   'HealthController_check'(
@@ -13669,6 +13703,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/account-oauth2-token']: {
+    /**
+     * AccountOauth2TokenController_upsert
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.AccountOauth2TokenControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AccountOauth2TokenControllerUpsert.Responses.$201>
   }
   ['/health']: {
     /**

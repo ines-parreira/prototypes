@@ -14,6 +14,7 @@ import {
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,
     useDeleteWorkflowConfigurationTemplate,
+    useUpsertAccountOauth2Token,
 } from '../queries'
 
 const mockedServer = new MockAdapter(axios)
@@ -253,6 +254,34 @@ describe('queries', () => {
             })
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+        })
+    })
+    describe('useUpsertAccountOauth2Token()', () => {
+        it('should upsert and return Account OAuth2 token on success', async () => {
+            const accountOauth2TokenResponse = {
+                id: 'someid',
+                account_id: 123,
+                refresh_token: 'refreshToken123',
+            }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onPut('/account-oauth2-token')
+                .reply(200, accountOauth2TokenResponse)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useUpsertAccountOauth2Token()
+            )
+
+            act(() => {
+                result.current.mutate([{}, accountOauth2TokenResponse])
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data?.data).toEqual(
+                accountOauth2TokenResponse
+            )
         })
     })
 })

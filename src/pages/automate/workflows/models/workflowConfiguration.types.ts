@@ -104,6 +104,10 @@ export type WorkflowStepHttpRequest = {
         method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
         headers?: Record<string, string> | null
         body?: string | null
+        oauth2_token_settings?: {
+            account_oauth2_token_id: string
+            refresh_token_url: string
+        } | null
         variables: {
             id: string
             name: string
@@ -422,6 +426,8 @@ export type WorkflowConfiguration = {
         | {
               app_id: string
               api_key?: string | null
+              refresh_token?: string | null
+              account_oauth2_token_id?: string | null
               type: 'app'
           }
     )[]

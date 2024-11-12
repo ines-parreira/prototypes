@@ -12,7 +12,12 @@ import css from './TestRequestInputs.less'
 type Props = {
     isLoading: boolean
     inputs: WorkflowVariable[]
-    onSendTestRequest: (values: Record<string, string>) => Promise<void>
+    refreshTokenUrl?: string
+    onSendTestRequest: (
+        values: Record<string, string>,
+        refreshToken?: string,
+        refreshTokenUrl?: string
+    ) => Promise<void>
     onClose: () => void
 }
 
@@ -21,15 +26,27 @@ const TestRequestInputs = ({
     inputs,
     onSendTestRequest,
     onClose,
+    refreshTokenUrl,
 }: Props) => {
+    const [refreshToken, setRefreshToken] = useState<string>('')
     const [values, setValues] = useState<Record<string, string>>({})
 
     const isDisabled = inputs.some((input) => !values[input.value])
 
     return (
         <>
-            <ModalHeader title="Enter sample values to test request" />
+            <ModalHeader title="Enter refresh token to test request" />
             <ModalBody className={css.body}>
+                {refreshTokenUrl && (
+                    <InputField
+                        label={'Refresh Token'}
+                        value={refreshToken}
+                        onChange={(value) => {
+                            setRefreshToken(value)
+                        }}
+                        placeholder="Sample refresh token"
+                    />
+                )}
                 {inputs.map((input) => (
                     <InputField
                         key={input.value}
@@ -53,7 +70,11 @@ const TestRequestInputs = ({
                     isLoading={isLoading}
                     isDisabled={isDisabled}
                     onClick={() => {
-                        void onSendTestRequest(values)
+                        void onSendTestRequest(
+                            values,
+                            refreshToken,
+                            refreshTokenUrl
+                        )
                     }}
                 >
                     Continue

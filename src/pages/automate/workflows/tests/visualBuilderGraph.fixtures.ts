@@ -268,6 +268,7 @@ export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
                 url: 'https://example.com',
                 method: 'GET',
                 headers: [],
+                oauth2TokenSettings: null,
                 variables: [
                     {
                         id: 'variable1',
@@ -326,6 +327,12 @@ export const visualBuilderGraphLlmPromptTriggerFixture: VisualBuilderGraph = {
     nodeEditingId: null,
     choiceEventIdEditing: null,
     branchIdsEditing: [],
+    apps: [
+        {
+            type: 'app',
+            app_id: '123',
+        },
+    ],
 }
 
 export const visualBuilderGraphReusableLLMPromptTriggerFixture: VisualBuilderGraph =

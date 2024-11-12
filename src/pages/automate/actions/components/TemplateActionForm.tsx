@@ -8,8 +8,13 @@ import {ulid} from 'ulidx'
 import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useGetStoreApps} from 'models/workflows/queries'
+import {
+    useGetStoreApps,
+    useUpsertAccountOauth2Token,
+} from 'models/workflows/queries'
+import {ActionsApp} from 'pages/automate/actionsPlatform/types'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
@@ -26,6 +31,8 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+
+import {notify} from 'state/notifications/actions'
 
 import useApps from '../../actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from '../../actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -54,8 +61,23 @@ type Props = {
     configuration: WorkflowConfiguration
     template: TemplateConfiguration
 }
+const AuthType: Record<
+    ActionsApp['auth_type'],
+    'apps.0.api_key' | 'apps.0.refresh_token'
+> = {
+    'api-key': 'apps.0.api_key',
+    'oauth2-token': 'apps.0.refresh_token',
+}
+type AuthValuePath = (typeof AuthType)[keyof typeof AuthType]
 
 const TemplateActionForm = ({configuration, template}: Props) => {
+    const dispatch = useAppDispatch()
+    const [appAuthFieldName, setAppAuthFieldName] = useState<AuthValuePath>(
+        configuration.apps?.[0].type === 'app' &&
+            configuration.apps[0].refresh_token
+            ? AuthType['oauth2-token']
+            : AuthType['api-key']
+    )
     const {shopName, shopType} = useParams<{
         shopType: 'shopify'
         shopName: string
@@ -80,7 +102,16 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         },
     })
 
-    const {control, reset, getValues, formState, trigger, setError} = methods
+    const {
+        control,
+        reset,
+        getValues,
+        formState,
+        trigger,
+        setError,
+        unregister,
+        register,
+    } = methods
 
     const isNewAction = !configuration.updated_datetime
 
@@ -167,6 +198,9 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         isSuccess: isActionUpserted,
     } = useUpsertAction(isNewAction ? 'create' : 'update', shopName, shopType)
 
+    const {mutateAsync: upsertAccountOAuth2Token} =
+        useUpsertAccountOauth2Token()
+
     useEffect(() => {
         if (isAxiosError(upsertError)) {
             if (upsertError.response?.status === 409) {
@@ -203,7 +237,11 @@ const TemplateActionForm = ({configuration, template}: Props) => {
     )
 
     const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(
-        isNewAction && actionApp.type === 'app' && !actionApp.api_key
+        isNewAction &&
+            actionApp.type === 'app' &&
+            (actionAppConnected?.auth_type === 'oauth2-token'
+                ? !actionApp.refresh_token
+                : !actionApp.api_key)
     )
 
     const handleSave = useCallback(async () => {
@@ -216,6 +254,32 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         nextGraph.apps = values.apps
         nextGraph.inputs = values.inputs
         nextGraph.values = values.values
+        const app = nextGraph.apps?.[0]
+        if (
+            actionAppConnected?.auth_type === 'oauth2-token' &&
+            app.type === 'app' &&
+            app.refresh_token
+        ) {
+            try {
+                const refreshToken = app.refresh_token
+                const accountOauth2TokenCreated =
+                    await upsertAccountOAuth2Token([
+                        undefined,
+                        {
+                            refresh_token: refreshToken,
+                            id: app.account_oauth2_token_id,
+                        },
+                    ])
+                app.account_oauth2_token_id = accountOauth2TokenCreated.data.id
+            } catch (err) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to create Refresh Token',
+                    })
+                )
+                return
+            }
+        }
 
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             nextGraph,
@@ -237,10 +301,13 @@ const TemplateActionForm = ({configuration, template}: Props) => {
     }, [
         getValues,
         graph,
-        connectedStoreApp,
+        actionAppConnected?.auth_type,
         upsertAction,
         shopName,
         shopType,
+        connectedStoreApp,
+        upsertAccountOAuth2Token,
+        dispatch,
         addStoreApp,
     ])
 
@@ -265,6 +332,17 @@ const TemplateActionForm = ({configuration, template}: Props) => {
         FeatureFlagKey.ActionEventsLogs,
         false
     )
+
+    useEffect(() => {
+        if (
+            actionAppConnected?.auth_type &&
+            AuthType[actionAppConnected?.auth_type] !== appAuthFieldName
+        ) {
+            unregister(appAuthFieldName)
+            setAppAuthFieldName(AuthType[actionAppConnected?.auth_type])
+            register(AuthType[actionAppConnected?.auth_type])
+        }
+    }, [actionAppConnected?.auth_type, appAuthFieldName, register, unregister])
 
     return (
         <ToolbarProvider workflowVariables={variables}>
@@ -306,8 +384,9 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                         View App Authentication
                                     </Button>
                                     <Controller
+                                        key={appAuthFieldName}
                                         control={control}
-                                        name="apps.0.api_key"
+                                        name={appAuthFieldName}
                                         rules={{
                                             required: true,
                                         }}
@@ -318,7 +397,7 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                                 actionAppConnected={
                                                     actionAppConnected
                                                 }
-                                                apiKey={value ?? ''}
+                                                value={value ?? ''}
                                                 isOpen={apiKeyModalIsOpen}
                                                 setOpen={setApiKeyModalIsOpen}
                                                 actionAppConfiguration={

@@ -13,6 +13,7 @@ import {
     useGetStoreApps,
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
+    useUpsertAccountOauth2Token,
 } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
@@ -47,6 +48,7 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
+const mockUseUpsertAccountOauth2Token = jest.mocked(useUpsertAccountOauth2Token)
 
 const queryClient = mockQueryClient()
 
@@ -149,6 +151,11 @@ describe('<EditActionFormView />', () => {
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetStoreApps>)
         mockUseAddStoreApp.mockReturnValue(jest.fn())
+        mockUseUpsertAccountOauth2Token.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAccountOauth2Token>)
     })
 
     it('should render edit action form', () => {

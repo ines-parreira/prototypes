@@ -224,4 +224,144 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
+    it('should render refresh token URL input when auth_type is oauth2-token', () => {
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={jest.fn()}
+            />
+        )
+
+        expect(screen.getByText('Token refresh endpoint')).toBeInTheDocument()
+    })
+    it('should not render refresh token URL input when auth_type is not oauth2-token', () => {
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'api-key',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={jest.fn()}
+            />
+        )
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('https://example.com'), {
+                target: {value: 'https://example2.com'},
+            })
+        })
+
+        expect(
+            screen.queryByText('Token refresh endpoint')
+        ).not.toBeInTheDocument()
+    })
+
+    it('should allow form submission when auth_type is oauth2-token and refresh token URL is provided', async () => {
+        const mockOnSubmit = jest.fn()
+
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                        refresh_token_url: 'https://refresh.example.com',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={mockOnSubmit}
+            />
+        )
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('https://example.com'), {
+                target: {value: 'https://example2.com'},
+            })
+        })
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnSubmit).toHaveBeenCalledWith({
+            id: 'someid',
+            auth_type: 'oauth2-token',
+            auth_settings: {
+                url: 'https://example2.com',
+                refresh_token_url: 'https://refresh.example.com',
+            },
+        })
+    })
+
+    it('should not allow form submission when auth_type is oauth2-token and refresh token URL is invalid', async () => {
+        const mockOnSubmit = jest.fn()
+
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                        refresh_token_url: 'https://refresh.example.com',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={mockOnSubmit}
+            />
+        )
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('https://example.com'), {
+                target: {value: 'invalid_url'},
+            })
+        })
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnSubmit).not.toHaveBeenCalled()
+    })
+    it('should not allow form submission when auth_type is oauth2-token and refresh token URL is empty', async () => {
+        const mockOnSubmit = jest.fn()
+
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                        refresh_token_url: 'https://refresh.example.com',
+                    },
+                }}
+                apps={[app]}
+                onSubmit={mockOnSubmit}
+            />
+        )
+        act(() => {
+            fireEvent.change(screen.getByDisplayValue('https://example.com'), {
+                target: {value: ''},
+            })
+        })
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnSubmit).not.toHaveBeenCalled()
+    })
 })

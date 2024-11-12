@@ -59,7 +59,7 @@ describe('<AppConfirmationModal />', () => {
                 onConfirm={jest.fn()}
                 setOpen={jest.fn()}
                 isOpen
-                apiKey="test"
+                value="test"
                 actionAppConnected={{
                     id: 'someid',
                     auth_type: 'api-key',
@@ -94,7 +94,7 @@ describe('<AppConfirmationModal />', () => {
                 onConfirm={mockOnConfirm}
                 setOpen={jest.fn()}
                 isOpen
-                apiKey="test"
+                value="test"
             />
         )
 
@@ -116,6 +116,172 @@ describe('<AppConfirmationModal />', () => {
             fireEvent.click(screen.getByText('Save Changes'))
         })
 
-        expect(mockOnConfirm).toHaveBeenCalledWith('test')
+        expect(mockOnConfirm).toHaveBeenCalledWith('test', 'api_key')
+    })
+    it('should render modal details step for oauth2-token', () => {
+        render(
+            <AppConfirmationModal
+                templateId="test2"
+                templateName="OAuth2 Test"
+                actionAppConfiguration={{
+                    app_id: 'someid',
+                    type: 'app',
+                }}
+                onConfirm={jest.fn()}
+                setOpen={jest.fn()}
+                isOpen
+                actionAppConnected={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+            />
+        )
+
+        expect(screen.getByText('Action details')).toBeInTheDocument()
+        expect(screen.getByText('Use Action')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'This Action requires an active My test app account.'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('should switch to input step and prompt for refresh token', () => {
+        render(
+            <AppConfirmationModal
+                templateId="test2"
+                templateName="OAuth2 Test"
+                actionAppConfiguration={{
+                    app_id: 'someid',
+                    type: 'app',
+                }}
+                onConfirm={jest.fn()}
+                setOpen={jest.fn()}
+                isOpen
+                actionAppConnected={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Use Action'))
+        })
+
+        expect(screen.getByText('Connect 3rd party app')).toBeInTheDocument()
+        expect(screen.getByText('Refresh token')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Enter the refresh token from your My test app account'
+            )
+        ).toBeInTheDocument()
+    })
+
+    it('should confirm input with refresh token', () => {
+        const mockOnConfirm = jest.fn()
+
+        render(
+            <AppConfirmationModal
+                templateId="test2"
+                templateName="OAuth2 Test"
+                actionAppConfiguration={{
+                    app_id: 'someid',
+                    type: 'app',
+                }}
+                onConfirm={mockOnConfirm}
+                setOpen={jest.fn()}
+                isOpen
+                value="initial-refresh-token"
+                actionAppConnected={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText(/Refresh token/), {
+                target: {
+                    value: 'new-refresh-token',
+                },
+            })
+        })
+
+        expect(screen.getByLabelText(/Refresh token/)).toHaveValue(
+            'new-refresh-token'
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnConfirm).toHaveBeenCalledWith(
+            'new-refresh-token',
+            'refresh_token'
+        )
+    })
+
+    it('should allow discarding changes in refresh token input', () => {
+        const mockOnConfirm = jest.fn()
+
+        render(
+            <AppConfirmationModal
+                templateId="test2"
+                templateName="OAuth2 Test"
+                actionAppConfiguration={{
+                    app_id: 'someid',
+                    type: 'app',
+                }}
+                onConfirm={mockOnConfirm}
+                setOpen={jest.fn()}
+                isOpen
+                value="initial-refresh-token"
+                actionAppConnected={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+            />
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText(/Refresh token/), {
+                target: {
+                    value: 'modified-refresh-token',
+                },
+            })
+        })
+
+        expect(screen.getByLabelText(/Refresh token/)).toHaveValue(
+            'modified-refresh-token'
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Discard changes'))
+        })
+
+        expect(screen.getByLabelText(/Refresh token/)).toHaveValue(
+            'initial-refresh-token'
+        )
     })
 })

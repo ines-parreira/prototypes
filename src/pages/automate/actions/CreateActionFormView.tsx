@@ -54,7 +54,11 @@ const CreateActionFormView = () => {
                 is_draft: false,
                 apps: template.apps.map((app) =>
                     app.type === 'app' && app.app_id === state.current?.app_id
-                        ? {...app, api_key: state.current.api_key}
+                        ? {
+                              ...app,
+                              api_key: state.current.api_key,
+                              refresh_token: state.current.refresh_token,
+                          }
                         : app
                 ),
                 entrypoints: template.entrypoints,

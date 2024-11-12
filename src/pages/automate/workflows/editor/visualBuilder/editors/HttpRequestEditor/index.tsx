@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
@@ -21,6 +22,7 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
 import TextInput from 'pages/common/forms/input/TextInput'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {saveFileAsDownloaded} from 'utils/file'
@@ -68,6 +70,19 @@ export default function HttpRequestEditor({
         [getVariableListInChildren, nodeInEdition.id]
     )
     const appDispatch = useAppDispatch()
+
+    const {actionsApps} = useApps()
+    const selectedApp = useMemo(() => {
+        if (visualBuilderGraph.apps?.[0]?.type === 'app') {
+            const appId = visualBuilderGraph.apps?.[0]?.app_id
+            return actionsApps.find((app) => app.id === appId)
+        }
+    }, [actionsApps, visualBuilderGraph.apps])
+
+    const isAppTypeOAuth2Token = useMemo(() => {
+        return selectedApp?.auth_type === 'oauth2-token'
+    }, [selectedApp?.auth_type])
+
     const {mutateAsync: downloadEventLogs, isLoading: isDownloadPending} =
         useDownloadWorkflowConfigurationStepLogs()
     const handleDownloadHttpRequestEventLogs = useCallback(async () => {
@@ -246,7 +261,47 @@ export default function HttpRequestEditor({
                         </div>
                     </div>
                     <div className={css.formField}>
-                        <Label>Headers</Label>
+                        <div className={css.headersHeading}>
+                            <Label>Headers</Label>
+                            {isAppTypeOAuth2Token && (
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                    }}
+                                >
+                                    <ToggleInput
+                                        name="toggleOauth2Settings"
+                                        onClick={() => {
+                                            dispatch({
+                                                type: 'TOGGLE_OAUTH2_SETTINGS',
+                                                httpRequestNodeId:
+                                                    nodeInEdition.id,
+                                            })
+                                        }}
+                                        isToggled={
+                                            !!nodeInEdition.data
+                                                .oauth2TokenSettings
+                                        }
+                                    >
+                                        <div>Enable OAuth2 Authentication</div>
+                                    </ToggleInput>
+                                    <>
+                                        <Tooltip
+                                            placement="top-start"
+                                            target={`toggleOauth2Settings + div`}
+                                            trigger={['hover']}
+                                            autohide={false}
+                                        >
+                                            {
+                                                "Enabling this will override any existing 'Authorization' key and apply a 'Bearer' prefix to the authorization token."
+                                            }
+                                        </Tooltip>
+                                    </>
+                                </div>
+                            )}
+                        </div>
                         <Headers
                             variables={workflowVariables}
                             headers={nodeInEdition.data.headers}
@@ -351,7 +406,8 @@ export default function HttpRequestEditor({
                         onClick={() => {
                             if (
                                 !variables.length &&
-                                !nodeInEdition.data.testRequestResult
+                                !nodeInEdition.data.testRequestResult &&
+                                !nodeInEdition.data.oauth2TokenSettings
                             ) {
                                 void sendTestRequest()
                             }
@@ -420,10 +476,15 @@ export default function HttpRequestEditor({
                     )}
                 </div>
             </Drawer.Content>
-            {variables.length > 0 ? (
+            {variables.length || nodeInEdition.data.oauth2TokenSettings ? (
                 <TestRequestModalWithInputs
                     nodeId={nodeInEdition.id}
                     isOpen={isTestRequestModalOpen}
+                    refreshTokenUrl={
+                        (!!nodeInEdition.data.oauth2TokenSettings &&
+                            selectedApp?.auth_settings.refresh_token_url) ||
+                        undefined
+                    }
                     onClose={() => {
                         setIsTestRequestModalOpen(false)
                     }}

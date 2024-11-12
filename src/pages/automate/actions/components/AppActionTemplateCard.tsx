@@ -60,10 +60,10 @@ const AppActionTemplateCard = ({
                 templateId={templateId}
                 templateName={templateName}
                 actionAppConfiguration={app}
-                onConfirm={(apiKey) => {
+                onConfirm={(value, key) => {
                     history.push(routes.newAction(templateId), {
                         app_id: app.app_id,
-                        api_key: apiKey,
+                        [key]: value,
                     })
                 }}
                 setOpen={setIsModalOpen}

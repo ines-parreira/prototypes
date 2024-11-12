@@ -11,11 +11,26 @@ import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/work
 import {RootState, StoreDispatch} from 'state/types'
 
 import ActionsPlatformEditStepView from '../ActionsPlatformEditStepView'
+import useApps from '../hooks/useApps'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
 import {ActionTemplate} from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
+jest.mock('pages/automate/actionsPlatform/hooks/useApps')
+
+const mockUseApps = jest.mocked(useApps)
+mockUseApps.mockReturnValue({
+    apps: [
+        {
+            icon: 'https://ok.com/1.png',
+            id: 'someid',
+            name: 'My test app',
+            type: 'app',
+        },
+    ],
+    isInitialLoading: false,
+} as unknown as ReturnType<typeof useApps>)
 
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
