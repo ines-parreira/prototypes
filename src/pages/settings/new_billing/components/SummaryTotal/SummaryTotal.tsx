@@ -92,8 +92,8 @@ function usePriceSummary(selectedPlans: SelectedPlans) {
 
     const {data: billingState} = useBillingState()
     const coupon: CouponSummary | null =
-        billingState?.subscription.coupon ||
-        billingState?.customer.coupon ||
+        billingState?.subscription?.coupon ||
+        billingState?.customer?.coupon ||
         null
 
     const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} = useMemo(

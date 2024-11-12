@@ -213,4 +213,32 @@ describe('SummaryTotal with coupons', () => {
             expect(screen.getByLabelText('Total price')).toBeInTheDocument()
         })
     })
+
+    it('should only render the total, without subtotal & discount line, if there is no customer or subscription in the billing state', async () => {
+        const mockEndpoint = jest.fn(() => [200, {}])
+
+        mockedServer.onGet('/billing/state').reply(mockEndpoint)
+
+        renderWithQueryClientProvider(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                interval={interval}
+                currency={currency}
+            />
+        )
+
+        await waitFor(() => {
+            // expect /billing/state to have been called
+            expect(mockEndpoint).toHaveBeenCalled()
+        })
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Discount amount')
+            ).not.toBeInTheDocument()
+            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
+        })
+    })
 })
