@@ -111,6 +111,8 @@ const WorkflowVariableDropdown = ({
     useEffect(() => {
         if (!isOpen) {
             setSelectedCategory(null)
+            setSearchQuery('')
+            setSearchResults(null)
         }
     }, [isOpen])
 
