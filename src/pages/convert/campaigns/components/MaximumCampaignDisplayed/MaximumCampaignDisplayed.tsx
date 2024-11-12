@@ -7,7 +7,7 @@ import {CampaignDisplaysInSession} from 'pages/convert/campaigns/types/CampaignM
 
 import css from './MaximumCampaignDisplayed.less'
 
-const DEFAULT_LABEL = 'Maximum campaign display in a session'
+const DEFAULT_LABEL = 'Maximum campaign displays'
 const DEFAULT_DESCRIPTION =
     'Limit the number of times a shopper can see this campaign in a session.'
 

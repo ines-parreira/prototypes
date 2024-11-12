@@ -87,7 +87,6 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                 <MaximumCampaignDisplayed
                     config={campaignFrequencySettings?.max_campaign_in_session}
                     onChange={onMaximumSettingChange}
-                    label="Maximum campaigns in 24 hours"
                     description="Limit the number of times a shopper can see campaigns on your store within 24 hours."
                     onValidationChange={onFrequentValidationChange(
                         'max_campaign_in_session'
@@ -102,7 +101,7 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                         campaignFrequencySettings?.min_time_between_campaigns
                     }
                     onChange={onTimeBetweenChange}
-                    label="Minimum time between campaigns"
+                    label="Time required between campaigns​"
                     description="Set a minimum time between campaigns being shown to shoppers on your store."
                     tooltip="Campaigns with Exit Intent conditions are exempt from this setting. They are shown to shoppers at the exact time when their conditions are met."
                     onValidationChange={onFrequentValidationChange(

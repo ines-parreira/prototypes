@@ -16,7 +16,7 @@ describe('<MaximumCampaignDisplayed />', () => {
         render(<MaximumCampaignDisplayed {...defaultProps} />)
 
         expect(
-            screen.getByText('Maximum campaign display in a session')
+            screen.getByText('Maximum campaign displays')
         ).toBeInTheDocument()
     })
 

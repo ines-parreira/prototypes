@@ -555,12 +555,10 @@ describe('<CampaignDetailsForm />', () => {
             const {getByText} = renderComponent(defaultProps)
 
             expect(
-                getByText('Time required between campaigns')
+                getByText('Time between campaign displays')
             ).toBeInTheDocument()
 
-            expect(
-                getByText('Maximum campaign display in a session')
-            ).toBeInTheDocument()
+            expect(getByText('Maximum campaign displays')).toBeInTheDocument()
         })
 
         it('user can enable features', async () => {

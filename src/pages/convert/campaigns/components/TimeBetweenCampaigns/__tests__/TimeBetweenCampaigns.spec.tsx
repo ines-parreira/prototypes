@@ -16,7 +16,7 @@ describe('<MaximumCampaignDisplayed />', () => {
         render(<TimeBetweenCampaigns {...defaultProps} />)
 
         expect(
-            screen.getByText('Time required between campaigns')
+            screen.getByText('Time between campaign displays')
         ).toBeInTheDocument()
     })
 

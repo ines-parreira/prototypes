@@ -15,6 +15,6 @@ export const SELECT_OPTIONS = [
     },
 ]
 
-export const DEFAULT_LABEL = 'Time required between campaigns'
+export const DEFAULT_LABEL = 'Time between campaign displays'
 export const DEFAULT_DESCRIPTION =
     'Set a minimum time between when a shopper sees this campaign and when they can see it again.'
