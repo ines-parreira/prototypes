@@ -58,10 +58,10 @@ const CampaignFrequency: React.FC<Props> = ({
                     autohide={false}
                     className={css.helpIcon}
                 >
-                    Setting how often this campaign is shown to a customer in a
-                    session will override your account settings{' '}
+                    How often shoppers see your campaign may also be affected by
+                    your{' '}
                     <Link to={`/app/convert/${integrationId}/settings`}>
-                        here
+                        store-level frequency settings
                     </Link>
                     .
                 </Tooltip>

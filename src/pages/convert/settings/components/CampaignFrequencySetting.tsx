@@ -79,7 +79,7 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     Frequency Settings
                 </span>
                 <span className={'body-regular'}>
-                    Set the frequency of campaign displays on your store.
+                    Choose how frequently shoppers see campaigns on your store.
                 </span>
             </div>
 
@@ -88,8 +88,7 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     config={campaignFrequencySettings?.max_campaign_in_session}
                     onChange={onMaximumSettingChange}
                     label="Maximum campaigns in 24 hours"
-                    description="Set the number of campaigns displayed on your store within 24 hours."
-                    tooltip="To ensure a smooth shopping experience and avoid overwhelming customers, limit the number of active campaigns displayed within 24 hours."
+                    description="Limit the number of times a shopper can see campaigns on your store within 24 hours."
                     onValidationChange={onFrequentValidationChange(
                         'max_campaign_in_session'
                     )}
@@ -104,8 +103,8 @@ export const CampaignFrequencySetting: React.FC<Props> = ({
                     }
                     onChange={onTimeBetweenChange}
                     label="Minimum time between campaigns"
-                    description="Set the time interval between two campaigns displayed on your store."
-                    tooltip="To ensure a smooth shopping experience and avoid overwhelming customers, set the time interval between two campaigns displayed on your store."
+                    description="Set a minimum time between campaigns being shown to shoppers on your store."
+                    tooltip="Campaigns with Exit Intent conditions are exempt from this setting. They are shown to shoppers at the exact time when their conditions are met."
                     onValidationChange={onFrequentValidationChange(
                         'time_between_campaigns'
                     )}

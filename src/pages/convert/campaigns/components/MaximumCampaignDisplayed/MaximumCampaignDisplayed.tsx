@@ -9,7 +9,7 @@ import css from './MaximumCampaignDisplayed.less'
 
 const DEFAULT_LABEL = 'Maximum campaign display in a session'
 const DEFAULT_DESCRIPTION =
-    'Set how often this campaign is displayed to a customer in a session.'
+    'Limit the number of times a shopper can see this campaign in a session.'
 
 type Props = {
     config: CampaignDisplaysInSession | null | undefined
