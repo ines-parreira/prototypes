@@ -71,7 +71,7 @@ const useApps = <T extends App['type'] = App['type']>(
     )
 
     useEffect(() => {
-        if (!isInitialLoading) {
+        if (!isInitialLoading && !isActionsAppsInitialLoading) {
             const appById = _keyBy(appsList, 'id')
 
             setMissingApps(
@@ -80,7 +80,7 @@ const useApps = <T extends App['type'] = App['type']>(
                     .map((actionsApp) => actionsApp.id)
             )
         }
-    }, [actionsApps, appsList, isInitialLoading])
+    }, [actionsApps, appsList, isActionsAppsInitialLoading, isInitialLoading])
 
     const isLoading =
         isInitialLoading ||
