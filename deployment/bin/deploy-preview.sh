@@ -30,7 +30,6 @@ if [ -z "${STORAGE_PATH}" ]; then
     exit 1
 fi
 
-
 PREVIEW_IDENTIFIER="f-${BUILD}"
 PREVIEW_NS="preview-${PREVIEW_IDENTIFIER}"
 PREVIEW_URL="${PREVIEW_IDENTIFIER}.preview.gorgias.xyz"
@@ -44,11 +43,11 @@ START_TIME="$(date +%s)"
 
 # # Use a function for the exits caused by errors. The condition prevents running this again on regular exit
 error_callback() {
-  if [ "$1" -ne 0 ]; then
-    send_datadog_duration_metric "$DD_DURATION_METRIC" "failed"
-    notify_preview_failed "$PREVIEW_NS"
-    error "exited with error"
-  fi
+    if [ "$1" -ne 0 ]; then
+        send_datadog_duration_metric "$DD_DURATION_METRIC" "failed"
+        notify_preview_failed "$PREVIEW_NS"
+        error "exited with error"
+    fi
 }
 
 ensure_dependencies

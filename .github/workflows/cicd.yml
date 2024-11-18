@@ -29,45 +29,16 @@ jobs:
     needs: workspace-vars
     runs-on: gh-actions-large-runner-set
     outputs:
-      cache-key: ${{ steps.cache-key.outputs.cache-key}}
+      cache-key: ${{ env.CACHE_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Generate cache key
-        id: cache-key
-        run: echo "cache-key=node-modules-${{ hashFiles('yarn.lock') }}" >> "$GITHUB_OUTPUT"
-
-      - name: Check cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          key: ${{steps.cache-key.outputs.cache-key}}
-          path: node_modules
-
-      - name: Install node
-        uses: ./.github/actions/setup-node
-        id: install-node
-        if: steps.cache.outputs.cache-hit != 'true'
-        with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
-
-      - name: Install node with yarn cache
-        uses: actions/setup-node@v4
-        if: steps.cache.outputs.cache-hit != 'true'
-        with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
-          cache: yarn
-
-      - name: Set GitHub Packages auth token
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
-          echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_READ_PACKAGES_TOKEN }}' >> .npmrc
-
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        uses: ./.github/actions/install-dependencies
+        id: install-dependencies
+        with:
+          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
   quality-check:
     name: Quality check

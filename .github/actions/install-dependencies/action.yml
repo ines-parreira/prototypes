@@ -1,0 +1,49 @@
+name: Install NPM dependencies
+description: Installs NPM dependencies
+
+inputs:
+  npm-token:
+    description: NPM read packaged token
+    required: true
+  node-version:
+    description: Version Spec of the version to use
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Check cache
+      uses: actions/cache@v4
+      id: cache
+      with:
+        key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+        path: 'node_modules'
+    
+    - name: Set cache key as environment variable
+      shell: bash
+      run: echo "CACHE_KEY=node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}" >> $GITHUB_ENV
+
+    - name: Install node
+      uses: ./.github/actions/setup-node
+      if: steps.cache.outputs.cache-hit != 'true'
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install node with yarn cache
+      uses: actions/setup-node@v4
+      if: steps.cache.outputs.cache-hit != 'true'
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: yarn
+
+    - name: Set GitHub Packages auth token
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
+        echo '//npm.pkg.github.com/:_authToken=${{ inputs.npm-token }}' >> .npmrc
+
+    - name: Install dependencies
+      shell: bash
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn install --frozen-lockfile

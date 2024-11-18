@@ -1,0 +1,118 @@
+name: Deploy Preview
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ contains(fromJSON('["refs/heads/main", "refs/heads/staging"]'), github.ref) && github.sha || '' }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 18
+  STORAGE_PATH: 'web-app'
+
+jobs:
+  Install-dependencies:
+    name: Install dependencies
+    runs-on: gh-actions-large-runner-set
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+  Build-preview:
+    name: Build preview
+    runs-on: gh-actions-large-runner-set
+    needs: Install-dependencies
+    env:
+      WEB_APP_RELEASE: preview-${GITHUB_SHA}
+      GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${GITHUB_SHA}/${STORAGE_PATH}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          key: node-modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: 'node_modules'
+
+      - name: Install node
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build preview
+        run: yarn build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build/
+
+  Deploy-preview:
+    name: Deploy preview
+    runs-on: gh-actions-default-runner-set
+    needs: Build-preview
+    container:
+      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:2.6.10
+      credentials:
+        username: _json_key
+        password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+    env:
+      BACKEND_REF: main
+      BUILD_DIR: 'build'
+      ASSETS_DIR: 'src/assets'
+      STORAGE_BUCKET: gs://gorgias-assets-staging
+      GCLOUD_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
+      GCLOUD_PROJECT: gorgias-helpdesk-staging
+      TF_VAR_datadog_api_key: ${{ secrets.TF_VAR_DATADOG_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/key.json
+      GH_REPO_READ_TOKEN: ${{ secrets.GORGIAS_BOT_READONLY_GH_ACTIONS_REPO_READ_TOKEN }}
+      SLACK_SRE_NOTIFICATION_WEBHOOK: ${{ secrets.SLACK_SRE_NOTIFICATION_WEBHOOK }}
+      # We need to set this env otherwise Helm won't see plugins
+      HELM_PLUGINS: /root/.local/share/helm/plugins
+      CI_PROJECT_DIR: ${{ github.workspace }}
+      CI_PROJECT_NAME: ${{ github.repository }}
+      CI_JOB_NAME: Preview
+      CI_COMMIT_REF_NAME: ${{ github.ref_name }}
+      CI_JOB_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      CI_COMMIT_SHA: ${{ github.sha }}
+      CI_COMMIT_SHORT_SHA: ${{ github.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download the build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/
+
+      - name: Setup service account
+        run: |
+          echo workflow: ${{ github.workflow}}
+          echo run id: ${{ github.run_id }}
+
+          # gorgi uses this file to check for release blocks in deployment conductor
+          cat <<EOF > $GOOGLE_APPLICATION_CREDENTIALS
+          ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} --key-file=${GOOGLE_APPLICATION_CREDENTIALS} --project=${GCLOUD_PROJECT}
+      - name: Add git safe directory
+      # Using $GITHUB_WORKSPACE instead of `github.workspace` because of https://github.com/actions/runner/issues/2058  
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE 
+      - name: Deploy preview
+        run: deployment/bin/deploy-preview.sh ${{ github.sha }}
