@@ -1,3 +1,4 @@
+import {Placement} from '@floating-ui/react'
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import _xor from 'lodash/xor'
@@ -71,6 +72,7 @@ export type MultiLevelSelectProps<
     customDisplayValue?: (
         value: InferCustomFieldValueType<AllowMultiValues> | undefined
     ) => string
+    placement?: Placement
 }
 
 export default function MultiLevelSelect<
@@ -91,6 +93,7 @@ export default function MultiLevelSelect<
     onFocus,
     isDisabled = false,
     allowMultiValues = false,
+    placement,
 }: MultiLevelSelectProps<AllowMultiValues>) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -260,6 +263,7 @@ export default function MultiLevelSelect<
                 target={containerRef}
                 ref={modalRef}
                 className={css.dropdown}
+                placement={placement}
             >
                 {currentPath.length > 0 && !isSearching && (
                     <DropdownHeader>

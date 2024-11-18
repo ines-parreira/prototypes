@@ -26,7 +26,7 @@ export type CustomFieldInputProps = {
     placeholder?: string
     dropdownAdditionalProps?: Pick<
         MultiLevelSelectProps<boolean | undefined>,
-        'prediction' | 'allowMultiValues' | 'customDisplayValue'
+        'prediction' | 'allowMultiValues' | 'customDisplayValue' | 'placement'
     >
     className?: string
 }
@@ -99,12 +99,8 @@ export default function CustomFieldInput({
                     choices={field.definition.input_settings.choices}
                     isDisabled={isDisabled}
                     onChange={onChange}
-                    allowMultiValues={dropdownAdditionalProps?.allowMultiValues}
                     value={value}
-                    customDisplayValue={
-                        dropdownAdditionalProps?.customDisplayValue
-                    }
-                    prediction={dropdownAdditionalProps?.prediction}
+                    {...dropdownAdditionalProps}
                 />
             </div>
         )

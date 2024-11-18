@@ -117,6 +117,7 @@ export default function CustomerField({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
+                dropdownAdditionalProps={{placement: 'bottom-end'}}
             />
         </Label>
     )
