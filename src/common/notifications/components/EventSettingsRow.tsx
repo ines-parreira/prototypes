@@ -45,7 +45,9 @@ export default function EventSettingsRow({
             <BodyCell innerClassName={cn(css.bodyCell, css.soundSelectCell)}>
                 <SoundSelect
                     addEmptyValue
-                    value={setting?.sound || 'default'}
+                    value={
+                        setting?.sound !== undefined ? setting.sound : 'default'
+                    }
                     onChange={onChangeSound}
                     disabled={
                         !Object.values(setting?.channels || {}).some(
