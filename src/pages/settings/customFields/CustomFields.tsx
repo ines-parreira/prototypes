@@ -80,6 +80,8 @@ export default function CustomFields({
 
     const hasActiveFields = activeFields.length > 0
     const hasArchivedFields = archivedFields.length > 0
+    const hasFieldInCurrentTab =
+        activeTab === 'active' ? hasActiveFields : hasArchivedFields
 
     const hasCustomFields = hasActiveFields || hasArchivedFields
     const shouldDisplayListingPage = hasCustomFields || debouncedSearch
@@ -166,7 +168,7 @@ export default function CustomFields({
                         </div>
                     ) : (
                         <div className="p-0">
-                            {debouncedSearch && !hasActiveFields ? (
+                            {debouncedSearch && !hasFieldInCurrentTab ? (
                                 <div className={css.emptyListTextWrapper}>
                                     No results found.
                                 </div>

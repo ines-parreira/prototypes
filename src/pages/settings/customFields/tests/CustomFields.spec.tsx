@@ -62,6 +62,16 @@ const notEmptyFieldDefinitions = {
     isLoading: false,
 } as unknown as ReturnType<typeof useCustomFieldDefinitions>
 
+const archivedOnlyFieldDefinitions = {
+    data: apiListCursorPaginationResponse([
+        {
+            ...ticketInputFieldDefinition,
+            deactivated_datetime: '2021-01-01T00:00:00Z',
+        },
+    ]),
+    isLoading: false,
+} as unknown as ReturnType<typeof useCustomFieldDefinitions>
+
 describe('<CustomFields/>', () => {
     beforeEach(() => {
         useParamsMock.mockReturnValue({activeTab: 'active'})
@@ -163,6 +173,22 @@ describe('<CustomFields/>', () => {
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
         expect(screen.getByTestId('custom-fields-list')).toBeInTheDocument()
+    })
+
+    it('should render archived ticket fields even when there is no active fields', () => {
+        useDebouncedValueMock.mockReturnValue(ticketInputFieldDefinition.label)
+        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+            if (archived) {
+                return archivedOnlyFieldDefinitions
+            }
+            return emptyFieldDefinitions
+        })
+
+        useParamsMock.mockReturnValue({activeTab: 'archived'})
+
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(screen.queryByText('No results found.')).toBeNull()
     })
 
     it.each([[OBJECT_TYPES.TICKET], [OBJECT_TYPES.CUSTOMER]])(
