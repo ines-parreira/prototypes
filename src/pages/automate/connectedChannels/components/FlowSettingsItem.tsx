@@ -73,6 +73,7 @@ export const FlowSettingsItem = ({
                                     warning
                                 </i>
                                 <Tooltip
+                                    autohide={false}
                                     trigger={['hover']}
                                     placement="top"
                                     target="languages-mismatch-warning"

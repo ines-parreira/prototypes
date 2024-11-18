@@ -76,7 +76,7 @@ jobs:
     with:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}}
+      assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}}
       release: staging-${{ github.sha }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
       artifact: ${{ needs.workspace-vars.outputs.build-artifact-name }}
@@ -95,7 +95,7 @@ jobs:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       gcloud-project: gorgias-helpdesk-staging
-      kube-context: gorgias-helpdesk-staging-us-east1-86cc
+      clusters: gorgias-helpdesk-staging-us-east1-86cc
       bucket: gs://gorgias-assets-staging
       bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
       assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}

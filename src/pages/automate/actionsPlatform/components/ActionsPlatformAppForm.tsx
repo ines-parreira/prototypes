@@ -96,7 +96,7 @@ const ActionsPlatformAppForm = ({
                     control={control}
                     name={'auth_settings.url'}
                     label={'Instructions URL'}
-                    caption={'URL with instructions on how to find an API key.'}
+                    caption={`URL with instructions on how to find ${authType === 'oauth2-token' ? 'a refresh token url' : 'an API key'}.`}
                     placeholder={'https://link.gorgias.com/xyz'}
                 />
                 {authType === 'oauth2-token' && (

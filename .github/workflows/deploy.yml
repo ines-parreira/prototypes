@@ -23,8 +23,8 @@ on:
         description: Path in the GCloud storage to upload the assets and build
         type: string
         required: true
-      kube-context:
-        description: Kubernetes context
+      clusters:
+        description: Clusters to deploy to
         type: string
         required: true
       assets-dir:
@@ -61,40 +61,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ inputs.cache-key }}
-          path: node_modules
-
-      - name: Install node
-        uses: ./.github/actions/setup-node
-        with:
-          node-version: ${{ inputs.node-version }}
-
       - name: Download the artifacts
         uses: actions/download-artifact@v4
         with:
           path: ${{ inputs.build-dir }}
           name: ${{ inputs.artifact }}
 
-      - name: Publish assets and build
+      - name: Prepare service account
         shell: bash
-        env:
-          GCLOUD_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
         run: |
-          # gorgi uses this file to check for release blocks in deployment conductor
           cat <<EOF > key.json
             ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
           EOF
           gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} --key-file=key.json --project=${{ inputs.gcloud-project }}
 
+      - name: Publish assets and build artifacts
+        shell: bash
+        run: |
           . deployment/bin/deploy-utils.sh
           . deploy-argo-utils.sh
+
           find_and_publish_to_gcs ${{ inputs.assets-dir }} ${{ inputs.bucket }}/${{ inputs.bucket-path }}/assets
           find_and_publish_to_gcs ${{ inputs.build-dir }} ${{ inputs.bucket }}/${{ inputs.bucket-path }}/build
-          setup_helpdesk_kubecontext ${{ inputs.kube-context }}
-          publish_manifest_configmap ${{ inputs.kube-context }} default ${{ inputs.build-dir }} /${{inputs.bucket-path }}/build
+
+      - name: Deploy configmaps
+        shell: bash
+        env:
+          GCLOUD_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
+        run: |
+          . deployment/bin/deploy-utils.sh
+          . deploy-argo-utils.sh
+
+          for CLUSTER in ${{ inputs.clusters }}; do
+            echo "Publishing manifest configmap to $CLUSTER"
+            setup_helpdesk_kubecontext $CLUSTER
+            publish_manifest_configmap $CLUSTER default ${{ inputs.build-dir }} /${{inputs.bucket-path }}/build
+          done
 
   create-release:
     name: Create release
@@ -114,6 +116,12 @@ jobs:
         uses: ./.github/actions/setup-node
         with:
           node-version: ${{ inputs.node-version }}
+
+      - name: Download the artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ inputs.build-dir }}
+          name: ${{ inputs.artifact }}
 
       - name: Create sentry release
         env:
