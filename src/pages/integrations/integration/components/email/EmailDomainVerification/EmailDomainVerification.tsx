@@ -6,6 +6,7 @@ import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
 import css from './EmailDomainVerification.less'
 import EmailDomainVerificationSupportContent from './EmailDomainVerificationSupportContent'
+import VerifyDomainModal from './VerifyDomainModal'
 
 export default function EmailDomainVerification() {
     return (
@@ -14,6 +15,7 @@ export default function EmailDomainVerification() {
             <SettingsSidebar className={css.sidebar}>
                 <EmailDomainVerificationSupportContent />
             </SettingsSidebar>
+            <VerifyDomainModal />
         </SettingsPageContainer>
     )
 }

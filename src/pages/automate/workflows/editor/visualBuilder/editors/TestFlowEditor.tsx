@@ -3,6 +3,7 @@ import _throttle from 'lodash/throttle'
 import React, {useEffect, useState, useMemo, useRef} from 'react'
 import {useParams} from 'react-router-dom'
 
+import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useKey from 'hooks/useKey'
@@ -117,7 +118,7 @@ export const TestFlowEditor = ({
         id,
     }: {
         label: string
-        language: string
+        language: typeof selectedLanguage
         id: string
     }) {
         if (
@@ -128,6 +129,17 @@ export const TestFlowEditor = ({
             return
 
         const gorgiasChat = chatIFrameElement.current.contentWindow.GorgiasChat
+
+        // SSP uses a different Language code than Workflow
+        const sspTextKey = Object.keys(GORGIAS_CHAT_SSP_TEXTS).find((key) => {
+            return (
+                key === language ||
+                language.toLowerCase().includes(key.split('-')[0])
+            )
+        })
+        if (sspTextKey) {
+            gorgiasChat.updateSSPTexts(GORGIAS_CHAT_SSP_TEXTS[sspTextKey])
+        }
         gorgiasChat.setPage('homepage')
         gorgiasChat.previewFlow({
             flowLabel: label,
@@ -342,6 +354,11 @@ export const TestFlowEditor = ({
                                             window.WebSocket = function() {}
 
                                             GorgiasChat.init().then(() => {
+                                                GorgiasChat.updateSSPTexts(${JSON.stringify(
+                                                    GORGIAS_CHAT_SSP_TEXTS[
+                                                        selectedLanguage
+                                                    ]
+                                                )})
                                                 GorgiasChat.hideOnMobile(false);
                                                 GorgiasChat.hideOutsideBusinessHours(false);
                                                 GorgiasChat.open();

@@ -7,6 +7,8 @@ jest.mock('../EmailDomainVerificationSupportContent', () => () => (
     <div>SidebarContent</div>
 ))
 
+jest.mock('../VerifyDomainModal', () => () => <div>VerifyDomainModal</div>)
+
 describe('EmailDomainVerification', () => {
     const renderComponent = () => render(<EmailDomainVerification />)
 
@@ -15,5 +17,6 @@ describe('EmailDomainVerification', () => {
 
         expect(screen.getByText('Domain verification')).toBeInTheDocument()
         expect(screen.getByText('SidebarContent')).toBeInTheDocument()
+        expect(screen.getByText('VerifyDomainModal')).toBeInTheDocument()
     })
 })

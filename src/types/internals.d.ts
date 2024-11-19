@@ -46,6 +46,7 @@ declare global {
                 flowLanguage: string
                 flowId: string
             }) => void
+            updateSSPTexts(param: Record<string, string>): void
         }
         loadGorgiasChat?: (isAiAgentPath: boolean) => void
         GORGIAS_SUPPORT_EMAIL: string
