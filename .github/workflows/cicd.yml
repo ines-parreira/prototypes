@@ -17,7 +17,6 @@ jobs:
     outputs:
       assets-dir: src/assets
       build-dir: build
-      build-artifact-name: build
       bucket-path: web-app
       node-version: 18
     steps:
@@ -64,7 +63,7 @@ jobs:
       assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}}
       release: smoke-test-${{ github.sha }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
-      artifact: ${{ needs.workspace-vars.outputs.build-artifact-name }}
+      artifact: smoke-test-build
 
   build-staging:
     name: Build staging
@@ -77,9 +76,9 @@ jobs:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}}
-      release: staging-${{ github.sha }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
-      artifact: ${{ needs.workspace-vars.outputs.build-artifact-name }}
+      artifact: staging-build
+      release: staging-${{ github.sha }}
 
   deploy-staging:
     name: Deploy staging
@@ -95,14 +94,52 @@ jobs:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       gcloud-project: gorgias-helpdesk-staging
-      clusters: gorgias-helpdesk-staging-us-east1-86cc
       bucket: gs://gorgias-assets-staging
+      clusters: gorgias-helpdesk-staging-us-east1-86cc
       bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
       assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
-      artifact: ${{ needs.workspace-vars.outputs.build-artifact-name }}
+      artifact: staging-build
       sentry-project: helpdesk-staging
       release: staging-${{ github.sha }}
+
+  build-production:
+    name: Build production
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - workspace-vars
+      - install-dependencies
+    uses: ./.github/workflows/build.yml
+    with:
+      cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}}
+      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      artifact: production-build
+      release: production-${{ github.sha }}
+
+  deploy-production:
+    name: Deploy staging
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - workspace-vars
+      - install-dependencies
+      - quality-check
+      - build-production
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.install-dependencies.outputs.cache-key}}
+      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      bucket: gs://gorgias-assets-production
+      gcloud-project: gorgias-helpdesk-production
+      clusters: gorgias-helpdesk-production-aus-southeast1-fcb9
+      bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
+      assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
+      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      artifact: production-build
+      sentry-project: helpdesk-web-app
+      release: production-${{ github.sha }}
 
   Chromatic:
     name: Upload Chromatic

@@ -196,7 +196,7 @@ Deploy production:
   parallel:
     matrix:
       - CONTEXT:
-          - gorgias-helpdesk-production-aus-southeast1-fcb9
+          # - gorgias-helpdesk-production-aus-southeast1-fcb9
           - gorgias-helpdesk-production-europe-west1-c511
           - gorgias-helpdesk-production-europe-west3-86c1
           - gorgias-helpdesk-production-us-central1-c433
