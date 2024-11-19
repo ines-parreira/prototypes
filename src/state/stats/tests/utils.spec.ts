@@ -331,6 +331,7 @@ describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
                 {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['123'],
+                    filterInstanceId: TagFilterInstanceId.First,
                 },
             ],
         })
@@ -367,10 +368,12 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
         const tagFilter = {
             operator: LogicalOperatorEnum.ONE_OF,
             values: ['456'],
+            filterInstanceId: TagFilterInstanceId.First,
         }
         const secondTagFilter = {
             operator: LogicalOperatorEnum.NOT_ONE_OF,
             values: ['765'],
+            filterInstanceId: TagFilterInstanceId.Second,
         }
         const agentFilter = {
             operator: LogicalOperatorEnum.ONE_OF,

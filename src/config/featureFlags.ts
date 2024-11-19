@@ -1,6 +1,5 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
-    AnalyticsSavedFilters = 'analytics-saved-f-ilters',
     ActionEventsLogs = 'action-events-logs',
     ActionsInputsProduct = 'actions-inputs-product',
     ActionsInternalPlatform = 'actions-internal-platform',
@@ -22,6 +21,7 @@ export enum FeatureFlagKey {
     AIAgentWelcomePage = 'ai-agent-welcome-page',
     AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsCustomFieldsFilter = 'analytics-custom-fields-filter',
+    AnalyticsCustomReports = 'analytics-custom-reports',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsNewCSATFilter = 'analytics-new-csat-filter',
     AnalyticsNewFilters = 'analytics-new-filters',
@@ -29,6 +29,7 @@ export enum FeatureFlagKey {
     AnalyticsNewFiltersConvert = 'analytics-new-filters-convert',
     AnalyticsNewFiltersHelpCenter = 'analytics-new-filters-help-center',
     AnalyticsNewFiltersVoice = 'analytics-new-filters-voice',
+    AnalyticsSavedFilters = 'analytics-saved-f-ilters',
     AutomateNonFilteredDenominatorInAutomationRate = 'use-non-filtered-automated-interactions-in-automation-rate-denominator',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutoQA = 'auto-qa',

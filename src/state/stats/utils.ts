@@ -235,6 +235,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                             values: currentFilter.map((tagFilter) => ({
                                 operator: tagFilter.operator,
                                 values: tagFilter.values.map(String),
+                                filterInstanceId: tagFilter.filterInstanceId,
                             })),
                         })
                     }
@@ -294,14 +295,11 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                       )
                   } else if (savedFilter.member === FilterKey.Tags) {
                       statsFilters[savedFilter.member] = savedFilter.values.map(
-                          (filter, index) => ({
+                          (filter) => ({
                               ...filter,
                               operator: filter.operator,
                               values: filter.values.map(Number),
-                              filterInstanceId:
-                                  index % 2 === 0
-                                      ? TagFilterInstanceId.First
-                                      : TagFilterInstanceId.Second,
+                              filterInstanceId: filter.filterInstanceId,
                           })
                       )
                   } else if (

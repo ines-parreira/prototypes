@@ -3,13 +3,14 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {useDispatch} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {SavedFilter} from 'models/stat/types'
+import {SavedFilter, SavedFilterAPI} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import {fromApiFormatted} from 'pages/stats/common/filters/helpers'
 import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
 import {
     applySavedFilter,
@@ -19,7 +20,7 @@ import {
 type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
 type Props = {
-    savedFilters: Array<SavedFilter>
+    savedFilters: Array<SavedFilterAPI>
     isAdmin: boolean
 }
 
@@ -68,7 +69,9 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             return (
                 <DropdownItem
                     key={filter.id}
-                    onClick={() => applySavedFilterHandler(filter)}
+                    onClick={() =>
+                        applySavedFilterHandler(fromApiFormatted(filter))
+                    }
                     option={{
                         label: filter.name,
                         value: filter.id,

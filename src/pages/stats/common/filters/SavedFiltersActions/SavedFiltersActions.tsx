@@ -5,7 +5,7 @@ import React, {useCallback, useMemo} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {SavedFilter} from 'models/stat/types'
+import {SavedFilterAPI} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import ApplySavedFilters from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import {areFiltersFilled} from 'pages/stats/common/filters/SavedFiltersActions/helpers'
@@ -24,8 +24,8 @@ export const SavedFiltersActions = ({optionalFilters}: Props) => {
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
     const {data} = useListAnalyticsFilters()
     const isCurrentUserAdmin = isAdmin(currentUser)
-    const savedFilters: SavedFilter[] =
-        (data?.data?.data as SavedFilter[]) ?? []
+    const savedFilters: SavedFilterAPI[] =
+        (data?.data?.data as SavedFilterAPI[]) ?? []
 
     const hasSaveFilters = useMemo(
         () => areFiltersFilled(optionalFilters, statsFilters),

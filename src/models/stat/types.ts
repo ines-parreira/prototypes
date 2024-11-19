@@ -146,21 +146,39 @@ export type CustomFieldSavedFilter = {
 
 export type TagsSavedFilter = {
     member: FilterKey.Tags
-    values: WithLogicalOperator<string>[]
+    values: (WithLogicalOperator<string> & {
+        filterInstanceId: TagFilterInstanceId
+    })[]
 }
 
 export type SavedFilter = {
     id: number
 } & SavedFilterDraft
 
+export type SavedFilterAPI = {
+    id: number
+} & SavedFilterAPIDraft
+
 export type SavedFilterSupportedFilters =
     | SavedFilterWithLogicalOperator
     | CustomFieldSavedFilter
     | TagsSavedFilter
 
+export type SavedFilterAPISupportedFilters =
+    | SavedFilterWithLogicalOperator
+    | CustomFieldSavedFilter
+    | (Omit<TagsSavedFilter, 'values'> & {
+          values: WithLogicalOperator<string>[]
+      })
+
 export type SavedFilterDraft = {
     name: string
     filter_group: SavedFilterSupportedFilters[]
+}
+
+export type SavedFilterAPIDraft = {
+    name: string
+    filter_group: SavedFilterAPISupportedFilters[]
 }
 
 export type StatsFiltersWithLogicalOperator = {

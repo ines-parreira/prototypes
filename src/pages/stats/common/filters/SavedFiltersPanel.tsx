@@ -13,14 +13,17 @@ import React, {useCallback, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {SavedFilter, SavedFilterDraft} from 'models/stat/types'
+import {SavedFilter, SavedFilterAPI, SavedFilterDraft} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
-import {withoutEmptyFilters} from 'pages/stats/common/filters/helpers'
+import {
+    fromApiFormatted,
+    toApiFormatted,
+} from 'pages/stats/common/filters/helpers'
 import {SavedFilterMenu} from 'pages/stats/common/filters/SavedFilterMenu'
 import css from 'pages/stats/common/filters/SavedFiltersPanel.less'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
@@ -114,13 +117,16 @@ export const SavedFiltersPanel = () => {
                         id: filter.id,
                         data: {
                             name: filter.name,
-                            filter_group: withoutEmptyFilters(
-                                filter.filter_group
-                            ),
+                            filter_group: toApiFormatted(filter.filter_group),
                         },
                     })
                     .then((res) => {
-                        dispatch(applySavedFilter(res.data as SavedFilter))
+                        dispatch(
+                            applySavedFilter(
+                                fromApiFormatted(res.data as SavedFilterAPI)
+                            )
+                        )
+
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Success,
@@ -142,13 +148,15 @@ export const SavedFiltersPanel = () => {
                     .mutateAsync({
                         data: {
                             name: filter.name,
-                            filter_group: withoutEmptyFilters(
-                                filter.filter_group
-                            ),
+                            filter_group: toApiFormatted(filter.filter_group),
                         },
                     })
                     .then((res) => {
-                        dispatch(applySavedFilter(res.data as SavedFilter))
+                        dispatch(
+                            applySavedFilter(
+                                fromApiFormatted(res.data as SavedFilterAPI)
+                            )
+                        )
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Success,

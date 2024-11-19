@@ -174,7 +174,7 @@ export const TagsFilter = ({
 
 export const getFilterInstanceProps = (
     filter: TagFilter[] | undefined,
-    ownProps: Omit<Props, 'value' | 'otherValue' | 'dispatchUpdate'>
+    ownProps: Pick<Props, 'filterInstanceId'>
 ) => {
     const tagFilters = filter ?? []
     let currentInstance = tagFilters.find(
@@ -199,10 +199,7 @@ export const getFilterInstanceProps = (
 }
 
 export const TagsFilterWithState = connect(
-    (
-        state: RootState,
-        ownProps: Omit<Props, 'value' | 'otherValue' | 'dispatchUpdate'>
-    ) =>
+    (state: RootState, ownProps: Pick<Props, 'filterInstanceId'>) =>
         getFilterInstanceProps(
             getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Tags],
             ownProps
@@ -218,10 +215,7 @@ export const TagsFilterWithState = connect(
 )(TagsFilter)
 
 export const TagsFilterWithSavedState = connect(
-    (
-        state: RootState,
-        ownProps: Omit<Props, 'value' | 'otherValue' | 'dispatchUpdate'>
-    ) =>
+    (state: RootState, ownProps: Pick<Props, 'filterInstanceId'>) =>
         getFilterInstanceProps(
             getSavedFiltersWithLogicalOperators(state)[FilterKey.Tags],
             ownProps
@@ -233,6 +227,7 @@ export const TagsFilterWithSavedState = connect(
                 values: filter.map((f) => ({
                     operator: f.operator,
                     values: f.values.map(String),
+                    filterInstanceId: f.filterInstanceId,
                 })),
             }),
     }

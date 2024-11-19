@@ -168,12 +168,6 @@ describe('SavedFiltersPanel', () => {
     })
 
     it('should create Saved Filter from Draft', () => {
-        const mutateMock = jest.fn().mockResolvedValue({})
-        useCreateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-            error: undefined,
-        } as any)
-
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilterDraft = {
             name: savedFilterName,
@@ -201,6 +195,13 @@ describe('SavedFiltersPanel', () => {
                 },
             },
         } as RootState
+        const mutateMock = jest.fn().mockResolvedValue({
+            data: {id: 123, ...savedFilterDraft},
+        })
+        useCreateAnalyticsFilterMock.mockReturnValue({
+            mutateAsync: mutateMock,
+            error: undefined,
+        } as any)
 
         renderWithStore(
             <MemoryRouter>
@@ -275,11 +276,6 @@ describe('SavedFiltersPanel', () => {
     })
 
     it('should update Saved Filter ', () => {
-        const mutateMock = jest.fn().mockResolvedValue({})
-        useUpdateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
-
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -309,6 +305,12 @@ describe('SavedFiltersPanel', () => {
                 },
             },
         } as RootState
+        const mutateMock = jest.fn().mockResolvedValue({
+            data: savedFilterDraft,
+        })
+        useUpdateAnalyticsFilterMock.mockReturnValue({
+            mutateAsync: mutateMock,
+        } as any)
 
         renderWithStore(
             <MemoryRouter>

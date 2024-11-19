@@ -11,11 +11,19 @@ import {
     CustomFieldFilter,
     FilterComponentKey,
     FilterKey,
+    SavedFilter,
+    SavedFilterAPI,
+    SavedFilterAPISupportedFilters,
     SavedFilterSupportedFilters,
     StateOnlyFilterKeys,
+    StaticFilter,
+    TagFilterInstanceId,
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {OptionGroup} from 'pages/stats/common/filters/AddFilterButton'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
+import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {ActiveFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
 
 import {Channel, ChannelIdentifier, toChannels} from 'services/channels'
@@ -101,9 +109,9 @@ export const getFilterSettings = (
     }
 }
 
-export const withoutEmptyFilters = (
+export const toApiFormatted = (
     savedFilters: SavedFilterSupportedFilters[]
-): SavedFilterSupportedFilters[] => {
+): SavedFilterAPISupportedFilters[] => {
     return savedFilters
         .map((filter) => {
             if (filter.member === FilterKey.CustomFields) {
@@ -114,7 +122,9 @@ export const withoutEmptyFilters = (
             } else if (filter.member === FilterKey.Tags) {
                 return {
                     ...filter,
-                    values: filter.values.filter((f) => f.values.length > 0),
+                    values: filter.values
+                        .filter((f) => f.values.length > 0)
+                        .map(({values, operator}) => ({values, operator})),
                 }
             }
             return filter
@@ -128,4 +138,152 @@ export const withoutEmptyFilters = (
             }
             return filter.values.length > 0
         })
+}
+
+const ticketFieldsTypes = [FilterKey.CustomFields]
+const qaFilterTypes = [
+    FilterKey.Score,
+    FilterKey.LanguageProficiency,
+    FilterKey.ResolutionCompleteness,
+    FilterKey.CommunicationSkills,
+]
+
+type FilterOption = {
+    value: string
+    label: string
+    type: FilterKey.Tags | FilterKey.CustomFields | StaticFilter
+}
+
+const getIfTicketFieldsFilters = (
+    filter: FilterOption
+): FilterOption | undefined =>
+    'type' in filter &&
+    filter.type !== undefined &&
+    ticketFieldsTypes.map(String).includes(filter.type)
+        ? filter
+        : undefined
+
+const getIfQaFilters = (filter: FilterOption): FilterOption | undefined =>
+    'type' in filter &&
+    filter.type !== undefined &&
+    qaFilterTypes.map(String).includes(filter.type)
+        ? filter
+        : undefined
+
+const getIfStandardFilter = (filter: FilterOption): FilterOption | undefined =>
+    getIfTicketFieldsFilters(filter) || getIfQaFilters(filter)
+        ? undefined
+        : filter
+
+export const STANDARD_FILTERS_LABEL = 'Standard filters'
+export const TICKET_FIELDS_FILTERS_LABEL = 'Ticket Fields filters'
+export const QUALITY_MANAGEMENT_FILTERS_LABEL = 'Quality Management filters'
+
+export const activeFiltersToOptions = (
+    activeFilters: ActiveFilter[]
+): OptionGroup[] =>
+    activeFilters
+        .filter((filter) => !filter.active)
+        .reduce<ActiveFilter[]>((filters, filter) => {
+            if (filter.type === FilterKey.Tags) {
+                if (
+                    filters.find(
+                        (addedFilter) => addedFilter.type === FilterKey.Tags
+                    )
+                ) {
+                    return filters
+                }
+            }
+            filters.push(filter)
+            return filters
+        }, [])
+        .map((filter) => {
+            if (filter.type === FilterKey.CustomFields) {
+                return {
+                    value: filter.key,
+                    label: filter.filterName,
+                    type: FilterKey.CustomFields,
+                }
+            }
+            return {
+                value: filter.key,
+                label: FilterLabels[filter.type],
+                type: filter.type,
+            }
+        })
+        .reduce<OptionGroup[]>((optionGroups, filter) => {
+            const updatedOptionGroups = []
+            const standardFilters = optionGroups.find(
+                (group) => group.title === STANDARD_FILTERS_LABEL
+            )
+            const ticketFieldsFilters = optionGroups.find(
+                (group) => group.title === TICKET_FIELDS_FILTERS_LABEL
+            )
+            const qaFilters = optionGroups.find(
+                (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL
+            )
+
+            const newStandardFilter = getIfStandardFilter(filter)
+            const newTicketFieldsFilters = getIfTicketFieldsFilters(filter)
+            const newQaFilters = getIfQaFilters(filter)
+
+            if (standardFilters || newStandardFilter) {
+                updatedOptionGroups.push({
+                    title: STANDARD_FILTERS_LABEL,
+                    options: [
+                        ...(standardFilters?.options ?? []),
+                        ...(newStandardFilter ? [newStandardFilter] : []),
+                    ],
+                })
+            }
+            if (ticketFieldsFilters || newTicketFieldsFilters) {
+                updatedOptionGroups.push({
+                    title: TICKET_FIELDS_FILTERS_LABEL,
+                    options: [
+                        ...(ticketFieldsFilters?.options ?? []),
+                        ...(newTicketFieldsFilters
+                            ? [newTicketFieldsFilters]
+                            : []),
+                    ],
+                })
+            }
+            if (qaFilters || newQaFilters) {
+                updatedOptionGroups.push({
+                    title: QUALITY_MANAGEMENT_FILTERS_LABEL,
+                    options: [
+                        ...(qaFilters?.options ?? []),
+                        ...(newQaFilters ? [newQaFilters] : []),
+                    ],
+                })
+            }
+
+            return updatedOptionGroups
+        }, [])
+        .map((group) => {
+            group.options.sort((a, b) => (a.label < b.label ? -1 : 1))
+            return group
+        })
+
+export const fromApiFormatted = (
+    savedFilterFromAPI: SavedFilterAPI
+): SavedFilter => {
+    return {
+        id: savedFilterFromAPI.id,
+        name: savedFilterFromAPI.name,
+        filter_group: savedFilterFromAPI.filter_group.map((filter) => {
+            if (filter.member === FilterKey.Tags) {
+                return {
+                    ...filter,
+                    values: filter.values.map((f, index) => ({
+                        ...f,
+                        filterInstanceId:
+                            index % 2 === 0
+                                ? TagFilterInstanceId.First
+                                : TagFilterInstanceId.Second,
+                    })),
+                }
+            }
+            return filter
+        }),
+    }
 }

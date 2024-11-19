@@ -323,24 +323,22 @@ describe('FiltersPanel', () => {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
             })
         )
-        const filtersOnDropDown = screen.getByRole('option', {
-            name: FilterLabels[FilterKey.Channels],
-        }).parentElement
+        const filtersOnDropDown = screen.queryAllByRole('option')
 
-        expect(filtersOnDropDown?.children).toHaveLength(5)
-        expect(filtersOnDropDown?.children?.[0]?.textContent).toBe(
+        expect(filtersOnDropDown).toHaveLength(5)
+        expect(filtersOnDropDown[0]?.textContent).toBe(
             FilterLabels[FilterKey.Agents]
         )
-        expect(filtersOnDropDown?.children?.[1]?.textContent).toBe(
+        expect(filtersOnDropDown[1]?.textContent).toBe(
             FilterLabels[FilterKey.Channels]
         )
-        expect(filtersOnDropDown?.children?.[2]?.textContent).toBe(
+        expect(filtersOnDropDown[2]?.textContent).toBe(
             FilterLabels[FilterKey.Tags]
         )
-        expect(filtersOnDropDown?.children?.[3]?.textContent).toBe(
+        expect(filtersOnDropDown[3]?.textContent).toBe(
             customFieldsMockResponse.data[1].label
         )
-        expect(filtersOnDropDown?.children?.[4]?.textContent).toBe(
+        expect(filtersOnDropDown[4]?.textContent).toBe(
             customFieldsMockResponse.data[0].label
         )
     })

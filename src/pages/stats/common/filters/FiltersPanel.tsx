@@ -27,11 +27,11 @@ import {
 } from 'models/stat/types'
 import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
 import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import css from 'pages/stats/common/filters/FiltersPanel.less'
 import {FilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {
+    activeFiltersToOptions,
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
     getFilterSettings,
@@ -152,46 +152,6 @@ const getActiveFilters = (
     }, [])
 }
 
-const activeFiltersToOptions = (activeFilters: ActiveFilter[]): FilterOptions =>
-    activeFilters
-        .filter((filter) => !filter.active)
-        .reduce<ActiveFilter[]>((filters, filter) => {
-            if (filter.type === FilterKey.Tags) {
-                if (
-                    filters.find(
-                        (addedFilter) => addedFilter.type === FilterKey.Tags
-                    )
-                ) {
-                    return filters
-                }
-            }
-            filters.push(filter)
-            return filters
-        }, [])
-        .map((filter) => {
-            if (filter.type === FilterKey.CustomFields) {
-                return {
-                    value: filter.key,
-                    label: filter.filterName,
-                    type: FilterKey.CustomFields,
-                }
-            }
-            return {
-                value: filter.key,
-                label: FilterLabels[filter.type],
-            }
-        })
-        .sort((a, b) => (a.label < b.label ? -1 : 1))
-        .sort((a, b) => {
-            if (
-                a.type !== FilterKey.CustomFields &&
-                b.type === FilterKey.CustomFields
-            ) {
-                return -1
-            }
-            return 0
-        })
-
 type FilterComponent = {
     key: string
     active: boolean
@@ -215,15 +175,6 @@ export type ActiveFilter =
       })
     | CustomFieldFilter
     | TagFilter
-
-type FilterOptions = (
-    | {value: string; label: string; type: FilterKey}
-    | {
-          value: string
-          label: string
-          type?: undefined
-      }
-)[]
 
 const useCustomFieldFilters = (
     cleanStatsFilters: StatsFiltersWithLogicalOperator
@@ -359,11 +310,6 @@ export const FiltersPanelComponent = ({
         []
     )
 
-    const options = useMemo(
-        () => activeFiltersToOptions(activeFilters),
-        [activeFilters]
-    )
-
     const createFilterElement = useCallback(
         (filter: ActiveFilter) =>
             createElement(filterComponentMap[filter.type], {
@@ -403,6 +349,11 @@ export const FiltersPanelComponent = ({
         ]
     )
 
+    const options = useMemo(
+        () => activeFiltersToOptions(activeFilters),
+        [activeFilters]
+    )
+
     return (
         <div className={css.wrapper}>
             {persistentFiltersToRender.map(createFilterElement)}
@@ -411,7 +362,10 @@ export const FiltersPanelComponent = ({
             )}
             {optionalFiltersToRender.map(createFilterElement)}
             {options.length > 0 && (
-                <AddFilterButton options={options} onClick={handleOnClick} />
+                <AddFilterButton
+                    optionGroups={options}
+                    onClick={handleOnClick}
+                />
             )}
         </div>
     )

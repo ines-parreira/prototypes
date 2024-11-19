@@ -13,7 +13,7 @@ import {
     StatsFiltersWithLogicalOperator,
     TagsSavedFilter,
 } from 'models/stat/types'
-import {withoutEmptyFilters} from 'pages/stats/common/filters/helpers'
+import {toApiFormatted} from 'pages/stats/common/filters/helpers'
 import {
     fromLegacyStatsFilters,
     isCustomFieldSavedFilter,
@@ -225,7 +225,7 @@ export const getCanSaveFilter = createSelector(
     (state) =>
         state.savedFilterDraft !== null &&
         state.savedFilterDraft.name !== '' &&
-        withoutEmptyFilters(state.savedFilterDraft.filter_group).length > 0
+        toApiFormatted(state.savedFilterDraft.filter_group).length > 0
 )
 
 export const getIsSavedFilterApplied = createSelector(
