@@ -32,6 +32,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         id: install-dependencies
@@ -119,7 +120,7 @@ jobs:
       release: production-${{ github.sha }}
 
   deploy-production:
-    name: Deploy staging
+    name: Deploy production
     if: github.ref == 'refs/heads/main'
     needs:
       - workspace-vars
@@ -133,7 +134,17 @@ jobs:
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
       bucket: gs://gorgias-assets-production
       gcloud-project: gorgias-helpdesk-production
-      clusters: gorgias-helpdesk-production-aus-southeast1-fcb9
+      clusters: >-
+        gorgias-helpdesk-production-aus-southeast1-fcb9
+        gorgias-helpdesk-production-europe-west1-c511
+        gorgias-helpdesk-production-europe-west3-86c1
+        gorgias-helpdesk-production-us-central1-c433
+        gorgias-helpdesk-production-us-central1-d8ff
+        gorgias-helpdesk-production-us-east1-2607
+        gorgias-helpdesk-production-us-east1-c94b
+        gorgias-helpdesk-production-us-east4-5f09
+        gorgias-helpdesk-production-us-east4-65cd
+        gorgias-main-us-east1-635c
       bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
       assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}

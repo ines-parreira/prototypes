@@ -1,4 +1,4 @@
-name: Deploy app
+name: Deploy
 
 on:
   workflow_call:
