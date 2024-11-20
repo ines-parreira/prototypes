@@ -61,7 +61,7 @@ jobs:
     with:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}}
+      assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}
       release: smoke-test-${{ github.sha }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
       artifact: smoke-test-build
@@ -76,7 +76,7 @@ jobs:
     with:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}}
+      assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
       artifact: staging-build
       release: staging-${{ github.sha }}
