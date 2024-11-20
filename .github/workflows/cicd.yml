@@ -114,7 +114,7 @@ jobs:
     with:
       cache-key: ${{ needs.install-dependencies.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}}
+      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}
       build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
       artifact: production-build
       release: production-${{ github.sha }}
