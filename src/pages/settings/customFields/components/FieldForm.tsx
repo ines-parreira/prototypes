@@ -1,7 +1,7 @@
 import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import {Location} from 'history'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {pick, set} from 'lodash'
+import {cloneDeep, pick, set} from 'lodash'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -71,15 +71,19 @@ export default function FieldForm(props: FieldFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
     const [isFormDirty, setIsFormDirty] = useState(false)
+
+    // we need to deep clone the initial form to avoid mutating the initial definition object & choices array that is passed by reference
     const [form, setForm] = useState(
-        pick(props.field, [
-            'object_type',
-            'label',
-            'description',
-            'required',
-            'managed_type',
-            'definition',
-        ])
+        cloneDeep(
+            pick(props.field, [
+                'object_type',
+                'label',
+                'description',
+                'required',
+                'managed_type',
+                'definition',
+            ])
+        )
     )
 
     // Use an effect since useRef() does not notify when the value is set
