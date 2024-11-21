@@ -63,7 +63,7 @@ describe('CampaignConfigurationBuilder', () => {
         expect(mockServer.history.get).toHaveLength(1)
     })
 
-    it('getOrCreateDiscountCode', async () => {
+    it('getOrCreateDiscountCode returns discount code', async () => {
         const existingCode = 'test-code'
 
         mockServer
@@ -71,7 +71,7 @@ describe('CampaignConfigurationBuilder', () => {
             .reply(200, {data: []})
         mockServer
             .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(200, {code: existingCode})
+            .reply(201, {code: existingCode})
 
         const code = await CampaignConfigurationBuilder.getOrCreateDiscountCode(
             fromJS(shopifyIntegration),
@@ -83,5 +83,41 @@ describe('CampaignConfigurationBuilder', () => {
         expect(code).toBe(existingCode)
         expect(mockServer.history.get).toHaveLength(1)
         expect(mockServer.history.post).toHaveLength(1)
+    })
+
+    it('backend returned 500 error ', async () => {
+        mockServer
+            .onGet(`/api/discount-codes/${shopifyIntegration.id}/`)
+            .reply(200, {data: []})
+        mockServer
+            .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
+            .reply(500, {data: {}})
+
+        await expect(
+            CampaignConfigurationBuilder.getOrCreateDiscountCode(
+                fromJS(shopifyIntegration),
+                'percentage',
+                'TESTCODE',
+                0.1
+            )
+        ).rejects.toThrow('Cannot create discount code')
+    })
+
+    it('backend returned different response than 201', async () => {
+        mockServer
+            .onGet(`/api/discount-codes/${shopifyIntegration.id}/`)
+            .reply(200, {data: []})
+        mockServer
+            .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
+            .reply(200, {data: {}})
+
+        await expect(
+            CampaignConfigurationBuilder.getOrCreateDiscountCode(
+                fromJS(shopifyIntegration),
+                'percentage',
+                'TESTCODE',
+                0.1
+            )
+        ).rejects.toThrow('Cannot create discount code')
     })
 })

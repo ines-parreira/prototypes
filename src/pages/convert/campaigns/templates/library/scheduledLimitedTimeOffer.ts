@@ -19,9 +19,11 @@ import {assetsUrl} from 'utils'
 import {CampaignConfigurationBuilder} from '../constructor'
 import {CampaignConfiguration, CampaignTemplate} from '../types'
 
+export const DISCOUNT_CODE = 'SAVE5'
+
 export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
     slug: 'schedule-limited-time-offer',
-    name: 'Schedule limited time offer for liquidated items ',
+    name: 'Schedule limited time offer for liquidated items',
     description:
         'Showcase your products on sale on your collection pages, and give an extra discount code',
     onboarding: false,
@@ -45,16 +47,23 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
             },
         }
     },
-    getConfiguration: async (
-        storeIntegration: Map<string, any>
-    ): Promise<CampaignConfiguration> => {
-        const discountCode =
+    postSave: async (storeIntegration: Map<string, any>): Promise<boolean> => {
+        try {
             await CampaignConfigurationBuilder.getOrCreateDiscountCode(
                 storeIntegration,
                 'percentage',
-                'SAVE5',
+                DISCOUNT_CODE,
                 0.05
             )
+        } catch (e) {
+            return Promise.resolve(false)
+        }
+
+        return Promise.resolve(true)
+    },
+    getConfiguration: async (
+        storeIntegration: Map<string, any>
+    ): Promise<CampaignConfiguration> => {
         const shopName = storeIntegration.getIn([
             'meta',
             'shop_domain',
@@ -86,7 +95,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
             {
                 name: SCHEDULE_LIMITED_TIME_OFFER.name,
                 template_id: SCHEDULE_LIMITED_TIME_OFFER.slug,
-                message_html: `<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>💸</em></div>`,
+                message_html: `<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="${DISCOUNT_CODE}" href="https://${shopName}/discount/${DISCOUNT_CODE}" target="_blank" rel="noreferrer">${DISCOUNT_CODE}</a> </strong>💸</em></div>`,
                 message_text:
                     '👉 Limited time offer — all under $99! \nPss: 5% extra discount with code SAVE5 💸',
 

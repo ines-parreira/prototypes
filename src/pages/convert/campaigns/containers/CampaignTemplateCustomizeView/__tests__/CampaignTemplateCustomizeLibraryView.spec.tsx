@@ -1,4 +1,4 @@
-import {render, waitFor, screen, act} from '@testing-library/react'
+import {render, waitFor, screen, act, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -13,7 +13,9 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
 import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
+import {SCHEDULE_LIMITED_TIME_OFFER} from 'pages/convert/campaigns/templates/library/scheduledLimitedTimeOffer'
 import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
@@ -27,8 +29,8 @@ jest.mock('pages/convert/campaigns/hooks/useUtm.ts')
 const useUtmMock = assumeMock(useUtm)
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
-jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
+jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -89,6 +91,9 @@ describe('CampaignTemplateCustomizeView', () => {
         }),
     }
 
+    const mockCreateCampaign = jest.fn()
+    const mockGetOrCreateDiscountCode = jest.fn()
+
     beforeAll(() => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection,
@@ -100,7 +105,7 @@ describe('CampaignTemplateCustomizeView', () => {
         } as any)
         useCreateCampaignMock.mockImplementation(() => {
             return {
-                mutateAsync: jest.fn(),
+                mutateAsync: mockCreateCampaign,
             } as unknown as ReturnType<typeof useCreateCampaign>
         })
         useUpdateCampaignMock.mockImplementation(() => {
@@ -135,6 +140,17 @@ describe('CampaignTemplateCustomizeView', () => {
         ;(window.getSelection as jest.Mock).mockRestore()
     })
 
+    beforeEach(() => {
+        jest.spyOn(
+            CampaignConfigurationBuilder.prototype,
+            'attachProductCards'
+        ).mockImplementation(jest.fn())
+        jest.spyOn(
+            CampaignConfigurationBuilder,
+            'getOrCreateDiscountCode'
+        ).mockImplementation(mockGetOrCreateDiscountCode)
+    })
+
     it('should render tooptips', async () => {
         ;(useParams as jest.Mock).mockReturnValue({
             id: '123',
@@ -153,6 +169,41 @@ describe('CampaignTemplateCustomizeView', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Add links')).toBeInTheDocument()
+            expect(mockGetOrCreateDiscountCode).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should create discount code after save', async () => {
+        ;(useParams as jest.Mock).mockReturnValue({
+            id: '123',
+            templateSlug: SCHEDULE_LIMITED_TIME_OFFER.slug,
+        })
+
+        act(() => {
+            render(
+                <BrowserRouter>
+                    <Provider store={mockStore(defaultState)}>
+                        <CampaignTemplateCustomizeLibraryView />
+                    </Provider>
+                </BrowserRouter>
+            )
+        })
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('Publish your campaign'))
+
+            const btn = screen.getByText('Create')
+            expect(btn).toBeInTheDocument()
+            expect(btn).toBeEnabled()
+
+            act(() => {
+                fireEvent.click(btn)
+            })
+        })
+
+        await waitFor(() => {
+            expect(mockCreateCampaign).toHaveBeenCalled()
+            expect(mockGetOrCreateDiscountCode).toHaveBeenCalled()
         })
     })
 
@@ -196,6 +247,8 @@ describe('CampaignTemplateCustomizeView', () => {
             expect(messageBanner).toHaveTextContent(
                 'Please select the bundle you want to recommend from your Shopify catalog.'
             )
+
+            expect(mockGetOrCreateDiscountCode).not.toHaveBeenCalled()
         })
     })
 

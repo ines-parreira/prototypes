@@ -12,6 +12,12 @@ import GorgiasApi from 'services/gorgiasApi'
 
 import {CampaignConfiguration, CampaignTemplate} from './types'
 
+export class CannotCreateDiscountCode extends Error {
+    constructor() {
+        super('Cannot create discount code')
+    }
+}
+
 export class CampaignConfigurationBuilder {
     private readonly data: CampaignConfiguration
 
@@ -83,12 +89,18 @@ export class CampaignConfigurationBuilder {
             usage_limit: null,
         }
 
-        const createResponse: {data: DiscountCode} = await client.post(
-            `/api/discount-codes/${integrationId}/`,
-            data
-        )
+        try {
+            const createResponse: {data: DiscountCode; status: number} =
+                await client.post(`/api/discount-codes/${integrationId}/`, data)
 
-        return createResponse.data.code
+            if (createResponse.status !== 201) {
+                throw new CannotCreateDiscountCode()
+            }
+
+            return createResponse.data.code
+        } catch (e) {
+            throw new CannotCreateDiscountCode()
+        }
     }
 
     build(): CampaignConfiguration {

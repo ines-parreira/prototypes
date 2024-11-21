@@ -487,8 +487,8 @@ Check out our [insert educational content here]",
 
 exports[`CampaignTemplates get template configuration 13`] = `
 {
-  "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
-  "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
+  "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="LUCKYGC10" href="https://shopify.myshopify.com/discount/LUCKYGC10" target="_blank" rel="noreferrer">LUCKYGC10</a> </strong>😉</div>",
+  "message_text": "Hold on! Get 10% off your first order with code LUCKYGC10 😉",
   "meta": {
     "noReply": true,
   },
@@ -692,8 +692,8 @@ exports[`CampaignTemplates get template configuration 20`] = `
 
 exports[`CampaignTemplates get template configuration 21`] = `
 {
-  "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong></div>",
-  "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code test-code",
+  "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="FORYOU10" href="https://shopify.myshopify.com/discount/FORYOU10" target="_blank" rel="noreferrer">FORYOU10</a> </strong></div>",
+  "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code FORYOU10",
   "meta": {
     "delay": 15000,
     "noReply": true,
@@ -1084,13 +1084,13 @@ exports[`CampaignTemplates get template configuration 33`] = `
 
 exports[`CampaignTemplates get template configuration 34`] = `
 {
-  "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
+  "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="SAVE5" href="https://shopify.myshopify.com/discount/SAVE5" target="_blank" rel="noreferrer">SAVE5</a> </strong>💸</em></div>",
   "message_text": "👉 Limited time offer — all under $99! 
 Pss: 5% extra discount with code SAVE5 💸",
   "meta": {
     "noReply": true,
   },
-  "name": "Schedule limited time offer for liquidated items ",
+  "name": "Schedule limited time offer for liquidated items",
   "status": "inactive",
   "template_id": "schedule-limited-time-offer",
   "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",

@@ -173,10 +173,36 @@ const CampaignTemplateCustomizeBaseView = ({
                         channel_connection_id: channelConnection.id,
                     },
                 ])
+
+                if (template && template.postSave) {
+                    const isSuccess = await template.postSave(
+                        storeIntegration,
+                        chatIntegration
+                    )
+                    if (!isSuccess) {
+                        void dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message:
+                                    'Failed to create discount code. Please try again in a few seconds.',
+                            })
+                        )
+                    }
+                }
+
                 history.push(successBackUrl ?? backUrl)
             }
         },
-        [backUrl, successBackUrl, channelConnection, createCampaign]
+        [
+            backUrl,
+            successBackUrl,
+            channelConnection,
+            createCampaign,
+            storeIntegration,
+            chatIntegration,
+            template,
+            dispatch,
+        ]
     )
 
     const handleUpdateCampaign = useCallback(

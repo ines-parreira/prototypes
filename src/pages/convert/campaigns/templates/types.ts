@@ -32,4 +32,8 @@ export type CampaignTemplate = {
         storeIntegration: Map<string, any>,
         chatIntegration: Map<string, any>
     ) => Promise<CampaignConfiguration>
+    postSave?: (
+        storeIntegration: Map<string, any>,
+        chatIntegration: Map<string, any>
+    ) => Promise<boolean>
 }

@@ -21,6 +21,8 @@ import {
     CampaignTemplateLabelType,
 } from '../types'
 
+export const DISCOUNT_CODE = 'LUCKYGC10'
+
 export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
     slug: 'discount-new-visitors',
     name: 'Give 10% off for new visitors about to leave',
@@ -44,16 +46,22 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
             },
         }
     },
-    getConfiguration: async (
-        storeIntegration: Map<string, any>
-    ): Promise<CampaignConfiguration> => {
-        const discountCode =
+    postSave: async (storeIntegration: Map<string, any>): Promise<boolean> => {
+        try {
             await CampaignConfigurationBuilder.getOrCreateDiscountCode(
                 storeIntegration,
                 'percentage',
-                'LUCKYGC10',
-                0.1
+                DISCOUNT_CODE,
+                0.05
             )
+        } catch (e) {
+            return Promise.resolve(false)
+        }
+        return Promise.resolve(true)
+    },
+    getConfiguration: async (
+        storeIntegration: Map<string, any>
+    ): Promise<CampaignConfiguration> => {
         const shopName = storeIntegration.getIn([
             'meta',
             'shop_domain',
@@ -91,8 +99,8 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
             {
                 name: DISCOUNT_NEW_VISITORS.name,
                 template_id: DISCOUNT_NEW_VISITORS.slug,
-                message_text: `Hold on! Get 10% off your first order with code ${discountCode} 😉`,
-                message_html: `<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>😉</div>`,
+                message_text: `Hold on! Get 10% off your first order with code ${DISCOUNT_CODE} 😉`,
+                message_html: `<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="${DISCOUNT_CODE}" href="https://${shopName}/discount/${DISCOUNT_CODE}" target="_blank" rel="noreferrer">${DISCOUNT_CODE}</a> </strong>😉</div>`,
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
