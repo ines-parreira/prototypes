@@ -113,14 +113,11 @@ src/pages/tickets/detail/components/TicketVoiceCall @gorgias/phone
 # Ecommerce & DevRel @gorgias/crm-devrel
 
 src/models/widget @gorgias/crm-devrel
-src/models/integration @gorgias/crm-devrel
-src/pages/integrations @gorgias/crm-devrel
 src/pages/settings/ticketFields @gorgias/crm-devrel
 src/pages/settings/users @gorgias/crm-devrel
 src/Infobar @gorgias/crm-devrel
 src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets @gorgias/crm-devrel
 src/pages/common/components/sourceWidgets @gorgias/crm-devrel
-src/state/integrations @gorgias/crm-devrel
 src/state/infobarActions @gorgias/crm-devrel
 src/state/widgets @gorgias/crm-devrel
 src/services/channels.ts @gorgias/crm-devrel
