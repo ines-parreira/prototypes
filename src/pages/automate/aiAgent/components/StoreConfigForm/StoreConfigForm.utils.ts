@@ -51,6 +51,8 @@ export const getStoreConfigurationFromFormValues = (
         deactivatedDatetime: deactivatedDatetime as string | null,
         trialModeActivatedDatetime,
         previewModeActivatedDatetime,
+        previewModeValidUntilDatetime:
+            formValues.previewModeValidUntilDatetime ?? null,
         chatChannelDeactivatedDatetime:
             formValues.chatChannelDeactivatedDatetime ?? null,
         emailChannelDeactivatedDatetime:
@@ -72,6 +74,43 @@ export function isAiAgentOnboardingWizardStep(
     return Object.values(AiAgentOnboardingWizardStep).includes(value)
 }
 
+export function isPreviewModeActivated({
+    isPreviewModeActive,
+    isTrialModeAvailable,
+    deactivatedDatetime,
+    emailChannelDeactivatedDatetime,
+    chatChannelDeactivatedDatetime,
+    trialModeActivatedDatetime,
+    previewModeValidUntilDatetime,
+}: {
+    isPreviewModeActive: boolean | null | undefined
+    isTrialModeAvailable: boolean
+    deactivatedDatetime: string | null | undefined
+    emailChannelDeactivatedDatetime: string | null | undefined
+    chatChannelDeactivatedDatetime: string | null | undefined
+    trialModeActivatedDatetime: string | null | undefined
+    previewModeValidUntilDatetime: string | null | undefined
+}): boolean {
+    const isAiAgentEnabled =
+        deactivatedDatetime === null ||
+        emailChannelDeactivatedDatetime === null ||
+        chatChannelDeactivatedDatetime === null
+
+    if (isAiAgentEnabled) {
+        return false
+    }
+
+    if (previewModeValidUntilDatetime) {
+        return !!isPreviewModeActive
+    }
+
+    if (isTrialModeAvailable) {
+        return !!trialModeActivatedDatetime
+    }
+
+    return false
+}
+
 export const getFormValuesFromStoreConfiguration = (
     storeConfig: StoreConfiguration
 ): FormValues => ({
@@ -81,6 +120,7 @@ export const getFormValuesFromStoreConfiguration = (
         storeConfig.emailChannelDeactivatedDatetime,
     trialModeActivatedDatetime: storeConfig.trialModeActivatedDatetime,
     previewModeActivatedDatetime: storeConfig.previewModeActivatedDatetime,
+    previewModeValidUntilDatetime: storeConfig.previewModeValidUntilDatetime,
     silentHandover: storeConfig.silentHandover,
     ticketSampleRate: null, // deprecated
     monitoredEmailIntegrations: storeConfig.monitoredEmailIntegrations,

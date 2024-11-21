@@ -15,7 +15,8 @@ import AutomateNavbarView from './AutomateNavbarView'
 
 const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const hasAiAgentPreview =
+        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isActionsInternalPlatformEnabled = useFlag(
@@ -25,7 +26,7 @@ const AutomateNavbar = () => {
 
     return (
         <Navbar activeContent="automate">
-            {(hasAutomate || hasAiAgentTrial) && (
+            {(hasAutomate || hasAiAgentPreview) && (
                 <>
                     <div
                         className={classNames(

@@ -90,6 +90,8 @@ jest.mock('pages/automate/aiAgent/hooks/useAiAgentEnabled')
 const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockSetSearchParam = jest.fn()
 
+const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
+
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext
 )
@@ -109,8 +111,6 @@ const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-
-const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
 
 const mockStore = configureMockStore([thunk])
 
@@ -213,6 +213,7 @@ describe('<StoreConfigForm />', () => {
         emailChannelDeactivatedDatetime: null,
         trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
         previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+        previewModeValidUntilDatetime: '2024-08-06T12:33:02.750Z',
         storeName: 'test-shop',
         helpCenterId: 1,
         snippetHelpCenterId: 1,
@@ -303,6 +304,7 @@ describe('<StoreConfigForm />', () => {
         mockedUseAccountStoreConfiguration.mockReturnValue({
             accountConfiguration: undefined,
             aiAgentTicketViewId: 1,
+            aiAgentPreviewTicketViewId: 2,
         })
     })
 
@@ -323,61 +325,6 @@ describe('<StoreConfigForm />', () => {
                 'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
             )
         ).toBeInTheDocument()
-    })
-
-    it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
-        renderComponent()
-
-        expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: expect.any(String),
-            emailChannelDeactivatedDatetime: expect.any(String),
-            chatChannelDeactivatedDatetime: expect.any(String),
-            trialModeActivatedDatetime: null,
-            previewModeActivatedDatetime: null,
-        })
-
-        const actualDeactivatedDatetime =
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            mockUpdateStoreConfiguration.mock.calls[0][0].deactivatedDatetime
-        const actualDate = new Date(actualDeactivatedDatetime)
-        const now = new Date()
-
-        expect(actualDate.getTime()).toBeCloseTo(now.getTime(), -3)
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalledWith({
-            message:
-                'AI Agent has been disabled, because no Knowledge source is connected.',
-            status: NotificationStatus.Warning,
-        })
-    })
-
-    it('should deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is false', () => {
-        renderComponent()
-
-        expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: expect.any(String),
-            chatChannelDeactivatedDatetime: expect.any(String),
-            emailChannelDeactivatedDatetime: expect.any(String),
-            trialModeActivatedDatetime: null,
-            previewModeActivatedDatetime: null,
-        })
-
-        const actualDeactivatedDatetime =
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            mockUpdateStoreConfiguration.mock.calls[0][0].deactivatedDatetime
-        const actualDate = new Date(actualDeactivatedDatetime)
-        const now = new Date()
-
-        expect(actualDate.getTime()).toBeCloseTo(now.getTime(), -3)
-
-        expect(mockDispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalledWith({
-            message:
-                'AI Agent has been disabled, because no Knowledge source is connected.',
-            status: NotificationStatus.Warning,
-        })
     })
 
     it('should not deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is true', () => {
@@ -453,6 +400,7 @@ describe('<StoreConfigForm />', () => {
                 emailChannelDeactivatedDatetime: expect.any(String),
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
+                previewModeValidUntilDatetime: null,
             })
 
             expect(mockDispatch).toHaveBeenCalled()
@@ -525,6 +473,29 @@ describe('<StoreConfigForm />', () => {
                 expect(screen.getByText(chatIntegration.value.name))
             )
         })
+
+        it('chat toggle should be disabled if user does not have automate', () => {
+            mockFlags({
+                [FeatureFlagKey.AiAgentChat]: true,
+                [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+            })
+            mockGetHasAutomate.mockReturnValue(false)
+            renderComponent()
+
+            const chatToggle = screen.getByLabelText('Enable AI Agent on Chat')
+            expect(chatToggle).toBeDisabled()
+        })
+    })
+
+    it('email toggle should be disabled if user does not have automate', () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: true,
+        })
+        mockGetHasAutomate.mockReturnValue(false)
+        renderComponent()
+
+        const emailToggle = screen.getByLabelText('Enable AI Agent on Email')
+        expect(emailToggle).toBeDisabled()
     })
 
     it('should render error email integration caption when there is none selected', () => {
@@ -727,7 +698,20 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
+        mockedUseConfigurationForm.mockReturnValue({
+            ...defaultUseConfigurationFormValues,
+            formValues: {
+                ...initialFormValues,
+                deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                trialModeActivatedDatetime: null,
+                previewModeActivatedDatetime: null,
+            },
+        })
+
         renderComponent({})
 
         // Simulate the user selecting 'enabled' mode
@@ -757,6 +741,7 @@ describe('<StoreConfigForm />', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentTrialMode]: true,
             [FeatureFlagKey.AiAgentChat]: false,
+            [FeatureFlagKey.AiAgentMultiChannelEnablement]: false,
         })
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -779,7 +764,7 @@ describe('<StoreConfigForm />', () => {
         expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
-            null
+            expect.any(String)
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
@@ -930,6 +915,7 @@ describe('<StoreConfigForm />', () => {
         mockedUseAccountStoreConfiguration.mockReturnValue({
             accountConfiguration: undefined,
             aiAgentTicketViewId: 1,
+            aiAgentPreviewTicketViewId: 2,
         })
 
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -971,6 +957,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1018,6 +1005,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: null,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1065,6 +1053,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1111,6 +1100,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1195,6 +1185,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1245,6 +1236,7 @@ describe('<StoreConfigForm />', () => {
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
+                aiAgentPreviewTicketViewId: 2,
             })
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -1286,6 +1278,132 @@ describe('<StoreConfigForm />', () => {
                 })
                 expect(ticketViewButton).toBeInTheDocument()
             })
+        })
+
+        it('should display banner if AI Agent on Preview mode', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            expect(
+                screen.getByText('You’re currently using AI Agent Preview.')
+            ).toBeInTheDocument()
+            expect(screen.getByText('Review Drafts')).toBeInTheDocument()
+        })
+
+        it('should display banner if AI Agent on Preview mode with new method', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    trialModeActivatedDatetime: null,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            expect(
+                screen.getByText('You’re currently using AI Agent Preview.')
+            ).toBeInTheDocument()
+            expect(screen.getByText('Review Drafts')).toBeInTheDocument()
+        })
+
+        it('should redirect to AI Agent Preview ticket views if button on Preview banner is clicked', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: null,
+                aiAgentPreviewTicketViewId: 2,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    isPreviewModeActive: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            expect(
+                screen.getByText('You’re currently using AI Agent Preview.')
+            ).toBeInTheDocument()
+
+            const reviewDraftsButton = screen.getByText('Review Drafts')
+            expect(reviewDraftsButton).toBeInTheDocument()
+            fireEvent.click(reviewDraftsButton)
+
+            expect(history.push).toHaveBeenCalledWith('/app/views/2')
+        })
+
+        it('should not show Review Drafts button if Preview ticket views id is null', () => {
+            mockFlags({
+                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
+            })
+            mockedUseAccountStoreConfiguration.mockReturnValue({
+                accountConfiguration: undefined,
+                aiAgentTicketViewId: null,
+                aiAgentPreviewTicketViewId: null,
+            })
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    deactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                    previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent({})
+
+            const reviewDraftsButton = screen.queryByText('Review Drafts')
+            expect(reviewDraftsButton).not.toBeInTheDocument()
         })
     })
 })

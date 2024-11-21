@@ -7,6 +7,9 @@ import {ACTIONS} from 'pages/automate/common/components/constants'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showAutomateActions = useShowAutomateActions()
+    const isGorgiasUser =
+        useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode] &&
+        (window.USER_IMPERSONATED || window.DEVELOPMENT)
 
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
@@ -41,6 +44,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             actionEvents: (configurationId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/actions/events/${configurationId}`,
             onboardingWizard: `/app/automation/shopify/${shopName}/ai-agent/new`,
+            previewMode: `/app/automation/shopify/${shopName}/ai-agent/preview-mode`,
         }),
         [shopName]
     )
@@ -80,8 +84,21 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 route: routes.test,
                 title: 'Test',
             },
+            ...(isGorgiasUser
+                ? [
+                      {
+                          route: routes.previewMode,
+                          title: 'Preview',
+                      },
+                  ]
+                : []),
         ],
-        [isAiAgentKnowledgeTabEnabled, routes, showAutomateActions]
+        [
+            isAiAgentKnowledgeTabEnabled,
+            isGorgiasUser,
+            routes,
+            showAutomateActions,
+        ]
     )
 
     return {headerNavbarItems, routes}

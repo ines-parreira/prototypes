@@ -17,6 +17,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
 import {assetsUrl} from 'utils'
 
+import {isPreviewModeActivated} from '../../aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
@@ -52,8 +53,26 @@ const AutomateNavbarSectionBlock = ({
         accountDomain,
     })
 
-    const hasAiAgentTrialEnabled =
-        !!storeConfiguration?.trialModeActivatedDatetime
+    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const hasAiAgentPreview =
+        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
+    const hasAiAgentTrialEnabled = isPreviewModeActivated({
+        isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
+        isTrialModeAvailable: isTrialModeAvailable,
+        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
+        emailChannelDeactivatedDatetime:
+            storeConfiguration?.emailChannelDeactivatedDatetime,
+        chatChannelDeactivatedDatetime:
+            storeConfiguration?.chatChannelDeactivatedDatetime,
+        trialModeActivatedDatetime:
+            storeConfiguration?.trialModeActivatedDatetime,
+        previewModeValidUntilDatetime:
+            storeConfiguration?.previewModeValidUntilDatetime,
+    })
+
     const hasAiAgentEnabled = !!(
         storeConfiguration &&
         (!storeConfiguration.deactivatedDatetime ||
@@ -61,10 +80,6 @@ const AutomateNavbarSectionBlock = ({
             !storeConfiguration.chatChannelDeactivatedDatetime) &&
         !hasAiAgentTrialEnabled
     )
-
-    const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
-    const isImprovedNavigationEnabled =
-        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -87,7 +102,7 @@ const AutomateNavbarSectionBlock = ({
         </Badge>
     )
 
-    if (hasAiAgentTrial && !hasAutomate) {
+    if (hasAiAgentPreview && !hasAutomate) {
         return (
             <NavbarSectionBlock
                 icon={

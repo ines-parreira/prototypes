@@ -109,8 +109,17 @@ export const AiAgentLayout = ({
                 isToggled={storeConfiguration.deactivatedDatetime === null}
                 isDisabled={isPendingCreateOrUpdate}
                 onClick={async (isEnabled: boolean) => {
+                    const disablePreviewModeParams = isEnabled
+                        ? {
+                              previewModeActivatedDatetime: null,
+                              trialModeActivatedDatetime: null,
+                              previewModeValidUntilDatetime: null,
+                          }
+                        : {}
+
                     await updateStoreConfiguration({
                         ...storeConfiguration,
+                        ...disablePreviewModeParams,
                         deactivatedDatetime:
                             storeConfiguration.deactivatedDatetime === null
                                 ? new Date().toISOString()

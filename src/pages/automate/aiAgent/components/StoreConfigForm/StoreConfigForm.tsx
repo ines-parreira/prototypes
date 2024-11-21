@@ -35,6 +35,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
+import {getHasAutomate} from 'state/billing/selectors'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -61,7 +62,7 @@ import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreC
 import {FormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
 import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
-import {AIAgentPreviewModeSection} from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
+import {AiAgentPreviewModeSection} from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
@@ -74,7 +75,10 @@ import {SettingsBanner} from './FormComponents/SettingsBanner'
 import {SignatureFormComponent} from './FormComponents/SignatureFormComponent'
 import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
 import css from './StoreConfigForm.less'
-import {getFormValuesFromStoreConfiguration} from './StoreConfigForm.utils'
+import {
+    getFormValuesFromStoreConfiguration,
+    isPreviewModeActivated,
+} from './StoreConfigForm.utils'
 
 const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
     'ai-settings-ticket-view-modal-viewed'
@@ -104,6 +108,8 @@ export const StoreConfigForm = ({
 
     const dispatch = useAppDispatch()
 
+    const hasAutomate = useAppSelector(getHasAutomate)
+
     const [isUrlSyncSuccess, setIsUrlSyncSuccess] = useState(false)
     const [isUrlSyncFail, setIsUrlSyncFail] = useState(false)
 
@@ -112,9 +118,10 @@ export const StoreConfigForm = ({
         WIZARD_POST_COMPLETION_QUERY_KEY
     )
 
-    const {aiAgentTicketViewId} = useAccountStoreConfiguration({
-        storeNames: [shopName],
-    })
+    const {aiAgentTicketViewId, aiAgentPreviewTicketViewId} =
+        useAccountStoreConfiguration({
+            storeNames: [shopName],
+        })
 
     const [ticketModalViewed, setTicketModalViewed] = useLocalStorage<string[]>(
         AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED,
@@ -273,16 +280,39 @@ export const StoreConfigForm = ({
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     const aiAgentMode = useMemo(() => {
-        if (isAIAgentToggled) {
-            if (formValues.trialModeActivatedDatetime === null) {
-                return 'enabled'
-            }
+        const isTrialMode =
+            !!storeConfiguration &&
+            isPreviewModeActivated({
+                isPreviewModeActive: storeConfiguration.isPreviewModeActive,
+                deactivatedDatetime: formValues?.deactivatedDatetime,
+                emailChannelDeactivatedDatetime:
+                    formValues?.emailChannelDeactivatedDatetime,
+                chatChannelDeactivatedDatetime:
+                    formValues?.chatChannelDeactivatedDatetime,
+                trialModeActivatedDatetime:
+                    formValues?.trialModeActivatedDatetime,
+                previewModeValidUntilDatetime:
+                    formValues?.previewModeValidUntilDatetime,
+                isTrialModeAvailable: trialModeAvailable,
+            })
 
+        if (isTrialMode) {
             return 'trial'
         }
 
+        if (isAIAgentToggled || isEmailChannelEnabled || isChatChannelEnabled) {
+            return 'enabled'
+        }
+
         return 'disabled'
-    }, [isAIAgentToggled, formValues.trialModeActivatedDatetime])
+    }, [
+        storeConfiguration,
+        formValues,
+        trialModeAvailable,
+        isAIAgentToggled,
+        isEmailChannelEnabled,
+        isChatChannelEnabled,
+    ])
 
     const deactivateAiAgent = useCallback(
         async (silentUpdate?: boolean) => {
@@ -294,6 +324,7 @@ export const StoreConfigForm = ({
             updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('trialModeActivatedDatetime', null)
             updateValue('previewModeActivatedDatetime', null)
+            updateValue('previewModeValidUntilDatetime', null)
 
             try {
                 await updateStoreConfiguration({
@@ -303,6 +334,7 @@ export const StoreConfigForm = ({
                     emailChannelDeactivatedDatetime: deactivatedDatetime,
                     trialModeActivatedDatetime: null,
                     previewModeActivatedDatetime: null,
+                    previewModeValidUntilDatetime: null,
                 })
                 if (!silentUpdate) {
                     void dispatch(
@@ -457,7 +489,19 @@ export const StoreConfigForm = ({
     }
 
     useEffect(() => {
-        if (aiAgentMode === 'trial' && !trialModeAvailable) {
+        // Used as protection for the case when we disable AI agent feature flag Can be removed after the feature flag is removed
+        let isAIAgentDeactivationRequired
+        if (trialModeAvailable) {
+            // If trial mode is available, we don't want to deactivate AI Agent
+            isAIAgentDeactivationRequired = false
+        } else if (isFollowUpAiAgentPreviewModeEnabled) {
+            // if preview mode is on we want to deactivate AI Agent only for users that are not migrated to preview mode
+            isAIAgentDeactivationRequired =
+                !formValues.previewModeValidUntilDatetime
+        } else {
+            isAIAgentDeactivationRequired = true
+        }
+        if (aiAgentMode === 'trial' && isAIAgentDeactivationRequired) {
             void deactivateAiAgent(true)
         }
     }, [
@@ -466,7 +510,38 @@ export const StoreConfigForm = ({
         trialModeAvailable,
         formValues.trialModeActivatedDatetime,
         formValues.previewModeActivatedDatetime,
+        isFollowUpAiAgentPreviewModeEnabled,
+        formValues.previewModeValidUntilDatetime,
     ])
+
+    const shouldDisablePreviewMode = useMemo(() => {
+        if (
+            formValues.trialModeActivatedDatetime === null &&
+            formValues.previewModeActivatedDatetime === null
+        ) {
+            return false
+        }
+        if (
+            (storeConfiguration?.deactivatedDatetime !== null ||
+                storeConfiguration?.emailChannelDeactivatedDatetime !== null ||
+                storeConfiguration?.chatChannelDeactivatedDatetime) &&
+            (formValues.deactivatedDatetime === null ||
+                formValues.emailChannelDeactivatedDatetime === null ||
+                formValues.chatChannelDeactivatedDatetime === null)
+        ) {
+            return true
+        }
+
+        return false
+    }, [storeConfiguration, formValues])
+
+    useEffect(() => {
+        if (shouldDisablePreviewMode) {
+            updateValue('trialModeActivatedDatetime', null)
+            updateValue('previewModeActivatedDatetime', null)
+            updateValue('previewModeValidUntilDatetime', null)
+        }
+    }, [shouldDisablePreviewMode, updateValue])
 
     const onCloseAiAgentConfigurationModal = () => {
         setIsAiAgentConfigurationModalOpen(false)
@@ -502,11 +577,13 @@ export const StoreConfigForm = ({
                         </div>
                         {(trialModeAvailable ||
                             isFollowUpAiAgentPreviewModeEnabled) && (
-                            <AIAgentPreviewModeSection
+                            <AiAgentPreviewModeSection
                                 storeConfiguration={storeConfiguration}
                                 updateValue={updateValue}
                                 aiAgentMode={aiAgentMode}
-                                aiAgentTicketViewId={aiAgentTicketViewId}
+                                aiAgentPreviewTicketViewId={
+                                    aiAgentPreviewTicketViewId
+                                }
                                 isFollowUpAiAgentPreviewModeEnabled={
                                     isFollowUpAiAgentPreviewModeEnabled
                                 }
@@ -534,6 +611,7 @@ export const StoreConfigForm = ({
                                         caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
                                         name={toggleAiAgentId}
                                         dataCanduId="ai-agent-configuration-toggle"
+                                        isDisabled={!hasAutomate}
                                     >
                                         Enable AI Agent
                                     </ToggleInput>
@@ -576,6 +654,7 @@ export const StoreConfigForm = ({
                                             )
                                         }}
                                         channel="chat"
+                                        isDisabled={!hasAutomate}
                                     />
                                 </div>
                             ) : null}
@@ -622,6 +701,7 @@ export const StoreConfigForm = ({
                                         )
                                     }}
                                     channel="email"
+                                    isDisabled={!hasAutomate}
                                 />
                             </div>
                         ) : null}

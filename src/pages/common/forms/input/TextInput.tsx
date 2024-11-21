@@ -29,6 +29,7 @@ type Props = {
     onChange?: (nextValue: string) => void
     prefix?: ReactNode
     suffix?: ReactNode
+    inputWrapperClassName?: string
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'disabled' | 'onChange' | 'prefix' | 'required'
@@ -48,6 +49,7 @@ function TextInput(
         suffix,
         type,
         value,
+        inputWrapperClassName,
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -97,7 +99,8 @@ function TextInput(
                     [css.isFocused]: isFocused,
                     [css.isNested]: !!inputGroupContext,
                 },
-                className
+                className,
+                inputWrapperClassName
             )}
         >
             {prefix && (

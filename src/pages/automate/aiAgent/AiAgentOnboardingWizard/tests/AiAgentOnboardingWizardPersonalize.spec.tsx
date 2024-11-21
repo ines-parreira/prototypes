@@ -87,13 +87,14 @@ const renderComponent = (
     )
 }
 
-const stormFormValues = {
+const storeFormValues = {
     toneOfVoice: ToneOfVoice.Friendly,
     signature: 'This response was created by AI',
     monitoredEmailIntegrations: [],
     monitoredChatIntegrations: [],
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
     deactivatedDatetime: new Date().toISOString(),
     silentHandover: false,
     tags: [],
@@ -121,7 +122,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             handleFormUpdate: mockHandleFormUpdate,
             handleSave: mockHandleSave,
-            storeFormValues: stormFormValues,
+            storeFormValues: storeFormValues,
             faqHelpCenters: [],
             handleAction: mockHandleAction,
             isLoading: false,
@@ -220,7 +221,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             handleFormUpdate: mockHandleFormUpdate,
             handleSave: mockHandleSave,
             storeFormValues: {
-                ...stormFormValues,
+                ...storeFormValues,
                 wizard: {...DEFAULT_WIZARD_FORM_VALUES, enabledChannels: []},
             },
             faqHelpCenters: [],

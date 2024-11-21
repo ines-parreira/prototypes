@@ -30,6 +30,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     chatChannelDeactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: null,
@@ -121,6 +122,7 @@ export enum WIZARD_BUTTON_ACTIONS {
 export const INITIAL_FORM_VALUES = {
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
     deactivatedDatetime: new Date().toISOString(),
     emailChannelDeactivatedDatetime: new Date().toISOString(),
     chatChannelDeactivatedDatetime: new Date().toISOString(),
@@ -166,6 +168,8 @@ export const ARTICLE_INGESTION_LOGS_STATUS = {
 
 export type ArticleIngestionLogsStatus =
     (typeof ARTICLE_INGESTION_LOGS_STATUS)[keyof typeof ARTICLE_INGESTION_LOGS_STATUS]
+
+export const DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS = 7
 
 export const AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET = {
     subject: 'Return policy',

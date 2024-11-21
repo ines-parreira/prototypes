@@ -353,6 +353,7 @@ describe('AiAgentKnowledgeContainer', () => {
             ).toISOString(),
             trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
+            previewModeValidUntilDatetime: null,
         })
 
         jest.useRealTimers()

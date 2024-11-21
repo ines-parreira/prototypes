@@ -46,6 +46,7 @@ import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentG
 import {AiAgentKnowledgeContainer} from 'pages/automate/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import {AiAgentPlaygroundContainer} from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
+
 import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
@@ -157,6 +158,8 @@ import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
 import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
 import {useTicketPage} from 'tickets/pages/TicketPage'
 import {useViewPage} from 'tickets/pages/ViewPage'
+
+import {AiAgentPreviewModeSettingsContainer} from '../pages/automate/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 
 export default function Routes() {
     return (
@@ -788,6 +791,8 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         return <Redirect to="/app/automation" />
     }
 
+    const isGorgiasUser = window.USER_IMPERSONATED || window.DEVELOPMENT
+
     return (
         <Switch>
             <AiAgentAccountConfigurationProvider>
@@ -881,6 +886,18 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             />
                         </Switch>
                     </AiAgentErrorBoundary>
+                    {isGorgiasUser && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-preview-mode"
+                            team={OBS_ADOPT_SENTRY_TEAM}
+                        >
+                            <Route
+                                path={`${path}/preview-mode`}
+                                exact
+                                component={AiAgentPreviewModeSettingsContainer}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                     {isAiAgentOnboardingWizardEnabled && (
                         <AiAgentErrorBoundary
                             section="ai-agent-onboarding-wizard"

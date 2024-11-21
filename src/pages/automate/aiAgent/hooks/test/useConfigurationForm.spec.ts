@@ -26,6 +26,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     deactivatedDatetime: undefined,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
     excludedTopics: null,
     helpCenterId: null,
     monitoredEmailIntegrations: null,

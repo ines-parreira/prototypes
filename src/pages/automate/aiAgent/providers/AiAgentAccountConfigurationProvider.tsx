@@ -23,7 +23,8 @@ export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
-    const hasAiAgentTrial = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const hasAiAgentPreview =
+        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
 
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
@@ -38,7 +39,7 @@ export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
         )
 
     if (
-        !(hasAiAgentTrial || hasAutomate) ||
+        !(hasAiAgentPreview || hasAutomate) ||
         accountConfigRetrievalStatus === 'error'
     ) {
         return <Redirect to="/app/automation" />

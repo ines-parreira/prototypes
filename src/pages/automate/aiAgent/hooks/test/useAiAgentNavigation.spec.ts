@@ -19,6 +19,7 @@ describe('useAiAgentNavigation', () => {
 
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.AiAgentKnowledgeTab]: false,
+            [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
         })
     })
 
@@ -92,5 +93,117 @@ describe('useAiAgentNavigation', () => {
                 },
             ])
         )
+    })
+
+    it('should add Preview mode to navbar if user is impersonated and not in development mod', () => {
+        window.USER_IMPERSONATED = true
+        window.DEVELOPMENT = false
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.headerNavbarItems).toEqual([
+            {
+                route: '/app/automation/shopify/test/ai-agent',
+                title: 'Settings',
+                dataCanduId: 'ai-agent-navbar-configuration',
+            },
+            {
+                exact: false,
+                route: '/app/automation/shopify/test/ai-agent/guidance',
+                title: 'Guidance',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/preview-mode',
+                title: 'Preview',
+            },
+        ])
+    })
+
+    it('should not add Preview mode to navbar if user is not impersonated and not in development mode', () => {
+        window.USER_IMPERSONATED = null
+        window.DEVELOPMENT = false
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.headerNavbarItems).toEqual([
+            {
+                route: '/app/automation/shopify/test/ai-agent',
+                title: 'Settings',
+                dataCanduId: 'ai-agent-navbar-configuration',
+            },
+            {
+                exact: false,
+                route: '/app/automation/shopify/test/ai-agent/guidance',
+                title: 'Guidance',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
+            },
+        ])
+    })
+
+    it('should add Preview mode to navbar if in development mode and not impersonated', () => {
+        window.USER_IMPERSONATED = null
+        window.DEVELOPMENT = true
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.headerNavbarItems).toEqual([
+            {
+                route: '/app/automation/shopify/test/ai-agent',
+                title: 'Settings',
+                dataCanduId: 'ai-agent-navbar-configuration',
+            },
+            {
+                exact: false,
+                route: '/app/automation/shopify/test/ai-agent/guidance',
+                title: 'Guidance',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/preview-mode',
+                title: 'Preview',
+            },
+        ])
+    })
+
+    it('should add Preview mode to navbar if in development mode and impersonated', () => {
+        window.USER_IMPERSONATED = true
+        window.DEVELOPMENT = true
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+        expect(result.current.headerNavbarItems).toEqual([
+            {
+                route: '/app/automation/shopify/test/ai-agent',
+                title: 'Settings',
+                dataCanduId: 'ai-agent-navbar-configuration',
+            },
+            {
+                exact: false,
+                route: '/app/automation/shopify/test/ai-agent/guidance',
+                title: 'Guidance',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
+            },
+            {
+                route: '/app/automation/shopify/test/ai-agent/preview-mode',
+                title: 'Preview',
+            },
+        ])
     })
 })

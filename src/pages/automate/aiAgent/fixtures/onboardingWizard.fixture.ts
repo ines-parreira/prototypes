@@ -11,6 +11,7 @@ export const getStoreConfigurationFormValuesFixture = (
     deactivatedDatetime: '2024-06-05T11:27:06.939Z',
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
     silentHandover: false,
     monitoredEmailIntegrations: [],

@@ -6,17 +6,18 @@ import {reportError} from 'utils/errors'
 
 import {mapArticleIngestionLogsToSourceItem} from '../components/PublicSourcesSection/utils'
 
-export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {
+export const usePublicResources = ({helpCenterId}: {helpCenterId?: number}) => {
     const {
         data: articleIngestionLogs,
         error,
         isLoading: isSourceItemsListLoading,
     } = useGetArticleIngestionLogs(
         {
-            help_center_id: helpCenterId,
+            help_center_id: helpCenterId ?? -1,
         },
         {
             refetchOnWindowFocus: false,
+            enabled: !!helpCenterId,
         }
     )
 

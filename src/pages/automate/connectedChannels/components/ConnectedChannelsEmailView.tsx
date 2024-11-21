@@ -6,6 +6,7 @@ import {useParams} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {isPreviewModeActivated} from 'pages/automate/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
 import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
@@ -23,6 +24,7 @@ export const ConnectedChannelsEmailView = () => {
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const isAiAgentMultiChannelEnabled =
         useFlags()[FeatureFlagKey.AiAgentMultiChannelEnablement]
+    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const {shopType, shopName} = useParams<{
         shopType: string
@@ -85,13 +87,35 @@ export const ConnectedChannelsEmailView = () => {
         !storeConfiguration ||
         storeConfiguration.monitoredEmailIntegrations.length === 0
 
+    const hasPreviewModeActivated = isPreviewModeActivated({
+        isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
+        isTrialModeAvailable: isTrialModeAvailable,
+        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
+        emailChannelDeactivatedDatetime:
+            storeConfiguration?.emailChannelDeactivatedDatetime,
+        chatChannelDeactivatedDatetime:
+            storeConfiguration?.chatChannelDeactivatedDatetime,
+        trialModeActivatedDatetime:
+            storeConfiguration?.trialModeActivatedDatetime,
+        previewModeValidUntilDatetime:
+            storeConfiguration?.previewModeValidUntilDatetime,
+    })
+
+    const previewModeDeactivationPayload = hasPreviewModeActivated
+        ? {
+              trialModeActivatedDatetime: null,
+              previewModeActivatedDatetime: null,
+              previewModeValidUntilDatetime: null,
+          }
+        : {}
+
     const onToggle = async (value: boolean) => {
         if (!storeConfiguration) return
 
         if (isAiAgentMultiChannelEnabled) {
             await upsertStoreConfiguration({
                 ...storeConfiguration,
-                trialModeActivatedDatetime: null,
+                ...previewModeDeactivationPayload,
                 emailChannelDeactivatedDatetime: value
                     ? null
                     : new Date().toISOString(),
@@ -99,7 +123,7 @@ export const ConnectedChannelsEmailView = () => {
         } else {
             await upsertStoreConfiguration({
                 ...storeConfiguration,
-                trialModeActivatedDatetime: null,
+                ...previewModeDeactivationPayload,
                 deactivatedDatetime: value ? null : new Date().toISOString(),
             })
         }

@@ -267,6 +267,7 @@ describe('AiAgentViewContainer', () => {
         ).toHaveBeenCalledWith({
             ...storeConfiguration,
             deactivatedDatetime: null,
+            previewModeValidUntilDatetime: null,
         })
     })
 

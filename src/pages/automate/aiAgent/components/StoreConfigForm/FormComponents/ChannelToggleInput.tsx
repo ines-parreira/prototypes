@@ -7,9 +7,15 @@ type Props = {
     isToggled: boolean
     onUpdate: (value: boolean) => void
     channel: 'email' | 'chat'
+    isDisabled?: boolean
 }
 
-export const ChannelToggleInput = ({isToggled, onUpdate, channel}: Props) => {
+export const ChannelToggleInput = ({
+    isToggled,
+    onUpdate,
+    channel,
+    isDisabled,
+}: Props) => {
     const handleClick = () => {
         onUpdate(!isToggled)
 
@@ -33,6 +39,7 @@ export const ChannelToggleInput = ({isToggled, onUpdate, channel}: Props) => {
                     ? 'ai-agent-configuration-toggle'
                     : 'ai-agent-configuration-chat-toggle'
             }
+            isDisabled={isDisabled}
         >
             Enable AI Agent on {channel === 'chat' ? 'Chat' : 'Email'}
         </ToggleInput>

@@ -22,5 +22,7 @@ export const useAccountStoreConfiguration = ({
     return {
         accountConfiguration,
         aiAgentTicketViewId: accountConfiguration?.views?.['All']?.id || null,
+        aiAgentPreviewTicketViewId:
+            accountConfiguration?.views?.['Preview']?.id || null,
     }
 }

@@ -69,7 +69,7 @@ describe('AiAgentAccountConfigurationProvider', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: false,
+            [FeatureFlagKey.AIAgentPreviewModeAllowed]: false,
         })
     })
 
@@ -87,7 +87,7 @@ describe('AiAgentAccountConfigurationProvider', () => {
     it('should render if not automate but feature flag and load successs', () => {
         mockGetHasAutomate.mockReturnValue(false)
         mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
+            [FeatureFlagKey.AIAgentPreviewModeAllowed]: true,
         })
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',

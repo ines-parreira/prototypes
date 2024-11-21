@@ -75,7 +75,7 @@ describe('AutomateNavbarSectionBlock', () => {
         jest.resetAllMocks()
 
         mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
+            [FeatureFlagKey.AIAgentPreviewModeAllowed]: true,
         })
 
         useStoreConfigurationMock.mockReturnValue({
@@ -93,8 +93,13 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
+                    deactivatedDatetime: '2024-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
                     previewModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                    previewModeValidUntilDatetime: '2024-10-01T00:00:00Z',
+                    isPreviewModeActive: true,
                 },
                 isLoading: false,
             })
@@ -220,7 +225,7 @@ describe('AutomateNavbarSectionBlock', () => {
             mockGetHasAutomate.mockReturnValue(false)
         })
 
-        it('should render AI Agent link when hasAiAgentTrial feature flag is true ', () => {
+        it('should render AI Agent link when hasAiAgentPreview feature flag is true ', () => {
             renderComponent(
                 <AutomateNavbarSectionBlock
                     shopType={shopType}
@@ -255,8 +260,13 @@ describe('AutomateNavbarSectionBlock', () => {
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
+                    deactivatedDatetime: '2024-10-01T00:00:00Z',
+                    chatChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
+                    emailChannelDeactivatedDatetime: '2024-10-01T00:00:00Z',
                     trialModeActivatedDatetime: '2024-10-01T00:00:00Z',
                     previewModeActivatedDatetime: '2024-10-01T00:00:00Z',
+                    previewModeValidUntilDatetime: '2024-10-01T00:00:00Z',
+                    isPreviewModeActive: true,
                 },
                 isLoading: false,
             })

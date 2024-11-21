@@ -59,6 +59,8 @@ export type StoreConfiguration = {
 
     chatChannelDeactivatedDatetime: string | null
     emailChannelDeactivatedDatetime: string | null
+    previewModeValidUntilDatetime: string | null
+    isPreviewModeActive?: boolean
 }
 
 export type CreateStoreConfigurationPayload = Pick<
@@ -69,6 +71,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'deactivatedDatetime'
     | 'trialModeActivatedDatetime'
     | 'previewModeActivatedDatetime'
+    | 'previewModeValidUntilDatetime'
     | 'customToneOfVoiceGuidance'
     | 'signature'
     | 'monitoredChatIntegrations'

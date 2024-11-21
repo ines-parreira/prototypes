@@ -14,6 +14,8 @@ export const getStoreConfigurationFixture = (
     chatChannelDeactivatedDatetime: null,
     trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
+    previewModeValidUntilDatetime: null,
+    isPreviewModeActive: false,
     storeName: 'test-store',
     helpCenterId: 1,
     guidanceHelpCenterId: 102,

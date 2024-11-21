@@ -1,5 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {StoreConfiguration} from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
@@ -9,24 +11,26 @@ import history from 'pages/history'
 import {getHasAutomate} from 'state/billing/selectors'
 
 import {FormValues, UpdateValue} from '../../types'
+import {isPreviewModeActivated} from '../StoreConfigForm/StoreConfigForm.utils'
 import css from './AiAgentPreviewModeSection.less'
 
 type Props = {
     updateValue: UpdateValue<FormValues>
     aiAgentMode: string
     storeConfiguration?: StoreConfiguration
-    aiAgentTicketViewId: number | null
+    aiAgentPreviewTicketViewId: number | null
     isFollowUpAiAgentPreviewModeEnabled: boolean
 }
 
-export const AIAgentPreviewModeSection = ({
+export const AiAgentPreviewModeSection = ({
     updateValue,
     aiAgentMode,
     storeConfiguration,
-    aiAgentTicketViewId,
+    aiAgentPreviewTicketViewId,
     isFollowUpAiAgentPreviewModeEnabled,
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
     const handleAiAgentTrialModeChange = (value: string) => {
         const date = new Date().toISOString()
@@ -40,10 +44,10 @@ export const AIAgentPreviewModeSection = ({
                 break
 
             case 'trial':
-                updateValue('deactivatedDatetime', null)
+                updateValue('deactivatedDatetime', date)
                 // We don't support trial mode in chat
                 updateValue('chatChannelDeactivatedDatetime', date)
-                updateValue('emailChannelDeactivatedDatetime', null)
+                updateValue('emailChannelDeactivatedDatetime', date)
 
                 updateValue('trialModeActivatedDatetime', date)
                 updateValue('previewModeActivatedDatetime', date)
@@ -56,12 +60,6 @@ export const AIAgentPreviewModeSection = ({
                 updateValue('trialModeActivatedDatetime', null)
                 updateValue('previewModeActivatedDatetime', null)
                 break
-        }
-    }
-
-    const handleRedirectToAiAgentTicketView = () => {
-        if (aiAgentTicketViewId) {
-            history.push(`/app/views/${aiAgentTicketViewId}`)
         }
     }
 
@@ -100,7 +98,20 @@ export const AIAgentPreviewModeSection = ({
         )
     }
 
-    if (storeConfiguration?.trialModeActivatedDatetime) {
+    const hasAiAgentTrialEnabled = isPreviewModeActivated({
+        isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
+        isTrialModeAvailable: isTrialModeAvailable,
+        deactivatedDatetime: storeConfiguration?.deactivatedDatetime,
+        emailChannelDeactivatedDatetime:
+            storeConfiguration?.emailChannelDeactivatedDatetime,
+        chatChannelDeactivatedDatetime:
+            storeConfiguration?.chatChannelDeactivatedDatetime,
+        trialModeActivatedDatetime:
+            storeConfiguration?.trialModeActivatedDatetime,
+        previewModeValidUntilDatetime:
+            storeConfiguration?.previewModeValidUntilDatetime,
+    })
+    if (hasAiAgentTrialEnabled) {
         return (
             <AIBanner className={css.banner}>
                 <div className={css.bannerWrapper}>
@@ -111,12 +122,18 @@ export const AIAgentPreviewModeSection = ({
                         Once you’re confident with AI Agent’s responses, set it
                         live!
                     </div>
-                    <Button
-                        className={css.bannerButton}
-                        onClick={handleRedirectToAiAgentTicketView}
-                    >
-                        Review Drafts
-                    </Button>
+                    {aiAgentPreviewTicketViewId && (
+                        <Button
+                            className={css.bannerButton}
+                            onClick={() => {
+                                history.push(
+                                    `/app/views/${aiAgentPreviewTicketViewId}`
+                                )
+                            }}
+                        >
+                            Review Drafts
+                        </Button>
+                    )}
                 </div>
             </AIBanner>
         )
