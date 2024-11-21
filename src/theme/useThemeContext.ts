@@ -3,12 +3,13 @@ import {useEffect, useMemo} from 'react'
 import {usePersistedState} from 'common/hooks'
 import {tryLocalStorage} from 'services/common/utils'
 
-import {Theme, Themes} from './types'
+import {THEMES, THEME_TYPES} from './constants'
+import {ThemeType} from './types'
 
 export default function useThemeContext() {
-    const [savedTheme, setSavedTheme] = usePersistedState<Theme | 'modern'>(
+    const [savedTheme, setSavedTheme] = usePersistedState<ThemeType | 'modern'>(
         'theme',
-        Theme.Modern
+        THEME_TYPES.Modern
     )
     const prefersDarkTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'
@@ -19,28 +20,36 @@ export default function useThemeContext() {
     useEffect(() => {
         if (savedTheme === 'modern') {
             tryLocalStorage(() => {
-                localStorage.setItem('theme', JSON.stringify(Theme.Modern))
-                setSavedTheme(Theme.Modern)
+                localStorage.setItem(
+                    'theme',
+                    JSON.stringify(THEME_TYPES.Modern)
+                )
+                setSavedTheme(THEME_TYPES.Modern)
             })
         }
     }, [savedTheme, setSavedTheme])
 
     const theme = useMemo(
         () =>
-            savedTheme === Theme.System
+            savedTheme === THEME_TYPES.System
                 ? prefersDarkTheme
-                    ? Theme.Dark
-                    : Theme.Light
+                    ? THEME_TYPES.Dark
+                    : THEME_TYPES.Light
                 : savedTheme === 'modern'
-                  ? Theme.Modern
+                  ? THEME_TYPES.Modern
                   : savedTheme,
         [prefersDarkTheme, savedTheme]
     )
 
-    return {
-        savedTheme: savedTheme as Theme,
-        theme,
-        setTheme: setSavedTheme,
-        colorTokens: Themes[theme].colorTokens,
-    }
+    const context = useMemo(
+        () => ({
+            savedTheme: savedTheme as ThemeType,
+            theme,
+            setTheme: setSavedTheme,
+            colorTokens: THEMES[theme].colorTokens,
+        }),
+        [savedTheme, setSavedTheme, theme]
+    )
+
+    return context
 }

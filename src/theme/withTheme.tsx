@@ -1,11 +1,9 @@
 import React, {ComponentType, useContext} from 'react'
 
 import ThemeContext from './ThemeContext'
-import useThemeContext from './useThemeContext'
+import {ThemeContextType} from './types'
 
-export type ThemeProps = ReturnType<typeof useThemeContext>
-
-export function withTheme<T>(Component: ComponentType<T & ThemeProps>) {
+export function withTheme<T>(Component: ComponentType<T & ThemeContextType>) {
     return (props: T) => {
         const themeContext = useContext(ThemeContext)
 

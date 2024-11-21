@@ -4,15 +4,18 @@ import _get from 'lodash/get'
 import React from 'react'
 
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import {Theme, Themes} from 'theme/types'
+import {THEME_TYPES, THEMES} from 'theme'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {
         const {getByText} = render(
-            <ThemeList savedTheme={Theme.Dark} onChangeTheme={jest.fn()} />
+            <ThemeList
+                savedTheme={THEME_TYPES.Dark}
+                onChangeTheme={jest.fn()}
+            />
         )
 
-        Object.values(Themes).forEach((theme) => {
+        Object.values(THEMES).forEach((theme) => {
             expect(
                 getByText(_get(theme, 'settingsLabel') || theme.label)
             ).toBeInTheDocument()
@@ -25,7 +28,7 @@ describe('ThemeList', () => {
 
         render(
             <ThemeList
-                savedTheme={Theme.Dark}
+                savedTheme={THEME_TYPES.Dark}
                 onChangeTheme={onChangeThemeSpy}
             />
         )

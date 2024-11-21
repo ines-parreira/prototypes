@@ -1,15 +1,18 @@
+import {ThemeContext as UIKitThemeContext} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React, {useContext} from 'react'
 
-import ThemeContext from '../ThemeContext'
+import {THEME_TYPES} from '../constants'
+import AppThemeContext from '../ThemeContext'
 import ThemeProvider from '../ThemeProvider'
 
 describe('ThemeProvider', () => {
     it('should provide the theme context and render its children', () => {
-        let theme
+        let UIKitTheme
+        let AppTheme
         const TestComponent = () => {
-            theme = useContext(ThemeContext)
-
+            UIKitTheme = useContext(UIKitThemeContext)
+            AppTheme = useContext(AppThemeContext)
             return <p>Test component</p>
         }
 
@@ -20,9 +23,13 @@ describe('ThemeProvider', () => {
         )
 
         expect(getByText('Test component')).toBeInTheDocument()
-        expect(theme).toEqual({
-            savedTheme: 'modern light',
-            theme: 'modern light',
+        expect(UIKitTheme).toEqual({
+            theme: THEME_TYPES.Modern,
+            colorTokens: expect.any(Object),
+        })
+        expect(AppTheme).toEqual({
+            savedTheme: THEME_TYPES.Modern,
+            theme: THEME_TYPES.Modern,
             setTheme: expect.any(Function),
             colorTokens: expect.any(Object),
         })

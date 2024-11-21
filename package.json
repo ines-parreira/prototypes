@@ -69,7 +69,7 @@
         "@gorgias/api-validators": "0.2.10",
         "@gorgias/design-tokens": "^0.3.1",
         "@gorgias/event-tracker-browser": "2.0.0",
-        "@gorgias/merchant-ui-kit": "^0.0.2",
+        "@gorgias/merchant-ui-kit": "0.0.3",
         "@hot-loader/react-dom": "16.13.0",
         "@knocklabs/react": "^0.2.23",
         "@reduxjs/toolkit": "^1.9.7",

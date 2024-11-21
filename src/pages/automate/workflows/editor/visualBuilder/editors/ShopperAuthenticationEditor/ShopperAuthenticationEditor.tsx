@@ -6,7 +6,7 @@ import InputField from 'gorgias-design-system/Input/TextField'
 import {ShopperAuthenticationNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {Drawer} from 'pages/common/components/Drawer'
 import RadioButton from 'pages/common/components/RadioButton'
-import {Theme} from 'theme'
+import {THEME_TYPES} from 'theme'
 
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 
@@ -28,7 +28,7 @@ export default function ShopperAuthenticationEditor({
                         <div
                             className={classNames(
                                 shopperAuthenticationCss.loginCard,
-                                Theme.Light
+                                THEME_TYPES.Light
                             )}
                         >
                             <div

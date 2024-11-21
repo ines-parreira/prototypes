@@ -3,8 +3,10 @@ import React, {ComponentType, useContext} from 'react'
 import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 import analyticsColorsLight from 'assets/css/new/stats/light.json'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import ThemeContext from 'theme/ThemeContext'
-import {Theme} from 'theme/types'
+
+import {THEME_TYPES} from './constants'
+import ThemeContext from './ThemeContext'
+import {ThemeType} from './types'
 
 interface ThemeColorValue {
     value: string
@@ -39,11 +41,11 @@ export interface AnalyticsTheme {
     }
 }
 
-const AnalyticsColorTokens: Record<Theme, AnalyticsTheme> = {
-    [Theme.System]: analyticsColorsModern,
-    [Theme.Modern]: analyticsColorsModern,
-    [Theme.Light]: analyticsColorsLight,
-    [Theme.Dark]: analyticsColorsDark,
+const AnalyticsColorTokens: Record<ThemeType, AnalyticsTheme> = {
+    [THEME_TYPES.System]: analyticsColorsModern,
+    [THEME_TYPES.Modern]: analyticsColorsModern,
+    [THEME_TYPES.Light]: analyticsColorsLight,
+    [THEME_TYPES.Dark]: analyticsColorsDark,
 }
 
 export const withAnalyticsTheme = <P extends object>(
@@ -52,7 +54,7 @@ export const withAnalyticsTheme = <P extends object>(
     return (props: P) => {
         const themeContext = useContext(ThemeContext)
         const analyticsTheme =
-            AnalyticsColorTokens[themeContext?.theme ?? Theme.Modern]
+            AnalyticsColorTokens[themeContext?.theme ?? THEME_TYPES.Modern]
         const colorTokens = themeContext
             ? {...themeContext.colorTokens, ...analyticsTheme}
             : undefined

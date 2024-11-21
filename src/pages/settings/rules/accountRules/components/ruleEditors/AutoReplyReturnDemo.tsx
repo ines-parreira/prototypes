@@ -5,7 +5,7 @@ import React from 'react'
 import Button from 'pages/common/components/button/Button'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {AutoReplyReturnSettings} from 'state/rules/types'
-import {Theme} from 'theme'
+import {THEME_TYPES} from 'theme'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
@@ -20,7 +20,7 @@ export const AutoReplyReturnDemo = ({settings}: Props) => (
             <div className={css.circle} />
             <div className={css.circle} />
         </div>
-        <div className={classnames(Theme.Light, css.demoContent)}>
+        <div className={classnames(THEME_TYPES.Light, css.demoContent)}>
             <div className={css.textdata}>
                 <div>
                     <div className={css.previewLegend}>

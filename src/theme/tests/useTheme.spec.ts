@@ -5,7 +5,7 @@ import useTheme from '../useTheme'
 
 jest.unmock('theme/useTheme.ts')
 
-describe('useSetTheme', () => {
+describe('useTheme', () => {
     it('should throw an error when used outside of the provider', () => {
         const {result} = renderHook(() => useTheme())
 

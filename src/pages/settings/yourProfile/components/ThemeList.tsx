@@ -4,17 +4,17 @@ import React from 'react'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
-import {Theme, Themes, useSavedTheme} from 'theme'
+import {ThemeType, THEMES} from 'theme'
 
 type Props = {
-    savedTheme: ReturnType<typeof useSavedTheme>
-    onChangeTheme: (theme: Theme) => void
+    savedTheme: ThemeType
+    onChangeTheme: (theme: ThemeType) => void
 }
 
 export default function ThemeList({savedTheme, onChangeTheme}: Props) {
     return (
         <div className={css.themeListWrapper}>
-            {Object.entries(Themes).map(([themeValue, themeSpecs]) => {
+            {Object.entries(THEMES).map(([themeValue, themeSpecs]) => {
                 return (
                     <PreviewRadioButton
                         label={
@@ -34,7 +34,7 @@ export default function ThemeList({savedTheme, onChangeTheme}: Props) {
                         value={themeValue}
                         className={css.previewRadioButtonWrapper}
                         onClick={() => {
-                            onChangeTheme(themeValue as Theme)
+                            onChangeTheme(themeValue as ThemeType)
                         }}
                         isSelected={savedTheme === themeValue}
                         hidden

@@ -2,7 +2,7 @@ import {render} from '@testing-library/react'
 import userEvent, {TargetElement} from '@testing-library/user-event'
 import React from 'react'
 
-import {AcceptedThemes, ThemeContext, useThemeContext} from 'theme'
+import {ThemeContext, useThemeContext} from 'theme'
 
 import BaseCard from '../BaseCard'
 
@@ -54,7 +54,7 @@ describe('<BaseCard />', () => {
             <ThemeContext.Provider
                 value={
                     {
-                        theme: theme as AcceptedThemes,
+                        theme: theme,
                     } as unknown as ReturnType<typeof useThemeContext>
                 }
             >

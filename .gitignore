@@ -54,3 +54,6 @@ storybook-static
 
 # Pre-commit
 .pre-commit-config.yaml
+
+# yalc
+.yalc

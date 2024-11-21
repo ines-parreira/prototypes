@@ -12,7 +12,7 @@ import {
 } from 'models/integration/types'
 import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
-import {Theme} from 'theme'
+import {THEME_TYPES} from 'theme'
 import {assetsUrl} from 'utils'
 
 import css from './CustomizedChatLauncher.less'
@@ -65,7 +65,7 @@ const CustomizedChatLauncher: React.FC<Props> = ({
 
     return (
         <div
-            className={classnames(Theme.Light, css.wrapper, className, {
+            className={classnames(THEME_TYPES.Light, css.wrapper, className, {
                 [css.buttonOnTop]: isButtonOnTop,
             })}
             style={{

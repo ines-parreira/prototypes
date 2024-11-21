@@ -13,8 +13,7 @@ import {
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
 import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
-import {AcceptedThemes, Theme} from 'theme'
-import {ThemeColors} from 'theme/types'
+import {THEME_TYPES, ThemeColors} from 'theme'
 import * as utils from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -57,8 +56,8 @@ describe('<Navbar />', () => {
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
         flags: {},
-        savedTheme: Theme.Modern,
-        theme: Theme.Modern as AcceptedThemes,
+        theme: THEME_TYPES.Modern,
+        savedTheme: THEME_TYPES.Modern,
         setTheme: jest.fn(),
         colorTokens: {} as ThemeColors,
     }

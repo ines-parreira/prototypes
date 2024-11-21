@@ -25,7 +25,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import {Theme, ThemeProps, useSavedTheme, withTheme} from 'theme'
+import {ThemeContextType, ThemeType, withTheme} from 'theme'
 
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
@@ -75,7 +75,7 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
-} & ThemeProps
+} & ThemeContextType
 
 type State = {
     bio: string
@@ -94,7 +94,7 @@ type State = {
 
 export class YourProfileView extends Component<Props, State> {
     isInitialized: boolean
-    initialTheme: ReturnType<typeof useSavedTheme>
+    initialTheme: ThemeType
     isDirty: boolean
 
     constructor(props: Props) {
@@ -207,7 +207,7 @@ export class YourProfileView extends Component<Props, State> {
         })
     }
 
-    onChangeTheme = (theme: Theme) => {
+    onChangeTheme = (theme: ThemeType) => {
         this.isDirty = true
         this.props.setTheme(theme)
     }

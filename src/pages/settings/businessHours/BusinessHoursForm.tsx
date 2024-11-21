@@ -5,7 +5,7 @@ import {Input} from 'reactstrap'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {Theme, useTheme} from 'theme'
+import {THEME_TYPES, useTheme} from 'theme'
 
 import css from './BusinessHours.less'
 import {DAYS_OPTIONS} from './constants'
@@ -31,7 +31,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
             />
             <Input
                 className={classNames(css.timeField, {
-                    [css.dark]: theme === Theme.Dark,
+                    [css.dark]: theme === THEME_TYPES.Dark,
                 })}
                 onChange={(e) => handleOnChange({from_time: e.target.value})}
                 value={businessHour.get('from_time')}
@@ -42,7 +42,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
             <p>to</p>
             <Input
                 className={classNames(css.timeField, {
-                    [css.dark]: theme === Theme.Dark,
+                    [css.dark]: theme === THEME_TYPES.Dark,
                 })}
                 onChange={(e) => handleOnChange({to_time: e.target.value})}
                 value={businessHour.get('to_time')}

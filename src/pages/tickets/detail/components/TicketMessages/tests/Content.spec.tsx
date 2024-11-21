@@ -1,7 +1,7 @@
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import {Theme} from 'theme'
+import {THEME_TYPES} from 'theme'
 
 import Content from '../Content'
 
@@ -199,7 +199,7 @@ describe('Content', () => {
     })
 
     it('should render react player video after the content', () => {
-        const {container} = render(
+        render(
             <Content
                 {...sharedProps}
                 html={`
@@ -210,40 +210,12 @@ describe('Content', () => {
                 `}
             />
         )
-        expect(container).toMatchInlineSnapshot(`
-            <div>
-              <div
-                class="message-content content"
-              >
-                <div>
-                  text before video
-                </div>
-                
-                            
-                <div>
-                  <br />
-                </div>
-                
-                            
-                            
-                <div>
-                  text after video
-                </div>
-              </div>
-              <div
-                class="content"
-              >
-                <div
-                  data-controls="true"
-                  data-height="225"
-                  data-light="true"
-                  data-mocked-react-player-here="true"
-                  data-url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
-                  data-width="400"
-                />
-              </div>
-            </div>
-        `)
+        const lastContent = screen.getByText('text after video')
+        const video = document.querySelector('[data-mocked-react-player-here]')
+        expect(
+            lastContent.compareDocumentPosition(video!) &
+                Node.DOCUMENT_POSITION_FOLLOWING
+        ).toBeTruthy()
     })
 
     it('should not display disclaimer when message is not truncated', () => {
@@ -288,7 +260,9 @@ describe('Content', () => {
             <Content {...sharedProps} html="<div style='height: 100%'><div>" />
         )
         expect(
-            (container.firstChild as Element).classList.contains(Theme.Light)
+            (container.firstChild as Element).classList.contains(
+                THEME_TYPES.Light
+            )
         ).toBeFalsy()
     })
 
@@ -297,7 +271,9 @@ describe('Content', () => {
             <Content {...sharedProps} html="<div style='color: blue'><div>" />
         )
         expect(
-            (container.firstChild as Element).classList.contains(Theme.Light)
+            (container.firstChild as Element).classList.contains(
+                THEME_TYPES.Light
+            )
         ).toBeTruthy()
     })
 })

@@ -19,7 +19,7 @@ import {user} from 'fixtures/users'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
-import {Theme, ThemeColors} from 'theme/types'
+import {THEME_TYPES, ThemeColors} from 'theme'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -31,8 +31,8 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     submitSetting: jest.fn(),
     preferences: fromJS({data: {date_format: 'en_GB', time_format: '24-hour'}}),
     setTheme: jest.fn(),
-    savedTheme: Theme.Dark,
-    theme: Theme.Dark,
+    theme: THEME_TYPES.Dark,
+    savedTheme: THEME_TYPES.Dark,
     colorTokens: {} as ThemeColors,
 }
 

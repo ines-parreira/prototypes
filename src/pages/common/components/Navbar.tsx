@@ -52,8 +52,8 @@ import {
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
-import {Theme, ThemeProps, withTheme} from 'theme'
-import {Themes} from 'theme/types'
+import {ThemeType, ThemeContextType, withTheme, THEMES} from 'theme'
+
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
 
@@ -161,7 +161,7 @@ type OwnProps = {
     flags?: LDFlagSet
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector> & ThemeProps
+type Props = OwnProps & ConnectedProps<typeof connector> & ThemeContextType
 
 type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 
@@ -346,7 +346,7 @@ export class Navbar extends Component<Props, State> {
     }
 
     updateTheme = (name: string) => {
-        this.props.setTheme(name as Theme)
+        this.props.setTheme(name as ThemeType)
         logEvent(SegmentEvent.ThemeUpdate, {
             theme: name,
         })
@@ -567,9 +567,9 @@ export class Navbar extends Component<Props, State> {
                                             Theme:
                                         </span>
                                         <span className={css.value}>
-                                            {Themes[savedTheme]
+                                            {THEMES[savedTheme]
                                                 ?.settingsLabel ??
-                                                Themes[savedTheme]?.label}
+                                                THEMES[savedTheme]?.label}
                                         </span>
                                     </DropdownItemLabel>
                                 </div>
@@ -1071,7 +1071,7 @@ export class Navbar extends Component<Props, State> {
                                     Back
                                 </DropdownHeader>
                                 <DropdownBody>
-                                    {Object.entries(Themes).map(
+                                    {Object.entries(THEMES).map(
                                         ([name, {label}]) => (
                                             <div
                                                 key={name}
