@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
 import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+import * as errorUtils from 'utils/errors'
 import {assumeMock} from 'utils/testing'
 
 import {useConfirmStripeSetupIntent} from '../useConfirmStripeSetupIntent'
@@ -115,5 +116,99 @@ describe('useConfirmStripeSetupIntent', () => {
         }
 
         expect(mockConfirmStripe).not.toHaveBeenCalled()
+    })
+
+    it('should not call sentry if the card is declined', async () => {
+        const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
+
+        const mockConfirmStripe = jest.fn().mockResolvedValue({
+            error: {
+                code: 'card_declined',
+            },
+        })
+
+        assumeMock(useStripe).mockReturnValue({
+            confirmSetup: mockConfirmStripe,
+        } as any)
+
+        assumeMock(useElements).mockReturnValue({} as any)
+
+        const {result} = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent
+        )
+
+        try {
+            await act(async () => {
+                await result.current.mutateAsync([])
+            })
+        } catch (e) {
+            expect(e).toEqual({
+                code: 'card_declined',
+            })
+        }
+
+        expect(reportErrorSpy).not.toHaveBeenCalled()
+    })
+
+    it('should call sentry in case of an error that is not card_declined', async () => {
+        const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
+
+        const mockConfirmStripe = jest.fn().mockRejectedValue({
+            code: 'some_error',
+        })
+
+        assumeMock(useStripe).mockReturnValue({
+            confirmSetup: mockConfirmStripe,
+        } as any)
+
+        assumeMock(useElements).mockReturnValue({} as any)
+
+        const {result} = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent
+        )
+
+        try {
+            await act(async () => {
+                await result.current.mutateAsync([])
+            })
+        } catch (e) {
+            expect(e).toEqual({
+                code: 'some_error',
+            })
+        }
+
+        expect(reportErrorSpy).toHaveBeenCalled()
+    })
+
+    it("should return setupIntent if the setup intent is successful, even when there's an error", async () => {
+        const mockConfirmStripe = jest.fn().mockResolvedValue({
+            error: {
+                setup_intent: {
+                    status: 'succeeded',
+                },
+            },
+        })
+
+        assumeMock(useStripe).mockReturnValue({
+            confirmSetup: mockConfirmStripe,
+        } as any)
+
+        assumeMock(useElements).mockReturnValue({} as any)
+
+        const {result} = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent
+        )
+
+        act(() => {
+            result.current.mutate([])
+        })
+
+        await waitFor(() => {
+            expect(result.current.data).toEqual({
+                setupIntent: {
+                    status: 'succeeded',
+                },
+            })
+        })
     })
 })

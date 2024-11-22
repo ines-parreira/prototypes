@@ -1,5 +1,5 @@
 import {useElements, useStripe} from '@stripe/react-stripe-js'
-import {SetupIntentResult} from '@stripe/stripe-js'
+import {SetupIntentResult, StripeError} from '@stripe/stripe-js'
 import {useMutation} from '@tanstack/react-query'
 
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -49,13 +49,33 @@ export const useConfirmStripeSetupIntent = (
                     // Stripe's confirmSetup always resolves with a SetupIntentResult, even if the setup intent is not successful.
                     // When the setup intent is not successful, the result object will have an error property.
                     if (result.error) {
+                        if (result.error.setup_intent?.status === 'succeeded') {
+                            // If the setup intent is successful, we don't want to treat it as an error.
+                            return {setupIntent: result.error.setup_intent}
+                        }
+
                         throw result.error
                     }
                     return result
                 })
         },
         onError: (error, ...args) => {
-            handleError(error, 'Failed to confirm stripe setup intent')
+            const stripeError = error as unknown as StripeError
+
+            if (
+                (stripeError.setup_intent?.status !== 'succeeded' &&
+                    stripeError.code &&
+                    ![
+                        'card_declined',
+                        'expired_card',
+                        'incorrect_cvc',
+                        'incorrect_number',
+                    ].includes(stripeError.code)) ||
+                !stripeError.code
+            ) {
+                // We only want to report errors that are not related to the user's input.
+                handleError(error, 'Failed to confirm stripe setup intent')
+            }
 
             void dispatch(
                 notify({
