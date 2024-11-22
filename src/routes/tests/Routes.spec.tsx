@@ -22,6 +22,7 @@ import {
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
 import LiveOverview from 'pages/stats/LiveOverview'
+import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -150,6 +151,8 @@ jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
 jest.mock('pages/stats/SupportPerformanceTags')
 const OldTagsMock = assumeMock(SupportPerformanceTags)
+jest.mock('pages/stats/quality-management/satisfaction/Satisfaction')
+const SatisfactionMock = assumeMock(Satisfaction)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -173,6 +176,7 @@ describe('<Routes/>', () => {
         ChannelsReportMock.mockImplementation(() => <div />)
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
         AutoQAMock.mockImplementation(() => <div />)
+        SatisfactionMock.mockImplementation(() => <div />)
         TagsMock.mockImplementation(() => <div />)
         OldTagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
@@ -534,6 +538,25 @@ describe('<Routes/>', () => {
                 expect(AutoQAMock).toHaveBeenCalled()
             }
         )
+
+        it('should render New Satisfaction page', () => {
+            mockFlags({
+                [FeatureFlagKey.NewSatisfactionReport]: true,
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={[
+                        '/app/stats/quality-management-satisfaction',
+                    ]}
+                >
+                    <Routes />
+                </MemoryRouter>,
+                state
+            )
+
+            expect(SatisfactionMock).toHaveBeenCalled()
+        })
 
         it('should render NewTagsPage page', () => {
             mockFlags({

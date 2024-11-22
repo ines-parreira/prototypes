@@ -35,6 +35,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const isNewTagsReportEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.NewTagsReport]
+    const isNewSatisfactionReportEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewSatisfactionReport]
 
     return (
         <>
@@ -275,6 +277,31 @@ export default function StatsNavbarView() {
                     </div>
                 </div>
             </NavbarBlock>
+            {isNewSatisfactionReportEnabled && (
+                <NavbarBlock icon="star" title="Quality Management">
+                    <div className={cssNavbar.menu}>
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/quality-management-satisfaction"
+                            >
+                                Satisfaction{' '}
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    {NEW_NAV_LABEL}
+                                </Badge>
+                            </NavbarLink>
+                        </div>
+                    </div>
+                </NavbarBlock>
+            )}
             <NavbarBlock icon="bolt" title="Automate">
                 <AutomateStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}

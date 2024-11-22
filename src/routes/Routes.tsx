@@ -120,6 +120,7 @@ import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
+import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
 import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_OVERVIEW,
@@ -466,6 +467,9 @@ export function StatsRoutes() {
     const isAiAgentStatsPageEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
 
+    const isNewSatisfactionReportEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewSatisfactionReport]
+
     useEffect(logPageChange, [location.pathname])
 
     return (
@@ -563,7 +567,18 @@ export function StatsRoutes() {
                         )
                     }
                 />
-
+                {!!isNewSatisfactionReportEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/quality-management-satisfaction`}
+                        render={() => (
+                            <App
+                                content={Satisfaction}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/channels`}

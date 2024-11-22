@@ -257,6 +257,27 @@ describe('StatsNavbarView', () => {
         expect(newChannelsReportLink).toBeInTheDocument()
     })
 
+    it('should render the link to the New Satisfaction Report', () => {
+        mockFlags({
+            [FeatureFlagKey.NewSatisfactionReport]: true,
+        })
+
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+        const newSatisfactionReportLink = container.querySelector(
+            'a[href="/app/stats/quality-management-satisfaction"]'
+        )
+        const newBadgeText = newSatisfactionReportLink?.children?.[0]?.innerHTML
+
+        expect(newSatisfactionReportLink).toBeInTheDocument()
+        expect(newBadgeText).toBe('NEW')
+    })
+
     it('should render the link to the Live Voice', () => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
