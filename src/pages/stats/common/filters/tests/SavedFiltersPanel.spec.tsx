@@ -8,15 +8,12 @@ import {within} from '@testing-library/dom'
 import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-
 import React from 'react'
-
 import {MemoryRouter} from 'react-router-dom'
 
 import {FilterKey, SavedFilter, SavedFilterDraft} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {SAVED_FILTER_ACTIONS_MENU_ICON} from 'pages/stats/common/filters/SavedFilterMenu'
-
 import {
     CANCEL_BUTTON_LABEL,
     COLLAPSE_CLOSED_ICON,
@@ -32,7 +29,6 @@ import {
     UNAPPLY_FILTER_ICON,
 } from 'pages/stats/common/filters/SavedFiltersPanel'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
-
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {
@@ -84,7 +80,7 @@ describe('SavedFiltersPanel', () => {
         const {container} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             defaultState
@@ -120,7 +116,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -157,7 +153,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -206,7 +202,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -255,7 +251,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -315,7 +311,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -365,7 +361,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -419,7 +415,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -465,7 +461,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -515,7 +511,7 @@ describe('SavedFiltersPanel', () => {
         renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -579,7 +575,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -638,7 +634,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -685,7 +681,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state
@@ -730,7 +726,7 @@ describe('SavedFiltersPanel', () => {
         const {store} = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
-                    <SavedFiltersPanel />
+                    <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
             state

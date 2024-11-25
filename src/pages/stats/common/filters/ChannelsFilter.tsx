@@ -1,12 +1,9 @@
 import isString from 'lodash/isString'
 import noop from 'lodash/noop'
-
 import React, {useCallback} from 'react'
-
 import {connect} from 'react-redux'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -21,9 +18,11 @@ import {
     filterChannels,
     logSegmentEvent,
 } from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
-
 import {
     Channel,
     ChannelIdentifier,
@@ -35,7 +34,6 @@ import {
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
@@ -51,7 +49,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export function ChannelsFilter({
     value = emptyFilter,
@@ -61,6 +60,7 @@ export function ChannelsFilter({
     onRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
 }: Props) {
     const channels = filterChannels(getChannels(), channelsFilter)
     const allChannelsSlugs = channels.map((channel) => channel.slug)
@@ -136,6 +136,7 @@ export function ChannelsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Channels]}
+            filterErrors={{warningType}}
             selectedOptions={getSelectedChannels()}
             selectedLogicalOperator={value.operator}
             logicalOperators={channelsFilterLogicalOperators}

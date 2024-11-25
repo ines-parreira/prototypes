@@ -169,7 +169,7 @@ FilterWithSingleSelect.args = {
 export const FilterWithWarning = Template.bind({})
 FilterWithWarning.args = {
     ...defaultProps,
-    warning: 'non-existent',
+    filterErrors: {warningType: 'non-existent'},
 }
 
 export default storyConfig

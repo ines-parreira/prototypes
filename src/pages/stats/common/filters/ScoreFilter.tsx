@@ -3,7 +3,6 @@ import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -14,7 +13,10 @@ import {
     scoreFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
@@ -41,7 +43,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export function ScoreFilter({
     value = emptyFilter,
@@ -50,6 +53,7 @@ export function ScoreFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
 }: Props) {
     const scores = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -105,6 +109,7 @@ export function ScoreFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Score]}
+            filterErrors={{warningType}}
             selectedOptions={selectedScoreOption}
             selectedLogicalOperator={value.operator}
             logicalOperators={scoreFilterLogicalOperators}

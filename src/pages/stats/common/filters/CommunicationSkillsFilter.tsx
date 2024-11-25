@@ -13,7 +13,10 @@ import {
     communicationSkillsFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
@@ -36,7 +39,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export function CommunicationSkillsFilter({
     value = emptyFilter,
@@ -45,6 +49,7 @@ export function CommunicationSkillsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
 }: Props) {
     const communicationSkills = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -103,6 +108,7 @@ export function CommunicationSkillsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.CommunicationSkills]}
+            filterErrors={{warningType}}
             selectedOptions={selectedScoreOption}
             selectedLogicalOperator={value.operator}
             logicalOperators={communicationSkillsFilterLogicalOperators}

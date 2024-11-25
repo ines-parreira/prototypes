@@ -1,9 +1,7 @@
 import noop from 'lodash/noop'
-
 import React, {useCallback, useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {CampaignPreview} from 'models/convert/campaign/types'
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
@@ -12,10 +10,12 @@ import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorLabel} from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {DropdownOption} from 'pages/stats/types'
-
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
@@ -35,7 +35,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export default function CampaignsFilter({
     value = emptyFilter,
@@ -45,6 +46,7 @@ export default function CampaignsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
 }: Props) {
     const getSelectedCampaigns = useMemo(() => {
         return campaigns
@@ -101,6 +103,7 @@ export default function CampaignsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Campaigns]}
+            filterErrors={{warningType}}
             selectedOptions={getSelectedCampaigns}
             logicalOperators={[]}
             filterOptionGroups={campaignsOptionGroups}

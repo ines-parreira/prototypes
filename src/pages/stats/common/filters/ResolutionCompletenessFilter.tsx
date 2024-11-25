@@ -10,7 +10,10 @@ import {
     resolutionCompletenessFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
@@ -32,7 +35,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export function ResolutionCompletenessFilter({
     value = emptyFilter,
@@ -40,6 +44,7 @@ export function ResolutionCompletenessFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
     onRemove,
 }: Props) {
     const filterOptions = [
@@ -90,6 +95,7 @@ export function ResolutionCompletenessFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.ResolutionCompleteness]}
+            filterErrors={{warningType}}
             selectedOptions={selectedOptions}
             filterOptionGroups={filterOptions}
             onChangeOption={onOptionChange}

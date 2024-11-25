@@ -7,6 +7,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FilterComponentKey} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
+import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {OptionalFilterProps} from 'pages/stats/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
@@ -17,12 +19,10 @@ import {
     setSelectedCustomField,
 } from 'state/ui/stats/ticketInsightsSlice'
 
-import {logSegmentEvent} from './helpers'
-
 export const CUSTOM_FIELD_FILTER_NAME =
     FilterLabels[FilterComponentKey.CustomField]
 
-export const CustomFieldFilter = () => {
+export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const dispatch = useAppDispatch()
 
@@ -76,6 +76,7 @@ export const CustomFieldFilter = () => {
     return (
         <Filter
             filterName={CUSTOM_FIELD_FILTER_NAME}
+            filterErrors={{warningType}}
             isPersistent={true}
             isMultiple={false}
             showSearch={false}

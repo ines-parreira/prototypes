@@ -1,6 +1,5 @@
 import noop from 'lodash/noop'
 import React, {useCallback} from 'react'
-
 import {connect} from 'react-redux'
 
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
@@ -15,9 +14,12 @@ import {
     tagsFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
 import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
+import {getFilterError} from 'pages/stats/common/filters/utils'
 import {DropdownOption} from 'pages/stats/types'
-
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
@@ -38,7 +40,8 @@ type Props = {
     otherValue?: TagFilter
     filterInstanceId?: TagFilterInstanceId
 } & DispatchProps &
-    RemovableFilter
+    RemovableFilter &
+    OptionalFilterProps
 
 const emptyTagFilter = (
     filterInstanceId: TagFilterInstanceId,
@@ -57,6 +60,7 @@ export const TagsFilter = ({
     otherValue,
     initializeAsOpen = false,
     onRemove,
+    warningType: tagsWarningType,
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
@@ -75,6 +79,11 @@ export const TagsFilter = ({
             value: String(tag.id),
             label: tag.name,
         }))
+
+    const stateOptions = Object.values(tagsState).map((tag) => ({
+        value: String(tag.id),
+        label: tag.name,
+    }))
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
@@ -132,9 +141,17 @@ export const TagsFilter = ({
         dispatchStatFiltersClean()
     }
 
+    const {warningType, warningMessage} = tagsWarningType
+        ? {warningType: tagsWarningType, warningMessage: undefined}
+        : getFilterError({
+              options: [{options: [...stateOptions]}],
+              selectedOptions,
+          })
+
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Tags]}
+            filterErrors={{warningType, warningMessage}}
             filterOptionGroups={[{options}]}
             selectedOptions={selectedOptions}
             logicalOperators={tagsFilterLogicalOperators.filter(

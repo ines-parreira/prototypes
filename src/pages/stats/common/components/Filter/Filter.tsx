@@ -9,7 +9,6 @@ import React, {
 } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
-
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -27,6 +26,7 @@ import {
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
 import css from 'pages/stats/common/components/Filter/Filter.less'
+import {getFilterError} from 'pages/stats/common/filters/utils'
 import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
 
 type Props = {
@@ -53,7 +53,10 @@ type Props = {
     selectedOptions: FilterOptionGroup['options']
     showQuickSelect?: boolean
     showSearch?: boolean
-    warning?: 'non-existent' | 'not-applicable'
+    filterErrors?: {
+        warningType?: 'not-applicable' | 'non-existent'
+        warningMessage?: string
+    }
 }
 
 type WithInfiniteScrollProps = PropsWithChildren<{
@@ -103,7 +106,7 @@ const Filter = ({
     selectedOptions,
     showQuickSelect = true,
     showSearch = true,
-    warning,
+    filterErrors,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
@@ -139,9 +142,20 @@ const Filter = ({
         return {selectedValues: values, selectedLabels: labels}
     }, [selectedOptions])
 
+    const {warningType, warningMessage} =
+        filterErrors ||
+        getFilterError({
+            options: filterOptionGroups,
+            selectedOptions,
+        })
+
     return (
         <div className={classNames(css.container, className)}>
-            <FilterName name={filterName} warningType={warning} />
+            <FilterName
+                name={filterName}
+                warningType={warningType}
+                warningMessage={warningMessage}
+            />
             <FilterValue
                 ref={ref}
                 optionsLabels={selectedLabels}

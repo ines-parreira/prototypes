@@ -4,26 +4,26 @@ import React, {useEffect, useRef, useState} from 'react'
 
 import css from 'pages/stats/common/components/Filter/components/FilterName/FilterName.less'
 import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
-
 import {FILTER_NAME_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
 
 type Props = {
     name: string
     className?: string
     warningType?: 'non-existent' | 'not-applicable'
+    warningMessage?: string
 }
 
 export const getWarningTooltip = (
-    warning: 'non-existent' | 'not-applicable',
+    warningType: 'non-existent' | 'not-applicable',
     filterName: string
 ) => {
-    if (warning === 'non-existent') {
-        return `${filterName} no longer exists. Check your settings and update your Saved Filters.`
+    if (warningType === 'non-existent') {
+        return 'Some filters or values have been archived or deleted. They will be ignored. Check your settings and update your Saved Filters.'
     }
-    return `${filterName} filter is not applicable to this report and are disabled.`
+    return `${filterName} filter is not applicable to this report.`
 }
 
-const FilterName = ({name, className, warningType}: Props) => {
+const FilterName = ({name, className, warningType, warningMessage}: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [showTooltip, setShowTooltip] = useState(false)
 
@@ -44,7 +44,10 @@ const FilterName = ({name, className, warningType}: Props) => {
                 {warningType && (
                     <FilterWarningIcon
                         warningType={warningType}
-                        tooltip={getWarningTooltip(warningType, name)}
+                        tooltip={
+                            warningMessage ||
+                            getWarningTooltip(warningType, name)
+                        }
                     />
                 )}
                 <div className={css.text}>{name}</div>

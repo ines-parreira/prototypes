@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-
 import {createSelector} from 'reselect'
 
 import {
@@ -102,9 +101,13 @@ export const filtersSlice = createSlice({
             state.savedFilterDraft = null
         },
         updateSavedFilterDraftName(state, action: PayloadAction<string>) {
-            state.savedFilterDraft = {
-                name: action.payload,
-                filter_group: state.savedFilterDraft?.filter_group ?? [],
+            if (state.savedFilterDraft === null) {
+                state.savedFilterDraft = {
+                    name: action.payload,
+                    filter_group: [],
+                }
+            } else {
+                state.savedFilterDraft.name = action.payload
             }
         },
         upsertSavedFilterFilter(
@@ -231,4 +234,9 @@ export const getCanSaveFilter = createSelector(
 export const getIsSavedFilterApplied = createSelector(
     getSliceState,
     (state) => state.appliedSavedFilterId !== null
+)
+
+export const getSavedFilterAppliedId = createSelector(
+    getSliceState,
+    (state) => state.appliedSavedFilterId
 )

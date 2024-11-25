@@ -15,7 +15,10 @@ import {
 } from 'pages/stats/common/filters/constants'
 import {getIntegrationIcon} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {
@@ -39,7 +42,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export function IntegrationsFilter({
     value = emptyFilter,
@@ -49,6 +53,7 @@ export function IntegrationsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    warningType,
 }: Props) {
     const getSelectedIntegrations = useCallback(() => {
         return integrations
@@ -117,6 +122,7 @@ export function IntegrationsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Integrations]}
+            filterErrors={{warningType}}
             selectedOptions={getSelectedIntegrations()}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}

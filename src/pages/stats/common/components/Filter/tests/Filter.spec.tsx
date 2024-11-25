@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import {
     FILTER_VALUE_PLACEHOLDER,
+    FILTER_WARNING_ICON,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
@@ -44,6 +45,10 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
+                filterErrors={{
+                    warningType: undefined,
+                    warningMessage: undefined,
+                }}
             />
         )
 
@@ -262,6 +267,10 @@ describe('Filter', () => {
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
                 onDropdownClosed={onDropdownClosedSpy}
+                filterErrors={{
+                    warningType: 'not-applicable',
+                    warningMessage: 'warningMessage',
+                }}
             />
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -269,5 +278,55 @@ describe('Filter', () => {
 
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
         expect(onDropdownClosedSpy).toHaveBeenCalled()
+    })
+
+    it('renders the filter component with an error message passed in props', async () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={selectedOptions}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+                filterErrors={{
+                    warningType: 'non-existent',
+                    warningMessage: 'warningMessage',
+                }}
+            />
+        )
+
+        const warningIcon = screen.getByText(FILTER_WARNING_ICON)
+        userEvent.hover(warningIcon)
+        await waitFor(() => {
+            expect(screen.getByText('warningMessage')).toBeInTheDocument()
+        })
+    })
+
+    it('renders the filter component with an error message when one of the values does not exist in the options list', async () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[{label: 'New Option', value: 'new-option'}]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        const warningIcon = screen.getByText(FILTER_WARNING_ICON)
+        userEvent.hover(warningIcon)
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'New Option no longer exists and has been removed from saved filters.'
+                )
+            ).toBeInTheDocument()
+        })
     })
 })

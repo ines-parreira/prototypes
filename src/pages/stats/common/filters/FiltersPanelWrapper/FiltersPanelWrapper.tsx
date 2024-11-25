@@ -28,12 +28,21 @@ export const FiltersPanelWrapper = ({
                     filterSettingsOverrides={filterSettingsOverrides}
                     optionalFilters={optionalFilters}
                     persistentFilters={persistentFilters}
+                    applicableFilters={[
+                        ...(persistentFilters || []),
+                        ...optionalFilters,
+                    ]}
                 />
                 {isAnalyticsSavedFilters && (
                     <SavedFiltersActions optionalFilters={optionalFilters} />
                 )}
             </div>
-            {isAnalyticsSavedFilters && <SavedFiltersPanel />}
+            {isAnalyticsSavedFilters && (
+                <SavedFiltersPanel
+                    persistentFilters={persistentFilters}
+                    optionalFilters={optionalFilters}
+                />
+            )}
         </div>
     )
 }

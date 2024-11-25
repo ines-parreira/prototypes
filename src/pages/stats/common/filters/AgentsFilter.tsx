@@ -1,11 +1,9 @@
 import noop from 'lodash/noop'
 import React, {useCallback, useState} from 'react'
-
 import {connect} from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -16,9 +14,11 @@ import {
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
 import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {DropdownOption} from 'pages/stats/types'
-
 import {getFilterAgentsJS} from 'state/agents/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
@@ -40,7 +40,8 @@ type Props = {
     ) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
-} & RemovableFilter
+} & RemovableFilter &
+    OptionalFilterProps
 
 export default function AgentsFilter({
     value = emptyFilter,
@@ -49,6 +50,7 @@ export default function AgentsFilter({
     dispatchStatFiltersClean = noop,
     initializeAsOpen = false,
     onRemove,
+    warningType,
 }: Props) {
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
@@ -160,6 +162,7 @@ export default function AgentsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Agents]}
+            filterErrors={{warningType}}
             selectedOptions={getSelectedItems()}
             selectedLogicalOperator={value.operator}
             logicalOperators={agentsFilterLogicalOperators}

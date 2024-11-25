@@ -1,5 +1,13 @@
 import times from 'lodash/times'
 
+import {
+    FilterComponentKey,
+    FilterKey,
+    SavedFilter,
+    SavedFilterDraft,
+} from 'models/stat/types'
+import {FilterOptionGroup} from 'pages/stats/types'
+
 export const getScoreLabelsAndValues = (
     maxScoreNumber: number,
     isDescending: boolean
@@ -29,4 +37,89 @@ export const getScoreLabelByValue = (
             .fill('☆')
             .join('')
     )
+}
+
+export const getFilterError = ({
+    options,
+    selectedOptions,
+}: {
+    selectedOptions?: FilterOptionGroup['options']
+    options: FilterOptionGroup[]
+}): {warningType?: 'non-existent'; warningMessage?: string} => {
+    const nonExistentValues =
+        (options.length &&
+            selectedOptions
+                ?.filter(
+                    (selectedOption) =>
+                        !options.some(
+                            (group) =>
+                                !group.options.length ||
+                                group.options.some(
+                                    (option) =>
+                                        option.value === selectedOption.value
+                                )
+                        )
+                )
+                .map((selectedOption) => selectedOption.label)) ||
+        []
+
+    if (nonExistentValues.length === 1) {
+        return {
+            warningType: 'non-existent',
+            warningMessage: `${nonExistentValues.join(', ')} no longer exists and has been removed from saved filters.`,
+        }
+    }
+    if (nonExistentValues.length > 1) {
+        return {
+            warningType: 'non-existent',
+            warningMessage: `${nonExistentValues.join(', ')} no longer exist and have been removed from saved filters.`,
+        }
+    }
+
+    return {warningMessage: undefined, warningType: undefined}
+}
+
+export const getValidMemberName = (member: string): string => {
+    return member.includes('tags') ? 'tags' : member
+}
+
+export const isFilterApplicable = ({
+    filterKey,
+    applicableFilters,
+}: {
+    filterKey: string
+    applicableFilters: (FilterKey | FilterComponentKey)[]
+}): 'not-applicable' | undefined => {
+    if (
+        applicableFilters.length &&
+        !applicableFilters.find(
+            (applicableFilter) =>
+                applicableFilter === getValidMemberName(filterKey)
+        )
+    ) {
+        return 'not-applicable'
+    }
+    return undefined
+}
+
+export const areFiltersApplicable = ({
+    savedFilterDraft,
+    applicableFilters,
+}: {
+    savedFilterDraft?: SavedFilterDraft | SavedFilter | null
+    applicableFilters: (FilterKey | FilterComponentKey)[]
+}): 'not-applicable' | undefined => {
+    if (savedFilterDraft?.filter_group && applicableFilters.length) {
+        const notApplicable = savedFilterDraft.filter_group.some(
+            (filter) =>
+                !applicableFilters.find(
+                    (applicableFilter) =>
+                        applicableFilter === getValidMemberName(filter.member)
+                )
+        )
+        if (notApplicable) {
+            return 'not-applicable'
+        }
+    }
+    return undefined
 }

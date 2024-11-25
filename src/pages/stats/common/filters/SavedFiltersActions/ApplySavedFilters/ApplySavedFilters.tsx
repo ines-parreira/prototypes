@@ -1,8 +1,8 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
-
 import {useDispatch} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import {SavedFilter, SavedFilterAPI} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
@@ -14,6 +14,7 @@ import {fromApiFormatted} from 'pages/stats/common/filters/helpers'
 import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
 import {
     applySavedFilter,
+    getSavedFilterAppliedId,
     initialiseSavedFilterDraft,
 } from 'state/ui/stats/filtersSlice'
 
@@ -38,7 +39,18 @@ const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
     })
 }
 
+const getApplyFiltersButtonName = (
+    filters: Array<SavedFilterAPI>,
+    id: number | null
+) => {
+    if (!id) {
+        return APPLY_SAVED_FILTERS
+    }
+    return filters.find((filter) => filter.id === id)?.name
+}
+
 const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
+    const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
@@ -65,23 +77,26 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
             )
         }
 
-        return savedFilters.map((filter) => {
-            return (
-                <DropdownItem
-                    key={filter.id}
-                    onClick={() =>
-                        applySavedFilterHandler(fromApiFormatted(filter))
-                    }
-                    option={{
-                        label: filter.name,
-                        value: filter.id,
-                    }}
-                >
-                    {filter.name}
-                </DropdownItem>
-            )
-        })
+        return savedFilters.map((filter) => (
+            <DropdownItem
+                key={filter.id}
+                onClick={() =>
+                    applySavedFilterHandler(fromApiFormatted(filter))
+                }
+                option={{
+                    label: filter.name,
+                    value: filter.id,
+                }}
+            >
+                {filter.name}
+            </DropdownItem>
+        ))
     }, [savedFilters, isAdmin, applySavedFilterHandler])
+
+    const applyFiltersButtonName = useMemo(
+        () => getApplyFiltersButtonName(savedFilters, savedFilterAppliedId),
+        [savedFilterAppliedId, savedFilters]
+    )
 
     return (
         <>
@@ -93,7 +108,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
                 size="medium"
                 ref={buttonRef}
             >
-                {APPLY_SAVED_FILTERS}
+                {applyFiltersButtonName}
             </DropdownButton>
             <Dropdown
                 onToggle={setToggleDropdown}

@@ -15,6 +15,7 @@ type Props = {
     title: string
     errorType?: 'not-applicable' | 'non-existent'
     onChange: (value: string) => void
+    errorMessage?: string
 }
 
 const PLACEHOLDER = 'Name Filter'
@@ -56,6 +57,7 @@ export const FiltersEditableTitle = ({
     isEditMode,
     toggleIsEditMode,
     errorType,
+    errorMessage,
     onChange,
 }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -83,14 +85,16 @@ export const FiltersEditableTitle = ({
             onClick={() => toggleIsEditMode(true)}
         >
             {prefix}
-            <span className={css.title}>{title}</span>
-            {errorType && (
-                <FilterWarningIcon
-                    tooltip={tooltipContent}
-                    warningType={errorType}
-                    tooltipPlacement="right"
-                />
-            )}
+            <span className={css.title}>
+                {title}
+                {errorType && (
+                    <FilterWarningIcon
+                        tooltip={errorMessage || tooltipContent}
+                        warningType={errorType}
+                        tooltipPlacement="right"
+                    />
+                )}
+            </span>
         </div>
     )
 }

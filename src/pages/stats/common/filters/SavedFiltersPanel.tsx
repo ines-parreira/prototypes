@@ -5,20 +5,23 @@ import {
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
-
 import classnames from 'classnames'
-
 import React, {useCallback, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAppSelector from 'hooks/useAppSelector'
-import {SavedFilter, SavedFilterAPI, SavedFilterDraft} from 'models/stat/types'
+import {
+    SavedFilter,
+    SavedFilterAPI,
+    SavedFilterDraft,
+    StaticFilter,
+} from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
+import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
 import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
 import {
     fromApiFormatted,
@@ -26,8 +29,8 @@ import {
 } from 'pages/stats/common/filters/helpers'
 import {SavedFilterMenu} from 'pages/stats/common/filters/SavedFilterMenu'
 import css from 'pages/stats/common/filters/SavedFiltersPanel.less'
+import {areFiltersApplicable} from 'pages/stats/common/filters/utils'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
-
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
@@ -63,9 +66,18 @@ const getDeleteConfirmationContent = (savedFilterName: string) =>
 
 const isSavedFilter = (
     savedFilter: SavedFilterDraft | SavedFilter | null
-): savedFilter is SavedFilter => savedFilter !== null && 'id' in savedFilter
+): savedFilter is SavedFilter =>
+    savedFilter !== null && 'id' in savedFilter && savedFilter.id !== undefined
 
-export const SavedFiltersPanel = () => {
+type Props = {
+    persistentFilters?: StaticFilter[]
+    optionalFilters: OptionalFilter[]
+}
+
+export const SavedFiltersPanel = ({
+    optionalFilters,
+    persistentFilters,
+}: Props) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
@@ -233,6 +245,13 @@ export const SavedFiltersPanel = () => {
                                 toggleIsEditMode={toggleIsEditMode}
                                 title={savedFilterDraft.name}
                                 onChange={titleOnChangeHandler}
+                                errorType={areFiltersApplicable({
+                                    applicableFilters: [
+                                        ...(persistentFilters || []),
+                                        ...optionalFilters,
+                                    ],
+                                    savedFilterDraft,
+                                })}
                             />
                             {(isEditMode || isEditingSavedFilterDraft) &&
                             savedFilter ? (
@@ -296,7 +315,12 @@ export const SavedFiltersPanel = () => {
                         >
                             <div className={classnames(css.collapse)}>
                                 <CampaignStatsFilters>
-                                    <FiltersPanelWithSavedFiltersState />
+                                    <FiltersPanelWithSavedFiltersState
+                                        applicableFilters={[
+                                            ...(persistentFilters || []),
+                                            ...optionalFilters,
+                                        ]}
+                                    />
                                 </CampaignStatsFilters>
                                 <div className={classnames(css.buttons)}>
                                     <Button

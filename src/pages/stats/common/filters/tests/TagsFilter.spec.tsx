@@ -1,7 +1,6 @@
 import {Tag} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -77,6 +76,7 @@ describe('<TagsFilter />', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                warningType="not-applicable"
             />,
             {}
         )
@@ -104,6 +104,7 @@ describe('<TagsFilter />', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                warningType="non-existent"
             />,
             {}
         )

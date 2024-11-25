@@ -1,7 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import _isEqual from 'lodash/isEqual'
-
 import React, {
     ComponentProps,
     ComponentType,
@@ -11,13 +9,11 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-
 import {connect} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import usePrevious from 'hooks/usePrevious'
-
 import {
     FilterComponentKey,
     FilterKey,
@@ -37,11 +33,11 @@ import {
     getFilterSettings,
 } from 'pages/stats/common/filters/helpers'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
+import {isFilterApplicable} from 'pages/stats/common/filters/utils'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-
 import {RootState} from 'state/types'
 import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 
@@ -59,8 +55,10 @@ type FilterSettingOverrides = {
 }
 
 export type FiltersPanelProps = {
+    warning?: 'not-applicable' | 'non-existent' | undefined
     persistentFilters?: StaticFilter[]
     optionalFilters?: OptionalFilter[]
+    applicableFilters?: (StaticFilter | OptionalFilter)[]
     filterSettingsOverrides?: FilterSettingOverrides
     cleanStatsFilters: StatsFiltersWithLogicalOperator
     filterComponentMap: Record<
@@ -205,6 +203,7 @@ const useCustomFieldFilters = (
 export const FiltersPanelComponent = ({
     persistentFilters = [],
     optionalFilters = [],
+    applicableFilters = [],
     filterSettingsOverrides,
     cleanStatsFilters,
     filterComponentMap,
@@ -339,6 +338,10 @@ export const FiltersPanelComponent = ({
                     filter.type === FilterKey.Tags
                         ? filter?.filterInstanceId
                         : undefined,
+                warningType: isFilterApplicable({
+                    filterKey: filter.key,
+                    applicableFilters,
+                }),
                 ...getFilterSettings(filter.key, filterSettingsOverrides),
             }),
         [
@@ -346,6 +349,7 @@ export const FiltersPanelComponent = ({
             filterComponentMap,
             filterSettingsOverrides,
             setActiveFilters,
+            applicableFilters,
         ]
     )
 
