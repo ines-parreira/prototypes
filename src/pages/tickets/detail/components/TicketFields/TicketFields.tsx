@@ -1,6 +1,7 @@
 import classNames from 'classnames'
-import React, {memo, useEffect, useState} from 'react'
+import React, {memo, useEffect, useMemo, useState} from 'react'
 
+import {AI_MANAGED_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -33,7 +34,21 @@ function TicketFields() {
             object_type: 'Ticket',
         })
 
-    const hasErroredTicketFields = ticketFieldDefinitions.some(
+    // Hide AI managed fields
+    // TODO(DevRel): Remove this once ticket conditional fields are released
+    const filteredTicketFieldDefinitions = useMemo(
+        () =>
+            ticketFieldDefinitions.filter(
+                (definition) =>
+                    !definition.managed_type ||
+                    !Object.values(AI_MANAGED_TYPES).includes(
+                        definition.managed_type
+                    )
+            ),
+        [ticketFieldDefinitions]
+    )
+
+    const hasErroredTicketFields = filteredTicketFieldDefinitions.some(
         ({id}) => ticketFieldState[id]?.hasError
     )
 
@@ -53,7 +68,7 @@ function TicketFields() {
         showAllFields,
     ])
 
-    if (isLoading || !ticketFieldDefinitions.length) {
+    if (isLoading || !filteredTicketFieldDefinitions.length) {
         return null
     }
 
@@ -70,7 +85,7 @@ function TicketFields() {
                     [css.isExpanded]: showAllFields,
                 })}
             >
-                {ticketFieldDefinitions.map((fieldDefinition) => {
+                {filteredTicketFieldDefinitions.map((fieldDefinition) => {
                     return (
                         <TicketField
                             key={fieldDefinition.id}
