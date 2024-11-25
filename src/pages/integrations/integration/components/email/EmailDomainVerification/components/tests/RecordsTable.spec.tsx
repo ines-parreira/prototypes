@@ -10,6 +10,9 @@ import RecordDiffStatus from '../RecordDiffStatus'
 import RecordsTable from '../RecordsTable'
 
 jest.mock('../RecordDiffStatus')
+jest.mock('../RecordsTableSkeleton', () => () => (
+    <div>RecordsTableSkeleton</div>
+))
 
 const RecordDiffStatusMock = assumeMock(RecordDiffStatus)
 
@@ -55,6 +58,8 @@ const defaultHookState: hook.UseDomainVerificationRequestHookResult = {
     isFetching: false,
     isDeleting: false,
     isPending: false,
+    isCreatingDomain: false,
+    domainCreationError: null,
 }
 
 describe('RecordsTable component', () => {
@@ -67,7 +72,7 @@ describe('RecordsTable component', () => {
             () => defaultHookState
         )
 
-        render(<RecordsTable domainName="gorgias.com" />)
+        render(<RecordsTable domain={domain} domainName="gorgias.com" />)
 
         expect(screen.getByText('MX')).toBeInTheDocument()
         expect(screen.getByText('TXT')).toBeInTheDocument()
@@ -91,7 +96,7 @@ describe('RecordsTable component', () => {
             .spyOn(helpers, 'removeDomainFromDNSRecords')
             .mockImplementation((records) => records)
 
-        render(<RecordsTable domainName="gorgias.com" />)
+        render(<RecordsTable domain={domain} domainName="gorgias.com" />)
 
         expect(removeDomainMock).toHaveBeenCalledWith(
             defaultHookState.domain?.data.sending_dns_records,
@@ -112,5 +117,15 @@ describe('RecordsTable component', () => {
         render(<RecordsTable domainName="gorgias.com" />)
 
         expect(removeDomainMock).toHaveBeenCalledWith([], 'gorgias.com')
+    })
+
+    it('should render a skeleton when loading', () => {
+        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
+            () => defaultHookState
+        )
+
+        render(<RecordsTable domainName="gorgias.com" isLoading />)
+
+        expect(screen.getByText('RecordsTableSkeleton')).toBeInTheDocument()
     })
 })

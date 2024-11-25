@@ -1,4 +1,5 @@
 import {Card} from '@gorgias/analytics-ui-kit'
+import {EmailDomain} from '@gorgias/api-queries'
 import classNames from 'classnames'
 import {isEmpty} from 'lodash'
 import React from 'react'
@@ -98,6 +99,7 @@ export default function DomainVerificationAccordionItem({
                                 domain was purchased (ie. Google Domains).
                             </p>
                             <RecordsTable
+                                domain={verification.domain as EmailDomain}
                                 domainName={verification.domain.name}
                             />
                         </>

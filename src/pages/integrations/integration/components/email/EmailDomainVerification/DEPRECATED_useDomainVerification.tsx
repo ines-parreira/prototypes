@@ -1,9 +1,7 @@
 import {
     EmailDomain,
-    HttpError,
     useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
-    useUpdateEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
 } from '@gorgias/api-queries'
 import {useCallback, useEffect, useMemo, useState} from 'react'
@@ -11,7 +9,6 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {DEFAULT_EMAIL_DKIM_KEY_SIZE} from 'models/integration/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
@@ -35,17 +32,14 @@ export type UseDomainVerificationRequestHookResult = {
     isFetching: boolean
     isDeleting: boolean
     isPending: boolean
-    isCreatingDomain: boolean
-    domainCreationError?: HttpError | null
 }
 
 export type UseDomainVerificationRequestHookOptions = {
     onDelete?: () => void
     onVerify?: () => void
-    shouldCreateDomain?: boolean
 }
 
-export function useDomainVerification(
+export function DEPRECATED_useDomainVerification(
     domainName: string,
     options?: UseDomainVerificationRequestHookOptions
 ): UseDomainVerificationRequestHookResult {
@@ -57,52 +51,18 @@ export function useDomainVerification(
         setRequestedAt,
     } = useRequestStatus(domainName)
 
-    const {
-        data,
-        isLoading: isFetching,
-        error: domainError,
-        refetch: refetchDomain,
-    } = useGetEmailIntegrationDomain(domainName, {
-        query: {
-            refetchInterval: DOMAIN_REFETCH_INTERVAL * 10,
-        },
-    })
-
-    const {
-        mutate: createDomain,
-        isLoading: isCreatingDomain,
-        error: domainCreationError,
-    } = useUpdateEmailIntegrationDomain({
-        mutation: {
-            onSuccess: () => refetchDomain(),
-        },
-    })
+    const {data, isLoading: isFetching} = useGetEmailIntegrationDomain(
+        domainName,
+        {
+            query: {
+                refetchInterval: DOMAIN_REFETCH_INTERVAL,
+            },
+        }
+    )
 
     const [domain, setDomain] = useState<EmailDomain | undefined>()
 
     const isPending = isRequestPending && !domain?.verified
-
-    useEffect(() => {
-        if (
-            domainError?.status === 404 &&
-            options?.shouldCreateDomain &&
-            !isCreatingDomain &&
-            !domainCreationError
-        ) {
-            createDomain({
-                domainName,
-                data: {dkim_key_size: DEFAULT_EMAIL_DKIM_KEY_SIZE},
-            })
-        }
-    }, [
-        domainError,
-        createDomain,
-        domainName,
-        domain,
-        isCreatingDomain,
-        domainCreationError,
-        options,
-    ])
 
     useEffect(() => {
         const transformDomainRecords = async () => {
@@ -182,8 +142,6 @@ export function useDomainVerification(
         isFetching,
         isDeleting,
         isPending,
-        isCreatingDomain,
-        domainCreationError,
     }
 }
 

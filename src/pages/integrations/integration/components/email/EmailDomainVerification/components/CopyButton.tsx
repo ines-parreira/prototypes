@@ -6,7 +6,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
-import css from '../DEPRECATED_EmailDomainVerification.less'
+import css from '../EmailDomainVerification.less'
 
 type Props = {
     clipboardTarget: string

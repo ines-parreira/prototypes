@@ -652,7 +652,9 @@ export const IntegrationDetail = ({
                     ) {
                         return (
                             <EmailIntegrationLayout integration={integration}>
-                                <EmailDomainVerification />
+                                <EmailDomainVerification
+                                    integration={integration.toJS()}
+                                />
                             </EmailIntegrationLayout>
                         )
                     }

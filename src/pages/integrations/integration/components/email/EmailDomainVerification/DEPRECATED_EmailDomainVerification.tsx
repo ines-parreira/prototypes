@@ -23,8 +23,8 @@ import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
 import EmailDomainVerificationForm from './components/EmailDomainVerificationForm'
 import RecordsTable from './components/RecordsTable'
 
-import css from './DEPRECATED_EmailDomainVerification.less'
-import {useDomainVerification} from './useDomainVerification'
+import {DEPRECATED_useDomainVerification} from './DEPRECATED_useDomainVerification'
+import css from './EmailDomainVerification.less'
 
 export type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
@@ -60,7 +60,7 @@ export default function DEPRECATED_EmailDomainVerification({
         isDeleting,
         isVerifying,
         isPending,
-    } = useDomainVerification(domainName, {
+    } = DEPRECATED_useDomainVerification(domainName, {
         onDelete,
     })
 
@@ -112,7 +112,7 @@ export default function DEPRECATED_EmailDomainVerification({
                 </div>
             )}
 
-            <RecordsTable domainName={domain.name} />
+            <RecordsTable domain={domain} domainName={domain.name} />
 
             <div className={css.buttonGroup}>
                 <Button

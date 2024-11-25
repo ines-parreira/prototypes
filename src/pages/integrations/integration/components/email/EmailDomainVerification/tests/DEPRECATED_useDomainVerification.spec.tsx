@@ -2,7 +2,6 @@ import {
     HttpResponse,
     EmailDomain,
     getEmailIntegrationDomain,
-    updateEmailIntegrationDomain,
     deleteEmailIntegrationDomain,
     verifyEmailIntegrationDomain,
 } from '@gorgias/api-client'
@@ -25,8 +24,8 @@ import {
 } from '../../helpers'
 import {
     UseDomainVerificationRequestHookOptions,
-    useDomainVerification,
-} from '../useDomainVerification'
+    DEPRECATED_useDomainVerification,
+} from '../DEPRECATED_useDomainVerification'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
@@ -40,9 +39,6 @@ const notifyMock = assumeMock(notify)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getDomainMock = assumeMock(getEmailIntegrationDomain)
 const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
-const updateEmailIntegrationDomainMock = assumeMock(
-    updateEmailIntegrationDomain
-)
 
 const populateCurrentValuesForDNSRecordsMock = assumeMock(
     populateCurrentValuesForDNSRecords
@@ -72,16 +68,19 @@ const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
 })
 
 const render = (options?: UseDomainVerificationRequestHookOptions) => {
-    return renderHook(() => useDomainVerification('gorgias.com', options), {
-        wrapper: ({children}) => (
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>{children}</Provider>
-            </QueryClientProvider>
-        ),
-    })
+    return renderHook(
+        () => DEPRECATED_useDomainVerification('gorgias.com', options),
+        {
+            wrapper: ({children}) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        }
+    )
 }
 
-describe('useDomainVerification()', () => {
+describe('DEPRECATED_useDomainVerification()', () => {
     beforeEach(() => {
         queryClient.clear()
         localStorage.clear()
@@ -351,67 +350,6 @@ describe('useDomainVerification()', () => {
                     expect(onDelete).toHaveBeenCalled()
                 })
             })
-        })
-    })
-
-    describe('domain creation', () => {
-        it('should create domain when it does not exist and shouldCreateDomain is true', async () => {
-            getDomainMock.mockResolvedValue(
-                Promise.reject({
-                    status: 404,
-                })
-            )
-
-            const {result, waitForValueToChange} = render({
-                shouldCreateDomain: true,
-            })
-
-            await waitForValueToChange(() => result.current.isFetching)
-
-            await waitFor(() => {
-                expect(updateEmailIntegrationDomainMock).toHaveBeenCalled()
-            })
-        })
-
-        it('should not create domain when it does not exist and shouldCreateDomain is false', () => {
-            getDomainMock.mockResolvedValue(
-                Promise.reject({
-                    status: 404,
-                })
-            )
-
-            render({
-                shouldCreateDomain: false,
-            })
-
-            expect(updateEmailIntegrationDomainMock).not.toHaveBeenCalled()
-        })
-
-        it('should not create domain if another creation failed', async () => {
-            const dispatchMock = jest.fn()
-            useAppDispatchMock.mockReturnValue(dispatchMock)
-
-            getDomainMock.mockReturnValue(
-                Promise.reject({
-                    status: 404,
-                })
-            )
-
-            const {result, rerender, waitForValueToChange} = render({
-                shouldCreateDomain: true,
-            })
-
-            await waitForValueToChange(() => result.current.isFetching)
-
-            updateEmailIntegrationDomainMock.mockRejectedValue({
-                status: 400,
-            })
-
-            rerender({
-                shouldCreateDomain: true,
-            })
-
-            expect(updateEmailIntegrationDomainMock).toHaveBeenCalledTimes(1)
         })
     })
 })

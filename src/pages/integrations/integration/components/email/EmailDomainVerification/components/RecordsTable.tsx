@@ -1,4 +1,4 @@
-import {EmailDNSRecord} from '@gorgias/api-queries'
+import {EmailDNSRecord, EmailDomain} from '@gorgias/api-queries'
 import React from 'react'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -7,18 +7,18 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import {removeDomainFromDNSRecords} from '../../helpers'
-import {useDomainVerification} from '../useDomainVerification'
 
 import RecordItem from './RecordItem'
 import css from './RecordsTable.less'
+import RecordsTableSkeleton from './RecordsTableSkeleton'
 
 type Props = {
     domainName: string
+    isLoading?: boolean
+    domain?: EmailDomain
 }
 
-const RecordsTable = ({domainName}: Props) => {
-    const {domain} = useDomainVerification(domainName)
-
+const RecordsTable = ({domainName, isLoading, domain}: Props) => {
     const records = removeDomainFromDNSRecords(
         domain?.data.sending_dns_records ?? [],
         domainName
@@ -36,9 +36,13 @@ const RecordsTable = ({domainName}: Props) => {
                 <HeaderCellProperty title="Status" />
             </TableHead>
             <TableBody>
-                {records.map((record: EmailDNSRecord, index: number) => (
-                    <RecordItem key={index} record={record} />
-                ))}
+                {isLoading ? (
+                    <RecordsTableSkeleton />
+                ) : (
+                    records.map((record: EmailDNSRecord, index: number) => (
+                        <RecordItem key={index} record={record} />
+                    ))
+                )}
             </TableBody>
         </TableWrapper>
     )

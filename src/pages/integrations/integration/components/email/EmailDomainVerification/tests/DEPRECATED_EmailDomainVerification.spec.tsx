@@ -16,7 +16,7 @@ import {assumeMock} from 'utils/testing'
 import * as helpers from '../../helpers'
 import RecordsTable from '../components/RecordsTable'
 import DEPRECATED_EmailDomainVerification from '../DEPRECATED_EmailDomainVerification'
-import * as hook from '../useDomainVerification'
+import * as hook from '../DEPRECATED_useDomainVerification'
 
 const queryClient = mockQueryClient()
 
@@ -125,12 +125,14 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
 
     describe('when the domain exists', () => {
         it('should render the correct records list page when domain is verified', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: getEmailDomain({verified: true}),
-                })
-            )
+            const domain = getEmailDomain({verified: true})
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain,
+            }))
 
             const {container} = renderComponent()
 
@@ -142,18 +144,21 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
             expect(RecordsTableMock).toHaveBeenCalledWith(
                 {
                     domainName: 'gorgias.com',
+                    domain,
                 },
                 {}
             )
         })
 
         it('should render the correct records list page when domain is not verified', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: getEmailDomain({verified: false}),
-                })
-            )
+            const domain = getEmailDomain({verified: false})
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain,
+            }))
 
             const {container} = renderComponent()
 
@@ -165,6 +170,7 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
             expect(RecordsTableMock).toHaveBeenCalledWith(
                 {
                     domainName: 'gorgias.com',
+                    domain,
                 },
                 {}
             )
@@ -173,12 +179,13 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
 
     describe('when the domain does not exist', () => {
         it('should render the domain creation form for mailgun integrations', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: undefined,
-                })
-            )
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain: undefined,
+            }))
             renderComponent({
                 integration: {
                     id: 1,
@@ -195,12 +202,13 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
         })
 
         it('should render the loader while the integration details are loading', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: undefined,
-                })
-            )
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain: undefined,
+            }))
 
             renderComponent({
                 integration: {
@@ -231,13 +239,14 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
         })
 
         it('should render a loader when domain is loading', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: undefined,
-                    isFetching: true,
-                })
-            )
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain: undefined,
+                isFetching: true,
+            }))
 
             renderComponent()
 
@@ -247,12 +256,13 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
 
     describe('performable actions', () => {
         it('should call verifyDomain when the verify domain button is clicked', () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: getEmailDomain({verified: false}),
-                })
-            )
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain: getEmailDomain({verified: false}),
+            }))
 
             renderComponent()
 
@@ -262,12 +272,13 @@ describe('<DEPRECATED_EmailDomainVerification/>', () => {
         })
 
         it('should call deleteDomain when the domain deletion button is clicked', async () => {
-            jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-                () => ({
-                    ...defaultHookState,
-                    domain: getEmailDomain({verified: false}),
-                })
-            )
+            jest.spyOn(
+                hook,
+                'DEPRECATED_useDomainVerification'
+            ).mockImplementation(() => ({
+                ...defaultHookState,
+                domain: getEmailDomain({verified: false}),
+            }))
 
             renderComponent()
 
