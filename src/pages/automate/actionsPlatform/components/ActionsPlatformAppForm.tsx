@@ -7,6 +7,8 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
+import InputField from 'pages/common/forms/DEPRECATED_InputField'
+
 import {ActionsApp, App} from '../types'
 import css from './ActionsPlatformAppForm.less'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
@@ -106,6 +108,36 @@ const ActionsPlatformAppForm = ({
                         label={'Token refresh endpoint'}
                     />
                 )}
+                {authType === 'api-key' && (
+                    <>
+                        <Controller
+                            control={control}
+                            name={'auth_settings.input_label'}
+                            render={({field: {value, onChange}}) => (
+                                <InputField
+                                    isRequired
+                                    label={'Input label'}
+                                    value={value ?? ''}
+                                    onChange={onChange}
+                                    placeholder={'API Key'}
+                                />
+                            )}
+                        />
+                    </>
+                )}
+                <Controller
+                    control={control}
+                    name={'auth_settings.instruction_url_text'}
+                    render={({field: {value, onChange}}) => (
+                        <InputField
+                            isRequired
+                            label={'Instructions URL text'}
+                            value={value ?? ''}
+                            onChange={onChange}
+                            placeholder={`How to find your API key in ${apps.find((app) => app.id === getValues().id)?.name || 'App'} `}
+                        />
+                    )}
+                />
             </div>
             <div className={css.actions}>
                 <Button

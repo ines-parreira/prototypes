@@ -71,16 +71,25 @@ export default function AppConfirmationModal({
         if (!app) return null
         if (isAppTypeOauth2Token)
             return {
-                description: `Enter the refresh token from your ${app.name} account`,
+                description: `Enter the refresh token below from your ${app.name} account.`,
                 label: 'Refresh token',
-                inputDescription: `Find your refresh token in ${app.name}.`,
+                inputDescription:
+                    actionAppConnected?.auth_settings.instruction_url_text ||
+                    `How to find your Refresh Token in ${app.name}`,
             }
         return {
-            description: `Enter the API key from your ${app.name} account.`,
-            label: 'API key',
-            inputDescription: `Find your API key in ${app.name}.`,
+            description: `Enter the ${actionAppConnected?.auth_settings.input_label || 'API key'} below from your ${app.name} account.`,
+            label: actionAppConnected?.auth_settings.input_label || 'API Key',
+            inputDescription:
+                actionAppConnected?.auth_settings.instruction_url_text ||
+                `How to find your API Key in ${app.name}`,
         }
-    }, [app, isAppTypeOauth2Token])
+    }, [
+        actionAppConnected?.auth_settings.input_label,
+        actionAppConnected?.auth_settings.instruction_url_text,
+        app,
+        isAppTypeOauth2Token,
+    ])
 
     useEffect(() => {
         if (step === 'input' && app) {

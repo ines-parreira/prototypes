@@ -709,6 +709,8 @@ declare namespace Components {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
         refresh_token_url?: string | null;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
         url?: string | null;
       };
     };
@@ -3537,6 +3539,8 @@ declare namespace Components {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
         refresh_token_url?: string | null;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
         url?: string | null;
       };
     })[];
@@ -8889,6 +8893,8 @@ declare namespace Components {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
         refresh_token_url?: string | null;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
         url?: string | null;
       };
     }
@@ -8897,6 +8903,8 @@ declare namespace Components {
       auth_type: "api-key" | "oauth2-token";
       auth_settings: {
         refresh_token_url?: string | null;
+        input_label?: string | null;
+        instruction_url_text?: string | null;
         url?: string | null;
       };
     };

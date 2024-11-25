@@ -83,7 +83,7 @@ describe('<AppActionTemplateCard />', () => {
         })
 
         act(() => {
-            fireEvent.change(screen.getByLabelText(/API key/), {
+            fireEvent.change(screen.getByLabelText(/API Key/), {
                 target: {value: 'test api key'},
             })
         })

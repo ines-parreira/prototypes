@@ -364,4 +364,87 @@ describe('<ActionsPlatformAppForm />', () => {
 
         expect(mockOnSubmit).not.toHaveBeenCalled()
     })
+    it('should allow form submission with API key input label and instruction URL link text', async () => {
+        const mockOnSubmit = jest.fn()
+
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'api-key',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+                apps={[]}
+                onSubmit={mockOnSubmit}
+            />
+        )
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText('Input label'), {
+                target: {value: 'Test API Key Label'},
+            })
+        })
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText('Instructions URL text'), {
+                target: {value: 'Test Instructions URL text'},
+            })
+        })
+
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnSubmit).toHaveBeenCalledWith({
+            id: 'someid',
+            auth_type: 'api-key',
+            auth_settings: {
+                url: 'https://example.com',
+                input_label: 'Test API Key Label',
+                instruction_url_text: 'Test Instructions URL text',
+            },
+        })
+    })
+    it('should allow form submission for Oauth2 token with just instruction URL link text', async () => {
+        const mockOnSubmit = jest.fn()
+
+        renderWithRouter(
+            <ActionsPlatformAppForm
+                value={{
+                    id: 'someid',
+                    auth_type: 'oauth2-token',
+                    auth_settings: {
+                        url: 'https://example.com',
+                    },
+                }}
+                apps={[]}
+                onSubmit={mockOnSubmit}
+            />
+        )
+
+        act(() => {
+            fireEvent.change(screen.getByLabelText('Instructions URL text'), {
+                target: {value: 'Test Instructions URL text'},
+            })
+        })
+
+        await flushPromises()
+
+        act(() => {
+            fireEvent.click(screen.getByText('Save Changes'))
+        })
+
+        expect(mockOnSubmit).toHaveBeenCalledWith({
+            id: 'someid',
+            auth_type: 'oauth2-token',
+            auth_settings: {
+                url: 'https://example.com',
+                instruction_url_text: 'Test Instructions URL text',
+            },
+        })
+    })
 })
