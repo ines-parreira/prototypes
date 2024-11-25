@@ -43,6 +43,7 @@ const simplifyWizardErrors = (formValues: FormValues, message: string) => {
 export const getValidStoreConfigurationFormValues = (
     formValues: FormValues,
     publicUrls: string[] | null | undefined,
+    hasExternalFiles: boolean,
     opts: {
         isOnboardingWizardPage: boolean
         isAiAgentChatEnabled: boolean | undefined
@@ -221,6 +222,7 @@ export const getValidStoreConfigurationFormValues = (
 
     if (
         formValues.helpCenterId === null &&
+        !hasExternalFiles &&
         (!publicUrls || publicUrls.length === 0) &&
         (!formValues.wizard || formValues.wizard.completedDatetime !== null)
     ) {

@@ -19,23 +19,40 @@ import {
 } from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import {
+    ARTICLE_INGESTION_LOGS_STATUS,
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../../constants'
 import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
 import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import {useFileIngestion} from '../../hooks/useFileIngestion'
+import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
 import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'
 
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('state/notifications/actions')
+
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
+
+jest.mock('../../hooks/useFileIngestion')
+const mockUseFileIngestion = assumeMock(useFileIngestion)
+
+jest.mock('pages/automate/aiAgent/hooks/usePublicResourcesPooling', () => ({
+    usePublicResourcesPooling: jest.fn(),
+}))
+const mockUsePublicResourcesPooling = assumeMock(usePublicResourcesPooling)
 
 const mockedHelpCenters = getHelpCentersResponseFixture.data
 const mockedStoreConfiguration = getStoreConfigurationFixture()
@@ -100,6 +117,18 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
             mockedUseAiAgentOnboardingWizard
         )
+        mockFlags({
+            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+        })
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            ingestFile: jest.fn(),
+            deleteIngestedFile: jest.fn(),
+            isIngesting: false,
+        })
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogsStatus: [],
+        })
     })
 
     it('should render the header and footer correctly', () => {
@@ -150,6 +179,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
             publicUrls: [],
+            hasExternalFiles: false,
             redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST,
             payload: {
                 wizard: {
@@ -174,6 +204,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             mockedUseAiAgentOnboardingWizard.handleSave
         ).toHaveBeenCalledWith({
             publicUrls: [],
+            hasExternalFiles: false,
             redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE,
             payload: {
                 wizard: {
@@ -330,6 +361,48 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         )
     })
 
+    it('should redirect to knowledge section when finishing wizard during public URL sync', async () => {
+        mockUseAiAgentOnboardingWizard.mockReturnValue({
+            ...mockedUseAiAgentOnboardingWizard,
+            snippetHelpCenter: mockedHelpCenters[0],
+            storeFormValues: getStoreConfigurationFormValuesFixture({
+                helpCenterId: null,
+            }),
+        })
+
+        mockUsePublicResourcesPooling.mockReturnValue({
+            articleIngestionLogsStatus: [ARTICLE_INGESTION_LOGS_STATUS.PENDING],
+        })
+
+        renderComponent({})
+
+        const addButton = screen.getByText('Add URL')
+        userEvent.click(addButton)
+
+        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const input = screen.getByLabelText('Public URL')
+
+        await userEvent.type(input, 'https://example.com/faqs')
+        userEvent.click(syncButton)
+
+        userEvent.click(screen.getByText('Finish'))
+
+        expect(
+            mockedUseAiAgentOnboardingWizard.handleSave
+        ).toHaveBeenCalledWith({
+            hasExternalFiles: false,
+            publicUrls: ['https://example.com/faqs'],
+            redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE,
+            payload: {
+                wizard: {
+                    ...mockedUseAiAgentOnboardingWizard.storeFormValues.wizard,
+                    completedDatetime: expect.any(String),
+                    onCompletePathway: WizardPostCompletionPathway.knowledge,
+                },
+            },
+        })
+    })
+
     it('should log event when new url is ingested', async () => {
         const defaultWizard = getStoreConfigurationFormValuesFixture().wizard!
         const mockedUseAiAgentOnboardingWizardWithSnippet = {
@@ -401,6 +474,37 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         ).toHaveBeenCalledWith({
             publicUrls: [],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
+        })
+    })
+
+    it('should display a warning notification when Finish is clicked and documents are syncing', () => {
+        mockUseAiAgentOnboardingWizard.mockReturnValue({
+            ...mockedUseAiAgentOnboardingWizard,
+            snippetHelpCenter: mockedHelpCenters[0],
+        })
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            ingestFile: jest.fn(),
+            deleteIngestedFile: jest.fn(),
+            isIngesting: true,
+        })
+
+        renderComponent({})
+
+        userEvent.click(screen.getByText('Finish'))
+
+        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
+            status: NotificationStatus.Warning,
+            buttons: [
+                expect.objectContaining({
+                    name: 'Finish Without Upload',
+                    primary: false,
+                    onClick: expect.any(Function),
+                }),
+            ],
         })
     })
 })

@@ -36,6 +36,7 @@ import {FormValues, UpdateValue, WizardFormValues} from '../../types'
 
 type handleSaveParams = {
     publicUrls?: string[]
+    hasExternalFiles?: boolean
     redirectTo?: WIZARD_BUTTON_ACTIONS
     stepName?: AiAgentOnboardingWizardStep
     payload?: Partial<FormValues>
@@ -283,6 +284,7 @@ export const useAiAgentOnboardingWizard = ({
 
     const handleSave = async ({
         publicUrls,
+        hasExternalFiles,
         redirectTo,
         stepName,
         payload,
@@ -290,6 +292,7 @@ export const useAiAgentOnboardingWizard = ({
         setIsLoading(true)
         const res = await handleOnSave({
             publicUrls,
+            hasExternalFiles,
             shopName,
             payload,
             stepName: stepName || step,

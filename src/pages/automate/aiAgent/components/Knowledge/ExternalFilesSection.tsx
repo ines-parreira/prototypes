@@ -34,12 +34,16 @@ type Props = {
     helpCenterId: number
     onLoadingStateChange?: (isLoading: boolean) => void
     onEmptyStateChange?: (isEmpty: boolean) => void
+    uploadFailedMessage?: string
+    disableNavigationPrompt?: boolean
 }
 
 export const ExternalFilesSection = ({
     helpCenterId,
     onLoadingStateChange,
     onEmptyStateChange,
+    uploadFailedMessage,
+    disableNavigationPrompt,
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
     const inputRef = createRef<HTMLInputElement>()
@@ -61,6 +65,7 @@ export const ExternalFilesSection = ({
                     notify({
                         status: NotificationStatus.Error,
                         message:
+                            uploadFailedMessage ??
                             'Failed to upload to due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
                     })
                 )
@@ -135,7 +140,7 @@ export const ExternalFilesSection = ({
                 bodyText="Your document is still uploading. If you leave now, you'll lose any upload progress. Are you sure you want to leave this page?"
                 cancelLabel="Continue Upload"
                 confirmLabel="Discard Upload"
-                enabled={isIngesting}
+                enabled={isIngesting && !disableNavigationPrompt}
             />
 
             <div className={css.container}>

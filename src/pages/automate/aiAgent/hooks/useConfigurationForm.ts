@@ -89,6 +89,7 @@ export const useConfigurationForm = ({
 
     const handleOnSave = async ({
         publicUrls,
+        hasExternalFiles,
         shopName,
         aiAgentMode,
         payload,
@@ -98,6 +99,7 @@ export const useConfigurationForm = ({
     }: {
         shopName: string
         publicUrls?: string[]
+        hasExternalFiles?: boolean
         aiAgentMode?: string
         payload?: Partial<FormValues>
         stepName?: AiAgentOnboardingWizardStep
@@ -119,6 +121,7 @@ export const useConfigurationForm = ({
             validFormValues = getValidStoreConfigurationFormValues(
                 enrichedFormValues,
                 publicUrls,
+                hasExternalFiles ?? false,
                 {
                     isAiAgentChatEnabled,
                     isMultiChannelEnabled,

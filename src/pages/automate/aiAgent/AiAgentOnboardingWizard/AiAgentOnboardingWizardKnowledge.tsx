@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
@@ -16,7 +17,10 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
+import {ExternalFilesSection} from '../components/Knowledge/ExternalFilesSection'
 import {CreatePublicSourcesSection} from '../components/StoreConfigForm/StoreConfigForm'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
@@ -32,12 +36,19 @@ import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 type Props = AiAgentOnboardingWizardProps
 
 const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
+    const dispatch = useAppDispatch()
+
     const [publicUrls, setPublicUrls] = useState<string[]>([])
     const [pendingUrlCount, setPendingUrlCount] = useState(0)
     const [isPristine, setIsPristine] = useState(true)
     const [isPublicUrlsPristine, setIsPublicUrlsPristine] = useState(true)
     const [synchingPublicUrls, setSynchingPublicUrls] = useState(false)
+    const [hasExternalFiles, setHasExternalFiles] = useState<boolean>(false)
+    const [externalFileIsLoading, setExternalFileIsLoading] = useState(false)
+    const [isFinishingWizard, setIsFinishingWizard] = useState(false)
 
+    const isAiAgentSnippetsFromExternalFilesEnabled =
+        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
     const isAiAgentOnboardingWizardKnowledgeRedirectEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]
 
@@ -93,13 +104,107 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         // we should deactivate AI Agent when there's no knowledge base
     }, [])
 
-    const hasPublicUrlSynced = useMemo(
+    const hasNoKnowledgeSource = useMemo(
         () =>
             !selectedHelpCenter &&
+            !hasExternalFiles &&
+            (!publicUrls.length || publicUrls.length === pendingUrlCount),
+        [
+            hasExternalFiles,
+            pendingUrlCount,
+            publicUrls.length,
+            selectedHelpCenter,
+        ]
+    )
+
+    const hasNoKnowledgeSourceExceptPendingPublicUrl = useMemo(
+        () =>
+            hasNoKnowledgeSource &&
             !!publicUrls.length &&
             publicUrls.length === pendingUrlCount,
-        [pendingUrlCount, publicUrls.length, selectedHelpCenter]
+        [hasNoKnowledgeSource, pendingUrlCount, publicUrls.length]
     )
+
+    const getRedirectionPathway = () => {
+        if (hasNoKnowledgeSourceExceptPendingPublicUrl) {
+            return {
+                redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE,
+                onCompletePathway: WizardPostCompletionPathway.knowledge,
+            }
+        } else if (isAiAgentOnboardingWizardKnowledgeRedirectEnabled) {
+            return {
+                redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE,
+                onCompletePathway: WizardPostCompletionPathway.guidance,
+            }
+        }
+        return {
+            redirectTo: WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST,
+            onCompletePathway: WizardPostCompletionPathway.test,
+        }
+    }
+
+    const handleWizardCompletion = () => {
+        const {redirectTo, onCompletePathway} = getRedirectionPathway()
+
+        handleSave({
+            publicUrls,
+            hasExternalFiles,
+            redirectTo,
+            payload: {
+                wizard: storeFormValues.wizard && {
+                    ...storeFormValues.wizard,
+                    completedDatetime: new Date().toISOString(),
+                    onCompletePathway,
+                },
+            },
+        })
+    }
+
+    const handleWarningDuringDocumentUpload = () => {
+        if (hasNoKnowledgeSource) {
+            void dispatch(
+                notify({
+                    message:
+                        'Documents must finish uploading before moving forward.',
+                    status: NotificationStatus.Error,
+                })
+            )
+        } else {
+            void dispatch(
+                notify({
+                    message:
+                        'Document upload still in progress. You can finish without uploading but will lose any upload progress.',
+                    status: NotificationStatus.Warning,
+                    buttons: [
+                        {
+                            name: 'Finish Without Upload',
+                            onClick: () => {
+                                setIsFinishingWizard(true)
+                                handleWizardCompletion()
+                            },
+                            primary: false,
+                        },
+                    ],
+                })
+            )
+        }
+    }
+
+    const handleFinish = () => {
+        if (externalFileIsLoading) {
+            handleWarningDuringDocumentUpload()
+            return
+        }
+
+        handleWizardCompletion()
+    }
+
+    const handleSaveAndCustomizeLater = () => {
+        handleSave({
+            publicUrls,
+            redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
+        })
+    }
 
     const onFooterAction = (buttonClicked: string) => {
         setIsPristine(true)
@@ -108,38 +213,11 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                 handleAction(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
                 break
             case FOOTER_BUTTONS.FINISH: {
-                let onCompletePathway = null
-                let redirectTo
-
-                if (hasPublicUrlSynced) {
-                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE
-                    onCompletePathway = WizardPostCompletionPathway.knowledge
-                } else if (isAiAgentOnboardingWizardKnowledgeRedirectEnabled) {
-                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE
-                    onCompletePathway = WizardPostCompletionPathway.guidance
-                } else {
-                    redirectTo = WIZARD_BUTTON_ACTIONS.FINISH_TO_TEST
-                    onCompletePathway = WizardPostCompletionPathway.test
-                }
-
-                handleSave({
-                    publicUrls,
-                    redirectTo,
-                    payload: {
-                        wizard: storeFormValues.wizard && {
-                            ...storeFormValues.wizard,
-                            completedDatetime: new Date().toISOString(),
-                            onCompletePathway,
-                        },
-                    },
-                })
+                handleFinish()
                 break
             }
             case FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER:
-                handleSave({
-                    publicUrls,
-                    redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
-                })
+                handleSaveAndCustomizeLater()
                 break
             default:
                 break
@@ -167,7 +245,11 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                         onFooterAction(FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER)
                     }
                 }}
-                when={(!isPristine || !isPublicUrlsPristine) && !isLoading}
+                when={
+                    (!isPristine || !isPublicUrlsPristine) &&
+                    !isLoading &&
+                    !externalFileIsLoading
+                }
             />
             <WizardStepSkeleton
                 step={AiAgentOnboardingWizardStep.Knowledge}
@@ -199,18 +281,37 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                 </div>
 
                 {snippetHelpCenter ? (
-                    <CreatePublicSourcesSection
-                        helpCenterId={snippetHelpCenter.id}
-                        selectedHelpCenterId={selectedHelpCenter?.id}
-                        onPublicURLsChanged={handlePublicURLsChange}
-                        shopName={shopName}
-                        logConnectedPublicUrl={logConnectedPublicUrl}
-                        setPendingResourcesCount={setPendingUrlCount}
-                        setIsPristine={setIsPublicUrlsPristine}
-                        syncUrlOnCommand={synchingPublicUrls}
-                        setSyncUrlOnCommand={setSynchingPublicUrls}
-                    />
+                    <div className={css.section}>
+                        <CreatePublicSourcesSection
+                            helpCenterId={snippetHelpCenter.id}
+                            selectedHelpCenterId={selectedHelpCenter?.id}
+                            onPublicURLsChanged={handlePublicURLsChange}
+                            shopName={shopName}
+                            logConnectedPublicUrl={logConnectedPublicUrl}
+                            setPendingResourcesCount={setPendingUrlCount}
+                            setIsPristine={setIsPublicUrlsPristine}
+                            syncUrlOnCommand={synchingPublicUrls}
+                            setSyncUrlOnCommand={setSynchingPublicUrls}
+                        />
+                    </div>
                 ) : null}
+
+                {isAiAgentSnippetsFromExternalFilesEnabled &&
+                    snippetHelpCenter && (
+                        <div className={css.section}>
+                            <ExternalFilesSection
+                                helpCenterId={snippetHelpCenter.id}
+                                onLoadingStateChange={(isLoading) =>
+                                    setExternalFileIsLoading(isLoading)
+                                }
+                                onEmptyStateChange={(isEmpty) =>
+                                    setHasExternalFiles(!isEmpty)
+                                }
+                                disableNavigationPrompt={isFinishingWizard}
+                                uploadFailedMessage="Failed to upload. Please try again."
+                            />
+                        </div>
+                    )}
             </WizardStepSkeleton>
         </>
     )
