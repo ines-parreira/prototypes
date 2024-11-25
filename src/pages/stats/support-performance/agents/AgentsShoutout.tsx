@@ -8,6 +8,8 @@ import Shoutout, {
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutoutsConfig'
 
+export const AGENTS_SHOUT_OUTS_TITLE = 'Top performers'
+
 export default function AgentsShoutout({
     useQuery,
     queryOrder,

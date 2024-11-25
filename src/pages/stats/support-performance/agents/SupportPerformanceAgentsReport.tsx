@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -6,19 +7,20 @@ import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hoo
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import ChartCard from 'pages/stats/ChartCard'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
-import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
+import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+import {
+    AgentsChart,
+    SupportPerformanceAgentsReportConfig,
+} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
-export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'
 export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.Channels,
     FilterKey.Integrations,
@@ -27,7 +29,7 @@ export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.CustomFields,
 ]
 
-export default function SupportPerformanceAgents() {
+export default function SupportPerformanceAgentsReport() {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const supportPerformanceAgentsOptionalFilters =
@@ -71,20 +73,23 @@ export default function SupportPerformanceAgents() {
                         </DashboardGridCell>
                     </DashboardSection>
                 )}
-                <DashboardSection title="Top performers" className="pb-0">
+                <DashboardSection
+                    title={AGENTS_SHOUT_OUTS_TITLE}
+                    className="pb-0"
+                >
                     <DashboardGridCell size={12}>
-                        <AgentsShoutouts />
+                        <CustomReportComponent
+                            chart={AgentsChart.TopPerformers}
+                            config={SupportPerformanceAgentsReportConfig}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection>
                     <DashboardGridCell size={12}>
-                        <ChartCard
-                            title={AGENT_PERFORMANCE_SECTION_TITLE}
-                            titleExtra={<AgentsPerformanceCardExtra />}
-                            noPadding
-                        >
-                            <AgentsTableWithDefaultState />
-                        </ChartCard>
+                        <CustomReportComponent
+                            chart={AgentsChart.Table}
+                            config={SupportPerformanceAgentsReportConfig}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

@@ -51,71 +51,86 @@ export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart>
             [OverviewChart.CustomerSatisfactionTrendCard]: {
                 chartComponent: CustomerSatisfactionTrendCard,
                 label: OverviewMetric.CustomerSatisfaction,
+                csvProducer: null,
             },
             [OverviewChart.MedianFirstResponseTimeTrendCard]: {
                 chartComponent: MedianFirstResponseTimeTrendCard,
                 label: OverviewMetric.MedianFirstResponseTime,
+                csvProducer: null,
             },
             [OverviewChart.MedianResolutionTimeTrendCard]: {
                 chartComponent: MedianResolutionTimeTrendCard,
                 label: OverviewMetric.MedianResolutionTime,
+                csvProducer: null,
             },
             [OverviewChart.MessagesPerTicketTrendCard]: {
                 chartComponent: MessagesPerTicketTrendCard,
                 label: OverviewMetric.MedianResolutionTime,
+                csvProducer: null,
             },
             [OverviewChart.TicketsCreatedTrendCard]: {
                 chartComponent: TicketsCreatedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsCreated].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.TicketsClosedTrendCard]: {
                 chartComponent: TicketsClosedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsClosed].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.OpenTicketsTrendCard]: {
                 chartComponent: OpenTicketsTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.OpenTickets].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.WorkloadPerChannelChart]: {
                 chartComponent: WorkloadPerChannelChart,
                 label: WORKLOAD_BY_CHANNEL_HINT.title,
+                csvProducer: null,
             },
             [OverviewChart.TicketsCreatedVsClosedChart]: {
                 chartComponent: TicketsCreatedVsClosedChart,
                 label: TICKETS_CREATED_VS_CLOSED_HINT.title,
+                csvProducer: null,
             },
             [OverviewChart.TicketsRepliedTrendCard]: {
                 chartComponent: TicketsRepliedTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketsReplied].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.MessagesSentTrendCard]: {
                 chartComponent: MessagesSentTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.MessagesSent].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.TicketHandleTimeTrendCard]: {
                 chartComponent: TicketHandleTimeTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.TicketHandleTime]
                     .hint.title,
+                csvProducer: null,
             },
             [OverviewChart.OneTouchTicketsTrendCard]: {
                 chartComponent: OneTouchTicketsTrendCard,
                 label: OverviewMetricConfig[OverviewMetric.OneTouchTickets].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.TicketsRepliedGraph]: {
                 chartComponent: TicketsRepliedGraph,
                 label: OverviewChartConfig[OverviewMetric.TicketsReplied].hint
                     .title,
+                csvProducer: null,
             },
             [OverviewChart.MessagesSentGraph]: {
                 chartComponent: MessagesSentGraph,
                 label: OverviewChartConfig[OverviewMetric.MessagesSent].hint
                     .title,
+                csvProducer: null,
             },
         },
     }

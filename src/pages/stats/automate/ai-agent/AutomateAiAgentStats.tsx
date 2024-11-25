@@ -38,7 +38,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
 import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
 import {
     activeParams,
     CustomFieldSelect,

@@ -22,7 +22,7 @@ jest.mock(
         ))
     }
 )
-jest.mock('pages/stats/SupportPerformanceFilters', () => ({
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 

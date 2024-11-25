@@ -129,7 +129,7 @@ import {
 } from 'pages/stats/self-service/constants'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
-import SupportPerformanceAgents from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
+import SupportPerformanceAgentsReport from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
@@ -619,7 +619,7 @@ export function StatsRoutes() {
                     path={`${path}/support-performance-agents`}
                     render={() => (
                         <App
-                            content={SupportPerformanceAgents}
+                            content={SupportPerformanceAgentsReport}
                             navbar={StatsNavbarContainer}
                         />
                     )}

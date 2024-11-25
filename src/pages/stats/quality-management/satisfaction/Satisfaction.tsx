@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -10,7 +11,7 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const SATISFACTION_TITLE = 'Satisfaction'
 export const SATISFACTION_OPTIONAL_FILTERS = [

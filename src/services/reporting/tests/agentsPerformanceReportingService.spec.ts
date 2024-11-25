@@ -172,30 +172,28 @@ const testCasesData = [
 describe('agentsPerformanceReportingService', () => {
     it.each(testCasesData)(
         'should call saveReport with $testName',
-        async ({data, summaryData, period}) => {
+        ({data, summaryData, period}) => {
             const fakeReport1 = 'someString'
 
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport1)
 
-            const zipperMock = jest.spyOn(files, 'saveZippedFiles')
+            const result = saveReport(data, summaryData, columnsOrder, period)
 
-            await saveReport(data, summaryData, columnsOrder, period)
-
-            expect(zipperMock).toHaveBeenCalledWith(
-                {
+            expect(result).toEqual({
+                files: {
                     [`${period.start_datetime}_${
                         period.end_datetime
                     }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}.csv`]:
                         fakeReport1,
                 },
-                `${period.start_datetime}_${
+                fileName: `${period.start_datetime}_${
                     period.end_datetime
-                }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}`
-            )
+                }-agents-metrics-${moment().format(DATE_TIME_FORMAT)}`,
+            })
         }
     )
 
-    it('should return agent name', async () => {
+    it('should return agent name', () => {
         const reportData = testCasesData.find(
             ({testName}) => testName === 'Report data with cube metrics'
         )
@@ -207,7 +205,7 @@ describe('agentsPerformanceReportingService', () => {
 
         if (reportData) {
             const {data, summaryData, period} = reportData
-            await saveReport(data, summaryData, columnsOrder, period)
+            saveReport(data, summaryData, columnsOrder, period)
         }
         const summaryRowAgentLabel = createCsvMock.mock.calls[0][0][1][0]
         const firstAgentName = createCsvMock.mock.calls[0][0][2][0]

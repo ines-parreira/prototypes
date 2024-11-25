@@ -1,100 +1,46 @@
 import {render, screen, fireEvent, act} from '@testing-library/react'
+
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {agents} from 'fixtures/agents'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useDownloadAgentsPerformanceData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
-import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
+import {saveZippedFiles} from 'utils/file'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/useAgentsMetrics')
-jest.mock('hooks/reporting/useAgentsSummaryMetrics')
+jest.mock(
+    'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
+)
+const useDownloadAgentsPerformanceDataMock = assumeMock(
+    useDownloadAgentsPerformanceData
+)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
-jest.mock('services/reporting/agentsPerformanceReportingService')
-const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
-const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
-const saveReportMock = assumeMock(saveReport)
+
+jest.mock('utils/file')
+const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('DownloadAgentsPerformanceDataButton', () => {
     const columnsOrder = Object.values(AgentsTableColumn)
-    const metricReturnValue = {
-        isFetching: false,
-        isError: false,
-        data: {allData: [], value: null, decile: 0},
-    }
-    const summaryMetricReturnValue = {
-        ...metricReturnValue,
-        data: {
-            value: 5,
+    const reportData = {
+        files: {
+            ['someName']: 'data',
         },
-    }
-    const agentsMetricsReturnValue = {
-        reportData: {
-            agents,
-            customerSatisfactionMetric: metricReturnValue,
-            closedTicketsMetric: metricReturnValue,
-            medianFirstResponseTimeMetric: metricReturnValue,
-            messagesSentMetric: metricReturnValue,
-            percentageOfClosedTicketsMetric: metricReturnValue,
-            medianResolutionTimeMetric: metricReturnValue,
-            ticketsRepliedMetric: metricReturnValue,
-            oneTouchTicketsMetric: metricReturnValue,
-            repliedTicketsPerHourMetric: metricReturnValue,
-            onlineTimeMetric: metricReturnValue,
-            messagesSentPerHourMetric: metricReturnValue,
-            closedTicketsPerHourMetric: metricReturnValue,
-            ticketHandleTimeMetric: metricReturnValue,
-        },
+        fileName: 'someFileName',
         isLoading: false,
-        period: {
-            start_datetime: '2021-02-03T00:00:00.000Z',
-            end_datetime: '2021-02-03T23:59:59.999Z',
-        },
-    }
-
-    const agentsSummaryMetricsReturnValue = {
-        summaryData: {
-            customerSatisfactionMetric: summaryMetricReturnValue,
-            closedTicketsMetric: summaryMetricReturnValue,
-            medianFirstResponseTimeMetric: summaryMetricReturnValue,
-            messagesSentMetric: summaryMetricReturnValue,
-            percentageOfClosedTicketsMetric: summaryMetricReturnValue,
-            medianResolutionTimeMetric: summaryMetricReturnValue,
-            ticketsRepliedMetric: summaryMetricReturnValue,
-            oneTouchTicketsMetric: {
-                ...summaryMetricReturnValue,
-                data: {...summaryMetricReturnValue.data, prevValue: 0},
-            },
-            repliedTicketsPerHourMetric: summaryMetricReturnValue,
-            onlineTimeMetric: summaryMetricReturnValue,
-            messagesSentPerHourMetric: summaryMetricReturnValue,
-            closedTicketsPerHourMetric: summaryMetricReturnValue,
-            ticketHandleTimeMetric: summaryMetricReturnValue,
-        },
-        isLoading: false,
-        period: {
-            start_datetime: '2021-02-03T00:00:00.000Z',
-            end_datetime: '2021-02-03T23:59:59.999Z',
-        },
     }
 
     beforeEach(() => {
-        useAgentsMetricsMock.mockReturnValue(agentsMetricsReturnValue)
-        useAgentsSummaryMetricsMock.mockReturnValue(
-            agentsSummaryMetricsReturnValue
-        )
         useAgentsTableConfigSettingMock.mockReturnValue({
             columnsOrder: columnsOrder,
         } as any)
+        useDownloadAgentsPerformanceDataMock.mockReturnValue(reportData)
     })
 
     it('should render', () => {
@@ -107,19 +53,19 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         render(<DownloadAgentsPerformanceDataButton />)
 
         fireEvent.click(screen.getByRole('button'))
-        expect(saveReportMock).toHaveBeenCalledWith(
-            agentsMetricsReturnValue.reportData,
-            agentsSummaryMetricsReturnValue.summaryData,
-            columnsOrder,
-            agentsMetricsReturnValue.period
+
+        expect(saveZippedFilesMock).toHaveBeenCalledWith(
+            reportData.files,
+            reportData.fileName
         )
     })
 
     it('should be disabled', () => {
-        useAgentsMetricsMock.mockReturnValue({
-            ...agentsMetricsReturnValue,
+        useDownloadAgentsPerformanceDataMock.mockReturnValue({
+            ...reportData,
             isLoading: true,
         })
+
         render(<DownloadAgentsPerformanceDataButton />)
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
@@ -137,6 +83,6 @@ describe('DownloadAgentsPerformanceDataButton', () => {
                 name: 'all-metrics',
             })
         )
-        expect(saveReportMock).toHaveBeenCalled()
+        expect(saveZippedFilesMock).toHaveBeenCalled()
     })
 })

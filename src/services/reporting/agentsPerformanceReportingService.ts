@@ -35,7 +35,7 @@ import {
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {AgentsTableColumn} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import {createCsv} from 'utils/file'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 
@@ -252,7 +252,7 @@ export const getData = (
         },
     }
 
-    const agentsMetricData = [
+    return [
         columnsOrder.map((column) => TableLabels[column]),
         columnsOrder.map((column) =>
             getSummary(column, columnsToMetricDataMap, data.agents.length)
@@ -263,11 +263,9 @@ export const getData = (
             )
         }),
     ]
-
-    return agentsMetricData
 }
 
-export const saveReport = async (
+export const saveReport = (
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: AgentsTableColumn[],
@@ -280,11 +278,11 @@ export const saveReport = async (
     const endDate = moment(period?.end_datetime).format(DATE_TIME_FORMAT)
     const periodPrefix = `${startDate}_${endDate}`
 
-    return saveZippedFiles(
-        {
+    return {
+        files: {
             [`${periodPrefix}-agents-metrics-${export_datetime}.csv`]:
                 createCsv(agentsMetricData),
         },
-        `${periodPrefix}-agents-metrics-${export_datetime}`
-    )
+        fileName: `${periodPrefix}-agents-metrics-${export_datetime}`,
+    }
 }

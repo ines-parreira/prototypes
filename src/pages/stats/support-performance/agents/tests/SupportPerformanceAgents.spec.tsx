@@ -14,12 +14,13 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
 import AgentsShoutouts from 'pages/stats/support-performance/agents/AgentsShoutouts'
 import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
+import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
 import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import SupportPerformanceAgents, {
-    AGENT_PERFORMANCE_SECTION_TITLE,
+import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+import SupportPerformanceAgentsReport, {
     AGENTS_OPTIONAL_FILTERS,
     AGENTS_PAGE_TITLE,
-} from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
+} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {assumeMock} from 'utils/testing'
 
@@ -44,6 +45,12 @@ jest.mock(
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 jest.mock('pages/stats/support-performance/agents/AgentsShoutouts.tsx')
 const AgentsShoutoutsMock = assumeMock(AgentsShoutouts)
+jest.mock(
+    'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+)
+const DownloadAgentsPerformanceDataButtonMock = assumeMock(
+    DownloadAgentsPerformanceDataButton
+)
 jest.mock('pages/stats/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock('hooks/reporting/useAgentsMetrics')
@@ -62,6 +69,7 @@ describe('SupportPerformanceAgents', () => {
     AgentsShoutoutsMock.mockImplementation(componentMock)
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentTableWithDefaultStateMock.mockImplementation(componentMock)
+    DownloadAgentsPerformanceDataButtonMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
         reportData: {
@@ -88,7 +96,7 @@ describe('SupportPerformanceAgents', () => {
     it('should render the page title and section title', () => {
         render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
@@ -101,19 +109,17 @@ describe('SupportPerformanceAgents', () => {
     it('should render the export data button', () => {
         render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
-        const button = screen.getByText(/Download data/)
-
-        expect(button).toBeInTheDocument()
+        expect(DownloadAgentsPerformanceDataButtonMock).toHaveBeenCalled()
     })
 
     it('should render the HeatmapSwitch and Agents Shoutout', () => {
         render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
@@ -126,7 +132,7 @@ describe('SupportPerformanceAgents', () => {
 
         const {getByText, queryByText} = render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
@@ -152,7 +158,7 @@ describe('SupportPerformanceAgents', () => {
 
         const {getByText} = render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
@@ -178,7 +184,7 @@ describe('SupportPerformanceAgents', () => {
 
         const {getByText} = render(
             <MemoryRouter>
-                <SupportPerformanceAgents />
+                <SupportPerformanceAgentsReport />
             </MemoryRouter>
         )
 
