@@ -1,4 +1,5 @@
 import {act} from '@testing-library/react'
+
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,6 +24,7 @@ import {
     ChannelColumnConfig,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {
@@ -41,7 +43,6 @@ import {
     getIsNewFilter,
 } from 'state/ui/stats/drillDownSlice'
 import {
-    OverviewMetric,
     SlaMetric,
     AgentsTableColumn,
     TicketFieldsMetric,

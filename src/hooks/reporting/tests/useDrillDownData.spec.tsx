@@ -1,5 +1,6 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import moment from 'moment/moment'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -39,6 +40,7 @@ import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
@@ -48,7 +50,6 @@ import {
 } from 'state/ui/stats/selectors'
 import {
     ConvertMetric,
-    OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'

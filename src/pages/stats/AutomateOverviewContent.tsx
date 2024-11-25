@@ -61,7 +61,7 @@ import {
     PAGE_TITLE_AUTOMATE_PAYWALL,
 } from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
-import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -300,7 +300,7 @@ export default function AutomateOverviewContent({
                                 isAnalyticsNewFiltersAutomate
                             }
                         />
-                        <DownloadOverviewDataButton
+                        <DownloadDataButton
                             onClick={async () => {
                                 logEvent(SegmentEvent.StatDownloadClicked, {
                                     name: 'all-metrics',

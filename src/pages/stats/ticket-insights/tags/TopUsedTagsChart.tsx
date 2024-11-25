@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
@@ -26,7 +27,6 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
-import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {TagsMetric} from 'state/ui/stats/types'
 

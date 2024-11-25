@@ -19,23 +19,37 @@ import {
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import {FilterKey} from 'models/stat/types'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
+
+import {TooltipData} from 'pages/stats/types'
 import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,
+    MEDIAN_RESOLUTION_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
+    ONE_TOUCH_TICKETS_LABEL,
     OPEN_TICKETS_LABEL,
-    MEDIAN_RESOLUTION_TIME_LABEL,
+    TICKET_HANDLE_TIME_LABEL,
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
-    ONE_TOUCH_TICKETS_LABEL,
-    TICKET_HANDLE_TIME_LABEL,
 } from 'services/reporting/constants'
-import {OverviewMetric} from 'state/ui/stats/types'
 
-import {TooltipData} from './types'
+export enum OverviewMetric {
+    CustomerSatisfaction = 'customer_satisfaction',
+    MedianFirstResponseTime = 'median_first_response_time',
+    MessagesPerTicket = 'messages_per_ticket',
+    MessagesSent = 'messages_sent',
+    OpenTickets = 'open_tickets',
+    MedianResolutionTime = 'median_resolution_time',
+    TicketsClosed = 'tickets_closed',
+    TicketsCreated = 'tickets_created',
+    TicketsReplied = 'tickets_replied',
+    OneTouchTickets = 'one_touch_tickets',
+    TicketHandleTime = 'ticket_handle_time',
+}
 
 export const OverviewMetricConfig: Record<
     OverviewMetric,
@@ -203,3 +217,13 @@ export const TICKETS_CREATED_VS_CLOSED_HINT = {
     title: 'Number of tickets created vs closed over time.',
     link: 'https://link.gorgias.com/q3m',
 }
+
+export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.CustomFields,
+]
+export const PERFORMANCE_OVERVIEW_CHART_TYPE = 'bar'
+export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'

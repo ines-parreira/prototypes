@@ -20,7 +20,7 @@ import SupportPerformanceAgents, {
     AGENTS_OPTIONAL_FILTERS,
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgents'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {assumeMock} from 'utils/testing'
 
 jest.unmock('react-router-dom')
@@ -28,7 +28,7 @@ jest.unmock('react-router-dom')
 jest.mock('state/ui/stats/agentPerformanceSlice')
 jest.mock('pages/stats/support-performance/agents/AgentsTable.tsx')
 const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
-jest.mock('pages/stats/SupportPerformanceFilters.tsx')
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',

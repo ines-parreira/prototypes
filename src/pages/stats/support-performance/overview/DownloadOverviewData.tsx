@@ -25,7 +25,7 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
@@ -53,7 +53,7 @@ export const DownloadOverviewData = ({
         )
     }, [isDeferredLoadingEnabled])
 
-    const [waitForTheReportData, setwaitForTheReportData] = useState(false)
+    const [waitForTheReportData, setWaitForTheReportData] = useState(false)
 
     const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -184,7 +184,7 @@ export const DownloadOverviewData = ({
         if (fetchingEnabled && !loading && waitForTheReportData) {
             void saveReportAsync()
             setFetchingEnable(false)
-            setwaitForTheReportData(false)
+            setWaitForTheReportData(false)
         }
     }, [
         fetchingEnabled,
@@ -195,13 +195,13 @@ export const DownloadOverviewData = ({
     ])
 
     return (
-        <DownloadOverviewDataButton
+        <DownloadDataButton
             onClick={() => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
                 setFetchingEnable(true)
-                setwaitForTheReportData(true)
+                setWaitForTheReportData(true)
             }}
             disabled={loading}
         />

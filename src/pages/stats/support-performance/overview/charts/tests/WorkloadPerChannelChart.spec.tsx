@@ -17,7 +17,7 @@ import {
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
@@ -41,6 +41,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<WorkloadPerChannelChart />', () => {
     jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
         [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+        [FeatureFlagKey.AnalyticsNewFilters]: false,
     }))
     const defaultStatsFilters: LegacyStatsFilters = {
         period: {
@@ -206,13 +207,17 @@ describe('<WorkloadPerChannelChart />', () => {
         })
 
         it('should call data hook with statsFiltersWithLogicalOperators', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+            }))
             useWorkloadPerChannelDistributionMock.mockReturnValue({
                 data: undefined,
             } as any)
 
             render(
                 <Provider store={mockStore(defaultState)}>
-                    <WorkloadPerChannelChart isAnalyticsNewFilters={true} />
+                    <WorkloadPerChannelChart />
                 </Provider>
             )
 

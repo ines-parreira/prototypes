@@ -2,13 +2,11 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
+import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 
 describe('DownloadOverviewData', () => {
     it('should be disabled', () => {
-        render(
-            <DownloadOverviewDataButton onClick={jest.fn()} disabled={true} />
-        )
+        render(<DownloadDataButton onClick={jest.fn()} disabled={true} />)
         const button = screen.getByRole('button')
 
         expect(button).toBeAriaDisabled()
@@ -17,9 +15,7 @@ describe('DownloadOverviewData', () => {
     it('should call onClick', () => {
         const onClickSpy = jest.fn()
 
-        render(
-            <DownloadOverviewDataButton onClick={onClickSpy} disabled={false} />
-        )
+        render(<DownloadDataButton onClick={onClickSpy} disabled={false} />)
         const button = screen.getByRole('button')
         userEvent.click(button)
 

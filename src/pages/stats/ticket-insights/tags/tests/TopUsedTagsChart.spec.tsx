@@ -1,18 +1,18 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
 
+import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
 import {
     TopUsedTagsChart,
     TAGS_CARD_TITLE,
 } from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
-import {useTagsDistribution} from 'pages/stats/useTagsDistribution'
 
 import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('pages/stats/useTagsDistribution')
+jest.mock('hooks/reporting/support-performance/useTagsDistribution')
 const useTagsDistributionMock = assumeMock(useTagsDistribution)
 
 const useTagsDistributionReturnValue = {

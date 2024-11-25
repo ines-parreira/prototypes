@@ -29,7 +29,10 @@ import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -39,7 +42,6 @@ import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({

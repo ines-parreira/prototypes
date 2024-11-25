@@ -37,7 +37,7 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
-jest.mock('pages/stats/SupportPerformanceFilters', () => ({
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 jest.mock('pages/stats/sla/components/AchievedAndBreachedTicketsChart')

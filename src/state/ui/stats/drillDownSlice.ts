@@ -26,7 +26,10 @@ import {
     ChannelColumnConfig,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -36,7 +39,6 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
-    OverviewMetric,
     SlaMetric,
     TagsMetric,
     TicketFieldsMetric,

@@ -23,7 +23,7 @@ import {
     businessHoursLegend,
     getMetricQuery,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'

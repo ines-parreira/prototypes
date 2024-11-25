@@ -20,7 +20,7 @@ import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/
 import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {OverviewChartConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'

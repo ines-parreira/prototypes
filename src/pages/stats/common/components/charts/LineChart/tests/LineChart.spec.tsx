@@ -5,7 +5,7 @@ import React from 'react'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 
-import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
+import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {ThemeProvider} from 'theme'
 import {assumeMock} from 'utils/testing'
 
@@ -17,7 +17,7 @@ import LineChart, {
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
 ))
-jest.mock('pages/stats/useCustomTooltip')
+jest.mock('pages/stats/common/useCustomTooltip')
 const useCustomTooltipMock = assumeMock(useCustomTooltip)
 const chartSpy = jest.spyOn(chartjs, 'Chart')
 

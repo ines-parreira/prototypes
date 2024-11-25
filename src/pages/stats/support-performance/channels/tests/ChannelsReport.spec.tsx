@@ -25,7 +25,7 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
-jest.mock('pages/stats/SupportPerformanceFilters', () => ({
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: ({hidden = false}: {hidden: boolean}) =>
         hidden ? null : <div>{defaultFiltersText}</div>,
 }))

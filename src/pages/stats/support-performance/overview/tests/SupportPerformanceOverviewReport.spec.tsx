@@ -1,5 +1,6 @@
 import {fireEvent, render} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,15 +12,16 @@ import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
-import SupportPerformanceOverview, {
-    STATS_TIPS_VISIBILITY_KEY,
+import {TicketsCreatedVsClosedChart} from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
+import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import {
+    OverviewMetric,
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
-} from 'pages/stats/SupportPerformanceOverview'
+    STATS_TIPS_VISIBILITY_KEY,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {RootState, StoreDispatch} from 'state/types'
-import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -34,11 +36,11 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
         children,
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
-jest.mock('pages/stats/SupportPerformanceFilters', () => ({
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 jest.mock(
-    'pages/stats/support-performance/components/DownloadOverviewData.tsx',
+    'pages/stats/support-performance/overview/DownloadOverviewData.tsx',
     () => ({
         DownloadOverviewData: () => null,
     })
@@ -54,13 +56,15 @@ jest.mock('pages/stats/support-performance/components/OverviewChartCard')
 const overviewChartCardMock = assumeMock(OverviewChartCard)
 
 jest.mock(
-    'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard.tsx'
+    'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart.tsx'
 )
 const ticketsCreatedVsClosedChartCardMock = assumeMock(
-    TicketsCreatedVsClosedChartCard
+    TicketsCreatedVsClosedChart
 )
 
-jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
+jest.mock(
+    'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+)
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
 jest.mock(
@@ -106,7 +110,7 @@ describe('<SupportPerformanceOverview />', () => {
         (customerMetricTrend) => {
             render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
 
@@ -123,7 +127,7 @@ describe('<SupportPerformanceOverview />', () => {
     it('should render productivity section with OneTouchTickets TrendCard', () => {
         render(
             <Provider store={mockStore({})}>
-                <SupportPerformanceOverview />
+                <SupportPerformanceOverviewReport />
             </Provider>
         )
         expect(trendCardMock.mock.calls).toContainEqual(
@@ -139,7 +143,7 @@ describe('<SupportPerformanceOverview />', () => {
         it('should show tips by default', () => {
             const {queryAllByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
 
@@ -151,7 +155,7 @@ describe('<SupportPerformanceOverview />', () => {
 
             const {getByText, queryAllByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
 
@@ -166,7 +170,7 @@ describe('<SupportPerformanceOverview />', () => {
 
             const {getByText, queryAllByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
 
@@ -191,7 +195,7 @@ describe('<SupportPerformanceOverview />', () => {
         it('should show New Filters Panel and render expected filters', () => {
             const {getByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
 
@@ -207,7 +211,7 @@ describe('<SupportPerformanceOverview />', () => {
             })
             const {getByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
             const filtersWithScore = [
@@ -227,7 +231,7 @@ describe('<SupportPerformanceOverview />', () => {
             })
             const {getByText} = render(
                 <Provider store={mockStore({})}>
-                    <SupportPerformanceOverview />
+                    <SupportPerformanceOverviewReport />
                 </Provider>
             )
             const filtersWithResolutionCompletenessAndCommunicationSkills = [

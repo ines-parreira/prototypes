@@ -19,6 +19,7 @@ import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constant
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -28,7 +29,6 @@ import {
     TagsFieldsMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import {
-    OverviewMetric,
     AgentsTableColumn,
     TicketFieldsMetric,
     SlaMetric,

@@ -7,20 +7,6 @@ import {
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
 
-export enum OverviewMetric {
-    CustomerSatisfaction = 'customer_satisfaction',
-    MedianFirstResponseTime = 'median_first_response_time',
-    MessagesPerTicket = 'messages_per_ticket',
-    MessagesSent = 'messages_sent',
-    OpenTickets = 'open_tickets',
-    MedianResolutionTime = 'median_resolution_time',
-    TicketsClosed = 'tickets_closed',
-    TicketsCreated = 'tickets_created',
-    TicketsReplied = 'tickets_replied',
-    OneTouchTickets = 'one_touch_tickets',
-    TicketHandleTime = 'ticket_handle_time',
-}
-
 export enum AgentsTableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'agent_customer_satisfaction',

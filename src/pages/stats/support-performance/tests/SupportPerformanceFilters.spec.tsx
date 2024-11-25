@@ -19,7 +19,7 @@ import {channelsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_C
 import {integrationsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import {tagsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 

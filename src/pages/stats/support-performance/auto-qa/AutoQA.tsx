@@ -19,7 +19,7 @@ import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
 const AUTO_QA_TITLE_TOOLTIP =

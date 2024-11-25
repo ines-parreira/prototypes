@@ -20,7 +20,7 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 
 const componentMock = () => <div />
 
-jest.mock('pages/stats/SupportPerformanceFilters', () => ({
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: componentMock,
 }))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({

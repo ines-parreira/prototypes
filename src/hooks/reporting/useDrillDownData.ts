@@ -17,6 +17,7 @@ import {
 } from 'pages/stats/DrillDownFormatters'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {
     DrillDownMetric,
@@ -32,7 +33,6 @@ import {
     AgentsTableColumn,
     AutoQAMetric,
     ChannelsTableColumns,
-    OverviewMetric,
     SlaMetric,
 } from 'state/ui/stats/types'
 

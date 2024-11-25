@@ -1,12 +1,13 @@
 import {render, screen} from '@testing-library/react'
+
 import React from 'react'
 
 import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
-    OverviewMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'

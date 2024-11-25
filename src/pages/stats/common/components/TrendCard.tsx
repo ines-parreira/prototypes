@@ -11,13 +11,14 @@ import {
 } from 'pages/stats/common/utils'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {AutoQAMetric, OverviewMetric, SlaMetric} from 'state/ui/stats/types'
+import {AutoQAMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
     hint,

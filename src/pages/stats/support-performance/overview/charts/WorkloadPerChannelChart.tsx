@@ -8,18 +8,17 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
 
-export const WorkloadPerChannelChart = ({
-    isAnalyticsNewFilters = false,
-}: {
-    isAnalyticsNewFilters?: boolean
-}) => {
+export const WorkloadPerChannelChart = () => {
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 

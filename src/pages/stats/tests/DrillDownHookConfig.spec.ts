@@ -11,6 +11,7 @@ import {
     formatVoiceDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -18,7 +19,6 @@ import {
     SlaMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import {
-    OverviewMetric,
     AgentsTableColumn,
     TicketFieldsMetric,
     SlaMetric,

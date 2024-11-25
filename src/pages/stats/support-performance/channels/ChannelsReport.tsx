@@ -14,7 +14,7 @@ import StatsPage from 'pages/stats/StatsPage'
 import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const CHANNELS_REPORT_PAGE_TITLE = 'Channels'
 export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'

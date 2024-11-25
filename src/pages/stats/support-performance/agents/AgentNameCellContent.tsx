@@ -6,8 +6,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import css from 'pages/stats/AgentCellContent.less'
 import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
+import css from 'pages/stats/support-performance/agents/AgentCellContent.less'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export type AgentNameCellContentProps = {

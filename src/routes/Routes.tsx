@@ -133,7 +133,7 @@ import SupportPerformanceAgents from 'pages/stats/support-performance/agents/Sup
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
-import SupportPerformanceOverview from 'pages/stats/SupportPerformanceOverview'
+import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
 import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
@@ -527,7 +527,7 @@ export function StatsRoutes() {
                     path={`${path}/support-performance-overview`}
                     render={() => (
                         <App
-                            content={SupportPerformanceOverview}
+                            content={SupportPerformanceOverviewReport}
                             navbar={StatsNavbarContainer}
                         />
                     )}

@@ -14,7 +14,7 @@ import {ApiListResponseCursorPagination} from 'models/api/types'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {CustomFieldsTicketCountBreakdownReport} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownReport'
 import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
@@ -34,7 +34,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('pages/stats/SupportPerformanceFilters.tsx')
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters.tsx')
 const SupportPerformanceFiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',

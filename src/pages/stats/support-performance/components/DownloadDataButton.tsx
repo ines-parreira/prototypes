@@ -11,7 +11,7 @@ type Props = {
     onClick: () => void
 }
 
-export const DownloadOverviewDataButton = ({disabled, onClick}: Props) => {
+export const DownloadDataButton = ({disabled, onClick}: Props) => {
     return (
         <Button
             intent="secondary"

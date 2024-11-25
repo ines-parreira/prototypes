@@ -25,7 +25,10 @@ import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+import {
+    OverviewMetric,
+    OverviewMetricConfig,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {
     CUSTOMER_SATISFACTION_LABEL,
@@ -41,7 +44,6 @@ import {
 import {
     ChannelsTableColumns,
     ChannelsTableViewIdentifier,
-    OverviewMetric,
     TableSetting,
 } from 'state/ui/stats/types'
 

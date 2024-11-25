@@ -1,0 +1,59 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import React from 'react'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import useLocalStorage from 'hooks/useLocalStorage'
+
+import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import {TrendCard} from 'pages/stats/common/components/TrendCard'
+import {
+    OverviewMetric,
+    OverviewMetricConfig,
+    STATS_TIPS_VISIBILITY_KEY,
+} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
+import {MetricName} from 'services/reporting/constants'
+import {
+    currentAccountHasFeature,
+    getSurveysSettingsJS,
+} from 'state/currentAccount/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
+
+export const CustomerSatisfactionTrendCard = () => {
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
+    const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
+
+    const surveySettings = useAppSelector(getSurveysSettingsJS)
+    const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
+        currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
+    )
+    const hasSatisfactionSurveyEnabledAndConfigured =
+        hasSatisfactionSurveyEnabled &&
+        (surveySettings?.data.send_survey_for_chat ||
+            surveySettings?.data.send_survey_for_email)
+
+    return (
+        <TrendCard
+            isAnalyticsNewFilters={isAnalyticsNewFilters}
+            {...OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]}
+            drillDownMetric={OverviewMetric.CustomerSatisfaction}
+            tip={
+                areTipsVisible &&
+                (hasSatisfactionSurveyEnabledAndConfigured ? (
+                    <SupportPerformanceTip
+                        isAnalyticsNewFilters={isAnalyticsNewFilters}
+                        metric={MetricName.CustomerSatisfaction}
+                        {...OverviewMetricConfig[
+                            OverviewMetric.CustomerSatisfaction
+                        ]}
+                    />
+                ) : (
+                    <ActivateCustomerSatisfactionSurveyTip />
+                ))
+            }
+        />
+    )
+}

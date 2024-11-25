@@ -22,8 +22,8 @@ import {
     OPTIONS,
 } from 'pages/stats/common/components/charts/config'
 import {ChartColors} from 'pages/stats/common/components/charts/types'
+import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
-import {useCustomTooltip} from 'pages/stats/useCustomTooltip'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'
 import {AnalyticsTheme, withAnalyticsTheme} from 'theme/withAnalyticsTheme'
 

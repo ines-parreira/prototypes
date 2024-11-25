@@ -16,7 +16,7 @@ import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
 import StatsPage from 'pages/stats/StatsPage'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
 export const SERVICE_LEVEL_OPTIONAL_FILTERS = [

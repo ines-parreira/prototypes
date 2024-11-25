@@ -15,12 +15,12 @@ import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performa
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 import {RootState} from 'state/types'
 import {busiestTimesSlice, initialState} from 'state/ui/stats/busiestTimesSlice'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
-jest.mock('pages/stats/SupportPerformanceFilters')
+jest.mock('pages/stats/support-performance/SupportPerformanceFilters')
 const FiltersMock = assumeMock(SupportPerformanceFilters)
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',

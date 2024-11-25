@@ -36,7 +36,7 @@ import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
+import {DownloadOverviewData} from 'pages/stats/support-performance/overview/DownloadOverviewData'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 
 import {fromLegacyStatsFilters} from 'state/stats/utils'

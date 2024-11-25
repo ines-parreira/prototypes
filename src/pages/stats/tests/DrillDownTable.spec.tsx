@@ -1,5 +1,6 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React, {FunctionComponent} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -29,6 +30,7 @@ import {
     COMPLETENESS_STATUS_COMPLETE,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {SlaStatusLabel} from 'services/reporting/constants'
 
@@ -38,12 +40,7 @@ import {
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {
-    AutoQAMetric,
-    ConvertMetric,
-    OverviewMetric,
-    SlaMetric,
-} from 'state/ui/stats/types'
+import {AutoQAMetric, ConvertMetric, SlaMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
