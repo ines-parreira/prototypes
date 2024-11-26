@@ -11,6 +11,7 @@ import React, {useCallback, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {isGorgiasApiError} from 'models/api/types'
 import {
     SavedFilter,
     SavedFilterAPI,
@@ -61,6 +62,28 @@ export const UNAPPLY_FILTER_ICON = 'close'
 export const DUPLICATE_FILTER_ACTION_LABEL = 'Duplicate Filter'
 export const DELETE_FILTER_ACTION_LABEL = 'Delete Filter'
 
+export const SAVED_FILTER_NAME_FIELD_KEY = 'name'
+export const SAVED_FILTER_FIELD_GROUP_FIELD_KEY = 'field_group'
+
+type SavedFiltersError = {
+    [SAVED_FILTER_NAME_FIELD_KEY]?: string[]
+    [SAVED_FILTER_FIELD_GROUP_FIELD_KEY]?: unknown
+}
+
+export const isSavedFiltersError = (
+    data: unknown
+): data is SavedFiltersError => {
+    return (
+        data !== null &&
+        typeof data === 'object' &&
+        Object.keys(data).some(
+            (key) =>
+                key === SAVED_FILTER_NAME_FIELD_KEY ||
+                key === SAVED_FILTER_FIELD_GROUP_FIELD_KEY
+        )
+    )
+}
+
 export const getDeleteConfirmationTitle = (savedFilterName: string) =>
     `Delete ${savedFilterName}?`
 const getDeleteConfirmationContent = (savedFilterName: string) =>
@@ -92,6 +115,9 @@ export const SavedFiltersPanel = ({
         savedFilterDraft !== null && !isSavedFilterApplied
 
     const [isEditMode, setIsEditMode] = useState(isEditingSavedFilterDraft)
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(
+        undefined
+    )
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
         useState(false)
     const toggleIsEditMode = () => {
@@ -117,6 +143,7 @@ export const SavedFiltersPanel = ({
 
     const titleOnChangeHandler = (name: string) => {
         dispatch(updateSavedFilterDraftName(name))
+        setErrorMessage(undefined)
     }
 
     const cancelHandler = useCallback(() => {
@@ -130,10 +157,12 @@ export const SavedFiltersPanel = ({
             )
         }
         setIsEditMode(false)
+        setErrorMessage(undefined)
     }, [dispatch, isEditingSavedFilterDraft, originalSavedFilter])
 
     const unApplyFilterHandler = () => {
         dispatch(unapplySavedFilter())
+        setErrorMessage(undefined)
     }
 
     const saveHandler = useCallback(
@@ -162,13 +191,24 @@ export const SavedFiltersPanel = ({
                         )
                         setIsEditMode(false)
                     })
-                    .catch(() => {
+                    .catch((e: unknown) => {
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Error,
                                 message: FILTER_SAVED_ERROR_MESSAGE,
                             })
                         )
+
+                        if (
+                            isGorgiasApiError(e) &&
+                            isSavedFiltersError(e.response.data.error.data)
+                        ) {
+                            setErrorMessage(
+                                e.response.data.error.data[
+                                    SAVED_FILTER_NAME_FIELD_KEY
+                                ]?.join(' ')
+                            )
+                        }
                     })
             } else {
                 void createMutation
@@ -192,17 +232,28 @@ export const SavedFiltersPanel = ({
                         )
                         setIsEditMode(false)
                     })
-                    .catch(() => {
+                    .catch((e: unknown) => {
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Error,
                                 message: FILTER_SAVED_ERROR_MESSAGE,
                             })
                         )
+
+                        if (
+                            isGorgiasApiError(e) &&
+                            isSavedFiltersError(e.response.data.error.data)
+                        ) {
+                            setErrorMessage(
+                                e.response.data.error.data[
+                                    SAVED_FILTER_NAME_FIELD_KEY
+                                ]?.join(' ')
+                            )
+                        }
                     })
             }
         },
-        [createMutation, dispatch, updateMutation]
+        [createMutation, dispatch, updateMutation, setErrorMessage]
     )
 
     const deleteHandler = useCallback(
@@ -267,6 +318,7 @@ export const SavedFiltersPanel = ({
                                     ],
                                     savedFilterDraft,
                                 })}
+                                error={errorMessage}
                             />
                             {(isEditMode || isEditingSavedFilterDraft) &&
                             savedFilter ? (

@@ -31,10 +31,14 @@ import {
     FILTER_DELETED_ERROR_MESSAGE,
     FILTER_SAVED_ERROR_MESSAGE,
     getDeleteConfirmationTitle,
+    isSavedFiltersError,
     SAVE_BUTTON_LABEL,
+    SAVED_FILTER_NAME_FIELD_KEY,
+    SAVED_FILTER_FIELD_GROUP_FIELD_KEY,
     SavedFiltersPanel,
     UNAPPLY_FILTER_ICON,
 } from 'pages/stats/common/filters/SavedFiltersPanel'
+import {exampleGorgiasApiError} from 'pages/stats/common/filters/tests/fixtures/errors'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
@@ -68,6 +72,29 @@ describe('SavedFiltersPanel', () => {
             },
         },
     } as RootState
+
+    const errorMessageOnSave = 'this is an api error'
+
+    const gorgiasApiError = {
+        ...exampleGorgiasApiError,
+        response: {
+            data: {
+                error: {
+                    data: {
+                        [SAVED_FILTER_NAME_FIELD_KEY]: [errorMessageOnSave],
+                    },
+                    msg: 'something went wrong',
+                },
+            },
+        },
+    }
+
+    const notGorgiasApiError = {
+        ...exampleGorgiasApiError,
+        response: {
+            data: {},
+        },
+    }
 
     beforeEach(() => {
         CampaignStatsFiltersMock.mockImplementation(() => <div />)
@@ -801,5 +828,172 @@ describe('SavedFiltersPanel', () => {
             )
         )
         expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
+    })
+
+    describe('error handling', () => {
+        const savedFilterName = 'Some Name draft'
+        const savedFilterDraft: SavedFilterDraft = {
+            name: savedFilterName,
+            filter_group: [
+                {
+                    member: FilterKey.Agents,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['1'],
+                },
+            ],
+        }
+        const savedFilterSaved: SavedFilter = {
+            ...savedFilterDraft,
+            id: 123,
+        }
+        const createState = {
+            stats: statsSlice.initialState,
+            integrations: fromJS({
+                integration: {
+                    id: 1,
+                },
+            }),
+            ui: {
+                stats: {
+                    filters: {
+                        ...initialState,
+                        savedFilterDraft,
+                    },
+                },
+            },
+        } as RootState
+
+        const updateState = {
+            ...createState,
+            ui: {
+                stats: {
+                    filters: {
+                        ...initialState,
+                        savedFilterDraft: savedFilterSaved,
+                        appliedSavedFilterId: 123,
+                    },
+                },
+            },
+        } as RootState
+
+        it('should show error message when error response contains name on creation of saved filters', async () => {
+            const mutateMock = jest.fn().mockRejectedValue(gorgiasApiError)
+            useCreateAnalyticsFilterMock.mockReturnValue({
+                mutateAsync: mutateMock,
+                error: undefined,
+            } as any)
+
+            const {store} = renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                createState
+            )
+
+            userEvent.click(
+                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+            )
+
+            expect(mutateMock).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        payload: expect.objectContaining({
+                            message: FILTER_SAVED_ERROR_MESSAGE,
+                        }),
+                    })
+                )
+                expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
+            })
+        })
+
+        it('should show error message when error response contains name on update of saved filters', async () => {
+            const mutateMock = jest.fn().mockRejectedValue(gorgiasApiError)
+            useUpdateAnalyticsFilterMock.mockReturnValue({
+                mutateAsync: mutateMock,
+            } as any)
+
+            const {store} = renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                updateState
+            )
+
+            userEvent.click(
+                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+            )
+
+            expect(mutateMock).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        payload: expect.objectContaining({
+                            message: FILTER_SAVED_ERROR_MESSAGE,
+                        }),
+                    })
+                )
+                userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+                expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
+            })
+        })
+
+        it('should not show error message when error response contains name', async () => {
+            const mutateMock = jest.fn().mockRejectedValue(notGorgiasApiError)
+            useCreateAnalyticsFilterMock.mockReturnValue({
+                mutateAsync: mutateMock,
+                error: undefined,
+            } as any)
+
+            const {store} = renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                createState
+            )
+
+            userEvent.click(
+                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+            )
+
+            expect(mutateMock).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        payload: expect.objectContaining({
+                            message: FILTER_SAVED_ERROR_MESSAGE,
+                        }),
+                    })
+                )
+                expect(
+                    screen.queryByText(errorMessageOnSave)
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('isSavedFiltersError', () => {
+        it('should return true', () => {
+            const savedFilterError1 = {
+                [SAVED_FILTER_NAME_FIELD_KEY]: ['name'],
+            }
+            const savedFilterError2 = {
+                [SAVED_FILTER_FIELD_GROUP_FIELD_KEY]: {},
+            }
+
+            expect(isSavedFiltersError(savedFilterError1)).toBeTruthy()
+            expect(isSavedFiltersError(savedFilterError2)).toBeTruthy()
+        })
+        it('should return false', () => {
+            const savedFilterError = {}
+
+            expect(isSavedFiltersError(savedFilterError)).toBeFalsy()
+        })
     })
 })
