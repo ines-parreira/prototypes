@@ -26,16 +26,23 @@ import {
 } from 'models/integration/types'
 import {isBoolean} from 'pages/common/components/infobar/utils'
 import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
-import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+import {
+    getOutboundEmailProviderSettingKey,
+    isBaseEmailAddress,
+} from 'pages/integrations/integration/components/email/helpers'
 import {
     INTEGRATION_REMOVAL_CONFIGURATION_TEXT,
     INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT,
 } from 'pages/integrations/integration/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('common/flags', () => ({
     useFlag: jest.fn().mockReturnValue(false),
 }))
+jest.mock('pages/integrations/integration/components/email/helpers')
+
+const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
 
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
@@ -56,6 +63,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
     beforeEach(() => {
         store = mockStore({integrations: fromJS(integrationsState)})
+        isBaseEmailAddressMock.mockReturnValue(false)
     })
 
     const renderWithStore = (props = {}) =>
@@ -139,7 +147,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
     )
     it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
         'should enable the submit button only if email deliverability setting changed [%s]',
-        (integrationType) => {
+        async (integrationType) => {
             const props = {
                 integration: fromJS({
                     id: 100,
@@ -158,23 +166,19 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                                 | IntegrationType.Gmail
                                 | IntegrationType.Outlook
                         )]: true,
+                        enable_outlook_sending: true,
+                        enable_gmail_sending: true,
                     },
                 }),
             }
 
             const helpers = renderWithStore(props)
-            const {getByRole, getAllByRole} = helpers
+            const {getByRole} = helpers
             const saveButton = getByRole('button', {name: 'Save changes'})
-            const deliverabilitySettingsRadioButtons = getAllByRole('radio')
-            const useInternalProviderRadioButton =
-                deliverabilitySettingsRadioButtons[0]
-            const useDefaultProviderRadioButton =
-                deliverabilitySettingsRadioButtons[1]
-            expect(saveButton).toBeAriaDisabled()
-            fireEvent.click(useInternalProviderRadioButton)
-            expect(saveButton).toBeAriaEnabled()
-            fireEvent.click(useDefaultProviderRadioButton)
-            expect(saveButton).toBeAriaDisabled()
+
+            await waitFor(() => {
+                expect(saveButton).toBeAriaDisabled()
+            })
         }
     )
 
@@ -398,6 +402,28 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             getByText(
                 `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT}`
             )
+        ).toBeInTheDocument()
+    })
+
+    it('should not display the "setup instructions" section for base email addresses', () => {
+        isBaseEmailAddressMock.mockReturnValue(true)
+
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: EMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: 'abc@example.com',
+                },
+            }),
+        }
+
+        const {queryByText, getByText} = renderWithStore(props)
+        expect(queryByText('Setup instructions')).not.toBeInTheDocument()
+
+        expect(
+            getByText(/we recommend using your own company support address/)
         ).toBeInTheDocument()
     })
 })

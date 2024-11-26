@@ -4,6 +4,7 @@ import copy from 'copy-to-clipboard'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {isEqual} from 'lodash'
 import _capitalize from 'lodash/capitalize'
 import React, {Component, FormEvent, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -40,7 +41,10 @@ import EmailIntegrationAddressField from 'pages/integrations/integration/compone
 import EmailIntegrationDeliverabilitySettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
 import css from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.less'
 import EmailIntegrationConnectStore from 'pages/integrations/integration/components/email/EmailToStoreMapping/EmailIntegrationConnectStore'
-import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+import {
+    getOutboundEmailProviderSettingKey,
+    isBaseEmailAddress,
+} from 'pages/integrations/integration/components/email/helpers'
 import {INTEGRATION_SAVED_FILTERS_REMOVAL_CONFIRMATION_TEXT} from 'pages/integrations/integration/constants'
 import {getRemovalConfirmationMessageWithSavedFiltersText} from 'pages/integrations/integration/utils'
 import settingsCss from 'pages/settings/settings.less'
@@ -54,7 +58,7 @@ import {
     getRedirectUri,
 } from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {displayRestrictedSymbols, isGorgiasSupportAddress} from 'utils'
+import {displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
 
 type Props = {
@@ -117,9 +121,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const currentFormValues = this._getFormValues(!integrationHasSignature)
         const {dirty: dirtyState} = this.state
 
-        const dirty =
-            JSON.stringify(integration.toJS()) !==
-            JSON.stringify(currentFormValues.toJS())
+        const dirty = !isEqual(integration.toJS(), currentFormValues.toJS())
 
         if (dirty !== dirtyState) {
             this.setState({dirty})
@@ -366,9 +368,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
     _renderInstructions = () => {
         const {forwardingEmailAddress, integration} = this.props
-        const address = integration.getIn(['meta', 'address'], '')
+        const address: string = integration.getIn(['meta', 'address'], '')
 
-        if (isGorgiasSupportAddress(address)) {
+        if (isBaseEmailAddress(address)) {
             // no need to display instructions for our own support address
             return (
                 <Alert>
