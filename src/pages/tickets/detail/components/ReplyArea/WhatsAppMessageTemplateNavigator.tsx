@@ -75,19 +75,27 @@ export default function WhatsAppMessageTemplateNavigator() {
                         </p>
                     </>
                 ) : (
-                    <p>
-                        {currentIntegration?.name ?? 'This integration'} has no
-                        approved, supported message templates. To create new
-                        message templates, please visit the{' '}
-                        <a
-                            href="https://business.facebook.com/wa/manage/message-templates/"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            WhatsApp Business Manager
-                        </a>
-                        .
-                    </p>
+                    <div data-testid="missing-templates-instructions">
+                        <p>
+                            The 24-hour window to respond to this WhatsApp
+                            message has expired. Re-engage the customer using
+                            approved message templates in order to reset the
+                            reply window.
+                        </p>
+                        <p>
+                            {currentIntegration?.name ?? 'This integration'}{' '}
+                            does not currently have any approved templates. To
+                            create new message templates, please visit the{' '}
+                            <a
+                                href="https://business.facebook.com/wa/manage/message-templates/"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                WhatsApp Business Manager
+                            </a>
+                            .
+                        </p>
+                    </div>
                 )}
             </div>
         )
