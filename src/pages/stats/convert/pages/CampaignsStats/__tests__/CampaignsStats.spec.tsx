@@ -9,7 +9,6 @@ import {campaign} from 'fixtures/campaign'
 import {convertStatusOk} from 'fixtures/convert'
 import {CampaignPreview} from 'models/convert/campaign/types'
 import {IntegrationType} from 'models/integration/constants'
-import {ReportingGranularity} from 'models/reporting/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
@@ -17,7 +16,6 @@ import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaigns
 import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import {RootState} from 'state/types'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 
@@ -68,19 +66,6 @@ jest.mock('react-router-dom', () => ({
 
 const useParamsMock = assumeMock(useParams)
 
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
-
-const startDate = '2021-05-01T00:00:00+02:00'
-const endDate = '2021-05-04T23:59:59+02:00'
-const filters = {
-    period: {
-        start_datetime: startDate,
-        end_datetime: endDate,
-    },
-}
-
 describe('CampaignsStats', () => {
     const history = createMemoryHistory()
 
@@ -117,12 +102,6 @@ describe('CampaignsStats', () => {
         })
 
         useParamsMock.mockReturnValue({})
-
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone: 'userTimezone',
-            granularity: ReportingGranularity.Day,
-        })
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {

@@ -84,31 +84,23 @@ export default function AutoQA() {
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <ReviewedClosedTicketsTrendCard
-                            isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        />
+                        <ReviewedClosedTicketsTrendCard />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <ResolutionCompletenessTrendCard
-                            isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        />
+                        <ResolutionCompletenessTrendCard />
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(trendCardColumnWidth)}
                     >
-                        <CommunicationSkillsTrendCard
-                            isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        />
+                        <CommunicationSkillsTrendCard />
                     </DashboardGridCell>
                     {isAutoQaLanguageProficiency && (
                         <DashboardGridCell
                             size={getGridCellSize(trendCardColumnWidth)}
                         >
-                            <LanguageProficiencyTrendCard
-                                isAnalyticsNewFilters={isAnalyticsNewFilters}
-                            />
+                            <LanguageProficiencyTrendCard />
                         </DashboardGridCell>
                     )}
                     <DashboardGridCell size={getGridCellSize(12)}>

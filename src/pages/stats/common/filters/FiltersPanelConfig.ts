@@ -98,14 +98,3 @@ export const SavedFilterComponentMap: Record<
     [FilterComponentKey.PhoneIntegrations]: () => null,
     [FilterComponentKey.Store]: () => null,
 }
-
-export const SAVABLE_FILTERS = [
-    FilterKey.CustomFields,
-    FilterKey.Channels,
-    FilterKey.Integrations,
-    FilterKey.Agents,
-    FilterKey.Tags,
-    FilterKey.Score,
-    FilterKey.Campaigns,
-    FilterKey.CampaignStatuses,
-]

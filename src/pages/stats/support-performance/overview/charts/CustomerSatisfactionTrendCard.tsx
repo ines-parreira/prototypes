@@ -1,8 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 
@@ -22,8 +19,6 @@ import {
 import {AccountFeature} from 'state/currentAccount/types'
 
 export const CustomerSatisfactionTrendCard = () => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
     const surveySettings = useAppSelector(getSurveysSettingsJS)
@@ -37,14 +32,12 @@ export const CustomerSatisfactionTrendCard = () => {
 
     return (
         <TrendCard
-            isAnalyticsNewFilters={isAnalyticsNewFilters}
             {...OverviewMetricConfig[OverviewMetric.CustomerSatisfaction]}
             drillDownMetric={OverviewMetric.CustomerSatisfaction}
             tip={
                 areTipsVisible &&
                 (hasSatisfactionSurveyEnabledAndConfigured ? (
                     <SupportPerformanceTip
-                        isAnalyticsNewFilters={isAnalyticsNewFilters}
                         metric={MetricName.CustomerSatisfaction}
                         {...OverviewMetricConfig[
                             OverviewMetric.CustomerSatisfaction

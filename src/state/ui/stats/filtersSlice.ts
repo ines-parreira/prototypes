@@ -77,7 +77,7 @@ export const filtersSlice = createSlice({
             state,
             action: PayloadAction<SavedFilter>
         ) {
-            state.appliedSavedFilterId = null
+            state.appliedSavedFilterId = action.payload.id
             state.savedFilterDraft = action.payload
         },
         duplicateSavedFilterDraftFromSavedFilter(

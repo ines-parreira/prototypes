@@ -1,9 +1,12 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
@@ -26,10 +29,6 @@ import {formatDates} from 'pages/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
-import {
     initialState,
     setOrder,
     ticketInsightsSlice,
@@ -45,13 +44,8 @@ jest.mock(
 const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
     useCustomFieldsTicketCountPerCustomFields
 )
-jest.mock('state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
-const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
@@ -153,18 +147,13 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     ]
 
     beforeEach(() => {
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
         })
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
-            {
-                userTimezone: 'someTimezone',
-                cleanStatsFilters: defaultStatsFilters,
-                granularity: ReportingGranularity.Day,
-            }
-        )
+
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: exampleData,
             dateTimes,

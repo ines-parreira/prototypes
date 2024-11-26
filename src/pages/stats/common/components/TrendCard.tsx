@@ -1,7 +1,8 @@
 import React, {ReactNode} from 'react'
 
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import useAppSelector from 'hooks/useAppSelector'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
@@ -14,10 +15,6 @@ import MetricCard from 'pages/stats/MetricCard'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {AutoQAMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
@@ -28,7 +25,6 @@ export const TrendCard = ({
     tip,
     interpretAs,
     metricFormat,
-    isAnalyticsNewFilters = false,
 }: {
     useTrend: MetricTrendHook
     hint: TooltipData
@@ -37,17 +33,9 @@ export const TrendCard = ({
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
-    isAnalyticsNewFilters?: boolean
 }) => {
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+        useNewStatsFilters()
 
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const formattedMetric = formatMetricValue(

@@ -1,8 +1,12 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
+
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     useTicketsClosedTimeSeries,
@@ -51,6 +55,8 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
                 filters: {
                     isFilterDirty: false,
                     cleanStatsFilters: filters,
+                    savedFilterDraft: null,
+                    appliedSavedFilterId: null,
                 },
             },
         },
@@ -86,6 +92,7 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
         mockedPeriodAndAggregationWindowToReportingGranularity.mockReturnValue(
             mockGranularity
         )
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
     })
 
     it('should return formatted time series for closed and created tickets', () => {
@@ -120,7 +127,9 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
     })
 
     it('should pass stats filters with logical operators', () => {
-        renderHook(() => useCreatedVsClosedTicketsTimeSeries(true), {
+        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+
+        renderHook(() => useCreatedVsClosedTicketsTimeSeries(), {
             wrapper: (({children}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as ComponentType,

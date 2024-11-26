@@ -1,11 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
@@ -14,12 +13,9 @@ import {
     useTicketSlaAchievementRate,
     useTicketSlaAchievementRateTrend,
 } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 
@@ -32,15 +28,8 @@ const useSatisfiedOrBreachedTicketsInPolicyPerStatusMock = assumeMock(
 const useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock = assumeMock(
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
 )
-jest.mock('state/ui/stats/selectors')
-const legacyStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
-
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 describe('useTicketSlaAchievementRate', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
@@ -54,15 +43,11 @@ describe('useTicketSlaAchievementRate', () => {
     const userTimezone = 'UTC'
 
     beforeEach(() => {
-        legacyStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             userTimezone,
             granularity: ReportingGranularity.Day,
-        })
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
         })
     })
 
@@ -146,18 +131,11 @@ describe('useTicketSlaAchievementRate with AnalyticsNewFilters', () => {
     const userTimezone = 'UTC'
 
     beforeEach(() => {
-        legacyStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             userTimezone,
             granularity: ReportingGranularity.Day,
-        })
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-        })
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            isAnalyticsNewFilters: true,
         })
     })
 
@@ -241,18 +219,11 @@ const userTimezone = 'UTC'
 
 describe('useTicketSlaAchievementRateTrend', () => {
     beforeEach(() => {
-        legacyStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             userTimezone,
             granularity: ReportingGranularity.Day,
-        })
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-        })
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFilters]: false,
+            isAnalyticsNewFilters: false,
         })
     })
 
@@ -305,18 +276,11 @@ describe('useTicketSlaAchievementRateTrend', () => {
 
 describe('useTicketSlaAchievementRateTrend with AnalyticsNewFilters', () => {
     beforeEach(() => {
-        legacyStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: filters,
             userTimezone,
             granularity: ReportingGranularity.Day,
-        })
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            cleanStatsFilters: filters,
-            userTimezone,
-            granularity: ReportingGranularity.Day,
-        })
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            isAnalyticsNewFilters: true,
         })
     })
 

@@ -46,7 +46,7 @@ export function ServiceLevelAgreements() {
                             <SupportPerformanceFilters
                                 hidden={isAnalyticsNewFilters}
                             />
-                            <DownloadSLAsData hidden={isAnalyticsNewFilters} />
+                            <DownloadSLAsData />
                         </>
                     }
                 >
@@ -82,19 +82,13 @@ export function ServiceLevelAgreements() {
                     </DashboardSection>
                     <DashboardSection>
                         <DashboardGridCell size={getGridCellSize(6)}>
-                            <AchievementRateTrendCard
-                                isAnalyticsNewFilters={isAnalyticsNewFilters}
-                            />
+                            <AchievementRateTrendCard />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>
-                            <BreachedTicketsRateTrendCard
-                                isAnalyticsNewFilters={isAnalyticsNewFilters}
-                            />
+                            <BreachedTicketsRateTrendCard />
                         </DashboardGridCell>
                         <DashboardGridCell size={12}>
-                            <AchievedAndBreachedTicketsChart
-                                isAnalyticsNewFilters={isAnalyticsNewFilters}
-                            />
+                            <AchievedAndBreachedTicketsChart />
                         </DashboardGridCell>
                     </DashboardSection>
                     <AnalyticsFooter />

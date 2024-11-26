@@ -1,5 +1,7 @@
 import {fireEvent, render} from '@testing-library/react'
+
 import LD from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -25,6 +27,7 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -33,6 +36,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
@@ -43,10 +47,6 @@ import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
@@ -90,6 +90,8 @@ const useWorkloadPerChannelDistributionMock = assumeMock(
 const useWorkloadPerChannelDistributionForPreviousPeriodMock = assumeMock(
     useWorkloadPerChannelDistributionForPreviousPeriod
 )
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -249,6 +251,12 @@ describe('DownloadOverviewData', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
         }))
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+            userTimezone: DEFAULT_TIMEZONE,
+        })
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
@@ -270,6 +278,13 @@ describe('DownloadOverviewData', () => {
 
     describe('statsFilters', () => {
         it('should call data hooks with legacyStatsFilters', () => {
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: defaultStatsFilters,
+                isAnalyticsNewFilters: false,
+                granularity: ReportingGranularity.Day,
+                userTimezone: DEFAULT_TIMEZONE,
+            })
+
             render(
                 <Provider store={mockStore(defaultState)}>
                     <DownloadOverviewData />
@@ -277,22 +292,19 @@ describe('DownloadOverviewData', () => {
             )
 
             expect(useCustomerSatisfactionTrendMock).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithTimezone(defaultState)
-                    .cleanStatsFilters,
+                defaultStatsFilters,
                 DEFAULT_TIMEZONE
             )
         })
         it('should call data hooks with statsFiltersWithLogicalOperators', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
-                    <DownloadOverviewData isAnalyticsNewFilters={true} />
+                    <DownloadOverviewData />
                 </Provider>
             )
 
             expect(useCustomerSatisfactionTrendMock).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
-                    defaultState
-                ).cleanStatsFilters,
+                fromLegacyStatsFilters(defaultStatsFilters),
                 DEFAULT_TIMEZONE
             )
         })

@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 
 import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -8,7 +9,6 @@ import {
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
 
 const ticketCountField = TicketTagsEnrichedMeasure.TicketCount
@@ -37,9 +37,7 @@ function getTicketCount(value?: ItemType) {
 }
 
 export const useTagsDistribution = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-    )
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
 
     const {data, isFetching} = useTagsTicketCount(

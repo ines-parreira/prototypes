@@ -23,7 +23,7 @@ import {getSavedFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {getCleanStatsFiltersWithLogicalOperators} from 'state/ui/stats/selectors'
 
 const filterOptions = [
     {
@@ -150,8 +150,8 @@ export const CampaignStatusesFilterFromContext = ({
 }: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const {selectedCampaignStatuses} = useCampaignStatsFilters()
-    const {cleanStatsFilters: statsFilters} = useAppSelector(
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    const statsFilters = useAppSelector(
+        getCleanStatsFiltersWithLogicalOperators
     )
     return (
         <CampaignStatusesFilter

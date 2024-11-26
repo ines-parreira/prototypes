@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import moment from 'moment/moment'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     useAnsweredCallsMetricPerAgent,
@@ -13,6 +13,7 @@ import {
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
+import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
@@ -37,7 +38,9 @@ const useAverageTalkTimeMetricPerAgentMock = assumeMock(
     useAverageTalkTimeMetricPerAgent
 )
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
+
 const agents = [{name: 'Guybrush Threepwood'}]
 const metricData = {
     isFetching: false,
@@ -60,15 +63,13 @@ const userTimezone = 'UTC'
 
 describe('useVoiceAgentsMetric', () => {
     it('should return call activity per agent metrics', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: false,
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: false,
         })
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                cleanStatsFilters: statsFilters,
-                userTimezone,
-            })
-            .mockReturnValue(agents)
+        useAppSelectorMock.mockReturnValue(agents)
         useTotalCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAnsweredCallsMetricPerAgentMock.mockReturnValue(metricData)
         useMissedCallsMetricPerAgentMock.mockReturnValue(metricData)
@@ -124,18 +125,13 @@ describe('useVoiceAgentsMetric', () => {
 
 describe('useVoiceAgentsMetric with the new filters', () => {
     it('should return call activity per agent metrics', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFilters,
+            userTimezone,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
         })
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                cleanStatsFilters: statsFilters,
-                userTimezone,
-            })
-            .mockReturnValueOnce({
-                cleanStatsFilters: statsFilters,
-            })
-            .mockReturnValue(agents)
+        useAppSelectorMock.mockReturnValue(agents)
         useTotalCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAnsweredCallsMetricPerAgentMock.mockReturnValue(metricData)
         useMissedCallsMetricPerAgentMock.mockReturnValue(metricData)

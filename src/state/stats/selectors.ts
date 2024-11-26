@@ -124,40 +124,12 @@ export const getPageStatsFilters = createSelector(
     getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
     (statsFilters, integrationsStatsFilter) => {
-        const {
-            aggregationWindow,
-            channels,
-            agents,
-            period,
-            tags,
-            helpCenters,
-            localeCodes,
-            score,
-            campaigns,
-            campaignStatuses,
-            customFields,
-            slaPolicies,
-            communicationSkills,
-            resolutionCompleteness,
-        } = statsFilters
+        const {integrations: __, ...rest} = statsFilters
         return {
-            aggregationWindow,
-            channels,
-            agents,
-            period,
+            ...rest,
             ...(integrationsStatsFilter.length > 0
                 ? {integrations: integrationsStatsFilter}
                 : {}),
-            tags,
-            helpCenters,
-            localeCodes,
-            score,
-            campaigns,
-            campaignStatuses,
-            customFields,
-            slaPolicies,
-            communicationSkills,
-            resolutionCompleteness,
         }
     }
 )
@@ -191,40 +163,10 @@ export const getPageStatsFiltersWithLogicalOperators = createSelector(
         statsFilters,
         integrationsStatsFilter
     ): StatsFiltersWithLogicalOperator => {
-        const {
-            agents,
-            aggregationWindow,
-            campaigns,
-            campaignStatuses,
-            channels,
-            communicationSkills,
-            customFields,
-            helpCenters,
-            languageProficiency,
-            localeCodes,
-            period,
-            resolutionCompleteness,
-            score,
-            slaPolicies,
-            tags,
-        } = statsFilters
+        const {integrations: __, ...rest} = statsFilters
         return {
-            aggregationWindow,
-            channels,
-            customFields,
-            agents,
-            period,
+            ...rest,
             integrations: integrationsStatsFilter,
-            tags,
-            helpCenters,
-            localeCodes,
-            score,
-            campaigns,
-            campaignStatuses,
-            slaPolicies,
-            communicationSkills,
-            resolutionCompleteness,
-            languageProficiency,
         }
     }
 )

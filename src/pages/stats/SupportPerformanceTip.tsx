@@ -1,35 +1,22 @@
 import React from 'react'
 
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
-import useAppSelector from 'hooks/useAppSelector'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
 import {MetricName} from 'services/reporting/constants'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {sanitizeHtmlDefault} from 'utils/html'
 
 export const SupportPerformanceTip = ({
     metric,
     useTrend,
-    isAnalyticsNewFilters = false,
 }: {
     metric: MetricName
     useTrend: MetricTrendHook
-    isAnalyticsNewFilters?: boolean
 }) => {
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
 
     const trend = useTrend(cleanStatsFilters, userTimezone)
     const tip = usePerformanceTips(metric, trend?.data?.value || null)

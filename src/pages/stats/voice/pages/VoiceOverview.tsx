@@ -1,9 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
+
 import React, {useMemo, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hooks/reporting/common/useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters'
 import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
@@ -47,6 +46,7 @@ import {
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
+import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {
@@ -57,10 +57,7 @@ import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {VoiceMetric} from 'state/ui/stats/types'
 
 export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
@@ -73,24 +70,17 @@ function VoiceOverview() {
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
     const voiceOverviewOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             VOICE_OVERVIEW_OPTIONAL_FILTERS
         )
-
     const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
-
+    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+        useNewVoiceStatsFilters()
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+
     const pageStatsFilters = useAppSelector(
         getPageStatsFiltersWithLogicalOperators
     )

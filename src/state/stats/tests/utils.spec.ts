@@ -14,6 +14,7 @@ import {
 } from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
+    excludeFromFiltersWithLogicalOperators,
     fromFiltersWithLogicalOperators,
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,
@@ -430,6 +431,45 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
                 values: agentFilter.values.map(Number),
             },
             [FilterKey.Campaigns]: campaignsFilter,
+        })
+    })
+})
+
+describe('excludeFromFiltersWithLogicalOperators', () => {
+    it('should return not excluded filters', () => {
+        const filters: StatsFiltersWithLogicalOperator = {
+            [FilterKey.Period]: {
+                start_datetime: 'sdf',
+                end_datetime: 'sdf',
+            },
+            [FilterKey.AggregationWindow]: ReportingGranularity.Day,
+            [FilterKey.Agents]: withDefaultLogicalOperator([123]),
+            [FilterKey.Integrations]: withDefaultLogicalOperator([123]),
+            [FilterKey.CustomFields]: [
+                {...withDefaultLogicalOperator(['123']), customFieldId: 123},
+            ],
+            [FilterKey.Tags]: [
+                {
+                    ...withDefaultLogicalOperator([123]),
+                    filterInstanceId: TagFilterInstanceId.Second,
+                },
+            ],
+        }
+        const excludeFilters: Exclude<FilterKey, FilterKey.Period>[] = [
+            FilterKey.AggregationWindow,
+            FilterKey.Agents,
+            FilterKey.CustomFields,
+            FilterKey.Tags,
+        ]
+
+        expect(
+            excludeFromFiltersWithLogicalOperators(filters, excludeFilters)
+        ).toEqual({
+            [FilterKey.Period]: {
+                start_datetime: 'sdf',
+                end_datetime: 'sdf',
+            },
+            [FilterKey.Integrations]: withDefaultLogicalOperator([123]),
         })
     })
 })

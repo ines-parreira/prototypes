@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -13,12 +11,9 @@ import {
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
 import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
+import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 import {VoiceAgentsMetrics} from 'state/ui/stats/drillDownSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 
 import css from './VoiceAgentsTable.less'
 
@@ -35,18 +30,8 @@ const CallsCountCell = ({
     metricData,
     isDrillDownEnabled = true,
 }: Props) => {
-    const isVoiceAgentsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersVoice]
-
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isVoiceAgentsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+        useNewVoiceStatsFilters()
 
     const isMetricLoading = useAppSelector(isSortingMetricLoading)
     const {data, isFetching} = useMetricPerAgent(
@@ -76,7 +61,7 @@ const CallsCountCell = ({
                         title: `${metricData.title} | ${agent.name}`,
                     }}
                     enabled={isDrillDownEnabled && !!metricValue}
-                    useNewFilterData={isVoiceAgentsNewFilters}
+                    useNewFilterData={isAnalyticsNewFilters}
                 >
                     {formattedValue}
                 </DrillDownModalTrigger>

@@ -1,5 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit'
 
+import {SAVABLE_FILTERS} from 'models/reporting/types'
+
 import {FilterKey} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -10,11 +12,15 @@ import {
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
 import {
+    excludeFromFiltersWithLogicalOperators,
     fromFiltersWithLogicalOperators,
     statsFiltersWithLogicalOperatorsFromSavedFilters,
 } from 'state/stats/utils'
 import {RootState} from 'state/types'
-import {getSavedFilterDraft} from 'state/ui/stats/filtersSlice'
+import {
+    getIsSavedFilterApplied,
+    getSavedFilterDraft,
+} from 'state/ui/stats/filtersSlice'
 import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
 
 export const isCleanStatsDirty = (state: RootState) =>
@@ -43,16 +49,37 @@ export const getCleanStatsFiltersWithTimezone = createSelector(
     }
 )
 
+export const getCleanStatsFiltersWithLogicalOperators = createSelector(
+    getCleanStatsFilters,
+    getPageStatsFiltersWithLogicalOperators,
+    (cleanStatsFilters, pageStatsFilters) =>
+        cleanStatsFilters || pageStatsFilters
+)
+
 export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
     createSelector(
-        getCleanStatsFilters,
-        getPageStatsFiltersWithLogicalOperators,
+        getCleanStatsFiltersWithLogicalOperators,
         getTimezone,
-        (cleanStatsFilters, pageStatsFilters, timezone) => {
-            const statsFilters = cleanStatsFilters || pageStatsFilters
+        getIsSavedFilterApplied,
+        getSavedFilterDraft,
+        (statsFilters, timezone, isSavedFilterApplied, savedFilterDraft) => {
+            let filters = statsFilters
+            if (isSavedFilterApplied) {
+                const filtersNotSupportedBySavedFilters =
+                    excludeFromFiltersWithLogicalOperators(
+                        statsFilters,
+                        SAVABLE_FILTERS
+                    )
+                filters = {
+                    ...filtersNotSupportedBySavedFilters,
+                    ...statsFiltersWithLogicalOperatorsFromSavedFilters(
+                        savedFilterDraft?.filter_group ?? []
+                    ),
+                }
+            }
             return {
                 userTimezone: timezone || DEFAULT_TIMEZONE,
-                cleanStatsFilters: statsFilters,
+                cleanStatsFilters: filters,
                 granularity: periodAndAggregationWindowToReportingGranularity(
                     statsFilters.period,
                     statsFilters[FilterKey.AggregationWindow]

@@ -1,9 +1,12 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks/dom'
+
 import _zip from 'lodash/zip'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {
     calculateDecile,
@@ -18,10 +21,6 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
-import {
     getCustomFieldsOrder,
     getValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
@@ -34,13 +33,8 @@ jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries
 )
-jest.mock('state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
-const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 jest.mock('state/ui/stats/ticketInsightsSlice')
 const getCustomFieldOrderMock = assumeMock(getCustomFieldsOrder)
 const getValueModeMock = assumeMock(getValueMode)
@@ -87,18 +81,12 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
     const isLoading = false
 
     beforeEach(() => {
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
         })
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
-            {
-                cleanStatsFilters: defaultStatsFilters,
-                userTimezone: 'UTC',
-                granularity: ReportingGranularity.Day,
-            }
-        )
         useCustomFieldsTicketCountTimeSeriesMock.mockReturnValue({
             data,
             isLoading,

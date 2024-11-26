@@ -215,6 +215,44 @@ export const fromFiltersWithLogicalOperators = (
     }
 }
 
+export const excludeFromFiltersWithLogicalOperators = (
+    statsFilters: StatsFiltersWithLogicalOperator,
+    filtersToExclude: Exclude<FilterKey, FilterKey.Period>[]
+): StatsFiltersWithLogicalOperator => {
+    return Object.values(FilterKey).reduce<StatsFiltersWithLogicalOperator>(
+        (acc, key) => {
+            if (!filtersToExclude.map(String).includes(key)) {
+                switch (key) {
+                    case FilterKey.Period:
+                        acc[key] = statsFilters[key]
+                        break
+                    case FilterKey.AggregationWindow:
+                        acc[key] = statsFilters[key]
+                        break
+                    case FilterKey.Tags:
+                        acc[key] = statsFilters[key]
+                        break
+                    case FilterKey.Integrations:
+                    case FilterKey.Agents:
+                    case FilterKey.HelpCenters:
+                        acc[key] = statsFilters[key]
+                        break
+                    case FilterKey.CustomFields:
+                        acc[key] = statsFilters[key]
+                        break
+                    default:
+                        acc[key] = statsFilters[key]
+                }
+            }
+
+            return acc
+        },
+        {
+            period: statsFilters.period,
+        }
+    )
+}
+
 export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
     statsFilters: StatsFiltersWithLogicalOperator
 ): SavedFilterDraft['filter_group'] =>

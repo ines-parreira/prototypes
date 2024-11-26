@@ -1,8 +1,7 @@
 import React from 'react'
 
 import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
+
 import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -27,7 +26,6 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {TagsMetric} from 'state/ui/stats/types'
 
 export const TAGS_CARD_TITLE = 'Top used tags'
@@ -38,14 +36,6 @@ export const TopUsedTagsChart = () => {
     const {isFetching, data} = useTagsDistribution()
 
     const getWidth = useWidthBasedOnScreen()
-
-    const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
-    )
-
-    useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
-    )
 
     return (
         <ChartCard

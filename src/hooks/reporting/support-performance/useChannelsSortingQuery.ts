@@ -1,9 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
@@ -13,10 +12,7 @@ import {
     sortingSet,
     getChannelsSorting,
 } from 'state/ui/stats/channelsSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
+
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {notEmpty} from 'utils'
 
@@ -25,17 +21,7 @@ export const useChannelsSortingQuery = (
     useQuery: MetricPerChannelQueryHook
 ) => {
     const dispatch = useDispatch()
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const {cleanStatsFilters: LegacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : LegacyStatsFilters
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
 
     const sorting = useAppSelector(getChannelsSorting)
     const {isFetching, data} = useQuery(

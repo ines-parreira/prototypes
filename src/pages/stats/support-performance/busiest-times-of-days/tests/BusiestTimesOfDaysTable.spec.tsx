@@ -1,8 +1,11 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {ReportingGranularity} from 'models/reporting/types'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
@@ -14,20 +17,11 @@ import {
     get24Hours,
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
-jest.mock('state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
-const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 describe('<BusiestTimesOfDaysTable />', () => {
     const defaultStatsFilters = {
@@ -38,18 +32,12 @@ describe('<BusiestTimesOfDaysTable />', () => {
     }
 
     beforeEach(() => {
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
         })
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
-            {
-                userTimezone: 'someTimezone',
-                cleanStatsFilters: defaultStatsFilters,
-                granularity: ReportingGranularity.Day,
-            }
-        )
     })
 
     const queryMock = jest.fn().mockReturnValue({data: [[]], isLoading: false})

@@ -1,18 +1,12 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 import {Metric} from 'hooks/reporting/metrics'
 import {
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import useAppSelector from 'hooks/useAppSelector'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
+
 import {calculatePercentage} from 'utils/reporting'
 
 const getSlaAchievementRate = (
@@ -25,19 +19,7 @@ const getSlaAchievementRate = (
     )
 
 export const useTicketSlaAchievementRate = (): Metric => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
 
     const satisfiedSlaTickets = useSatisfiedOrBreachedTicketsInPolicyPerStatus(
         cleanStatsFilters,
@@ -68,19 +50,7 @@ export const useTicketSlaAchievementRate = (): Metric => {
 }
 
 export const useTicketSlaAchievementRateTrend = (): MetricTrend => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
 
     const satisfiedSlaTicketsTrend =
         useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(

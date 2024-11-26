@@ -1,9 +1,9 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {Channel} from 'models/channel/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -22,10 +22,6 @@ import {
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {getHeatmapMode} from 'state/ui/stats/channelsSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 
 export const ChannelsCellContent = ({
@@ -43,18 +39,9 @@ export const ChannelsCellContent = ({
     width: number
     useMetric: MetricPerChannelQueryHook
 }) => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-
     const isHeatmapMode = useAppSelector(getHeatmapMode)
-    const {cleanStatsFilters: LegacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : LegacyStatsFilters
+    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+        useNewStatsFilters()
 
     const {isFetching, data} = useMetric(
         cleanStatsFilters,

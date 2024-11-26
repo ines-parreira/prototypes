@@ -1,7 +1,7 @@
 import {OrderDirection} from 'models/api/types'
 
 import {Cubes} from 'models/reporting/cubes'
-import {StatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 
 export enum ReportingFilterOperator {
     Equals = 'equals',
@@ -126,3 +126,14 @@ export enum EnrichmentFields {
     CustomerIntegrationDataByExternalId = 'CustomerIntegrationDataByExternalId.id',
     OrderCustomerId = 'OrderConversion.customerId',
 }
+
+export const SAVABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
+    FilterKey.CustomFields,
+    FilterKey.Channels,
+    FilterKey.Integrations,
+    FilterKey.Agents,
+    FilterKey.Tags,
+    FilterKey.Score,
+    FilterKey.Campaigns,
+    FilterKey.CampaignStatuses,
+]

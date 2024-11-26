@@ -1,4 +1,5 @@
 import {render, screen} from '@testing-library/react'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -19,8 +20,10 @@ import {
     useTicketsRepliedTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
@@ -38,10 +41,6 @@ import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -80,6 +79,8 @@ const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend
 )
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 describe('<TrendCard />', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -195,6 +196,12 @@ describe('<TrendCard />', () => {
         useTicketHandleTimeTrendMock.mockReturnValue(ticketHandleTimeTrend)
 
         trendBadgeMock.mockImplementation(() => <>{DEFAULT_BADGE_TEXT}</>)
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+            userTimezone: DEFAULT_TIMEZONE,
+        })
     })
 
     it.each(Object.values(OverviewMetric))(
@@ -255,6 +262,12 @@ describe('<TrendCard />', () => {
     })
 
     it('should call useTrend with legacyStatsFilters', () => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            isAnalyticsNewFilters: false,
+            granularity: ReportingGranularity.Day,
+            userTimezone: DEFAULT_TIMEZONE,
+        })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
             data: {value: null, prevValue: null},
@@ -273,12 +286,18 @@ describe('<TrendCard />', () => {
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters,
+            defaultStatsFilters,
             DEFAULT_TIMEZONE
         )
     })
 
     it('should call useTrend with statsFiltersWithLogicalOperators', () => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+            userTimezone: DEFAULT_TIMEZONE,
+        })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
             data: {value: null, prevValue: null},
@@ -292,14 +311,12 @@ describe('<TrendCard />', () => {
                     {...OverviewMetricConfig[metric]}
                     useTrend={useTrendSpy}
                     drillDownMetric={metric}
-                    isAnalyticsNewFilters={true}
                 />
             </Provider>
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            getCleanStatsFiltersWithLogicalOperatorsWithTimezone(defaultState)
-                .cleanStatsFilters,
+            fromLegacyStatsFilters(defaultStatsFilters),
             DEFAULT_TIMEZONE
         )
     })

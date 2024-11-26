@@ -1,33 +1,16 @@
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import useAppSelector from 'hooks/useAppSelector'
 import {formatTimeSeriesData} from 'pages/stats/common/utils'
 import {
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
 } from 'services/reporting/constants'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 
-export const useCreatedVsClosedTicketsTimeSeries = (
-    isAnalyticsNewFilters = false
-) => {
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {
-        cleanStatsFilters: statsFiltersWithLogicalOperators,
-        userTimezone,
-        granularity,
-    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+export const useCreatedVsClosedTicketsTimeSeries = () => {
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
     const closedTicketsTimeSeries = useTicketsClosedTimeSeries(
         cleanStatsFilters,

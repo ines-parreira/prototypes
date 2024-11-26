@@ -1,10 +1,9 @@
 import React from 'react'
 
+import {SAVABLE_FILTERS} from 'models/reporting/types'
+
 import {FiltersPanelComponent} from 'pages/stats/common/filters/FiltersPanel'
-import {
-    SAVABLE_FILTERS,
-    SavedFilterComponentMap,
-} from 'pages/stats/common/filters/FiltersPanelConfig'
+import {SavedFilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'

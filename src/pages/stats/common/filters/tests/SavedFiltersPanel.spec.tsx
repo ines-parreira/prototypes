@@ -1,6 +1,7 @@
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
+    useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -11,8 +12,14 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
-import {FilterKey, SavedFilter, SavedFilterDraft} from 'models/stat/types'
+import {
+    FilterKey,
+    SavedFilter,
+    SavedFilterAPI,
+    SavedFilterDraft,
+} from 'models/stat/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {fromApiFormatted} from 'pages/stats/common/filters/helpers'
 import {SAVED_FILTER_ACTIONS_MENU_ICON} from 'pages/stats/common/filters/SavedFilterMenu'
 import {
     CANCEL_BUTTON_LABEL,
@@ -34,6 +41,7 @@ import {RootState} from 'state/types'
 import {
     clearSavedFilterDraft,
     duplicateSavedFilterDraftFromSavedFilter,
+    initialiseSavedFilterDraftFromSavedFilter,
     initialState,
     unapplySavedFilter,
     updateSavedFilterDraftName,
@@ -47,6 +55,7 @@ jest.mock('pages/stats/convert/providers/CampaignStatsFilters')
 const CampaignStatsFiltersMock = assumeMock(CampaignStatsFilters)
 
 jest.mock('@gorgias/api-queries')
+const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
 const useCreateAnalyticsFilterMock = assumeMock(useCreateAnalyticsFilter)
 const useUpdateAnalyticsFilterMock = assumeMock(useUpdateAnalyticsFilter)
 const useDeleteAnalyticsFilterMock = assumeMock(useDeleteAnalyticsFilter)
@@ -62,6 +71,10 @@ describe('SavedFiltersPanel', () => {
 
     beforeEach(() => {
         CampaignStatsFiltersMock.mockImplementation(() => <div />)
+        useListAnalyticsFiltersMock.mockReturnValue({
+            data: undefined,
+            error: undefined,
+        } as any)
         useCreateAnalyticsFilterMock.mockReturnValue({
             data: undefined,
             error: undefined,
@@ -692,10 +705,9 @@ describe('SavedFiltersPanel', () => {
         expect(store.getActions()).toContainEqual(unapplySavedFilter())
     })
 
-    it('should cancel Saved Filter Draft', () => {
+    it('should cancel Saved Filter Draft of New Saved Filter', () => {
         const savedFilterName = 'Some Name draft'
-        const savedFilterDraft: SavedFilter = {
-            id: 123,
+        const savedFilterDraft: SavedFilterDraft = {
             name: savedFilterName,
             filter_group: [
                 {
@@ -717,7 +729,7 @@ describe('SavedFiltersPanel', () => {
                     filters: {
                         ...initialState,
                         savedFilterDraft,
-                        appliedSavedFilterId: 123,
+                        appliedSavedFilterId: null,
                     },
                 },
             },
@@ -734,6 +746,60 @@ describe('SavedFiltersPanel', () => {
         userEvent.click(screen.getByRole('button', {name: CANCEL_BUTTON_LABEL}))
 
         expect(store.getActions()).toContainEqual(clearSavedFilterDraft())
+        expect(screen.getByText(COLLAPSE_OPEN_ICON)).toBeInTheDocument()
+    })
+
+    it('should discard changes made to the Saved Filter and close the Collapse', () => {
+        const savedFilterName = 'Some Name draft'
+        const savedFilter: SavedFilter = {
+            id: 123,
+            name: savedFilterName,
+            filter_group: [
+                {
+                    member: FilterKey.Agents,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['1'],
+                },
+            ],
+        }
+        const state = {
+            stats: statsSlice.initialState,
+            integrations: fromJS({
+                integration: {
+                    id: 1,
+                },
+            }),
+            ui: {
+                stats: {
+                    filters: {
+                        ...initialState,
+                        savedFilterDraft: savedFilter,
+                        appliedSavedFilterId: 123,
+                    },
+                },
+            },
+        } as RootState
+        useListAnalyticsFiltersMock.mockReturnValue({
+            data: {
+                data: {data: [savedFilter]},
+            },
+        } as any)
+
+        const {store} = renderWithStore(
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <SavedFiltersPanel optionalFilters={[]} />
+                </QueryClientProvider>
+            </MemoryRouter>,
+            state
+        )
+        userEvent.click(screen.getByRole('button', {name: CANCEL_BUTTON_LABEL}))
+
+        expect(store.getActions()).toContainEqual(
+            initialiseSavedFilterDraftFromSavedFilter(
+                fromApiFormatted(savedFilter as SavedFilterAPI)
+            )
+        )
         expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
     })
 })

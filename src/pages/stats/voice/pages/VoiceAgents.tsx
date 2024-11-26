@@ -45,8 +45,12 @@ export const VOICE_AGENTS_OPTIONAL_FILTERS: OptionalFilter[] = [
 function VoiceAgents() {
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const statsFilters = useAppSelector(getPageStatsFilters)
+
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
         getPageStatsFiltersWithLogicalOperators
+    )
+    useCleanStatsFiltersWithLogicalOperators(
+        pageStatsFiltersWithLogicalOperators
     )
 
     const isVoiceAgentsNewFilters =
@@ -55,10 +59,6 @@ function VoiceAgents() {
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             VOICE_AGENTS_OPTIONAL_FILTERS
         )
-
-    useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
-    )
 
     const getGridCellSize = useGridSize()
 

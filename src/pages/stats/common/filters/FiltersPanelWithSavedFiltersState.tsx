@@ -1,10 +1,9 @@
 import {connect} from 'react-redux'
 
+import {SAVABLE_FILTERS} from 'models/reporting/types'
+
 import {FiltersPanelComponent} from 'pages/stats/common/filters/FiltersPanel'
-import {
-    SAVABLE_FILTERS,
-    SavedFilterComponentMap,
-} from 'pages/stats/common/filters/FiltersPanelConfig'
+import {SavedFilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
 import {RootState} from 'state/types'
 import {getStatsFiltersFromSavedFilters} from 'state/ui/stats/selectors'
 

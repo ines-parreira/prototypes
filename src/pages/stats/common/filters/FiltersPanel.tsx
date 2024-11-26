@@ -39,7 +39,7 @@ import {
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {RootState} from 'state/types'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import {getCleanStatsFiltersWithLogicalOperators} from 'state/ui/stats/selectors'
 
 export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
 
@@ -376,8 +376,6 @@ export const FiltersPanelComponent = ({
 }
 
 export const FiltersPanel = connect((state: RootState) => ({
-    cleanStatsFilters:
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
-            .cleanStatsFilters,
+    cleanStatsFilters: getCleanStatsFiltersWithLogicalOperators(state),
     filterComponentMap: FilterComponentMap,
 }))(FiltersPanelComponent)

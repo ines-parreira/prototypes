@@ -2,16 +2,12 @@ import React from 'react'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import useAppSelector from 'hooks/useAppSelector'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
 import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 
 export const CHART_TITLE = 'Achieved and breached tickets'
 export const HINT =
@@ -33,23 +29,8 @@ export const CHART_FIELDS = [
     },
 ]
 
-export const AchievedAndBreachedTicketsChart = ({
-    isAnalyticsNewFilters = false,
-}: {
-    isAnalyticsNewFilters?: boolean
-}) => {
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {
-        cleanStatsFilters: statsFiltersWithLogicalOperators,
-        userTimezone,
-        granularity,
-    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+export const AchievedAndBreachedTicketsChart = () => {
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
     const {data, isLoading} = useSatisfiedOrBreachedTicketsTimeSeries(
         cleanStatsFilters,

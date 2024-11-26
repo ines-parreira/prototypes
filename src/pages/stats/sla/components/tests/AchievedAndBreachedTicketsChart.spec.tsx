@@ -160,7 +160,7 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <AchievedAndBreachedTicketsChart isAnalyticsNewFilters />
+                <AchievedAndBreachedTicketsChart />
             </Provider>
         )
 

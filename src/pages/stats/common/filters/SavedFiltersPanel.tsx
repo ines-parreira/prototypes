@@ -2,6 +2,7 @@ import {Card} from '@gorgias/analytics-ui-kit'
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
+    useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
@@ -40,6 +41,7 @@ import {
     getCanSaveFilter,
     getIsSavedFilterApplied,
     getSavedFilterDraft,
+    initialiseSavedFilterDraftFromSavedFilter,
     unapplySavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
@@ -104,6 +106,11 @@ export const SavedFiltersPanel = ({
         },
     }
 
+    const savedFilters = useListAnalyticsFilters()
+    const originalSavedFilter =
+        savedFilter !== null
+            ? savedFilters.data?.data.data.find((f) => f.id === savedFilter.id)
+            : null
     const createMutation = useCreateAnalyticsFilter(mutationConfig)
     const updateMutation = useUpdateAnalyticsFilter(mutationConfig)
     const deleteMutation = useDeleteAnalyticsFilter(mutationConfig)
@@ -112,10 +119,18 @@ export const SavedFiltersPanel = ({
         dispatch(updateSavedFilterDraftName(name))
     }
 
-    const cancelHandler = () => {
-        dispatch(clearSavedFilterDraft())
+    const cancelHandler = useCallback(() => {
+        if (isEditingSavedFilterDraft) {
+            dispatch(clearSavedFilterDraft())
+        } else if (originalSavedFilter) {
+            dispatch(
+                initialiseSavedFilterDraftFromSavedFilter(
+                    fromApiFormatted(originalSavedFilter as SavedFilterAPI)
+                )
+            )
+        }
         setIsEditMode(false)
-    }
+    }, [dispatch, isEditingSavedFilterDraft, originalSavedFilter])
 
     const unApplyFilterHandler = () => {
         dispatch(unapplySavedFilter())

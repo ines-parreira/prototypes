@@ -1,7 +1,10 @@
 import {render, screen} from '@testing-library/react'
+
 import {forEach} from 'lodash'
 import React from 'react'
 import {Provider} from 'react-redux'
+
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -12,10 +15,6 @@ import {
     MOBILE_EXPAND_COLUMN_WIDTH,
     DEFAULT_MARGIN,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {
     getHeatmapMode,
     getValueMode,
@@ -48,13 +47,8 @@ jest.mock(
 const getValueModeMock = assumeMock(getValueMode)
 const getHeatmapModeMock = assumeMock(getHeatmapMode)
 
-jest.mock('state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
-)
-const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
-)
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 
 describe('<CustomFieldsTicketCountDataRowContent />', () => {
@@ -79,7 +73,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
     beforeEach(() => {
         getValueModeMock.mockReturnValue(ValueMode.TotalCount)
         getHeatmapModeMock.mockReturnValue(false)
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+        useNewStatsFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Week,
             cleanStatsFilters: {
                 period: {
@@ -88,17 +82,6 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
                 },
             },
         } as any)
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
-            {
-                granularity: ReportingGranularity.Week,
-                cleanStatsFilters: {
-                    period: {
-                        start_datetime: '2021-02-03T00:00:00.000Z',
-                        end_datetime: '2021-02-03T23:59:59.999Z',
-                    },
-                },
-            } as any
-        )
         getSelectedCustomFieldMock.mockReturnValue({
             id: 123,
             label: 'someLabel',

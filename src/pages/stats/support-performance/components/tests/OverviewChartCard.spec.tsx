@@ -1,4 +1,5 @@
 import {render} from '@testing-library/react'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,6 +8,7 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -25,10 +27,7 @@ import {OverviewChartConfig} from 'pages/stats/support-performance/overview/Supp
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
+
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
@@ -36,6 +35,9 @@ const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
 const useTicketsClosedTimeSeriesMock = assumeMock(useTicketsClosedTimeSeries)
 const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
 const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
+
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -65,6 +67,12 @@ describe('<OverviewChartCard />', () => {
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            userTimezone: DEFAULT_TIMEZONE,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
     })
 
     const defaultTimeSeries = {
@@ -114,7 +122,14 @@ describe('<OverviewChartCard />', () => {
         }
         const userTimezone = DEFAULT_TIMEZONE
         const granularity = ReportingGranularity.Day
+
         it('should pas legacyStatsFilters to useTimeSeries', () => {
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+                userTimezone: DEFAULT_TIMEZONE,
+                granularity: ReportingGranularity.Day,
+                isAnalyticsNewFilters: false,
+            })
             const useTimeSeriesSpy = jest
                 .fn()
                 .mockReturnValue(defaultTimeSeries)
@@ -129,14 +144,19 @@ describe('<OverviewChartCard />', () => {
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithTimezone(defaultState)
-                    .cleanStatsFilters,
+                fromLegacyStatsFilters(defaultStatsFilters),
                 userTimezone,
                 granularity
             )
         })
 
         it('should pas statsFilterWithLogicalOperators to useTimeSeries', () => {
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+                userTimezone: DEFAULT_TIMEZONE,
+                granularity: ReportingGranularity.Day,
+                isAnalyticsNewFilters: true,
+            })
             const useTimeSeriesSpy = jest
                 .fn()
                 .mockReturnValue(defaultTimeSeries)
@@ -146,15 +166,12 @@ describe('<OverviewChartCard />', () => {
                     <OverviewChartCard
                         {...config}
                         useTimeSeries={useTimeSeriesSpy}
-                        isAnalyticsNewFilters={true}
                     />
                 </Provider>
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
-                    defaultState
-                ).cleanStatsFilters,
+                fromLegacyStatsFilters(defaultStatsFilters),
                 userTimezone,
                 granularity
             )

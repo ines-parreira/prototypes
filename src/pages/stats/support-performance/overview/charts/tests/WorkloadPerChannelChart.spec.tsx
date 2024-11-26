@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import LD from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,6 +16,8 @@ import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import GaugeChart from 'pages/stats/GaugeChart'
@@ -22,10 +26,6 @@ import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('pages/stats/GaugeChart')
@@ -35,6 +35,8 @@ jest.mock('hooks/reporting/distributions')
 const useWorkloadPerChannelDistributionMock = assumeMock(
     useWorkloadPerChannelDistribution
 )
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -81,6 +83,12 @@ describe('<WorkloadPerChannelChart />', () => {
             workloadDistribution
         )
         gaugeChartMock.mockImplementation(() => <div />)
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+            userTimezone: DEFAULT_TIMEZONE,
+        })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
         }))
@@ -188,6 +196,12 @@ describe('<WorkloadPerChannelChart />', () => {
 
     describe('statsFilters', () => {
         it('should call data hook with legacyStatsFilters', () => {
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: defaultStatsFilters,
+                isAnalyticsNewFilters: false,
+                granularity: ReportingGranularity.Day,
+                userTimezone: DEFAULT_TIMEZONE,
+            })
             useWorkloadPerChannelDistributionMock.mockReturnValue({
                 data: undefined,
             } as any)
@@ -199,8 +213,7 @@ describe('<WorkloadPerChannelChart />', () => {
             )
 
             expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithTimezone(defaultState)
-                    .cleanStatsFilters,
+                defaultStatsFilters,
                 DEFAULT_TIMEZONE,
                 true
             )
@@ -211,6 +224,12 @@ describe('<WorkloadPerChannelChart />', () => {
                 [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
             }))
+            useNewStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+                isAnalyticsNewFilters: true,
+                granularity: ReportingGranularity.Day,
+                userTimezone: DEFAULT_TIMEZONE,
+            })
             useWorkloadPerChannelDistributionMock.mockReturnValue({
                 data: undefined,
             } as any)
@@ -222,9 +241,7 @@ describe('<WorkloadPerChannelChart />', () => {
             )
 
             expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
-                getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
-                    defaultState
-                ).cleanStatsFilters,
+                fromLegacyStatsFilters(defaultStatsFilters),
                 DEFAULT_TIMEZONE,
                 true
             )

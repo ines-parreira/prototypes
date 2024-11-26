@@ -1,8 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import {
@@ -15,19 +12,15 @@ import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import {MetricName} from 'services/reporting/constants'
 
 export const MedianFirstResponseTimeTrendCard = () => {
-    const isAnalyticsNewFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const [areTipsVisible] = useLocalStorage(STATS_TIPS_VISIBILITY_KEY, true)
 
     return (
         <TrendCard
-            isAnalyticsNewFilters={isAnalyticsNewFilters}
             {...OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime]}
             drillDownMetric={OverviewMetric.MedianFirstResponseTime}
             tip={
                 areTipsVisible && (
                     <SupportPerformanceTip
-                        isAnalyticsNewFilters={isAnalyticsNewFilters}
                         metric={MetricName.MedianFirstResponseTime}
                         {...OverviewMetricConfig[
                             OverviewMetric.MedianFirstResponseTime

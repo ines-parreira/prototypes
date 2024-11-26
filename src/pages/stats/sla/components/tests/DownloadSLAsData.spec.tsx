@@ -1,5 +1,6 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {fireEvent, render} from '@testing-library/react'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,11 +16,16 @@ import {
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import {
+    DEFAULT_TIMEZONE,
+    DOWNLOAD_DATA_BUTTON_LABEL,
+} from 'pages/stats/constants'
 
 import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {saveReport} from 'services/reporting/SLAsReportingService'
@@ -52,6 +58,9 @@ jest.mock('hooks/reporting/sla/useTicketSlaAchievementRate')
 const useTicketSlaAchievementRateTrendMock = assumeMock(
     useTicketSlaAchievementRateTrend
 )
+
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -145,6 +154,12 @@ const satisfiedOrBreachedTimeSeries = {
 describe('DownloadSLAsData', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            userTimezone: DEFAULT_TIMEZONE,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
         useBreachedSlaTicketsTrendMock.mockReturnValue(
             breachedTicketsSLAsMetricTrend
         )
@@ -193,12 +208,18 @@ describe('DownloadSLAsData with AnalyticsNewFilters', () => {
         useSatisfiedOrBreachedTicketsTimeSeriesMock.mockReturnValue(
             satisfiedOrBreachedTimeSeries
         )
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            userTimezone: DEFAULT_TIMEZONE,
+            granularity: ReportingGranularity.Day,
+            isAnalyticsNewFilters: true,
+        })
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <DownloadSLAsData hidden />
+                <DownloadSLAsData />
             </Provider>
         )
 

@@ -47,9 +47,7 @@ export default function SupportPerformanceOverviewReport() {
                         <SupportPerformanceFilters
                             hidden={isAnalyticsNewFilters}
                         />
-                        <DownloadOverviewData
-                            isAnalyticsNewFilters={isAnalyticsNewFilters}
-                        />
+                        <DownloadOverviewData />
                     </>
                 }
             >

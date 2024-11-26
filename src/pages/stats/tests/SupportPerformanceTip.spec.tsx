@@ -1,5 +1,7 @@
 import {render, screen} from '@testing-library/react'
+
 import {fromJS} from 'immutable'
+
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +13,9 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {tags} from 'fixtures/tag'
 import {teams} from 'fixtures/teams'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
+import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
@@ -22,13 +26,13 @@ import {AccountSettingType} from 'state/currentAccount/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
+import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
+const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 describe('SupportPerformanceTip', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -81,6 +85,15 @@ describe('SupportPerformanceTip', () => {
             stats: {filters: uiStatsInitialState},
         },
     } as RootState
+
+    beforeEach(() => {
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: fromLegacyStatsFilters(defaultStatsFilters),
+            userTimezone: DEFAULT_TIMEZONE,
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+        })
+    })
 
     it('should render tip from PerformanceTipProvider', () => {
         const average = '4.9'
@@ -143,6 +156,12 @@ describe('SupportPerformanceTip', () => {
 
     it('should pass legacyStatsFilters to the data hook', () => {
         const useTrendSpy = jest.fn()
+        useNewStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: defaultStatsFilters,
+            userTimezone: DEFAULT_TIMEZONE,
+            isAnalyticsNewFilters: true,
+            granularity: ReportingGranularity.Day,
+        })
 
         render(
             <Provider store={mockStore(defaultState)}>
@@ -151,7 +170,7 @@ describe('SupportPerformanceTip', () => {
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters,
+            defaultStatsFilters,
             DEFAULT_TIMEZONE
         )
     })
@@ -161,17 +180,12 @@ describe('SupportPerformanceTip', () => {
 
         render(
             <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceTip
-                    metric={metric}
-                    useTrend={useTrendSpy}
-                    isAnalyticsNewFilters={true}
-                />
+                <SupportPerformanceTip metric={metric} useTrend={useTrendSpy} />
             </Provider>
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
-            getCleanStatsFiltersWithLogicalOperatorsWithTimezone(defaultState)
-                .cleanStatsFilters,
+            fromLegacyStatsFilters(defaultStatsFilters),
             DEFAULT_TIMEZONE
         )
     })

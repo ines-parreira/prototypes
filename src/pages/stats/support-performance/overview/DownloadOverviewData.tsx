@@ -18,25 +18,17 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
+import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import useAppSelector from 'hooks/useAppSelector'
 import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
-import {
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
-    getCleanStatsFiltersWithTimezone,
-} from 'state/ui/stats/selectors'
 
-export const DownloadOverviewData = ({
-    isAnalyticsNewFilters = false,
-}: {
-    isAnalyticsNewFilters?: boolean
-}) => {
+export const DownloadOverviewData = () => {
     const isDeferredLoadingEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
 
@@ -55,18 +47,7 @@ export const DownloadOverviewData = ({
 
     const [waitForTheReportData, setWaitForTheReportData] = useState(false)
 
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const {
-        cleanStatsFilters: statsFiltersWithLogicalOperators,
-        userTimezone,
-        granularity,
-    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
-
-    const cleanStatsFilters = isAnalyticsNewFilters
-        ? statsFiltersWithLogicalOperators
-        : legacyStatsFilters
+    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
 
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
         cleanStatsFilters,
