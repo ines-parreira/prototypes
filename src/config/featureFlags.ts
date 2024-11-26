@@ -124,6 +124,7 @@ export enum FeatureFlagKey {
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
+    ShopifyCustomerProfileCreation = 'shopify-customer-profile-creation',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyOrderNotes = 'shopify-order-notes',
     ShowSpeakerLabelsInTranscription = 'show-speaker-labels-in-transcription',
