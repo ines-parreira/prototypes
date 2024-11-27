@@ -236,6 +236,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.FREE,
         privacyPolicy: '',
         setupGuide: '',
+        supportEmail: 'support@gorgias.com',
     },
     {
         type: IntegrationType.Phone,

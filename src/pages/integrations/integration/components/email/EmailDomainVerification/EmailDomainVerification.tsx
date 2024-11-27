@@ -4,11 +4,13 @@ import React from 'react'
 import {OutlookIntegration} from 'models/integration/types'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
+import {getDomainFromEmailAddress} from '../helpers'
+import DomainVerificationProvider from './DomainVerificationProvider'
 import css from './EmailDomainVerification.less'
+import EmailDomainVerificationActionButtons from './EmailDomainVerificationActionButtons'
 import EmailDomainVerificationContent from './EmailDomainVerificationContent'
-import EmailDomainVerificationSupportContent from './EmailDomainVerificationSupportContent'
+import EmailDomainVerificationSupportContentSidebar from './EmailDomainVerificationSupportContentSidebar'
 import VerifyDomainModal from './VerifyDomainModal'
 
 type Props = {
@@ -16,17 +18,21 @@ type Props = {
 }
 
 export default function EmailDomainVerification({integration}: Props) {
+    const emailAddress = integration.meta?.address ?? ''
+
     return (
         <SettingsPageContainer className={css.pageContainer}>
-            <SettingsContent>
-                <EmailDomainVerificationContent
-                    integration={integration}
-                    displayButtons
-                />
-            </SettingsContent>
-            <SettingsSidebar className={css.sidebar}>
-                <EmailDomainVerificationSupportContent />
-            </SettingsSidebar>
+            <DomainVerificationProvider
+                domainName={getDomainFromEmailAddress(emailAddress)}
+            >
+                <SettingsContent>
+                    <EmailDomainVerificationContent integration={integration} />
+                    <EmailDomainVerificationActionButtons
+                        integration={integration}
+                    />
+                </SettingsContent>
+            </DomainVerificationProvider>
+            <EmailDomainVerificationSupportContentSidebar />
             <VerifyDomainModal />
         </SettingsPageContainer>
     )

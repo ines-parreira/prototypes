@@ -1,12 +1,16 @@
 import {
     EmailDomain,
-    HttpError,
-    useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
     useUpdateEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
 } from '@gorgias/api-queries'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
@@ -19,6 +23,12 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
 } from '../helpers'
+import {DomainVerificationContext} from './DomainVerificationContext'
+
+type Props = {
+    children: ReactNode
+    domainName: string
+}
 
 const DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS = 60
 const DOMAIN_REFETCH_INTERVAL = 5000
@@ -26,29 +36,10 @@ const DOMAIN_REFETCH_INTERVAL = 5000
 export const domainVerificationStorageKey = (domainName: string) =>
     `email-domain-verification-requested-at-${domainName}`
 
-export type UseDomainVerificationRequestHookResult = {
-    verifyDomain: () => void
-    deleteDomain: () => void
-    domain: EmailDomain | undefined
-    isRequested: boolean
-    isVerifying: boolean
-    isFetching: boolean
-    isDeleting: boolean
-    isPending: boolean
-    isCreatingDomain: boolean
-    domainCreationError?: HttpError | null
-}
-
-export type UseDomainVerificationRequestHookOptions = {
-    onDelete?: () => void
-    onVerify?: () => void
-    shouldCreateDomain?: boolean
-}
-
-export function useDomainVerification(
-    domainName: string,
-    options?: UseDomainVerificationRequestHookOptions
-): UseDomainVerificationRequestHookResult {
+export default function DomainVerificationProvider({
+    children,
+    domainName,
+}: Props) {
     const dispatch = useAppDispatch()
 
     const {
@@ -85,7 +76,6 @@ export function useDomainVerification(
     useEffect(() => {
         if (
             domainError?.status === 404 &&
-            options?.shouldCreateDomain &&
             !isCreatingDomain &&
             !domainCreationError
         ) {
@@ -101,7 +91,6 @@ export function useDomainVerification(
         domain,
         isCreatingDomain,
         domainCreationError,
-        options,
     ])
 
     useEffect(() => {
@@ -133,7 +122,6 @@ export function useDomainVerification(
         useVerifyEmailIntegrationDomain({
             mutation: {
                 onSuccess: async () => {
-                    options?.onVerify?.()
                     setRequestedAt(new Date())
                     await dispatch(
                         notify({
@@ -155,36 +143,26 @@ export function useDomainVerification(
             },
         })
 
-    const {mutate: triggerDelete, isLoading: isDeleting} =
-        useDeleteEmailIntegrationDomain({
-            mutation: {
-                onSuccess: () => {
-                    setDomain(undefined)
-                    options?.onDelete?.()
-                },
-            },
-        })
-
     const verifyDomain = useCallback(() => {
         triggerVerify({domainName})
     }, [triggerVerify, domainName])
 
-    const deleteDomain = useCallback(() => {
-        triggerDelete({domainName})
-    }, [triggerDelete, domainName])
-
-    return {
-        domain,
-        verifyDomain,
-        deleteDomain,
-        isRequested,
-        isVerifying,
-        isFetching,
-        isDeleting,
-        isPending,
-        isCreatingDomain,
-        domainCreationError,
-    }
+    return (
+        <DomainVerificationContext.Provider
+            value={{
+                domain,
+                verifyDomain,
+                isRequested,
+                isVerifying,
+                isFetching,
+                isPending,
+                isCreatingDomain,
+                domainCreationError,
+            }}
+        >
+            {children}
+        </DomainVerificationContext.Provider>
+    )
 }
 
 function useRequestStatus(domainName: string) {

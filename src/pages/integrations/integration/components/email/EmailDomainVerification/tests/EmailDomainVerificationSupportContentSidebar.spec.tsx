@@ -4,24 +4,30 @@ import React from 'react'
 
 import {assumeMock} from 'utils/testing'
 
-import EmailDomainVerificationSupportContent from '../EmailDomainVerificationSupportContent'
+import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
 import SupportContentLearnMore from '../SupportContentLearnMore'
+import useDomainVerification from '../useDomainVerification'
 
 jest.mock('@gorgias/merchant-ui-kit')
 jest.mock('../SupportContentLearnMore')
+jest.mock('../useDomainVerification')
 
 const SupportContentLearnMoreMock = assumeMock(SupportContentLearnMore)
 const SelectInputMock = assumeMock(SelectInput)
+const useDomainVerificationMock = assumeMock(useDomainVerification)
 
-describe('EmailDomainVerificationSupportContent', () => {
+describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>
-        render(<EmailDomainVerificationSupportContent />)
+        render(<EmailDomainVerificationSupportContentSidebar />)
 
     beforeEach(() => {
         SelectInputMock.mockReturnValue(<div>SelectInput</div>)
         SupportContentLearnMoreMock.mockImplementation(({children}) => (
             <div data-testid="supportContentLearnMore">{children}</div>
         ))
+        useDomainVerificationMock.mockReturnValue({
+            domainCreationError: null,
+        } as ReturnType<typeof useDomainVerification>)
     })
 
     it('default state - should display dropdown, dynamic content and links', () => {

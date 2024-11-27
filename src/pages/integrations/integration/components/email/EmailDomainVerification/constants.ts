@@ -1,3 +1,5 @@
+export const SUPPORT_EMAIL = 'support@gorgias.com'
+
 export type SupportContentDropdownOption = {
     label: string
     value: string

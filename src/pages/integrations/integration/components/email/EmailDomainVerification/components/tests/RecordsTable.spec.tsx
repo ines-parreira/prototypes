@@ -5,7 +5,6 @@ import React from 'react'
 import {assumeMock} from 'utils/testing'
 
 import * as helpers from '../../../helpers'
-import * as hook from '../../useDomainVerification'
 import RecordDiffStatus from '../RecordDiffStatus'
 import RecordsTable from '../RecordsTable'
 
@@ -49,29 +48,12 @@ const domain: EmailDomain = {
     },
 }
 
-const defaultHookState: hook.UseDomainVerificationRequestHookResult = {
-    domain,
-    verifyDomain: jest.fn(),
-    deleteDomain: jest.fn(),
-    isRequested: true,
-    isVerifying: false,
-    isFetching: false,
-    isDeleting: false,
-    isPending: false,
-    isCreatingDomain: false,
-    domainCreationError: null,
-}
-
 describe('RecordsTable component', () => {
     beforeEach(() => {
         RecordDiffStatusMock.mockReturnValue(<div>StatusDiff</div>)
     })
 
     it('should render a list of DNS records (with the domain names replaced)', () => {
-        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-            () => defaultHookState
-        )
-
         render(<RecordsTable domain={domain} domainName="gorgias.com" />)
 
         expect(screen.getByText('MX')).toBeInTheDocument()
@@ -88,10 +70,6 @@ describe('RecordsTable component', () => {
     })
 
     it('should populate the current values for the DNS records', () => {
-        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-            () => defaultHookState
-        )
-
         const removeDomainMock = jest
             .spyOn(helpers, 'removeDomainFromDNSRecords')
             .mockImplementation((records) => records)
@@ -99,17 +77,12 @@ describe('RecordsTable component', () => {
         render(<RecordsTable domain={domain} domainName="gorgias.com" />)
 
         expect(removeDomainMock).toHaveBeenCalledWith(
-            defaultHookState.domain?.data.sending_dns_records,
+            domain.data.sending_dns_records,
             'gorgias.com'
         )
     })
 
     it('should call populate with an empty list if domain is missing', () => {
-        jest.spyOn(hook, 'useDomainVerification').mockImplementation(() => ({
-            ...defaultHookState,
-            domain: undefined,
-        }))
-
         const removeDomainMock = jest
             .spyOn(helpers, 'removeDomainFromDNSRecords')
             .mockImplementation((records) => records)
@@ -120,10 +93,6 @@ describe('RecordsTable component', () => {
     })
 
     it('should render a skeleton when loading', () => {
-        jest.spyOn(hook, 'useDomainVerification').mockImplementation(
-            () => defaultHookState
-        )
-
         render(<RecordsTable domainName="gorgias.com" isLoading />)
 
         expect(screen.getByText('RecordsTableSkeleton')).toBeInTheDocument()
