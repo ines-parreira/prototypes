@@ -1,6 +1,5 @@
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -19,6 +18,7 @@ import {
     MAX_SCORE_VALUE,
     LanguageProficiencyFilter,
     LanguageProficiencyFilterWithState,
+    LanguageProficiencyFilterWithSavedState,
 } from 'pages/stats/common/filters/LanguageProficiencyFilter'
 import {
     getScoreLabelByValue,
@@ -263,6 +263,24 @@ describe('LanguageProficiency', () => {
                 defaultState
             )
 
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.LanguageProficiency])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('LanguageProficiencyFilterWithSavedState', () => {
+        it('should render LanguageProficiencyFilterWithSavedState component', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(
+                <LanguageProficiencyFilterWithSavedState />,
+                defaultState
+            )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 

@@ -16,6 +16,7 @@ import {
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
     ResolutionCompletenessFilter,
+    ResolutionCompletenessFilterWithSavedState,
     ResolutionCompletenessFilterWithState,
 } from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import * as statsSlice from 'state/stats/statsSlice'
@@ -208,6 +209,24 @@ describe('ResolutionCompletenessFilter', () => {
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText('Complete'))
+
+            expect(
+                screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
+            ).toBeInTheDocument()
+            expect(spy).toHaveBeenCalled()
+        })
+    })
+
+    describe('ResolutionCompletenessFilterWithSavedState', () => {
+        it('should render ResolutionCompletenessFilterWithSavedState component', () => {
+            const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+
+            renderWithStore(
+                <ResolutionCompletenessFilterWithSavedState />,
+                defaultState
+            )
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
                 screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])

@@ -22,10 +22,14 @@ import {
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
 import {DropdownOption} from 'pages/stats/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import {
+    getPageStatsFiltersWithLogicalOperators,
+    getSavedFiltersWithLogicalOperators,
+} from 'state/stats/selectors'
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -149,5 +153,21 @@ export const CommunicationSkillsFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
+    }
+)(CommunicationSkillsFilter)
+
+export const CommunicationSkillsFilterWithSavedState = connect(
+    (state: RootState) => ({
+        value: getSavedFiltersWithLogicalOperators(state)[
+            FilterKey.CommunicationSkills
+        ],
+    }),
+    {
+        dispatchUpdate: (filter: Exclude<Props['value'], undefined>) =>
+            upsertSavedFilterFilter({
+                member: FilterKey.CommunicationSkills,
+                operator: filter.operator,
+                values: filter.values,
+            }),
     }
 )(CommunicationSkillsFilter)

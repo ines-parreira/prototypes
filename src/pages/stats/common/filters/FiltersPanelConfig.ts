@@ -15,7 +15,10 @@ import {
     ChannelsFilterWithSavedState,
     ChannelsFilterWithState,
 } from 'pages/stats/common/filters/ChannelsFilter'
-import {CommunicationSkillsFilterWithState} from 'pages/stats/common/filters/CommunicationSkillsFilter'
+import {
+    CommunicationSkillsFilterWithSavedState,
+    CommunicationSkillsFilterWithState,
+} from 'pages/stats/common/filters/CommunicationSkillsFilter'
 import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
 import {
     CustomFieldsFilterWithSavedState,
@@ -28,9 +31,15 @@ import {
     IntegrationsFilterWithState,
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
-import {LanguageProficiencyFilterWithState} from 'pages/stats/common/filters/LanguageProficiencyFilter'
+import {
+    LanguageProficiencyFilterWithSavedState,
+    LanguageProficiencyFilterWithState,
+} from 'pages/stats/common/filters/LanguageProficiencyFilter'
 import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
-import {ResolutionCompletenessFilterWithState} from 'pages/stats/common/filters/ResolutionCompletenessFilter'
+import {
+    ResolutionCompletenessFilterWithSavedState,
+    ResolutionCompletenessFilterWithState,
+} from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import {
     ScoreFiltersWithSavedState,
     ScoreFiltersWithState,
@@ -86,12 +95,13 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Campaigns]: CampaignsFilterFromSavedContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromSavedContext,
     [FilterKey.AggregationWindow]: () => null,
-    [FilterKey.CommunicationSkills]: () => null,
+    [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithSavedState,
     [FilterKey.HelpCenters]: () => null,
-    [FilterKey.LanguageProficiency]: () => null,
+    [FilterKey.LanguageProficiency]: LanguageProficiencyFilterWithSavedState,
     [FilterKey.LocaleCodes]: () => null,
     [FilterKey.Period]: () => null,
-    [FilterKey.ResolutionCompleteness]: () => null,
+    [FilterKey.ResolutionCompleteness]:
+        ResolutionCompletenessFilterWithSavedState,
     [FilterKey.SlaPolicies]: () => null,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,
