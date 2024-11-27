@@ -5,12 +5,13 @@ import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {NotificationStatus} from 'state/notifications/types'
+
 import {changeHelpCenterId} from 'state/ui/helpCenter'
 
 import {
@@ -145,10 +146,8 @@ const HelpCenterStartView: React.FC = () => {
                 </NavLink>
             </SecondaryNavbar>
             {showBanner && (
-                <BannerNotification
-                    status={NotificationStatus.Warning}
-                    showIcon
-                    closable
+                <AlertBanner
+                    type={AlertBannerTypes.Warning}
                     onClose={() => {
                         setBannerNotificationDismissed(true)
                     }}

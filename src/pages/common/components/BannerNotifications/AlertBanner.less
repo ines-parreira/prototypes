@@ -1,0 +1,60 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .AlertBanner {
+        position: relative;
+        z-index: 90;
+        top: 0;
+        width: 100%;
+        height: 48px;
+        overflow: hidden;
+        display: flex;
+        gap: @layout-spacing-s;
+        justify-content: space-between;
+        padding: 0 @layout-spacing-m;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+
+        &.critical {
+            background-color: var(--accessory-red-1);
+            border-bottom-color: var(--accessory-red-3);
+        }
+
+        &.warning {
+            background: var(--feedback-warning-0);
+            border-bottom-color: var(--feedback-warning-4);
+        }
+
+        &.info {
+            background: var(--main-primary-0);
+            border-bottom-color: var(--main-primary-4);
+        }
+
+        &.borderless {
+            border: none;
+        }
+
+        @media print {
+            display: none;
+        }
+    }
+
+    .centralContainer {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: center;
+        gap: @layout-spacing-xs;
+        align-items: center;
+        max-height: 100%;
+    }
+
+    .messageContainer {
+        overflow-y: auto;
+        max-height: 47px;
+    }
+
+    .closeContainer {
+        flex: 0 0 auto;
+    }
+}

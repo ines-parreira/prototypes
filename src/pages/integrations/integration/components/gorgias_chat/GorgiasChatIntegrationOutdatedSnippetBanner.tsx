@@ -1,12 +1,11 @@
 import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/types'
 
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {Tab} from 'pages/integrations/integration/types'
-import {NotificationStatus} from 'state/notifications/types'
 
 type Props = {
     integration: Map<any, any>
@@ -26,25 +25,15 @@ const GorgiasChatIntegrationOutdatedSnippetBanner: React.FC<Props> = ({
     }`
 
     return (
-        <BannerNotification
-            status={NotificationStatus.Warning}
-            showIcon
+        <AlertBanner
+            type={AlertBannerTypes.Warning}
             message={message}
-            actionHTML={
-                !isInstallationTab && (
-                    <Link
-                        to={`/app/settings/channels/${
-                            IntegrationType.GorgiasChat
-                        }/${integration.get('id') as string}/${
-                            Tab.Installation
-                        }`}
-                    >
-                        Go To Installation Tab
-                    </Link>
-                )
-            }
+            CTA={{
+                type: 'internal',
+                text: 'Go To Installation Tab',
+                to: `/app/settings/channels/${IntegrationType.GorgiasChat}/${integration.get('id') as string}/${Tab.Installation}`,
+            }}
             borderless
-            dismissible={false}
         />
     )
 }

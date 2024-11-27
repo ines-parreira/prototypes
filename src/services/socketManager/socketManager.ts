@@ -3,11 +3,10 @@ import _noop from 'lodash/noop'
 import _throttle from 'lodash/throttle'
 import {dismissNotification} from 'reapop'
 
-import refreshIcon from 'assets/img/icons/refresh.svg'
-
 import {store} from 'common/store'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import {devLog} from 'utils'
 
@@ -159,16 +158,13 @@ export class SocketManager {
             notify({
                 id: this.disconnectedNotificationId,
                 style: NotificationStyle.Banner,
-                status: NotificationStatus.Error,
-                dismissible: false,
+                type: AlertBannerTypes.Critical,
                 message: 'You are not connected to live ticket updates.',
-                actionHTML: `<span class="d-inline-flex align-items-baseline">
-                              <img src=${refreshIcon} class="align-self-center" style="margin-right: 8px"/>
-                              <span class="text-primary">Refresh</span>
-                             </span>`,
-                showIcon: true,
-                onClick: this.resetWorker,
-                allowHTML: true,
+                CTA: {
+                    type: 'action',
+                    text: 'Refresh',
+                    onClick: this.resetWorker,
+                },
             })
         )
     }

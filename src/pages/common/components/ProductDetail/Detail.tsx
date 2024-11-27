@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
 
 import css from './Detail.less'
 import Header from './Header'
@@ -14,13 +14,8 @@ export default function Detail(props: ProductDetail) {
     return (
         <>
             <Header {...props} />
-            {props.notification && (
-                <BannerNotification
-                    {...props.notification}
-                    borderless
-                    showIcon
-                    dismissible={false}
-                />
+            {props.alertBanner && (
+                <AlertBanner {...props.alertBanner} borderless />
             )}
             <main className={css.main}>
                 <section>

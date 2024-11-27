@@ -17,13 +17,9 @@ import {useSetupIntent} from 'pages/settings/new_billing/views/PaymentMethodSetu
 
 import css from './PaymentMethodSetupView.less'
 
-type IPaymentMethodSetupViewProps = Pick<
-    IFormProps,
-    'contactBilling' | 'dispatchBillingError'
->
+type IPaymentMethodSetupViewProps = Pick<IFormProps, 'dispatchBillingError'>
 
 export const PaymentMethodSetupView: React.FC<IPaymentMethodSetupViewProps> = ({
-    contactBilling,
     dispatchBillingError,
 }) => {
     const hasCreditCard = useHasCreditCard({refetchOnWindowFocus: false})
@@ -46,10 +42,7 @@ export const PaymentMethodSetupView: React.FC<IPaymentMethodSetupViewProps> = ({
         <StripeElementsProvider clientSecret={setupIntent.clientSecret}>
             <div className={css.container}>
                 <BackLink />
-                <Form
-                    contactBilling={contactBilling}
-                    dispatchBillingError={dispatchBillingError}
-                >
+                <Form dispatchBillingError={dispatchBillingError}>
                     <StripePaymentElement />
                     <VerificationChargeDisclaimer />
                     {!hasCreditCard.data ? (

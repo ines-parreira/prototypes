@@ -79,10 +79,7 @@ describe('Form', () => {
 
         it('should render form with Update card button when subscription is not trialing or canceled', () => {
             renderWithStoreAndQueryClientAndRouter(
-                <Form
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />,
+                <Form dispatchBillingError={jest.fn()} />,
                 mockInitialStoreState
             )
 
@@ -93,10 +90,7 @@ describe('Form', () => {
 
         it('should redirect to BILLING_PAYMENT_PATH when submit is successful', async () => {
             const {history} = renderWithStoreAndQueryClientAndRouter(
-                <Form
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                />,
+                <Form dispatchBillingError={jest.fn()} />,
                 mockInitialStoreState
             )
 
@@ -163,10 +157,7 @@ describe('Form', () => {
 
         it('should redirect to BILLING_BASE_PATH when submit is successful', async () => {
             const {history} = renderWithStoreAndQueryClientAndRouter(
-                <Form
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                >
+                <Form dispatchBillingError={jest.fn()}>
                     <EmailInputField />
                 </Form>,
                 mockInitialStoreState

@@ -200,6 +200,11 @@ describe('receivedEvents', () => {
                         current_subscription: {
                             products: {},
                         },
+                        status: {
+                            notification: {
+                                message: 'hey',
+                            },
+                        },
                     },
                 } as any)
             }
@@ -208,6 +213,7 @@ describe('receivedEvents', () => {
             expect(spy).toHaveBeenCalledWith({
                 newAccountStatus: 'active',
                 currentAccountStatus: 'active',
+                notification: {message: 'hey'},
             })
         })
 

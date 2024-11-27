@@ -44,8 +44,10 @@ import {UserRole} from './config/types/user'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {DateTimeResultFormatType} from './constants/datetime'
 import {GorgiasApiResponseDataError} from './models/api/types'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
-import {Notification, NotificationStatus} from './state/notifications/types'
+import {
+    AlertNotification,
+    NotificationStatus,
+} from './state/notifications/types'
 import {RootState} from './state/types'
 import {ViewsState} from './state/views/types'
 import {NonEmptyArray, Schemas} from './types'
@@ -1079,12 +1081,11 @@ export const openChat = (e: SyntheticEvent) => {
 
 export const transformSystemMessagesToNotifications = (
     systemMessages: Array<SystemMessage>
-): Array<Notification> => {
+): Array<AlertNotification> => {
     return systemMessages.map((systemMessage) => ({
-        status:
-            AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1
-                ? systemMessage[0]
-                : NotificationStatus.Info,
+        status: Object.values(NotificationStatus).includes(systemMessage[0])
+            ? systemMessage[0]
+            : NotificationStatus.Info,
         message: systemMessage[1],
     }))
 }

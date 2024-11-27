@@ -29,7 +29,7 @@ import {
 } from 'services/socketManager/types'
 import {initialState as newMessageState} from 'state/newMessage/reducers'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {AlertNotification, NotificationStatus} from 'state/notifications/types'
 import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
@@ -342,8 +342,10 @@ describe('ticket actions', () => {
             mockServer.onPut(endpointMatchers.anyTicket).reply(202, {data: {}})
 
             return store.dispatch(actions.setSpam(true)).then(() => {
-                const button = (notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0]!.buttons?.[0] as unknown as {
+                const button = (
+                    (notify as jest.MockedFunction<typeof notify>).mock
+                        .calls[0][0]! as AlertNotification
+                ).buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 
@@ -401,8 +403,10 @@ describe('ticket actions', () => {
             mockServer.onPut(endpointMatchers.anyTicket).reply(202, {data: {}})
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
-                const button = (notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0]!.buttons?.[0] as unknown as {
+                const button = (
+                    (notify as jest.MockedFunction<typeof notify>).mock
+                        .calls[0][0]! as AlertNotification
+                ).buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 

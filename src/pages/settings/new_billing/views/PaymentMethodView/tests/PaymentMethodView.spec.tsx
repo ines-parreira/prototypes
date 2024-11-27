@@ -158,10 +158,7 @@ describe('PaymentMethodView', () => {
         const {getByText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <PaymentMethodView
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                    />
+                    <PaymentMethodView dispatchBillingError={jest.fn()} />
                 </Provider>
             </QueryClientProvider>
         )
@@ -185,10 +182,7 @@ describe('PaymentMethodView', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <PaymentMethodView
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                    />
+                    <PaymentMethodView dispatchBillingError={jest.fn()} />
                 </Provider>
             </QueryClientProvider>
         )
@@ -234,10 +228,7 @@ describe('PaymentMethodView', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={storeWithTrialingSubscription}>
-                    <PaymentMethodView
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                    />
+                    <PaymentMethodView dispatchBillingError={jest.fn()} />
                 </Provider>
             </QueryClientProvider>
         )
@@ -261,10 +252,7 @@ describe('PaymentMethodView', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={storeWithCanceledSubscription}>
-                    <PaymentMethodView
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                    />
+                    <PaymentMethodView dispatchBillingError={jest.fn()} />
                 </Provider>
             </QueryClientProvider>
         )

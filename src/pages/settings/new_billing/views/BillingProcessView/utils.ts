@@ -1,6 +1,6 @@
 import {Plan, PlanInterval} from 'models/billing/types'
 import {
-    Notification,
+    AlertNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
@@ -22,7 +22,7 @@ export const setHelpdeskNotification = ({
     periodEnd,
     onClick,
     isFreeTrial,
-}: setNotificationProps): Notification | null => {
+}: setNotificationProps): AlertNotification | null => {
     if (isFreeTrial) return null
 
     // Set the notification message
@@ -47,7 +47,6 @@ export const setHelpdeskNotification = ({
         style: NotificationStyle.Alert,
         showDismissButton: true,
         noAutoDismiss: true,
-        showIcon: true,
         allowHTML: true,
         message,
         buttons: !!buttonLabel
@@ -69,7 +68,7 @@ export const setAutomationNotification = ({
     interval = PlanInterval.Month,
     onClick,
     isFreeTrial,
-}: setNotificationProps): Notification | null => {
+}: setNotificationProps): AlertNotification | null => {
     if (isFreeTrial) return null
 
     // Set the notification message
@@ -103,7 +102,6 @@ export const setAutomationNotification = ({
         style: NotificationStyle.Alert,
         showDismissButton: true,
         noAutoDismiss: true,
-        showIcon: true,
         allowHTML: true,
         buttons: !!buttonLabel
             ? [
@@ -125,7 +123,7 @@ export const setConvertNotification = ({
     interval = PlanInterval.Month,
     onClick,
     isFreeTrial,
-}: setNotificationProps): Notification | null => {
+}: setNotificationProps): AlertNotification | null => {
     if (isFreeTrial) return null
 
     // Set the notification message
@@ -159,7 +157,6 @@ export const setConvertNotification = ({
         style: NotificationStyle.Alert,
         showDismissButton: true,
         noAutoDismiss: true,
-        showIcon: true,
         allowHTML: true,
         buttons: !!buttonLabel
             ? [

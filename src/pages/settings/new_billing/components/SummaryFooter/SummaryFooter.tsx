@@ -96,7 +96,6 @@ const SummaryFooter = ({
             const notification: Notification = {
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
-                showIcon: true,
                 showDismissButton: true,
                 dismissAfter: 5000,
                 message: 'Your subscription has successfully been updated.',

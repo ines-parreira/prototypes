@@ -20,7 +20,6 @@ export const useExtendTrialWithSideEffects = () => {
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )
@@ -36,7 +35,6 @@ export const useExtendTrialWithSideEffects = () => {
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )

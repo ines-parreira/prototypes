@@ -4,6 +4,8 @@ import * as reapop from 'reapop'
 import * as segment from 'common/segment'
 import * as actions from 'state/notifications/actions'
 
+import {BannerNotification} from 'state/notifications/types'
+
 import {
     RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
@@ -175,7 +177,7 @@ describe('SocketManager', () => {
             expect(socketManager.isConnected).toEqual(false)
             expect(notifySpy.mock.calls).toMatchSnapshot()
             expect(resetWorker).toHaveBeenCalledTimes(0)
-            notifySpy.mock.calls[0][0]?.onClick?.()
+            ;(notifySpy.mock.calls[0][0] as BannerNotification).CTA?.onClick?.()
             expect(resetWorker).toHaveBeenCalledTimes(1)
         })
     })

@@ -7,7 +7,6 @@ import useSessionStorage from 'hooks/useSessionStorage'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
-import {TicketPurpose} from 'state/billing/types'
 import {isTrialing as useIsTrialing} from 'state/currentAccount/selectors'
 
 import {ProductType} from '../../../../../models/billing/types'
@@ -30,14 +29,10 @@ import {
 } from './utils'
 
 type PaymentMethodViewProps = {
-    contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
 }
 
-const PaymentMethodView = ({
-    contactBilling,
-    dispatchBillingError,
-}: PaymentMethodViewProps) => {
+const PaymentMethodView = ({dispatchBillingError}: PaymentMethodViewProps) => {
     const isTrialing = useAppSelector(useIsTrialing)
 
     const {
@@ -54,7 +49,7 @@ const PaymentMethodView = ({
         setBillingContact,
         isCreditCardFetched,
         isContactFetched,
-    } = useCreditCard({contactBilling, dispatchBillingError})
+    } = useCreditCard({dispatchBillingError})
 
     const {
         currentHelpdeskPlan,
@@ -73,7 +68,6 @@ const PaymentMethodView = ({
         isSubscriptionCanceled,
         selectedPlans: selectedPlansFromState,
     } = useBillingPlans({
-        contactBilling,
         dispatchBillingError,
         filterByInterval: true,
     })

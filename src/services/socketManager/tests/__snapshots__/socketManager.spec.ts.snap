@@ -12,18 +12,15 @@ exports[`SocketManager onDisconnect() should update the manager's \`isConnected\
 [
   [
     {
-      "actionHTML": "<span class="d-inline-flex align-items-baseline">
-                              <img src=test-file-stub class="align-self-center" style="margin-right: 8px"/>
-                              <span class="text-primary">Refresh</span>
-                             </span>",
-      "allowHTML": true,
-      "dismissible": false,
+      "CTA": {
+        "onClick": [MockFunction],
+        "text": "Refresh",
+        "type": "action",
+      },
       "id": "696480246",
       "message": "You are not connected to live ticket updates.",
-      "onClick": [MockFunction],
-      "showIcon": true,
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]

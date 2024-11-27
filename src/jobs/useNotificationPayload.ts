@@ -3,7 +3,11 @@ import _uniqueId from 'lodash/uniqueId'
 import {useCallback, useRef} from 'react'
 import {POSITIONS} from 'reapop'
 
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {
+    AlertNotification,
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 import {buildJobMessage} from 'utils/notificationUtils'
 
 import {Update} from './types'
@@ -44,12 +48,14 @@ const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
     )
 
     const getNotificationPayload = useCallback(
-        ({id, message}: {id?: string; message?: string} = {}) => {
+        ({
+            id,
+            message,
+        }: {id?: string; message?: string} = {}): AlertNotification => {
             return {
                 id: id ?? notification.current?.id,
                 buttons: [],
                 allowHTML: false,
-                closeButton: false,
                 closeOnNext: true,
                 dismissAfter: 10000,
                 dismissible: true,

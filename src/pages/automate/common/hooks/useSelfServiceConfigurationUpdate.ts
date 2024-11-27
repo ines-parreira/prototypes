@@ -9,12 +9,12 @@ import {
 import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {Notification, NotificationStatus} from 'state/notifications/types'
+import {AlertNotification, NotificationStatus} from 'state/notifications/types'
 
 import useStoreIntegrations from './useStoreIntegrations'
 
 export type UseSelfServiceConfigurationUpdateProps = {
-    handleNotify: (notification: Notification) => void
+    handleNotify: (notification: AlertNotification) => void
 }
 export const useSelfServiceConfigurationUpdate = ({
     handleNotify,

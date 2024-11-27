@@ -4,14 +4,14 @@ import {Link} from 'react-router-dom'
 
 import {usePersistedState} from 'common/hooks'
 import useAppSelector from 'hooks/useAppSelector'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
 } from 'pages/integrations/integration/components/email/helpers'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getEmailIntegrations} from 'state/integrations/selectors'
-import {NotificationStatus} from 'state/notifications/types'
 import {isAdmin} from 'utils'
 
 const BANNER_VISIBILITY_KEY = 'email-domain-verification-banner-visibility'
@@ -52,15 +52,11 @@ export default function EmailDomainVerificationBanner() {
     )
 
     return (
-        <BannerNotification
+        <AlertBanner
             aria-label="Email domain verification"
             message={message}
-            status={NotificationStatus.Warning}
-            id="domain-verification-banner"
-            dismissible={false}
-            closable={true}
+            type={AlertBannerTypes.Warning}
             onClose={() => setIsBannerVisible(false)}
-            showIcon={true}
         />
     )
 }

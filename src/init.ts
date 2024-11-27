@@ -22,6 +22,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {store} from 'common/store'
 import {EditableUserProfile} from 'config/types/user'
 import {initializeNewReleaseHandler} from 'models/api/resources'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
 import {
     getCurrentAutomatePlan,
@@ -31,7 +32,7 @@ import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {getBaseEmailIntegration} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {transformSystemMessagesToNotifications} from 'utils'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
@@ -67,14 +68,16 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
     if (!baseEmailIntegration.getIn(['meta', 'verified'], true)) {
         reduxStore.dispatch(
             notify({
-                allowHTML: true,
                 id: 'account-not-verified-notification',
                 style: NotificationStyle.Banner,
-                status: NotificationStatus.Warning,
-                dismissible: false,
-                message:
-                    'Your email address is not verified. <span class="text-primary">Click here to resend the verification email.</span>',
-                onClick: () => resendVerificationEmail()(reduxStore.dispatch),
+                type: AlertBannerTypes.Warning,
+                message: 'Your email address is not verified.',
+                CTA: {
+                    type: 'action',
+                    text: 'Click here to resend the verification email.',
+                    onClick: () =>
+                        resendVerificationEmail()(reduxStore.dispatch),
+                },
             }) as any
         )
     }
@@ -88,11 +91,9 @@ export const notifyUserImpersonated = (reduxStore: Store) => {
 
         reduxStore.dispatch(
             notify({
-                allowHTML: true,
                 id: 'user-impersonated-notification',
                 style: NotificationStyle.Banner,
-                status: NotificationStatus.Warning,
-                dismissible: false,
+                type: AlertBannerTypes.Warning,
                 message: `Impersonating <b>${
                     currentUser.get('email') as string
                 }</b> in <b>${getEnvironment()}</b> environment.

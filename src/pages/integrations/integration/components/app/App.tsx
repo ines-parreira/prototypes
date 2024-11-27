@@ -16,7 +16,8 @@ import {
     TrialPeriod,
 } from 'models/integration/types/app'
 import {ColorType} from 'pages/common/components/Badge/Badge'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
@@ -116,12 +117,9 @@ export default function AppDetail() {
 
     if (appItem.isUnapproved) {
         detailProps.infocard.banner = (
-            <BannerNotification
-                status={NotificationStatus.Warning}
-                allowHTML
+            <AlertBanner
+                type={AlertBannerTypes.Warning}
                 message="<strong>This app has not been approved by Gorgias.</strong><br />We approve apps to ensure your security, be sure that you trust this app before granting it access."
-                showIcon
-                dismissible={false}
             />
         )
     }

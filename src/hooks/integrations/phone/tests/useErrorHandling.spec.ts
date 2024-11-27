@@ -3,10 +3,15 @@ import {dismissNotification} from 'reapop'
 
 import {isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {
+    BannerNotification,
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
 import {useErrorHandling} from '../useErrorHandling'
@@ -46,11 +51,8 @@ describe('useErrorHandling', () => {
 
         expect(notifyMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                status: NotificationStatus.Error,
                 style: NotificationStyle.Banner,
-                showIcon: true,
-                dismissible: false,
-                allowHTML: true,
+                type: AlertBannerTypes.Critical,
                 id: 'phone-error-banner',
             })
         )
@@ -70,7 +72,7 @@ describe('useErrorHandling', () => {
         )
         expect(notifyMock).not.toHaveBeenCalledWith(
             expect.objectContaining({
-                status: NotificationStatus.Error,
+                type: NotificationStatus.Error,
                 id: 'phone-error-banner',
             })
         )
@@ -91,7 +93,7 @@ describe('useErrorHandling', () => {
         )
         expect(notifyMock).not.toHaveBeenCalledWith(
             expect.objectContaining({
-                status: NotificationStatus.Error,
+                type: NotificationStatus.Error,
                 id: 'phone-error-banner',
             })
         )
@@ -108,7 +110,7 @@ describe('useErrorHandling', () => {
 
         expect(notifyMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                status: NotificationStatus.Warning,
+                type: AlertBannerTypes.Warning,
                 style: NotificationStyle.Banner,
                 id: 'phone-warning-banner',
             })
@@ -138,8 +140,9 @@ describe('useErrorHandling', () => {
 
         renderHook(() => useErrorHandling())
 
-        const onClick = notifyMock.mock.calls?.[0]?.[0]?.onClick
-        onClick?.()
+        const onClose = (notifyMock.mock.calls?.[0]?.[0] as BannerNotification)
+            .onClose
+        onClose?.()
 
         expect(actionsMock.setWarning).toHaveBeenCalledTimes(1)
         expect(actionsMock.setWarning).toHaveBeenCalledWith(null)

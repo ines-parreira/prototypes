@@ -3,12 +3,12 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
 import settingsCss from 'pages/settings/settings.less'
-import {NotificationStatus} from 'state/notifications/types'
 import {assetsUrl} from 'utils'
 
 import css from './FacebookIntegrationCustomerChat.less'
@@ -61,10 +61,9 @@ const FacebookIntegrationCustomerChat = ({
                         ) as List<number>
                     ).size > 0 && (
                         <Row className="mb-4">
-                            <BannerNotification
+                            <AlertBanner
                                 message={deprecationBanner}
-                                status={NotificationStatus.Warning}
-                                dismissible={false}
+                                type={AlertBannerTypes.Warning}
                             />
                         </Row>
                     )}

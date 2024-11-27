@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -6,7 +6,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {EmailMigrationStatus} from 'models/integration/types'
 import {getEmailMigrationStatus} from 'state/integrations/selectors'
 
-import BannerNotification from '../BannerNotifications/BannerNotification'
+import AlertBanner from '../BannerNotifications/AlertBanner'
 import {computeEmailMigrationStatusBanner} from './helpers'
 import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
 
@@ -20,11 +20,13 @@ export default function EmailMigrationBanner() {
         void fetchMigrationStatus()
     })
 
-    const bannerSettings = migrationStatus
-        ? computeEmailMigrationStatusBanner(migrationStatus)
-        : null
-
     const migrationPageURL = `/app/settings/channels/email/migration`
+
+    const bannerSettings = migrationStatus
+        ? computeEmailMigrationStatusBanner(migrationStatus, () => {
+              history.push(migrationPageURL)
+          })
+        : null
 
     const shouldHideBanner =
         !bannerSettings ||
@@ -36,21 +38,10 @@ export default function EmailMigrationBanner() {
     }
 
     return (
-        <BannerNotification
+        <AlertBanner
             message={bannerSettings?.message ?? ''}
-            status={
-                bannerSettings?.status as ComponentProps<
-                    typeof BannerNotification
-                >['status']
-            }
-            actionHTML={bannerSettings?.actionHTML ?? ''}
-            id={'migration-status'}
-            dismissible={false}
-            allowHTML={true}
-            showIcon={true}
-            onClick={() => {
-                history.push(migrationPageURL)
-            }}
+            type={bannerSettings?.type}
+            CTA={bannerSettings?.CTA}
         />
     )
 }

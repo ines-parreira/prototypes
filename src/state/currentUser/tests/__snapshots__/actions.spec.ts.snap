@@ -35,16 +35,15 @@ exports[`current user actions handle2FAEnforced() should display the banner 1`] 
 [
   [
     {
-      "actionHTML": "<span class="d-inline-flex align-items-baseline">
-                             <span class="text-primary">Setup 2FA</span>
-                         </span>",
-      "dismissible": false,
+      "CTA": {
+        "onClick": [Function],
+        "text": "Setup 2FA",
+        "type": "action",
+      },
       "id": "two-fa-setup-required-banner",
       "message": "Action required: your admin requires you to enable Two-Factor Authentication (2FA) before 05/12/2022.",
-      "onClick": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]

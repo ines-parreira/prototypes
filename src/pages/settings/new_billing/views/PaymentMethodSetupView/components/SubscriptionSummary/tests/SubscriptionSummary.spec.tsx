@@ -63,7 +63,6 @@ const defaultUseBillingPlansMockReturnValue = {
 
 const renderSubscriptionSummary = () => {
     const props: ISubscriptionSummaryProps = {
-        contactBilling: jest.fn(),
         dispatchBillingError: jest.fn(),
         isPaymentMethodValid: true,
         isSubmitting: false,

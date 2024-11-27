@@ -1,5 +1,5 @@
 import {IntegrationType} from 'models/integration/types'
-import {NotificationStatus} from 'state/notifications/types'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {NodeEnv, envVars} from 'utils/environment'
 
 import {IncidentImpact} from './types'
@@ -91,31 +91,31 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           ys5kq8wycd9w: IntegrationType.Facebook, // Instagram comments
       })
 
-// Mapping between statuspage.io statuses (https://status.gorgias.com/api) and our own notification status/labels.
+// Mapping between statuspage.io statuses (https://status.gorgias.com/api) and our own AlertBanner types.
 export const INCIDENT_IMPACT_LABEL = Object.freeze({
     [IncidentImpact.None]: {
         level: 0,
-        status: NotificationStatus.Info,
+        status: AlertBannerTypes.Info,
         label: 'operational',
     },
     [IncidentImpact.Minor]: {
         level: 1,
-        status: NotificationStatus.Warning,
+        status: AlertBannerTypes.Warning,
         label: 'degraded performance',
     },
     [IncidentImpact.Major]: {
         level: 2,
-        status: NotificationStatus.Error,
+        status: AlertBannerTypes.Critical,
         label: 'a partial outage',
     },
     [IncidentImpact.Critical]: {
         level: 3,
-        status: NotificationStatus.Error,
+        status: AlertBannerTypes.Critical,
         label: 'a major outage',
     },
     [IncidentImpact.Maintenance]: {
         level: 0,
-        status: NotificationStatus.Info,
+        status: AlertBannerTypes.Info,
         label: 'a maintenance',
     },
 })

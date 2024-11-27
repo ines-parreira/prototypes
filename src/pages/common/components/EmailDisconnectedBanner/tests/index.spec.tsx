@@ -91,7 +91,7 @@ describe('EmailMigrationBanner', () => {
 
         renderComponent()
         expect(screen.getByText('test@gorgias.com')).toBeVisible()
-        userEvent.click(screen.getByText('test@gorgias.com'))
+        userEvent.click(screen.getByText('Reconnect'))
         await waitFor(() => {
             expect(testLocation.pathname).toBe('/app/settings/channels/email')
         })

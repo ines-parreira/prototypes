@@ -14,12 +14,7 @@ import {
 } from 'state/billing/actions'
 import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
 import {creditCard, getContact} from 'state/billing/selectors'
-import {
-    BillingContact,
-    CreditCard,
-    ErrorResponse,
-    TicketPurpose,
-} from 'state/billing/types'
+import {BillingContact, CreditCard, ErrorResponse} from 'state/billing/types'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
@@ -38,14 +33,10 @@ import {BILLING_BASE_PATH} from '../constants'
 import {useBillingPlans} from './useBillingPlan'
 
 type useCreditCardProps = {
-    contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
 }
 
-export const useCreditCard = ({
-    contactBilling,
-    dispatchBillingError,
-}: useCreditCardProps) => {
+export const useCreditCard = ({dispatchBillingError}: useCreditCardProps) => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const hasCreditCard = useAppSelector(getHasCreditCard)
@@ -80,7 +71,6 @@ export const useCreditCard = ({
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {startSubscription} = useBillingPlans({
-        contactBilling,
         dispatchBillingError,
     })
 
@@ -233,7 +223,6 @@ export const useCreditCard = ({
                     status: NotificationStatus.Success,
                     message: 'Credit card updated successfully!',
                     style: NotificationStyle.Alert,
-                    showIcon: true,
                     showDismissButton: true,
                 })
             )
@@ -261,7 +250,6 @@ export const useCreditCard = ({
                     status: NotificationStatus.Error,
                     message: errorMsg,
                     style: NotificationStyle.Alert,
-                    showIcon: true,
                     showDismissButton: true,
                 })
             )

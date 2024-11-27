@@ -130,7 +130,6 @@ exports[`infobarActions.shopify.cancelOrder actions on error onInit() should not
       "message": "foo",
       "position": "top-center",
       "status": "error",
-      "style": "alert",
     },
     "type": "reapop/upsertNotification",
   },

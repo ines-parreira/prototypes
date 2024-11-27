@@ -51,7 +51,6 @@ describe('useReactivateTrialWithSideEffects', () => {
             style: NotificationStyle.Alert,
             showDismissButton: true,
             noAutoDismiss: false,
-            showIcon: true,
             allowHTML: true,
         })
     })
@@ -76,7 +75,6 @@ describe('useReactivateTrialWithSideEffects', () => {
             style: NotificationStyle.Alert,
             showDismissButton: true,
             noAutoDismiss: false,
-            showIcon: true,
             allowHTML: true,
         })
     })

@@ -1,30 +1,22 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {dismissNotification as hide} from 'reapop'
 
-import {Notification} from '../../../../state/notifications/types'
+import {BannerNotification as BannerNotificationType} from 'state/notifications/types'
 
-import BannerNotification from './BannerNotification'
+import AlertBanner from './AlertBanner'
 
 type OwnProps = {
-    notifications: Array<Notification>
+    notifications: Array<BannerNotificationType>
 }
 
 const BannerNotifications = ({
     notifications = [],
-    hide,
 }: OwnProps & ConnectedProps<typeof connector>) => {
     return (
         <div>
             {notifications.map((notification) => (
-                <BannerNotification
-                    key={notification.id as string}
-                    //@ts-ignore ts-2783
-                    hide={hide}
-                    {...(notification as ComponentProps<
-                        typeof BannerNotification
-                    >)}
-                />
+                <AlertBanner key={notification.id} {...notification} />
             ))}
         </div>
     )

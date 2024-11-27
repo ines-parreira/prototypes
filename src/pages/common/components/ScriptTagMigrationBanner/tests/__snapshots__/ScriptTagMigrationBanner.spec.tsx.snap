@@ -3,18 +3,19 @@
 exports[`<ScriptTagMigrationBanner /> should contain both re-install and permission update link for a single store 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -44,7 +45,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -53,18 +54,19 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
 exports[`<ScriptTagMigrationBanner /> should contain only permission update link for a single store 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -84,7 +86,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -93,18 +95,19 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 exports[`<ScriptTagMigrationBanner /> should contain only permission update link for multiple stores 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -124,7 +127,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -133,18 +136,19 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a single store 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -171,7 +175,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -180,18 +184,19 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
 exports[`<ScriptTagMigrationBanner /> should contain only re-install link for multiple stores 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -218,7 +223,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -227,18 +232,19 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
 exports[`<ScriptTagMigrationBanner /> should contain re-install link for a single store and permission update link for multiple stores 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -268,7 +274,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>
@@ -277,18 +283,19 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
 exports[`<ScriptTagMigrationBanner /> should contain re-install link for multiple stores and permission update link for a single store 1`] = `
 <div>
   <div
-    class="bannerNotification error"
+    aria-live="assertive"
+    class="AlertBanner critical"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon critical"
+      >
+        error
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           <b>
@@ -318,7 +325,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
             Scary Deadline
           </b>
         </span>
-      </span>
+      </div>
     </div>
   </div>
 </div>

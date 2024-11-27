@@ -138,14 +138,12 @@ const BillingProcessView = ({
         isSubscriptionUpdating,
         autoUpgradeChanged,
     } = useBillingPlans({
-        contactBilling,
         dispatchBillingError,
         selectedProduct,
         filterByInterval: true,
     })
 
     const {hasCreditCard, shouldPayWithShopify} = useCreditCard({
-        contactBilling,
         dispatchBillingError,
     })
 

@@ -14,6 +14,7 @@ import {
 } from 'config/types/user'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import client from 'models/api/resources'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import history from 'pages/history'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {fetchChats} from 'state/chats/actions'
@@ -272,16 +273,15 @@ export const handle2FAEnforced =
                 notify({
                     id: TWO_FA_REQUIRED_NOTIFICATION_ID,
                     style: NotificationStyle.Banner,
-                    status: NotificationStatus.Warning,
-                    showIcon: true,
-                    dismissible: false,
-                    onClick: () => {
-                        history.push(OPEN_TWO_FA_MODAL_URL)
-                    },
+                    type: AlertBannerTypes.Warning,
                     message: `Action required: your admin requires you to enable Two-Factor Authentication (2FA) before ${twoFASetupDueDate.toString()}.`,
-                    actionHTML: `<span class="d-inline-flex align-items-baseline">
-                             <span class="text-primary">Setup 2FA</span>
-                         </span>`,
+                    CTA: {
+                        type: 'action',
+                        text: 'Setup 2FA',
+                        onClick: () => {
+                            history.push(OPEN_TWO_FA_MODAL_URL)
+                        },
+                    },
                 })
             )
         }

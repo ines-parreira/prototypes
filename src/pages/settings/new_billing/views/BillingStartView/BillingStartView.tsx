@@ -10,6 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {isEnterprise} from 'models/billing/utils'
 import {AlertType} from 'pages/common/components/Alert/Alert'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -231,18 +232,15 @@ const BillingStartView = () => {
                 })
                 void dispatch(
                     notify({
-                        message: `Your Voice subscription has been activated!`,
+                        id: 'voice-subscription-activated',
                         style: NotificationStyle.Banner,
-                        status: NotificationStatus.Success,
-                        actionHTML: (
-                            <a
-                                href="https://docs.gorgias.com/en-US/set-up-voice-81798"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Set Up Voice
-                            </a>
-                        ),
+                        type: AlertBannerTypes.Info,
+                        message: `Your Voice subscription has been activated!`,
+                        CTA: {
+                            type: 'external',
+                            href: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
+                            text: 'Set Up Voice',
+                        },
                     })
                 )
             }
@@ -262,18 +260,15 @@ const BillingStartView = () => {
                 })
                 void dispatch(
                     notify({
+                        id: 'sms-subscription-activated',
                         message: `Your SMS subscription has been activated!`,
                         style: NotificationStyle.Banner,
-                        status: NotificationStatus.Success,
-                        actionHTML: (
-                            <a
-                                href="https://docs.gorgias.com/en-US/set-up-sms-81919"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Set Up SMS
-                            </a>
-                        ),
+                        type: AlertBannerTypes.Info,
+                        CTA: {
+                            type: 'external',
+                            href: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
+                            text: 'Set Up SMS',
+                        },
                     })
                 )
             }
@@ -306,12 +301,12 @@ const BillingStartView = () => {
                         id: 'convert-subscription-activated',
                         message: `Your Convert subscription has been activated!`,
                         style: NotificationStyle.Banner,
-                        status: NotificationStatus.Success,
-                        actionHTML: (
-                            <a href="/app/convert" rel="noreferrer">
-                                Set Up Convert
-                            </a>
-                        ),
+                        type: AlertBannerTypes.Info,
+                        CTA: {
+                            type: 'internal',
+                            to: '/app/convert',
+                            text: 'Set Up Convert',
+                        },
                     })
                 )
             } else if (
@@ -488,12 +483,10 @@ const BillingStartView = () => {
                                 <Redirect to={BILLING_PAYMENT_PATH} />
                             ) : isStripeElementsIntegrationEnabled ? (
                                 <PaymentMethodSetupView
-                                    contactBilling={contactBilling}
                                     dispatchBillingError={dispatchBillingError}
                                 />
                             ) : (
                                 <PaymentMethodView
-                                    contactBilling={contactBilling}
                                     dispatchBillingError={dispatchBillingError}
                                 />
                             )}

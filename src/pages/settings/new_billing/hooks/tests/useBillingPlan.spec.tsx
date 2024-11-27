@@ -83,14 +83,12 @@ describe('useBillingPlans', () => {
     })
 
     it('should submit a support ticket when a non-vetted user selects a phone plan', async () => {
-        const contactBilling = jest.fn()
         const dispatchBillingError = jest.fn()
         const queryClient = mockQueryClient()
 
         const {result} = renderHook(
             () =>
                 useBillingPlans({
-                    contactBilling,
                     dispatchBillingError,
                 }),
             {
@@ -122,7 +120,6 @@ describe('useBillingPlans', () => {
     })
 
     it('should update subscriptions when a vetted user changes phone plans', async () => {
-        const contactBilling = jest.fn()
         const dispatchBillingError = jest.fn()
         const queryClient = mockQueryClient()
         const alteredStore = mockedStore({
@@ -144,7 +141,6 @@ describe('useBillingPlans', () => {
         const {result} = renderHook(
             () =>
                 useBillingPlans({
-                    contactBilling,
                     dispatchBillingError,
                 }),
             {

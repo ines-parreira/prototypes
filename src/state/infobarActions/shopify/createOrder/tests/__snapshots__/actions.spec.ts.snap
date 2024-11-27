@@ -544,7 +544,6 @@ exports[`infobarActions.shopify.createOrder actions onInit() on error should cal
       "message": "Error while calculating draft order",
       "position": "top-center",
       "status": "error",
-      "style": "alert",
     },
     "type": "reapop/upsertNotification",
   },

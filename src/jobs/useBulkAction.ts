@@ -1,7 +1,7 @@
 import {JobType, useCreateJob} from '@gorgias/api-queries'
 import {AxiosError} from 'axios'
 import {useCallback, useMemo} from 'react'
-import {notify as updateNotification} from 'reapop'
+import {Notification, notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import {getConfigByType} from 'config/views'
@@ -53,7 +53,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             onSuccess: (response) => {
                 dispatch(
                     updateNotification({
-                        ...getNotificationPayload(),
+                        ...(getNotificationPayload() as Notification),
                         status: NotificationStatus.Success,
                         ...(level === 'view'
                             ? {
@@ -74,7 +74,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             onError: (error: AxiosError<{error: {msg: string}}>) => {
                 dispatch(
                     updateNotification({
-                        ...getNotificationPayload(),
+                        ...(getNotificationPayload() as Notification),
                         status: NotificationStatus.Error,
                         message:
                             error.response?.status === 403

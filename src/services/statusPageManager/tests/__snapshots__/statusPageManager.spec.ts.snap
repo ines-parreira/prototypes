@@ -4,16 +4,13 @@ exports[`statusPageManager processIncidents() cluster filtering should notify if
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing a partial outage in our API affecting REST API component.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -23,16 +20,13 @@ exports[`statusPageManager processIncidents() cluster filtering should notify if
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing a partial outage in our API affecting REST API component.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -42,16 +36,13 @@ exports[`statusPageManager processIncidents() integration filtering should notif
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing a partial outage in our API affecting Facebook Integration, Gmail Integration components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -61,30 +52,24 @@ exports[`statusPageManager processIncidents() should dispatch as many notificati
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id-1",
       "message": "
                 Currently experiencing degraded performance in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id-2",
       "message": "
                 Currently experiencing a major outage in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -94,16 +79,13 @@ exports[`statusPageManager processIncidents() should dispatch notification if it
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-my-incident-id",
       "message": "
                 Currently experiencing a major outage in our API affecting REST API component.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -113,16 +95,13 @@ exports[`statusPageManager processIncidents() should dispatch notify accordingly
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing a major outage in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -132,16 +111,13 @@ exports[`statusPageManager processIncidents() should dispatch notify accordingly
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing a partial outage in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "error",
       "style": "banner",
+      "type": "critical",
     },
   ],
 ]
@@ -151,16 +127,13 @@ exports[`statusPageManager processIncidents() should dispatch notify accordingly
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing degraded performance in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]
@@ -170,16 +143,13 @@ exports[`statusPageManager processIncidents() should dispatch notify accordingly
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
                 Currently experiencing operational in our API affecting REST API, GraphQL API components.
                 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "status": "info",
       "style": "banner",
+      "type": "info",
     },
   ],
 ]
@@ -189,9 +159,6 @@ exports[`statusPageManager processScheduledMaintenances() cluster filtering shou
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -199,9 +166,8 @@ REST API started <em>a few seconds ago</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]
@@ -211,9 +177,6 @@ exports[`statusPageManager processScheduledMaintenances() cluster filtering shou
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -221,9 +184,8 @@ REST API started <em>a few seconds ago</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]
@@ -233,9 +195,6 @@ exports[`statusPageManager processScheduledMaintenances() cluster filtering shou
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -243,9 +202,8 @@ REST API started <em>a few seconds ago</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]
@@ -257,9 +215,6 @@ exports[`statusPageManager processScheduledMaintenances() should dispatch notify
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -267,9 +222,8 @@ REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]
@@ -279,9 +233,6 @@ exports[`statusPageManager processScheduledMaintenances() should dispatch notify
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -289,9 +240,8 @@ REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "info",
       "style": "banner",
+      "type": "info",
     },
   ],
 ]
@@ -301,9 +251,6 @@ exports[`statusPageManager processScheduledMaintenances() should dispatch notify
 [
   [
     {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
 API affecting
@@ -311,9 +258,8 @@ REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href="https://status.gorgias.com/" target="_blank" rel="noreferrer noopener">status page</a>.",
       "onClose": [Function],
-      "showIcon": true,
-      "status": "warning",
       "style": "banner",
+      "type": "warning",
     },
   ],
 ]

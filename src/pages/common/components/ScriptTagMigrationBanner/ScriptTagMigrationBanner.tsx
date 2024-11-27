@@ -10,12 +10,11 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {IntegrationType} from 'models/integration/constants'
 
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {NotificationStatus} from 'state/notifications/types'
 import {isAdmin} from 'utils'
-
-import BannerNotification from '../BannerNotifications/BannerNotification'
 
 import useStoresRequiringScriptTagMigration from './hooks/useStoresRequiringScriptTagMigration'
 
@@ -84,7 +83,7 @@ const ScriptTagMigrationBanner = () => {
               }/installation`
 
     return (
-        <BannerNotification
+        <AlertBanner
             message={
                 <>
                     <b>Action required</b>:{' '}
@@ -127,9 +126,7 @@ const ScriptTagMigrationBanner = () => {
                     to ensure better chat stability by <b>{migrationDueDate}</b>
                 </>
             }
-            status={NotificationStatus.Error}
-            dismissible={false}
-            showIcon
+            type={AlertBannerTypes.Critical}
         />
     )
 }

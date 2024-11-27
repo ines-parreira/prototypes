@@ -53,23 +53,24 @@ exports[`Detail should render 1`] = `
     </div>
   </header>
   <div
-    class="bannerNotification info borderless"
+    aria-live="polite"
+    class="AlertBanner info borderless"
   >
     <div
-      class="messageContainer"
+      class="centralContainer"
     >
-      <img
-        alt="icon"
-        class="icon"
-        src="test-file-stub"
-      />
       <span
-        class="messageText"
+        class="material-icons-round Icon info"
+      >
+        info
+      </span>
+      <div
+        class="messageContainer"
       >
         <span>
           Beware!
         </span>
-      </span>
+      </div>
     </div>
   </div>
   <main

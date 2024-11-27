@@ -307,13 +307,15 @@ const receivedEvents: ReceivedEvent[] = [
                 (state.currentAccount as {status?: {status?: string}})?.status
                     ?.status || 'active'
 
-            reduxStore.dispatch(
-                notificationsActions.handleUsageBanner({
-                    newAccountStatus,
-                    currentAccountStatus,
-                    notification,
-                }) as any
-            )
+            if (notification) {
+                reduxStore.dispatch(
+                    notificationsActions.handleUsageBanner({
+                        newAccountStatus,
+                        currentAccountStatus,
+                        notification,
+                    }) as any
+                )
+            }
 
             const oldTicketAssignmentSetting =
                 currentAccountSelectors.getTicketAssignmentSettings(state)

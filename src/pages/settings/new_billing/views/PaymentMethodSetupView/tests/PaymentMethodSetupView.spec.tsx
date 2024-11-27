@@ -48,10 +48,7 @@ describe('PaymentMethodSetupView', () => {
         )
 
         renderWithStoreAndQueryClientProvider(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />
+            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />
         )
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
@@ -67,10 +64,7 @@ describe('PaymentMethodSetupView', () => {
         } as any)
 
         renderWithStoreAndQueryClientProvider(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />
+            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />
         )
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
@@ -84,10 +78,7 @@ describe('PaymentMethodSetupView', () => {
         } as any)
 
         renderWithStoreAndQueryClientProvider(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />,
+            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
             mockInitialStoreState
         )
 
@@ -119,10 +110,7 @@ describe('PaymentMethodSetupView', () => {
         } as any)
 
         renderWithStoreAndQueryClientProvider(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />,
+            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
             mockInitialStoreState
         )
 
@@ -152,10 +140,7 @@ describe('PaymentMethodSetupView', () => {
         } as any)
 
         renderWithStoreAndQueryClientProvider(
-            <PaymentMethodSetupView
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-            />,
+            <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
             mockInitialStoreState
         )
 

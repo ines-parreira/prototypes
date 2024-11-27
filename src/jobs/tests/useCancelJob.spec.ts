@@ -38,7 +38,7 @@ describe('useBulkAction', () => {
         message: 'Job launched',
         position: POSITIONS.topCenter,
         status: NotificationStatus.Loading,
-        style: NotificationStyle.Alert,
+        style: NotificationStyle.Alert as const,
     }
 
     it('should successfully cancel job', () => {

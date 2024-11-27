@@ -32,7 +32,6 @@ type BillingFrequencyViewProps = {
 }
 
 const BillingFrequencyView = ({
-    contactBilling,
     dispatchBillingError,
     periodEnd,
     isTrialing,
@@ -60,7 +59,6 @@ const BillingFrequencyView = ({
         updateSubscription,
         isSubscriptionUpdating,
     } = useBillingPlans({
-        contactBilling,
         dispatchBillingError,
     })
 

@@ -13,7 +13,6 @@ exports[`mergeTickets actions mergeTickets should dispatch a success notificatio
       "message": "Tickets merged successfully",
       "position": "top-center",
       "status": "success",
-      "style": "alert",
     },
     "type": "reapop/upsertNotification",
   },

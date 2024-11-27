@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {creditCard} from 'state/billing/selectors'
 import {
@@ -14,7 +15,7 @@ import {
 import {ShopifyBillingStatus} from 'state/currentAccount/types'
 
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
@@ -73,15 +74,13 @@ const SummaryPaymentSection = ({
                 void dispatch(
                     notify({
                         message: 'No payment method registered on your account',
-                        status: NotificationStatus.Warning,
+                        type: AlertBannerTypes.Warning,
                         style: NotificationStyle.Banner,
-                        showIcon: true,
-                        allowHTML: true,
-                        actionHTML: (
-                            <Link to={BILLING_PAYMENT_CARD_PATH}>
-                                Add a payment method
-                            </Link>
-                        ),
+                        CTA: {
+                            type: 'internal',
+                            to: BILLING_PAYMENT_CARD_PATH,
+                            text: 'Add a payment method',
+                        },
                         id: 'no-payment-method',
                     })
                 )
@@ -95,15 +94,13 @@ const SummaryPaymentSection = ({
                         message: `${
                             brand[0].toUpperCase() + brand.slice(1)
                         } ending with ${last4} is expired`,
-                        status: NotificationStatus.Warning,
+                        type: AlertBannerTypes.Warning,
                         style: NotificationStyle.Banner,
-                        showIcon: true,
-                        allowHTML: true,
-                        actionHTML: (
-                            <Link to={BILLING_PAYMENT_CARD_PATH}>
-                                Change Card
-                            </Link>
-                        ),
+                        CTA: {
+                            type: 'internal',
+                            to: BILLING_PAYMENT_CARD_PATH,
+                            text: 'Change Card',
+                        },
                         id: 'payment-method-expired',
                     })
                 )
@@ -116,20 +113,15 @@ const SummaryPaymentSection = ({
                 void dispatch(
                     notify({
                         message: 'Payment with Shopify is canceled',
-                        status: NotificationStatus.Warning,
+                        type: AlertBannerTypes.Warning,
                         style: NotificationStyle.Banner,
-                        showIcon: true,
-                        allowHTML: true,
-                        actionHTML: (
-                            <Link
-                                to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Reactivate billing with Shopify
-                            </Link>
-                        ),
-                        id: 'payment-method-expired',
+                        CTA: {
+                            type: 'internal',
+                            to: ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+                            text: 'Reactivate billing with Shopify',
+                            opensInNewTab: true,
+                        },
+                        id: 'payment-method-canceled',
                     })
                 )
             } else if (shopifyBillingStatus === ShopifyBillingStatus.Inactive) {
@@ -137,19 +129,14 @@ const SummaryPaymentSection = ({
                 void dispatch(
                     notify({
                         message: 'Payment with Shopify is inactive',
-                        status: NotificationStatus.Warning,
+                        type: AlertBannerTypes.Warning,
                         style: NotificationStyle.Banner,
-                        showIcon: true,
-                        allowHTML: true,
-                        actionHTML: (
-                            <Link
-                                to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Activate Billing with Shopify
-                            </Link>
-                        ),
+                        CTA: {
+                            type: 'internal',
+                            to: ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+                            text: 'Activate Billing with Shopify',
+                            opensInNewTab: true,
+                        },
                         id: 'payment-method-expired',
                     })
                 )

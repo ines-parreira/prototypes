@@ -31,7 +31,7 @@ import {
     getCurrentVoicePlan,
     getIsVettedForPhone,
 } from 'state/billing/selectors'
-import {ProductData, TicketPurpose} from 'state/billing/types'
+import {ProductData} from 'state/billing/types'
 import {
     setCurrentSubscription,
     updateSubscriptionsForPlans,
@@ -66,14 +66,12 @@ import {
 } from '../views/BillingProcessView/utils'
 
 export type BillingPlansProps = {
-    contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
     selectedProduct?: ProductType
     filterByInterval?: boolean
 }
 
 export const useBillingPlans = ({
-    contactBilling,
     dispatchBillingError,
     selectedProduct,
     filterByInterval = false,
@@ -428,12 +426,9 @@ export const useBillingPlans = ({
                         message: `We're reviewing your <strong>${productsNames}</strong> plan${
                             plansToBeHandledManually.length > 1 ? 's' : ''
                         } request and will contact you at <b>${from}</b> within 24 business hours`,
-                        actionHTML: `<span class="d-inline-flex align-items-baseline"><span class="text-primary">Contact Billing</span></span>`,
-                        onClick: () => contactBilling(TicketPurpose.CONTACT_US),
                         allowHTML: true,
                         status: NotificationStatus.Info,
                         style: NotificationStyle.Alert,
-                        showIcon: true,
                         showDismissButton: true,
                         noAutoDismiss: true,
                         id: 'billing-voice-sms-request',
@@ -445,7 +440,6 @@ export const useBillingPlans = ({
             }
         }
     }, [
-        contactBilling,
         dispatch,
         dispatchBillingError,
         domain,
@@ -485,7 +479,6 @@ export const useBillingPlans = ({
                 message: 'Your billing frequency has been updated to yearly',
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
-                showIcon: true,
                 showDismissButton: true,
                 dismissAfter: 5000,
             })
@@ -607,7 +600,6 @@ export const useBillingPlans = ({
                     message: 'You have removed Automate from your subscription',
                     status: NotificationStatus.Success,
                     style: NotificationStyle.Alert,
-                    showIcon: true,
                 })
             }
 

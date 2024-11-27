@@ -82,7 +82,6 @@ export const useConfirmStripeSetupIntent = (
                     status: NotificationStatus.Error,
                     message: error.message as string,
                     style: NotificationStyle.Alert,
-                    showIcon: true,
                     showDismissButton: true,
                 })
             )

@@ -15,7 +15,8 @@ import useSelfServiceChatChannels, {
 import LanguageSelector from 'pages/automate/workflows/components/LanguageSelector'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
@@ -247,8 +248,8 @@ export const TestFlowEditor = ({
             <Drawer.Content>
                 {isAuthenticationBannerVisible && (
                     <div className={css.banner}>
-                        <BannerNotification
-                            status={NotificationStatus.Info}
+                        <AlertBanner
+                            type={AlertBannerTypes.Info}
                             message={
                                 <div className={css.bannerContent}>
                                     <span>
@@ -270,8 +271,6 @@ export const TestFlowEditor = ({
                                     </a>
                                 </div>
                             }
-                            showIcon
-                            allowHTML
                         />
                     </div>
                 )}

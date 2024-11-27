@@ -10,6 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {
@@ -32,7 +33,7 @@ import {
     shouldPayWithShopify as getShouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 
 import ProductCard from '../../components/ProductCard'
 import {
@@ -148,36 +149,43 @@ const UsageAndPlansView = ({
                     .filter(Boolean)
                     .join(', ')
 
-                const CTA = (
-                    <Link to={`${BILLING_PROCESS_PATH}/helpdesk`}>
-                        Review Subscription
-                    </Link>
-                )
-
                 void dispatch(
                     notify({
+                        style: NotificationStyle.Banner,
+                        type: AlertBannerTypes.Warning,
                         message: `Your subscription to the ${helpdeskPlanName} plan ${
                             otherPlans.length > 0 ? `with ${otherPlans}` : ''
                         } starts on <b>${subscriptionStartDate}</b>.`,
-                        allowHTML: true,
-                        actionHTML: CTA,
-                        status: NotificationStatus.Warning,
-                        style: NotificationStyle.Banner,
+                        CTA: {
+                            type: 'internal',
+                            to: `${BILLING_PROCESS_PATH}/helpdesk`,
+                            text: 'Review Subscription',
+                        },
                         id: 'trial-start-subscription',
                     })
                 )
             } else if (showTrialBanner) {
-                const cta = shouldPayWithShopify
-                    ? `<a href=${ACTIVATE_PAYMENT_WITH_SHOPIFY_URL} target="_blank" rel="noopener noreferrer"> activate Billing with Shopify</a>`
-                    : `<a href=${BILLING_PAYMENT_CARD_PATH}>add a payment method</a>`
+                const CTA = {
+                    type: 'internal' as const,
+                    ...(shouldPayWithShopify
+                        ? {
+                              to: ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+                              text: 'Activate Billing with Shopify',
+                              openInNewTab: true,
+                          }
+                        : {
+                              to: BILLING_PAYMENT_CARD_PATH,
+                              text: 'Add a payment method',
+                          }),
+                }
 
                 void dispatch(
                     notify({
-                        message: `Your free trial is ending on ${trialPeriodEnd}. Please ${cta} to continue using Gorgias.`,
-                        allowHTML: true,
-                        status: NotificationStatus.Warning,
-                        style: NotificationStyle.Banner,
                         id: 'trial-start-subscription',
+                        style: NotificationStyle.Banner,
+                        type: AlertBannerTypes.Warning,
+                        CTA,
+                        message: `Your free trial is ending on ${trialPeriodEnd}.`,
                     })
                 )
             }

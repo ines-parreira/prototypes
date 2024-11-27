@@ -6,10 +6,11 @@ import {dismissNotification} from 'reapop'
 import {store as reduxStore} from 'common/store'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {getHelpCenters} from 'state/entities/helpCenter/helpCenters'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 
 import {tryLocalStorage} from '../common/utils'
 
@@ -283,18 +284,15 @@ export class StatusPageManager {
                 this.store.dispatch(
                     notify({
                         id: `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
-                        status: notification.status,
                         style: NotificationStyle.Banner,
+                        type: notification.status,
                         message,
-                        allowHTML: true,
-                        dismissible: false,
-                        closable: true,
                         onClose: () =>
                             StatusPageManager.hideNotification(
                                 incident.id,
                                 DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
                             ),
-                    } as any) as any
+                    }) as any
                 )
             }
         }
@@ -412,16 +410,12 @@ Find out more on our <a href="${
                 this.store.dispatch(
                     notify({
                         id: MAINTENANCE_NOTIFICATION_ID,
-                        status:
-                            maintenance.status === MaintenanceStatus.Scheduled
-                                ? NotificationStatus.Info
-                                : NotificationStatus.Warning,
                         style: NotificationStyle.Banner,
+                        type:
+                            maintenance.status === MaintenanceStatus.Scheduled
+                                ? AlertBannerTypes.Info
+                                : AlertBannerTypes.Warning,
                         message,
-                        allowHTML: true,
-                        dismissible: false,
-                        closable: true,
-                        showIcon: true,
                         onClose: () =>
                             StatusPageManager.hideNotification(
                                 maintenance.id,

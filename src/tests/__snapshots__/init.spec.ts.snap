@@ -4,17 +4,17 @@ exports[`init notifyAccountNotVerified() should dispatch a notification because 
 [
   {
     "payload": {
-      "allowHTML": true,
+      "CTA": {
+        "onClick": [Function],
+        "text": "Click here to resend the verification email.",
+        "type": "action",
+      },
       "buttons": [],
-      "closeButton": false,
-      "dismissAfter": 0,
-      "dismissible": false,
       "id": "account-not-verified-notification",
-      "message": "Your email address is not verified. <span class="text-primary">Click here to resend the verification email.</span>",
-      "onClick": [Function],
-      "position": "top-center",
-      "status": "warning",
+      "message": "Your email address is not verified.",
+      "status": "none",
       "style": "banner",
+      "type": "warning",
     },
     "type": "reapop/upsertNotification",
   },
@@ -27,17 +27,13 @@ exports[`init notifyUserImpersonated() should dispatch a notification because us
 [
   {
     "payload": {
-      "allowHTML": true,
       "buttons": [],
-      "closeButton": false,
-      "dismissAfter": 0,
-      "dismissible": false,
       "id": "user-impersonated-notification",
       "message": "Impersonating <b>alex@gorgias.io</b> in <b>development</b> environment.
                 cluster='us-east1-abcd' and account_id=1 and user_id=2",
-      "position": "top-center",
-      "status": "warning",
+      "status": "none",
       "style": "banner",
+      "type": "warning",
     },
     "type": "reapop/upsertNotification",
   },

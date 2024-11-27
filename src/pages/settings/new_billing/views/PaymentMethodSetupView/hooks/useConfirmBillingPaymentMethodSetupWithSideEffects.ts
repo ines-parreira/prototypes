@@ -34,7 +34,6 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                         status: NotificationStatus.Success,
                         message: 'Credit card updated successfully!',
                         style: NotificationStyle.Alert,
-                        showIcon: true,
                         showDismissButton: true,
                     })
                 )
@@ -65,7 +64,6 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                         status: NotificationStatus.Error,
                         message: errorMsg,
                         style: NotificationStyle.Alert,
-                        showIcon: true,
                         showDismissButton: true,
                     })
                 )

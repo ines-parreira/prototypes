@@ -60,7 +60,6 @@ export default function AddSalesCouponModal({
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )
@@ -76,7 +75,6 @@ export default function AddSalesCouponModal({
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )
@@ -95,7 +93,6 @@ export default function AddSalesCouponModal({
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )
@@ -111,7 +108,6 @@ export default function AddSalesCouponModal({
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                     noAutoDismiss: false,
-                    showIcon: true,
                     allowHTML: true,
                 })
             )

@@ -45,7 +45,6 @@ describe('useBulkAction', () => {
                 id: expect.stringContaining('notification-'),
                 buttons: [],
                 allowHTML: false,
-                closeButton: false,
                 closeOnNext: true,
                 dismissAfter: 10000,
                 dismissible: true,

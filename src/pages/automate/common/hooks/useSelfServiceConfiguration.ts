@@ -14,7 +14,7 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import {getHasAutomate} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
+import {AlertNotification, NotificationStatus} from 'state/notifications/types'
 
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
@@ -22,7 +22,7 @@ import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 const useSelfServiceConfiguration = (
     shopType: string,
     shopName: string,
-    notificationHandler?: (notification: Notification) => void
+    notificationHandler?: (notification: AlertNotification) => void
 ) => {
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -50,7 +50,7 @@ const useSelfServiceConfiguration = (
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id
     const handleNotify = useCallback(
-        (notif: Notification) => {
+        (notif: AlertNotification) => {
             if (notificationHandler) {
                 notificationHandler(notif)
             } else {

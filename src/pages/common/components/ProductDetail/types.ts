@@ -1,7 +1,7 @@
 import {ReactNode} from 'react'
 
 import {ColorType} from 'pages/common/components/Badge/Badge'
-import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
+import {AlertBannerProps} from 'pages/common/components/BannerNotifications/AlertBanner'
 
 export type Infocard = {
     isHidden?: boolean
@@ -39,6 +39,6 @@ export type ProductDetail = {
     }
     longDescription: string
     screenshots?: string[]
-    notification?: BannerProps
+    alertBanner?: AlertBannerProps
     infocard: Infocard
 }

@@ -1,6 +1,10 @@
 import {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    BannerNotification,
+    isBannerNotification,
+} from 'state/notifications/types'
 import {RootState} from 'state/types'
 
 function getNotifications(state: RootState) {
@@ -12,9 +16,9 @@ export default function useBannerNotifications() {
 
     return useMemo(
         () =>
-            notifications.filter(
-                (notification) => notification.style === 'banner'
-            ),
+            notifications.filter((notification) =>
+                isBannerNotification(notification)
+            ) as BannerNotification[],
         [notifications]
     )
 }

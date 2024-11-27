@@ -26,7 +26,8 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
@@ -695,19 +696,17 @@ export const CampaignDetailsForm = ({
             <CampaigFormConfigurationProvider value={formConfiguration}>
                 <CampaignDetailsFormProvider value={campaignDetailContext}>
                     {isLightCampaignBannerVisible && (
-                        <BannerNotification
+                        <AlertBanner
+                            type={AlertBannerTypes.Info}
                             message={
                                 "You are editing a light campaign. Light campaigns don't allow advanced triggers, and are not charged in your Convert plan."
                             }
-                            actionHTML={
-                                <a
-                                    href="https://docs.gorgias.com/en-US/search/campaign?page=1"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Learn More
-                                </a>
-                            }
+                            CTA={{
+                                type: 'external',
+                                href: 'https://docs.gorgias.com/en-US/search/campaign?page=1',
+                                text: 'Learn More',
+                                opensInNewTab: true,
+                            }}
                         />
                     )}
 

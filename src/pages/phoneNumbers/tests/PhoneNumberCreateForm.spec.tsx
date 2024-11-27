@@ -9,6 +9,7 @@ import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
 import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
 import * as apiCalls from 'models/phoneNumber/resources'
 import * as notificationActions from 'state/notifications/actions'
+import {AlertNotification} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
@@ -251,7 +252,8 @@ describe('<PhoneNumberCreateForm/>', () => {
             })
             expect(createPhoneNumberSpy).toHaveBeenCalled()
 
-            const notificationSent = notify.mock.lastCall?.[0]
+            const notificationSent = notify.mock
+                .lastCall?.[0] as AlertNotification
             expect(notificationSent?.title).toEqual('Cannot add phone number.')
             expect(notificationSent?.allowHTML).toBe(true)
         })

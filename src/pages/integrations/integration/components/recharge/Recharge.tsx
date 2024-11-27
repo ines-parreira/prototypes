@@ -37,16 +37,18 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
     const isIntegration = integrationId && integrationId !== connectionsPath
     const isConnections = integrationId === connectionsPath
     const hasNoAvailableShopifyIntegrations = !availableShopifyIntegrations.size
-    const notification = hasNoAvailableShopifyIntegrations
+    const alertBanner = hasNoAvailableShopifyIntegrations
         ? {
               message: integrations.size
                   ? `You are all set! All your Shopify stores have Recharge connected.`
                   : `To connect the Recharge app you need to have at least one Shopify store connected to Gorgias.`,
-              actionHTML: !integrations.size ? (
-                  <Link to="/app/settings/integrations/shopify">
-                      Connect Shopify
-                  </Link>
-              ) : undefined,
+              CTA: !integrations.size
+                  ? {
+                        type: 'internal' as const,
+                        to: '/app/settings/integrations/shopify',
+                        text: 'Connect Shopify',
+                    }
+                  : undefined,
           }
         : undefined
 
@@ -63,11 +65,10 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
         connectUrl: '/app/settings/integrations/recharge/new',
         isExternalConnectUrl: false,
         isConnectionDisabled: hasNoAvailableShopifyIntegrations,
-        notification: notification,
     }
 
     const detailProps = mapAppToDetail({...rechargeConfig})
-    detailProps.notification = notification
+    detailProps.alertBanner = alertBanner
     const CTA = (
         <ConnectLink
             connectUrl={connectProps.connectUrl}
@@ -75,7 +76,7 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
             isDisabled={connectProps.isConnectionDisabled}
             integrationTitle={IntegrationType.Recharge}
             disabledMessage={
-                (connectProps.isConnectionDisabled && notification?.message) ||
+                (connectProps.isConnectionDisabled && alertBanner?.message) ||
                 ''
             }
         >
@@ -143,7 +144,6 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                             integrations={integrations}
                             loading={loading}
                             redirectUri={redirectUri}
-                            {...connectProps}
                         />
                     )}
                 </>

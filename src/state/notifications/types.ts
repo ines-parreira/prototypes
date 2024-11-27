@@ -1,4 +1,7 @@
-import {ReactNode} from 'react'
+import {Position, Status} from 'reapop'
+
+import {AlertBannerProps} from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 
 export enum NotificationStatus {
     Success = 'success',
@@ -13,38 +16,68 @@ export enum NotificationStyle {
     Banner = 'banner',
 }
 
-export type Notification = {
-    status?: NotificationStatus
-    message?: string
-    id?: Maybe<string>
+type ReapopNotification = {
+    id: string
     title?: string
-    dismissAfter?: number
-    closeOnNext?: boolean
+    message?: string
+    status: Status
+    position?: Position
     buttons?: NotificationButton[]
-    allowHTML?: boolean
-    actionHTML?: string | ReactNode
+    image?: string
+    dismissAfter?: number
     dismissible?: boolean
-    style?: NotificationStyle
+    onAdd?: (...args: any[]) => void
+    onDismiss?: (...args: any[]) => void
+    showDismissButton?: boolean
+    allowHTML?: boolean
+}
+
+export type AlertNotification = Omit<ReapopNotification, 'status' | 'id'> & {
+    style?: NotificationStyle.Alert
+    status?: NotificationStatus
+    id?: Maybe<string>
+    // double check this one
     type?: NotificationStatus
-    onClick?: () => void
+    closeOnNext?: boolean
     noAutoDismiss?: boolean
     isTicketMessageFailedEvent?: boolean
-    showIcon?: boolean
-    closable?: boolean
-    onClose?: () => void
-    // TODO(@nikolam): separate strictly reapop notifications from the Gorgias type
-    showDismissButton?: boolean
 }
+
+// Types below are due to mixing reapop with banners :(
+// Remove them once banners have their own system
+export type BannerNotification = Omit<AlertBannerProps, 'borderless'> & {
+    style: NotificationStyle.Banner
+    id: string
+}
+
+export const isAlertNotification = (
+    notification: Notification
+): notification is AlertNotification =>
+    notification.style === NotificationStyle.Alert ||
+    notification.style === undefined
+
+export const isBannerNotification = (
+    notification: Notification
+): notification is BannerNotification =>
+    notification.style === NotificationStyle.Banner
+
+export type BannerNotificationFromBackend = Omit<
+    BannerNotification,
+    'style'
+> & {
+    type: AlertBannerTypes
+}
+
+export type Notification = AlertNotification | BannerNotification
 
 export type NotificationButton = {
     name: string
-    onClick: () => void
-    primary: boolean
-    color?: 'string'
+    primary?: boolean
+    onClick?: (...args: any[]) => void
 }
 
 export type HandleUsageBanner = {
     newAccountStatus: string
     currentAccountStatus: string
-    notification: Maybe<Notification>
+    notification?: BannerNotificationFromBackend
 }

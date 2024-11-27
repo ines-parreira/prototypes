@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {Notification, NotificationButton} from 'state/notifications/types'
+import {AlertNotification, NotificationButton} from 'state/notifications/types'
 
 import {MigrationFailuresSection} from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
 import {QuickSummaryEntry} from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
@@ -66,7 +66,7 @@ export const getSessionCreateData = (
     },
 })
 
-export const longNotificationOptions: Notification = {
+export const longNotificationOptions: AlertNotification = {
     dismissAfter: 20 * 1000,
     dismissible: true,
     showDismissButton: true,

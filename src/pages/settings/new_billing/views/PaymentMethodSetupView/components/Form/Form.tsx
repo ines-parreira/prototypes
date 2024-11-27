@@ -29,11 +29,10 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import css from './Form.less'
 
 export type IFormProps = Omit<HTMLProps<HTMLFormElement>, 'onSubmit' | 'ref'> &
-    Pick<ISubscriptionSummaryProps, 'contactBilling' | 'dispatchBillingError'>
+    Pick<ISubscriptionSummaryProps, 'dispatchBillingError'>
 
 export const Form: React.FC<IFormProps> = ({
     children,
-    contactBilling,
     dispatchBillingError,
     ...props
 }) => {
@@ -128,7 +127,6 @@ export const Form: React.FC<IFormProps> = ({
                 </div>
             </Card>
             <SubscriptionSummary
-                contactBilling={contactBilling}
                 dispatchBillingError={dispatchBillingError}
                 isPaymentMethodValid={isComplete}
                 isSubmitting={isLoading}

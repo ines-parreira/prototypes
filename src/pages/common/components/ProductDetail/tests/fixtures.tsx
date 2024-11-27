@@ -51,7 +51,7 @@ export const dummyProduct: ProductDetail = {
         'https://screen.com/my3.png',
         'https://screen.com/my4.png',
     ],
-    notification: {
+    alertBanner: {
         message: 'Beware!',
     },
     categories: ['My category', {label: 'Wow', type: ColorType.Success}],

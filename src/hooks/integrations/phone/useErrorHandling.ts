@@ -1,16 +1,16 @@
 import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
 
-import refreshIcon from 'assets/img/icons/refresh.svg'
 import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {NotificationStyle} from 'state/notifications/types'
 
 import useVoiceDevice from './useVoiceDevice'
 
-enum PhoneBannerNotification {
+enum PhoneAlertBanner {
     Error = 'phone-error-banner',
     Warning = 'phone-warning-banner',
 }
@@ -24,21 +24,18 @@ export function useErrorHandling() {
             void dispatch(
                 notify({
                     message: errorMessage(error),
-                    status: NotificationStatus.Error,
+                    type: AlertBannerTypes.Critical,
                     style: NotificationStyle.Banner,
-                    id: PhoneBannerNotification.Error,
-                    actionHTML: `<span class="d-inline-flex align-items-baseline">
-                    <img src=${refreshIcon} class="align-self-center" style="margin-right: 8px"/>
-                    <span class="text-primary">Reload page</span>
-                    </span>`,
-                    showIcon: true,
-                    onClick: () => window.location.reload(),
-                    dismissible: false,
-                    allowHTML: true,
+                    id: PhoneAlertBanner.Error,
+                    CTA: {
+                        type: 'action',
+                        text: 'Reload page',
+                        onClick: () => window.location.reload(),
+                    },
                 })
             )
         } else {
-            dispatch(dismissNotification(PhoneBannerNotification.Error))
+            dispatch(dismissNotification(PhoneAlertBanner.Error))
         }
     }, [dispatch, error])
 
@@ -49,16 +46,16 @@ export function useErrorHandling() {
             void dispatch(
                 notify({
                     message,
-                    status: NotificationStatus.Warning,
+                    type: AlertBannerTypes.Warning,
                     style: NotificationStyle.Banner,
-                    id: PhoneBannerNotification.Warning,
-                    onClick: () => {
+                    id: PhoneAlertBanner.Warning,
+                    onClose: () => {
                         actions.setWarning(null)
                     },
                 })
             )
         } else {
-            dispatch(dismissNotification(PhoneBannerNotification.Warning))
+            dispatch(dismissNotification(PhoneAlertBanner.Warning))
         }
     }, [dispatch, warning, actions])
 }

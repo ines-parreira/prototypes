@@ -3,10 +3,9 @@ import React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {AlertBannerTypes} from 'pages/common/components//BannerNotifications/types'
+import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
 import {getInactiveEmailChannels} from 'state/integrations/selectors'
-import {NotificationStatus} from 'state/notifications/types'
-
-import BannerNotification from '../BannerNotifications/BannerNotification'
 
 export default function EmailDisconnectedBanner() {
     const state: List<Map<string, any>> = useAppSelector(
@@ -25,11 +24,6 @@ export default function EmailDisconnectedBanner() {
     }
     const email = state.first().get('address')
 
-    const reconnect = (
-        <span className="d-inline-flex align-items-baseline">
-            <span className="text-primary">Reconnect</span>
-        </span>
-    )
     const message = (
         <>
             <strong>{email}</strong> may be disconnected. If you’re having
@@ -38,17 +32,16 @@ export default function EmailDisconnectedBanner() {
     )
 
     return (
-        <BannerNotification
+        <AlertBanner
             message={message}
-            actionHTML={reconnect}
-            status={NotificationStatus.Error}
-            id={'disconnection-status'}
-            dismissible={false}
-            allowHTML={true}
-            showIcon={true}
-            onClick={() => {
-                history.push(reconnectPageURL)
+            CTA={{
+                type: 'action',
+                text: 'Reconnect',
+                onClick: () => {
+                    history.push(reconnectPageURL)
+                },
             }}
+            type={AlertBannerTypes.Warning}
         />
     )
 }

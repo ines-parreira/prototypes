@@ -92,9 +92,7 @@ describe('EmailDomainVerificationBanner', () => {
 
         renderComponent()
 
-        const closeIcon = screen.getByRole('img', {
-            name: /close\-icon/i,
-        })
+        const closeIcon = screen.getByText('close')
         fireEvent.click(closeIcon)
         expect(dismissFn).toHaveBeenCalledWith(false)
     })

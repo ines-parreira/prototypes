@@ -119,7 +119,6 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
                             integrations={integrations}
                             loading={loading}
                             redirectUri={redirectUri}
-                            {...connectProps}
                         />
                     )}
                 </>

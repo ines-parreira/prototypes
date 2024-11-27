@@ -2,9 +2,11 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+
 import {StoreDispatch} from '../../types'
 import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
-import {Notification, NotificationStatus} from '../types'
+import {Notification} from '../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -44,8 +46,6 @@ describe('actions', () => {
                 {},
                 INITIAL_MESSAGE as Notification
             )
-            // auto-calculated by default
-            delete defaultMessage.dismissAfter
 
             expect(expectedActions).toMatchObject([
                 {
@@ -217,7 +217,8 @@ describe('actions', () => {
                     newAccountStatus: 'active',
                     currentAccountStatus: 'active',
                     notification: {
-                        status: NotificationStatus.Success,
+                        id: 'ok',
+                        type: AlertBannerTypes.Critical,
                         message: messageNotification,
                     },
                 })
@@ -233,7 +234,8 @@ describe('actions', () => {
                     newAccountStatus: 'active',
                     currentAccountStatus: 'deactivated',
                     notification: {
-                        status: NotificationStatus.Success,
+                        id: 'ok',
+                        type: AlertBannerTypes.Info,
                         message: messageNotification,
                     },
                 })

@@ -11,7 +11,8 @@ import {
     POSITIONS,
 } from 'reapop'
 
-import history from '../../pages/history'
+import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+
 import {StoreDispatch, RootState} from '../types'
 
 import {
@@ -19,24 +20,16 @@ import {
     HandleUsageBanner,
     NotificationStatus,
     NotificationStyle,
+    isBannerNotification,
+    isAlertNotification,
 } from './types'
-
-export const AUTHORIZED_NOTIFICATION_TYPES = [
-    'success',
-    'error',
-    'warning',
-    'info',
-    'loading',
-]
 
 export const INITIAL_MESSAGE = {
     position: POSITIONS.topCenter,
-    dismissAfter: 0,
     dismissible: true,
     buttons: [],
     allowHTML: false,
     closeButton: false,
-    style: NotificationStyle.Alert,
 }
 
 // clean-up notification for comparison
@@ -49,6 +42,8 @@ const isDuplicate = (
     oldNotification: Notification
 ): boolean => {
     if (
+        isAlertNotification(notification) &&
+        isAlertNotification(oldNotification) &&
         !!notification.isTicketMessageFailedEvent &&
         !!oldNotification.isTicketMessageFailedEvent &&
         notification.message === oldNotification.message
@@ -80,40 +75,57 @@ export const notify =
             return Promise.resolve()
         }
 
-        const status =
-            message.status &&
-            AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
+        let finalMessage: Notification = {}
+
+        if (isAlertNotification(message)) {
+            const status = Object.values(NotificationStatus).includes(
+                message.status as NotificationStatus
+            )
                 ? message.status
                 : NotificationStatus.Info
 
-        const finalMessage: Notification = {
-            ...INITIAL_MESSAGE,
-            ...message,
-            ...{status},
-        }
+            let dismissAfter: number = message.dismissAfter || 0
+            if (!!message.noAutoDismiss) {
+                dismissAfter = 0
+            } else if (
+                // calculate auto dismiss time if dismissAfter is not set
+                // and dismissible is true or undefined
+                !(message.dismissible === false) &&
+                !message.dismissAfter
+            ) {
+                const wordsPerMinute = 230
+                const readText = `${message.title || ''} ${
+                    message.message || ''
+                }`
+                let readingTime =
+                    (_words(readText).length * 60) / wordsPerMinute
+                readingTime = _max([3, Math.ceil(readingTime)]) as number
+                dismissAfter = readingTime * 1000
+            }
 
-        // TODO(@ghinda): use message everywhere, and remove this conditional
-        // if no content, set title as the content
-        if (finalMessage.title && !finalMessage.message) {
-            finalMessage.message = finalMessage.title
-            delete finalMessage.title
-        }
+            finalMessage = {
+                ...INITIAL_MESSAGE,
+                ...message,
+                status,
+                dismissAfter,
+            }
 
-        if (!!finalMessage.noAutoDismiss) {
-            finalMessage.dismissAfter = 0
-        } else if (
-            finalMessage.dismissible &&
-            finalMessage.dismissAfter === 0
-        ) {
-            // calculate auto dismiss time if dismissAfter is not set
+            // if no content, set title as the content
+            if (finalMessage.title && !finalMessage.message) {
+                finalMessage.message = finalMessage.title
+                finalMessage.title = undefined
+            }
+        } else if (isBannerNotification(message)) {
+            const type = Object.values(AlertBannerTypes).includes(
+                message.type as AlertBannerTypes
+            )
+                ? message.type
+                : AlertBannerTypes.Info
 
-            const wordsPerMinute = 230
-            const readText = `${finalMessage.title || ''} ${
-                finalMessage.message || ''
-            }`
-            let readingTime = (_words(readText).length * 60) / wordsPerMinute
-            readingTime = _max([3, Math.ceil(readingTime)]) as number
-            finalMessage.dismissAfter = readingTime * 1000
+            finalMessage = {
+                ...message,
+                type,
+            }
         }
 
         const notificationsState = (getState() || {}).notifications || []
@@ -121,7 +133,7 @@ export const notify =
 
         notificationsState.forEach((notification: Notification) => {
             // close previous notifications that were closeOnNext = true
-            if (notification.closeOnNext) {
+            if (isAlertNotification(notification) && notification.closeOnNext) {
                 dispatch(dismissNotification(notification.id!))
             }
 
@@ -136,6 +148,7 @@ export const notify =
         if (duplicate) {
             return Promise.resolve()
         }
+
         return dispatch(
             addNotification(finalMessage as ReapopNotification)
         ) as unknown as Promise<ReturnType<StoreDispatch>>
@@ -159,13 +172,17 @@ export const handleUsageBanner =
                 notify({
                     id: USAGE_NOTIFICATION_BANNER.toString(),
                     style: NotificationStyle.Banner,
-                    status: notification.type || NotificationStatus.Warning,
-                    dismissible: false,
+                    type:
+                        // until we update backend types in `g/models/account.py`
+                        notification.type === ('error' as AlertBannerTypes)
+                            ? AlertBannerTypes.Critical
+                            : AlertBannerTypes.Warning,
                     message: notification.message,
-                    onClick: () => {
-                        history.push('/app/settings/billing')
+                    CTA: {
+                        type: 'internal',
+                        text: 'Go to billing page',
+                        to: '/app/settings/billing',
                     },
-                    allowHTML: true,
                 })
             )
         }

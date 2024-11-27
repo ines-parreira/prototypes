@@ -51,7 +51,6 @@ describe('useExtendTrialWithSideEffects', () => {
             style: NotificationStyle.Alert,
             showDismissButton: true,
             noAutoDismiss: false,
-            showIcon: true,
             allowHTML: true,
         })
     })
@@ -72,7 +71,6 @@ describe('useExtendTrialWithSideEffects', () => {
             style: NotificationStyle.Alert,
             showDismissButton: true,
             noAutoDismiss: false,
-            showIcon: true,
             allowHTML: true,
         })
     })

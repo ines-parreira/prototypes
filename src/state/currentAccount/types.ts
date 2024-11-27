@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
-import {Notification} from 'state/notifications/types'
+import {BannerNotificationFromBackend} from 'state/notifications/types'
 import {
     AgentsTableColumn,
     ChannelsTableColumns,
@@ -231,7 +231,7 @@ export type Account = {
     meta: Record<string, unknown>
     status: {
         status: AccountStatus
-        notification?: Notification
+        notification?: BannerNotificationFromBackend
     }
     stripe_id: string
     settings: AccountSetting[]
