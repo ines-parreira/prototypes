@@ -247,5 +247,41 @@ describe('<DropdownInput/>', () => {
 
             expect(screen.queryByText('See examples')).not.toBeInTheDocument()
         })
+
+        it('should a specific help link for tickets', () => {
+            const props = {
+                ...defaultProps,
+                objectType: OBJECT_TYPES.TICKET,
+            }
+
+            renderWithDnD(
+                <Provider store={mockStore}>
+                    <DropdownInput {...props} />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('See examples').getAttribute('href')
+            ).toEqual(
+                'https://docs.gorgias.com/en-US/set-up-ticket-fields-215327#how-to-define-your-fields-to-generate-insights-efficiently'
+            )
+        })
+
+        it('should render a specific helper link for customers', () => {
+            const props = {
+                ...defaultProps,
+                objectType: OBJECT_TYPES.CUSTOMER,
+            }
+
+            renderWithDnD(
+                <Provider store={mockStore}>
+                    <DropdownInput {...props} />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('See examples').getAttribute('href')
+            ).toEqual('https://link.gorgias.com/t8f')
+        })
     })
 })

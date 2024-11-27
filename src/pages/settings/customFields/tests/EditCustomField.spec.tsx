@@ -9,6 +9,7 @@ import {
     productManagedTicketInputFieldDefinition,
     managedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
+    managedCustomerInputFieldDefinition,
 } from 'fixtures/customField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
 import {assumeMock} from 'utils/testing'
@@ -62,6 +63,14 @@ describe('<EditCustomField/>', () => {
         expect(screen.getByText(/This field is managed/)).toBeInTheDocument()
     })
 
+    it('should render link for ticket managed field', () => {
+        setTicketFieldDefinition(managedCustomerInputFieldDefinition)
+        render(<EditCustomField objectType={OBJECT_TYPES.CUSTOMER} />)
+        expect(
+            screen.getByText('see this article').getAttribute('href')
+        ).toEqual('https://link.gorgias.com/tjj')
+    })
+
     it('should render text for contact_reason managed field', () => {
         setTicketFieldDefinition(managedTicketInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
@@ -69,9 +78,7 @@ describe('<EditCustomField/>', () => {
         expect(screen.findByText(/This field is powered /))
         expect(
             screen.getByText('see this article').getAttribute('href')
-        ).toEqual(
-            'https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58'
-        )
+        ).toEqual('https://docs.gorgias.com/en-US/managed-ticket-fields-273001')
     })
 
     it('should render text for non contact_reason managed field', () => {

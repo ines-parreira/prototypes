@@ -2,7 +2,11 @@ import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import {
+    OBJECT_TYPE_SETTINGS,
+    OBJECT_TYPES,
+    MANAGED_TYPES,
+} from 'custom-fields/constants'
 import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     CustomFieldObjectTypes,
@@ -27,6 +31,10 @@ export default function EditCustomField({
     const id = parseInt(params.id, 10)
 
     const {data: field, isLoading} = useCustomFieldDefinition(id)
+    const helpArticleLink =
+        objectType === OBJECT_TYPES.CUSTOMER
+            ? 'https://link.gorgias.com/tjj'
+            : 'https://docs.gorgias.com/en-US/managed-ticket-fields-273001'
 
     useTitle(field?.label)
 
@@ -63,11 +71,12 @@ export default function EditCustomField({
                                 <>
                                     Use this field to gain actionable insights
                                     into customer inquiry trends.
-                                    {field.managed_type === 'contact_reason'
-                                        ? 'This field is powered by AI and can automatically be filled by Gorgias, '
-                                        : 'For more details, '}
+                                    {field.managed_type ===
+                                    MANAGED_TYPES.CONTACT_REASON
+                                        ? ' This field is powered by AI and can automatically be filled by Gorgias, '
+                                        : ' For more details, '}
                                     <a
-                                        href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
+                                        href={helpArticleLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

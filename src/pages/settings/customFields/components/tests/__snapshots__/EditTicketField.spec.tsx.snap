@@ -73,9 +73,9 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
             class="label"
           >
             Use this field to gain actionable insights into customer inquiry trends.
-            This field is powered by AI and can automatically be filled by Gorgias, 
+             This field is powered by AI and can automatically be filled by Gorgias, 
             <a
-              href="https://docs.gorgias.com/en-US/273001-a7d86899ce5f4aef81ebbaa301d78b58"
+              href="https://docs.gorgias.com/en-US/managed-ticket-fields-273001"
               rel="noopener noreferrer"
               target="_blank"
             >

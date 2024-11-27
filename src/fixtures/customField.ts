@@ -155,6 +155,11 @@ export const customerFieldDefinitions: CustomField[] =
         ...customerFieldBaseDefinition,
     }))
 
+export const managedCustomerInputFieldDefinition: CustomField = {
+    ...customerInputFieldDefinition,
+    managed_type: 'customer_type',
+}
+
 export const managedTicketInputFieldDefinition: CustomField = {
     ...ticketInputFieldDefinition,
     managed_type: 'contact_reason',

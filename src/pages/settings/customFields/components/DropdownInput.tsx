@@ -2,7 +2,7 @@ import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import uniqueId from 'lodash/uniqueId'
 import React, {memo, useCallback, useState} from 'react'
 
-import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
+import {DROPDOWN_NESTING_DELIMITER, OBJECT_TYPES} from 'custom-fields/constants'
 import {
     CustomField,
     CustomFieldInput,
@@ -212,7 +212,11 @@ export function DropdownInput({
                     Type {DROPDOWN_NESTING_DELIMITER} symbol to add a new child
                     level.{' '}
                     <a
-                        href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+                        href={
+                            objectType === OBJECT_TYPES.TICKET
+                                ? 'https://docs.gorgias.com/en-US/set-up-ticket-fields-215327#how-to-define-your-fields-to-generate-insights-efficiently'
+                                : 'https://link.gorgias.com/t8f'
+                        }
                         rel="noopener noreferrer"
                         target="_blank"
                     >
