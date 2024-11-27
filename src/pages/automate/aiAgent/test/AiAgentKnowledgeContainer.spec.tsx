@@ -211,7 +211,7 @@ describe('AiAgentKnowledgeContainer', () => {
 
         expect(
             screen.getByText(
-                'Select a Help Center or add at least one URL or external document in order to enable AI Agent.'
+                'Connect at least one of the knowledge sources below to enable AI Agent.'
             )
         ).toBeInTheDocument()
 

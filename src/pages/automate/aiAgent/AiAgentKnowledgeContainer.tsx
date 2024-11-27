@@ -40,9 +40,9 @@ export const AiAgentKnowledgeContainer = () => {
     const accountDomain = currentAccount.get('domain')
     const dispatch = useAppDispatch()
     const [externalFilesIsLoading, setExternalFilesIsLoading] = useState(false)
-    const [hasExternalFiles, setHasExternalFiles] = useState<boolean | null>(
-        null
-    )
+    const [hasExternalFiles, setHasExternalFiles] = useState<
+        boolean | undefined
+    >()
 
     const {shopName} = useParams<{
         shopName: string
@@ -111,7 +111,7 @@ export const AiAgentKnowledgeContainer = () => {
     }
 
     const onSubmit = () => {
-        void handleOnSave({shopName, publicUrls})
+        void handleOnSave({shopName, publicUrls, hasExternalFiles})
     }
 
     const deactivateAiAgent = useCallback(async () => {
@@ -199,7 +199,7 @@ export const AiAgentKnowledgeContainer = () => {
                 <ConfigurationSection
                     title="Knowledge"
                     isRequired
-                    subtitle="Select a Help Center or add at least one URL or external document in order to enable AI Agent."
+                    subtitle="Connect at least one of the knowledge sources below to enable AI Agent."
                     data-candu-id="ai-agent-configuration-knowledge-copy"
                 >
                     <div className={css.sectionContainer}>
@@ -244,9 +244,8 @@ export const AiAgentKnowledgeContainer = () => {
                 <div className={css.buttons}>
                     <Button
                         intent="primary"
-                        isLoading={
-                            isPendingCreateOrUpdate || externalFilesIsLoading
-                        }
+                        isLoading={isPendingCreateOrUpdate}
+                        isDisabled={externalFilesIsLoading}
                         onClick={onSubmit}
                     >
                         Save Changes

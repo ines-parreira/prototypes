@@ -27,8 +27,8 @@ const notifyMock = assumeMock(notify)
 
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
-let onSuccess: () => void
-let onFailure: () => void
+let onSuccess: (() => void) | undefined
+let onFailure: (() => void) | undefined
 
 const renderComponent = ({
     ingestedFiles = null,
@@ -151,6 +151,40 @@ describe('ExternalFilesSection', () => {
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message: 'File too large. Upload a file smaller than 500 MB.',
+        })
+    })
+
+    it('should show an error message if the file name already exists', () => {
+        renderComponent({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    filename: 'test.pdf',
+                    status: 'SUCCESSFUL',
+                    google_storage_url:
+                        'https://storage.googleapis.com/test.pdf',
+                    uploaded_datetime: '2024-11-04T19:24:08Z',
+                },
+            ],
+        })
+
+        const fileInput = screen.getByDisplayValue('')
+        const file = new File(['dummy content'], 'test.pdf', {
+            type: 'application/pdf',
+        })
+
+        Object.defineProperty(fileInput, 'files', {
+            value: [file],
+        })
+        fireEvent.change(fileInput)
+
+        expect(screen.getByText('Upload File')).toBeInTheDocument()
+
+        expect(notifyMock).toHaveBeenCalledWith({
+            status: NotificationStatus.Error,
+            message:
+                'Failed to upload: A file with this name already exists. Remove or select a different file.',
         })
     })
 

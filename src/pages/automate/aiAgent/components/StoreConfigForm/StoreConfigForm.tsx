@@ -56,6 +56,7 @@ import {
 import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
 import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
 import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
+import {useFileIngestion} from '../../hooks/useFileIngestion'
 import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
@@ -232,7 +233,6 @@ export const StoreConfigForm = ({
         updateValue,
         isPendingCreateOrUpdate,
     } = useConfigurationForm({initValues: defaultFormValues, shopName})
-    const [publicUrls, setPublicUrls] = useState<string[]>([])
 
     const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
@@ -388,10 +388,30 @@ export const StoreConfigForm = ({
         shopName,
     })
 
+    const {sourceItems} = usePublicResources({
+        helpCenterId: snippetHelpCenter?.id,
+    })
+
+    const {ingestedFiles} = useFileIngestion({
+        helpCenterId: snippetHelpCenter?.id ?? 0,
+    })
+
+    const externalKnowledgeSources = useMemo(
+        () => ({
+            publicUrls: sourceItems
+                ?.filter((source) => source.status !== 'error')
+                .map((source) => source.url)
+                .filter((url): url is string => !!url),
+            hasExternalFiles:
+                ingestedFiles?.some(
+                    (ingestedFile) => ingestedFile.status === 'SUCCESSFUL'
+                ) ?? false,
+        }),
+        [sourceItems, ingestedFiles]
+    )
+
     const handlePublicURLsChange = useCallback(
         (publicURLs: string[]) => {
-            setPublicUrls(publicURLs)
-
             // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
             if (
                 publicURLs.length === 0 &&
@@ -463,7 +483,8 @@ export const StoreConfigForm = ({
                 isAiAgentWasEnabledForEmail)
 
         void handleOnSave({
-            publicUrls,
+            publicUrls: externalKnowledgeSources.publicUrls,
+            hasExternalFiles: externalKnowledgeSources.hasExternalFiles,
             shopName,
             aiAgentMode,
             silentNotification:

@@ -78,6 +78,19 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {AiAgentWelcomePageViewed: 'ai-agent-welcome-page-viewed'},
 }))
 
+jest.mock('pages/automate/aiAgent/hooks/usePublicResources', () => ({
+    usePublicResources: () => ({
+        sourceItems: [],
+        isSourceItemsListLoading: false,
+    }),
+}))
+
+jest.mock('pages/automate/aiAgent/hooks/useFileIngestion', () => ({
+    useFileIngestion: () => ({
+        ingestedFiles: [],
+    }),
+}))
+
 const mockStore = configureMockStore([thunk])
 
 const contactForm = ContactFormFixture

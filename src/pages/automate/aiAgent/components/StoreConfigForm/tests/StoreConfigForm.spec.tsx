@@ -109,6 +109,11 @@ const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
+mockedUsePublicResources.mockReturnValue({
+    sourceItems: [],
+    isSourceItemsListLoading: false,
+} as unknown as ReturnType<typeof usePublicResources>)
+
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 

@@ -96,6 +96,21 @@ export const ExternalFilesSection = ({
             return
         }
 
+        if (
+            successfullyIngestedFiles.some(
+                (ingestedFile) => ingestedFile.filename === file.name
+            )
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Failed to upload: A file with this name already exists. Remove or select a different file.`,
+                })
+            )
+
+            return
+        }
+
         setIsLoading(true)
 
         try {
