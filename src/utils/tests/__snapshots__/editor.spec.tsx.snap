@@ -176,7 +176,7 @@ exports[`editor utils from HTML convert quoted "p" to "unstyled" block 1`] = `
     },
     "depth": 0,
     "text": "Foo",
-    "type": "unstyled",
+    "type": "paragraph",
   },
 ]
 `;

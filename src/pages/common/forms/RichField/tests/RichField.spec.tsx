@@ -1,5 +1,5 @@
 import {render} from '@testing-library/react'
-import {ContentState, EditorState} from 'draft-js'
+import {ContentBlock, ContentState, EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
 import React, {ComponentProps, LegacyRef} from 'react'
 
@@ -148,5 +148,25 @@ describe('RichField', () => {
         )
 
         getByText(`${text.length} characters`)
+    })
+
+    it('should return the correct class name for paragraph blocks', () => {
+        const contentBlock = {
+            getType: jest.fn().mockReturnValue('paragraph'),
+        } as unknown as ContentBlock
+
+        const instance = new RichField(defaultProps)
+        const result = instance._blockStyleFn(contentBlock)
+        expect(result).toBe('editor-paragraph')
+    })
+
+    it('should return an empty string for non-paragraph blocks', () => {
+        const contentBlock = {
+            getType: jest.fn().mockReturnValue('header'),
+        } as unknown as ContentBlock
+
+        const instance = new RichField(defaultProps)
+        const result = instance._blockStyleFn(contentBlock)
+        expect(result).toBe('')
     })
 })

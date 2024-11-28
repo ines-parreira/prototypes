@@ -1,4 +1,4 @@
-import {ContentState, EditorState} from 'draft-js'
+import {ContentBlock, ContentState, EditorState} from 'draft-js'
 import _isEqual from 'lodash/isEqual'
 import React, {Component, ComponentProps} from 'react'
 import 'draft-js/dist/Draft.css'
@@ -124,6 +124,15 @@ export default class RichField extends Component<Props, State> {
         this.setState({isFocused: false})
     }
 
+    _blockStyleFn = (contentBlock: ContentBlock) => {
+        const type = contentBlock.getType()
+        if (type === 'paragraph') {
+            return 'editor-paragraph'
+        }
+
+        return ''
+    }
+
     render() {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
@@ -143,6 +152,7 @@ export default class RichField extends Component<Props, State> {
                 onChange={this.handleEditorChange}
                 onFocus={this._onFocus}
                 onBlur={this._onBlur}
+                blockStyleFn={this._blockStyleFn}
             />
         )
     }

@@ -24,7 +24,7 @@ exports[`RichFieldEditor should handle shortcuts 1`] = `
           "blockMap": Immutable.OrderedMap {
             "123": Immutable.Record {
               "key": "123",
-              "type": "unstyled",
+              "type": "paragraph",
               "text": "foo",
               "characterList": Immutable.List [
                 Immutable.Record {
@@ -151,7 +151,7 @@ exports[`RichFieldEditor should handle shortcuts 1`] = `
           "blockMap": Immutable.OrderedMap {
             "123": Immutable.Record {
               "key": "123",
-              "type": "unstyled",
+              "type": "paragraph",
               "text": "foo",
               "characterList": Immutable.List [
                 Immutable.Record {
