@@ -3,6 +3,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -21,9 +22,15 @@ type Props = {
     config: DimensionConfig
     dimension: TicketQAScoreDimension
     onChange: (prediction: number, explanation: string) => void
+    ticketId: number
 }
 
-export default function Dimension({config, dimension, onChange}: Props) {
+export default function Dimension({
+    config,
+    dimension,
+    onChange,
+    ticketId,
+}: Props) {
     const [isExpanded, setIsExpanded] = useState(
         () =>
             config.autoExpandThreshold !== undefined &&
@@ -40,9 +47,32 @@ export default function Dimension({config, dimension, onChange}: Props) {
         [config.options, dimension.prediction]
     )
 
+    const handleSelectBoxClick = useCallback(
+        (v: boolean) => {
+            setIsSelectOpen(v)
+            if (v) {
+                logEvent(SegmentEvent.AutoQATicketInteraction, {
+                    ticket_id: ticketId,
+                    type: `${dimension.name}_score_clicked`,
+                })
+            }
+        },
+        [dimension.name, ticketId]
+    )
+
     const handleClickExpand = useCallback(() => {
-        setIsExpanded((e) => !e)
-    }, [])
+        const isExpandedStateCB = (e: boolean) => {
+            const nextExpandedState = !e
+            if (nextExpandedState) {
+                logEvent(SegmentEvent.AutoQATicketInteraction, {
+                    ticket_id: ticketId,
+                    type: `${dimension.name}_toggle_clicked`,
+                })
+            }
+            return nextExpandedState
+        }
+        setIsExpanded(isExpandedStateCB)
+    }, [dimension.name, ticketId])
 
     const handleClickPrediction = useCallback(
         (value) => {
@@ -66,6 +96,8 @@ export default function Dimension({config, dimension, onChange}: Props) {
                         className={css.button}
                         fillStyle="ghost"
                         intent="secondary"
+                        area-label={`expand_${dimension.name}`}
+                        aria-expanded={isExpanded}
                         onClick={handleClickExpand}
                     >
                         <ButtonIconLabel
@@ -94,7 +126,7 @@ export default function Dimension({config, dimension, onChange}: Props) {
                 <SelectInputBox
                     className={css.prediction}
                     placeholder="Select issues"
-                    onToggle={setIsSelectOpen}
+                    onToggle={handleSelectBoxClick}
                     floating={floatingRef}
                     ref={selectRef}
                     label={predictionLabel}

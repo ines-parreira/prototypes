@@ -1,7 +1,5 @@
 import classNames from 'classnames'
-
 import {fromJS, Map} from 'immutable'
-
 import React, {useEffect, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
@@ -10,7 +8,7 @@ import {Navbar} from 'reactstrap'
 import {TicketStatus} from 'business/types/ticket'
 import {useFlag} from 'common/flags'
 import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import {logEvent, logEventWithSampling} from 'common/segment/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,7 +18,6 @@ import TicketFeedback, {
     useHasAIAgent,
 } from 'pages/tickets/detail/components/TicketFeedback'
 import {getHasAutomate} from 'state/billing/selectors'
-
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
@@ -38,7 +35,6 @@ import {WidgetEnvironment} from 'state/widgets/types'
 import {isTeamLead} from 'utils'
 
 import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
-
 import {isTrialMessageFromAIAgent} from './components/AIAgentFeedbackBar/utils'
 import css from './TicketInfobarContainer.less'
 
@@ -53,6 +49,7 @@ export const CUSTOMER_DETAILS_TAB = 'Customer Details'
 export const AI_FEEDBACK_TAB = '✨ AI Feedback'
 
 const SIDE_PANEL_VIEWED_EVENT_TYPE = 'summary'
+const AI_AGENT_TAB_CLICK_EVENT_TYPE = 'tab_clicked'
 
 export const TicketInfobarContainer = ({
     isEditingWidgets,
@@ -133,6 +130,10 @@ export const TicketInfobarContainer = ({
         logEventWithSampling(SegmentEvent.AiAgentFeedbackSidePanelViewed, {
             type: SIDE_PANEL_VIEWED_EVENT_TYPE,
             accountId,
+        })
+        logEvent(SegmentEvent.AutoQATicketInteraction, {
+            ticket_id: params.ticketId,
+            type: AI_AGENT_TAB_CLICK_EVENT_TYPE,
         })
     }
 

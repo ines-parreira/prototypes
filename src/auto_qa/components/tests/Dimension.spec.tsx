@@ -2,9 +2,14 @@ import {TicketQAScoreDimension} from '@gorgias/api-queries'
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {dimensionConfig} from '../../config'
+import Dimension from 'auto_qa/components/Dimension'
+import {dimensionConfig} from 'auto_qa/config'
+import {logEvent, SegmentEvent} from 'common/segment'
 
-import Dimension from '../Dimension'
+jest.mock('common/segment', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {AutoQATicketInteraction: 'auto-qa-ticket-interaction'},
+}))
 
 describe('Dimension', () => {
     const defaultDimension = {
@@ -27,6 +32,7 @@ describe('Dimension', () => {
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
+                ticketId={1}
             />
         )
         expect(getByText('Communication')).toBeInTheDocument()
@@ -41,6 +47,7 @@ describe('Dimension', () => {
                 config={dimensionConfig.communication_skills}
                 dimension={{...defaultDimension, prediction: 4}}
                 onChange={onChange}
+                ticketId={1}
             />
         )
         expect(getByText('Beepity-boopity')).toBeInTheDocument()
@@ -53,6 +60,7 @@ describe('Dimension', () => {
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
+                ticketId={1}
             />
         )
 
@@ -69,11 +77,68 @@ describe('Dimension', () => {
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
+                ticketId={1}
             />
         )
 
         fireEvent.click(getByText('arrow_right'))
         fireEvent.change(getByText('Beepity-boopity'), {target: {value: 'Yup'}})
         expect(onChange).toHaveBeenCalledWith(5, 'Yup')
+    })
+
+    it('should check the segment log event has been called when expandable area is expanded', () => {
+        const onChange = jest.fn()
+        const dimensionName = 'communication_skills'
+        render(
+            <Dimension
+                config={dimensionConfig[dimensionName]}
+                dimension={defaultDimension}
+                onChange={onChange}
+                ticketId={1}
+            />
+        )
+
+        const expandButton = document.querySelector(
+            `button[area-label="expand_${dimensionName}"]`
+        )
+
+        expect(expandButton).toBeInTheDocument()
+        expect(expandButton).toHaveAttribute('aria-expanded', 'false')
+
+        fireEvent.click(expandButton as HTMLButtonElement)
+
+        expect(expandButton).toHaveAttribute('aria-expanded', 'true')
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AutoQATicketInteraction,
+            {
+                ticket_id: 1,
+                type: `${dimensionName}_toggle_clicked`,
+            }
+        )
+    })
+
+    it('should check the segment log event has not been called when expandable area is collapsed', () => {
+        const onChange = jest.fn()
+        const dimensionName = 'communication_skills'
+        render(
+            <Dimension
+                config={dimensionConfig[dimensionName]}
+                dimension={{...defaultDimension, prediction: 4}}
+                onChange={onChange}
+                ticketId={1}
+            />
+        )
+
+        const expandButton = document.querySelector(
+            `button[area-label="expand_${dimensionName}"]`
+        )
+
+        expect(expandButton).toBeInTheDocument()
+        expect(expandButton).toHaveAttribute('aria-expanded', 'true')
+
+        fireEvent.click(expandButton as HTMLButtonElement)
+
+        expect(expandButton).toHaveAttribute('aria-expanded', 'false')
+        expect(logEvent).not.toHaveBeenCalled()
     })
 })

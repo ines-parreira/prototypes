@@ -87,6 +87,7 @@ export default function AutoQA() {
                             config={dimensionConfig[dim.name]}
                             dimension={dim}
                             onChange={changeHandlers[dim.name]}
+                            ticketId={ticket.id}
                         />
                     ))}
 
