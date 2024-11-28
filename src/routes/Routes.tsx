@@ -13,19 +13,16 @@ import {
 import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useFlag} from 'common/flags'
 import {logPageChange} from 'common/segment'
-
 import {FeatureFlagKey} from 'config/featureFlags'
 import {PageSection} from 'config/pages'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import useAppSelector from 'hooks/useAppSelector'
 import App from 'pages/App'
-
 import ActionEventsViewContainer from 'pages/automate/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
 import CreateActionFormView from 'pages/automate/actions/CreateActionFormView'
 import EditActionFormView from 'pages/automate/actions/EditActionFormView'
-
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
@@ -46,7 +43,6 @@ import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentG
 import {AiAgentKnowledgeContainer} from 'pages/automate/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import {AiAgentPlaygroundContainer} from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
-
 import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
@@ -116,6 +112,8 @@ import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
+import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
@@ -169,6 +167,8 @@ export default function Routes() {
         </Route>
     )
 }
+
+type FeatureFlag = boolean | undefined
 
 export function AppRoutes() {
     const {path} = useRouteMatch()
@@ -457,18 +457,21 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const isAutoQAEnabled: boolean | undefined =
+    const isAutoQAEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const isNewTagsReportEnabled: boolean | undefined =
+    const isNewTagsReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewTagsReport]
 
-    const isAiAgentStatsPageEnabled: boolean | undefined =
+    const isAiAgentStatsPageEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentStatsPage]
 
-    const isNewSatisfactionReportEnabled: boolean | undefined =
+    const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
+
+    const isAnalyticsCustomReports: FeatureFlag =
+        useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -532,6 +535,30 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+                {!!isAnalyticsCustomReports && (
+                    <Switch>
+                        <Route
+                            exact
+                            path={`${path}/custom-reports/new`}
+                            render={() => (
+                                <App
+                                    content={CustomReports}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path={`${path}/custom-reports/:id`}
+                            render={() => (
+                                <App
+                                    content={CustomReport}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                    </Switch>
+                )}
                 <Route
                     exact
                     path={`${path}/busiest-times-of-days`}
@@ -968,7 +995,7 @@ function AutomationContent() {
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const isAutomateTopQuestionsEnabled =
         useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
-    const isNewChannelsViewEnabled: boolean | undefined =
+    const isNewChannelsViewEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewChannelsView]
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,

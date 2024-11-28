@@ -1,3 +1,4 @@
+import {useListAnalyticsCustomReports} from '@gorgias/api-queries'
 import {screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -10,14 +11,12 @@ import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {UserRole} from 'config/types/user'
-
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
@@ -25,7 +24,7 @@ import StatsNavbarView, {
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreements'
 import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -34,6 +33,12 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
         return <div data-testid="mock-convert-subscription-modal" />
     })
 })
+
+jest.mock('@gorgias/api-queries')
+
+const useListAnalyticsCustomReportsMock = assumeMock(
+    useListAnalyticsCustomReports
+)
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -291,5 +296,42 @@ describe('StatsNavbarView', () => {
             'a[href="/app/stats/live-voice"]'
         )
         expect(liveVoiceLink).toBeInTheDocument()
+    })
+
+    it('should render the link to the Custom Reports', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsCustomReports]: true,
+        })
+
+        const mockData = {
+            data: {
+                data: [
+                    {id: '1', name: 'Report 1', emoji: '📊'},
+                    {id: '2', name: 'Report 2', emoji: 'plus'},
+                ],
+            },
+        }
+
+        useListAnalyticsCustomReportsMock.mockReturnValue({
+            data: mockData,
+        } as any)
+
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        const FirstCustomReportLink = container.querySelector(
+            'a[href="/app/stats/custom-reports/1"]'
+        )
+        const SecondCustomReportLink = container.querySelector(
+            'a[href="/app/stats/custom-reports/2"]'
+        )
+
+        expect(FirstCustomReportLink).toBeInTheDocument()
+        expect(SecondCustomReportLink).toBeInTheDocument()
     })
 })

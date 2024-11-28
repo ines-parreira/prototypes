@@ -31,7 +31,6 @@ import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
 import Routes from 'routes/Routes'
 import {initialState} from 'state/billing/reducers'
 import {RootState} from 'state/types'
-
 import {assumeMock, renderWithRouter, renderWithStore} from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
@@ -617,6 +616,38 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.getByText('LiveVoice')).toBeInTheDocument()
+        })
+
+        it('should render Custom Report page', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsCustomReports]: true,
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={['/app/stats/custom-reports/new']}
+                >
+                    <Routes />
+                </MemoryRouter>,
+                state
+            )
+
+            expect(screen.getByText('CUSTOM REPORTS')).toBeInTheDocument()
+        })
+
+        it('should render Custom Reports pages', () => {
+            mockFlags({
+                [FeatureFlagKey.AnalyticsCustomReports]: true,
+            })
+
+            renderWithStore(
+                <MemoryRouter initialEntries={['/app/stats/custom-reports/1']}>
+                    <Routes />
+                </MemoryRouter>,
+                state
+            )
+
+            expect(screen.getByText('CUSTOM REPORT ID: 1')).toBeInTheDocument()
         })
 
         it('should the NoMatch component when the path doesn’t match any route', () => {

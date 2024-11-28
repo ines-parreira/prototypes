@@ -6,12 +6,12 @@ import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
+import {CustomReportsNavbarBlock} from 'pages/stats/custom-reports/CustomReportsNavbarBlock/CustomReportsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -22,6 +22,8 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
 }
 
+type FeatureFlag = boolean | undefined
+
 export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
 
@@ -29,14 +31,16 @@ export default function StatsNavbarView() {
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
-    const isHelpCenterAnalyticsEnabled: boolean | undefined =
+    const isHelpCenterAnalyticsEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const isAutoQAEnabled: boolean | undefined =
+    const isAutoQAEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const isNewTagsReportEnabled: boolean | undefined =
+    const isNewTagsReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewTagsReport]
-    const isNewSatisfactionReportEnabled: boolean | undefined =
+    const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
+    const isAnalyticsCustomReports: FeatureFlag =
+        useFlags()[FeatureFlagKey.AnalyticsCustomReports]
 
     return (
         <>
@@ -75,6 +79,13 @@ export default function StatsNavbarView() {
                     />
                 </div>
             </NavbarBlock>
+
+            {!!isAnalyticsCustomReports && (
+                <CustomReportsNavbarBlock
+                    navBarLinkProps={COMMON_NAV_LINK_PROPS}
+                />
+            )}
+
             <NavbarBlock icon="emoji_events" title="Support Performance">
                 <div className={cssNavbar.menu}>
                     <div

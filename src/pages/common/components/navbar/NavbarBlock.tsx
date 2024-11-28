@@ -5,12 +5,10 @@ import {useDrag} from 'react-dnd'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 import navbarCss from 'assets/css/navbar.less'
-
 import {ViewCategoryNavbar} from 'models/view/types'
+import css from 'pages/common/components/navbar/NavbarBlock.less'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-
-import css from './NavbarBlock.less'
 
 type Props = {
     actions?: {
@@ -19,6 +17,7 @@ type Props = {
     }[]
     children: ReactNode
     className?: string
+    actionsClassName?: string
     icon?: string
     title: string
     value?: ViewCategoryNavbar
@@ -28,6 +27,7 @@ export default function NavbarBlock({
     actions,
     children,
     className,
+    actionsClassName,
     icon,
     title,
     value,
@@ -94,7 +94,14 @@ export default function NavbarBlock({
                                 color="secondary"
                                 type="button"
                             >
-                                <i className="material-icons">add</i>
+                                <i
+                                    className={classnames(
+                                        'material-icons',
+                                        actionsClassName
+                                    )}
+                                >
+                                    add
+                                </i>
                             </DropdownToggle>
                             <DropdownMenu right>
                                 {actions.map((action) => {
