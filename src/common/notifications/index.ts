@@ -7,6 +7,7 @@ export {default as NotificationsSettings} from './components/Settings'
 export {default as NotificationsProvider} from './components/Provider'
 export {default as SoundSelect} from './components/SoundSelect'
 export {default as NotificationsToasts} from './components/Toasts'
+export {default as useNotifications} from './hooks/useNotifications'
 export {default as registerCategory} from './registerCategory'
 export {default as registerNotification} from './registerNotification'
 
