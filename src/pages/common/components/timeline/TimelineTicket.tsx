@@ -3,8 +3,9 @@ import {Map} from 'immutable'
 import React, {Component, MouseEvent} from 'react'
 import {Card, CardBody} from 'reactstrap'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {StatusLabel, AgentLabel} from 'pages/common/utils/labels'
+import {AgentLabel, StatusLabel} from 'pages/common/utils/labels'
 import history from 'pages/history'
 import {displayHistoryOnNextPage} from 'state/ticket/actions'
 import {stripHTML} from 'utils'
@@ -28,6 +29,8 @@ export default class TimelineTicket extends Component<Props> {
         if (this.props.displayHistoryOnNextPage) {
             this.props.displayHistoryOnNextPage(true)
         }
+
+        logEvent(SegmentEvent.CustomerTimelineTicketClicked)
 
         history.push(`/app/ticket/${this.props.ticket.get('id') as number}`)
     }

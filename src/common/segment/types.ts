@@ -121,6 +121,7 @@ export enum SegmentEvent {
     CustomActionLinksStart = 'widget/custom-link/start-creation',
     CustomerMergeClicked = 'customer-merge-clicked',
     CustomerNoteEdited = 'customer-note-edited',
+    CustomerTimelineTicketClicked = 'customer/timeline/ticket-clicked',
     CustomFieldArchivedFieldClicked = 'custom-fields/archived-field-clicked',
     CustomFieldCreateFieldClicked = 'custom-fields/create-field-clicked',
     CustomFieldCustomerAddFieldsClicked = 'custom-fields/customer-add-field-clicked',

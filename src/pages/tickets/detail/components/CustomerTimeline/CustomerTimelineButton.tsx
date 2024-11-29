@@ -4,6 +4,7 @@ import {fromJS, List, Map} from 'immutable'
 import pluralize from 'pluralize'
 import React, {useMemo} from 'react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -55,6 +56,16 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
 
     const handleCustomerTimelineButtonClick = () => {
         dispatch(toggleHistory(!isHistoryDisplayed))
+
+        logEvent(SegmentEvent.UserHistoryToggled, {
+            open: !isHistoryDisplayed,
+            nbOfTicketsInTimeline: (
+                customers.getIn(['customerHistory', 'tickets']) as List<any>
+            ).size,
+            channel: ticket.get('channel'),
+            nbOfMessagesInTicket:
+                (ticket.get('messages') as List<any>)?.size ?? 0,
+        })
     }
 
     return (
