@@ -1,9 +1,17 @@
 import React from 'react'
 
+import {
+    FieldValues,
+    SubmitHandler,
+    useFormContext,
+    useFormState,
+} from 'react-hook-form'
+
 import useAppSelector from 'hooks/useAppSelector'
 import useSessionStorage from 'hooks/useSessionStorage'
 import {ProductType} from 'models/billing/types'
 import Card from 'pages/settings/new_billing/components/Card'
+import {FormSubmitButtonError} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter'
 import SummaryItem from 'pages/settings/new_billing/components/SummaryItem'
 import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
@@ -14,19 +22,19 @@ import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
 
 import css from './SubscriptionSummary.less'
 
-export type ISubscriptionSummaryProps = {
+export type ISubscriptionSummaryProps<
+    TFields extends FieldValues = FieldValues,
+> = {
     dispatchBillingError: () => void
-    isPaymentMethodValid: boolean
-    isSubmitting: boolean
-    handleSubmit: () => Promise<any>
+    onValidSubmit: SubmitHandler<TFields>
 }
 
-export const SubscriptionSummary: React.FC<ISubscriptionSummaryProps> = ({
+export function SubscriptionSummary<TFields extends FieldValues>({
     dispatchBillingError,
-    isPaymentMethodValid,
-    isSubmitting,
-    handleSubmit,
-}) => {
+    onValidSubmit,
+}: ISubscriptionSummaryProps<TFields>) {
+    const {isSubmitting} = useFormState()
+
     const [selectedPlansFromSessionStorage] = useSessionStorage<SelectedPlans>(
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY
     )
@@ -53,6 +61,9 @@ export const SubscriptionSummary: React.FC<ISubscriptionSummaryProps> = ({
         dispatchBillingError,
         filterByInterval: true,
     })
+
+    const handleUpdateSubscription =
+        useHandleUpdateSubscription<TFields>(onValidSubmit)
 
     if (
         !isTrialing &&
@@ -123,15 +134,39 @@ export const SubscriptionSummary: React.FC<ISubscriptionSummaryProps> = ({
                 isTrialing={isTrialing}
                 isCurrentSubscriptionCanceled={isSubscriptionCanceled}
                 isPaymentMethodFooter={true}
-                isPaymentMethodValid={isPaymentMethodValid}
                 anyProductChanged={true}
                 anyNewProductSelected={true}
                 anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
                 periodEnd={''}
-                updateSubscription={handleSubmit}
+                updateSubscription={handleUpdateSubscription}
                 isSubscriptionUpdating={isSubmitting}
                 ctaText={`Subscribe now`}
+                noRedirect
             />
+            <FormSubmitButtonError />
         </Card>
     )
+}
+
+// We need to throw validation errors to stop the SummaryFooter from starting a subscription
+function useHandleUpdateSubscription<TFields extends FieldValues>(
+    onValidSubmit: ISubscriptionSummaryProps<TFields>['onValidSubmit']
+) {
+    const {handleSubmit} = useFormContext<TFields>()
+
+    return () =>
+        new Promise<void>(async (resolve, reject) => {
+            try {
+                await handleSubmit(onValidSubmit, (validationErrors) => {
+                    reject(
+                        Object.values(validationErrors)[0] ??
+                            new Error('Unknown validation error')
+                    )
+                })(undefined)
+
+                resolve()
+            } catch (error) {
+                reject(error)
+            }
+        })
 }

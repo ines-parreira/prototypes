@@ -8,7 +8,9 @@ export const emptyError = (
 }
 
 export const emailError = (value: string): string | undefined => {
-    return !isEmail(value) ? 'Email is invalid' : undefined
+    return !isEmail(value)
+        ? 'Email format must include @ and a domain, e.g. example@domain.com.'
+        : undefined
 }
 
 const canadianPostalCoderegex = new RegExp(/^\w\d\w\d\w\d$/i)

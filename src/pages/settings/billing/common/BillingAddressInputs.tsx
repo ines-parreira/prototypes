@@ -99,7 +99,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     })
                 }
                 placeholder="e.g. Unit #2, Floor 5"
-                value={value.shipping.address.line2}
+                value={value.shipping.address.line2 ?? undefined}
             />
 
             <div className={classnames(css.row, settingsCss.mb16)}>

@@ -1,6 +1,8 @@
 import {ProductType} from 'models/billing/types'
 import {ProductSubscriptionDescriptions} from 'pages/settings/new_billing/types'
 
+import {TaxIdType, VATCountries} from 'state/billing/types'
+
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
@@ -135,3 +137,36 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
 
 export const PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP =
     'To subscribe to this product, you must have a paid Helpdesk subscription'
+
+export const TAX_ID_VALIDATION: {
+    [key in TaxIdType]: {
+        countries: string[]
+        states?: string[]
+    }
+} = {
+    [TaxIdType.eu_vat]: {
+        countries: Object.values(VATCountries),
+    },
+    [TaxIdType.au_abn]: {
+        countries: ['AU'],
+    },
+    [TaxIdType.ca_gst_hst]: {
+        countries: ['CA'],
+    },
+    [TaxIdType.ca_pst_bc]: {
+        countries: ['CA'],
+        states: ['BC'],
+    },
+    [TaxIdType.ca_pst_sk]: {
+        countries: ['CA'],
+        states: ['SK'],
+    },
+    [TaxIdType.ca_pst_mb]: {
+        countries: ['CA'],
+        states: ['MB'],
+    },
+    [TaxIdType.ca_qst]: {
+        countries: ['CA'],
+        states: ['QC'],
+    },
+}

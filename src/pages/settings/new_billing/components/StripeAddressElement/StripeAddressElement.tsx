@@ -1,15 +1,10 @@
 import {AddressElement, AddressElementProps} from '@stripe/react-stripe-js'
 import React from 'react'
 
-import {useBillingContact} from 'models/billing/queries'
-
 export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({
     options,
     ...props
 }) => {
-    const {data: {data: {shipping: billingContactShipping}} = {data: {}}} =
-        useBillingContact({staleTime: Infinity})
-
     return (
         <AddressElement
             options={{
@@ -17,7 +12,6 @@ export const StripeAddressElement: React.FC<Partial<AddressElementProps>> = ({
                 fields: {phone: 'always'},
                 display: {name: 'organization'},
                 validation: {phone: {required: 'never'}},
-                defaultValues: billingContactShipping,
                 ...options,
             }}
             {...props}

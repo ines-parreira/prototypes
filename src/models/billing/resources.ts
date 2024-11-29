@@ -6,7 +6,10 @@ import {
     SubscriptionCycle,
     ICard,
 } from 'models/billing/types'
-import {BillingContact} from 'state/billing/types'
+import {
+    BillingContactDetailResponse,
+    BillingContactUpdatePayload,
+} from 'state/billing/types'
 
 import {ApiListResponseCursorPagination} from '../api/types'
 
@@ -66,10 +69,15 @@ export async function reactivateTrial() {
 }
 
 export const getBillingContact = () =>
-    client.get<BillingContact>('/api/billing/contact/')
+    client.get<BillingContactDetailResponse>('/api/billing/contact/')
 
-export const updateBillingContact = (billingContact: BillingContact) =>
-    client.put<BillingContact>('/api/billing/contact/', billingContact)
+export const updateBillingContact = (
+    billingContact: BillingContactUpdatePayload
+) =>
+    client.put<BillingContactUpdatePayload>(
+        '/api/billing/contact/',
+        billingContact
+    )
 
 export const getCreditCard = () =>
     client.get<ICard | Record<string, never>>('/api/billing/credit-card/')

@@ -8,6 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import useSessionStorage from 'hooks/useSessionStorage'
 import {PlanInterval, ProductType} from 'models/billing/types'
+import {Form} from 'pages/settings/new_billing/components/Form/Form'
 import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
@@ -32,6 +33,7 @@ jest.mock('react-router-dom', () => ({
         push: jest.fn(),
     })),
 }))
+
 const queryClient = mockQueryClient()
 
 const selectedPlans: SelectedPlans = {
@@ -64,14 +66,14 @@ const defaultUseBillingPlansMockReturnValue = {
 const renderSubscriptionSummary = () => {
     const props: ISubscriptionSummaryProps = {
         dispatchBillingError: jest.fn(),
-        isPaymentMethodValid: true,
-        isSubmitting: false,
-        handleSubmit: jest.fn().mockResolvedValue(null),
+        onValidSubmit: jest.fn().mockResolvedValue(null),
     }
 
     const result = renderWithRouter(
         <QueryClientProvider client={queryClient}>
-            <SubscriptionSummary {...props} />
+            <Form onValidSubmit={props.onValidSubmit}>
+                <SubscriptionSummary {...props} />
+            </Form>
         </QueryClientProvider>
     )
 
@@ -129,15 +131,21 @@ describe('SubscriptionSummary Component', () => {
         })
 
         const {
-            props: {handleSubmit},
+            props: {onValidSubmit},
         } = renderSubscriptionSummary()
 
         fireEvent.click(screen.getByLabelText(/I agree to the/))
 
-        fireEvent.click(screen.getByText('Subscribe now'))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: 'Subscribe now'})
+            ).toBeAriaEnabled()
+        })
+
+        fireEvent.click(screen.getByRole('button', {name: 'Subscribe now'}))
 
         await waitFor(() => {
-            expect(handleSubmit).toHaveBeenCalled()
+            expect(onValidSubmit).toHaveBeenCalled()
         })
     })
 })

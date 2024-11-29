@@ -1,7 +1,7 @@
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {useUpdateBillingContactWithSideEffects} from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
 import {useSubmitPaymentMethod} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
-import {BillingContact} from 'state/billing/types'
+import {BillingContactUpdatePayload} from 'state/billing/types'
 import {reportError} from 'utils/errors'
 
 export const useSubmitPaymentMethodWithBillingContact = (
@@ -21,7 +21,7 @@ export const useSubmitPaymentMethodWithBillingContact = (
     })
 
     const submitPaymentMethodWithBillingContact = (
-        billingContact: BillingContact
+        billingContact: BillingContactUpdatePayload
     ) => updateBillingContact.mutateAsync([billingContact])
 
     return {

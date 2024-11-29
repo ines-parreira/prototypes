@@ -7,9 +7,11 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useBillingContact} from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
 import {BILLING_INFORMATION_PATH} from 'pages/settings/new_billing/constants'
+import {DataRow} from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
 import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import {BillingContact} from 'state/billing/types'
+import {TaxIdRows} from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
+import {BillingContact, BillingContactDetailResponse} from 'state/billing/types'
 
 export const BillingInformationSection = () => {
     const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
@@ -21,38 +23,52 @@ export const BillingInformationSection = () => {
                 isTaxIdFieldEnabled ? 'Billing information' : 'Billing address'
             }
         >
-            <Content />
+            <ContentLoader />
         </Section>
     )
 }
 
-const Content: React.FC = () => {
-    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
-
+const ContentLoader: React.FC = () => {
     const billingInformation = useBillingContact()
 
     if (!billingInformation.data?.data) {
         return <Loader minHeight="auto" />
     }
 
-    const data = billingInformation.data.data
-    const {name, phone, address} = data.shipping
+    return <Content billingInformation={billingInformation.data.data} />
+}
+
+const Content: React.FC<{billingInformation: BillingContactDetailResponse}> = ({
+    billingInformation,
+}) => {
+    const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
+
+    const {name, phone, address} = billingInformation.shipping
 
     // Email is not taken into account because it defaults to the user's email
     const hasInformation = Object.values(address).some(
-        (value) => !!value.length
+        (value) => !!value?.length
     )
 
     return (
         <>
             <Description>
-                <DataRow label="Billing email" value={data.email} />
+                <DataRow
+                    label="Billing email"
+                    value={billingInformation.email}
+                />
                 <DataRow
                     label={`${isTaxIdFieldEnabled ? 'Organization' : 'Company'} name`}
                     value={name}
                 />
                 <DataRow label="Phone number" value={phone} />
                 <DataRow label="Address" value={getDisplayAddress(address)} />
+                {isTaxIdFieldEnabled ? (
+                    <TaxIdRows
+                        taxIDs={billingInformation.tax_ids}
+                        address={address}
+                    />
+                ) : null}
             </Description>
             <Link to={BILLING_INFORMATION_PATH}>
                 {hasInformation ? 'Update' : 'Add'}{' '}
@@ -61,15 +77,6 @@ const Content: React.FC = () => {
         </>
     )
 }
-
-const DataRow: React.FC<{label: string; value?: string | null}> = ({
-    label,
-    value,
-}) => (
-    <div>
-        <strong>{label}:</strong> {value?.length ? value : '-'}
-    </div>
-)
 
 const getDisplayAddress = (address: BillingContact['shipping']['address']) => {
     const firstPart = [

@@ -45,7 +45,7 @@ export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
                         },
                         '.Label': {
                             fontWeight: '600',
-                            marginBottom: '1px',
+                            marginBottom: '8px',
                             fontSize: '14px',
                             lineHeight: '20px',
                             letterSpacing: '-0.1px',

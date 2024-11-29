@@ -41,6 +41,36 @@ describe('BillingInformationSection', () => {
                 expect(screen.getByText('Update address')).toBeVisible()
             })
         })
+
+        describe("when there's no address information", () => {
+            beforeEach(() => {
+                mockedServer.onGet('/api/billing/contact/').reply(200, {
+                    email: 'example@gorgias.com',
+                    shipping: {
+                        address: {
+                            line2: '',
+                            state: '',
+                        },
+                        name: '',
+                        phone: '',
+                    },
+                })
+            })
+
+            it('should render', async () => {
+                renderWithQueryClientProvider(<BillingInformationSection />)
+
+                expect(screen.getByText('Billing address')).toBeVisible()
+
+                await waitFor(() => {
+                    expectEmptyValues(3)
+                    expect(screen.getByText('Add address')).toBeVisible()
+                    expect(
+                        screen.queryByText('Sales Tax ID:')
+                    ).not.toBeInTheDocument()
+                })
+            })
+        })
     })
 
     describe('when the billing-tax-id-field feature flag is enabled', () => {
@@ -82,10 +112,17 @@ describe('BillingInformationSection', () => {
                 expect(screen.getByText('Billing information')).toBeVisible()
 
                 await waitFor(() => {
-                    expect(screen.getAllByText('-')).toHaveLength(3)
+                    expectEmptyValues(4)
                     expect(screen.getByText('Add Information')).toBeVisible()
+                    expect(screen.getByText('Sales Tax ID:')).toBeVisible()
                 })
             })
         })
     })
 })
+
+const getAllEmptyValues = () => screen.getAllByText('-')
+
+const expectEmptyValues = (quantity: number) => {
+    expect(getAllEmptyValues()).toHaveLength(quantity)
+}

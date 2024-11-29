@@ -7,6 +7,7 @@ import React from 'react'
 import {account} from 'fixtures/account'
 import {products} from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import * as useSetupIntentModule from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 import {assumeMock} from 'utils/testing'
 
@@ -42,7 +43,7 @@ const mockInitialStoreState = {
 describe('PaymentMethodSetupView', () => {
     it('should render Loader when setup intent is loading', () => {
         mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
-        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue(
             new Promise(() => {})
         )
@@ -58,7 +59,7 @@ describe('PaymentMethodSetupView', () => {
         mockedServer
             .onGet('/api/billing/credit-card/')
             .reply(() => new Promise(() => {}))
-        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {client_secret: 'client-secret', id: 'id'},
         } as any)
@@ -72,7 +73,9 @@ describe('PaymentMethodSetupView', () => {
 
     it('should render StripeElementsProvider and form when setup intent and credit card are available', async () => {
         mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
-        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        mockedServer
+            .onGet('/api/billing/contact/')
+            .reply(200, {shipping: {address: {}}})
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {client_secret: 'client-secret', id: 'id'},
         } as any)
@@ -104,14 +107,22 @@ describe('PaymentMethodSetupView', () => {
         mockedServer
             .onGet('/api/billing/credit-card/')
             .reply(200, {brand: 'visa'})
-        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
+
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {client_secret: 'client-secret', id: 'id'},
         } as any)
 
         renderWithStoreAndQueryClientProvider(
             <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
-            mockInitialStoreState
+            {
+                ...mockInitialStoreState,
+                currentAccount: fromJS({
+                    current_subscription: fromJS({
+                        status: 'active',
+                    }),
+                }),
+            }
         )
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
@@ -132,24 +143,33 @@ describe('PaymentMethodSetupView', () => {
         })
     })
 
-    it("should'nt render Stripe elements if the setup intent's client secret isn't available", async () => {
+    it("shouldn't render Stripe elements if the setup intent's client secret isn't available", async () => {
         mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
-        mockedServer.onGet('/api/billing/contact/').reply(200, {})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
+
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {id: 'id'},
         } as any)
+
+        const useSetupIntentSpy = jest.spyOn(
+            useSetupIntentModule,
+            'useSetupIntent'
+        )
 
         renderWithStoreAndQueryClientProvider(
             <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
             mockInitialStoreState
         )
 
-        await waitFor(() => {
-            expect(screen.getByTestId('loader')).toBeInTheDocument()
-        })
+        expect(screen.getByTestId('loader')).toBeVisible()
 
         await waitFor(() => {
-            expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
+            expect(useSetupIntentSpy).toHaveReturnedWith(
+                expect.objectContaining({
+                    isSuccess: true,
+                    clientSecret: undefined,
+                })
+            )
         })
 
         expect(screen.queryByTestId('stripe-elements')).not.toBeInTheDocument()

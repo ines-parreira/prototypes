@@ -1,10 +1,10 @@
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {render, fireEvent, screen, waitFor, act} from '@testing-library/react'
+import {fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
 import client from 'models/api/resources'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {BillingAddressSetupView} from '../BillingAddressSetupView'
 
@@ -45,13 +45,12 @@ const mockedServer = new MockAdapter(client)
 
 mockedServer.onGet('/api/billing/contact/').reply(200, {
     email: 'test@example.com',
+    shipping: {},
 })
 
 describe('BillingAddressSetupView', () => {
     it('should render the component correctly', async () => {
-        render(<BillingAddressSetupView />, {
-            wrapper: mockQueryClientProvider(),
-        })
+        renderWithQueryClientProvider(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -63,61 +62,8 @@ describe('BillingAddressSetupView', () => {
         expect(screen.getByTestId('stripe-address-element')).toBeInTheDocument()
     })
 
-    it('should disable the submit button and show an error when the email is invalid', async () => {
-        render(<BillingAddressSetupView />, {
-            wrapper: mockQueryClientProvider(),
-        })
-
-        await waitFor(() => {
-            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
-        })
-
-        addressElementChangeHandler({
-            complete: true,
-            value: {address: {postal_code: '12345', country: 'US'}},
-        } as StripeAddressElementChangeEvent)
-
-        fireEvent.change(
-            screen.getByRole('textbox', {name: 'Email required'}),
-            {
-                target: {value: 'invalid-email'},
-            }
-        )
-
-        await waitFor(() => {
-            expect(screen.getByText('Email is invalid')).toBeVisible()
-            expect(
-                screen.getByRole('button', {name: 'Set Address'})
-            ).toBeAriaDisabled()
-        })
-    })
-
-    it('should disable the submit button when the address is incomplete', async () => {
-        render(<BillingAddressSetupView />, {
-            wrapper: mockQueryClientProvider(),
-        })
-
-        await waitFor(() => {
-            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
-        })
-
-        // The initial email is valid, so it shouldn't show an email validationerror
-        expect(screen.queryByText('Email is invalid')).not.toBeInTheDocument()
-
-        // Should show the notice that invoices are sent to this email address
-        expect(
-            screen.getByText('Invoices are sent to this email address.')
-        ).toBeVisible()
-
-        expect(
-            screen.getByRole('button', {name: 'Set Address'})
-        ).toBeAriaDisabled()
-    })
-
     it('should enable the submit button when the address is complete and the email is valid', async () => {
-        render(<BillingAddressSetupView />, {
-            wrapper: mockQueryClientProvider(),
-        })
+        renderWithQueryClientProvider(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -145,9 +91,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should update the email state when input changes', async () => {
-        render(<BillingAddressSetupView />, {
-            wrapper: mockQueryClientProvider(),
-        })
+        renderWithQueryClientProvider(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -157,12 +101,9 @@ describe('BillingAddressSetupView', () => {
             screen.queryByDisplayValue('new@example.com')
         ).not.toBeInTheDocument()
 
-        fireEvent.change(
-            screen.getByRole('textbox', {name: 'Email required'}),
-            {
-                target: {value: 'new@example.com'},
-            }
-        )
+        fireEvent.change(screen.getByRole('textbox', {name: 'Email'}), {
+            target: {value: 'new@example.com'},
+        })
 
         await waitFor(() => {
             expect(

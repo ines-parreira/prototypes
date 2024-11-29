@@ -2,58 +2,37 @@ import React from 'react'
 
 import {useBillingContact} from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
-import BackLink from 'pages/settings/new_billing/components/BackLink'
-import {EmailInputField} from 'pages/settings/new_billing/components/EmailInputField/EmailInputField'
-import {StripeAddressElement} from 'pages/settings/new_billing/components/StripeAddressElement/StripeAddressElement'
 import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
-import {
-    Form,
-    IFormProps,
-} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/Form/Form'
-import {StripePaymentElement} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentElement/StripePaymentElement'
-import {VerificationChargeDisclaimer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/VerificationChargeDisclaimer/VerificationChargeDisclaimer'
+import {FormContainer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import {useSetupIntent} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 
-import css from './PaymentMethodSetupView.less'
+type IProps = {
+    dispatchBillingError: () => void
+}
 
-type IPaymentMethodSetupViewProps = Pick<IFormProps, 'dispatchBillingError'>
-
-export const PaymentMethodSetupView: React.FC<IPaymentMethodSetupViewProps> = ({
+export const PaymentMethodSetupView: React.FC<IProps> = ({
     dispatchBillingError,
 }) => {
     const hasCreditCard = useHasCreditCard({refetchOnWindowFocus: false})
-    const billingContact = useBillingContact({refetchOnWindowFocus: false})
+    const billingInformation = useBillingContact({refetchOnWindowFocus: false})
     const setupIntent = useSetupIntent()
 
     if (
-        setupIntent.isLoading ||
+        !setupIntent.clientSecret ||
         hasCreditCard.isLoading ||
-        billingContact.isLoading
+        !billingInformation.data?.data
     ) {
         return <Loader />
     }
 
-    if (!setupIntent.clientSecret) {
-        return null
-    }
-
     return (
         <StripeElementsProvider clientSecret={setupIntent.clientSecret}>
-            <div className={css.container}>
-                <BackLink />
-                <Form dispatchBillingError={dispatchBillingError}>
-                    <StripePaymentElement />
-                    <VerificationChargeDisclaimer />
-                    {!hasCreditCard.data ? (
-                        <>
-                            <h1 className={css.title}>Billing Information</h1>
-                            <EmailInputField />
-                            <StripeAddressElement />
-                        </>
-                    ) : null}
-                </Form>
-            </div>
+            <FormContainer
+                hasCreditCard={hasCreditCard.data}
+                billingInformation={billingInformation.data.data}
+                dispatchBillingError={dispatchBillingError}
+            />
         </StripeElementsProvider>
     )
 }

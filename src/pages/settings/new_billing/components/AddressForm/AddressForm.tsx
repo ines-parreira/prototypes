@@ -126,7 +126,9 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         }
                         placeholder="e.g. Unit #2, Floor 5"
                         type="text"
-                        value={billingContact.shipping.address.line2}
+                        value={
+                            billingContact.shipping.address.line2 ?? undefined
+                        }
                     />
                 </div>
                 <div className={css.formRow}>

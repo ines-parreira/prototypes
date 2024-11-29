@@ -47,6 +47,7 @@ export type SummaryFooterProps = {
     isSubscriptionUpdating?: boolean
     setUpdateProcessStarted?: (isStarted: boolean) => void
     autoUpgradeChanged?: boolean
+    noRedirect?: boolean
 }
 
 const SummaryFooter = ({
@@ -71,6 +72,7 @@ const SummaryFooter = ({
     isSubscriptionUpdating = false,
     setUpdateProcessStarted,
     autoUpgradeChanged = false,
+    noRedirect = false,
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
@@ -108,7 +110,9 @@ const SummaryFooter = ({
                 setSessionSelectedPlans(selectedPlans)
             }
 
-            if (
+            if (noRedirect) {
+                // Do nothing
+            } else if (
                 (isTrialing ||
                     (isCurrentSubscriptionCanceled && !hasCreditCard)) &&
                 !isPaymentMethodFooter

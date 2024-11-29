@@ -81,6 +81,29 @@ export type PaymentMethod = {
     method: PaymentMethodType
 }
 
+export enum TaxIdType {
+    eu_vat = 'eu_vat',
+    au_abn = 'au_abn',
+    ca_gst_hst = 'ca_gst_hst',
+    ca_pst_bc = 'ca_pst_bc',
+    ca_pst_mb = 'ca_pst_mb',
+    ca_pst_sk = 'ca_pst_sk',
+    ca_qst = 'ca_qst',
+}
+
+export enum TaxIdVerificationStatus {
+    Pending = 'pending',
+    Verified = 'verified',
+    Unverified = 'unverified',
+    Unavailable = 'unavailable',
+}
+
+export type TaxId<Type extends TaxIdType = TaxIdType> = {
+    type: Type
+    value: string
+    verification: TaxIdVerificationStatus
+}
+
 export type BillingContact = {
     email: string
     shipping: {
@@ -88,14 +111,26 @@ export type BillingContact = {
             city: string
             country: string
             line1: string
-            line2: string
+            line2: string | null
             postal_code: string
             state?: string
         }
         name: string
-        phone: string | null
+        phone?: string | null
     }
 }
+
+export type BillingContactDetailResponse = {
+    tax_ids?: Partial<{
+        [key in TaxIdType]: TaxId<key>
+    }>
+} & BillingContact
+
+export type BillingContactUpdatePayload = {
+    tax_ids?: Partial<{
+        [key in TaxIdType]: TaxId<key>['value']
+    }>
+} & BillingContact
 
 export type Subscription = {
     prices: string[]
@@ -138,4 +173,34 @@ export interface ErrorResponse {
     error?: {
         message: string
     }
+}
+
+export enum VATCountries {
+    AT = 'AT',
+    BE = 'BE',
+    BG = 'BG',
+    CY = 'CY',
+    CZ = 'CZ',
+    DE = 'DE',
+    DK = 'DK',
+    EE = 'EE',
+    ES = 'ES',
+    FI = 'FI',
+    FR = 'FR',
+    GR = 'GR',
+    HR = 'HR',
+    HU = 'HU',
+    IE = 'IE',
+    IT = 'IT',
+    LT = 'LT',
+    LU = 'LU',
+    LV = 'LV',
+    MT = 'MT',
+    NL = 'NL',
+    PL = 'PL',
+    PT = 'PT',
+    RO = 'RO',
+    SE = 'SE',
+    SI = 'SI',
+    SK = 'SK',
 }
