@@ -45,9 +45,9 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -118,9 +118,9 @@ exports[`<Infobar/> should ignore other keys 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -165,9 +165,9 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value=""
       />
@@ -257,9 +257,9 @@ exports[`<Infobar/> should render customer context 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value=""
       />
@@ -304,9 +304,9 @@ exports[`<Infobar/> should render loading state because the customer is being fe
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -355,9 +355,9 @@ exports[`<Infobar/> should render loading state because the search is in progres
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -402,9 +402,9 @@ exports[`<Infobar/> should render search results 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -476,9 +476,9 @@ exports[`<Infobar/> should render selected customer 1`] = `
         class="infobarSearchWrapper"
       >
         <input
+          class="infobarSearch"
           data-testid="Search"
           placeholder="Search for customers by email, order number, etc."
-          style="max-width: none;"
           tabindex="10"
           value="query"
         />
@@ -560,9 +560,9 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value="query"
       />
@@ -634,9 +634,9 @@ exports[`<Infobar/> should render ticket context 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value=""
       />
@@ -681,9 +681,9 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
       class="infobarSearchWrapper"
     >
       <input
+        class="infobarSearch"
         data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        style="max-width: none;"
         tabindex="10"
         value=""
       />

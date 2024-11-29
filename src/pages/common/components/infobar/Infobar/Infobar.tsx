@@ -261,10 +261,10 @@ export const Infobar = ({
             <div className={css.infobarContent}>
                 <div className={css.infobarSearchWrapper}>
                     <Search
+                        className={css.infobarSearch}
                         tabIndex={10}
                         placeholder="Search for customers by email, order number, etc."
                         onKeyDown={handleKeyDown}
-                        style={{maxWidth: 'none'}}
                         onChange={onChange}
                         value={searchTerm}
                     />
