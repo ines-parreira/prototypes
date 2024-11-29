@@ -34,7 +34,10 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
             return 'German'
         case 'nl':
             return 'Dutch'
-        //AUTEN-3246: Temp fix There is an issue with the cz in channel and in workflows cs-CZ
+        // We have cz in chat, without this the warning text will be "...but this channel is in Unknown.."
+        case 'cz':
+            return 'Czech'
+        //AUTEN-3246: We have cs-CZ in flows,  without this the warning text will be "This Flow is in Unknown,..."
         case 'cs':
             return 'Czech'
         case 'da':
@@ -90,11 +93,15 @@ export default function useLanguagesMismatchWarnings(
             // we align the workflow languages with the channel languages
             // for example chat will use nl for Dutch, but the workflow use nl-NL
             const workflowLanguages =
-                workflow.available_languages?.map(
-                    (wl) =>
-                        channelLanguages.find(
-                            (cl) => cl === wl.substring(0, cl.length)
-                        ) ?? wl
+                workflow.available_languages?.map((wl) =>
+                    wl === 'cs-CZ'
+                        ? // Handle special case for 'cs-CZ' and 'cz'
+                          (channelLanguages.find(
+                              (cl) => cl === ('cz' as ChannelLanguage)
+                          ) ?? wl)
+                        : (channelLanguages.find(
+                              (cl) => cl === wl.substring(0, cl.length)
+                          ) ?? wl)
                 ) ?? []
             // There is no overlap between the flow language and the channel language.
             if (
