@@ -1,11 +1,15 @@
 import {useListAnalyticsFilters} from '@gorgias/api-queries'
+import {fireEvent, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
-import {SAVE_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
+import {
+    SAVE_FILTERS,
+    SAVE_FILTERS_TOOLTIP,
+} from 'pages/stats/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'
 import {
     emptyFiltersMock,
     filterKeysMock,
@@ -96,6 +100,28 @@ describe('SavedFiltersActions for an Admin', () => {
         expect(getByText(SAVE_FILTERS)).toBeTruthy()
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
+    })
+
+    it('should have a tooltip', async () => {
+        useListAnalyticsFiltersMock.mockReturnValue({
+            data: {
+                data: [
+                    {id: 1, name: 'Temp Filter 1', filter_group: []},
+                    {id: 2, name: 'Temp Filter 2', filter_group: []},
+                ],
+            },
+        } as any)
+
+        const {getByText} = renderWithStore(
+            <SavedFiltersActions optionalFilters={filterKeysMock} />,
+            {}
+        )
+
+        fireEvent.mouseEnter(getByText(SAVE_FILTERS))
+
+        await waitFor(() =>
+            expect(getByText(SAVE_FILTERS_TOOLTIP)).toBeTruthy()
+        )
     })
 
     it('should create SavedFilter draft from current filters', () => {

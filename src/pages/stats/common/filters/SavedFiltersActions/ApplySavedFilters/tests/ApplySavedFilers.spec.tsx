@@ -1,11 +1,13 @@
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SavedFilter} from 'models/stat/types'
 import ApplySavedFilers, {
+    APPLY_SAVED_FILTER_TOOLTIP,
     APPLY_SAVED_FILTERS,
     CREATE_SAVED_FILTERS_LABEL,
+    getApplyFiltersButtonName,
     NO_FILTERS_CONTENT,
     NOT_ADMIN_CONTENT,
 } from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
@@ -48,6 +50,19 @@ describe('ApplySavedFilers', () => {
         fireEvent.click(getByText(APPLY_SAVED_FILTERS))
 
         expect(getByText(NOT_ADMIN_CONTENT)).toBeTruthy()
+    })
+
+    it('should have a descriptive tooltip', async () => {
+        const {getByText} = renderWithStore(
+            <ApplySavedFilers isAdmin={false} savedFilters={[]} />,
+            defaultState
+        )
+
+        fireEvent.mouseEnter(getByText(APPLY_SAVED_FILTERS))
+
+        await waitFor(() =>
+            expect(getByText(APPLY_SAVED_FILTER_TOOLTIP)).toBeTruthy()
+        )
     })
 
     it('should show the saved filters for a normal user', () => {
@@ -116,5 +131,68 @@ describe('ApplySavedFilers', () => {
 
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
         expect(getByText(savedFilters[0].name)).toBeTruthy()
+    })
+})
+
+const filters = [{id: 1, name: 'Filter 1', filter_group: []}]
+
+describe('getApplyFiltersButtonName', () => {
+    it('should return APPLY_SAVED_FILTERS when id is null', () => {
+        const result = getApplyFiltersButtonName(filters, null)
+        expect(result).toBe(APPLY_SAVED_FILTERS)
+    })
+
+    it('should return APPLY_SAVED_FILTERS when id is undefined', () => {
+        const result = getApplyFiltersButtonName(filters, undefined as any)
+        expect(result).toBe(APPLY_SAVED_FILTERS)
+    })
+
+    it('should return APPLY_SAVED_FILTERS if id does not match any filter', () => {
+        const result = getApplyFiltersButtonName(
+            [
+                {id: 1, name: 'Filter 1', filter_group: []},
+                {id: 2, name: 'Filter 2', filter_group: []},
+            ],
+            999
+        )
+        expect(result).toBe(APPLY_SAVED_FILTERS)
+    })
+
+    it('should return the filter name when a matching id is found', () => {
+        const result = getApplyFiltersButtonName(
+            [
+                {id: 1, name: 'Filter 1', filter_group: []},
+                {id: 2, name: 'Filter 2', filter_group: []},
+            ],
+            1
+        )
+        expect(result).toBe('Filter 1')
+    })
+
+    it('should return APPLY_SAVED_FILTERS when filters is empty', () => {
+        const result = getApplyFiltersButtonName([], 1)
+        expect(result).toBe(APPLY_SAVED_FILTERS)
+    })
+
+    it('should return APPLY_SAVED_FILTERS when filter name is empty or null', () => {
+        const result = getApplyFiltersButtonName(
+            [
+                {id: 1, name: '', filter_group: []},
+                {id: 2, name: null, filter_group: []} as any,
+            ],
+            1
+        )
+        expect(result).toBe(APPLY_SAVED_FILTERS)
+    })
+
+    it('should return the first filter name if multiple filters match the same id (edge case)', () => {
+        const result = getApplyFiltersButtonName(
+            [
+                {id: 1, name: 'Filter 1', filter_group: []},
+                {id: 1, name: 'Filter 2', filter_group: []},
+            ],
+            1
+        )
+        expect(result).toBe('Filter 1')
     })
 })

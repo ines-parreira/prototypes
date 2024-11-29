@@ -1,3 +1,4 @@
+import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {useDispatch} from 'react-redux'
 
@@ -25,6 +26,8 @@ type Props = {
     isAdmin: boolean
 }
 
+const APPLY_SAVED_FILTER_ID = 'apply-saved-filter'
+export const APPLY_SAVED_FILTER_TOOLTIP = 'Apply Saved Filter to current report'
 export const CREATE_SAVED_FILTERS_LABEL = 'Create Saved Filters'
 export const NO_FILTERS_CONTENT =
     'No Saved Filters available. Create the first Saved Filter to share across teams'
@@ -39,14 +42,16 @@ const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
     })
 }
 
-const getApplyFiltersButtonName = (
+export const getApplyFiltersButtonName = (
     filters: Array<SavedFilterAPI>,
     id: number | null
 ) => {
     if (!id) {
         return APPLY_SAVED_FILTERS
     }
-    return filters.find((filter) => filter.id === id)?.name
+    return (
+        filters.find((filter) => filter.id === id)?.name || APPLY_SAVED_FILTERS
+    )
 }
 
 const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
@@ -107,8 +112,12 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
                 intent="primary"
                 size="medium"
                 ref={buttonRef}
+                id={APPLY_SAVED_FILTER_ID}
             >
                 {applyFiltersButtonName}
+                <Tooltip target={APPLY_SAVED_FILTER_ID} placement="top">
+                    {APPLY_SAVED_FILTER_TOOLTIP}
+                </Tooltip>
             </DropdownButton>
             <Dropdown
                 onToggle={setToggleDropdown}
