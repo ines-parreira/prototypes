@@ -108,13 +108,18 @@ export default function ShopifyProductLine({
 
     const fetchResults = useCallback(async () => {
         try {
-            const results = await gorgiasApi.search(
+            const results = (await gorgiasApi.search(
                 `/api/integrations/${shopifyIntegration.get(
                     'id'
                 )}/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`,
                 filter
+            )) as Array<IntegrationDataItem<Product>>
+
+            setShopifyProducts(
+                results.filter(
+                    (result): boolean => result.data.variants.length > 0
+                )
             )
-            setShopifyProducts(results as Array<IntegrationDataItem<Product>>)
             setSubResults([])
         } catch (error) {
             void dispatch(

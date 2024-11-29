@@ -7,6 +7,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {Product} from 'constants/integrations/types/shopify'
+import {IntegrationDataItem} from 'models/integration/types'
+
 import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
 
 import {PRODUCTS_PER_PAGE} from '../../../../../constants/integration'
@@ -175,6 +178,35 @@ describe('<ShopifyProductLine/>', () => {
         })
 
         expect(screen.queryByText('My store')).not.toBeInTheDocument()
+    })
+
+    it("should skip product that doesn't have any variant defined", async () => {
+        const products = shopifyProductResult() as unknown as Array<
+            IntegrationDataItem<Product>
+        >
+        // Clear variants from the first product
+        products[0].data.variants = []
+
+        mockServer.onGet('/api/integrations/1/product/').reply(200, {
+            data: products,
+        })
+
+        const {getByText, queryByText} = render(
+            <Provider store={store}>
+                <ShopifyProductLine {...minProps} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(`${products.length - 1} Products`, {
+                    exact: false,
+                })
+            ).toBeInTheDocument()
+
+            expect(queryByText(/Black shirt/i)).not.toBeInTheDocument()
+            expect(getByText(/Strong phone/i)).toBeDefined()
+        })
     })
 
     it('should call productClicked with the correct variant image URL when a variant is clicked', async () => {
