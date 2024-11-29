@@ -65,7 +65,49 @@ const useUpdateAnalyticsFilterMock = assumeMock(useUpdateAnalyticsFilter)
 const useDeleteAnalyticsFilterMock = assumeMock(useDeleteAnalyticsFilter)
 
 describe('SavedFiltersPanel', () => {
+    const adminUser = {
+        has_password: false,
+        lastname: 'Doe',
+        settings: [
+            {
+                data: {
+                    available: true,
+                    date_format: 'en_US',
+                    macros_default_to_search_popover: false,
+                    prefill_best_macro: true,
+                    show_macros: true,
+                    time_format: 'AM/PM',
+                },
+                id: 123,
+                type: 'preferences',
+            },
+        ],
+        active: true,
+        name: 'John Doe',
+        external_id: '00000001',
+        created_datetime: '2022-05-23T09:30:00',
+        role: {
+            id: 7,
+            name: 'admin',
+        },
+        country: null,
+        language: null,
+        timezone: 'EET',
+        id: 629084,
+        firstname: 'John',
+        is_active: true,
+        email: 'john.doe@gorgias.com',
+        roles: [
+            {
+                id: 7,
+                name: 'admin',
+            },
+        ],
+        updated_datetime: '2022-10-03T10:45:00',
+    }
+
     const defaultState = {
+        currentUser: fromJS(adminUser),
         ui: {
             stats: {
                 filters: initialState,
@@ -151,6 +193,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         renderWithStore(
@@ -230,6 +273,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
         const mutateMock = jest.fn().mockResolvedValue({
             data: {id: 123, ...savedFilterDraft},
@@ -286,6 +330,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -340,6 +385,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
         const mutateMock = jest.fn().mockResolvedValue({
             data: savedFilterDraft,
@@ -396,6 +442,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -450,6 +497,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -496,6 +544,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         renderWithStore(
@@ -546,6 +595,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         renderWithStore(
@@ -610,6 +660,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -669,6 +720,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -716,6 +768,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -760,6 +813,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const {store} = renderWithStore(
@@ -805,6 +859,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
@@ -861,6 +916,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         const updateState = {
@@ -874,6 +930,7 @@ describe('SavedFiltersPanel', () => {
                     },
                 },
             },
+            currentUser: defaultState.currentUser,
         } as RootState
 
         it('should show error message when error response contains name on creation of saved filters', async () => {
@@ -975,6 +1032,108 @@ describe('SavedFiltersPanel', () => {
                     screen.queryByText(errorMessageOnSave)
                 ).not.toBeInTheDocument()
             })
+        })
+
+        it('should check that cancel and save buttons are visible when user has admin role', () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilterDraft: SavedFilterDraft = {
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft,
+                            appliedSavedFilterId: null,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            expect(
+                screen.getByRole('button', {name: CANCEL_BUTTON_LABEL})
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+            ).toBeInTheDocument()
+        })
+
+        it('should check that cancel and save buttons are not visible when user has other than admin role', () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilterDraft: SavedFilterDraft = {
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft,
+                            appliedSavedFilterId: null,
+                        },
+                    },
+                },
+                currentUser: fromJS({
+                    ...adminUser,
+                    role: {
+                        id: 1,
+                        name: 'some_role',
+                    },
+                }),
+            } as RootState
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            expect(
+                screen.queryByRole('button', {name: CANCEL_BUTTON_LABEL})
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {name: SAVE_BUTTON_LABEL})
+            ).not.toBeInTheDocument()
         })
     })
 

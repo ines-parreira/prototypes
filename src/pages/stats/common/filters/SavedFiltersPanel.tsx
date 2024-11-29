@@ -7,7 +7,7 @@ import {
 } from '@gorgias/api-queries'
 import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -33,6 +33,7 @@ import {SavedFilterMenu} from 'pages/stats/common/filters/SavedFilterMenu'
 import css from 'pages/stats/common/filters/SavedFiltersPanel.less'
 import {areFiltersApplicable} from 'pages/stats/common/filters/utils'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
@@ -46,6 +47,7 @@ import {
     unapplySavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
+import {isAdmin} from 'utils'
 
 export const FILTER_SAVED_MESSAGE = 'Filter successfully saved!'
 export const FILTER_SAVED_ERROR_MESSAGE = 'Filter not saved!'
@@ -106,6 +108,7 @@ export const SavedFiltersPanel = ({
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
+    const currentUser = useAppSelector(getCurrentUser)
     const savedFilter = isSavedFilter(savedFilterDraft)
         ? savedFilterDraft
         : null
@@ -164,6 +167,11 @@ export const SavedFiltersPanel = ({
         dispatch(unapplySavedFilter())
         setErrorMessage(undefined)
     }
+
+    const isCurrentUserAnAdmin = useMemo(
+        () => isAdmin(currentUser),
+        [currentUser]
+    )
 
     const saveHandler = useCallback(
         (filter: SavedFilter | SavedFilterDraft) => {
@@ -389,23 +397,25 @@ export const SavedFiltersPanel = ({
                                         ]}
                                     />
                                 </CampaignStatsFilters>
-                                <div className={classnames(css.buttons)}>
-                                    <Button
-                                        intent={'secondary'}
-                                        onClick={cancelHandler}
-                                    >
-                                        {CANCEL_BUTTON_LABEL}
-                                    </Button>
-                                    <Button
-                                        intent={'primary'}
-                                        onClick={() =>
-                                            saveHandler(savedFilterDraft)
-                                        }
-                                        isDisabled={!canSaveFilter}
-                                    >
-                                        {SAVE_BUTTON_LABEL}
-                                    </Button>
-                                </div>
+                                {isCurrentUserAnAdmin && (
+                                    <div className={classnames(css.buttons)}>
+                                        <Button
+                                            intent={'secondary'}
+                                            onClick={cancelHandler}
+                                        >
+                                            {CANCEL_BUTTON_LABEL}
+                                        </Button>
+                                        <Button
+                                            intent={'primary'}
+                                            onClick={() =>
+                                                saveHandler(savedFilterDraft)
+                                            }
+                                            isDisabled={!canSaveFilter}
+                                        >
+                                            {SAVE_BUTTON_LABEL}
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         </Collapse>
                     </div>
