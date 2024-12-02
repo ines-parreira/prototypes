@@ -9,9 +9,7 @@ import {assumeMock} from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/api-queries', () => ({
-    useGetTicketMessage: jest.fn(),
-}))
+jest.mock('@gorgias/api-queries')
 const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
 
 describe('MetaRepliedByLabel', () => {

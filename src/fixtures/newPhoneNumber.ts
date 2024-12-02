@@ -34,6 +34,14 @@ export const phoneNumbers: NewPhoneNumber[] = [
             mms: true,
             whatsapp: true,
         },
+        twilio_phone_number: {
+            type: PhoneType.Local,
+            address: {
+                state: 'CA',
+                country: PhoneCountry.US,
+                area_code: 415,
+            },
+        },
     },
     {
         id: 2,
@@ -62,6 +70,13 @@ export const phoneNumbers: NewPhoneNumber[] = [
             mms: true,
             whatsapp: true,
         },
+        twilio_phone_number: {
+            type: PhoneType.TollFree,
+            address: {
+                country: PhoneCountry.CA,
+                area_code: 813,
+            },
+        },
     },
     {
         id: 3,
@@ -77,7 +92,7 @@ export const phoneNumbers: NewPhoneNumber[] = [
                 meta: {
                     type: PhoneType.Mobile,
                     address: {
-                        country: PhoneCountry.CA,
+                        country: PhoneCountry.AU,
                         area_code: 813,
                     },
                 },
@@ -89,6 +104,13 @@ export const phoneNumbers: NewPhoneNumber[] = [
             voice: true,
             mms: false,
             whatsapp: true,
+        },
+        twilio_phone_number: {
+            type: PhoneType.Mobile,
+            address: {
+                country: PhoneCountry.AU,
+                area_code: 813,
+            },
         },
     },
 ]

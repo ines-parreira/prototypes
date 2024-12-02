@@ -1,32 +1,60 @@
-import {fireEvent, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {WaitMusicType} from '@gorgias/api-client'
+import {fireEvent} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {PhoneCountry, PhoneFunction} from 'business/twilio'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 import {
     IntegrationType,
     PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
 } from 'models/integration/types'
-import * as api from 'pages/integrations/integration/components/phone/actions'
 import {Account} from 'state/currentAccount/types'
-import * as actions from 'state/integrations/actions'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 
+import useVoiceIntegrationGreetingMessage from '../hooks/useVoiceIntegrationGreetingMessage'
 import VoiceIntegrationGreetingMessage from '../VoiceIntegrationGreetingMessage'
+import {STATIC_WAIT_MUSIC_LIBRARY} from '../waitMusicLibraryConstants'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-jest.mock('models/api/resources')
-const updatePhoneGreetingMessageConfigurationSpy = jest.spyOn(
-    api,
-    'updatePhoneGreetingMessageConfiguration'
+
+const store = mockStore({
+    entities: {
+        newPhoneNumbers: phoneNumbers.reduce(
+            (acc, number) => ({...acc, [number.id]: number}),
+            {}
+        ),
+    },
+} as RootState)
+
+jest.mock(
+    'pages/integrations/integration/components/voice/hooks/useVoiceIntegrationGreetingMessage'
 )
-const fetchIntegratonsSpy = jest.spyOn(actions, 'fetchIntegrations')
+const defaultUseVoiceIntegrationGreetingMessage = {
+    greetingMessagePayload: {
+        voice_message_type: VoiceMessageType.None,
+        text_to_speech_content: 'Hello!',
+    },
+    setGreetingMessagePayload: jest.fn(),
+    waitMusicPayload: {
+        type: WaitMusicType.Library,
+    },
+    setWaitMusicPayload: jest.fn(),
+    isGreetingMessageLoading: false,
+    isWaitMusicLoading: false,
+    isSubmittable: false,
+    makeApiCalls: jest.fn(),
+}
+assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue(
+    defaultUseVoiceIntegrationGreetingMessage
+)
 
 const standardIntegration: PhoneIntegration = {
     id: 1,
@@ -68,28 +96,47 @@ const standardIntegration: PhoneIntegration = {
     managed: false,
 }
 
-const renderVoiceIntegrationGreetingMessage = (
-    storeState: RootState,
-    integration: PhoneIntegration
-) =>
+const renderVoiceIntegrationGreetingMessage = (integration: PhoneIntegration) =>
     renderWithRouter(
-        <Provider store={mockStore(storeState)}>
+        <Provider store={store}>
             <VoiceIntegrationGreetingMessage integration={integration} />
         </Provider>
     )
 
 describe('<VoiceIntegrationGreetingMessage /> render', () => {
     it('should render standard integration', () => {
-        const {getByLabelText, getByText, getByRole} =
-            renderVoiceIntegrationGreetingMessage(
-                {} as RootState,
-                standardIntegration
-            )
-        expect(getByText('Set greeting message')).toBeInTheDocument()
-        expect(getByText('Text To Speech')).toBeInTheDocument()
-        expect(getByText('Custom recording')).toBeInTheDocument()
-        expect(getByText('None')).toBeInTheDocument()
+        mockFlags({
+            [FeatureFlagKey.CustomWaitMusic]: true,
+        })
+
+        const {getByLabelText, queryByText, getByRole, getAllByText} =
+            renderVoiceIntegrationGreetingMessage(standardIntegration)
+        expect(queryByText('Set greeting message')).toBeInTheDocument()
+        expect(queryByText('Text To Speech')).toBeInTheDocument()
+        const customRecordingFields = getAllByText('Custom recording')
+        expect(customRecordingFields.length).toBe(2)
+        expect(customRecordingFields[0]).toBeInTheDocument()
+        expect(queryByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()
+
+        expect(queryByText('Wait music')).toBeInTheDocument()
+        expect(queryByText('Choose from library')).toBeInTheDocument()
+        expect(customRecordingFields[1]).toBeInTheDocument()
+        expect(getByLabelText('Choose from library')).toBeChecked()
+
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+    })
+
+    it('should not render wait music section when FF disabled', () => {
+        mockFlags({
+            [FeatureFlagKey.CustomWaitMusic]: false,
+        })
+
+        const {getByRole, queryByText} =
+            renderVoiceIntegrationGreetingMessage(standardIntegration)
+
+        expect(queryByText('Set greeting message')).toBeInTheDocument()
+        expect(queryByText('Wait music')).not.toBeInTheDocument()
 
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
     })
@@ -102,7 +149,7 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
         } as Account
     })
 
-    it('should allow saving when switching to different settings', async () => {
+    it('should allow changing between different greeting message types', () => {
         const standardIntegrationWithDifferentSettings: PhoneIntegration = {
             ...standardIntegration,
             meta: {
@@ -113,18 +160,20 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
                 },
             },
         }
-        updatePhoneGreetingMessageConfigurationSpy.mockReturnValue(() => {
-            return new Promise((resolve) =>
-                resolve({
-                    payload: {},
-                })
-            )
+
+        const setGreetingMessagePayloadMock = jest.fn()
+        assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue({
+            ...defaultUseVoiceIntegrationGreetingMessage,
+            greetingMessagePayload: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Welcome to Acme Inc.!',
+            },
+            setGreetingMessagePayload: setGreetingMessagePayloadMock,
+            isSubmittable: false,
         })
-        fetchIntegratonsSpy.mockReturnValue(() => Promise.resolve(null))
 
         const {getByLabelText, getByRole} =
             renderVoiceIntegrationGreetingMessage(
-                {} as RootState,
                 standardIntegrationWithDifferentSettings
             )
 
@@ -132,18 +181,13 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
 
         fireEvent.click(getByLabelText('None'))
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
-
-        fireEvent.click(getByRole('button', {name: 'Save changes'}))
-        expect(
-            updatePhoneGreetingMessageConfigurationSpy.mock.calls
-        ).toHaveLength(1)
-        await waitFor(() =>
-            expect(fetchIntegratonsSpy.mock.calls).toHaveLength(1)
-        )
+        expect(setGreetingMessagePayloadMock).toHaveBeenCalledWith({
+            voice_message_type: VoiceMessageType.None,
+            text_to_speech_content: 'Welcome to Acme Inc.!',
+        })
     })
 
-    it('should disable saving when going back to the original settings', () => {
+    it('should save greeting messages preferences', () => {
         const standardIntegrationWithDifferentSettings: PhoneIntegration = {
             ...standardIntegration,
             meta: {
@@ -154,94 +198,168 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
             },
         }
 
+        const makeApiCallsMock = jest.fn()
+        assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue({
+            ...defaultUseVoiceIntegrationGreetingMessage,
+            greetingMessagePayload: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Welcome to Acme Inc.!',
+            },
+            isSubmittable: true,
+            makeApiCalls: makeApiCallsMock,
+        })
+
         const {getByLabelText, getByRole} =
             renderVoiceIntegrationGreetingMessage(
-                {} as RootState,
-                standardIntegrationWithDifferentSettings
-            )
-
-        expect(getByLabelText('None')).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
-
-        fireEvent.click(getByLabelText('Text To Speech'))
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
-
-        fireEvent.click(getByLabelText('None'))
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
-    })
-
-    it('should disable saving when going back to the original text-to-speech text', async () => {
-        const standardIntegrationWithDifferentSettings: PhoneIntegration = {
-            ...standardIntegration,
-            meta: {
-                ...standardIntegration.meta,
-                greeting_message: {
-                    voice_message_type: VoiceMessageType.TextToSpeech,
-                    text_to_speech_content: 'Welcome to Acme Inc.!',
-                },
-            },
-        }
-
-        const {getByLabelText, getByRole, getByText} =
-            renderVoiceIntegrationGreetingMessage(
-                {} as RootState,
                 standardIntegrationWithDifferentSettings
             )
 
         expect(getByLabelText('Text To Speech')).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
-
-        const textToSpeechInputBox = getByText('Welcome to Acme Inc.!')
-        await userEvent.type(textToSpeechInputBox, ' Hello!')
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
 
-        userEvent.clear(textToSpeechInputBox)
-        await userEvent.type(textToSpeechInputBox, 'Welcome to Acme Inc.!')
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+        expect(makeApiCallsMock).toHaveBeenCalledWith()
+    })
+})
+
+describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
+    const LIBRARY_EXAMPLE = STATIC_WAIT_MUSIC_LIBRARY[1]
+    const CUSTOM_RECORDING_EXAMPLE = {
+        audio_file_name: 'cool-rock-riffs.mp3',
+        audio_file_path: 'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+        audio_file_type: 'audio/mpeg',
+    }
+
+    beforeEach(() => {
+        window.GORGIAS_STATE.currentAccount = {
+            domain: 'acme',
+        } as Account
+        window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
+        mockFlags({
+            [FeatureFlagKey.CustomWaitMusic]: true,
+        })
     })
 
-    it('should allow replacing a custom recording', () => {
+    it('should allow changing between different wait music types', () => {
         const standardIntegrationWithDifferentSettings: PhoneIntegration = {
             ...standardIntegration,
             meta: {
                 ...standardIntegration.meta,
-                greeting_message: {
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    voice_recording_file_path: 'example.mp3',
+                wait_music: {
+                    type: WaitMusicType.CustomRecording,
+                    library: LIBRARY_EXAMPLE,
+                    custom_recording: CUSTOM_RECORDING_EXAMPLE,
                 },
             },
         }
+
+        const setWaitMusicPayloadMock = jest.fn()
+        assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue({
+            ...defaultUseVoiceIntegrationGreetingMessage,
+            waitMusicPayload: {
+                type: WaitMusicType.CustomRecording,
+                library: LIBRARY_EXAMPLE,
+                custom_recording: CUSTOM_RECORDING_EXAMPLE,
+            },
+            setWaitMusicPayload: setWaitMusicPayloadMock,
+            isSubmittable: false,
+        })
+
+        const {getByLabelText, getByRole, getAllByLabelText} =
+            renderVoiceIntegrationGreetingMessage(
+                standardIntegrationWithDifferentSettings
+            )
+
+        expect(getAllByLabelText('Custom recording')[1]).toBeChecked()
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+
+        fireEvent.click(getByLabelText('Choose from library'))
+
+        expect(setWaitMusicPayloadMock).toHaveBeenCalledWith({
+            type: WaitMusicType.Library,
+            library: LIBRARY_EXAMPLE,
+            custom_recording: CUSTOM_RECORDING_EXAMPLE,
+        })
+    })
+
+    it('should save wait music preferences', () => {
+        const standardIntegrationWithDifferentSettings: PhoneIntegration = {
+            ...standardIntegration,
+            meta: {
+                ...standardIntegration.meta,
+                wait_music: {
+                    type: WaitMusicType.CustomRecording,
+                    custom_recording: CUSTOM_RECORDING_EXAMPLE,
+                },
+            },
+        }
+
+        const makeApiCallsMock = jest.fn()
+        assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue({
+            ...defaultUseVoiceIntegrationGreetingMessage,
+            waitMusicPayload: {
+                type: WaitMusicType.Library,
+                library: LIBRARY_EXAMPLE,
+            },
+            isSubmittable: true,
+            makeApiCalls: makeApiCallsMock,
+        })
 
         const {getByLabelText, getByRole} =
             renderVoiceIntegrationGreetingMessage(
-                {} as RootState,
                 standardIntegrationWithDifferentSettings
             )
-        expect(getByLabelText('voice-recording')).toBeInTheDocument()
-        expect(
-            getByRole('button', {name: 'backup Replace File'})
-        ).toBeInTheDocument()
+
+        expect(getByLabelText('Choose from library')).toBeChecked()
+        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
+
+        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+        expect(makeApiCallsMock).toHaveBeenCalledWith()
     })
 
-    it('should not allow saving without a recording file', () => {
-        const standardIntegrationWithDifferentSettings: PhoneIntegration = {
-            ...standardIntegration,
-            meta: {
-                ...standardIntegration.meta,
-                greeting_message: {
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    voice_recording_file_path: '',
+    it('should pass the correct integrationCountry to WaitMusicField', () => {
+        const standardIntegrationWithExistingWaitMusicPreferences: PhoneIntegration =
+            {
+                ...standardIntegration,
+                meta: {
+                    ...standardIntegration.meta,
+                    phone_number_id: 3,
+                    wait_music: {
+                        type: WaitMusicType.Library,
+                        library: LIBRARY_EXAMPLE,
+                    },
                 },
-            },
-        }
+            }
 
-        const {getByRole} = renderVoiceIntegrationGreetingMessage(
-            {} as RootState,
-            standardIntegrationWithDifferentSettings
-        )
-        fireEvent.click(getByRole('button', {name: 'Save changes'}))
-        expect(updatePhoneGreetingMessageConfigurationSpy.mock.calls).toEqual(
-            []
-        )
+        const setWaitMusicPayloadMock = jest.fn()
+        assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue({
+            ...defaultUseVoiceIntegrationGreetingMessage,
+            waitMusicPayload: {
+                type: WaitMusicType.Library,
+                library: LIBRARY_EXAMPLE,
+            },
+            setWaitMusicPayload: setWaitMusicPayloadMock,
+            isSubmittable: false,
+        })
+
+        const {getByLabelText, getByText} =
+            renderVoiceIntegrationGreetingMessage(
+                standardIntegrationWithExistingWaitMusicPreferences
+            )
+
+        expect(getByLabelText('Choose from library')).toBeChecked()
+
+        fireEvent.click(getByText('arrow_drop_down'))
+        fireEvent.click(getByText('Ringtone'))
+
+        expect(setWaitMusicPayloadMock).toHaveBeenCalledWith({
+            type: WaitMusicType.Library,
+            library: {
+                key: 'ringtone',
+                name: 'Ringtone',
+                audio_file_path:
+                    'https://github.com/msilvestro/custom-wait-music/raw/refs/heads/main/Australia_ringing_tone.mp3',
+            },
+        })
     })
 })

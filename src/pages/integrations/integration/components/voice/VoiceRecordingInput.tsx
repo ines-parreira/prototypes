@@ -16,7 +16,7 @@ type PropsVoiceRecordingInput = {
     uploadLabel?: string
     replaceLabel?: string
     className?: string
-    maxSize?: number
+    maxSizeInMB?: number
 }
 
 export default function VoiceRecordingInput({
@@ -25,7 +25,7 @@ export default function VoiceRecordingInput({
     uploadLabel = 'Select file',
     replaceLabel = 'Select file',
     className = css.optionContent,
-    maxSize,
+    maxSizeInMB,
 }: PropsVoiceRecordingInput) {
     const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
 
@@ -63,7 +63,8 @@ export default function VoiceRecordingInput({
                     </ButtonIconLabel>
                 </Button>
                 <Caption className={css.caption}>
-                    Supported file: .mp3 {maxSize && ` (Max ${maxSize}MB)`}
+                    Supported file: .mp3{' '}
+                    {maxSizeInMB && ` (Max ${maxSizeInMB}MB)`}
                 </Caption>
             </div>
         </div>

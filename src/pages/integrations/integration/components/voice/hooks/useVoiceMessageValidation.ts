@@ -1,11 +1,8 @@
+import {WaitMusicType} from '@gorgias/api-queries'
 import _pick from 'lodash/pick'
 import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    MAX_VOICE_RECORDING_FILE_SIZE,
-    MAX_VOICE_RECORDING_FILE_SIZE_MB,
-} from 'models/integration/constants'
 import {
     IvrMenuAction,
     IvrMenuActionType,
@@ -14,6 +11,7 @@ import {
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
     VoiceMessageType,
+    LocalWaitMusicPreferences,
 } from 'models/integration/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -27,6 +25,7 @@ export default function useVoiceMessageValidation() {
     const validateVoiceRecordingUpload = async (
         event: React.ChangeEvent<HTMLInputElement>,
         maxRecordingDuration?: number,
+        maxRecordingSizeInMB?: number,
         newErrorMessages = false
     ) => {
         if (!event.target.files) {
@@ -34,13 +33,16 @@ export default function useVoiceMessageValidation() {
         }
 
         const uploadedFile = event.target.files[0]
-        if (uploadedFile.size > MAX_VOICE_RECORDING_FILE_SIZE) {
+        if (
+            maxRecordingSizeInMB &&
+            uploadedFile.size > maxRecordingSizeInMB * 1_000_000
+        ) {
             void dispatch(
                 notify({
                     title: newErrorMessages ? 'Failed to upload' : '',
                     message: newErrorMessages
-                        ? `File too large. Upload a recording smaller than ${MAX_VOICE_RECORDING_FILE_SIZE_MB}MB.`
-                        : `Invalid file size. The max size is ${MAX_VOICE_RECORDING_FILE_SIZE_MB} MB.`,
+                        ? `File too large. Upload a recording smaller than ${maxRecordingSizeInMB}MB.`
+                        : `Invalid file size. The max size is ${maxRecordingSizeInMB} MB.`,
                     status: NotificationStatus.Error,
                 })
             )
@@ -331,6 +333,36 @@ export default function useVoiceMessageValidation() {
         return false
     }
 
+    const areWaitMusicPreferencesTheSame = (
+        preferences: LocalWaitMusicPreferences,
+        other: LocalWaitMusicPreferences
+    ) => {
+        if (
+            preferences.type === WaitMusicType.Library &&
+            other.type === WaitMusicType.Library
+        ) {
+            return preferences.library?.key === other.library?.key
+        }
+
+        if (
+            preferences.type === WaitMusicType.CustomRecording &&
+            other.type === WaitMusicType.CustomRecording
+        ) {
+            if (
+                preferences.custom_recording?.audio_file ||
+                other.custom_recording?.audio_file
+            ) {
+                return false
+            }
+            return (
+                preferences.custom_recording?.audio_file_path ===
+                other.custom_recording?.audio_file_path
+            )
+        }
+
+        return false
+    }
+
     return {
         validateVoiceRecordingUpload,
         canPayloadBeSubmitted,
@@ -338,5 +370,6 @@ export default function useVoiceMessageValidation() {
         isValidTextToSpeech,
         cleanUpIvrPayload,
         areVoiceMessagesTheSame,
+        areWaitMusicPreferencesTheSame,
     }
 }

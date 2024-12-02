@@ -1,27 +1,26 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useCallback} from 'react'
 import {Form} from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_GREETING_MESSAGE} from 'models/integration/constants'
-import {
-    PhoneIntegration,
-    VoiceMessage,
-    isPhoneIntegration,
-} from 'models/integration/types'
+import {PhoneCountry} from 'business/twilio'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {PhoneIntegration, isPhoneIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import {updatePhoneGreetingMessageConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
-import {fetchIntegrations} from 'state/integrations/actions'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 
-import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+import useVoiceIntegrationGreetingMessage from './hooks/useVoiceIntegrationGreetingMessage'
 import css from './VoiceIntegrationGreetingMessage.less'
+import WaitMusicField from './WaitMusicField'
+import {DEFAULT_WAIT_MUSIC_PREFERENCES} from './waitMusicLibraryConstants'
 
 type Props = {
-    integration: Maybe<PhoneIntegration>
+    integration: PhoneIntegration
 }
 
 const MAX_RECORDING_DURATION = 30
@@ -29,55 +28,34 @@ const MAX_RECORDING_DURATION = 30
 export default function VoiceIntegrationGreetingMessage({
     integration,
 }: Props): JSX.Element | null {
-    const dispatch = useAppDispatch()
-    const {areVoiceMessagesTheSame} = useVoiceMessageValidation()
+    const shouldDisplayWaitMusicSection =
+        useFlags()[FeatureFlagKey.CustomWaitMusic]
 
-    const integrationGreetingMessage =
-        integration?.meta?.greeting_message ?? DEFAULT_GREETING_MESSAGE
-    const [initialSettings, setInitialSettings] = useState<VoiceMessage>(
-        integrationGreetingMessage
-    )
-    const [payload, setPayload] = useState<VoiceMessage>(
-        integrationGreetingMessage
-    )
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
-    const isSubmittable = !areVoiceMessagesTheSame(payload, initialSettings)
+    const integrationCountry = integration
+        ? (phoneNumbers[integration.meta.phone_number_id].twilio_phone_number
+              ?.address.country ?? PhoneCountry.US)
+        : PhoneCountry.US
 
-    const [isLoading, setIsLoading] = useState(false)
-
-    useEffect(() => {
-        if (
-            !areVoiceMessagesTheSame(
-                initialSettings,
-                integrationGreetingMessage
-            )
-        ) {
-            setInitialSettings(integrationGreetingMessage)
-            setPayload(integrationGreetingMessage)
-        }
-    }, [
-        payload,
-        setPayload,
-        initialSettings,
-        setInitialSettings,
-        areVoiceMessagesTheSame,
-        integrationGreetingMessage,
-    ])
+    const {
+        greetingMessagePayload,
+        setGreetingMessagePayload,
+        waitMusicPayload,
+        setWaitMusicPayload,
+        isGreetingMessageLoading,
+        isWaitMusicLoading,
+        isSubmittable,
+        makeApiCalls,
+    } = useVoiceIntegrationGreetingMessage(integration)
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
             event.preventDefault()
 
-            setIsLoading(true)
-            try {
-                await dispatch(updatePhoneGreetingMessageConfiguration(payload))
-                await dispatch(fetchIntegrations())
-                setIsLoading(false)
-            } catch (error) {
-                setIsLoading(false)
-            }
+            await makeApiCalls()
         },
-        [payload, setIsLoading, dispatch]
+        [makeApiCalls]
     )
 
     if (!isPhoneIntegration(integration)) {
@@ -97,17 +75,35 @@ export default function VoiceIntegrationGreetingMessage({
                             starts.
                         </p>
                         <VoiceMessageField
-                            value={payload}
-                            onChange={setPayload}
+                            value={greetingMessagePayload}
+                            onChange={setGreetingMessagePayload}
                             maxRecordingDuration={MAX_RECORDING_DURATION}
                             allowNone
                             horizontal={true}
                         />
                     </div>
-
+                    {shouldDisplayWaitMusicSection && (
+                        <div className={css.section}>
+                            <h4 className={css.sectionTitle}>Wait music</h4>
+                            <p className={css.sectionSubtitle}>
+                                The music callers will hear while they are
+                                waiting.
+                            </p>
+                            <WaitMusicField
+                                preferences={
+                                    waitMusicPayload ??
+                                    DEFAULT_WAIT_MUSIC_PREFERENCES
+                                }
+                                onChange={setWaitMusicPayload}
+                                integrationCountry={integrationCountry}
+                            />
+                        </div>
+                    )}
                     <Button
                         type="submit"
-                        isLoading={isLoading}
+                        isLoading={
+                            isGreetingMessageLoading || isWaitMusicLoading
+                        }
                         isDisabled={!isSubmittable}
                     >
                         Save changes

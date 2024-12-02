@@ -32,6 +32,7 @@ export type NewPhoneNumber = {
         waba_id: string
         waba_phone_number_id: string
     }
+    twilio_phone_number?: TwilioPhoneNumberMeta
 }
 
 export type TwilioPhoneNumberMeta = {

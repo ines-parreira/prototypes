@@ -1,3 +1,4 @@
+import {WaitMusicType} from '@gorgias/api-queries'
 import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -9,6 +10,7 @@ import {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
+    LocalWaitMusicPreferences,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
 
@@ -169,7 +171,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
             }
         )
 
-    it('useVoiceMessageValidation successful', async () => {
+    it('is successful', async () => {
         const fileName = 'example.mp3'
         const event = {
             target: {
@@ -198,7 +200,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         })
     })
 
-    it('useVoiceMessageValidation validation error', async () => {
+    it('is invalid because audio duration too long', async () => {
         const fileName = 'example.mp3'
         const event = {
             target: {
@@ -228,7 +230,39 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         )
     })
 
-    it('useVoiceMessageValidation invalid file error', async () => {
+    it('is invalid because audio size too big', async () => {
+        const fileName = 'example.mp3'
+        const audioFile = new File(['test data'], fileName, {
+            type: 'audio/mpeg',
+        })
+        Object.defineProperty(audioFile, 'size', {value: 1_000_000 + 1})
+        const event = {
+            target: {
+                files: [audioFile],
+            },
+        } as unknown as React.ChangeEvent<HTMLInputElement>
+        getAudioFileDurationSpy.mockResolvedValue(5)
+
+        const {result} = renderUseVoiceMessageValidationHook()
+
+        await act(async () => {
+            const res = await result.current.validateVoiceRecordingUpload(
+                event,
+                10,
+                1,
+                true
+            )
+            expect(res).toBeNull()
+        })
+
+        const notification = mockStore.getActions()[0]
+        expect(notification).toHaveProperty(
+            'payload.message',
+            'File too large. Upload a recording smaller than 1MB.'
+        )
+    })
+
+    it('is invalid because wrong audio file format', async () => {
         const fileName = 'example.mp3'
         const event = {
             target: {
@@ -702,20 +736,6 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should not be the same when they are both TTS but have different text', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
-            {
-                voice_message_type: VoiceMessageType.TextToSpeech,
-                text_to_speech_content: 'Hello!',
-            },
-            {
-                voice_message_type: VoiceMessageType.TextToSpeech,
-                text_to_speech_content: 'Ciao!',
-            }
-        )
-        expect(result.current).toBe(false)
-    })
-
     it.each([
         {
             voiceMessage: voiceMessageWithNewAudioFile,
@@ -729,6 +749,189 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
         'should not be the same when they are both custom recording and have the same audio file URL, but one of them has new file data',
         ({voiceMessage, other}) => {
             const {result} = renderAreVoiceMessagesTheSame(voiceMessage, other)
+            expect(result.current).toBe(false)
+        }
+    )
+})
+
+describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderAreWaitMusicPreferencesTheSame = (
+        preferences: LocalWaitMusicPreferences,
+        other: LocalWaitMusicPreferences
+    ) =>
+        renderHook(
+            () => {
+                const {areWaitMusicPreferencesTheSame} =
+                    useVoiceMessageValidation()
+                return areWaitMusicPreferencesTheSame(preferences, other)
+            },
+            {
+                wrapper,
+            }
+        )
+
+    it('should not be the same when they have different type', () => {
+        const {result} = renderAreWaitMusicPreferencesTheSame(
+            {
+                type: WaitMusicType.Library,
+            },
+            {
+                type: WaitMusicType.CustomRecording,
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it('should be the same when they are both library and have the same key', () => {
+        const {result} = renderAreWaitMusicPreferencesTheSame(
+            {
+                type: WaitMusicType.Library,
+                library: {
+                    audio_file_path:
+                        'https://assets.gorgias.io/phone/Ringtone.mp3',
+                    key: 'ringtone',
+                    name: 'Ringtone',
+                },
+            },
+            {
+                type: WaitMusicType.Library,
+                library: {
+                    audio_file_path:
+                        'https://assets.gorgias.io/phone/Ringtone.mp3',
+                    key: 'ringtone',
+                    name: 'Ringtone',
+                },
+            }
+        )
+        expect(result.current).toBe(true)
+    })
+
+    it('should not be the same when they are both library but have different key', () => {
+        const {result} = renderAreWaitMusicPreferencesTheSame(
+            {
+                type: WaitMusicType.Library,
+                library: {
+                    audio_file_path:
+                        'https://assets.gorgias.io/phone/Ringtone.mp3',
+                    key: 'ringtone',
+                    name: 'Ringtone',
+                },
+            },
+            {
+                type: WaitMusicType.Library,
+                library: {
+                    audio_file_path:
+                        'https://assets.gorgias.io/phone/CatchyJingle.mp3',
+                    key: 'catchy_jingle',
+                    name: 'Catchy Jingle',
+                },
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it('should be the same when they are both custom recording and have the same audio file URL', () => {
+        const {result} = renderAreWaitMusicPreferencesTheSame(
+            {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            },
+            {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            }
+        )
+        expect(result.current).toBe(true)
+    })
+
+    it('should not be the same when they are both custom recording but have different audio file URL', () => {
+        const {result} = renderAreWaitMusicPreferencesTheSame(
+            {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            },
+            {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'magic-bossa-nova.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/MagicBossaNova.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            }
+        )
+        expect(result.current).toBe(false)
+    })
+
+    it.each([
+        {
+            preferences: {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                    audio_file: 'data:audio/mpeg;base64,SUQzBAAAAAAAf1',
+                },
+            },
+            other: {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            },
+        },
+        {
+            preferences: {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                },
+            },
+            other: {
+                type: WaitMusicType.CustomRecording,
+                custom_recording: {
+                    audio_file_name: 'cool-rock-riffs.mp3',
+                    audio_file_path:
+                        'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
+                    audio_file_type: 'audio/mpeg',
+                    audio_file: 'data:audio/mpeg;base64,SUQzBAAAAAAAf1',
+                },
+            },
+        },
+    ])(
+        'should not be the same when they are both custom recording and have the same audio file URL, but one of them has new file data',
+        ({preferences, other}) => {
+            const {result} = renderAreWaitMusicPreferencesTheSame(
+                preferences,
+                other
+            )
             expect(result.current).toBe(false)
         }
     )

@@ -1,4 +1,6 @@
 // g/integrations/phone/schemas.py
+import {UpdateWaitMusicLibrary, WaitMusicType} from '@gorgias/api-queries'
+
 import {PhoneFunction} from 'business/twilio'
 
 import {
@@ -27,6 +29,7 @@ export type PhoneIntegrationMeta = {
     voicemail: PhoneIntegrationVoicemailSettings
     ivr?: PhoneIntegrationIvrSettings
     phone_team_id?: Maybe<number>
+    wait_music?: LocalWaitMusicPreferences
 }
 
 export enum PhoneRingingBehaviour {
@@ -136,3 +139,16 @@ export const isStandardPhoneIntegration = (
 ): integration is PhoneIntegration =>
     integration?.type === IntegrationType.Phone &&
     integration?.meta.function === 'standard'
+
+export type LocalWaitMusicCustomRecording = {
+    audio_file?: Maybe<string>
+    audio_file_path?: Maybe<string>
+    audio_file_name: string
+    audio_file_type: string
+}
+
+export type LocalWaitMusicPreferences = {
+    type: WaitMusicType
+    custom_recording?: LocalWaitMusicCustomRecording
+    library?: UpdateWaitMusicLibrary
+}

@@ -78,6 +78,7 @@ export enum FeatureFlagKey {
     CustomerFields = 'customer-fields',
     CustomizableAgentRingTime = 'customizable-agent-ring-time',
     CustomizableWaitTime = 'customizable-wait-time',
+    CustomWaitMusic = 'custom-wait-music',
     DefaultEmailAddress = 'default-email-address',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

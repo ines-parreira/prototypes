@@ -66,6 +66,7 @@ const VoiceMessageField = ({
             const voiceRecordingUpload = await validateVoiceRecordingUpload(
                 event,
                 maxRecordingDuration,
+                MAX_VOICE_RECORDING_FILE_SIZE_MB,
                 horizontal
             )
             if (voiceRecordingUpload) {
@@ -119,7 +120,7 @@ const VoiceMessageField = ({
                         className={css.optionContentHorizontal}
                         replaceLabel={'Replace File'}
                         uploadLabel={'Upload File'}
-                        maxSize={MAX_VOICE_RECORDING_FILE_SIZE_MB}
+                        maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                     />
                 )}
                 {value.voice_message_type === VoiceMessageType.TextToSpeech && (
@@ -157,7 +158,7 @@ const VoiceMessageField = ({
                     onVoiceRecordingUpload={handleVoiceRecordingUpload}
                     replaceLabel={'Replace File'}
                     uploadLabel={'Upload File'}
-                    maxSize={MAX_VOICE_RECORDING_FILE_SIZE_MB}
+                    maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                 />
             )}
             {allowNone && (

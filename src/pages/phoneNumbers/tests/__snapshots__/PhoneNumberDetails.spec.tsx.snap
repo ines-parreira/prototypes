@@ -88,7 +88,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             class="form-control"
             readonly=""
             type="text"
-            value="Canada"
+            value="Australia"
           />
         </div>
       </div>
@@ -1446,7 +1446,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             class="form-control"
             readonly=""
             type="text"
-            value="Canada"
+            value="Australia"
           />
         </div>
       </div>

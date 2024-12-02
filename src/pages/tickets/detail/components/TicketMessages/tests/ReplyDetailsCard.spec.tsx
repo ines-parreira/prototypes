@@ -12,9 +12,7 @@ import {assumeMock} from 'utils/testing'
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore()
 
-jest.mock('@gorgias/api-queries', () => ({
-    useGetTicketMessage: jest.fn(),
-}))
+jest.mock('@gorgias/api-queries')
 const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
 
 describe('ReplyDetailsCard', () => {

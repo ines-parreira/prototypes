@@ -48,7 +48,7 @@ describe('<PhoneNumbersList/>', () => {
             const rowsBeforeSorting = getRows()
 
             expect(rowsBeforeSorting[1].slice(0, 1)).toEqual([
-                '🇨🇦Intl. Phone Number +1 213 373 4255',
+                '🇦🇺Intl. Phone Number +1 213 373 4255',
             ])
             expect(rowsBeforeSorting[2].slice(0, 1)).toEqual([
                 '🇨🇦Another Phone Number +1 213 373 4254',
@@ -68,7 +68,7 @@ describe('<PhoneNumbersList/>', () => {
                 '🇨🇦Another Phone Number +1 213 373 4254',
             ])
             expect(rowsAfterSorting[3].slice(0, 1)).toEqual([
-                '🇨🇦Intl. Phone Number +1 213 373 4255',
+                '🇦🇺Intl. Phone Number +1 213 373 4255',
             ])
         })
     })
