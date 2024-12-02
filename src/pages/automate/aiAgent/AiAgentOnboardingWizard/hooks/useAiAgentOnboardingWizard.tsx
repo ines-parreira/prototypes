@@ -135,6 +135,9 @@ export const useAiAgentOnboardingWizard = ({
     const isAiAgentOnboardingWizardEducationalStepEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
 
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
+
     const {
         isPendingCreateOrUpdate,
         handleOnSave,
@@ -221,9 +224,11 @@ export const useAiAgentOnboardingWizard = ({
                     version,
                     redirectTo: 'knowledge',
                 })
+
                 history.replace({
-                    // TODO link to knowledge tab once it is implemented
-                    pathname: routes.configuration(),
+                    pathname: isAiAgentKnowledgeTabEnabled
+                        ? routes.knowledge
+                        : routes.configuration(),
                     search: getPostCompletionSearchParams(
                         WIZARD_POST_COMPLETION_STATE.configuration
                     ),

@@ -33,6 +33,7 @@ import ActionsPlatformEditStepViewContainer from 'pages/automate/actionsPlatform
 import ActionsPlatformEditTemplateViewContainer from 'pages/automate/actionsPlatform/ActionsPlatformEditTemplateViewContainer'
 import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlatformStepsView'
 import ActionsPlatformTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformTemplatesView'
+import AiAgentConfigurationContainer from 'pages/automate/aiAgent/AiAgentConfigurationContainer'
 import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
 import {AiAgentGuidanceContainer} from 'pages/automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentGuidanceDetailContainer} from 'pages/automate/aiAgent/AiAgentGuidanceDetailContainer'
@@ -43,7 +44,10 @@ import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentG
 import {AiAgentKnowledgeContainer} from 'pages/automate/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentOnboardingWizard from 'pages/automate/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import {AiAgentPlaygroundContainer} from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
+import {AiAgentPreviewModeSettingsContainer} from 'pages/automate/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
+import {Level2IntentsContainer} from 'pages/automate/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
+import {OptimizeContainer} from 'pages/automate/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import {AiAgentAccountConfigurationProvider} from 'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationProvider'
@@ -157,8 +161,6 @@ import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
 import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
 import {useTicketPage} from 'tickets/pages/TicketPage'
 import {useViewPage} from 'tickets/pages/ViewPage'
-
-import {AiAgentPreviewModeSettingsContainer} from '../pages/automate/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 
 export default function Routes() {
     return (
@@ -829,6 +831,9 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
+    const isAiAgentOptimizeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
+
     if (shopType !== 'shopify') {
         return <Redirect to="/app/automation" />
     }
@@ -839,11 +844,31 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         <Switch>
             <AiAgentAccountConfigurationProvider>
                 <AiAgentStoreConfigurationProvider>
+                    <Route
+                        path={`${path}`}
+                        exact
+                        component={AiAgentViewContainer}
+                    />
+                    {isAiAgentOptimizeTabEnabled && (
+                        <AiAgentErrorBoundary section="ai-agent-optimize">
+                            <Route
+                                path={`${path}/optimize`}
+                                exact
+                                component={OptimizeContainer}
+                            />
+                            <Switch>
+                                <Route
+                                    path={`${path}/optimize/:intentId`}
+                                    component={Level2IntentsContainer}
+                                />
+                            </Switch>
+                        </AiAgentErrorBoundary>
+                    )}
                     <AiAgentErrorBoundary section="ai-agent-configuration">
                         <Route
-                            path={`${path}`}
+                            path={`${path}/settings`}
                             exact
-                            component={AiAgentViewContainer}
+                            component={AiAgentConfigurationContainer}
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary section="ai-agent-playground">

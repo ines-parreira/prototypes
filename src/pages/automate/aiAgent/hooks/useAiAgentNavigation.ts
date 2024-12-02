@@ -14,15 +14,19 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const isAiAgentKnowledgeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
+    const isAiAgentOptimizeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
+
     const routes = useMemo(
         () => ({
             automation: `/app/automation`,
+            main: `/app/automation/shopify/${shopName}/ai-agent`,
             test: `/app/automation/shopify/${shopName}/ai-agent/test`,
             guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
             knowledge: `/app/automation/shopify/${shopName}/ai-agent/knowledge`,
             newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
             configuration: (section?: 'knowledge' | 'email') =>
-                `/app/automation/shopify/${shopName}/ai-agent${
+                `/app/automation/shopify/${shopName}/ai-agent/settings${
                     section ? `?section=${section}` : ''
                 }`,
             guidanceArticleEdit: (articleId: number) =>
@@ -45,12 +49,24 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 `/app/automation/shopify/${shopName}/ai-agent/actions/events/${configurationId}`,
             onboardingWizard: `/app/automation/shopify/${shopName}/ai-agent/new`,
             previewMode: `/app/automation/shopify/${shopName}/ai-agent/preview-mode`,
+            optimize: `/app/automation/shopify/${shopName}/ai-agent/optimize`,
+            optimizeIntent: (intentId: string) =>
+                `/app/automation/shopify/${shopName}/ai-agent/optimize/${intentId}`,
         }),
         [shopName]
     )
 
     const headerNavbarItems = useMemo(
         () => [
+            ...(isAiAgentOptimizeTabEnabled
+                ? [
+                      {
+                          route: routes.optimize,
+                          title: 'Optimize',
+                          exact: false,
+                      },
+                  ]
+                : []),
             {
                 route: routes.configuration(),
                 title: 'Settings',
@@ -95,6 +111,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
         ],
         [
             isAiAgentKnowledgeTabEnabled,
+            isAiAgentOptimizeTabEnabled,
             isGorgiasUser,
             routes,
             showAutomateActions,

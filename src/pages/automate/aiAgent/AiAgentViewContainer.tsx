@@ -1,16 +1,16 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import Spinner from 'pages/common/components/Spinner'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import {AiAgentConfigurationView} from './AiAgentConfigurationView/AiAgentConfigurationView'
 import css from './AiAgentViewContainer.less'
 import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
 import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useWelcomePageAcknowledged} from './hooks/useWelcomePageAcknowledged'
 import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
 
@@ -27,13 +27,18 @@ const AiAgentViewContainer = () => {
     }>()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountId = currentAccount.get('id')
-    const accountDomain = currentAccount.get('domain')
+
+    const history = useHistory()
+    const {routes} = useAiAgentNavigation({shopName})
 
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
 
     const welcomePageFeatureFlag: WelcomePageFeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentWelcomePage]
+
+    const isAiAgentOptimizeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
 
     const welcomePageAcknowledged = useWelcomePageAcknowledged({shopName})
 
@@ -83,18 +88,20 @@ const AiAgentViewContainer = () => {
         isAiAgentOnboardingWizardEnabled &&
         (!storeConfiguration || isOnUpdateOnboardingWizard)
 
-    return displayOnboardingWizardWelcomePage ? (
+    if (!displayOnboardingWizardWelcomePage) {
+        history.push(
+            isAiAgentOptimizeTabEnabled
+                ? routes.optimize
+                : routes.configuration()
+        )
+    }
+
+    return (
         <AIAgentWelcomePageDynamic
             state="onboardingWizard"
             shopType={shopType}
             shopName={shopName}
             storeConfiguration={storeConfiguration}
-        />
-    ) : (
-        <AiAgentConfigurationView
-            accountDomain={accountDomain}
-            shopName={shopName}
-            shopType={shopType}
         />
     )
 }

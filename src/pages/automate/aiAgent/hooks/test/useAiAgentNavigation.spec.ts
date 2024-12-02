@@ -29,7 +29,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
@@ -53,7 +53,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
@@ -95,6 +95,26 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
+    it('should add Optimize to navbar if feature flag is on', () => {
+        useFlagsMock.mockReturnValue({
+            [FeatureFlagKey.AiAgentOptimizeTab]: true,
+        })
+
+        const {result} = renderHook(() =>
+            useAiAgentNavigation({shopName: 'test'})
+        )
+
+        expect(result.current.headerNavbarItems).toEqual(
+            expect.arrayContaining([
+                {
+                    route: '/app/automation/shopify/test/ai-agent/optimize',
+                    title: 'Optimize',
+                    exact: false,
+                },
+            ])
+        )
+    })
+
     it('should add Preview mode to navbar if user is impersonated and not in development mod', () => {
         window.USER_IMPERSONATED = true
         window.DEVELOPMENT = false
@@ -104,7 +124,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
@@ -133,7 +153,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
@@ -158,7 +178,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },
@@ -187,7 +207,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
-                route: '/app/automation/shopify/test/ai-agent',
+                route: '/app/automation/shopify/test/ai-agent/settings',
                 title: 'Settings',
                 dataCanduId: 'ai-agent-navbar-configuration',
             },

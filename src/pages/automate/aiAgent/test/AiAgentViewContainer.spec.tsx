@@ -1,5 +1,6 @@
 import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {keyBy} from 'lodash'
@@ -16,16 +17,16 @@ import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {IntegrationType} from 'models/integration/types'
+import {getStoreConfigurationFixture} from 'pages/automate/aiAgent/fixtures/storeConfiguration.fixtures'
+import {useGetOrCreateSnippetHelpCenter} from 'pages/automate/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import {useWelcomePageAcknowledged} from 'pages/automate/aiAgent/hooks/useWelcomePageAcknowledged'
+import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getHasAutomate} from 'state/billing/selectors'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
 import AiAgentViewContainer from '../AiAgentViewContainer'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
-import {useWelcomePageAcknowledged} from '../hooks/useWelcomePageAcknowledged'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('launchdarkly-react-client-sdk')
 
@@ -226,64 +227,6 @@ describe('AiAgentViewContainer', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('renders loader if loading help centers', () => {
-        setupMocks({isHelpCentersLoading: true})
-        renderComponent()
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
-    })
-
-    it('renders configuration', () => {
-        setupMocks()
-        renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
-    })
-
-    it('enables and disables configuration from the main toggle', () => {
-        setupMocks()
-        const storeConfiguration = getStoreConfigurationFixture()
-        const {rerender} = renderComponent()
-
-        act(() => {
-            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
-        })
-
-        expect(
-            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
-        ).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: expect.any(String),
-        })
-
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            ...mockedAiAgentStoreConfigurationContext,
-            storeConfiguration: {
-                ...storeConfiguration,
-                deactivatedDatetime: new Date().toISOString(),
-            },
-        })
-
-        rerender(
-            <Provider store={mockStore(getState())}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AiAgentViewContainer />
-                </QueryClientProvider>
-            </Provider>
-        )
-
-        act(() => {
-            fireEvent.click(screen.getAllByText('Enable AI Agent')[0])
-        })
-
-        expect(
-            mockedAiAgentStoreConfigurationContext.updateStoreConfiguration
-        ).toHaveBeenCalledWith({
-            ...storeConfiguration,
-            deactivatedDatetime: null,
-            previewModeValidUntilDatetime: null,
-        })
-    })
-
     it('hides the toggle if in trial mode', () => {
         setupMocks({trialModeFlag: true})
         renderComponent()
@@ -373,28 +316,6 @@ describe('AiAgentViewContainer', () => {
         )
     })
 
-    it('renders the configuration page if the merchant already has interacted with the AI Agent', () => {
-        setupMocks({
-            welcomePageFlag: 'dynamic_odd_static_even',
-            hasStoreConfiguration: true,
-        })
-
-        renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
-        expect(screen.getAllByText('Enable AI Agent')[0]).toBeInTheDocument()
-    })
-
-    it('renders the configuration page if the welcome page is acknowledged', () => {
-        setupMocks({
-            welcomePageFlag: 'dynamic_odd_static_even',
-            hasStoreConfiguration: false,
-            welcomePageAcknowledged: true,
-        })
-
-        renderComponent()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument
-    })
-
     it('renders the dynamic welcome page for onboarding wizard if the the flag is enabled', () => {
         setupMocks({
             onBoardingWizardFlag: true,
@@ -407,5 +328,29 @@ describe('AiAgentViewContainer', () => {
                 'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:'
             )
         ).toBeInTheDocument()
+    })
+
+    it('redirects to guidance page if onboarding wizard is done', () => {
+        const history = createMemoryHistory()
+        const historyPushSpy = jest
+            .spyOn(history, 'push')
+            .mockImplementationOnce(jest.fn)
+
+        setupMocks({
+            hasStoreConfiguration: false,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(getState())}>
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AiAgentViewContainer />
+                </QueryClientProvider>
+            </Provider>,
+            {history}
+        )
+
+        expect(historyPushSpy).toHaveBeenCalledWith(
+            expect.stringContaining('ai-agent/settings')
+        )
     })
 })

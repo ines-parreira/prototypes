@@ -41,13 +41,13 @@ describe('CheckPlaygroundPrerequisites', () => {
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
-            '/app/automation/shopify/it-shop/ai-agent?section=knowledge'
+            '/app/automation/shopify/it-shop/ai-agent/settings?section=knowledge'
         )
     })
 
     it('renders MissingKnowledgeSourceAlert with the correct link when the feature flag is on', () => {
         mockFlags({
-            [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
+            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
         })
 
         renderComponent()

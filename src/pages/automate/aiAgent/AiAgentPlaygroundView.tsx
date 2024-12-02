@@ -94,7 +94,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
                     },
                 })
 
-                return history.push(routes.configuration())
+                return history.push(routes.main)
             }
         }
     }, [storeFetchError, dispatch, shopName, routes])

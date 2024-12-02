@@ -64,7 +64,7 @@ export const AiAgentConfigurationView = ({
 
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return (
-            <div className={css.spinner}>
+            <div className={css.spinner} aria-label="loading">
                 <Spinner size="big" />
             </div>
         )

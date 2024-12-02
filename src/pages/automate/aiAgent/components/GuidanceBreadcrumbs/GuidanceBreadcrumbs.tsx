@@ -13,7 +13,7 @@ export const GuidanceBreadcrumbs = ({shopName, title}: Props) => {
     return (
         <Breadcrumb>
             <BreadcrumbItem>
-                <Link to={routes.configuration()}>{AI_AGENT}</Link>
+                <Link to={routes.main}>{AI_AGENT}</Link>
             </BreadcrumbItem>
             {title !== undefined && (
                 <BreadcrumbItem active>{title}</BreadcrumbItem>

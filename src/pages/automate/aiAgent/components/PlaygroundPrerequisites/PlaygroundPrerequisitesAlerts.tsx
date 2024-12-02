@@ -10,8 +10,8 @@ import css from './PlaygroundPrerequisitesAlerts.less'
 
 export const MissingKnowledgeSourceAlert = ({shopName}: {shopName: string}) => {
     const {routes} = useAiAgentNavigation({shopName})
-    const isAiAgentSnippetsFromExternalFilesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentSnippetsFromExternalFiles]
+    const isAiAgentKnowledgeTabEnabled =
+        useFlags()[FeatureFlagKey.AiAgentKnowledgeTab]
 
     return (
         <div role="alert">
@@ -22,7 +22,7 @@ export const MissingKnowledgeSourceAlert = ({shopName}: {shopName: string}) => {
                 customActions={
                     <Link
                         to={
-                            isAiAgentSnippetsFromExternalFilesEnabled
+                            isAiAgentKnowledgeTabEnabled
                                 ? routes.knowledge
                                 : routes.configuration('knowledge')
                         }
