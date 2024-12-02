@@ -198,6 +198,8 @@ export const getCustomFieldSavedFilterById = (customFieldId: number) =>
             )
 
         return customFieldsFilter?.values
-            .map((v) => ({...v, customFieldId: v.custom_field_id}))
-            .find((csFilter) => csFilter.custom_field_id === customFieldId)
+            .map((v) => ({...v, customFieldId: Number(v.custom_field_id)}))
+            .find(
+                (csFilter) => csFilter.custom_field_id === String(customFieldId)
+            )
     })

@@ -342,12 +342,12 @@ describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
                 {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['123'],
-                    custom_field_id: 890,
+                    custom_field_id: '890',
                 },
                 {
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
                     values: [],
-                    custom_field_id: 456,
+                    custom_field_id: '456',
                 },
             ],
         })
@@ -364,7 +364,7 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
         const customFieldFilter = {
             operator: LogicalOperatorEnum.ONE_OF,
             values: ['Some::value'],
-            custom_field_id: 123,
+            custom_field_id: '123',
         }
         const tagFilter = {
             operator: LogicalOperatorEnum.ONE_OF,

@@ -291,7 +291,9 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                                 SavedFilterCustomFieldFilter[]
                             >((accumulator, value) => {
                                 accumulator.push({
-                                    custom_field_id: value.customFieldId,
+                                    custom_field_id: String(
+                                        value.customFieldId
+                                    ),
                                     values: value.values,
                                     operator: value.operator,
                                 })
@@ -328,7 +330,7 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                       statsFilters[savedFilter.member] = savedFilter.values.map(
                           (v) => ({
                               ...v,
-                              customFieldId: v.custom_field_id,
+                              customFieldId: Number(v.custom_field_id),
                           })
                       )
                   } else if (savedFilter.member === FilterKey.Tags) {

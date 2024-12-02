@@ -75,7 +75,7 @@ export interface CustomFieldFilter extends WithLogicalOperator<string> {
 
 export interface SavedFilterCustomFieldFilter
     extends WithLogicalOperator<string> {
-    custom_field_id: number
+    custom_field_id: string
 }
 
 export enum TagFilterInstanceId {

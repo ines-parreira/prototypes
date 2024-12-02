@@ -144,8 +144,9 @@ export const filtersSlice = createSlice({
                             values: [
                                 {
                                     ...action.payload,
-                                    custom_field_id:
-                                        action.payload.customFieldId,
+                                    custom_field_id: String(
+                                        action.payload.customFieldId
+                                    ),
                                 },
                             ],
                         },
@@ -164,7 +165,8 @@ export const filtersSlice = createSlice({
                 const otherValues =
                     existingCustomFieldFilter?.values.filter(
                         (v) =>
-                            v.custom_field_id !== action.payload.customFieldId
+                            v.custom_field_id !==
+                            String(action.payload.customFieldId)
                     ) ?? []
 
                 const updatedFilter: CustomFieldSavedFilter = {
@@ -173,7 +175,9 @@ export const filtersSlice = createSlice({
                         ...otherValues,
                         {
                             ...action.payload,
-                            custom_field_id: action.payload.customFieldId,
+                            custom_field_id: String(
+                                action.payload.customFieldId
+                            ),
                         },
                     ],
                 }

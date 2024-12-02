@@ -460,7 +460,7 @@ describe('CustomFieldsFilterWithSavedState', () => {
                                 values: [
                                     {
                                         operator: LogicalOperatorEnum.ONE_OF,
-                                        custom_field_id: customFieldId,
+                                        custom_field_id: String(customFieldId),
                                         values: [customFieldValue],
                                     },
                                 ],

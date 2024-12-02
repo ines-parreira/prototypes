@@ -342,7 +342,9 @@ describe('filtersSlice', () => {
                     values: [
                         {
                             ...customFieldFilter,
-                            custom_field_id: customFieldFilter.customFieldId,
+                            custom_field_id: String(
+                                customFieldFilter.customFieldId
+                            ),
                         },
                     ],
                 },
@@ -374,7 +376,9 @@ describe('filtersSlice', () => {
                     values: [
                         {
                             ...customFieldFilter,
-                            custom_field_id: customFieldFilter.customFieldId,
+                            custom_field_id: String(
+                                customFieldFilter.customFieldId
+                            ),
                         },
                     ],
                 },
@@ -385,7 +389,7 @@ describe('filtersSlice', () => {
             const currentFilter = {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['Some::value'],
-                custom_field_id: 123,
+                custom_field_id: '123',
             }
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
@@ -418,7 +422,9 @@ describe('filtersSlice', () => {
                         currentFilter,
                         {
                             ...customFieldFilter,
-                            custom_field_id: customFieldFilter.customFieldId,
+                            custom_field_id: String(
+                                customFieldFilter.customFieldId
+                            ),
                         },
                     ],
                 },
@@ -429,7 +435,7 @@ describe('filtersSlice', () => {
             const currentFilter = {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['Some::value'],
-                custom_field_id: 123,
+                custom_field_id: '123',
             }
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
@@ -462,7 +468,9 @@ describe('filtersSlice', () => {
                     values: [
                         {
                             ...customFieldFilter,
-                            custom_field_id: customFieldFilter.customFieldId,
+                            custom_field_id: String(
+                                customFieldFilter.customFieldId
+                            ),
                         },
                     ],
                 },

@@ -119,12 +119,12 @@ describe('toApiFormatted', () => {
             {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [],
-                custom_field_id: 1,
+                custom_field_id: '1',
             },
             {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['123'],
-                custom_field_id: 2,
+                custom_field_id: '2',
             },
         ],
     }
@@ -157,7 +157,7 @@ describe('toApiFormatted', () => {
                     {
                         operator: LogicalOperatorEnum.ONE_OF,
                         values: ['123'],
-                        custom_field_id: 2,
+                        custom_field_id: '2',
                     },
                 ],
             },

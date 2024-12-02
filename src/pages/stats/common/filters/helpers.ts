@@ -117,7 +117,13 @@ export const toApiFormatted = (
             if (filter.member === FilterKey.CustomFields) {
                 return {
                     ...filter,
-                    values: filter.values.filter((f) => f.values.length > 0),
+                    values: filter.values
+                        .filter((f) => f.values.length > 0)
+                        .map((f) => ({
+                            values: f.values,
+                            operator: f.operator,
+                            custom_field_id: f.custom_field_id,
+                        })),
                 }
             } else if (filter.member === FilterKey.Tags) {
                 return {
