@@ -361,9 +361,10 @@ export const FiltersPanelComponent = ({
     return (
         <div className={css.wrapper}>
             {persistentFiltersToRender.map(createFilterElement)}
-            {persistentFiltersToRender.length > 0 && (
-                <span className={css.divider} />
-            )}
+            {persistentFiltersToRender.length > 0 &&
+                optionalFiltersToRender.length > 0 && (
+                    <span className={css.divider} />
+                )}
             {optionalFiltersToRender.map(createFilterElement)}
             {options.length > 0 && (
                 <AddFilterButton

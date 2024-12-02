@@ -4,7 +4,6 @@ import {act, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React from 'react'
 import {Provider} from 'react-redux'
 
@@ -250,7 +249,23 @@ describe('FiltersPanel', () => {
         }
     )
 
-    it('should render only persistentFilters and a divider by default', () => {
+    it('should render only persistentFilters without a divider if there arent any optional filters', () => {
+        const {baseElement} = renderWithStore(
+            <FiltersPanel
+                persistentFilters={persistentFilters}
+                optionalFilters={[]}
+            />,
+            defaultState
+        )
+
+        persistentFilters.forEach((filter) => {
+            expect(screen.getByText(FilterLabels[filter])).toBeInTheDocument()
+        })
+
+        expect(baseElement.getElementsByClassName('divider').length).toBe(0)
+    })
+
+    it('should render persistentFilters and a divider if there are optional filters', () => {
         const {baseElement} = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
@@ -263,13 +278,19 @@ describe('FiltersPanel', () => {
             expect(screen.getByText(FilterLabels[filter])).toBeInTheDocument()
         })
 
-        expect(baseElement.getElementsByClassName('divider').length).toBe(1)
+        expect(baseElement.getElementsByClassName('divider').length).toBe(0)
 
-        optionalFilters.forEach((filter) => {
-            expect(
-                screen.queryByText(FilterLabels[filter])
-            ).not.toBeInTheDocument()
-        })
+        userEvent.click(
+            screen.getByRole('button', {
+                name: new RegExp(ADD_FILTER_BUTTON_LABEL),
+            })
+        )
+
+        userEvent.click(
+            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+        )
+
+        expect(baseElement.getElementsByClassName('divider').length).toBe(1)
     })
 
     it('should allow adding optional Filters with Dropdown open by default', () => {
