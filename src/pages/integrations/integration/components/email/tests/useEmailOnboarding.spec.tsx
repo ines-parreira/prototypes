@@ -3,20 +3,22 @@ import {
     updateIntegration,
     deleteIntegration,
     sendVerificationEmail,
+    EmailIntegration,
 } from '@gorgias/api-client'
 import {HttpResponse, Integration} from '@gorgias/api-queries'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as localStorage from 'hooks/useLocalStorage'
-import {EmailIntegration} from 'models/integration/types'
 import socketManager from 'services/socketManager'
 import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
 import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
@@ -35,6 +37,7 @@ import {
     UseEmailOnboardingHookResult,
     stepUrl,
     useEmailOnboarding,
+    useEmailOnboardingCompleteCheck,
 } from '../hooks/useEmailOnboarding'
 
 jest.mock('pages/history')
@@ -87,6 +90,11 @@ const mockIsRequested = (isRequested: boolean) => {
 }
 
 describe('useEmailOnboarding()', () => {
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.NewDomainVerification]: true,
+        })
+    })
     it('should have an initial state', () => {
         const {result} = render()
         const state: UseEmailOnboardingHookResult = result.current
@@ -192,11 +200,64 @@ describe('useEmailOnboarding()', () => {
             it('should return ForwardingSetup when the URL is set to verification and a verification has not been sent', () => {
                 mockIsRequested(false)
                 const {result} = render(
-                    {integration},
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: false,
+                            },
+                        } as EmailIntegration,
+                    },
                     '/app/settings/channels/email/1/onboarding/verification'
                 )
                 expect(result.current.currentStep).toEqual(
                     EmailIntegrationOnboardingStep.ForwardingSetup
+                )
+            })
+
+            it('should return Domain Verification when the URL is set to domain-verification', () => {
+                const {result} = render(
+                    {integration},
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                )
+                expect(result.current.currentStep).toEqual(
+                    EmailIntegrationOnboardingStep.DomainVerification
+                )
+            })
+
+            it('should return Forwarding Setup when URL is set to domain-verification and forwarding is not verified and not requested', () => {
+                mockIsRequested(false)
+                const {result} = render(
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: false,
+                            },
+                        } as EmailIntegration,
+                    },
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                )
+                expect(result.current.currentStep).toEqual(
+                    EmailIntegrationOnboardingStep.ForwardingSetup
+                )
+            })
+
+            it('should return Verification when URL is set to domain-verification and forwarding is requested but not verified', () => {
+                mockIsRequested(true)
+                const {result} = render(
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: false,
+                            },
+                        } as EmailIntegration,
+                    },
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                )
+                expect(result.current.currentStep).toEqual(
+                    EmailIntegrationOnboardingStep.Verification
                 )
             })
         })
@@ -665,6 +726,24 @@ describe('useEmailOnboarding()', () => {
                     '/app/settings/channels/email/1/onboarding/forwarding-setup'
                 )
             })
+
+            it('should redirect to the Verification if the current step is Domain Verification', () => {
+                const {result} = render(
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: true,
+                            },
+                        } as EmailIntegration,
+                    },
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                )
+                result.current.goBack()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/1/onboarding/verification'
+                )
+            })
         })
 
         describe('goToNext()', () => {
@@ -706,11 +785,57 @@ describe('useEmailOnboarding()', () => {
                 )
             })
 
-            it('should redirect to the integrations page if the current step is Verification', () => {
+            it('should redirect to the integrations page if the current step is Verification and new domain verification FF is off', () => {
                 mockIsRequested(true)
+                mockFlags({
+                    [FeatureFlagKey.NewDomainVerification]: false,
+                })
                 const {result} = render(
-                    {integration},
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: true,
+                            },
+                        } as EmailIntegration,
+                    },
                     '/app/settings/channels/email/1/onboarding/verification'
+                )
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email'
+                )
+            })
+
+            it('should redirect to the Domain Verification if the current step is Verification', () => {
+                const {result} = render(
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: true,
+                            },
+                        } as EmailIntegration,
+                    },
+                    '/app/settings/channels/email/1/onboarding/verification'
+                )
+                result.current.goToNext()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                )
+            })
+
+            it('should redirect to the integrations page if the current step is Domain Verification', () => {
+                const {result} = render(
+                    {
+                        integration: {
+                            ...integration,
+                            meta: {
+                                verified: true,
+                            },
+                        } as EmailIntegration,
+                    },
+                    '/app/settings/channels/email/1/onboarding/domain-verification'
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
@@ -766,6 +891,33 @@ describe('useEmailOnboarding()', () => {
                     '/app/settings/channels/email/1/onboarding/verification'
                 )
             })
+        })
+    })
+
+    describe('useEmailOnboardingCompleteCheck()', () => {
+        it('should complete the onboarding when calling completeOnboarding()', () => {
+            const integration = {
+                id: 1,
+                type: 'email',
+            } as EmailIntegration
+
+            const setValue = jest.fn()
+            const localStorageSpy = jest.spyOn(localStorage, 'default')
+            localStorageSpy.mockReturnValueOnce([false, setValue, jest.fn()])
+
+            const {result} = renderHook(() =>
+                useEmailOnboardingCompleteCheck(integration)
+            )
+
+            expect(localStorageSpy).toHaveBeenCalledWith(
+                'email-onboarding-completed-1',
+                false
+            )
+            expect(result.current.isOnboardingComplete).toBe(false)
+
+            result.current.completeOnboarding()
+
+            expect(setValue).toHaveBeenCalledWith(true)
         })
     })
 })

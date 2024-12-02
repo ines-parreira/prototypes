@@ -55,7 +55,7 @@ export default function DomainVerificationProvider({
         refetch: refetchDomain,
     } = useGetEmailIntegrationDomain(domainName, {
         query: {
-            refetchInterval: DOMAIN_REFETCH_INTERVAL * 10,
+            refetchInterval: DOMAIN_REFETCH_INTERVAL,
         },
     })
 

@@ -1,6 +1,5 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import React, {useContext, useEffect} from 'react'
-
-import {EmailIntegration} from 'models/integration/types'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -13,6 +12,7 @@ import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
 } from './hooks/useEmailOnboarding'
+import OnboardingDomainVerificationButtons from './OnboardingDomainVerificationButtons'
 
 type Props = {
     integration?: EmailIntegration | undefined
@@ -23,6 +23,7 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
         integration,
         deleteIntegration,
         goBack,
+        goToNext,
         currentStep,
         isConnected,
         isConnecting,
@@ -64,21 +65,28 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                         {isRequested ? 'Next' : 'Begin Verification'}
                     </FormSubmitButton>
                 )}
+                {currentStep === EmailIntegrationOnboardingStep.Verification &&
+                    (integration?.meta?.verified ? (
+                        <Button intent="primary" onClick={goToNext}>
+                            Next
+                        </Button>
+                    ) : (
+                        <FormSubmitButton
+                            isLoading={isSending}
+                            isDisabled={isPending}
+                        >
+                            {isRequested ? (
+                                <ButtonIconLabel icon="markunread">
+                                    Re-Send Verification Email
+                                </ButtonIconLabel>
+                            ) : (
+                                'Begin Verification'
+                            )}
+                        </FormSubmitButton>
+                    ))}
                 {currentStep ===
-                    EmailIntegrationOnboardingStep.Verification && (
-                    <FormSubmitButton
-                        isLoading={isSending}
-                        isDisabled={isPending}
-                    >
-                        {isRequested ? (
-                            <ButtonIconLabel icon="markunread">
-                                Re-Send Verification Email
-                            </ButtonIconLabel>
-                        ) : (
-                            'Begin Verification'
-                        )}
-                    </FormSubmitButton>
-                )}
+                    EmailIntegrationOnboardingStep.DomainVerification &&
+                    integration && <OnboardingDomainVerificationButtons />}
             </div>
 
             {integration && (
@@ -90,7 +98,7 @@ export default function EmailIntegrationOnboardingButtons(props: Props) {
                     onConfirm={deleteIntegration}
                 >
                     <ButtonIconLabel icon="delete">
-                        Delete Email Address
+                        Delete integration
                     </ButtonIconLabel>
                 </ConfirmButton>
             )}

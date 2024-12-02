@@ -1,8 +1,9 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {BrowserRouter} from 'react-router-dom'
 
-import {EmailIntegration, IntegrationType} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
 
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {

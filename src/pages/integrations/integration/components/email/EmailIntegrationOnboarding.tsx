@@ -1,6 +1,8 @@
+import {EmailIntegration} from '@gorgias/api-queries'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
@@ -9,11 +11,15 @@ import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integratio
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
+import DomainVerificationProvider from './EmailDomainVerification/DomainVerificationProvider'
+import EmailDomainVerificationSupportContentSidebar from './EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import EmailIntegrationConnectForm from './EmailIntegrationConnectForm'
 import EmailIntegrationForwardingSetupForm from './EmailIntegrationForwardingSetupForm'
 
 import css from './EmailIntegrationOnboarding.less'
+import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
 import EmailIntegrationVerificationForm from './EmailIntegrationVerificationForm'
+import {getDomainFromEmailAddress} from './helpers'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
@@ -25,6 +31,9 @@ type Props = {
 
 export default function EmailIntegrationOnboarding({integration}: Props) {
     const {currentStep} = useEmailOnboarding({integration})
+    const isNewDomainVerificationEnabled =
+        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+
     return (
         <>
             <div className="full-width">
@@ -40,18 +49,34 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                     <SettingsContent>
                         <Wizard
                             startAt={currentStep}
-                            steps={Object.values(
-                                EmailIntegrationOnboardingStep
-                            )}
+                            steps={
+                                isNewDomainVerificationEnabled
+                                    ? Object.values(
+                                          EmailIntegrationOnboardingStep
+                                      )
+                                    : Object.values(
+                                          EmailIntegrationOnboardingStep
+                                      ).filter(
+                                          (step) =>
+                                              step !==
+                                              EmailIntegrationOnboardingStep.DomainVerification
+                                      )
+                            }
                         >
                             <WizardProgressHeader
                                 labels={{
                                     [EmailIntegrationOnboardingStep.ConnectIntegration]:
                                         'Connect email',
                                     [EmailIntegrationOnboardingStep.ForwardingSetup]:
-                                        'Forward emails to Gorgias',
+                                        'Receive emails',
                                     [EmailIntegrationOnboardingStep.Verification]:
-                                        'Verify email integration',
+                                        'Verify integration',
+                                    ...(isNewDomainVerificationEnabled
+                                        ? {
+                                              [EmailIntegrationOnboardingStep.DomainVerification]:
+                                                  'Send emails',
+                                          }
+                                        : {}),
                                 }}
                                 className={css.wizardProgressHeader}
                             />
@@ -70,6 +95,13 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                                     EmailIntegrationOnboardingStep.Verification
                                 }
                             />
+                            {isNewDomainVerificationEnabled && (
+                                <WizardStep
+                                    name={
+                                        EmailIntegrationOnboardingStep.DomainVerification
+                                    }
+                                />
+                            )}
 
                             {currentStep ===
                                 EmailIntegrationOnboardingStep.ConnectIntegration && (
@@ -89,8 +121,25 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                                     integration={integration}
                                 />
                             )}
+                            {currentStep ===
+                                EmailIntegrationOnboardingStep.DomainVerification &&
+                                integration && (
+                                    <DomainVerificationProvider
+                                        domainName={getDomainFromEmailAddress(
+                                            integration.meta?.address ?? ''
+                                        )}
+                                    >
+                                        <EmailIntegrationOnboardingDomainVerification
+                                            integration={integration}
+                                        />
+                                    </DomainVerificationProvider>
+                                )}
                         </Wizard>
                     </SettingsContent>
+                    {currentStep ===
+                        EmailIntegrationOnboardingStep.DomainVerification && (
+                        <EmailDomainVerificationSupportContentSidebar />
+                    )}
                 </SettingsPageContainer>
             </div>
         </>

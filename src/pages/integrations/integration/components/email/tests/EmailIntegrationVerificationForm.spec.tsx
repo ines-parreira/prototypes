@@ -1,7 +1,7 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
 import EmailIntegrationVerificationForm from 'pages/integrations/integration/components/email/EmailIntegrationVerificationForm'
 import {assumeMock} from 'utils/testing'
 

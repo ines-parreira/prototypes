@@ -1,7 +1,7 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
 import {assumeMock} from 'utils/testing'
 
 import EmailIntegrationConnectForm from '../EmailIntegrationConnectForm'
@@ -195,7 +195,7 @@ describe('<EmailIntegrationConnectForm />', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'delete Delete Email Address',
+                name: 'delete Delete integration',
             })
         ).toBeInTheDocument()
     })

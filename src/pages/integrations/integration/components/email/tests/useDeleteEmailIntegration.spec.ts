@@ -10,7 +10,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {assumeMock} from 'utils/testing'
 
-import useEmailIntegration from '../useEmailIntegration'
+import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
 
 jest.mock('@gorgias/api-queries')
 jest.mock('hooks/useAppDispatch')
@@ -22,7 +22,7 @@ const useDeleteIntegrationMock = assumeMock(useDeleteIntegration)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
 
-describe('useEmailIntegration', () => {
+describe('useDeleteEmailIntegration', () => {
     const mockDispatch = jest.fn()
     const mockPush = jest.fn()
 
@@ -41,7 +41,7 @@ describe('useEmailIntegration', () => {
         } as any)
 
         const {result} = renderHook(() =>
-            useEmailIntegration(integration as any)
+            useDeleteEmailIntegration(integration as any)
         )
 
         act(() => {
@@ -82,7 +82,7 @@ describe('useEmailIntegration', () => {
         isGorgiasApiErrorMock.mockReturnValue(true)
 
         const {result} = renderHook(() =>
-            useEmailIntegration(integration as any)
+            useDeleteEmailIntegration(integration as any)
         )
 
         act(() => {
@@ -115,7 +115,7 @@ describe('useEmailIntegration', () => {
         isGorgiasApiErrorMock.mockReturnValue(false)
 
         const {result} = renderHook(() =>
-            useEmailIntegration(integration as any)
+            useDeleteEmailIntegration(integration as any)
         )
 
         act(() => {

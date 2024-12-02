@@ -10,7 +10,6 @@ import {getIntegrationsLoading} from 'state/integrations/selectors'
 
 import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
 import RecordsTable from './components/RecordsTable'
-import EmailDomainCreationFailure from './EmailDomainCreationFailure'
 import useDomainVerification from './useDomainVerification'
 
 type Props = {
@@ -40,7 +39,12 @@ export default function EmailDomainVerificationContent({integration}: Props) {
     }
 
     if (!domain && domainCreationError) {
-        return <EmailDomainCreationFailure />
+        return (
+            <FormSection
+                title="There was an issue processing your request"
+                description="The DNS records needed for domain verification are still pending from your provider. These records are required for the domain verification process. Please contact support for assistance."
+            />
+        )
     }
 
     return (

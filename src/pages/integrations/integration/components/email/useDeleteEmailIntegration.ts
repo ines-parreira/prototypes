@@ -4,7 +4,6 @@ import {
     HttpResponse,
     useDeleteIntegration,
 } from '@gorgias/api-queries'
-
 import {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -18,7 +17,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {listUrl} from './hooks/useEmailOnboarding'
 
-export default function useEmailIntegration(
+export default function useDeleteEmailIntegration(
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
 ) {
     const dispatch = useAppDispatch()

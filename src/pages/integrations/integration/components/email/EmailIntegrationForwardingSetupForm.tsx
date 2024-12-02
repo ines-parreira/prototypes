@@ -1,7 +1,7 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useCallback} from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import FormRow from 'pages/common/forms/FormRow'
 import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'

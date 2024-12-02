@@ -1,12 +1,17 @@
 import {EmailIntegration, GmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
+import {Link} from 'react-router-dom'
+
 import {OutlookIntegration} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
-import useEmailIntegration from '../useEmailIntegration'
+import LinkButton from 'pages/common/components/button/LinkButton'
+
+import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
+import {SUPPORT_EMAIL} from './constants'
 import css from './EmailDomainVerification.less'
 import useDomainVerification from './useDomainVerification'
 
@@ -20,15 +25,30 @@ export default function EmailDomainVerificationActionButtons({
     const {
         domain,
         isCreatingDomain,
+        domainCreationError,
         isFetching,
         verifyDomain,
         isVerifying,
         isPending,
     } = useDomainVerification()
 
-    const {deleteIntegration, isDeleting} = useEmailIntegration(integration)
+    const {deleteIntegration, isDeleting} =
+        useDeleteEmailIntegration(integration)
 
     const isDisabled = !domain || isCreatingDomain || isFetching
+
+    if (domainCreationError) {
+        return (
+            <div className={css.errorButtonsGroup}>
+                <Link to="/app/settings/channels/email">
+                    <Button intent="secondary">Close</Button>
+                </Link>
+                <LinkButton intent="primary" href={`mailto:${SUPPORT_EMAIL}`}>
+                    Contact support
+                </LinkButton>
+            </div>
+        )
+    }
 
     return (
         <div className={css.buttonGroup}>

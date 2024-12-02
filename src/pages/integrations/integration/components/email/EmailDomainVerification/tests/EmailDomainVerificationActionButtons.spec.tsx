@@ -4,15 +4,15 @@ import React from 'react'
 
 import {assumeMock} from 'utils/testing'
 
-import useEmailIntegration from '../../useEmailIntegration'
+import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
 import useDomainVerification from '../useDomainVerification'
 
 jest.mock('../useDomainVerification')
-jest.mock('../../useEmailIntegration')
+jest.mock('../../useDeleteEmailIntegration')
 
 const useDomainVerificationMock = assumeMock(useDomainVerification)
-const useEmailIntegrationMock = assumeMock(useEmailIntegration)
+const useDeleteEmailIntegrationMock = assumeMock(useDeleteEmailIntegration)
 
 describe('EmailDomainVerificationActionButtons', () => {
     const renderComponent = () =>
@@ -33,12 +33,12 @@ describe('EmailDomainVerificationActionButtons', () => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
         } as ReturnType<typeof useDomainVerification>)
-        useEmailIntegrationMock.mockReturnValue({} as any)
+        useDeleteEmailIntegrationMock.mockReturnValue({} as any)
     })
 
     it('should delete integration when delete button is clicked', () => {
         const deleteFn = jest.fn()
-        useEmailIntegrationMock.mockReturnValue({
+        useDeleteEmailIntegrationMock.mockReturnValue({
             deleteIntegration: deleteFn,
             isDeleting: false,
         } as any)
@@ -75,6 +75,33 @@ describe('EmailDomainVerificationActionButtons', () => {
         })
 
         expect(verifyDomainFn).toHaveBeenCalled()
+    })
+
+    describe('domain creation error state', () => {
+        it('should render correct href for contact support button', () => {
+            useDomainVerificationMock.mockReturnValue({
+                domainCreationError: true,
+            } as any)
+            renderComponent()
+
+            expect(screen.getByText('Contact support')).toHaveAttribute(
+                'href',
+                'mailto:support@gorgias.com'
+            )
+        })
+
+        it('should render correct link for close button', () => {
+            useDomainVerificationMock.mockReturnValue({
+                domainCreationError: true,
+            } as any)
+
+            renderComponent()
+
+            expect(screen.getByText('Close').closest('a')).toHaveAttribute(
+                'to',
+                '/app/settings/channels/email'
+            )
+        })
     })
 
     describe('loading state', () => {

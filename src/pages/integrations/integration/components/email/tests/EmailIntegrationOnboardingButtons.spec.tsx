@@ -1,8 +1,8 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 import {FormProvider, useForm} from 'react-hook-form'
 
-import {EmailIntegration} from 'models/integration/types/email'
 import {assumeMock} from 'utils/testing'
 
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
@@ -23,6 +23,9 @@ const renderComponent = () =>
     })
 
 jest.mock('../hooks/useEmailOnboarding')
+jest.mock('../OnboardingDomainVerificationButtons', () => () => (
+    <div>OnboardingDomainVerificationButtons</div>
+))
 
 const defaultHookResult: UseEmailOnboardingHookResult = {
     integration: undefined,
@@ -237,6 +240,38 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 expect(button).toBeInTheDocument()
                 expect(button.getAttribute('type')).toBe('submit')
             })
+
+            it('should display next button when integration is verified', () => {
+                useEmailOnboardingMock.mockReturnValue({
+                    ...defaultHookResult,
+                    currentStep: EmailIntegrationOnboardingStep.Verification,
+                    integration: {meta: {verified: true}} as EmailIntegration,
+                })
+
+                renderComponent()
+
+                const button = screen.getByRole('button', {
+                    name: 'Next',
+                })
+                expect(button).toBeInTheDocument()
+                expect(button.getAttribute('type')).toBe('button')
+            })
+
+            it('should not display next button when integration is not verified', () => {
+                useEmailOnboardingMock.mockReturnValue({
+                    ...defaultHookResult,
+                    currentStep: EmailIntegrationOnboardingStep.Verification,
+                    integration: {meta: {verified: false}} as EmailIntegration,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.queryByRole('button', {
+                        name: 'Next',
+                    })
+                ).not.toBeInTheDocument()
+            })
         })
     })
 
@@ -250,8 +285,22 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'delete Delete Email Address',
+                name: 'delete Delete integration',
             })
+        ).toBeInTheDocument()
+    })
+
+    it('should display the domain verification buttons when on the domain verification step', () => {
+        useEmailOnboardingMock.mockReturnValue({
+            ...defaultHookResult,
+            currentStep: EmailIntegrationOnboardingStep.DomainVerification,
+            integration: {id: 1} as EmailIntegration,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText('OnboardingDomainVerificationButtons')
         ).toBeInTheDocument()
     })
 })

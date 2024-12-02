@@ -1,7 +1,7 @@
+import {EmailIntegration} from '@gorgias/api-queries'
 import {pick} from 'lodash'
 import React from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
 import FormRow from 'pages/common/forms/FormRow'
 import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 

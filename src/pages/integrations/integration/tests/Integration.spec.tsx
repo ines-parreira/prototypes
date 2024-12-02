@@ -559,6 +559,37 @@ describe('<IntegrationDetail />', () => {
             }
         )
 
+        it('should render the onboarding tab when domain verification FF is on and tab is Onboarding', () => {
+            mockFlags({
+                [FeatureFlagKey.NewDomainVerification]: true,
+            })
+
+            const props = {
+                ...minProps,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                        type: 'email',
+                        meta: {verified: true},
+                    },
+                }),
+            }
+
+            const {getByText} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...props} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOnboarding}`,
+                }
+            )
+
+            expect(getByText('EmailIntegrationOnboarding')).toBeInTheDocument()
+        })
+
         describe('new onboarding', () => {
             it('should render the new onboarding for the onboarding route', () => {
                 const {getByText} = renderWithRouter(

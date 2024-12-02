@@ -6,9 +6,7 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {assumeMock} from 'utils/testing'
 
 import {isBaseEmailAddress} from '../../helpers'
-import useEmailIntegration from '../../useEmailIntegration'
 import RecordsTable from '../components/RecordsTable'
-import EmailDomainCreationFailure from '../EmailDomainCreationFailure'
 import EmailDomainVerificationContent from '../EmailDomainVerificationContent'
 import useDomainVerification from '../useDomainVerification'
 
@@ -16,18 +14,14 @@ jest.mock('hooks/useAppSelector')
 jest.mock('../../helpers')
 jest.mock('../components/RecordsTable')
 jest.mock('../useDomainVerification')
-jest.mock('../../useEmailIntegration')
-jest.mock('../EmailDomainCreationFailure')
 
 const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
 const useDomainVerificationMock = assumeMock(useDomainVerification)
 const RecordsTableMock = assumeMock(RecordsTable)
-const useEmailIntegrationMock = assumeMock(useEmailIntegration)
 const getIntegrationsLoadingSpy = jest.spyOn(
     integrationsSelectors,
     'getIntegrationsLoading'
 )
-const EmailDomainCreationFailureMock = assumeMock(EmailDomainCreationFailure)
 
 describe('EmailDomainVerificationContent', () => {
     const renderComponent = () =>
@@ -50,13 +44,9 @@ describe('EmailDomainVerificationContent', () => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
         } as ReturnType<typeof useDomainVerification>)
-        useEmailIntegrationMock.mockReturnValue({} as any)
         getIntegrationsLoadingSpy.mockImplementation(() => ({
             integration: false,
         }))
-        EmailDomainCreationFailureMock.mockReturnValue(
-            <div>EmailDomainCreationFailure</div>
-        )
     })
 
     it('should display base email integration alert', () => {
@@ -141,7 +131,7 @@ describe('EmailDomainVerificationContent', () => {
     })
 
     describe('error state', () => {
-        it('should display EmailDomainCreationFailure when domain is not fetched and domain creation error is present', () => {
+        it('should display error state when domain is not fetched and domain creation error is present', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
                 domainCreationError: {message: 'error'},
@@ -150,7 +140,7 @@ describe('EmailDomainVerificationContent', () => {
             renderComponent()
 
             expect(
-                screen.getByText('EmailDomainCreationFailure')
+                screen.getByText(/Please contact support for assistance/)
             ).toBeInTheDocument()
         })
     })

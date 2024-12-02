@@ -1,5 +1,6 @@
 import {
     CreateIntegrationBody,
+    EmailIntegration,
     HttpResponse,
     UpdateIntegrationBody,
     useCreateIntegration,
@@ -7,19 +8,17 @@ import {
     useSendVerificationEmail,
     useUpdateIntegration,
 } from '@gorgias/api-queries'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {isObject, kebabCase} from 'lodash'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useHistory, useRouteMatch} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {isGorgiasApiError} from 'models/api/types'
-import {
-    EmailIntegration,
-    Integration,
-    IntegrationType,
-} from 'models/integration/types'
+import {Integration, IntegrationType} from 'models/integration/types'
 import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
 import socketManager from 'services/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
@@ -32,6 +31,7 @@ export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
     ForwardingSetup = 'ForwardingSetup',
     Verification = 'Verification',
+    DomainVerification = 'DomainVerification',
 }
 
 export type ConnectIntegrationPayload = {
@@ -66,6 +66,7 @@ export type UseEmailOnboardingHookResult = {
 }
 
 const FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS = 2 * 60
+const ONBOARDING_COMPLETE_STORAGE_KEY = 'email-onboarding-completed'
 
 export function useEmailOnboarding(
     options?: UseEmailOnboardingHookOptions
@@ -323,10 +324,17 @@ function useGetCurrentStep(
             return EmailIntegrationOnboardingStep.ForwardingSetup
 
         case kebabCase(EmailIntegrationOnboardingStep.Verification):
-            return isRequested
+            return isRequested || isVerified
                 ? EmailIntegrationOnboardingStep.Verification
                 : EmailIntegrationOnboardingStep.ForwardingSetup
 
+        case kebabCase(EmailIntegrationOnboardingStep.DomainVerification):
+            if (isVerified) {
+                return EmailIntegrationOnboardingStep.DomainVerification
+            }
+            return isRequested
+                ? EmailIntegrationOnboardingStep.Verification
+                : EmailIntegrationOnboardingStep.ForwardingSetup
         default:
             return isVerified || isRequested
                 ? EmailIntegrationOnboardingStep.Verification
@@ -384,6 +392,9 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
     const history = useHistory()
     const currentStep = useGetCurrentStep(integration)
 
+    const isNewDomainVerificationEnabled =
+        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+
     const goBack = useCallback(() => {
         if (!integration) {
             history.push(listUrl())
@@ -414,6 +425,15 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                     )
                 )
                 return
+            }
+
+            case EmailIntegrationOnboardingStep.DomainVerification: {
+                history.push(
+                    stepUrl(
+                        EmailIntegrationOnboardingStep.Verification,
+                        integration
+                    )
+                )
             }
         }
     }, [history, currentStep, integration])
@@ -446,15 +466,50 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
             }
 
             case EmailIntegrationOnboardingStep.Verification: {
+                if (isNewDomainVerificationEnabled) {
+                    history.push(
+                        stepUrl(
+                            EmailIntegrationOnboardingStep.DomainVerification,
+                            integration
+                        )
+                    )
+                    return
+                }
+
+                history.push(listUrl())
+                return
+            }
+
+            case EmailIntegrationOnboardingStep.DomainVerification: {
                 history.push(listUrl())
                 return
             }
         }
-    }, [history, currentStep, integration])
+    }, [history, currentStep, integration, isNewDomainVerificationEnabled])
 
     return {
         goBack,
         goToNext,
+    }
+}
+
+export const useEmailOnboardingCompleteCheck = (
+    integration?: EmailIntegration | undefined
+) => {
+    const onboardingCompleteStorageKey = `${ONBOARDING_COMPLETE_STORAGE_KEY}-${integration?.id}`
+
+    const [hasCompletedOnboarding, setHasCompletedOnboarding] = useLocalStorage(
+        onboardingCompleteStorageKey,
+        false
+    )
+
+    const completeOnboarding = useCallback(() => {
+        setHasCompletedOnboarding(true)
+    }, [setHasCompletedOnboarding])
+
+    return {
+        isOnboardingComplete: hasCompletedOnboarding,
+        completeOnboarding,
     }
 }
 

@@ -620,7 +620,9 @@ export const IntegrationDetail = ({
                 if (isUpdate) {
                     if (
                         integration.get('type') === 'email' &&
-                        integration.getIn(['meta', 'verified']) === false
+                        (integration.getIn(['meta', 'verified']) === false ||
+                            (isNewDomainVerificationEnabled &&
+                                extra === Tab.EmailOnboarding))
                     ) {
                         return (
                             <EmailIntegrationOnboarding
