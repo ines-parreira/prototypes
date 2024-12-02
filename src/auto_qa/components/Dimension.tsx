@@ -3,6 +3,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 
+import {manualDimensionsOrder} from 'auto_qa/config'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -88,6 +89,16 @@ export default function Dimension({
         [dimension.prediction, onChange]
     )
 
+    const isManualDimension = manualDimensionsOrder.includes(dimension.name)
+    const dimensionFooter = isManualDimension ? (
+        <></>
+    ) : (
+        <>
+            <i className={cn('material-icons', css.aiIcon)}>auto_awesome</i>
+            AI generated, edit to improve AI model
+        </>
+    )
+
     return (
         <>
             <div className={css.container}>
@@ -125,7 +136,7 @@ export default function Dimension({
 
                 <SelectInputBox
                     className={css.prediction}
-                    placeholder="Select issues"
+                    placeholder={config.scorePlaceholder}
                     onToggle={handleSelectBoxClick}
                     floating={floatingRef}
                     ref={selectRef}
@@ -160,7 +171,7 @@ export default function Dimension({
                 <div className={css.explanation}>
                     <TextArea
                         autoRowHeight={true}
-                        placeholder="Provide feedback"
+                        placeholder={config.placeholder}
                         value={dimension.explanation}
                         onChange={handleChangeExplanation}
                     />
@@ -168,12 +179,7 @@ export default function Dimension({
                         {dimension.user_id ? (
                             <DimensionUser userId={dimension.user_id} />
                         ) : (
-                            <>
-                                <i className={cn('material-icons', css.aiIcon)}>
-                                    auto_awesome
-                                </i>{' '}
-                                AI generated, edit to improve AI model
-                            </>
+                            dimensionFooter
                         )}
                     </div>
                 </div>

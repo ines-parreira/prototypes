@@ -53,6 +53,31 @@ describe('Dimension', () => {
         expect(getByText('Beepity-boopity')).toBeInTheDocument()
     })
 
+    it('should not show footer message under a manual dimension', () => {
+        const onChange = jest.fn()
+        const accuracyDimension = {
+            id: 2,
+            ticket_id: 1,
+            user_id: null,
+            created_datetime: '2024-01-20T10:00:00Z',
+            updated_datetime: '2024-01-21T10:00:00Z',
+            name: 'accuracy',
+            prediction: 5,
+            explanation: 'Beepity-boopity',
+        } as TicketQAScoreDimension
+        const {queryByText} = render(
+            <Dimension
+                config={dimensionConfig.accuracy}
+                dimension={accuracyDimension}
+                onChange={onChange}
+                ticketId={1}
+            />
+        )
+        expect(
+            queryByText('AI generated, edit to improve AI model')
+        ).not.toBeInTheDocument()
+    })
+
     it('should call onChange when the prediction changes', () => {
         const onChange = jest.fn()
         const {getByRole, getByText} = render(

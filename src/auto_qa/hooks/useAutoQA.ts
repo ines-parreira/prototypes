@@ -5,9 +5,9 @@ import {
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useCallback, useMemo, useRef, useState} from 'react'
 
+import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
@@ -16,17 +16,39 @@ import {
     dimensionOrder,
     SupportedTicketQAScoreDimension,
     dimensionOrderWithLanguageProficiency,
+    manualDimensionsOrder,
 } from '../config'
 import type {DimensionSummary} from '../types'
 
 import useSaveState from './useSaveState'
 
 export default function useAutoQA(ticketId: number) {
-    const isAutoQaLanguageProficiency =
-        !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
-    const supportedDimensionsOrder = isAutoQaLanguageProficiency
-        ? dimensionOrderWithLanguageProficiency
-        : dimensionOrder
+    const isAutoQaLanguageProficiency = useFlag(
+        FeatureFlagKey.AutoQaLanguageProficiency,
+        false
+    )
+    const isAutoQaManualDimensions = useFlag(
+        FeatureFlagKey.AutoQaManualDimensions,
+        false
+    )
+
+    const supportedDimensionsOrderWithLanguage = useMemo(
+        () =>
+            isAutoQaLanguageProficiency
+                ? dimensionOrderWithLanguageProficiency
+                : dimensionOrder,
+        [isAutoQaLanguageProficiency]
+    )
+    const supportedDimensionsOrder = useMemo(
+        () =>
+            isAutoQaManualDimensions
+                ? [
+                      ...supportedDimensionsOrderWithLanguage,
+                      ...manualDimensionsOrder,
+                  ]
+                : supportedDimensionsOrderWithLanguage,
+        [isAutoQaManualDimensions, supportedDimensionsOrderWithLanguage]
+    )
     const {data, isError, isLoading, refetch} =
         useListTicketQaScoreDimensions(ticketId)
     const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
@@ -85,37 +107,41 @@ export default function useAutoQA(ticketId: number) {
         [handleChange]
     )
 
-    const dimensionsMap = useMemo(
-        () =>
-            !data?.data.data
-                ? ({} as Record<
+    const dimensionsMap = useMemo(() => {
+        const baseMap: Record<
+            TicketQAScoreDimensionName,
+            TicketQAScoreDimension | undefined
+        > = !data?.data.data
+            ? ({} as Record<
+                  TicketQAScoreDimensionName,
+                  TicketQAScoreDimension | undefined
+              >)
+            : data.data.data.dimensions.reduce(
+                  (acc, dim) => ({
+                      ...acc,
+                      [dim.name]: dim,
+                  }),
+                  {} as Record<
                       TicketQAScoreDimensionName,
                       TicketQAScoreDimension
-                  >)
-                : data.data.data.dimensions.reduce(
-                      (acc, dim) => ({
-                          ...acc,
-                          [dim.name]: dim,
-                      }),
-                      {} as Record<
-                          TicketQAScoreDimensionName,
-                          TicketQAScoreDimension
-                      >
-                  ),
-        [data]
-    )
+                  >
+              )
+        // Ensure all supported dimensions are present in the map
+        return baseMap
+    }, [data])
 
     const dimensions: SupportedTicketQAScoreDimension[] = useMemo(
         () =>
-            supportedDimensionsOrder
-                .filter((name) => !!dimensionsMap[name])
-                .map(
-                    (name) =>
-                        ({
-                            ...dimensionsMap[name],
-                            ...values[name],
-                        }) as SupportedTicketQAScoreDimension
-                ),
+            // Ensure all supported dimensions are present in the map
+            supportedDimensionsOrder.map(
+                (name) =>
+                    (!dimensionsMap[name]
+                        ? {name, value: null}
+                        : {
+                              ...dimensionsMap[name],
+                              ...values[name],
+                          }) as SupportedTicketQAScoreDimension
+            ),
         [dimensionsMap, supportedDimensionsOrder, values]
     )
 

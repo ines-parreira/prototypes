@@ -7,6 +7,8 @@ export type DimensionConfig = {
     options: DimensionOption[]
     prefix?: ReactNode
     tooltip?: string
+    placeholder?: string
+    scorePlaceholder?: string
 }
 
 export type DimensionOption = {
