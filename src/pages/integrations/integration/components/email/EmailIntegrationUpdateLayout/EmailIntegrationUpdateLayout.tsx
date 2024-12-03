@@ -1,8 +1,10 @@
 import {Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {EmailProvider} from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -18,6 +20,8 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
         'meta',
         'provider',
     ])
+    const isNewDomainVerificationEnabled: boolean =
+        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
     return (
         <div className="full-width">
@@ -57,7 +61,9 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                     <NavLink
                         to={`/app/settings/channels/email/${integrationId}/outbound-verification`}
                     >
-                        Outbound Verification
+                        {isNewDomainVerificationEnabled
+                            ? 'Domain Verification'
+                            : 'Outbound Verification'}
                     </NavLink>
                 )}
             </SecondaryNavbar>

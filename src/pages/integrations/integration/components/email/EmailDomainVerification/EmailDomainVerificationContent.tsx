@@ -49,11 +49,18 @@ export default function EmailDomainVerificationContent({integration}: Props) {
 
     return (
         <FormSection
-            title="Verify your domain to send emails from Gorgias"
-            description={`Domain verification allows Gorgias to send emails to your
+            {...(domain?.verified
+                ? {
+                      title: 'Your domain has been verified',
+                      description: `Your domain has been successfully verified. You can now add any email address ending in @${domainName} and use it to send emails from Gorgias.`,
+                  }
+                : {
+                      title: 'Verify your domain to send emails from Gorgias',
+                      description: `Domain verification allows Gorgias to send emails to your
                     customers on your behalf. Add the records below to the DNS
                     settings for ${domainName} – copy and paste the information
-                    to prevent entry errors.`}
+                    to prevent entry errors.`,
+                  })}
         >
             <RecordsTable
                 domain={domain}

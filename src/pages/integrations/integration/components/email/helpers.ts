@@ -1,3 +1,7 @@
+import {
+    EmailIntegration as NEW_EmailIntegration,
+    GmailIntegration as NEW_GmailIntegration,
+} from '@gorgias/api-queries'
 import axios from 'axios'
 import {isEmpty} from 'lodash'
 
@@ -87,7 +91,12 @@ export const isBaseEmailAddress = (emailAddress: string): boolean => {
 }
 
 export const isBaseEmailIntegration = (
-    emailIntegration: EmailIntegration | GmailIntegration | OutlookIntegration
+    emailIntegration:
+        | EmailIntegration
+        | GmailIntegration
+        | OutlookIntegration
+        | NEW_EmailIntegration
+        | NEW_GmailIntegration
 ): boolean => {
     return isBaseEmailAddress(emailIntegration.meta.address)
 }

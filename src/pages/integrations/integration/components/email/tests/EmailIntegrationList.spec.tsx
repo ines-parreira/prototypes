@@ -1,6 +1,7 @@
 import {QueryClientProvider} from '@tanstack/react-query'
 import {render, waitFor, screen, fireEvent} from '@testing-library/react'
 import {List, fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
@@ -17,6 +18,7 @@ import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
 import {isBaseEmailIntegration, isOutboundVerifiedSendgrid} from '../helpers'
+import {useEmailOnboardingCompleteCheck} from '../hooks/useEmailOnboarding'
 import {fetchEmailDomains} from '../resources'
 
 const queryClient = mockQueryClient()
@@ -28,6 +30,7 @@ jest.mock(
 jest.mock('../helpers')
 jest.mock('../resources')
 jest.mock('pages/history')
+jest.mock('../hooks/useEmailOnboarding')
 
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
@@ -35,6 +38,9 @@ const EmailIntegrationListVerificationStatusMock = assumeMock(
 )
 const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
 const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
+const useEmailOnboardingCompleteCheckMock = assumeMock(
+    useEmailOnboardingCompleteCheck
+)
 
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
@@ -112,11 +118,15 @@ describe('<EmailIntegrationList/>', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.EnableEmailToStoreMapping]: false,
             [FeatureFlagKey.DefaultEmailAddress]: false,
+            [FeatureFlagKey.NewDomainVerification]: false,
         }))
         isBaseEmailIntegrationMock.mockReturnValue(false)
         EmailIntegrationListVerificationStatusMock.mockImplementation(() => (
             <div>EmailIntegrationListVerificationStatus</div>
         ))
+        useEmailOnboardingCompleteCheckMock.mockReturnValue({
+            isOnboardingComplete: true,
+        } as any)
     })
 
     describe('render()', () => {
@@ -483,9 +493,55 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getOutlookIntegration(1, false, true),
                     expected: `/app/settings/channels/email/${1}/dns`,
                 },
+                {
+                    description:
+                        'should redirect to onboarding wizard domain verification when onboarding is not complete - forward email',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Mailgun
+                    ),
+                    expected: `/app/settings/channels/email/${1}/onboarding/domain-verification`,
+                    onboardingComplete: false,
+                    newDomainVerificationFFEnabled: true,
+                },
+                {
+                    description:
+                        'should redirect to domain verification tab when onboarding is complete but domain verification is incomplete - forward email',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Mailgun
+                    ),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                    onboardingComplete: true,
+                    newDomainVerificationFFEnabled: true,
+                },
+
+                {
+                    description:
+                        'should not redirect to onboarding wizard domain verification when onboardingComplete state is false - gmail',
+                    integration: getGmailIntegration(1, false, true),
+                    expected: `/app/settings/channels/email/${1}/dns`,
+                    onboardingComplete: false,
+                    newDomainVerificationFFEnabled: true,
+                },
             ])(
                 '(outbound unverified) $description',
-                async ({integration, expected}) => {
+                async ({
+                    integration,
+                    expected,
+                    newDomainVerificationFFEnabled,
+                    onboardingComplete,
+                }) => {
+                    mockFlags({
+                        [FeatureFlagKey.NewDomainVerification]:
+                            newDomainVerificationFFEnabled ?? false,
+                    })
+                    useEmailOnboardingCompleteCheckMock.mockReturnValue({
+                        isOnboardingComplete: onboardingComplete,
+                    } as any)
+
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundVerifiedSendgridMock.mockReturnValue(false)
 
@@ -507,6 +563,10 @@ describe('<EmailIntegrationList/>', () => {
                     )
 
                     expect(history.push).toHaveBeenCalledWith(expected)
+
+                    expect(
+                        useEmailOnboardingCompleteCheckMock
+                    ).toHaveBeenCalledWith(integration)
                 }
             )
 

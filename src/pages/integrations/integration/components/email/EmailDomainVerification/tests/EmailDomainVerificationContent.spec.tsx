@@ -130,6 +130,20 @@ describe('EmailDomainVerificationContent', () => {
         })
     })
 
+    describe('success state', () => {
+        it('should display success message when domain is verified', () => {
+            useDomainVerificationMock.mockReturnValue({
+                domain: {verified: true},
+            } as ReturnType<typeof useDomainVerification>)
+
+            renderComponent()
+
+            expect(
+                screen.getByText(/Your domain has been successfully verified/)
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('error state', () => {
         it('should display error state when domain is not fetched and domain creation error is present', () => {
             useDomainVerificationMock.mockReturnValue({

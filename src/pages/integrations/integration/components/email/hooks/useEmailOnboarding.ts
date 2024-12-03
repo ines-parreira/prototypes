@@ -1,6 +1,7 @@
 import {
     CreateIntegrationBody,
     EmailIntegration,
+    GmailIntegration,
     HttpResponse,
     UpdateIntegrationBody,
     useCreateIntegration,
@@ -20,8 +21,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {isGorgiasApiError} from 'models/api/types'
-import {Integration, IntegrationType} from 'models/integration/types'
-
+import {
+    Integration,
+    IntegrationType,
+    OutlookIntegration,
+} from 'models/integration/types'
 import socketManager from 'services/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
 import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
@@ -496,7 +500,11 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
 }
 
 export const useEmailOnboardingCompleteCheck = (
-    integration?: EmailIntegration | undefined
+    integration?:
+        | EmailIntegration
+        | GmailIntegration
+        | OutlookIntegration
+        | undefined
 ) => {
     const onboardingCompleteStorageKey = `${ONBOARDING_COMPLETE_STORAGE_KEY}-${integration?.id}`
 

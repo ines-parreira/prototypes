@@ -5,6 +5,7 @@ import EmailDomainVerificationContent from './EmailDomainVerification/EmailDomai
 import useDomainVerification from './EmailDomainVerification/useDomainVerification'
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
 import {useEmailOnboardingCompleteCheck} from './hooks/useEmailOnboarding'
+import OnboardingDomainVerificationPrompt from './OnboardingDomainVerificationPrompt'
 
 type Props = {
     integration: EmailIntegration
@@ -26,6 +27,7 @@ export default function EmailIntegrationOnboardingDomainVerification({
         <>
             <EmailDomainVerificationContent integration={integration} />
             <EmailIntegrationOnboardingButtons integration={integration} />
+            <OnboardingDomainVerificationPrompt when={!domain?.verified} />
         </>
     )
 }
