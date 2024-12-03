@@ -2,9 +2,9 @@ import {EmailIntegration} from '@gorgias/api-queries'
 import {Label} from '@gorgias/merchant-ui-kit'
 import React, {useCallback} from 'react'
 
+import {Form} from 'components/Form/Form'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import FormRow from 'pages/common/forms/FormRow'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
@@ -35,7 +35,10 @@ export default function EmailIntegrationForwardingSetupForm(props: Props) {
 
     return (
         <div>
-            <Form<Values> defaultValues={defaultValues} onSubmit={handleSubmit}>
+            <Form<Values>
+                defaultValues={defaultValues}
+                onValidSubmit={handleSubmit}
+            >
                 <FormSection
                     title="Forward your support emails to Gorgias"
                     description="In this step, you will go to your email provider to set up forwarding rules

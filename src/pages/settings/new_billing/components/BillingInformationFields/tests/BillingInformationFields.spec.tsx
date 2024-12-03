@@ -5,9 +5,9 @@ import {act, render, screen, waitFor} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
-import {Form} from 'pages/settings/new_billing/components/Form/Form'
 import {VATCountries} from 'state/billing/types'
 import {assumeMock} from 'utils/testing'
 

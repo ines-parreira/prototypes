@@ -5,10 +5,10 @@ import React, {useMemo} from 'react'
 
 import {SubmitHandler} from 'react-hook-form'
 
+import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
-import {Form} from 'pages/settings/new_billing/components/Form/Form'
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 
 import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'

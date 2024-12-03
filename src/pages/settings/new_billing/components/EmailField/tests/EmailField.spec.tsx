@@ -2,8 +2,8 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import React from 'react'
 
+import {Form} from 'components/Form/Form'
 import {EmailField} from 'pages/settings/new_billing/components/EmailField/EmailField'
-import {Form} from 'pages/settings/new_billing/components/Form/Form'
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 
 describe('EmailField', () => {

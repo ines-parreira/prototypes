@@ -1,9 +1,9 @@
 import {EmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
+import {Form} from 'components/Form/Form'
 import FormRow from 'pages/common/forms/FormRow'
 import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
@@ -19,7 +19,7 @@ export default function EmailIntegrationVerificationForm(props: Props) {
     const {integration, sendVerification} = useEmailOnboarding(props)
 
     return (
-        <Form onSubmit={sendVerification}>
+        <Form onValidSubmit={sendVerification}>
             <FormContent {...props} />
             <EmailIntegrationOnboardingButtons integration={integration} />
         </Form>

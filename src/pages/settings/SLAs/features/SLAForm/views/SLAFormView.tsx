@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {Form} from 'components/Form/Form'
+import {FormValidator} from 'components/Form/validation'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import history from 'pages/history'
@@ -12,13 +14,11 @@ import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
 import {SLAFormValues} from '../controllers/useFormValues'
 
 import ChannelSelectBox from './ChannelSelectBox'
-import Form from './Form'
 import FormField from './FormField'
 import FormSection from './FormSection'
 import MetricsFieldArray from './MetricsFieldArray'
 import css from './SLAFormView.less'
 import ToggleInputFormField from './ToggleInputFormField'
-import {FormValidator} from './validation'
 
 type SLAFormViewProps = {
     policy: MappedFormSLAPolicy | undefined
@@ -50,7 +50,7 @@ export default function SLAFormView({
                     <Form
                         defaultValues={defaultValues}
                         values={values}
-                        onSubmit={onSubmit}
+                        onValidSubmit={onSubmit}
                         validator={validator}
                     >
                         <FormSection>

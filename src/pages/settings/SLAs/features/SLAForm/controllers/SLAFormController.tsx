@@ -3,11 +3,11 @@ import {validateCreateSlaPolicyBody} from '@gorgias/api-validators'
 import React from 'react'
 import {useLocation, useParams} from 'react-router-dom'
 
+import {toFormErrors} from 'components/Form/validation'
 import {SLATemplate} from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
 import SLAFormView from '../views/SLAFormView'
-import {toFormErrors} from '../views/validation'
 
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'

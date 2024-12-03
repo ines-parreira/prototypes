@@ -9,17 +9,19 @@ import {
     useUpdateIntegration,
 } from '@gorgias/api-queries'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {isObject, kebabCase} from 'lodash'
+import isObject from 'lodash/isObject'
+import kebabCase from 'lodash/kebabCase'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useHistory, useRouteMatch} from 'react-router-dom'
 
+import {FormErrors} from 'components/Form/validation'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {isGorgiasApiError} from 'models/api/types'
 import {Integration, IntegrationType} from 'models/integration/types'
-import {FormErrors} from 'pages/settings/SLAs/features/SLAForm/views/validation'
+
 import socketManager from 'services/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
 import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'

@@ -1,9 +1,9 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {pick} from 'lodash'
+import type {EmailIntegration} from '@gorgias/api-queries'
+import pick from 'lodash/pick'
 import React from 'react'
 
+import {Form} from 'components/Form/Form'
 import FormRow from 'pages/common/forms/FormRow'
-import Form from 'pages/settings/SLAs/features/SLAForm/views/Form'
 
 import FormField from 'pages/settings/SLAs/features/SLAForm/views/FormField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
@@ -41,7 +41,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
         <div>
             <Form<Values>
                 defaultValues={defaultValues}
-                onSubmit={handleSubmit}
+                onValidSubmit={handleSubmit}
                 errors={errors}
             >
                 <FormSection

@@ -1,13 +1,15 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {produce} from 'immer'
-import {set} from 'lodash'
+import _set from 'lodash/set'
 import React from 'react'
 
-import Form from './Form'
-import FormField from './FormField'
-import FormSubmitButton from './FormSubmitButton'
-import ToggleInputFormField from './ToggleInputFormField'
-import {FormErrors} from './validation'
+import {Form} from 'components/Form/Form'
+
+import {FormErrors} from 'components/Form/validation'
+import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
+
+import FormField from '../../../pages/settings/SLAs/features/SLAForm/views/FormField'
+import ToggleInputFormField from '../../../pages/settings/SLAs/features/SLAForm/views/ToggleInputFormField'
 
 const onSubmit = jest.fn()
 
@@ -15,7 +17,7 @@ describe('<Form />', () => {
     describe('fields', () => {
         it('renders the field components', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField name="address" label="Address" />
                 </Form>
@@ -27,7 +29,7 @@ describe('<Form />', () => {
 
         it('allows using custom field components', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField
                         name="agree"
@@ -47,7 +49,7 @@ describe('<Form />', () => {
     describe('values', () => {
         it('allows passing default (initial) values', async () => {
             render(
-                <Form defaultValues={{name: 'John'}} onSubmit={onSubmit}>
+                <Form defaultValues={{name: 'John'}} onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                 </Form>
             )
@@ -55,13 +57,16 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({name: 'John'})
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {name: 'John'},
+                    expect.any(Object)
+                )
             })
         })
 
         it('updates values when fields change', async () => {
             render(
-                <Form defaultValues={{name: 'John'}} onSubmit={onSubmit}>
+                <Form defaultValues={{name: 'John'}} onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                 </Form>
             )
@@ -72,13 +77,16 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({name: 'Doe'})
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {name: 'Doe'},
+                    expect.any(Object)
+                )
             })
         })
 
         it('allows using dot notation for field names', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField name="address.street" label="Street" />
                 </Form>
@@ -93,16 +101,19 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    name: 'John',
-                    address: {street: 'Sesame St'},
-                })
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        name: 'John',
+                        address: {street: 'Sesame St'},
+                    },
+                    expect.any(Object)
+                )
             })
         })
 
         it('allows using dot notation as array indexes for field names', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField name="items.0.name" label="First item" />
                     <FormField name="items.1.name" label="Second item" />
@@ -121,10 +132,13 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    name: 'John',
-                    items: [{name: 'One'}, {name: 'Two'}],
-                })
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        name: 'John',
+                        items: [{name: 'One'}, {name: 'Two'}],
+                    },
+                    expect.any(Object)
+                )
             })
         })
     })
@@ -132,7 +146,7 @@ describe('<Form />', () => {
     describe('validation', () => {
         it('validates required fields', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" isRequired />
                 </Form>
             )
@@ -150,7 +164,7 @@ describe('<Form />', () => {
 
         it('allows customizing required field error message', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField
                         name="name"
                         label="Name"
@@ -170,7 +184,7 @@ describe('<Form />', () => {
 
         it('allows using custom per-field validation', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField
                         name="name"
                         label="Name"
@@ -200,7 +214,10 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({name: 'not secret'})
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {name: 'not secret'},
+                    expect.any(Object)
+                )
             })
         })
 
@@ -208,7 +225,7 @@ describe('<Form />', () => {
             render(
                 <Form
                     errors={{username: 'Username is already in use'}}
-                    onSubmit={onSubmit}
+                    onValidSubmit={onSubmit}
                 >
                     <FormField name="username" label="Username" />
                 </Form>
@@ -239,7 +256,7 @@ describe('<Form />', () => {
                             return {username: 'Cannot be admin'}
                         }
                     }}
-                    onSubmit={onSubmit}
+                    onValidSubmit={onSubmit}
                 >
                     <FormField name="username" label="Username" />
                 </Form>
@@ -272,7 +289,10 @@ describe('<Form />', () => {
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({username: 'not-admin'})
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {username: 'not-admin'},
+                    expect.any(Object)
+                )
             })
         })
 
@@ -286,25 +306,25 @@ describe('<Form />', () => {
             const validate = (values: Values) => {
                 return produce<FormErrors<Values>>({}, (errors) => {
                     if (!values.name) {
-                        set(errors, 'name', 'Name is required')
+                        _set(errors, 'name', 'Name is required')
                     }
 
                     if (!values.address?.street) {
-                        set(errors, 'address.street', 'Street is required')
+                        _set(errors, 'address.street', 'Street is required')
                     }
 
                     if (!values.items?.[0]?.name) {
-                        set(errors, 'items.0.name', 'First item is required')
+                        _set(errors, 'items.0.name', 'First item is required')
                     }
 
                     if (!values.items?.[1]?.name) {
-                        set(errors, 'items.1.name', 'Second item is required')
+                        _set(errors, 'items.1.name', 'Second item is required')
                     }
                 })
             }
 
             render(
-                <Form<Values> onSubmit={onSubmit} validator={validate}>
+                <Form<Values> onValidSubmit={onSubmit} validator={validate}>
                     <FormField name="name" label="Name" />
                     <FormField name="address.street" label="Street" />
                     <FormField name="items.0.name" label="First item" />
@@ -333,7 +353,7 @@ describe('<Form />', () => {
     describe('submit button', () => {
         it('allows using a form submit button', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>
@@ -344,7 +364,7 @@ describe('<Form />', () => {
 
         it('allows customizing the label text', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton>Next Step</FormSubmitButton>
                 </Form>
@@ -355,7 +375,7 @@ describe('<Form />', () => {
 
         it('allows setting loading state', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton isLoading />
                 </Form>
@@ -369,7 +389,7 @@ describe('<Form />', () => {
 
         it('allows overriding disabled state', () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton isDisabled />
                 </Form>
@@ -388,7 +408,7 @@ describe('<Form />', () => {
 
         it('tracks dirty state disabling it while unchanged', async () => {
             render(
-                <Form onSubmit={onSubmit}>
+                <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>
@@ -406,7 +426,7 @@ describe('<Form />', () => {
 
         it('tracks dirty state correctly based on default values', async () => {
             render(
-                <Form onSubmit={onSubmit} defaultValues={{name: 'test'}}>
+                <Form onValidSubmit={onSubmit} defaultValues={{name: 'test'}}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>
@@ -428,7 +448,10 @@ describe('<Form />', () => {
             fireEvent.click(button)
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({name: 'Doe'})
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {name: 'Doe'},
+                    expect.any(Object)
+                )
             })
         })
     })

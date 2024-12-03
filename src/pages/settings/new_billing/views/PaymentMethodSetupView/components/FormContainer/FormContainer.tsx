@@ -9,12 +9,12 @@ import {useStore} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
-import {Form} from 'pages/settings/new_billing/components/Form/Form'
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import {
     BILLING_BASE_PATH,
