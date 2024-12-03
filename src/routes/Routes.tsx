@@ -538,28 +538,28 @@ export function StatsRoutes() {
                     )}
                 />
                 {!!isAnalyticsCustomReports && (
-                    <Switch>
-                        <Route
-                            exact
-                            path={`${path}/custom-reports/new`}
-                            render={() => (
-                                <App
-                                    content={CustomReports}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
-                        />
-                        <Route
-                            exact
-                            path={`${path}/custom-reports/:id`}
-                            render={() => (
-                                <App
-                                    content={CustomReport}
-                                    navbar={StatsNavbarContainer}
-                                />
-                            )}
-                        />
-                    </Switch>
+                    <Route
+                        exact
+                        path={`${path}/custom-reports/new`}
+                        render={() => (
+                            <App
+                                content={CustomReports}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
+                {!!isAnalyticsCustomReports && (
+                    <Route
+                        exact
+                        path={`${path}/custom-reports/:id`}
+                        render={() => (
+                            <App
+                                content={CustomReport}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
                 )}
                 <Route
                     exact
