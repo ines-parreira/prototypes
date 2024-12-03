@@ -9,6 +9,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import CircularAudioPlayer from './CircularAudioPlayer'
 import {
     RINGTONE_AUDIO_FILE_PATHS,
     STATIC_WAIT_MUSIC_LIBRARY,
@@ -27,6 +28,9 @@ const WaitMusicLibrarySelect = ({
     integrationCountry,
 }: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [activeAudioPlayer, setActiveAudioPlayer] = useState<string | null>(
+        null
+    )
 
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -74,6 +78,15 @@ const WaitMusicLibrarySelect = ({
                                     shouldCloseOnSelect
                                     className={css.dropdownItem}
                                 >
+                                    <CircularAudioPlayer
+                                        src={option.audio_file_path}
+                                        isActive={
+                                            activeAudioPlayer === option.key
+                                        }
+                                        onPlay={() =>
+                                            setActiveAudioPlayer(option.key)
+                                        }
+                                    />
                                     <div className={css.dropdownText}>
                                         {option.name}
                                     </div>

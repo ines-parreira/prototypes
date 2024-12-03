@@ -7,7 +7,20 @@ import {PhoneCountry} from 'models/phoneNumber/types'
 import {STATIC_WAIT_MUSIC_LIBRARY} from '../waitMusicLibraryConstants'
 import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'
 
-describe('<IvrMenuActionSelect />', () => {
+jest.mock(
+    '../CircularAudioPlayer',
+    () => (props: {src: string; isActive: boolean; onPlay: () => null}) => {
+        return (
+            <div data-testid="circular-audio-player">
+                <span>{props.src}</span>
+                <button onClick={props.onPlay} />
+                <span>{props.isActive ? 'Active' : 'Inactive'}</span>
+            </div>
+        )
+    }
+)
+
+describe('<WaitMusicLibrarySelect />', () => {
     const onChangeMock = jest.fn()
     const renderComponent = (
         selectedLibrary?: UpdateWaitMusicLibrary,
@@ -23,7 +36,7 @@ describe('<IvrMenuActionSelect />', () => {
     }
 
     it('should render', () => {
-        const {getByText} = renderComponent()
+        const {getByText, getAllByTestId} = renderComponent()
 
         expect(getByText('Ringtone')).toBeInTheDocument()
 
@@ -32,6 +45,24 @@ describe('<IvrMenuActionSelect />', () => {
         expect(getByText('New Frontier')).toBeInTheDocument()
         expect(getByText('The Elevator Bossanova')).toBeInTheDocument()
         expect(getByText('Moonlight Coffee')).toBeInTheDocument()
+
+        const circularAudioPlayers = getAllByTestId('circular-audio-player')
+        expect(circularAudioPlayers.length).toBe(5)
+        expect(circularAudioPlayers[0]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/UsRingTone.mp3'
+        )
+        expect(circularAudioPlayers[1]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/ClockworkWaltz.mp3'
+        )
+        expect(circularAudioPlayers[2]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/newfrontier.mp3'
+        )
+        expect(circularAudioPlayers[3]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/theelevatorbossanova.mp3'
+        )
+        expect(circularAudioPlayers[4]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/moonlightcoffee.mp3'
+        )
     })
 
     it.each(
@@ -88,4 +119,22 @@ describe('<IvrMenuActionSelect />', () => {
             })
         }
     )
+
+    it('should correctly set the active circular audio player', () => {
+        const {getByText, getAllByTestId} = renderComponent()
+
+        fireEvent.click(getByText('arrow_drop_down'))
+        const circularAudioPlayers = getAllByTestId('circular-audio-player')
+        expect(circularAudioPlayers.length).toBe(5)
+
+        fireEvent.click(
+            circularAudioPlayers[2].querySelector('button') as Element
+        )
+
+        expect(circularAudioPlayers[0]).toHaveTextContent('Inactive')
+        expect(circularAudioPlayers[1]).toHaveTextContent('Inactive')
+        expect(circularAudioPlayers[2]).toHaveTextContent('Active')
+        expect(circularAudioPlayers[3]).toHaveTextContent('Inactive')
+        expect(circularAudioPlayers[4]).toHaveTextContent('Inactive')
+    })
 })
