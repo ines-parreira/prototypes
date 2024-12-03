@@ -46,6 +46,8 @@ const typedCountries = countries as {value: CountryCode; label: string}[]
 
 export type PhoneNumberInputHandle = {
     onChange: (value: string) => void
+    onCountryChange: (country: CountryCode) => void
+    inputValue: string
 }
 
 type Props = {
@@ -180,8 +182,12 @@ const PhoneNumberInput = (
             onChange: (value: string) => {
                 handleNumberChange(value, currentCountry)
             },
+            onCountryChange: (country: CountryCode) => {
+                handleCountryChange(value, country)
+            },
+            inputValue: inputRef.current?.value ?? '',
         }),
-        [handleNumberChange, currentCountry]
+        [handleNumberChange, currentCountry, handleCountryChange, value]
     )
 
     const hasError = !!error || isPhoneNumberTooLong

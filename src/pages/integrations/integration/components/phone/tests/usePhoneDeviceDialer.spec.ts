@@ -1,13 +1,17 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 
+import React from 'react'
+
 import {UserSearchResult} from 'models/search/types'
+import {getCountryFromPhoneNumber} from 'pages/phoneNumbers/utils'
 import * as selectors from 'state/integrations/selectors'
 import {assumeMock} from 'utils/testing'
 
 import useDialerOutboundCall from '../useDialerOutboundCall'
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
+import usePhoneNumbers from '../usePhoneNumbers'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock(
@@ -17,19 +21,35 @@ jest.mock(
     'pages/integrations/integration/components/phone/usePhoneDeviceDialerCustomerSuggestions'
 )
 jest.mock('libphonenumber-js')
+jest.mock('../usePhoneNumbers')
+jest.mock('pages/phoneNumbers/utils')
 
 const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
 const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
 const usePhoneDeviceDialerCustomerSuggestionsMock = assumeMock(
     usePhoneDeviceDialerCustomerSuggestions
 )
+const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
+const getCountryFromPhoneNumberMock = assumeMock(getCountryFromPhoneNumber)
 
 const getPhoneIntegrationsSpy = jest.spyOn(selectors, 'getPhoneIntegrations')
 
 describe('usePhoneDeviceDialer', () => {
     const mockPhoneIntegrations = [
-        {id: 1, name: 'testIntegration'},
-        {id: 2, name: 'otherTestIntegration2'},
+        {
+            id: 1,
+            name: 'testIntegration',
+            meta: {
+                phone_number_id: 1,
+            },
+        },
+        {
+            id: 2,
+            name: 'otherTestIntegration2',
+            meta: {
+                phone_number_id: 2,
+            },
+        },
     ]
     const mockUserSearchResult: UserSearchResult = {
         customer: {name: 'John Doe'},
@@ -51,6 +71,9 @@ describe('usePhoneDeviceDialer', () => {
                 debouncedSearchCustomers: mockDebouncedSearchCustomers,
             }
         )
+        usePhoneNumbersMock.mockReturnValue({
+            getPhoneNumberById: jest.fn(() => ({phone_number: '1234567890'})),
+        } as any)
     })
 
     it('should initialize with default values', () => {
@@ -181,5 +204,32 @@ describe('usePhoneDeviceDialer', () => {
         ).toHaveBeenLastCalledWith(
             expect.objectContaining({minSearchInputLength: 3})
         )
+    })
+
+    it('should return default country code', () => {
+        getCountryFromPhoneNumberMock.mockReturnValueOnce('US')
+        const onCountryChange = jest.fn()
+        jest.spyOn(React, 'createRef').mockReturnValue({
+            current: {onCountryChange},
+        } as any)
+
+        const {result, rerender} = renderHook(() =>
+            usePhoneDeviceDialer({onCallInitiated: mockOnCallInitiated})
+        )
+
+        getCountryFromPhoneNumberMock.mockReturnValue('FR')
+        rerender()
+
+        act(() => {
+            result.current.setSelectedIntegration(
+                mockPhoneIntegrations[1] as any
+            )
+        })
+
+        expect(result.current.selectedIntegration).toEqual(
+            mockPhoneIntegrations[1]
+        )
+
+        expect(onCountryChange).toHaveBeenCalledWith('FR')
     })
 })

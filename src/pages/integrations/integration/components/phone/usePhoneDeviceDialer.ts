@@ -1,13 +1,15 @@
 import {isValidPhoneNumber} from 'libphonenumber-js'
-import {createRef, useState} from 'react'
+import {createRef, useCallback, useEffect, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {UserSearchResult} from 'models/search/types'
 import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {getCountryFromPhoneNumber} from 'pages/phoneNumbers/utils'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 
 import useDialerOutboundCall from './useDialerOutboundCall'
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
+import usePhoneNumbers from './usePhoneNumbers'
 
 type UsePhoneDeviceDialerArgs = {
     onCallInitiated: () => void
@@ -26,9 +28,39 @@ export default function usePhoneDeviceDialer({
     const [selectedIntegration, setSelectedIntegration] = useState(
         phoneIntegrations[0]
     )
+    const {getPhoneNumberById} = usePhoneNumbers()
 
     const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
     const isCallButtonDisabled = isSearchTypeCustomer && !selectedCustomer
+
+    const updateCountryCode = useCallback(() => {
+        if (isSearchTypeCustomer || phoneNumberInputRef.current?.inputValue) {
+            return
+        }
+
+        const selectedIntegrationPhoneNumber = getPhoneNumberById(
+            selectedIntegration.meta.phone_number_id
+        )
+        const selectedIntegrationCountryCode = getCountryFromPhoneNumber(
+            selectedIntegrationPhoneNumber.phone_number
+        )
+
+        if (selectedIntegrationCountryCode) {
+            phoneNumberInputRef.current?.onCountryChange(
+                selectedIntegrationCountryCode
+            )
+        }
+    }, [
+        selectedIntegration,
+        isSearchTypeCustomer,
+        phoneNumberInputRef,
+        getPhoneNumberById,
+    ])
+
+    useEffect(() => {
+        updateCountryCode()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedIntegration])
 
     const handleChange = (value: string) => {
         setInputValue(value)

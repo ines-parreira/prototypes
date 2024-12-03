@@ -1,4 +1,4 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
+import {render, fireEvent, waitFor, act} from '@testing-library/react'
 import React, {createRef} from 'react'
 
 import {reportError} from 'utils/errors'
@@ -311,5 +311,22 @@ describe('<PhoneNumberInput/>', () => {
         )
 
         expect(getByTestId('loader')).toBeVisible()
+    })
+
+    it('should change country code when ref.onCountryChange is called', () => {
+        const ref = createRef<PhoneNumberInputHandle>()
+        const {getByText} = render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                ref={ref}
+            />
+        )
+
+        act(() => {
+            ref.current?.onCountryChange('FR')
+        })
+
+        expect(getByText('🇫🇷')).toBeVisible()
     })
 })
