@@ -132,6 +132,25 @@ describe('ApplySavedFilers', () => {
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
         expect(getByText(savedFilters[0].name)).toBeTruthy()
     })
+
+    it('should render draft filter name instead of applied filter name', () => {
+        const {getByText, queryByText} = renderWithStore(
+            <ApplySavedFilers isAdmin savedFilters={savedFilters} />,
+            {
+                ui: {
+                    stats: {
+                        filters: {
+                            appliedSavedFilterId: 1,
+                            savedFilterDraft: savedFilters[1],
+                        },
+                    },
+                },
+            } as RootState
+        )
+
+        expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
+        expect(getByText(savedFilters[1].name)).toBeTruthy()
+    })
 })
 
 const filters = [{id: 1, name: 'Filter 1', filter_group: []}]

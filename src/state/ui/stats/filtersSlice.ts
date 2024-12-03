@@ -35,7 +35,7 @@ export const initialState: FiltersSliceState = {
 }
 
 export const EMPTY_DRAFT_NAME = 'Saved Filter Draft'
-export const COPY_OF_DRAFT_NAME = 'Copy of '
+export const COPY_OF_DRAFT_NAME = '(COPY)'
 
 export const filtersSlice = createSlice({
     name: 'filters',
@@ -85,7 +85,7 @@ export const filtersSlice = createSlice({
             action: PayloadAction<SavedFilter>
         ) {
             state.savedFilterDraft = {
-                name: `${COPY_OF_DRAFT_NAME}${action.payload.name}`,
+                name: `${action.payload.name} ${COPY_OF_DRAFT_NAME}`,
                 filter_group: action.payload.filter_group,
             }
         },

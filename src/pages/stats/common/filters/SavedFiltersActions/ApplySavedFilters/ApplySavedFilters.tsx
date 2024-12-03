@@ -16,6 +16,7 @@ import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilter
 import {
     applySavedFilter,
     getSavedFilterAppliedId,
+    getSavedFilterDraft,
     initialiseSavedFilterDraft,
 } from 'state/ui/stats/filtersSlice'
 
@@ -56,6 +57,7 @@ export const getApplyFiltersButtonName = (
 
 const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
     const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
+    const savedFilterDraft = useAppSelector(getSavedFilterDraft)
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
     const buttonRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
@@ -99,8 +101,11 @@ const ApplySavedFilters = ({savedFilters, isAdmin}: Props) => {
     }, [savedFilters, isAdmin, applySavedFilterHandler])
 
     const applyFiltersButtonName = useMemo(
-        () => getApplyFiltersButtonName(savedFilters, savedFilterAppliedId),
-        [savedFilterAppliedId, savedFilters]
+        () =>
+            savedFilterDraft
+                ? savedFilterDraft.name
+                : getApplyFiltersButtonName(savedFilters, savedFilterAppliedId),
+        [savedFilterAppliedId, savedFilters, savedFilterDraft]
     )
 
     return (

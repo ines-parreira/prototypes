@@ -140,7 +140,7 @@ describe('filtersSlice', () => {
             )
 
             expect(newState.savedFilterDraft).toEqual({
-                name: `${COPY_OF_DRAFT_NAME}${savedFilter.name}`,
+                name: `${savedFilter.name} ${COPY_OF_DRAFT_NAME}`,
                 filter_group: [agentsSavedFilter],
             })
         })
