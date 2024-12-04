@@ -12,9 +12,9 @@
         flex-direction: row;
         width: 100%;
         height: 100%;
-        border-right: 1px solid var(--navbar-border-color);
-        background: var(--navbar-background-color);
-        color: var(--navbar-text-color);
+        border-right: 1px solid var(--navigation-border);
+        background: var(--navigation-background);
+        color: var(--navigation-text-item);
 
         @media @mobiles {
             min-width: 0;
@@ -85,16 +85,16 @@
         width: inherit;
         min-width: 200px;
         max-width: 350px;
-        background: var(--navbar-background-color);
+        background: var(--navigation-background);
     }
 
     .nav-dropdown-wrapper {
         position: relative;
         border-bottom: 1px solid
             hsla(
-                var(--navbar-title-color-h),
-                var(--navbar-title-color-s),
-                var(--navbar-title-color-l),
+                var(--navigation-title-item-h),
+                var(--navigation-title-item-s),
+                var(--navigation-title-item-l),
                 0.08
             );
     }
@@ -102,9 +102,9 @@
     .nav-dropdown {
         &:global.show > button {
             background-color: hsl(
-                var(--navbar-background-color-h),
-                var(--navbar-background-color-s),
-                calc(var(--navbar-background-color-l) - 4%)
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 4%)
             );
         }
     }
@@ -117,7 +117,7 @@
         border: 0;
         border-radius: 0;
 
-        color: var(--navbar-title-color);
+        color: var(--navigation-title-item);
         .heading-subsection-semibold();
 
         > div {
@@ -131,24 +131,24 @@
 
         &:hover {
             background-color: hsl(
-                var(--navbar-background-color-h),
-                var(--navbar-background-color-s),
-                calc(var(--navbar-background-color-l) - 4%)
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 4%)
             );
-            color: var(--navbar-title-color);
+            color: var(--navigation-title-item);
         }
 
         &:active {
             background-color: hsl(
-                var(--navbar-background-color-h),
-                var(--navbar-background-color-s),
-                calc(var(--navbar-background-color-l) - 8%)
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 8%)
             );
         }
     }
 
     .dropdown-toggle-dropup {
-        background: var(--navbar-background-color);
+        background: var(--navigation-background);
         border-width: 1px 0 0;
         padding-top: 12px;
         padding-bottom: 12px;
@@ -156,15 +156,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--navbar-title-color);
+        color: var(--navigation-title-item);
 
         .body-semibold();
 
         &.active {
             background-color: hsl(
-                var(--navbar-background-color-h),
-                var(--navbar-background-color-s),
-                calc(var(--navbar-background-color-l) - 8%)
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 8%)
             );
         }
 
