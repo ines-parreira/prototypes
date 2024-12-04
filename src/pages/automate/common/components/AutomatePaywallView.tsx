@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
 
@@ -9,6 +8,14 @@ import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'
+
+import PaywallView from 'pages/common/components/PaywallView/PaywallView'
+import PaywallViewActionButtons from 'pages/common/components/PaywallView/PaywallViewActionButtons'
+import PaywallViewChecklist from 'pages/common/components/PaywallView/PaywallViewChecklist'
+import PaywallViewChecklistItem from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
+import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
+import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
+import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import {usePaywallConfig} from '../hooks/usePaywallConfig'
@@ -61,37 +68,26 @@ const AutomatePaywallView = ({
         <div className={css.layout}>
             {headerTitle && <PageHeader title={headerTitle} />}
 
-            <div className={css.wrapper}>
-                <div className={css.leftContainer}>
-                    {paywallLogo && (
-                        <img
-                            className={css.headerIcon}
-                            src={paywallLogo}
-                            alt={paywallLogoAlt}
-                        />
-                    )}
-                    {paywallTitle && (
-                        <div className={css.title}>{paywallTitle}</div>
-                    )}
+            <PaywallView>
+                <PaywallViewLeftContainer>
+                    <PaywallViewHeader
+                        logo={paywallLogo}
+                        logoAlt={paywallLogoAlt}
+                        title={paywallTitle}
+                    />
 
-                    {descriptions.map((description, i) => (
-                        <div key={i} className={css.description}>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.checkIcon
-                                )}
-                            >
-                                check
-                            </i>
-                            <span>{description}</span>
-                        </div>
-                    ))}
+                    <PaywallViewChecklist>
+                        {descriptions.map((description, i) => (
+                            <PaywallViewChecklistItem key={i}>
+                                {description}
+                            </PaywallViewChecklistItem>
+                        ))}
+                    </PaywallViewChecklist>
 
                     {automateFeature === AutomateFeatures.AiAgent ? (
                         <div data-candu-id="automate-ai-agent-waitwall" />
                     ) : (
-                        <div className={css.actionButton}>
+                        <PaywallViewActionButtons>
                             {props?.customCta ? (
                                 props.customCta
                             ) : (
@@ -119,7 +115,7 @@ const AutomatePaywallView = ({
                                     Learn more
                                 </LinkButton>
                             )}
-                        </div>
+                        </PaywallViewActionButtons>
                     )}
 
                     {hasAccessToROICalculator && (
@@ -136,14 +132,15 @@ const AutomatePaywallView = ({
                             Calculate Potential Return on Investment
                         </Button>
                     )}
-                </div>
-                <div className={css.rightContainer}>
+                </PaywallViewLeftContainer>
+                <PaywallViewRightContainer>
                     <HeroImageCarousel
                         width={slidesWidth}
                         slides={slidesData}
                     />
-                </div>
-            </div>
+                </PaywallViewRightContainer>
+            </PaywallView>
+
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}

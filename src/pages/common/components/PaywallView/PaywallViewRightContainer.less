@@ -1,0 +1,13 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .container {
+        margin: 0 64px;
+        width: 420px;
+
+        @media @mobiles {
+            padding-bottom: 64px;
+        }
+    }
+}

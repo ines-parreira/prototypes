@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: calc(100% - 60px);
+        padding: 0 24px;
+        min-height: 600px;
+
+        @media @mobiles {
+            flex-direction: column;
+            gap: 64px;
+            margin: 64px 0;
+        }
+    }
+}

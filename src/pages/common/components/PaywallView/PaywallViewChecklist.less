@@ -1,0 +1,13 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        .heading-subsection-regular();
+
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        color: var(--neutral-grey-5);
+    }
+}

@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 
@@ -7,6 +6,13 @@ import LinkButton from 'pages/common/components/button/LinkButton'
 
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'
+import PaywallView from 'pages/common/components/PaywallView/PaywallView'
+import PaywallViewActionButtons from 'pages/common/components/PaywallView/PaywallViewActionButtons'
+import PaywallViewChecklist from 'pages/common/components/PaywallView/PaywallViewChecklist'
+import PaywallViewChecklistItem from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
+import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
+import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
+import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {
     CONVERT_BOOK_DEMO_LINK,
@@ -43,30 +49,23 @@ const ConvertPaywallView = ({
         <div className={css.layout}>
             <PageHeader title={pageHeaderTitle || headerTitle}></PageHeader>
 
-            <div className={css.wrapper}>
-                <div className={css.leftContainer}>
-                    <img
-                        className={css.headerIcon}
-                        src={convertIcon}
-                        alt="Gorgias Convert"
+            <PaywallView>
+                <PaywallViewLeftContainer>
+                    <PaywallViewHeader
+                        logo={convertIcon}
+                        logoAlt="Gorgias Convert"
+                        title={paywallTitle}
                     />
-                    <div className={css.title}>{paywallTitle}</div>
 
-                    {descriptions.map((description, i) => (
-                        <div key={i} className={css.description}>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.checkIcon
-                                )}
-                            >
-                                check
-                            </i>
-                            <span>{description}</span>
-                        </div>
-                    ))}
+                    <PaywallViewChecklist>
+                        {descriptions.map((description, i) => (
+                            <PaywallViewChecklistItem key={i}>
+                                {description}
+                            </PaywallViewChecklistItem>
+                        ))}
+                    </PaywallViewChecklist>
 
-                    <div className={css.actionButton}>
+                    <PaywallViewActionButtons>
                         <LinkButton
                             data-candu-id="convert-paywall-select-plan"
                             className="mr-2"
@@ -84,12 +83,12 @@ const ConvertPaywallView = ({
                         >
                             {greyButtonText}
                         </LinkButton>
-                    </div>
-                </div>
-                <div className={css.rightContainer}>
+                    </PaywallViewActionButtons>
+                </PaywallViewLeftContainer>
+                <PaywallViewRightContainer>
                     <HeroImageCarousel slides={slidesData} />
-                </div>
-            </div>
+                </PaywallViewRightContainer>
+            </PaywallView>
         </div>
     )
 }

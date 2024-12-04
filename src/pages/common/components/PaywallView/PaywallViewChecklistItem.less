@@ -1,0 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        gap: @layout-spacing-xs;
+
+        .checkIcon {
+            color: var(--feedback-success-3);
+            font-size: 24px;
+        }
+    }
+}
