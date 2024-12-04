@@ -2,7 +2,6 @@ import _pickBy from 'lodash/pickBy'
 import {useMemo} from 'react'
 
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 
 import {CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG} from '../constants/triggers'
 import {TriggerConfigValue} from '../types/TriggerConfig'
@@ -20,18 +19,8 @@ export function useAvailableTriggerList({
     isShopifyHeadless = false,
     isLightCampaign = false,
 }: FnArguments) {
-    const areLLMProductRecommendationsEnabled =
-        useAreConvertLLMProductRecommendationsEnabled()
     return useMemo(() => {
         const filterFn = (trigger: TriggerConfigValue, triggerType: string) => {
-            if (
-                triggerType === CampaignTriggerType.OutOfStockProductPages &&
-                !areLLMProductRecommendationsEnabled
-            ) {
-                // temporary code until we release the feature
-                return false
-            }
-
             const requirements = Object.entries(trigger.requirements)
 
             if (requirements.length === 0) {
@@ -70,7 +59,6 @@ export function useAvailableTriggerList({
 
         return _pickBy(TRIGGERS_CONFIG, filterFn)
     }, [
-        areLLMProductRecommendationsEnabled,
         isLightCampaign,
         isShopifyStore,
         isConvertSubscriber,

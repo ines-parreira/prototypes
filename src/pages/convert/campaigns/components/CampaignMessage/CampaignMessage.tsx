@@ -36,7 +36,6 @@ import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 
 import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
 import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
-import {useAreConvertLLMProductRecommendationsEnabled} from 'pages/convert/common/hooks/useAreConvertLLMProductRecommendationsEnabled'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import {useIsAICopyAssistantEnabled} from 'pages/convert/common/hooks/useIsAICopyAssistantEnabled'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
@@ -93,8 +92,6 @@ export const CampaignMessage = memo(
         const {shopifyIntegration} = useIntegrationContext()
         const {getStepConfiguration, getTourConfiguration} =
             useCampaignFormContext()
-        const areProductRecommendationsEnabled =
-            useAreConvertLLMProductRecommendationsEnabled()
         const isAssistantEnabled = useIsAICopyAssistantEnabled()
         const stepConfiguration = useMemo(() => {
             return getStepConfiguration(CampaignStepsKeys.Message)
@@ -169,9 +166,7 @@ export const CampaignMessage = memo(
         ).find((att) => attachmentIsProductRecommendation(att))
 
         const canAddProductRecommendation =
-            isConvertSubscriber &&
-            !anyProductRecommendationAttached &&
-            areProductRecommendationsEnabled
+            isConvertSubscriber && !anyProductRecommendationAttached
 
         useEffect(() => {
             if (attachments.isEmpty() && showWarningOutOfStock) {

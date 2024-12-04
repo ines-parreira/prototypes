@@ -71,7 +71,6 @@ export enum FeatureFlagKey {
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConvertAiCopyAssistant = 'convert-ai-copy-assistant',
-    ConvertLLMProductRecommendations = 'convert-llm-product-recommendations',
     ConvertOverviewPage = 'convert-overview-page',
     ConvertPerformanceView = 'convert-performance-view',
     ConvertContactForm = 'convert-contact-form',
