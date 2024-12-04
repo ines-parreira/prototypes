@@ -1,6 +1,5 @@
 import {screen} from '@testing-library/react'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import LD from 'launchdarkly-react-client-sdk'
 
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -58,10 +57,6 @@ jest.mock('../../PaymentMethodSetupView/PaymentMethodSetupView', () => ({
         <div data-testid="payment-method-setup-view" />
     ),
 }))
-
-jest.mock('../../PaymentMethodView/PaymentMethodView', () => () => (
-    <div data-testid="payment-method-view" />
-))
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
@@ -266,62 +261,24 @@ describe('BillingStartView', () => {
             )
         }
 
-        describe('If the integration flag is off', () => {
-            beforeEach(() => {
-                jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                    [FeatureFlagKey.BillingStripeElementsPaymentIntegration]:
-                        false,
-                }))
-            })
+        it('should show the new Stripe elements address form', () => {
+            renderBillingStartViewWithRouterAndProviderOnRoute(
+                BILLING_INFORMATION_PATH
+            )
 
-            it('should NOT show the new Stripe elements address form', () => {
-                renderBillingStartViewWithRouterAndProviderOnRoute(
-                    BILLING_INFORMATION_PATH
-                )
-
-                expect(
-                    screen.queryByTestId('billing-address-setup-view')
-                ).not.toBeInTheDocument()
-            })
-
-            it('should NOT show the new Stripe elements payment method form', () => {
-                renderBillingStartViewWithRouterAndProviderOnRoute(
-                    BILLING_PAYMENT_CARD_PATH
-                )
-
-                expect(
-                    screen.queryByTestId('payment-method-setup-view')
-                ).not.toBeInTheDocument()
-            })
+            expect(
+                screen.getByTestId('billing-address-setup-view')
+            ).toBeInTheDocument()
         })
 
-        describe('If the integration flag is on', () => {
-            beforeEach(() => {
-                jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                    [FeatureFlagKey.BillingStripeElementsPaymentIntegration]:
-                        true,
-                }))
-            })
+        it('should show the new Stripe elements payment method form', () => {
+            renderBillingStartViewWithRouterAndProviderOnRoute(
+                BILLING_PAYMENT_CARD_PATH
+            )
 
-            it('should show the new Stripe elements address form', () => {
-                renderBillingStartViewWithRouterAndProviderOnRoute(
-                    BILLING_INFORMATION_PATH
-                )
-
-                expect(
-                    screen.getByTestId('billing-address-setup-view')
-                ).toBeInTheDocument()
-            })
-
-            it('should show the new Stripe elements payment method form', () => {
-                renderBillingStartViewWithRouterAndProviderOnRoute(
-                    BILLING_PAYMENT_CARD_PATH
-                )
-
-                expect(
-                    screen.getByTestId('payment-method-setup-view')
-                ).toBeInTheDocument()
-            })
+            expect(
+                screen.getByTestId('payment-method-setup-view')
+            ).toBeInTheDocument()
         })
     })
 })

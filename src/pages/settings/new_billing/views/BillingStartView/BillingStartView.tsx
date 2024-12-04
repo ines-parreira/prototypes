@@ -1,9 +1,7 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -65,12 +63,10 @@ import {
 } from '../../constants'
 import {BillingAddressSetupView} from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
-import BillingInformationView from '../BillingInformationView'
 import BillingInternalView from '../BillingInternalView'
 import BillingProcessView from '../BillingProcessView'
 import PaymentsHistoryView from '../PaymentHistoryView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
-import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
 import UsageAndPlansView from '../UsageAndPlansView'
 import css from './BillingStartView.less'
 
@@ -363,9 +359,6 @@ const BillingStartView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentConvertPlan, convertStatus])
 
-    const isStripeElementsIntegrationEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.BillingStripeElementsPaymentIntegration]
-
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
@@ -461,11 +454,7 @@ const BillingStartView = () => {
                             />
                         </Route>
                         <Route exact path={BILLING_INFORMATION_PATH}>
-                            {isStripeElementsIntegrationEnabled ? (
-                                <BillingAddressSetupView />
-                            ) : (
-                                <BillingInformationView />
-                            )}
+                            <BillingAddressSetupView />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_FREQUENCY_PATH}>
                             <BillingFrequencyView
@@ -481,12 +470,8 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_PAYMENT_CARD_PATH}>
                             {payment === 'shopify' ? (
                                 <Redirect to={BILLING_PAYMENT_PATH} />
-                            ) : isStripeElementsIntegrationEnabled ? (
-                                <PaymentMethodSetupView
-                                    dispatchBillingError={dispatchBillingError}
-                                />
                             ) : (
-                                <PaymentMethodView
+                                <PaymentMethodSetupView
                                     dispatchBillingError={dispatchBillingError}
                                 />
                             )}

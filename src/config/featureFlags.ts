@@ -40,7 +40,6 @@ export enum FeatureFlagKey {
     AutoQaManualDimensions = 'auto-qa-manual-dimensions',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
-    BillingStripeElementsPaymentIntegration = 'billing-stripe-elements-payment-integration',
     BillingTaxIdField = 'billing-tax-id-field',
     BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
