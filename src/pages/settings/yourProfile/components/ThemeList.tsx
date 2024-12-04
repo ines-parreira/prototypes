@@ -1,42 +1,41 @@
-import _get from 'lodash/get'
 import React from 'react'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
-import {ThemeType, THEMES} from 'theme'
+import {THEME_CONFIGS} from 'theme'
+import type {HelpdeskThemeName} from 'theme'
 
 type Props = {
-    savedTheme: ThemeType
-    onChangeTheme: (theme: ThemeType) => void
+    savedTheme: HelpdeskThemeName
+    onChangeTheme: (theme: HelpdeskThemeName) => void
 }
 
 export default function ThemeList({savedTheme, onChangeTheme}: Props) {
     return (
         <div className={css.themeListWrapper}>
-            {Object.entries(THEMES).map(([themeValue, themeSpecs]) => {
+            {THEME_CONFIGS.map((themeConfig) => {
                 return (
                     <PreviewRadioButton
                         label={
                             <ButtonIconLabel
-                                icon={themeSpecs.icon}
+                                icon={themeConfig.icon}
                                 iconClassName={
-                                    savedTheme === themeValue
+                                    savedTheme === themeConfig.name
                                         ? css.buttonIconWrapperSelected
                                         : css.buttonIconWrapper
                                 }
                             >
-                                {_get(themeSpecs, 'settingsLabel') ||
-                                    themeSpecs.label}
+                                {themeConfig.settingsLabel || themeConfig.label}
                             </ButtonIconLabel>
                         }
-                        key={themeValue}
-                        value={themeValue}
+                        key={themeConfig.name}
+                        value={themeConfig.name}
                         className={css.previewRadioButtonWrapper}
                         onClick={() => {
-                            onChangeTheme(themeValue as ThemeType)
+                            onChangeTheme(themeConfig.name)
                         }}
-                        isSelected={savedTheme === themeValue}
+                        isSelected={savedTheme === themeConfig.name}
                         hidden
                     />
                 )

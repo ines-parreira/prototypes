@@ -4,7 +4,7 @@ import React from 'react'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {THEME_TYPES, ThemeContext, useThemeContext} from 'theme'
+import {THEME_NAME, ThemeContext, useThemeContext} from 'theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
 import TicketTag from '../TicketTag'
@@ -69,7 +69,7 @@ describe('<TicketTag />', () => {
         const {container} = render(
             <ThemeContext.Provider
                 value={
-                    {theme: THEME_TYPES.Dark} as ReturnType<
+                    {theme: THEME_NAME.Dark} as ReturnType<
                         typeof useThemeContext
                     >
                 }

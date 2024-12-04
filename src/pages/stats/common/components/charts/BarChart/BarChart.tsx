@@ -25,7 +25,8 @@ import {ChartColors} from 'pages/stats/common/components/charts/types'
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'
-import {AnalyticsTheme, withAnalyticsTheme} from 'theme/withAnalyticsTheme'
+import {withAnalyticsTheme} from 'theme'
+import type {AnalyticsTheme} from 'theme'
 
 type Props = {
     data: TwoDimensionalDataItem[]

@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import {THEME_TYPES} from 'theme'
+import {THEME_NAME} from 'theme'
 
 import Content from '../Content'
 
@@ -261,7 +261,7 @@ describe('Content', () => {
         )
         expect(
             (container.firstChild as Element).classList.contains(
-                THEME_TYPES.Light
+                THEME_NAME.Light
             )
         ).toBeFalsy()
     })
@@ -272,7 +272,7 @@ describe('Content', () => {
         )
         expect(
             (container.firstChild as Element).classList.contains(
-                THEME_TYPES.Light
+                THEME_NAME.Light
             )
         ).toBeTruthy()
     })

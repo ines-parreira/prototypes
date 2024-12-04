@@ -18,9 +18,14 @@ import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {ChannelsTableColumns} from 'state/ui/stats/types'
 import {renderWithStore} from 'utils/testing'
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Tooltip: () => <div />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 describe('<ChannelsCellContent />', () => {
     const mockedHelpCenters = [1, 2, 3]

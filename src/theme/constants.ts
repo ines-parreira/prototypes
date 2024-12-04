@@ -1,38 +1,43 @@
 import dark from '@gorgias/design-tokens/dist/tokens/color/merchantDark.json'
 import light from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
 import legacyColors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {
-    THEME_TYPES as UIKIT_THEME_TYPES,
-    ThemeColors,
-} from '@gorgias/merchant-ui-kit'
+import {THEME_TYPES} from '@gorgias/merchant-ui-kit'
 
-import {ThemeType, ThemeValue} from './types'
+import type {ColorTokens, ThemeConfig, ThemeName} from './types'
 
-export const THEME_TYPES = {
+const {Modern, ...UIKIT_THEME_TYPES} = THEME_TYPES
+export const THEME_NAME = {
     ...UIKIT_THEME_TYPES,
+    Classic: Modern,
     System: 'system',
 } as const
 
-export const THEMES: Record<ThemeType, ThemeValue> = {
-    [THEME_TYPES.System]: {
-        label: 'Use system setting',
-        settingsLabel: 'System',
+export const themeTokenMap: Record<ThemeName, ColorTokens> = {
+    [THEME_NAME.Classic]: legacyColors['🖥 Modern'] as unknown as ColorTokens,
+    [THEME_NAME.Dark]: dark.Dark,
+    [THEME_NAME.Light]: light.Light,
+}
+
+export const THEME_CONFIGS: ThemeConfig[] = [
+    {
         icon: 'computer',
-        colorTokens: legacyColors['📺 Classic'] as unknown as ThemeColors,
+        label: 'Use system setting',
+        name: 'system',
+        settingsLabel: 'System',
     },
-    [THEME_TYPES.Dark]: {
-        label: 'Dark',
+    {
         icon: 'dark_mode',
-        colorTokens: dark.Dark,
+        label: 'Dark',
+        name: THEME_NAME.Dark,
     },
-    [THEME_TYPES.Light]: {
-        label: 'Light',
+    {
         icon: 'brightness_high',
-        colorTokens: light.Light,
+        label: 'Light',
+        name: THEME_NAME.Light,
     },
-    [THEME_TYPES.Modern]: {
-        label: 'Classic',
+    {
         icon: 'brightness_6',
-        colorTokens: legacyColors['🖥 Modern'] as unknown as ThemeColors,
+        label: 'Classic',
+        name: THEME_NAME.Classic,
     },
-} as const
+] as const

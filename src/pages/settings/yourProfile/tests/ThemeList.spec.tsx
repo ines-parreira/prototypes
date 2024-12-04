@@ -1,25 +1,21 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import _get from 'lodash/get'
 import React from 'react'
 
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import {THEME_TYPES, THEMES} from 'theme'
+import {THEME_CONFIGS, THEME_NAME} from 'theme'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {
         const {getByText} = render(
-            <ThemeList
-                savedTheme={THEME_TYPES.Dark}
-                onChangeTheme={jest.fn()}
-            />
+            <ThemeList savedTheme={THEME_NAME.Dark} onChangeTheme={jest.fn()} />
         )
 
-        Object.values(THEMES).forEach((theme) => {
+        THEME_CONFIGS.forEach((themeConfig) => {
             expect(
-                getByText(_get(theme, 'settingsLabel') || theme.label)
+                getByText(themeConfig.settingsLabel || themeConfig.label)
             ).toBeInTheDocument()
-            expect(getByText(theme.icon)).toBeInTheDocument()
+            expect(getByText(themeConfig.icon)).toBeInTheDocument()
         })
     })
 
@@ -28,7 +24,7 @@ describe('ThemeList', () => {
 
         render(
             <ThemeList
-                savedTheme={THEME_TYPES.Dark}
+                savedTheme={THEME_NAME.Dark}
                 onChangeTheme={onChangeThemeSpy}
             />
         )
@@ -40,27 +36,27 @@ describe('ThemeList', () => {
         expect(systemTheme).toHaveTextContent('System')
         userEvent.click(systemTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(1)
-        expect(onChangeThemeSpy).toHaveBeenCalledWith('system')
+        expect(onChangeThemeSpy).toHaveBeenCalledWith(THEME_NAME.System)
 
         // Dark
         const darkTheme = screen.getAllByRole('radio')[1]
         expect(darkTheme).toHaveTextContent('Dark')
         userEvent.click(darkTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(2)
-        expect(onChangeThemeSpy).toHaveBeenCalledWith('dark')
+        expect(onChangeThemeSpy).toHaveBeenCalledWith(THEME_NAME.Dark)
 
         // Light
         const lightTheme = screen.getAllByRole('radio')[2]
         expect(lightTheme).toHaveTextContent('Light')
         userEvent.click(lightTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(3)
-        expect(onChangeThemeSpy).toHaveBeenCalledWith('light')
+        expect(onChangeThemeSpy).toHaveBeenCalledWith(THEME_NAME.Light)
 
         // Classic
         const classicTheme = screen.getAllByRole('radio')[3]
         expect(classicTheme).toHaveTextContent('Classic')
         userEvent.click(classicTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(4)
-        expect(onChangeThemeSpy).toHaveBeenCalledWith('modern light')
+        expect(onChangeThemeSpy).toHaveBeenCalledWith(THEME_NAME.Classic)
     })
 })

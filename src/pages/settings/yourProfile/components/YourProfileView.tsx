@@ -25,7 +25,8 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
-import {ThemeContextType, ThemeType, withTheme} from 'theme'
+import {withTheme} from 'theme'
+import type {HelpdeskThemeName, ThemeContextType} from 'theme'
 
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
@@ -94,7 +95,7 @@ type State = {
 
 export class YourProfileView extends Component<Props, State> {
     isInitialized: boolean
-    initialTheme: ThemeType
+    initialTheme: HelpdeskThemeName
     isDirty: boolean
 
     constructor(props: Props) {
@@ -207,7 +208,7 @@ export class YourProfileView extends Component<Props, State> {
         })
     }
 
-    onChangeTheme = (theme: ThemeType) => {
+    onChangeTheme = (theme: HelpdeskThemeName) => {
         this.isDirty = true
         this.props.setTheme(theme)
     }

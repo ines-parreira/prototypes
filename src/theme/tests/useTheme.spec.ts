@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
+import {THEME_NAME} from '../constants'
 import Provider from '../ThemeProvider'
 import useTheme from '../useTheme'
 
@@ -17,6 +18,6 @@ describe('useTheme', () => {
     it('should return the active theme', () => {
         const {result} = renderHook(() => useTheme(), {wrapper: Provider})
 
-        expect(result.current).toBe('modern light')
+        expect(result.current).toBe(THEME_NAME.Classic)
     })
 })

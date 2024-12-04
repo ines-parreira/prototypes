@@ -49,9 +49,14 @@ const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Tooltip: () => <div />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 const componentMock = () => <div />
 

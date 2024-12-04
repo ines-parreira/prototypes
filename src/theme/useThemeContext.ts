@@ -2,15 +2,15 @@ import {useEffect, useMemo} from 'react'
 
 import {usePersistedState} from 'common/hooks'
 
-import {THEMES, THEME_TYPES} from './constants'
-import {ThemeType} from './types'
+import {THEME_NAME, themeTokenMap} from './constants'
+import {HelpdeskThemeName} from './types'
 
-export const themeValues = Object.values(THEME_TYPES)
+export const themeValues = Object.values(THEME_NAME)
 
 export default function useThemeContext() {
-    const [savedTheme, setSavedTheme] = usePersistedState<ThemeType>(
+    const [savedTheme, setSavedTheme] = usePersistedState<HelpdeskThemeName>(
         'theme',
-        THEME_TYPES.Modern
+        THEME_NAME.Classic
     )
     const prefersDarkTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'
@@ -20,7 +20,7 @@ export default function useThemeContext() {
     // technically be anything as it's in the user's cintrol
     const actualTheme = themeValues.includes(savedTheme)
         ? savedTheme
-        : THEME_TYPES.Modern
+        : THEME_NAME.Classic
     useEffect(() => {
         if (actualTheme !== savedTheme) {
             setSavedTheme(actualTheme)
@@ -29,10 +29,10 @@ export default function useThemeContext() {
 
     const theme = useMemo(
         () =>
-            actualTheme === THEME_TYPES.System
+            actualTheme === THEME_NAME.System
                 ? prefersDarkTheme
-                    ? THEME_TYPES.Dark
-                    : THEME_TYPES.Light
+                    ? THEME_NAME.Dark
+                    : THEME_NAME.Light
                 : actualTheme,
         [prefersDarkTheme, actualTheme]
     )
@@ -42,7 +42,7 @@ export default function useThemeContext() {
             savedTheme: actualTheme,
             theme,
             setTheme: setSavedTheme,
-            colorTokens: THEMES[theme].colorTokens,
+            colorTokens: themeTokenMap[theme],
         }),
         [actualTheme, setSavedTheme, theme]
     )

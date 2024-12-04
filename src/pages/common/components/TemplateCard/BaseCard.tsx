@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {THEME_TYPES, ThemeContext} from 'theme'
+import {THEME_NAME, ThemeContext} from 'theme'
 
 import css from './Card.less'
 
@@ -41,8 +41,8 @@ function BaseCard({
             className={classNames(
                 css.container,
                 {
-                    [css.default]: context?.theme !== THEME_TYPES.Dark,
-                    [css.dark]: context?.theme === THEME_TYPES.Dark,
+                    [css.default]: context?.theme !== THEME_NAME.Dark,
+                    [css.dark]: context?.theme === THEME_NAME.Dark,
                 },
                 className
             )}

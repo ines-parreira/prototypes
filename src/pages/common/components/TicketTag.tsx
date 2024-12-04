@@ -5,7 +5,7 @@ import React, {ComponentProps, useContext, useMemo} from 'react'
 import {useFlag} from 'common/flags'
 import Tag from 'components/Tag'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {THEME_TYPES, ThemeContext} from 'theme'
+import {THEME_NAME, ThemeContext} from 'theme'
 import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
 
 type Props = {
@@ -29,7 +29,7 @@ const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
         if (color) {
             const [hue, saturation] = parseToHsla(color)
             const backgroundColor = `hsla(${hue}, ${saturation * 100}%,`
-            if (context?.theme === THEME_TYPES.Dark) {
+            if (context?.theme === THEME_NAME.Dark) {
                 const textColorDark = getEnoughContrastedColor(
                     color,
                     `${backgroundColor} 10%)`

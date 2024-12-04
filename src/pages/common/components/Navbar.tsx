@@ -52,7 +52,8 @@ import {
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
-import {ThemeType, ThemeContextType, withTheme, THEMES} from 'theme'
+import {THEME_CONFIGS, withTheme} from 'theme'
+import type {HelpdeskThemeName, ThemeContextType} from 'theme'
 
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
@@ -346,7 +347,7 @@ export class Navbar extends Component<Props, State> {
     }
 
     updateTheme = (name: string) => {
-        this.props.setTheme(name as ThemeType)
+        this.props.setTheme(name as HelpdeskThemeName)
         logEvent(SegmentEvent.ThemeUpdate, {
             theme: name,
         })
@@ -369,6 +370,10 @@ export class Navbar extends Component<Props, State> {
         const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
 
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
+
+        const selectedTheme = THEME_CONFIGS.find(
+            ({name}) => name === savedTheme
+        )!
 
         return (
             <div
@@ -567,9 +572,8 @@ export class Navbar extends Component<Props, State> {
                                             Theme:
                                         </span>
                                         <span className={css.value}>
-                                            {THEMES[savedTheme]
-                                                ?.settingsLabel ??
-                                                THEMES[savedTheme]?.label}
+                                            {selectedTheme?.settingsLabel ||
+                                                selectedTheme?.label}
                                         </span>
                                     </DropdownItemLabel>
                                 </div>
@@ -1071,34 +1075,30 @@ export class Navbar extends Component<Props, State> {
                                     Back
                                 </DropdownHeader>
                                 <DropdownBody>
-                                    {Object.entries(THEMES).map(
-                                        ([name, {label}]) => (
-                                            <div
-                                                key={name}
-                                                className={classnames(
-                                                    css[
-                                                        'dropdown-item-user-menu'
-                                                    ],
-                                                    css.justify
-                                                )}
-                                                onClick={() =>
-                                                    this.updateTheme(name)
-                                                }
-                                            >
-                                                {label}
-                                                {savedTheme === name && (
-                                                    <span
-                                                        className={classnames(
-                                                            css.check,
-                                                            'material-icons'
-                                                        )}
-                                                    >
-                                                        done
-                                                    </span>
-                                                )}
-                                            </div>
-                                        )
-                                    )}
+                                    {THEME_CONFIGS.map(({label, name}) => (
+                                        <div
+                                            key={name}
+                                            className={classnames(
+                                                css['dropdown-item-user-menu'],
+                                                css.justify
+                                            )}
+                                            onClick={() =>
+                                                this.updateTheme(name)
+                                            }
+                                        >
+                                            {label}
+                                            {savedTheme === name && (
+                                                <span
+                                                    className={classnames(
+                                                        css.check,
+                                                        'material-icons'
+                                                    )}
+                                                >
+                                                    done
+                                                </span>
+                                            )}
+                                        </div>
+                                    ))}
                                 </DropdownBody>
                             </Screen>
                             <div id="noticeable-widget" />

@@ -25,9 +25,14 @@ const getSelectedCustomFieldMock = assumeMock(getSelectedCustomField)
 jest.mock('hooks/reporting/useTicketsDistribution')
 const useTicketsDistributionMock = assumeMock(useTicketsDistribution)
 
-jest.mock('@gorgias/merchant-ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
+jest.mock(
+    '@gorgias/merchant-ui-kit',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/merchant-ui-kit'),
+            Tooltip: () => <div />,
+        }) as typeof import('@gorgias/merchant-ui-kit')
+)
 
 describe('<TicketDistributionTable>', () => {
     const maxTicketCount = 16

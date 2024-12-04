@@ -4,19 +4,19 @@ import {
     UIKitThemeType,
 } from '@gorgias/merchant-ui-kit'
 
-import {THEME_TYPES} from './constants'
-
-export type ThemeType = (typeof THEME_TYPES)[keyof typeof THEME_TYPES]
+export type ColorTokens = ThemeColors
+export type ThemeName = UIKitThemeType
+export type HelpdeskThemeName = ThemeName | 'system'
 
 export type ThemeContextType = UIKitThemeContextType & {
-    theme: UIKitThemeType
-    savedTheme: ThemeType
-    setTheme: (theme: ThemeType) => void
+    theme: ThemeName
+    savedTheme: HelpdeskThemeName
+    setTheme: (theme: HelpdeskThemeName) => void
 }
 
-export type ThemeValue = {
-    label: string
-    settingsLabel?: string
+export type ThemeConfig = {
     icon: string
-    colorTokens: ThemeColors
+    label: string
+    name: HelpdeskThemeName
+    settingsLabel?: string
 }
