@@ -63,6 +63,7 @@ describe('AIAgentDraftMessage', () => {
     const defaultProps = {
         ticketId: 1,
         message: mockMessage,
+        messageIds: [mockMessage.id],
         isTrial: false,
     }
     beforeEach(() => {

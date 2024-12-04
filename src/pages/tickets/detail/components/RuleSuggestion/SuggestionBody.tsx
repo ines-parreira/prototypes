@@ -20,6 +20,7 @@ type Props = {
     setSuggestionState: (state: SuggestionStates) => void
     isAIAgentDraftMessage?: boolean
     message?: TicketMessage
+    messageIds?: Array<TicketMessage['id']>
     isTrialMessage?: boolean
 }
 
@@ -33,6 +34,7 @@ export default function SuggestionBody({
     setSuggestionState,
     isAIAgentDraftMessage = false,
     message,
+    messageIds,
     isTrialMessage,
 }: Props) {
     const [innerRef, {height}] = useMeasure<HTMLDivElement>()
@@ -103,8 +105,12 @@ export default function SuggestionBody({
                     })}
                 </div>
             </div>
-            {isTrialMessage && message && (
-                <AIAgentBanner message={message} className={css.banner} />
+            {isTrialMessage && message && messageIds && (
+                <AIAgentBanner
+                    message={message}
+                    messageIds={messageIds}
+                    className={css.banner}
+                />
             )}
         </Collapse>
     )

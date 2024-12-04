@@ -23,6 +23,7 @@ type Props = {
     id: string
     className?: string
     message: TicketMessage
+    messageIds: Array<TicketMessage['id']>
     hasCursor: boolean
     lastMessageDatetimeAfterMount: Moment | null
     children?: ReactNode
@@ -57,6 +58,7 @@ export default class Container extends Component<Props> {
         const {
             children,
             message,
+            messageIds,
             isMessageHidden,
             isMessageDeleted,
             isAIAgentInternalNote = false,
@@ -205,6 +207,7 @@ export default class Container extends Component<Props> {
                         {isAIAgentMessage && (
                             <AIAgentBanner
                                 message={message}
+                                messageIds={messageIds}
                                 className={classNames({
                                     [css.withVerticalSpacing]:
                                         !isAIAgentInternalNote,

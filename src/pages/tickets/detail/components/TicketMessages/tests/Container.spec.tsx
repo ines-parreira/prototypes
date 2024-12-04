@@ -47,6 +47,7 @@ describe('Container', () => {
         id: 'some-header',
         hasCursor: false,
         message,
+        messageIds: [message.id],
         timezone: 'America/Los_Angeles',
         lastMessageDatetimeAfterMount: moment('2017-01-01T12:12:34Z'),
         isMessageHidden: false,

@@ -72,7 +72,10 @@ describe('AIAgentBanner', () => {
         const {container} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
+                    <AIAgentBanner
+                        message={mockMessage}
+                        messageIds={[mockMessage.id]}
+                    />
                 </Provider>
             </QueryClientProvider>
         )
@@ -104,7 +107,12 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(<AIAgentBanner message={{...mockMessage, public: false}} />)
+        render(
+            <AIAgentBanner
+                message={{...mockMessage, public: false}}
+                messageIds={[mockMessage.id]}
+            />
+        )
 
         expect(screen.queryByTestId('feedback')).not.toBeInTheDocument()
     })
@@ -133,7 +141,12 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(<AIAgentBanner message={{...mockMessage, public: true}} />)
+        render(
+            <AIAgentBanner
+                message={{...mockMessage, public: true}}
+                messageIds={[mockMessage.id]}
+            />
+        )
 
         expect(screen.queryByTestId('feedback')).toBeInTheDocument()
     })
@@ -162,7 +175,12 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(<AIAgentBanner message={mockMessage} />)
+        render(
+            <AIAgentBanner
+                message={mockMessage}
+                messageIds={[mockMessage.id]}
+            />
+        )
 
         expect(screen.getByTestId('feedback')).toBeInTheDocument()
     })
@@ -190,7 +208,12 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        render(<AIAgentBanner message={mockMessage} />)
+        render(
+            <AIAgentBanner
+                message={mockMessage}
+                messageIds={[mockMessage.id]}
+            />
+        )
 
         const message = screen.getByText('summary')
 
@@ -217,7 +240,10 @@ describe('AIAgentBanner', () => {
         } as any)
 
         const {getByText} = render(
-            <AIAgentBanner message={{...mockMessage, public: false}} />
+            <AIAgentBanner
+                message={{...mockMessage, public: false}}
+                messageIds={[mockMessage.id]}
+            />
         )
 
         const message = getByText('summary')
@@ -251,6 +277,7 @@ describe('AIAgentBanner', () => {
                     public: false,
                     body_html: 'body_html123',
                 }}
+                messageIds={[mockMessage.id]}
             />
         )
 
@@ -281,8 +308,53 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {container} = render(<AIAgentBanner message={mockMessage} />)
+        const {container} = render(
+            <AIAgentBanner
+                message={mockMessage}
+                messageIds={[mockMessage.id]}
+            />
+        )
 
         expect(container.firstChild).toHaveClass('hasError')
+    })
+    it('should render the feedback if at last one message of the group matches with the returned feedback', () => {
+        const messageWithFeedback = {...mockMessage, id: 2}
+        const lastGroupMessageWithoutFeedback = {...mockMessage, id: 3}
+
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: messageWithFeedback.id,
+                            summary: 'summary',
+                            feedbackOnResource: [
+                                {resourceId: 1, feedback: 'thumbs_up'},
+                                {resourceId: 2, feedback: 'thumbs_up'},
+                                {resourceId: 3, feedback: 'thumbs_down'},
+                            ],
+                            allowsFeedback: true,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        render(
+            <AIAgentBanner
+                message={mockMessage}
+                messageIds={[
+                    mockMessage.id,
+                    messageWithFeedback.id,
+                    lastGroupMessageWithoutFeedback.id,
+                ]}
+            />
+        )
+
+        expect(screen.queryByTestId('feedback')).toBeInTheDocument()
     })
 })

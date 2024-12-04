@@ -12,18 +12,23 @@ import AIAgentFeedback from './AIAgentFeedback'
 
 export type AIAgentBannerProps = {
     message: TicketMessage
+    messageIds: Array<TicketMessage['id']>
     className?: string
 }
 
-const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
+const AIAgentBanner = ({
+    message,
+    messageIds,
+    className,
+}: AIAgentBannerProps) => {
     const {data} = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
 
     const ticketFeedback = data?.data
 
-    const messageFeedback = ticketFeedback?.messages?.find(
-        (messageFeedback) => messageFeedback.messageId === message.id
+    const messageFeedback = ticketFeedback?.messages?.find((messageFeedback) =>
+        messageIds.includes(messageFeedback.messageId)
     )
 
     // If message is not public, it is an internal note created by AI Agent
