@@ -70,8 +70,8 @@ describe('useThemeContext', () => {
         expect(result.current.savedTheme).toEqual(THEME_TYPES.Light)
     })
 
-    it('should update state in local storage if current theme is the outdated modern value', () => {
-        jest.spyOn(localStorage, 'getItem').mockReturnValue('"modern"')
+    it('should update state in local storage if the saved theme is not valid', () => {
+        jest.spyOn(localStorage, 'getItem').mockReturnValue('"notvalid"')
         jest.spyOn(localStorage, 'setItem')
         const {result} = renderHook(() => useThemeContext())
 

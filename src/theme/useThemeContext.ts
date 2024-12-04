@@ -1,13 +1,14 @@
 import {useEffect, useMemo} from 'react'
 
 import {usePersistedState} from 'common/hooks'
-import {tryLocalStorage} from 'services/common/utils'
 
 import {THEMES, THEME_TYPES} from './constants'
 import {ThemeType} from './types'
 
+export const themeValues = Object.values(THEME_TYPES)
+
 export default function useThemeContext() {
-    const [savedTheme, setSavedTheme] = usePersistedState<ThemeType | 'modern'>(
+    const [savedTheme, setSavedTheme] = usePersistedState<ThemeType>(
         'theme',
         THEME_TYPES.Modern
     )
@@ -15,40 +16,35 @@ export default function useThemeContext() {
         '(prefers-color-scheme: dark)'
     ).matches
 
-    // Deprecates 'modern' as theme value on local storage
-    // if only 'modern' is set as theme, accessory tokens are not available for modern theme
+    // Properly sanitize the value from localstorage, since it can
+    // technically be anything as it's in the user's cintrol
+    const actualTheme = themeValues.includes(savedTheme)
+        ? savedTheme
+        : THEME_TYPES.Modern
     useEffect(() => {
-        if (savedTheme === 'modern') {
-            tryLocalStorage(() => {
-                localStorage.setItem(
-                    'theme',
-                    JSON.stringify(THEME_TYPES.Modern)
-                )
-                setSavedTheme(THEME_TYPES.Modern)
-            })
+        if (actualTheme !== savedTheme) {
+            setSavedTheme(actualTheme)
         }
-    }, [savedTheme, setSavedTheme])
+    }, [actualTheme, savedTheme, setSavedTheme])
 
     const theme = useMemo(
         () =>
-            savedTheme === THEME_TYPES.System
+            actualTheme === THEME_TYPES.System
                 ? prefersDarkTheme
                     ? THEME_TYPES.Dark
                     : THEME_TYPES.Light
-                : savedTheme === 'modern'
-                  ? THEME_TYPES.Modern
-                  : savedTheme,
-        [prefersDarkTheme, savedTheme]
+                : actualTheme,
+        [prefersDarkTheme, actualTheme]
     )
 
     const context = useMemo(
         () => ({
-            savedTheme: savedTheme as ThemeType,
+            savedTheme: actualTheme,
             theme,
             setTheme: setSavedTheme,
             colorTokens: THEMES[theme].colorTokens,
         }),
-        [savedTheme, setSavedTheme, theme]
+        [actualTheme, setSavedTheme, theme]
     )
 
     return context
