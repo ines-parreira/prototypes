@@ -1,45 +1,46 @@
+import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
 import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
 import {fireEvent, screen, waitFor, act} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import {assumeMock} from 'utils/testing'
 
 import {BillingAddressSetupView} from '../BillingAddressSetupView'
 
-jest.mock('react-redux')
 jest.mock('hooks/useAppSelector')
-jest.mock('state/billing/selectors')
 
-type ChangeEventHandler = (event: StripeAddressElementChangeEvent) => any
+jest.mock('@stripe/stripe-js')
+jest.mock('@stripe/react-stripe-js')
 
-let changeEventHandler: ChangeEventHandler = () => {}
+assumeMock(Elements).mockImplementation(({children}: any) => (
+    <div data-testid="stripe-elements">{children}</div>
+))
 
-const addressElementChangeHandler: (
-    event: StripeAddressElementChangeEvent
-) => any = (event) => {
+let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
+
+assumeMock(AddressElement).mockImplementation(({onChange}) => {
+    handleAddressChange = onChange ?? (() => {})
+
+    return <div data-testid="stripe-address-element" />
+})
+
+const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
+    assumeMock(useElements).mockReturnValue({
+        getElement: jest.fn().mockReturnValue({
+            getValue: jest.fn().mockResolvedValue(event),
+        }),
+    } as any)
+
     act(() => {
-        changeEventHandler(event)
+        handleAddressChange(event as any)
     })
 }
-
-jest.mock('@stripe/react-stripe-js', () => ({
-    useElements: jest.fn(() => ({
-        getElement: jest.fn(() => ({
-            on: jest.fn((eventType, handler: ChangeEventHandler) => {
-                if (eventType === 'change') {
-                    changeEventHandler = handler
-                }
-            }),
-            getValue: jest.fn(),
-        })),
-    })),
-    AddressElement: () => <div data-testid="stripe-address-element" />,
-    Elements: ({children}: any) => (
-        <div data-testid="stripe-elements">{children}</div>
-    ),
-}))
 
 const mockedServer = new MockAdapter(client)
 
@@ -48,9 +49,11 @@ mockedServer.onGet('/api/billing/contact/').reply(200, {
     shipping: {},
 })
 
+mockedServer.onPut('/api/billing/contact/').reply(201, {})
+
 describe('BillingAddressSetupView', () => {
     it('should render the component correctly', async () => {
-        renderWithQueryClientProvider(<BillingAddressSetupView />)
+        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -63,7 +66,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should enable the submit button when the address is complete and the email is valid', async () => {
-        renderWithQueryClientProvider(<BillingAddressSetupView />)
+        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -77,7 +80,7 @@ describe('BillingAddressSetupView', () => {
             screen.getByText('Invoices are sent to this email address.')
         ).toBeVisible()
 
-        addressElementChangeHandler({
+        mockAddressValue({
             complete: true,
             value: {address: {postal_code: '12345', country: 'US'}},
         } as StripeAddressElementChangeEvent)
@@ -91,7 +94,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should update the email state when input changes', async () => {
-        renderWithQueryClientProvider(<BillingAddressSetupView />)
+        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
@@ -110,6 +113,60 @@ describe('BillingAddressSetupView', () => {
                 screen.queryByDisplayValue('test@example.com')
             ).not.toBeInTheDocument()
             expect(screen.getByDisplayValue('new@example.com')).toBeVisible()
+        })
+    })
+
+    it('should not submit empty tax ID fields (they are required)', async () => {
+        mockFlags({
+            [FeatureFlagKey.BillingTaxIdField]: true,
+        })
+
+        renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
+        })
+
+        fireEvent.change(screen.getByRole('textbox', {name: 'Email'}), {
+            target: {value: 'new@example.com'},
+        })
+
+        mockAddressValue({
+            complete: true,
+            value: {address: {country: 'FR', postal_code: '75019'}},
+        } as StripeAddressElementChangeEvent)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('textbox', {name: 'VAT Number info'})
+            ).toBeVisible()
+        })
+
+        fireEvent.click(
+            screen.getByRole('button', {name: 'Save Billing Information'})
+        )
+
+        fireEvent.change(
+            screen.getByRole('textbox', {name: 'VAT Number info'}),
+            {
+                target: {value: 'FRAB123456789'},
+            }
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('FRAB123456789')).toBeVisible()
+        })
+
+        await waitFor(() => {
+            expect(mockedServer.history.post).toHaveLength(0)
+        })
+
+        fireEvent.click(
+            screen.getByRole('button', {name: 'Save Billing Information'})
+        )
+
+        await waitFor(() => {
+            expect(mockedServer.history.put).toHaveLength(1)
         })
     })
 })
