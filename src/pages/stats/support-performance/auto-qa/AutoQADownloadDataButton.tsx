@@ -13,7 +13,7 @@ import {
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {saveReport} from 'services/reporting/autoQAReportingService'
 
-const DOWNLOAD_BUTTON_TITLE = 'Channels Report Data'
+const DOWNLOAD_BUTTON_TITLE = 'AutoQA Report Data'
 
 export const AutoQADownloadDataButton = () => {
     const {reportData, isLoading, period} = useAutoQAMetrics()

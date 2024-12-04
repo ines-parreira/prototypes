@@ -12,6 +12,7 @@ import {
 } from 'models/job/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {MetricValueFormat} from 'pages/stats/common/utils'
+import {SatisfactionMetricConfig as SatisfactionTrendCardConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {
     AgentsColumnConfig,
@@ -39,6 +40,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    SatisfactionMetric,
     SlaMetric,
     TagsMetric,
     TicketFieldsMetric,
@@ -135,6 +137,10 @@ export type TagsFieldsMetrics = {
     }
 } & CommonMetrics
 
+export type SatisfactionMetrics = {
+    metricName: SatisfactionMetric
+} & CommonMetrics
+
 export type SlaMetrics = {
     metricName: SlaMetric
 } & CommonMetrics
@@ -164,6 +170,7 @@ export type DrillDownMetric =
     | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
+    | SatisfactionMetrics
     | SlaMetrics
     | ConvertMetrics
     | VoiceMetrics
@@ -200,6 +207,9 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.ClosedTicketsPerHour,
     AutoQAMetric.ReviewedClosedTickets,
     AutoQAMetric.ResolutionCompleteness,
+    SatisfactionMetric.AverageScore,
+    SatisfactionMetric.ResponseRate,
+    SatisfactionMetric.SurveysSent,
     AutoQAAgentsTableColumn.ReviewedClosedTickets,
     AutoQAAgentsTableColumn.ResolutionCompleteness,
     ChannelsTableColumns.TicketsCreated,
@@ -368,6 +378,14 @@ export const getDrillDownMetricColumn = (
     ) {
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
+    } else if (
+        metricData.metricName === SatisfactionMetric.AverageScore ||
+        metricData.metricName === SatisfactionMetric.ResponseRate ||
+        metricData.metricName === SatisfactionMetric.SurveysSent
+    ) {
+        metricTitle = SatisfactionTrendCardConfig[metricData.metricName].title
+        metricValueFormat =
+            SatisfactionTrendCardConfig[metricData.metricName].metricFormat
     } else if (
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAMetric.CommunicationSkills ||

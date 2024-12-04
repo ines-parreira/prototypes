@@ -6,6 +6,10 @@ import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFa
 import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import {averageScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import {responseRateDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
+import {surveysSentDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
+
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
@@ -51,6 +55,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    SatisfactionMetric,
     SlaMetric,
     TagsMetric,
     TicketFieldsMetric,
@@ -225,6 +230,12 @@ export const getDrillDownQuery = (
             return communicationSkillsDrillDownQueryFactory
         case AutoQAMetric.LanguageProficiency:
             return languageProficiencyDrillDownQueryFactory
+        case SatisfactionMetric.AverageScore:
+            return averageScoreDrillDownQueryFactory
+        case SatisfactionMetric.ResponseRate:
+            return responseRateDrillDownQueryFactory
+        case SatisfactionMetric.SurveysSent:
+            return surveysSentDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:

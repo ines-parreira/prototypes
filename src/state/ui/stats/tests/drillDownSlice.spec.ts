@@ -9,6 +9,7 @@ import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {SatisfactionMetricConfig as SatisfactionTrendCardConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {
     buildAgentMetric,
@@ -49,6 +50,7 @@ import {
     ConvertMetric,
     VoiceAgentsMetric,
     AutoQAMetric,
+    SatisfactionMetric,
     ChannelsTableColumns,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
@@ -311,6 +313,54 @@ describe('drillDownSlice', () => {
                     metricValueFormat:
                         TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
                             .metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName: SatisfactionMetric.AverageScore,
+                },
+                expectedValues: {
+                    metricTitle:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.AverageScore
+                        ].title,
+                    showMetric: false,
+                    metricValueFormat:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.AverageScore
+                        ].metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName: SatisfactionMetric.ResponseRate,
+                },
+                expectedValues: {
+                    metricTitle:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.ResponseRate
+                        ].title,
+                    showMetric: false,
+                    metricValueFormat:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.ResponseRate
+                        ].metricFormat,
+                },
+            },
+            {
+                metricData: {
+                    metricName: SatisfactionMetric.SurveysSent,
+                },
+                expectedValues: {
+                    metricTitle:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.SurveysSent
+                        ].title,
+                    showMetric: false,
+                    metricValueFormat:
+                        SatisfactionTrendCardConfig[
+                            SatisfactionMetric.SurveysSent
+                        ].metricFormat,
                 },
             },
             ...voiceAgentsMetricsWithExpectedValues,

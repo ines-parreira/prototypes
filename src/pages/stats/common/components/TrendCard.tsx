@@ -15,7 +15,7 @@ import MetricCard from 'pages/stats/MetricCard'
 import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {AutoQAMetric, SlaMetric} from 'state/ui/stats/types'
+import {AutoQAMetric, SatisfactionMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
     hint,
@@ -29,7 +29,11 @@ export const TrendCard = ({
     useTrend: MetricTrendHook
     hint: TooltipData
     title: string
-    drillDownMetric?: OverviewMetric | SlaMetric | AutoQAMetric
+    drillDownMetric?:
+        | OverviewMetric
+        | SlaMetric
+        | AutoQAMetric
+        | SatisfactionMetric
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat

@@ -26,12 +26,14 @@ import {
     ConvertMetrics,
     DrillDownMetric,
     SlaMetrics,
+    SatisfactionMetrics,
     TagsFieldsMetrics,
 } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
     TicketFieldsMetric,
     SlaMetric,
+    SatisfactionMetric,
     ConvertMetric,
     VoiceMetric,
     AutoQAMetric,
@@ -188,6 +190,13 @@ describe('getDrillDownQuery', () => {
         },
         {metricName: SlaMetric.BreachedTicketsRate},
     ]
+    const satisfactionMetrics: SatisfactionMetrics[] = [
+        {
+            metricName: SatisfactionMetric.AverageScore,
+        },
+        {metricName: SatisfactionMetric.ResponseRate},
+        {metricName: SatisfactionMetric.SurveysSent},
+    ]
     const tagsMetrics: TagsFieldsMetrics[] = [
         {
             metricName: TagsMetric.TicketCount,
@@ -257,6 +266,7 @@ describe('getDrillDownQuery', () => {
         ...autoQAMetrics,
         ...channelMetrics,
         ...slaMetrics,
+        ...satisfactionMetrics,
         ...convertMetrics,
         ...voiceMetrics,
         ...tagsMetrics,

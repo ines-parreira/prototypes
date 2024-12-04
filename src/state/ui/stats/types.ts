@@ -31,6 +31,12 @@ export enum AutoQAMetric {
     LanguageProficiency = 'auto_qa_language_proficiency',
 }
 
+export enum SatisfactionMetric {
+    AverageScore = 'satisfaction_survey_average_score',
+    ResponseRate = 'satisfaction_survey_response_rate',
+    SurveysSent = 'satisfaction_survey_surveys_sent',
+}
+
 export enum TicketFieldsMetric {
     TicketCustomFieldsTicketCount = 'ticket_custom_fields_ticket_count',
 }
