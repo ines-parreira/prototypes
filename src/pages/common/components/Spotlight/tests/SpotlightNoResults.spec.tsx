@@ -23,4 +23,15 @@ describe('<SpotlightNoResults />', () => {
         fireEvent.click(getByText(/Use advanced search/i))
         expect(mockHandleAdvancedSearch).toHaveBeenCalled()
     })
+
+    it('should handle showAdvancedSearch prop', () => {
+        const {queryByText} = render(
+            <SpotlightNoResults
+                {...componentProps}
+                showAdvancedSearch={false}
+            />
+        )
+
+        expect(queryByText(/Use advanced search/i)).toBeNull()
+    })
 })

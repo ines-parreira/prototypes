@@ -2,6 +2,7 @@ import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {createBrowserHistory} from 'history'
 import {fromJS} from 'immutable'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {stringify} from 'qs'
 import React, {ComponentProps, ReactPortal} from 'react'
 import ReactDOM from 'react-dom'
@@ -12,6 +13,7 @@ import thunk from 'redux-thunk'
 // eslint-disable-next-line import/order
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {ticket} from 'fixtures/ticket'
@@ -24,6 +26,7 @@ import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {SearchEngine} from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {
+    CALLS_LABEL,
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
@@ -36,6 +39,7 @@ import SpotlightModal, {
 } from 'pages/common/components/Spotlight/SpotlightModal'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import history from 'pages/history'
+import * as billingSelectors from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
@@ -136,8 +140,14 @@ jest.mock('hooks/useLocalStorageWithExpiry', () => () => {
     return {state, setState, remove: jest.fn(), refreshTimestamp: jest.fn()}
 })
 
+const mockCurrentAccountHasProduct = jest.spyOn(
+    billingSelectors,
+    'currentAccountHasProduct'
+)
+
 const getCustomersTab = () => screen.getByRole('tab', {name: CUSTOMERS_LABEL})
 const getTicketsTab = () => screen.getByRole('tab', {name: TICKETS_LABEL})
+const getCallsTab = () => screen.getByRole('tab', {name: CALLS_LABEL})
 const getFederatedTab = () =>
     screen.getByRole('tab', {
         name: FEDERATED_SEARCH_TAB_LABEL,
@@ -155,6 +165,8 @@ describe('<SpotlightModal/>', () => {
             value: jest.fn(),
             writable: true,
         })
+        resetLDMocks()
+        mockFlags({[FeatureFlagKey.VoiceCallSearch]: true})
     })
 
     beforeEach(() => {
@@ -171,6 +183,7 @@ describe('<SpotlightModal/>', () => {
             reset: jest.fn(),
         })
         mockUseSearchRankScenario.mockReturnValue(mockSearchRank)
+        mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
     })
 
     afterEach(() => {
@@ -207,6 +220,33 @@ describe('<SpotlightModal/>', () => {
 
             expect(customersTab).toHaveClass('activeTab')
         })
+
+        it('should render & set calls tab if available', async () => {
+            mockFlags({[FeatureFlagKey.VoiceCallSearch]: true})
+            mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
+
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+
+            const callsTab = getCallsTab()
+            expect(callsTab).toBeInTheDocument()
+
+            callsTab?.focus()
+            expect(callsTab).toHaveClass('activeTab')
+        })
+
+        it('should not render calls if FF is off', async () => {
+            mockFlags({[FeatureFlagKey.VoiceCallSearch]: false})
+            mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
+
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+
+            expect(screen.queryByRole('tab', {name: CALLS_LABEL})).toBeNull()
+            expect(getFederatedTab()).toHaveClass('activeTab')
+            expect(getCustomersTab()).toBeInTheDocument()
+            expect(getTicketsTab()).toBeInTheDocument()
+        })
     })
 
     describe('Navigate to Advanced Search', () => {
@@ -217,6 +257,22 @@ describe('<SpotlightModal/>', () => {
             const {queryByText} = renderWithRouter(
                 <WrappedSpotlightModal {...minProps} />
             )
+
+            const advancedSearchButton = queryByText('Advanced Search')
+
+            expect(advancedSearchButton).not.toBeInTheDocument()
+        })
+
+        it('should not navigate to advanced search on calls tab', () => {
+            mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
+            mockFlags({[FeatureFlagKey.VoiceCallSearch]: true})
+
+            const {queryByText} = renderWithRouter(
+                <WrappedSpotlightModal {...minProps} />
+            )
+
+            const callsTab = getCallsTab()
+            callsTab?.focus()
 
             const advancedSearchButton = queryByText('Advanced Search')
 

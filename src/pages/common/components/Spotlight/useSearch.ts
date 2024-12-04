@@ -65,12 +65,14 @@ export enum Tabs {
     All = 'all',
     Tickets = 'tickets',
     Customers = 'customers',
+    Calls = 'calls',
 }
 
 const searchRankScenarioSource: Record<ViewType, SearchRankSource> = {
     [ViewType.CustomerList]: SearchRankSource.SpotlightCustomer,
     [ViewType.TicketList]: SearchRankSource.SpotlightTicket,
     [ViewType.All]: SearchRankSource.SpotlightAll,
+    [ViewType.CallList]: SearchRankSource.SpotlightAll,
 }
 
 const getSelectedItemUrl = (
@@ -113,6 +115,7 @@ export const useSearch = () => {
         [Tabs.Customers]: '',
         [Tabs.Tickets]: '',
         [Tabs.All]: '',
+        [Tabs.Calls]: '',
     })
 
     const previousSearchItemsType = usePrevious(searchItemsType)
@@ -154,6 +157,8 @@ export const useSearch = () => {
                               FEDERATED_SEARCH_GROUP_SIZE
                           ),
                       ].length - 1
+            case ViewType.CallList:
+                return 0
         }
     }, [
         searchItemsType,
@@ -183,6 +188,8 @@ export const useSearch = () => {
                 return hasSearched
                     ? customers[selectedIndex]
                     : recentCustomers[selectedIndex]
+            case ViewType.CallList:
+                return 0
             case ViewType.All:
                 return hasSearched
                     ? [
@@ -227,6 +234,7 @@ export const useSearch = () => {
                 [Tabs.Customers]:
                     viewType === ViewType.CustomerList ? searchTerm : '',
                 [Tabs.All]: viewType === ViewType.All ? searchTerm : '',
+                [Tabs.Calls]: '',
             })
             setCustomers((customers) =>
                 cursor ? [...customers, ...results] : results
@@ -255,6 +263,7 @@ export const useSearch = () => {
                 [Tabs.Tickets]:
                     viewType === ViewType.TicketList ? searchTerm : '',
                 [Tabs.All]: viewType === ViewType.All ? searchTerm : '',
+                [Tabs.Calls]: '',
             })
             setTickets((tickets) =>
                 cursor ? [...tickets, ...results] : results
@@ -378,7 +387,12 @@ export const useSearch = () => {
         !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
         !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
         setSearchItemsType(defaultSearchItemsType)
-        setLastSearchQueries({customers: '', tickets: '', all: ''})
+        setLastSearchQueries({
+            customers: '',
+            tickets: '',
+            all: '',
+            calls: '',
+        })
         cancelSearch()
         searchRank.endScenario()
         resetSelectedIndex()

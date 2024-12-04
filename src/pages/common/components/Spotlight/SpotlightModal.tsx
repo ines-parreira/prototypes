@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {stringify} from 'qs'
 import React, {
     KeyboardEvent,
@@ -10,27 +11,31 @@ import React, {
 import {useLocation} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import {ProductType} from 'models/billing/types'
 import {ViewType} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import Search from 'pages/common/components/Search'
+
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
+    CALLS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 import {SpotlightModalContent} from 'pages/common/components/Spotlight/SpotlightModalContent'
 import {Tabs, useSearch} from 'pages/common/components/Spotlight/useSearch'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {currentAccountHasProduct} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isMacOs} from 'utils/platform'
 
@@ -46,12 +51,14 @@ export const CUSTOMERS_ADVANCED_SEARCH_PATH = '/app/customers/search'
 const navigatorTabsWithFederatedSearch = [
     {label: FEDERATED_SEARCH_TAB_LABEL, value: Tabs.All},
     {label: TICKETS_LABEL, value: Tabs.Tickets},
+    {label: CALLS_LABEL, value: Tabs.Calls},
     {label: CUSTOMERS_LABEL, value: Tabs.Customers},
 ]
 
 const viewToTabMap: Record<ViewType, Tabs> = {
     [ViewType.All]: Tabs.All,
     [ViewType.TicketList]: Tabs.Tickets,
+    [ViewType.CallList]: Tabs.Calls,
     [ViewType.CustomerList]: Tabs.Customers,
 }
 
@@ -66,6 +73,11 @@ const viewToAdvancedSearchPath: Record<
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
+    const hasVoiceProduct = useAppSelector(
+        currentAccountHasProduct(ProductType.Voice)
+    )
+    const useVoiceCallSearch = !!useFlags()[FeatureFlagKey.VoiceCallSearch]
+    const showCallsTab = useVoiceCallSearch && hasVoiceProduct
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
 
@@ -86,10 +98,14 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         setSelectedIndex,
     } = search
 
+    const hasAdvancedSearch =
+        searchItemsType !== ViewType.All &&
+        searchItemsType !== ViewType.CallList
+
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
 
-        if (searchItemsType !== ViewType.All) {
+        if (hasAdvancedSearch) {
             const advancedSearchPathname =
                 viewToAdvancedSearchPath[searchItemsType]
 
@@ -102,7 +118,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 }),
             })
         }
-    }, [searchItemsType, onCloseModal, searchQuery])
+    }, [searchItemsType, onCloseModal, searchQuery, hasAdvancedSearch])
 
     useEffect(() => {
         shortcutManager.bind('SpotlightModal', {
@@ -156,15 +172,22 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const handleTabChange = (tab: string) => {
         searchRank.endScenario()
-        if (tab === Tabs.Customers) {
-            setSearchItemsType(ViewType.CustomerList)
-            logEvent(SegmentEvent.GlobalSearchCustomerTabClick)
-        } else if (tab === Tabs.Tickets) {
-            setSearchItemsType(ViewType.TicketList)
-            logEvent(SegmentEvent.GlobalSearchTicketTabClick)
-        } else if (tab === Tabs.All) {
-            setSearchItemsType(ViewType.All)
-            logEvent(SegmentEvent.GlobalSearchAllTabClick)
+        switch (tab) {
+            case Tabs.Customers:
+                setSearchItemsType(ViewType.CustomerList)
+                logEvent(SegmentEvent.GlobalSearchCustomerTabClick)
+                break
+            case Tabs.Tickets:
+                setSearchItemsType(ViewType.TicketList)
+                logEvent(SegmentEvent.GlobalSearchTicketTabClick)
+                break
+            case Tabs.All:
+                setSearchItemsType(ViewType.All)
+                logEvent(SegmentEvent.GlobalSearchAllTabClick)
+                break
+            case Tabs.Calls:
+                setSearchItemsType(ViewType.CallList)
+                break
         }
     }
 
@@ -191,7 +214,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         [hasSearched, currentUser]
     )
 
-    const hasAdvancedSearch = searchItemsType !== ViewType.All
+    const tabs = navigatorTabsWithFederatedSearch.filter(
+        (tab) => showCallsTab || tab.value !== Tabs.Calls
+    )
 
     return (
         <Modal
@@ -214,7 +239,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 onKeyDown={handleKeyDown}
             />
             <TabNavigator
-                tabs={navigatorTabsWithFederatedSearch}
+                tabs={tabs}
                 activeTab={viewToTabMap[searchItemsType]}
                 onTabChange={handleTabChange}
                 className={css.tabNavigator}
@@ -230,6 +255,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     logRecentlyAccessedSegmentEvent={
                         logRecentlyAccessedSegmentEvent
                     }
+                    showCallsTab={showCallsTab}
                 />
             </ModalBody>
             <ModalFooter

@@ -405,6 +405,7 @@ function getViewTypeUrl(
             list: 'customers',
         },
         [ViewType.All]: null,
+        [ViewType.CallList]: null,
     }
 
     return typeMap[viewType]

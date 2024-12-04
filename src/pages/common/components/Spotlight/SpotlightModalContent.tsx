@@ -18,6 +18,7 @@ import {
     CUSTOMERS_LABEL,
     FEDERATED_SEARCH_GROUP_SIZE,
     TICKETS_LABEL,
+    CALLS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
@@ -43,6 +44,8 @@ const hasNoResults = (
             return _isEmpty(customers)
         case ViewType.TicketList:
             return _isEmpty(tickets)
+        case ViewType.CallList:
+            return true
     }
 }
 const hasNoRecentResults = (
@@ -57,6 +60,8 @@ const hasNoRecentResults = (
             return _isEmpty(customers)
         case ViewType.TicketList:
             return _isEmpty(tickets)
+        case ViewType.CallList:
+            return true
     }
 }
 
@@ -86,6 +91,9 @@ const getData = (
             )
             return [...tickets, ...customers]
         }
+        case ViewType.CallList: {
+            return []
+        }
     }
 }
 
@@ -110,6 +118,7 @@ type Props = {
         type: 'spotlight-ticket' | 'spotlight-customer'
     ) => void
     onTabChange: (tab: string) => void
+    showCallsTab?: boolean
 }
 
 export const SpotlightModalContent = ({
@@ -131,9 +140,11 @@ export const SpotlightModalContent = ({
     hasSearched,
     logRecentlyAccessedSegmentEvent,
     onTabChange,
+    showCallsTab,
 }: Props) => {
     const virtuosoRef = useRef<VirtuosoHandle | GroupedVirtuosoHandle>(null)
     const groupedVirtuosoRef = useRef<GroupedVirtuosoHandle>(null)
+    const showAdvancedSearch = searchItemsType !== ViewType.CallList
 
     useEffect(() => {
         const virtuosoScrollArea = virtuosoRef.current
@@ -157,6 +168,7 @@ export const SpotlightModalContent = ({
                 title="No results"
                 bodyText="You may want to try using different keywords or check for typos."
                 handleAdvancedSearch={goToAdvancedSearch}
+                showAdvancedSearch={showAdvancedSearch}
             />
         )
     }
@@ -165,17 +177,22 @@ export const SpotlightModalContent = ({
         !hasSearched &&
         hasNoRecentResults(recentTickets, recentCustomers, searchItemsType)
     ) {
+        const message = showCallsTab
+            ? 'Try searching for a ticket, call or customer.'
+            : 'Try searching for a ticket or customer.'
         return (
             <SpotlightNoResults
                 title="No recent results"
-                bodyText="Try searching for a ticket or customer."
+                bodyText={message}
                 handleAdvancedSearch={goToAdvancedSearch}
+                showAdvancedSearch={showAdvancedSearch}
             />
         )
     }
 
     const displayedTickets = hasSearched ? tickets : recentTickets
     const displayedCustomers = hasSearched ? customers : recentCustomers
+    const displayedCalls = []
 
     const shouldDisplayRecentItems =
         !hasSearched &&
@@ -244,6 +261,14 @@ export const SpotlightModalContent = ({
                             displayedTickets.length,
                             FEDERATED_SEARCH_GROUP_SIZE
                         ),
+                        ...(showCallsTab
+                            ? [
+                                  Math.min(
+                                      displayedCalls.length,
+                                      FEDERATED_SEARCH_GROUP_SIZE
+                                  ),
+                              ]
+                            : []),
                         Math.min(
                             displayedCustomers.length,
                             FEDERATED_SEARCH_GROUP_SIZE
@@ -253,7 +278,11 @@ export const SpotlightModalContent = ({
                         itemContentCallback(index, data[index])
                     }
                     groupContent={(index) => (
-                        <GroupHeader index={index} onTabChange={onTabChange} />
+                        <GroupHeader
+                            index={index}
+                            onTabChange={onTabChange}
+                            showCallsTab={showCallsTab}
+                        />
                     )}
                 ></GroupedSpotlightScrollArea>
             ) : (
@@ -283,12 +312,31 @@ const RecentlyAccessedHeader = () => (
 const GroupHeader = ({
     index,
     onTabChange,
+    showCallsTab,
 }: {
     index: number
     onTabChange: (tab: string) => void
+    showCallsTab?: boolean
 }) => {
-    const title = index === 0 ? TICKETS_LABEL : CUSTOMERS_LABEL
-    const targetTab = index === 0 ? Tabs.Tickets : Tabs.Customers
+    const getTabDetails = (index: number) => {
+        if (index === 0) {
+            return {
+                title: TICKETS_LABEL,
+                targetTab: Tabs.Tickets,
+            }
+        }
+        if (index === 1 && showCallsTab) {
+            return {
+                title: CALLS_LABEL,
+                targetTab: Tabs.Calls,
+            }
+        }
+        return {
+            title: CUSTOMERS_LABEL,
+            targetTab: Tabs.Customers,
+        }
+    }
+    const {title, targetTab} = getTabDetails(index)
 
     return (
         <div className={css.groupContent}>

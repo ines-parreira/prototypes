@@ -16,6 +16,7 @@ export enum ViewType {
     All = 'all',
     TicketList = 'ticket-list',
     CustomerList = 'customer-list',
+    CallList = 'voice-call-list',
 }
 
 export enum EntityType {

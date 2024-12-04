@@ -240,4 +240,50 @@ describe('<SpotlightModalContent />', () => {
 
         expect(onTabChange).toHaveBeenCalled()
     })
+
+    it('should render correct message when we can search calls', () => {
+        const props = {
+            ...defaultProps,
+            searchItemsType: ViewType.CustomerList,
+            customers: [],
+            hasSearched: false,
+            showCallsTab: true,
+        }
+
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        expect(
+            getByText('Try searching for a ticket, call or customer.')
+        ).toBeInTheDocument()
+    })
+
+    it('should render correct message when we cannot search calls', () => {
+        const props = {
+            ...defaultProps,
+            searchItemsType: ViewType.CustomerList,
+            customers: [],
+            hasSearched: false,
+            showCallsTab: false,
+        }
+
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        expect(
+            getByText('Try searching for a ticket or customer.')
+        ).toBeInTheDocument()
+    })
+
+    it('should not render advanced search for voice calls tab', () => {
+        const props = {
+            ...defaultProps,
+            searchItemsType: ViewType.CallList,
+            showCallsTab: true,
+            tickets: [ticketWithHighlights],
+            customers: [customerWithHighlights],
+        }
+
+        const {queryByText} = render(<SpotlightModalContent {...props} />)
+
+        expect(queryByText('Use advanced search')).toBeNull()
+    })
 })
