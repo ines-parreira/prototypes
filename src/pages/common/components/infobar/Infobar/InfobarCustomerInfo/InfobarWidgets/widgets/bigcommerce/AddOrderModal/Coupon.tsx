@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useReducer, useRef, useState} from 'react'
 
@@ -10,7 +11,6 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Spinner from 'pages/common/components/Spinner'
 import InputField from 'pages/common/forms/input/InputField'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
@@ -159,7 +159,7 @@ export function Coupon({
             >
                 {state.isLoading && (
                     <div className="mr-3">
-                        <Spinner color="dark" size="small" />
+                        <LoadingSpinner color="dark" size="small" />
                     </div>
                 )}
                 <MoneyAmount

@@ -7,7 +7,9 @@ import Body from '../Body'
 import Context from '../Context'
 import focusOnNextItem from '../focusOnNextItem'
 
-jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: () => 'SpinnerMock',
+}))
 
 jest.mock('../focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock

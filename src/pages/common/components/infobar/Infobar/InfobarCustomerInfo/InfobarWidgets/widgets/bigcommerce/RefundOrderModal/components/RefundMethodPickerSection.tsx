@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {Dispatch} from 'react'
 
@@ -7,7 +8,6 @@ import {
     BigCommerceRefundType,
 } from 'models/integration/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import Spinner from 'pages/common/components/Spinner'
 
 import css from '../RefundOrderModal.less'
 import {
@@ -38,7 +38,7 @@ export function RefundMethodPickerSection({
             <p className={css.modalSectionHeader}>Refund method</p>
             {isLoading && (
                 <div className={css.spinnerWrapper}>
-                    <Spinner className={css.spinner} size="medium" />
+                    <LoadingSpinner className={css.spinner} />
                 </div>
             )}
             {!availablePaymentOptionsData && (

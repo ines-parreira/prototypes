@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
@@ -16,7 +17,6 @@ import {AGENT_ROLE} from 'config/user'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import Spinner from 'pages/common/components/Spinner'
 
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 
@@ -90,7 +90,7 @@ export default function WorkflowsView({
     const workflowsElement =
         isFetchPending || !storeIntegrationId ? (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         ) : hasStoreWorkflows ? (
             <Container fluid className={css.pageContainer}>

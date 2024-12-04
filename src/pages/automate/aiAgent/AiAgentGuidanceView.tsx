@@ -1,9 +1,9 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useEffect} from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LocaleCode} from 'models/helpCenter/types'
-import Spinner from 'pages/common/components/Spinner'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -127,7 +127,7 @@ export const AiAgentGuidanceView = ({
     ) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

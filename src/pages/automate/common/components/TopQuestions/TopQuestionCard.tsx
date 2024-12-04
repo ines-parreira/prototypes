@@ -1,8 +1,8 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {ReactNode} from 'react'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './TopQuestionCard.less'
 
@@ -38,7 +38,7 @@ const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => {
 
     return isCreating ? (
         <div className={css.creatingArticle}>
-            <Spinner width={20} />
+            <LoadingSpinner size={20} />
             Creating...
         </div>
     ) : (

@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import React, {
@@ -19,7 +20,6 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Spinner from 'pages/common/components/Spinner'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
@@ -185,7 +185,7 @@ export const CancelOrderModalContainer = ({
                     />
                 ) : (
                     <div className={css.spinner}>
-                        <Spinner size="medium" />
+                        <LoadingSpinner />
                     </div>
                 )}
                 <ModalFooter className={css.footer}>
@@ -200,7 +200,7 @@ export const CancelOrderModalContainer = ({
                     </Button>
                     {loading && (
                         <div className={css.loading}>
-                            <Spinner size="small" />
+                            <LoadingSpinner size="small" />
                             <span>{loadingMessage}</span>
                         </div>
                     )}

@@ -20,7 +20,9 @@ const mockUseListUsers = useListUsers as jest.Mock
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
-jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: () => 'SpinnerMock',
+}))
 jest.mock(
     '../UserDropdownItem',
     () =>

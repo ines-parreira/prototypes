@@ -11,13 +11,13 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial disabled state
       Refundable items
     </p>
     <svg
-      class="spinner gloom medium spinner"
+      class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA LoadingSpinner--medium--Oelly spinner"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"
     >
       <circle
-        class="dot"
+        class="LoadingSpinner--dot--tnzt_"
         cx="10"
         cy="10"
         fill="none"
@@ -25,7 +25,7 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial disabled state
         stroke-width="2"
       />
       <circle
-        class="circle"
+        class="LoadingSpinner--circle--OnNzl"
         cx="10"
         cy="10"
         fill="none"

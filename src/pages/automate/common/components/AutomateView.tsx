@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {NavLink} from 'react-router-dom'
@@ -5,7 +6,6 @@ import {Container} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './AutomateView.less'
 
@@ -66,7 +66,7 @@ const AutomateView = ({
             >
                 {isLoading ? (
                     <div className={css.spinner}>
-                        <Spinner size="big" />
+                        <LoadingSpinner size="big" />
                     </div>
                 ) : (
                     children

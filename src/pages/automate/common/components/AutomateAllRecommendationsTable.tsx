@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {Link} from 'react-router-dom'
@@ -7,7 +7,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {NumberedPagination} from 'pages/common/components/Paginations'
-import Spinner from 'pages/common/components/Spinner'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -146,7 +145,7 @@ const ArticleStatus = ({
         </span>
     ) : isCreating ? (
         <div className={css.creatingArticle}>
-            <Spinner width={16} />
+            <LoadingSpinner size={16} />
             Creating...
         </div>
     ) : (

@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {
     ReactNode,
@@ -12,8 +13,6 @@ import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
 import successIcon from 'assets/img/icons/success.svg'
 import warningIcon from 'assets/img/icons/warning2.svg'
-
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './Alert.less'
 
@@ -33,7 +32,7 @@ const alertIcon = {
     [AlertType.Error]: errorIcon,
     [AlertType.Loading]: (
         <span className={css.loadingIcon}>
-            <Spinner color="dark" size="small" />
+            <LoadingSpinner color="dark" size="small" />
         </span>
     ),
     [AlertType.Ai]: autoAwesomeIcon,

@@ -1,11 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {ParamType} from 'openapi-client-axios'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Spinner} from 'reactstrap'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -654,9 +653,8 @@ export const ImportSection: React.FC<Props> = ({
                             className={css.importInProgressContainer}
                         >
                             <div>
-                                <Spinner
-                                    size="sm"
-                                    color="primary"
+                                <LoadingSpinner
+                                    size="small"
                                     className={css.spinner}
                                 />
                                 Import in progress

@@ -1,9 +1,9 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useEffect} from 'react'
 
 import useOrderBy from 'hooks/useOrderBy'
 import {OrderDirection} from 'models/api/types'
-import Spinner from 'pages/common/components/Spinner'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -76,7 +76,7 @@ export default function ActionEventsList({
             </TableWrapper>
             {isLoading && (
                 <div className={css.spinner}>
-                    <Spinner color="dark" size="medium" />
+                    <LoadingSpinner color="dark" />
                 </div>
             )}
             {hasNoData && (

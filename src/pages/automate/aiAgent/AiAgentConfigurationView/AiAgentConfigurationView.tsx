@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 import {Redirect} from 'react-router-dom'
 
@@ -5,7 +6,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {useAiAgentStoreConfigurationContext} from 'pages/automate/aiAgent/providers/AiAgentStoreConfigurationContext'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import Spinner from 'pages/common/components/Spinner'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {notify} from 'state/notifications/actions'
@@ -65,7 +65,7 @@ export const AiAgentConfigurationView = ({
     if (isStoreConfigLoading || isLoadingHelpCenters) {
         return (
             <div className={css.spinner} aria-label="loading">
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

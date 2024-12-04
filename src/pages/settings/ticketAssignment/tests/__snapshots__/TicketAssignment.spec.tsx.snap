@@ -389,7 +389,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
         type="submit"
       >
         <svg
-          class="spinner gloom spinner"
+          class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
           height="22"
           preserveAspectRatio="xMidYMid meet"
           role="status"
@@ -397,7 +397,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
           width="22"
         >
           <circle
-            class="dot"
+            class="LoadingSpinner--dot--tnzt_"
             cx="10"
             cy="10"
             fill="none"
@@ -405,7 +405,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             stroke-width="2"
           />
           <circle
-            class="circle"
+            class="LoadingSpinner--circle--OnNzl"
             cx="10"
             cy="10"
             fill="none"

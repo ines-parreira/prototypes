@@ -1,8 +1,8 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React from 'react'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Spinner from 'pages/common/components/Spinner'
 
 import type {SaveState} from '../hooks/useSaveState'
 
@@ -17,7 +17,7 @@ export default function SaveBadge({state}: Props) {
         return (
             <Badge className={css.badge} type={ColorType.Grey}>
                 <span className={cn(css.icon)}>
-                    <Spinner className={css.spinner} size="small" />
+                    <LoadingSpinner className={css.spinner} size="small" />
                 </span>
                 Saving
             </Badge>

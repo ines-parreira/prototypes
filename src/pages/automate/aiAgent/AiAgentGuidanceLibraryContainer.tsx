@@ -1,7 +1,6 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 import {useParams} from 'react-router-dom'
-
-import Spinner from 'pages/common/components/Spinner'
 
 import {AiAgentGuidanceLibrary} from './AiAgentGuidanceLibrary'
 import css from './AiAgentGuidanceLibraryContainer.less'
@@ -20,7 +19,7 @@ export const AiAgentGuidanceLibraryContainer = () => {
     if (!guidanceHelpCenter) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

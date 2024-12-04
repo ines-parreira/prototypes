@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
@@ -11,7 +12,6 @@ import {useAiAgentEnabled} from 'pages/automate/aiAgent/hooks/useAiAgentEnabled'
 import {useStoreConfiguration} from 'pages/automate/aiAgent/hooks/useStoreConfiguration'
 import {useStoreConfigurationMutation} from 'pages/automate/aiAgent/hooks/useStoreConfigurationMutation'
 import {isAiAgentEnabled} from 'pages/automate/aiAgent/util'
-import Spinner from 'pages/common/components/Spinner'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 
@@ -68,7 +68,7 @@ export const ConnectedChannelsEmailView = () => {
     if (isLoading) {
         return (
             <div className={css.loadingContainer}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

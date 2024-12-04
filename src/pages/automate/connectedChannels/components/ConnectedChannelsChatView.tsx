@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {noop, startCase} from 'lodash'
 import React, {useCallback, useMemo} from 'react'
@@ -13,7 +14,6 @@ import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceCh
 import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {AutomateFeatures} from 'pages/automate/common/types'
-import Spinner from 'pages/common/components/Spinner'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import css from './ConnectedChannelsChatView.less'
@@ -171,7 +171,7 @@ export const ConnectedChannelsChatView = ({
     if (isLoading) {
         return (
             <div className={css.loadingContainer}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

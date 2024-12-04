@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {produce} from 'immer'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -13,7 +14,6 @@ import {
     Container,
     Form,
     Row,
-    Spinner,
 } from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -1047,7 +1047,7 @@ function GorgiasTranslateText({
                 </Form>
             )) || (
                 <div className={css.spinnerWrapper}>
-                    <Spinner className={css.spinner} color="gloom" />
+                    <LoadingSpinner className={css.spinner} />
                 </div>
             )}
 

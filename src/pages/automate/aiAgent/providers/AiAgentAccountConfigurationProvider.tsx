@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ReactNode} from 'react'
 import {Redirect} from 'react-router-dom'
@@ -6,7 +7,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import Spinner from 'pages/common/components/Spinner'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -48,7 +48,7 @@ export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
     if (accountConfigRetrievalStatus !== 'success') {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

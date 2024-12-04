@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {ReactNode, useEffect, useState} from 'react'
 
@@ -11,7 +12,6 @@ import {
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import Spinner from 'pages/common/components/Spinner'
 import {assertUnreachable} from 'utils'
 import {sanitizeHtmlDefault} from 'utils/html'
 
@@ -275,7 +275,10 @@ const PlaygroundPlaceholderMessage = () => {
                 type={ColorType.Magenta}
                 className={css.aiAgentProcessingBadge}
             >
-                <Spinner width={12} className={css.aiAgentProcessingIcon} />
+                <LoadingSpinner
+                    size={12}
+                    className={css.aiAgentProcessingIcon}
+                />
                 <div className={css.aiAgentProcessingStatus}>
                     {processingStatus}
                 </div>

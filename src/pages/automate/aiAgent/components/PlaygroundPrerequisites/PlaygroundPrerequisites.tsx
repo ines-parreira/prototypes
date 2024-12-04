@@ -1,7 +1,7 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {ReactNode} from 'react'
 
 import {StoreConfiguration} from 'models/aiAgent/types'
-import Spinner from 'pages/common/components/Spinner'
 
 import {usePublicResources} from '../../hooks/usePublicResources'
 import css from './PlaygroundPrerequisites.less'
@@ -52,7 +52,7 @@ const CheckKnowledgeHasAtLeastPublicSources = ({
     if (isSourceItemsListLoading) {
         return (
             <div className={css.spinner}>
-                <Spinner role="alert" size="big" />
+                <LoadingSpinner role="alert" size="big" />
             </div>
         )
     }

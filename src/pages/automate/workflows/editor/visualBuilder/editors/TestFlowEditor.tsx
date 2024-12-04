@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
 import React, {useEffect, useState, useMemo, useRef} from 'react'
@@ -20,7 +21,6 @@ import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/type
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
-import Spinner from 'pages/common/components/Spinner'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
@@ -296,7 +296,7 @@ export const TestFlowEditor = ({
 
                     <div className={classNames(css['iframe-container'])}>
                         {!isFlowInterpreterStarted && (
-                            <Spinner color="dark" size="big" />
+                            <LoadingSpinner color="dark" size="big" />
                         )}
 
                         <div

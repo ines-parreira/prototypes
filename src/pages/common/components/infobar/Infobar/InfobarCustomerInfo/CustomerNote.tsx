@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 import React, {ChangeEvent, useEffect, useState} from 'react'
@@ -5,7 +6,6 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerDraft} from 'models/customer/types'
-import Spinner from 'pages/common/components/Spinner'
 import {submitCustomer} from 'state/customers/actions'
 import {countLines} from 'utils/string'
 
@@ -81,7 +81,10 @@ export default function CustomerNote({customer}: {customer: Map<any, any>}) {
                         </p>
                     )}
                     {isLoading && (
-                        <Spinner className={css.loaderIcon} size="small" />
+                        <LoadingSpinner
+                            className={css.loaderIcon}
+                            size="small"
+                        />
                     )}
                 </div>
             </div>

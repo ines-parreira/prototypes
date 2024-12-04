@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {
     ChangeEvent,
@@ -10,7 +11,6 @@ import React, {
 import useMouseRelease from 'hooks/useMouseRelease'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import Spinner from 'pages/common/components/Spinner'
 import settingsCss from 'pages/settings/settings.less'
 import {notificationSounds} from 'services'
 import {defaultSound, SoundValue} from 'services/NotificationSounds'
@@ -73,7 +73,7 @@ export default function Settings() {
             <PageHeader title="Notifications" />
             {isLoading ? (
                 <div className={css.spinner}>
-                    <Spinner size="big" />
+                    <LoadingSpinner size="big" />
                 </div>
             ) : (
                 <form

@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {Dispatch, useEffect} from 'react'
 
 import {
@@ -5,7 +6,6 @@ import {
     BigCommerceRefundItemsPayload,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
-import Spinner from 'pages/common/components/Spinner'
 
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
@@ -61,7 +61,7 @@ export function EntireOrderRefundOrderModal({
                 Refundable items
             </p>
             {isLoading && !productRefundData && (
-                <Spinner className={css.spinner} size="medium" />
+                <LoadingSpinner className={css.spinner} />
             )}
             {currencyCode &&
                 refundData?.order_level_refund_data &&

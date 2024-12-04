@@ -19,7 +19,10 @@ import TagDropdownMenu from '../TagDropdownMenu'
 jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock
 
-jest.mock('pages/common/components/Spinner', () => () => 'SpinnerMock')
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: () => 'SpinnerMock',
+}))
+
 const mockStore = configureMockStore([thunk])
 
 const mockContext: ContextType<typeof DropdownContext> = {

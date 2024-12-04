@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {isAxiosError} from 'axios'
 import React, {useEffect, useState} from 'react'
 import {Redirect} from 'react-router-dom'
@@ -10,7 +11,6 @@ import {
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
 import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
-import Spinner from 'pages/common/components/Spinner'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -102,7 +102,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
     if (storeDataLoading || accountDataLoading || snippetHelpCenterLoading) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

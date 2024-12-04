@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import {noop} from 'lodash'
 import React, {useCallback} from 'react'
@@ -13,7 +14,6 @@ import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHel
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import {AutomateFeatures} from 'pages/automate/common/types'
-import Spinner from 'pages/common/components/Spinner'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -131,7 +131,7 @@ export const ConnectedChannelsHelpCenterView = ({
     if (isLoading) {
         return (
             <div className={css.loadingContainer}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

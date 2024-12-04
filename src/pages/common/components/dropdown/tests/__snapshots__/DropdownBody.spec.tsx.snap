@@ -16,13 +16,13 @@ exports[`<DropdownBody /> should render a spinner when loading 1`] = `
     class="spinnerWrapper"
   >
     <svg
-      class="spinner gloom medium"
+      class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA LoadingSpinner--medium--Oelly"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"
     >
       <circle
-        class="dot"
+        class="LoadingSpinner--dot--tnzt_"
         cx="10"
         cy="10"
         fill="none"
@@ -30,7 +30,7 @@ exports[`<DropdownBody /> should render a spinner when loading 1`] = `
         stroke-width="2"
       />
       <circle
-        class="circle"
+        class="LoadingSpinner--circle--OnNzl"
         cx="10"
         cy="10"
         fill="none"

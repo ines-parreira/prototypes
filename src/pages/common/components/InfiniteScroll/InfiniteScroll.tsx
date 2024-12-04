@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {
     HTMLProps,
@@ -10,8 +11,6 @@ import React, {
 } from 'react'
 
 import css from 'pages/common/components/InfiniteScroll/InfiniteScroll.less'
-
-import Spinner from '../Spinner'
 
 type Props = {
     children: ReactNode
@@ -83,11 +82,9 @@ const InfiniteScroll = ({
             {children}
             {isLoadingState && (
                 <div className={css.wrapper}>
-                    <Spinner
+                    <LoadingSpinner
                         className={css.spinner}
-                        {...(loaderSize
-                            ? {width: loaderSize}
-                            : {size: 'small'})}
+                        size={loaderSize ?? 'small'}
                     />
                 </div>
             )}

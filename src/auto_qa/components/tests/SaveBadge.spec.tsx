@@ -3,7 +3,9 @@ import React from 'react'
 
 import SaveBadge from '../SaveBadge'
 
-jest.mock('pages/common/components/Spinner', () => () => <div>Spinner</div>)
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: () => <div>Spinner</div>,
+}))
 
 describe('SaveBadge', () => {
     it('should return null if the state is idle', () => {

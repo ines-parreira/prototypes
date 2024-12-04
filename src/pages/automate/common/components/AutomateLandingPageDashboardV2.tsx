@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
@@ -15,7 +16,6 @@ import css from 'pages/automate/common/components/AutomateLandingPage.less'
 import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
 import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import Button from 'pages/common/components/button/Button'
-import Spinner from 'pages/common/components/Spinner'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import TipsToggle from 'pages/stats/TipsToggle'
@@ -78,7 +78,7 @@ const AutomateLandingPageDashboardV2 = ({
     if (isLoading) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

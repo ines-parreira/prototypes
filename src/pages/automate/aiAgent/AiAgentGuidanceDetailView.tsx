@@ -1,8 +1,7 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {useMemo} from 'react'
 
 import {LocaleCode} from 'models/helpCenter/types'
-
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './AiAgentGuidanceContainer.less'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
@@ -74,7 +73,7 @@ export const AiAgentGuidanceDetailView = ({
     if (!guidanceArticle) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React, {Dispatch} from 'react'
 import {Table} from 'reactstrap'
 
@@ -16,7 +17,6 @@ import {
     calculateOrderTotal,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Spinner from 'pages/common/components/Spinner'
 
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
@@ -85,7 +85,7 @@ export function TotalsSummaryComponent({
                             colSpan={3}
                         >
                             {isLoading ? (
-                                <Spinner
+                                <LoadingSpinner
                                     className={bigcommerceTableCss.spinner}
                                     size="small"
                                 />
@@ -160,7 +160,7 @@ export function TotalsSummaryComponent({
                             colSpan={3}
                         >
                             {isLoading ? (
-                                <Spinner
+                                <LoadingSpinner
                                     className={bigcommerceTableCss.spinner}
                                     size="small"
                                 />
@@ -190,7 +190,7 @@ export function TotalsSummaryComponent({
                             colSpan={3}
                         >
                             {isLoading ? (
-                                <Spinner
+                                <LoadingSpinner
                                     className={bigcommerceTableCss.spinner}
                                     size="small"
                                 />
@@ -225,7 +225,7 @@ export function TotalsSummaryComponent({
                                 colSpan={3}
                             >
                                 {isLoading ? (
-                                    <Spinner
+                                    <LoadingSpinner
                                         className={bigcommerceTableCss.spinner}
                                         size="small"
                                     />
@@ -252,7 +252,7 @@ export function TotalsSummaryComponent({
                             colSpan={3}
                         >
                             {isLoading ? (
-                                <Spinner
+                                <LoadingSpinner
                                     className={bigcommerceTableCss.spinner}
                                     size="small"
                                 />

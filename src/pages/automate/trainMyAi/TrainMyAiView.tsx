@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {useQueryClient} from '@tanstack/react-query'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -19,7 +20,6 @@ import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
-import Spinner from 'pages/common/components/Spinner'
 
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import {assetsUrl} from '../../../utils'
@@ -522,7 +522,7 @@ const TrainMyAiView = () => {
                             {isInitialLoadingArticleRecommndations ||
                             typeof helpCenterId !== 'number' ? (
                                 <div className={css.spinner}>
-                                    <Spinner size="big" />
+                                    <LoadingSpinner size="big" />
                                 </div>
                             ) : (
                                 articleRecommendationsData?.data &&

@@ -1,4 +1,4 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import {Label, LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {
     AriaAttributes,
@@ -9,7 +9,6 @@ import React, {
 } from 'react'
 
 import useId from 'hooks/useId'
-import Spinner from 'pages/common/components/Spinner'
 
 import Caption from './Caption/Caption'
 import css from './ToggleInput.less'
@@ -78,7 +77,7 @@ const ToggleInput = ({
                 />
                 <div className={css.slider} />
                 {isLoading && (
-                    <Spinner
+                    <LoadingSpinner
                         color="light"
                         size="small"
                         className={classnames(css.spinner, {

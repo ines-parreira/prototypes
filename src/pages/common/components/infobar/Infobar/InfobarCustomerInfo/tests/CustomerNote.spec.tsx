@@ -10,7 +10,9 @@ import {assumeMock, flushPromises} from 'utils/testing'
 
 import CustomerNote from '../CustomerNote'
 
-jest.mock('pages/common/components/Spinner', () => () => <div>SpinnerMock</div>)
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: () => <div>SpinnerMock</div>,
+}))
 
 jest.mock('state/customers/actions')
 const submitCustomerMock = assumeMock(submitCustomer)

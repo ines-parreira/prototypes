@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {fromJS, List, Map} from 'immutable'
 import React, {useCallback, useContext, useMemo, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -18,7 +19,6 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Spinner from 'pages/common/components/Spinner'
 import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -363,7 +363,7 @@ export function DraftOrderModalContainer({
                 </div>
             ) : (
                 <div className={css.spinner}>
-                    <Spinner size="medium" />
+                    <LoadingSpinner />
                 </div>
             )}
             <ModalFooter className={css.footer}>
@@ -377,7 +377,7 @@ export function DraftOrderModalContainer({
                     </Button>
                     {loading && (
                         <div className={css.buttonGroup}>
-                            <Spinner size="small" />
+                            <LoadingSpinner size="small" />
                             <span>{loadingMessage}</span>
                         </div>
                     )}

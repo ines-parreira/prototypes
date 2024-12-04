@@ -1,9 +1,9 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useEffect, useState, useMemo} from 'react'
 
 import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
 import {HelpCenter} from 'models/helpCenter/types'
-import Spinner from 'pages/common/components/Spinner'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {Components} from 'rest_api/ssp_api/client.generated'
@@ -139,7 +139,7 @@ export default function TrainMyAiPreview({
                                 articleData={previewArticleData}
                             />
                         ) : previewArticleDataIsInitialLoading ? (
-                            <Spinner size="big" />
+                            <LoadingSpinner size="big" />
                         ) : null}
                     </div>
                 </EditionManagerContextProvider>

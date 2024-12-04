@@ -7,7 +7,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="spinner gloom spinner"
+    class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -15,7 +15,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="dot"
+      class="LoadingSpinner--dot--tnzt_"
       cx="10"
       cy="10"
       fill="none"
@@ -23,7 +23,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="circle"
+      class="LoadingSpinner--circle--OnNzl"
       cx="10"
       cy="10"
       fill="none"
@@ -49,7 +49,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="spinner gloom spinner"
+    class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -57,7 +57,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="dot"
+      class="LoadingSpinner--dot--tnzt_"
       cx="10"
       cy="10"
       fill="none"
@@ -65,7 +65,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="circle"
+      class="LoadingSpinner--circle--OnNzl"
       cx="10"
       cy="10"
       fill="none"
@@ -91,7 +91,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   type="button"
 >
   <svg
-    class="spinner gloom spinner"
+    class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -99,7 +99,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     width="22"
   >
     <circle
-      class="dot"
+      class="LoadingSpinner--dot--tnzt_"
       cx="10"
       cy="10"
       fill="none"
@@ -107,7 +107,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       stroke-width="2"
     />
     <circle
-      class="circle"
+      class="LoadingSpinner--circle--OnNzl"
       cx="10"
       cy="10"
       fill="none"

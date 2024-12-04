@@ -1,3 +1,4 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import cs from 'classnames'
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
@@ -11,7 +12,6 @@ import {isStarterTier} from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
-import Spinner from 'pages/common/components/Spinner'
 import settingsCss from 'pages/settings/settings.less'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
@@ -84,7 +84,7 @@ const UserList = () => {
                         <p>Something went wrong</p>
                     ) : paginatedAgents.isLoading ? (
                         <div className={css.spinnerWrapper}>
-                            <Spinner size="big" />
+                            <LoadingSpinner size="big" />
                         </div>
                     ) : (
                         <ul className={css.list}>

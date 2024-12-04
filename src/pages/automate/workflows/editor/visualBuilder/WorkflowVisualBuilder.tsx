@@ -1,5 +1,6 @@
 import 'reactflow/dist/style.css'
 
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
@@ -14,7 +15,6 @@ import {
 } from 'reactflow'
 
 import {useSearchParam} from 'hooks/useSearchParam'
-import Spinner from 'pages/common/components/Spinner'
 
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
 import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
@@ -141,7 +141,7 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
         <div className={css.container}>
             {(isFetchPending || !areNodesInitialized) && (
                 <div className={css.spinner}>
-                    <Spinner size="big" />
+                    <LoadingSpinner size="big" />
                 </div>
             )}
             {!isFetchPending && (

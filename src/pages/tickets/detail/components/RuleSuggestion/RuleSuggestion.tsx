@@ -1,7 +1,8 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {fromJS} from 'immutable'
 import _pick from 'lodash/pick'
 import React, {useState} from 'react'
-import {Spinner, Tooltip} from 'reactstrap'
+import {Tooltip} from 'reactstrap'
 
 import {
     TicketMessageSourceType,
@@ -221,7 +222,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         <div className={css.buttons}>
             <div id={tooltipId}>
                 {isLoadingRules ? (
-                    <Spinner color="dark" width="25px" />
+                    <LoadingSpinner color="dark" size={25} />
                 ) : (
                     (!rule || !!rule?.deactivated_datetime) && (
                         <Button

@@ -1,6 +1,6 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {useState} from 'react'
-import {Spinner} from 'reactstrap'
 
 import {FetchedProvidersState} from '../../../../types'
 
@@ -94,7 +94,7 @@ const DropAreas: React.FC<Props> = ({
 
                     <div className={css.providersLogosContainer}>
                         {fetchedProviders.isLoading ? (
-                            <Spinner />
+                            <LoadingSpinner />
                         ) : (
                             fetchedProviders.data &&
                             fetchedProviders.data.map((provider, idx) => (

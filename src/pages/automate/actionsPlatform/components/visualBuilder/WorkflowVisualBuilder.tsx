@@ -1,5 +1,6 @@
 import 'reactflow/dist/style.css'
 
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, FC} from 'react'
 import {
@@ -35,7 +36,6 @@ import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBui
 import {withVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Spinner from 'pages/common/components/Spinner'
 
 const nodeTypes = {
     llm_prompt_trigger: LLMPromptTriggerNode,
@@ -95,7 +95,7 @@ const WorkflowVisualBuilderWrapped = ({
 
     return (
         <div className={css.container}>
-            {!areNodesInitialized && <Spinner size="big" />}
+            {!areNodesInitialized && <LoadingSpinner size="big" />}
             <div
                 className={classnames(css.reactFlowContainer, {
                     [css.transparent]: !areNodesInitialized,

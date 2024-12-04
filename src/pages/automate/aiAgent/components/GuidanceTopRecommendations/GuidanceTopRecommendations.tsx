@@ -1,8 +1,8 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import {GuidanceAiSuggestionsList} from 'pages/automate/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import {AIGuidance} from 'pages/automate/aiAgent/types'
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './GuidanceTopRecommendations.less'
 
@@ -20,7 +20,7 @@ export const GuidanceTopRecommendations = ({
     if (isLoading) {
         return (
             <div className={css.spinner}>
-                <Spinner size="medium" />
+                <LoadingSpinner />
             </div>
         )
     }

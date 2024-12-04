@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {
     ReactElement,
@@ -7,7 +7,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Badge, Spinner} from 'reactstrap'
+import {Badge} from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Article} from 'models/helpCenter/types'
@@ -123,7 +123,7 @@ export const CategoriesTableBasicRow = ({
                             )}
                         >
                             {isLoading ? (
-                                <Spinner size="sm" color="secondary" />
+                                <LoadingSpinner size="small" />
                             ) : (
                                 <a href="" onClick={onLoadMore}>
                                     Load more
@@ -154,7 +154,7 @@ export const CategoriesTableBasicRow = ({
         <span className={css['caret-placeholder']} />
     )
     const countBadge = isCountBadgeLoading ? (
-        <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
+        <LoadingSpinner size="small" style={{marginLeft: 8}} />
     ) : (
         <Badge pill color="light" className={css.count}>
             {hasArticles ? itemCount : 'No Published Articles'}

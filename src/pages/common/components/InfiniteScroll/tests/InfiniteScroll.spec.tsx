@@ -1,21 +1,17 @@
+import type {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
-import Spinner from 'pages/common/components/Spinner'
-
 import InfiniteScroll from '../InfiniteScroll'
 
-jest.mock(
-    'pages/common/components/Spinner',
-    () =>
-        ({size, width}: ComponentProps<typeof Spinner>) => (
-            <div>
-                SpinnerMock
-                <div>size-{size}</div>
-                <div>width-{width}</div>
-            </div>
-        )
-)
+jest.mock('@gorgias/merchant-ui-kit', () => ({
+    LoadingSpinner: ({size}: ComponentProps<typeof LoadingSpinner>) => (
+        <div>
+            SpinnerMock
+            <div>size-{size}</div>
+        </div>
+    ),
+}))
 
 describe('<InfiniteScroll />', () => {
     const originalClientHeight = Object.getOwnPropertyDescriptor(
@@ -143,13 +139,13 @@ describe('<InfiniteScroll />', () => {
         expect(getByText(/size-small/)).toBeInTheDocument()
     })
 
-    it('should use specified Spinner width', () => {
+    it('should use specified Spinner size', () => {
         const loaderSize = 10
         const {getByText} = render(
             <InfiniteScroll {...minProps} isLoading loaderSize={loaderSize} />
         )
 
         expect(getByText('SpinnerMock')).toBeInTheDocument()
-        expect(getByText(/width-10/)).toBeInTheDocument()
+        expect(getByText(/size-10/)).toBeInTheDocument()
     })
 })

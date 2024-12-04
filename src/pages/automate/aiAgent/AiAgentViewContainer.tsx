@@ -1,10 +1,10 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import Spinner from 'pages/common/components/Spinner'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import css from './AiAgentViewContainer.less'
@@ -48,7 +48,7 @@ const AiAgentViewContainer = () => {
     if (isLoadingStoreConfiguration || welcomePageAcknowledged.isLoading) {
         return (
             <div className={css.spinner}>
-                <Spinner size="big" />
+                <LoadingSpinner size="big" />
             </div>
         )
     }

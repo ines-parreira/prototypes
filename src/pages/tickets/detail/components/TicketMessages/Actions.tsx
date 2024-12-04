@@ -1,4 +1,4 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
@@ -14,7 +14,6 @@ import {JSONTree} from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Spinner from 'pages/common/components/Spinner'
 import {getActionTemplate, toRGBA} from 'utils'
 
 import css from './Actions.less'
@@ -215,9 +214,9 @@ export default class Actions extends Component<Props, State> {
 
                     if (action.status === ActionStatus.Pending) {
                         icon = (
-                            <Spinner
+                            <LoadingSpinner
                                 className={css.spinner}
-                                width={18}
+                                size={18}
                                 color="dark"
                             />
                         )

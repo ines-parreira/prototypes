@@ -1,7 +1,6 @@
+import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {forwardRef, ForwardedRef, HTMLAttributes, ReactNode} from 'react'
-
-import Spinner from 'pages/common/components/Spinner'
 
 import css from './DropdownBody.less'
 
@@ -23,7 +22,7 @@ function DropdownBody(
         >
             {isLoading ? (
                 <div className={css.spinnerWrapper}>
-                    <Spinner size="medium" />
+                    <LoadingSpinner />
                 </div>
             ) : (
                 children
