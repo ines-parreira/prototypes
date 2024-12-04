@@ -2,10 +2,8 @@ import classNames from 'classnames'
 import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-
-import DEPRECATED_Modal from '../../../../common/components/DEPRECATED_Modal'
-
-import css from './ConfirmationModal.less'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import css from 'pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.less'
 
 export type ConfirmationModalProps = {
     children: React.ReactNode
@@ -19,6 +17,7 @@ export type ConfirmationModalProps = {
     title: React.ReactNode
     onClose: () => void
     onConfirm: () => void
+    additionalActionButtonConfig?: ComponentProps<typeof Button>
 }
 
 export const ConfirmationModal = ({
@@ -33,6 +32,7 @@ export const ConfirmationModal = ({
     title,
     onClose,
     onConfirm,
+    additionalActionButtonConfig,
 }: ConfirmationModalProps): JSX.Element => {
     return (
         <DEPRECATED_Modal
@@ -43,6 +43,11 @@ export const ConfirmationModal = ({
             footerClassName={css.actions}
             footer={
                 <>
+                    {additionalActionButtonConfig && (
+                        <Button {...additionalActionButtonConfig}>
+                            {additionalActionButtonConfig?.content}
+                        </Button>
+                    )}
                     <Button intent="secondary" onClick={onClose}>
                         {cancelText}
                     </Button>

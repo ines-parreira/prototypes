@@ -37,6 +37,10 @@ import {
     SAVED_FILTER_FIELD_GROUP_FIELD_KEY,
     SavedFiltersPanel,
     UNAPPLY_FILTER_ICON,
+    SAVE_MODAL_BUTTON_LABEL,
+    getSaveConfirmationTitle,
+    CLOSE_MODAL_BUTTON_LABEL,
+    CANCEL_MODAL_BUTTON_LABEL,
 } from 'pages/stats/common/filters/SavedFiltersPanel'
 import {exampleGorgiasApiError} from 'pages/stats/common/filters/tests/fixtures/errors'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
@@ -356,7 +360,7 @@ describe('SavedFiltersPanel', () => {
         })
     })
 
-    it('should update Saved Filter ', () => {
+    it('should update Saved Filter ', async () => {
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -405,10 +409,19 @@ describe('SavedFiltersPanel', () => {
 
         userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
 
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+            ).toBeInTheDocument()
+            userEvent.click(
+                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+            )
+        })
+
         expect(mutateMock).toHaveBeenCalled()
     })
 
-    it('should failed update of a Saved Filter ', async () => {
+    it('should fail update of a Saved Filter ', async () => {
         const mutateMock = jest.fn().mockRejectedValue({})
         useUpdateAnalyticsFilterMock.mockReturnValue({
             mutateAsync: mutateMock,
@@ -456,7 +469,17 @@ describe('SavedFiltersPanel', () => {
 
         userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
 
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+            ).toBeInTheDocument()
+            userEvent.click(
+                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+            )
+        })
+
         expect(mutateMock).toHaveBeenCalled()
+
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(
                 expect.objectContaining({
@@ -985,7 +1008,19 @@ describe('SavedFiltersPanel', () => {
                 screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
             )
 
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                ).toBeInTheDocument()
+                userEvent.click(
+                    screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                )
+            })
+
             expect(mutateMock).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+
             await waitFor(() => {
                 expect(store.getActions()).toContainEqual(
                     expect.objectContaining({
@@ -994,7 +1029,6 @@ describe('SavedFiltersPanel', () => {
                         }),
                     })
                 )
-                userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
                 expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
             })
         })
@@ -1134,6 +1168,145 @@ describe('SavedFiltersPanel', () => {
             expect(
                 screen.queryByRole('button', {name: SAVE_BUTTON_LABEL})
             ).not.toBeInTheDocument()
+        })
+
+        it('should close confirmation edit modal on Canceled confirmation', async () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilterDraft: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft,
+                            appliedSavedFilterId: 123,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+            const mutateMock = jest.fn().mockResolvedValue({
+                data: savedFilterDraft,
+            })
+            useUpdateAnalyticsFilterMock.mockReturnValue({
+                mutateAsync: mutateMock,
+            } as any)
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+            userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
+
+            const confirmationModal = screen.getByRole('dialog')
+            expect(confirmationModal).toBeInTheDocument()
+            expect(
+                within(confirmationModal).getByText(
+                    getSaveConfirmationTitle(savedFilterName)
+                )
+            ).toBeInTheDocument()
+            userEvent.click(
+                within(confirmationModal).getByText(CLOSE_MODAL_BUTTON_LABEL)
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        getSaveConfirmationTitle(savedFilterName)
+                    )
+                ).not.toBeInTheDocument()
+                expect(mutateMock).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should close confirmation edit modal on Discard changes', () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft: savedFilter,
+                            appliedSavedFilterId: 123,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+            useListAnalyticsFiltersMock.mockReturnValue({
+                data: {
+                    data: {data: [savedFilter]},
+                },
+            } as any)
+
+            const {store} = renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+            userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
+
+            const confirmationModal = screen.getByRole('dialog')
+            expect(confirmationModal).toBeInTheDocument()
+            expect(
+                within(confirmationModal).getByText(
+                    getSaveConfirmationTitle(savedFilterName)
+                )
+            ).toBeInTheDocument()
+            userEvent.click(
+                within(confirmationModal).getByText(CANCEL_MODAL_BUTTON_LABEL)
+            )
+
+            expect(store.getActions()).toContainEqual(
+                initialiseSavedFilterDraftFromSavedFilter(
+                    fromApiFormatted(savedFilter as SavedFilterAPI)
+                )
+            )
+            expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
         })
     })
 

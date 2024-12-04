@@ -50,6 +50,7 @@ import {
 import {isAdmin} from 'utils'
 
 export const FILTER_SAVED_MESSAGE = 'Filter successfully saved!'
+export const FILTER_EDIT_SAVED_MESSAGE = 'Filter successfully edited!'
 export const FILTER_SAVED_ERROR_MESSAGE = 'Filter not saved!'
 export const FILTER_DELETED_MESSAGE = 'Filter successfully deleted!'
 export const FILTER_DELETED_ERROR_MESSAGE = 'Filter not deleted!'
@@ -66,6 +67,10 @@ export const DELETE_FILTER_ACTION_LABEL = 'Delete Filter'
 
 export const SAVED_FILTER_NAME_FIELD_KEY = 'name'
 export const SAVED_FILTER_FIELD_GROUP_FIELD_KEY = 'field_group'
+
+export const SAVE_MODAL_BUTTON_LABEL = 'Save Changes'
+export const CLOSE_MODAL_BUTTON_LABEL = 'Back To Editing'
+export const CANCEL_MODAL_BUTTON_LABEL = 'Discard Changes'
 
 type SavedFiltersError = {
     [SAVED_FILTER_NAME_FIELD_KEY]?: string[]
@@ -90,6 +95,18 @@ export const getDeleteConfirmationTitle = (savedFilterName: string) =>
     `Delete ${savedFilterName}?`
 const getDeleteConfirmationContent = (savedFilterName: string) =>
     `Deleting ${savedFilterName} will remove it from Saved Filters for all users. This action cannot be undone.`
+
+export const getSaveConfirmationTitle = (savedFilterName: string) =>
+    `Save changes to ${savedFilterName}?`
+
+const getSaveConfirmationContent = () => (
+    <>
+        {`These updates will override the previous Saved Filter selection for all users.`}
+        <br />
+        <br />
+        <br />
+    </>
+)
 
 const isSavedFilter = (
     savedFilter: SavedFilterDraft | SavedFilter | null
@@ -121,7 +138,9 @@ export const SavedFiltersPanel = ({
     const [errorMessage, setErrorMessage] = useState<string | undefined>(
         undefined
     )
-    const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
+    const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+        useState(false)
+    const [isSaveConfirmationModalOpen, setIsSaveConfirmationModalOpen] =
         useState(false)
     const toggleIsEditMode = () => {
         setIsEditMode(!isEditMode)
@@ -194,7 +213,7 @@ export const SavedFiltersPanel = ({
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Success,
-                                message: FILTER_SAVED_MESSAGE,
+                                message: FILTER_EDIT_SAVED_MESSAGE,
                             })
                         )
                         setIsEditMode(false)
@@ -332,7 +351,7 @@ export const SavedFiltersPanel = ({
                             savedFilter ? (
                                 <>
                                     <ConfirmationModal
-                                        confirmIntent={'destructive'}
+                                        confirmIntent="destructive"
                                         confirmText={
                                             DELETE_CONFIRMATION_BUTTON_LABEL
                                         }
@@ -341,11 +360,15 @@ export const SavedFiltersPanel = ({
                                         )}
                                         onConfirm={() => {
                                             deleteHandler(savedFilter)
-                                            setIsConfirmationModalOpen(false)
+                                            setIsDeleteConfirmationModalOpen(
+                                                false
+                                            )
                                         }}
-                                        isOpen={isConfirmationModalOpen}
+                                        isOpen={isDeleteConfirmationModalOpen}
                                         onClose={() => {
-                                            setIsConfirmationModalOpen(false)
+                                            setIsDeleteConfirmationModalOpen(
+                                                false
+                                            )
                                         }}
                                         className={css.confirmationModal}
                                     >
@@ -365,7 +388,7 @@ export const SavedFiltersPanel = ({
                                             {
                                                 label: DELETE_FILTER_ACTION_LABEL,
                                                 callback: () =>
-                                                    setIsConfirmationModalOpen(
+                                                    setIsDeleteConfirmationModalOpen(
                                                         true
                                                     ),
                                             },
@@ -407,15 +430,58 @@ export const SavedFiltersPanel = ({
                                         </Button>
                                         <Button
                                             intent={'primary'}
-                                            onClick={() =>
-                                                saveHandler(savedFilterDraft)
-                                            }
+                                            onClick={() => {
+                                                if (
+                                                    !isSavedFilter(
+                                                        savedFilterDraft
+                                                    )
+                                                ) {
+                                                    saveHandler(
+                                                        savedFilterDraft
+                                                    )
+                                                } else {
+                                                    setIsSaveConfirmationModalOpen(
+                                                        true
+                                                    )
+                                                }
+                                            }}
                                             isDisabled={!canSaveFilter}
                                         >
                                             {SAVE_BUTTON_LABEL}
                                         </Button>
                                     </div>
                                 )}
+                                <ConfirmationModal
+                                    confirmIntent="primary"
+                                    confirmText={SAVE_MODAL_BUTTON_LABEL}
+                                    cancelText={CLOSE_MODAL_BUTTON_LABEL}
+                                    additionalActionButtonConfig={{
+                                        intent: 'destructive',
+                                        content: CANCEL_MODAL_BUTTON_LABEL,
+                                        fillStyle: 'ghost',
+                                        onClick: () => {
+                                            cancelHandler()
+                                            setIsSaveConfirmationModalOpen(
+                                                false
+                                            )
+                                        },
+                                        className: css.discardChangesButton,
+                                    }}
+                                    title={getSaveConfirmationTitle(
+                                        savedFilterDraft.name
+                                    )}
+                                    onConfirm={() => {
+                                        saveHandler(savedFilterDraft)
+                                        setIsSaveConfirmationModalOpen(false)
+                                    }}
+                                    isOpen={isSaveConfirmationModalOpen}
+                                    onClose={() => {
+                                        setIsSaveConfirmationModalOpen(false)
+                                    }}
+                                    className={css.confirmationModal}
+                                >
+                                    {getSaveConfirmationContent()}
+                                </ConfirmationModal>
                             </div>
                         </Collapse>
                     </div>

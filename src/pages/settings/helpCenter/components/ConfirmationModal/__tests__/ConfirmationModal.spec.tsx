@@ -62,4 +62,34 @@ describe('<ConfirmationModal />', () => {
 
         expect(handleOnConfirm).toHaveBeenCalled()
     })
+
+    it('should add additional button to the confirmation modal ', () => {
+        const additionalButtonName = 'Additional button'
+        const additionalActionButtonAction = jest.fn()
+        const {getByRole} = render(
+            <ConfirmationModal
+                additionalActionButtonConfig={{
+                    content: additionalButtonName,
+                    onClick: additionalActionButtonAction,
+                }}
+                isOpen
+                confirmText="Confirm"
+                title="Are you sure?"
+                onClose={handleOnClose}
+                onConfirm={handleOnConfirm}
+            >
+                Test content
+            </ConfirmationModal>
+        )
+
+        expect(
+            getByRole('button', {name: additionalButtonName})
+        ).toBeInTheDocument()
+
+        act(() => {
+            fireEvent.click(getByRole('button', {name: additionalButtonName}))
+        })
+
+        expect(additionalActionButtonAction).toHaveBeenCalled()
+    })
 })
