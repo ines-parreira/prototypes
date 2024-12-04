@@ -226,6 +226,24 @@ export const FiltersPanelComponent = ({
                 ) === undefined
         )
         const updatedActiveFilters = activeFilters.map((filter) => {
+            if (filter.type === FilterKey.Tags) {
+                const getTagsFilterByInstanceId = (
+                    instanceId: TagFilterInstanceId
+                ) => {
+                    return cleanStatsFilters[FilterKey.Tags]?.find(
+                        (instance) => instance.filterInstanceId === instanceId
+                    )
+                }
+
+                return {
+                    ...filter,
+                    active:
+                        (
+                            getTagsFilterByInstanceId(filter.filterInstanceId)
+                                ?.values ?? []
+                        ).length > 0,
+                }
+            }
             if (
                 isFilterTypeWithValues(filter.type) &&
                 (cleanStatsFilters[filter.type]?.values ?? []).length > 0 &&
