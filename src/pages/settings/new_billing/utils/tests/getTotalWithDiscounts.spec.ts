@@ -247,4 +247,51 @@ describe('getTotalWithDiscounts', () => {
         expect(totalWithDiscounts).toEqual(0)
         expect(discountAmount).toEqual(expectedDiscountAmount)
     })
+
+    it('should share flat amount discount across several eligible products', () => {
+        const selectedPlans: SelectedPlans = {
+            [ProductType.Helpdesk]: {
+                plan: proMonthlyHelpdeskPlan,
+                isSelected: true,
+            },
+            [ProductType.Automation]: {
+                plan: proMonthlyAutomationPlan,
+                isSelected: true,
+            },
+            [ProductType.Voice]: {
+                plan: voicePlan1,
+                isSelected: false,
+            },
+            [ProductType.SMS]: {
+                plan: smsPlan1,
+                isSelected: false,
+            },
+            [ProductType.Convert]: {
+                plan: convertPlan1,
+                isSelected: false,
+            },
+        }
+        const coupon: CouponSummary = {
+            name: 'test coupon - $200 off',
+            duration: 'forever',
+            duration_in_months: null,
+            amount_off_in_cents: 20000,
+            amount_off_decimal: '200',
+            percent_off: null,
+            products: [ProductType.Helpdesk, ProductType.Automation],
+        }
+
+        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+            getTotalWithDiscounts(selectedPlans, coupon)
+
+        const expectedDiscountAmount = 20000
+
+        expect(totalWithoutDiscounts).toEqual(
+            proMonthlyHelpdeskPlan.amount + proMonthlyAutomationPlan.amount
+        )
+        expect(totalWithDiscounts).toEqual(
+            totalWithoutDiscounts - (coupon.amount_off_in_cents as number)
+        )
+        expect(discountAmount).toEqual(expectedDiscountAmount)
+    })
 })
