@@ -126,14 +126,18 @@ exports[`<TicketTags /> should display current tags 1`] = `
         type="button"
       >
         <span
-          class="wrapper button"
+          class="content"
         >
-          Show less
-          <i
-            class="material-icons icon isRight small"
+          <span
+            class="wrapper button"
           >
-            expand_less
-          </i>
+            Show less
+            <i
+              class="material-icons icon isRight small"
+            >
+              expand_less
+            </i>
+          </span>
         </span>
       </button>
     </div>

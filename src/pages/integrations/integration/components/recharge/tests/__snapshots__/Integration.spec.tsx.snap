@@ -22,28 +22,36 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
             class="wrapper installButton mb-2 fill secondary medium"
             type="button"
           >
-            <img
-              alt="shopify logo"
-              class="shopifyLogo"
-              src="/assets/img/integrations/shopify.png"
-            />
-            Install Recharge for
-             
-            my first mock store
+            <span
+              class="content"
+            >
+              <img
+                alt="shopify logo"
+                class="shopifyLogo"
+                src="/assets/img/integrations/shopify.png"
+              />
+              Install Recharge for
+               
+              my first mock store
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper installButton mb-2 fill secondary medium"
             type="button"
           >
-            <img
-              alt="shopify logo"
-              class="shopifyLogo"
-              src="/assets/img/integrations/shopify.png"
-            />
-            Install Recharge for
-             
-            my second mock store
+            <span
+              class="content"
+            >
+              <img
+                alt="shopify logo"
+                class="shopifyLogo"
+                src="/assets/img/integrations/shopify.png"
+              />
+              Install Recharge for
+               
+              my second mock store
+            </span>
           </button>
         </div>
       </div>
@@ -116,14 +124,18 @@ exports[`<RechargeIntegration/> render() should render an integration with a del
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>

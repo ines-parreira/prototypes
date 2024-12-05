@@ -502,7 +502,9 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Create phone number
                   </span>
                 </button>

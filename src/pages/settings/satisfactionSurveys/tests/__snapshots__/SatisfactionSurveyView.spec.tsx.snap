@@ -230,7 +230,9 @@ exports[`SatisfactionSurveyView should render current survey settings form 1`] =
             class="wrapper fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Save
             </span>
           </button>

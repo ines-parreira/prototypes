@@ -74,7 +74,9 @@ exports[`<ArchiveConfirmationModal/> should render 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -83,7 +85,9 @@ exports[`<ArchiveConfirmationModal/> should render 1`] = `
                 class="wrapper ml-3 confirmBtn fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Archive
                 </span>
               </button>
@@ -170,7 +174,9 @@ exports[`<ArchiveConfirmationModal/> should render 2`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -179,7 +185,9 @@ exports[`<ArchiveConfirmationModal/> should render 2`] = `
                 class="wrapper ml-3 confirmBtn fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Archive
                 </span>
               </button>

@@ -8,15 +8,19 @@ exports[`<SpotlightSearchButton /> should render a search button 1`] = `
   type="button"
 >
   <span
-    class="wrapper buttonIcon"
+    class="content"
   >
-    <i
-      class="material-icons icon isLeft medium"
+    <span
+      class="wrapper buttonIcon"
     >
-      search
-    </i>
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        search
+      </i>
+    </span>
+    Search
   </span>
-  Search
 </button>
 `;
 

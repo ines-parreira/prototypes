@@ -49,14 +49,18 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                add
-              </i>
-              Create macro
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  add
+                </i>
+                Create macro
+              </span>
             </span>
           </button>
         </div>
@@ -74,14 +78,18 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    delete
-                  </i>
-                  Delete macro
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      delete
+                    </i>
+                    Delete macro
+                  </span>
                 </span>
               </button>
             </div>
@@ -97,7 +105,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill secondary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Discard Changes
                   </span>
                 </button>
@@ -111,7 +121,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill secondary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Duplicate
                   </span>
                 </button>
@@ -125,7 +137,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Update
                   </span>
                 </button>

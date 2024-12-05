@@ -31,7 +31,9 @@ import {ThemeContext} from 'theme'
 import css from './Popover.less'
 
 type Props = {
-    buttonProps?: ComponentProps<typeof Button>
+    buttonProps?: React.PropsWithChildren<
+        Omit<ComponentProps<typeof Button>, 'children'>
+    >
     footer?: ReactNode
     isOpen: boolean
     offsetValue?: OffsetOptions

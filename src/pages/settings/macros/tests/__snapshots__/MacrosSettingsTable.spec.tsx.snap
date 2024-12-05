@@ -235,11 +235,15 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Duplicate macro"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              file_copy
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -248,11 +252,15 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Delete macro"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              delete
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </span>
           </button>
         </div>
       </td>
@@ -354,11 +362,15 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Duplicate macro"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              file_copy
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -367,11 +379,15 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             title="Delete macro"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              delete
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </span>
           </button>
         </div>
       </td>

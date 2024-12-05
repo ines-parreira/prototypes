@@ -202,6 +202,7 @@ export const TicketPreview = ({
                                         'material-icons',
                                         css.icon
                                     )}
+                                    aria-hidden="true"
                                 >
                                     auto_awesome
                                 </i>

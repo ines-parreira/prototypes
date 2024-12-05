@@ -13,10 +13,14 @@ exports[`<ColorPicker /> should display popup on button click with default color
       id="color-picker-4"
       type="button"
     >
-      <div
-        class="color"
-        style="background-color: rgb(255, 255, 255);"
-      />
+      <span
+        class="content"
+      >
+        <div
+          class="color"
+          style="background-color: rgb(255, 255, 255);"
+        />
+      </span>
     </button>
     <input
       class="input form-control"
@@ -175,10 +179,14 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
     id="color-picker-3"
     type="button"
   >
-    <div
-      class="color"
-      style="background-color: rgb(0, 0, 0);"
-    />
+    <span
+      class="content"
+    >
+      <div
+        class="color"
+        style="background-color: rgb(0, 0, 0);"
+      />
+    </span>
   </button>
   <input
     class="input form-control"
@@ -200,10 +208,14 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
     id="color-picker-2"
     type="button"
   >
-    <div
-      class="color"
-      style="background-color: rgb(255, 255, 255);"
-    />
+    <span
+      class="content"
+    >
+      <div
+        class="color"
+        style="background-color: rgb(255, 255, 255);"
+      />
+    </span>
   </button>
   <input
     class="input form-control"
@@ -225,7 +237,9 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
     id="color-picker-1"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Pick a color
     </span>
   </button>

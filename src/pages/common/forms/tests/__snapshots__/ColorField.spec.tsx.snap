@@ -25,10 +25,14 @@ exports[`ColorField should render with minimal props 1`] = `
         id="color-picker-2"
         type="button"
       >
-        <div
-          class="color"
-          style="background-color: rgb(255, 255, 255);"
-        />
+        <span
+          class="content"
+        >
+          <div
+            class="color"
+            style="background-color: rgb(255, 255, 255);"
+          />
+        </span>
       </button>
       <input
         class="input form-control"

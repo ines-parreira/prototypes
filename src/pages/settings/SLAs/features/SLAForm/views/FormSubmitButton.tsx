@@ -5,7 +5,7 @@ import Button from 'pages/common/components/button/Button'
 
 export default function FormSubmitButton({
     ...buttonProps
-}: ComponentProps<typeof Button>) {
+}: React.PropsWithChildren<Omit<ComponentProps<typeof Button>, 'children'>>) {
     const {isDirty} = useFormState()
 
     return (

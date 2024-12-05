@@ -33,14 +33,18 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft small"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </span>
         </button>
         <button
@@ -50,14 +54,18 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              add
-            </i>
-            Add
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add
+            </span>
           </span>
         </button>
       </div>
@@ -129,14 +137,18 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft small"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </span>
       </button>
       <button
@@ -146,14 +158,18 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            add
-          </i>
-          Add
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add
+          </span>
         </span>
       </button>
     </div>
@@ -225,14 +241,18 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft small"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </span>
         </button>
         <button
@@ -242,14 +262,18 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              add
-            </i>
-            Add
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add
+            </span>
           </span>
         </button>
       </div>

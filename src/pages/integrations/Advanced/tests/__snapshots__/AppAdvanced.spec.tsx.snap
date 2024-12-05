@@ -133,11 +133,15 @@ exports[`AppAdvanced should render 1`] = `
             title="More details"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              expand_more
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                expand_more
+              </i>
+            </span>
           </button>
         </div>
         <span
@@ -197,11 +201,15 @@ exports[`AppAdvanced should render 1`] = `
             title="More details"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              expand_more
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                expand_more
+              </i>
+            </span>
           </button>
         </div>
         <span

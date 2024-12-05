@@ -124,7 +124,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -134,7 +136,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>
@@ -247,7 +251,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -257,7 +263,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>
@@ -408,7 +416,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -418,7 +428,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>
@@ -531,7 +543,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -541,7 +555,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>
@@ -692,7 +708,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -702,7 +720,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>
@@ -815,7 +835,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▲
               </span>
             </button>
@@ -825,7 +847,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 ▼
               </span>
             </button>

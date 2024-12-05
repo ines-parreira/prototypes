@@ -36,7 +36,9 @@ exports[`<ConvertToForwardPopover/> should render popover 1`] = `
               class="wrapper button mr-2 fill primary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Understood
               </span>
             </button>
@@ -45,7 +47,9 @@ exports[`<ConvertToForwardPopover/> should render popover 1`] = `
               class="wrapper button fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Change To Forward
               </span>
             </button>

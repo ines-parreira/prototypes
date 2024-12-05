@@ -226,7 +226,9 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
               Loading...
             </span>
           </svg>
-          <span>
+          <span
+            class="content"
+          >
             Add SMS
           </span>
         </button>
@@ -432,7 +434,9 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
           class="wrapper mt-4 mb-4 fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Add SMS
           </span>
         </button>
@@ -668,7 +672,9 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
               Loading...
             </span>
           </svg>
-          <span>
+          <span
+            class="content"
+          >
             Add SMS
           </span>
         </button>

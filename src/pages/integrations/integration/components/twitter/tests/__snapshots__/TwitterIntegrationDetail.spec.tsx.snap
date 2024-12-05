@@ -172,14 +172,18 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    delete
-                  </i>
-                  Remove Twitter Account
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      delete
+                    </i>
+                    Remove Twitter Account
+                  </span>
                 </span>
               </button>
             </div>

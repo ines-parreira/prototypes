@@ -89,11 +89,15 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
           tabindex="0"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            close
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              close
+            </i>
+          </span>
         </button>
       </span>
     </div>
@@ -204,11 +208,15 @@ exports[`<OrderLineItemRow/> render() should render with modifiers visible 1`] =
           tabindex="0"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            close
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              close
+            </i>
+          </span>
         </button>
       </span>
     </div>
@@ -312,11 +320,15 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
           tabindex="0"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            close
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              close
+            </i>
+          </span>
         </button>
       </span>
     </div>
@@ -420,11 +432,15 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
           tabindex="0"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            close
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              close
+            </i>
+          </span>
         </button>
       </span>
     </div>

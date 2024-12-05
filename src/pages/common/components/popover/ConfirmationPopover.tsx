@@ -19,8 +19,8 @@ import {GroupPositionContext} from 'pages/common/components/layout/Group'
 import css from './ConfirmationPopover.less'
 
 type Props = {
-    buttonProps?: ComponentProps<typeof Button>
-    cancelButtonProps?: ComponentProps<typeof Button>
+    buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>
+    cancelButtonProps?: Omit<ComponentProps<typeof Button>, 'children'>
     children: (props: {
         uid: string
         onDisplayConfirmation: (event?: SyntheticEvent) => void

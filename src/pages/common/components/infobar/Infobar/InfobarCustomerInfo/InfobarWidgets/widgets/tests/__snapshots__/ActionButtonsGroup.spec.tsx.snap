@@ -11,11 +11,15 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     type="button"
   >
     <span
-      id="action-button-1-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-1-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -24,11 +28,15 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     type="button"
   >
     <span
-      id="action-button-2-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-2-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -37,11 +45,15 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     type="button"
   >
     <span
-      id="action-button-3-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-3-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
 </span>
 `;
@@ -59,11 +71,15 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     type="button"
   >
     <span
-      id="action-button-4-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-4-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -72,11 +88,15 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     type="button"
   >
     <span
-      id="action-button-5-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-5-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -85,11 +105,15 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     type="button"
   >
     <span
-      id="action-button-6-tooltip-target"
-    />
-    <div>
-      Option 1
-    </div>
+      class="content"
+    >
+      <span
+        id="action-button-6-tooltip-target"
+      />
+      <div>
+        Option 1
+      </div>
+    </span>
   </button>
   <div
     class="dropdown"
@@ -104,11 +128,15 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
         class="wrapper wrapper small fill secondary small right"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          more_horiz
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            more_horiz
+          </i>
+        </span>
       </button>
     </span>
     <div

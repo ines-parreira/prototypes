@@ -339,9 +339,7 @@ describe('<ImportSection />', () => {
             .replyOnce(200, partiallySucceededMigration)
 
         const firstRetryButton = await waitFor(() =>
-            screen.getByText('Retry', {
-                selector: 'button',
-            })
+            screen.getByRole('button', {name: /Retry/})
         )
 
         fireEvent.click(firstRetryButton)
@@ -354,9 +352,7 @@ describe('<ImportSection />', () => {
 
         // The first one was for failed migration, this one is for partially succeeded
         const secondRetryButton = await waitFor(() =>
-            screen.getByText('Retry', {
-                selector: 'button',
-            })
+            screen.getByRole('button', {name: /Retry/})
         )
 
         fireEvent.click(secondRetryButton)
@@ -404,7 +400,7 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
-            screen.getByText(/Import Articles/, {selector: 'button'})
+            screen.getByRole('button', {name: /Import Articles/})
         )
         fireEvent.click(importArticlesButton)
 

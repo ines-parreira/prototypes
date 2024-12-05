@@ -155,22 +155,30 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   class="wrapper button wrapper small fill secondary small top"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    arrow_drop_up
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </span>
                 </button>
                 <button
                   aria-disabled="true"
                   class="wrapper button wrapper small fill secondary small bottom isDisabled"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    arrow_drop_down
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
                 </button>
               </span>
             </span>
@@ -194,11 +202,15 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 tabindex="0"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  close
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    close
+                  </i>
+                </span>
               </button>
             </div>
           </td>
@@ -303,22 +315,30 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   class="wrapper button wrapper small fill secondary small top"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    arrow_drop_up
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small bottom"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    arrow_drop_down
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
                 </button>
               </span>
             </span>
@@ -342,11 +362,15 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 tabindex="0"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  close
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    close
+                  </i>
+                </span>
               </button>
             </div>
           </td>

@@ -122,14 +122,18 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            info_outline
-          </i>
-          Learn
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              info_outline
+            </i>
+            Learn
+          </span>
         </span>
       </button>
     </h1>
@@ -228,22 +232,30 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_up
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_up
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small bottom"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_down
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </button>
                     </span>
                   </span>
@@ -283,22 +295,30 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_up
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_up
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small bottom"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_down
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </button>
                     </span>
                   </span>
@@ -418,7 +438,9 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             Loading...
           </span>
         </svg>
-        <span>
+        <span
+          class="content"
+        >
           Save changes
         </span>
       </button>
@@ -446,14 +468,18 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            info_outline
-          </i>
-          Learn
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              info_outline
+            </i>
+            Learn
+          </span>
         </span>
       </button>
     </h1>
@@ -502,7 +528,9 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Create team
                   </span>
                 </button>
@@ -583,7 +611,9 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
         class="wrapper fill primary medium"
         type="submit"
       >
-        <span>
+        <span
+          class="content"
+        >
           Save changes
         </span>
       </button>
@@ -611,14 +641,18 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            info_outline
-          </i>
-          Learn
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              info_outline
+            </i>
+            Learn
+          </span>
         </span>
       </button>
     </h1>
@@ -717,22 +751,30 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_up
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_up
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small bottom"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_down
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </button>
                     </span>
                   </span>
@@ -772,22 +814,30 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_up
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_up
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small bottom"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          arrow_drop_down
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </button>
                     </span>
                   </span>
@@ -876,7 +926,9 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
         class="wrapper fill primary medium"
         type="submit"
       >
-        <span>
+        <span
+          class="content"
+        >
           Save changes
         </span>
       </button>

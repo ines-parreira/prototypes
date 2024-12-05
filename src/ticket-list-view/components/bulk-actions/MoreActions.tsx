@@ -14,7 +14,6 @@ import {Popover} from 'components/Popover'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {Update} from 'jobs'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -176,18 +175,19 @@ export default function MoreActions({
         setLevel(null)
     }, [])
 
-    const buttonPropsPopover: ComponentProps<typeof Button> = useMemo(
-        () => ({
-            intent: 'destructive',
-            onClick: () => {
-                const action = isActiveViewTrashView
-                    ? actions['delete']
-                    : actions['trash']
-                void launchJob(action, action.params?.())
-            },
-        }),
-        [actions, isActiveViewTrashView, launchJob]
-    )
+    const buttonPropsPopover: ComponentProps<typeof Popover>['buttonProps'] =
+        useMemo(
+            () => ({
+                intent: 'destructive',
+                onClick: () => {
+                    const action = isActiveViewTrashView
+                        ? actions['delete']
+                        : actions['trash']
+                    void launchJob(action, action.params?.())
+                },
+            }),
+            [actions, isActiveViewTrashView, launchJob]
+        )
 
     const onClick = useCallback(
         (value: Action, options?: Item | null) => {

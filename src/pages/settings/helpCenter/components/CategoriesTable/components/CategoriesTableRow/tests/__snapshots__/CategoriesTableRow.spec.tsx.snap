@@ -195,11 +195,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
             id="categorySettings-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              settings
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                settings
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -208,11 +212,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
             id="createNestedCategory-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              playlist_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                playlist_add
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -221,11 +229,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
             id="createNestedArticle-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              note_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                note_add
+              </i>
+            </span>
           </button>
         </div>
       </div>
@@ -354,11 +366,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
             id="categorySettings-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              settings
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                settings
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -367,11 +383,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
             id="createNestedCategory-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              playlist_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                playlist_add
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -380,11 +400,15 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
             id="createNestedArticle-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              note_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                note_add
+              </i>
+            </span>
           </button>
         </div>
       </div>
@@ -513,11 +537,15 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
             id="categorySettings-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              settings
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                settings
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -526,11 +554,15 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
             id="createNestedCategory-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              playlist_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                playlist_add
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -539,11 +571,15 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
             id="createNestedArticle-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              note_add
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                note_add
+              </i>
+            </span>
           </button>
         </div>
       </div>

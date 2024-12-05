@@ -25,7 +25,7 @@ type Stages = 'info' | 'prompt'
 type ButtonProps = {
     label: string
     onClick: () => void
-    buttonsProp?: ComponentProps<typeof Button>
+    buttonsProp?: Omit<ComponentProps<typeof Button>, 'children'>
 }
 interface StageProp {
     content: ReactElement

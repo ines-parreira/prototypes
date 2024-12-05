@@ -46,14 +46,18 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    bolt
-                  </i>
-                  Upgrade your help center with automate
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      bolt
+                    </i>
+                    Upgrade your help center with automate
+                  </span>
                 </span>
               </button>
             </div>
@@ -139,13 +143,17 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             id="preview-help-center"
             type="button"
           >
-            <i
-              class="material-icons"
+            <span
+              class="content"
             >
-              open_in_new
-            </i>
-            <span>
-              View Help Center
+              <i
+                class="material-icons"
+              >
+                open_in_new
+              </i>
+              <span>
+                View Help Center
+              </span>
             </span>
           </button>
         </div>
@@ -279,12 +287,16 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 class="wrapper add-link fill secondary medium"
                 type="button"
               >
-                <i
-                  class="material-icons"
+                <span
+                  class="content"
                 >
-                  add
-                </i>
-                Add Link
+                  <i
+                    class="material-icons"
+                  >
+                    add
+                  </i>
+                  Add Link
+                </span>
               </button>
             </span>
           </div>
@@ -383,12 +395,16 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                   class="wrapper add-link fill secondary medium"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
-                  Add Link
+                    <i
+                      class="material-icons"
+                    >
+                      add
+                    </i>
+                    Add Link
+                  </span>
                 </button>
               </span>
             </div>
@@ -561,7 +577,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             class="wrapper mr-2 fill primary medium isDisabled"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Save Changes
             </span>
           </button>
@@ -570,7 +588,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Cancel
             </span>
           </button>

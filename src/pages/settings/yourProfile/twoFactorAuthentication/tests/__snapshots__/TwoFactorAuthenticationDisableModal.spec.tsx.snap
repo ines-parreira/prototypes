@@ -103,7 +103,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -112,7 +114,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>
@@ -191,7 +195,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -200,7 +206,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>
@@ -327,7 +335,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -336,7 +346,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
                 class="wrapper fill destructive medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>
@@ -415,7 +427,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -424,7 +438,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>
@@ -563,7 +579,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -572,7 +590,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>
@@ -671,7 +691,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -680,7 +702,9 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Foo action button text
                 </span>
               </button>

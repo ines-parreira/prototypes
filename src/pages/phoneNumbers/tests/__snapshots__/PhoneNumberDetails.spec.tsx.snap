@@ -58,12 +58,16 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -218,7 +222,9 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -229,14 +235,18 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -303,12 +313,16 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -493,7 +507,9 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -504,14 +520,18 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -578,12 +598,16 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -763,7 +787,9 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -774,14 +800,18 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -848,12 +878,16 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -1038,7 +1072,9 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1049,14 +1085,18 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -1123,12 +1163,16 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -1331,7 +1375,9 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1342,14 +1388,18 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -1416,12 +1466,16 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -1576,7 +1630,9 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1587,14 +1643,18 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>
@@ -1661,12 +1721,16 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
                 style="height: 100%;"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  file_copy
-                </i>
-                Copy
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </span>
               </button>
             </div>
           </div>
@@ -1851,7 +1915,9 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1862,14 +1928,18 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete number
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete number
+            </span>
           </span>
         </button>
       </div>

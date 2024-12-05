@@ -46,14 +46,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    bolt
-                  </i>
-                  Upgrade your help center with automate
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      bolt
+                    </i>
+                    Upgrade your help center with automate
+                  </span>
                 </span>
               </button>
             </div>
@@ -65,13 +69,17 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             id="preview-help-center"
             type="button"
           >
-            <i
-              class="material-icons"
+            <span
+              class="content"
             >
-              open_in_new
-            </i>
-            <span>
-              View Help Center
+              <i
+                class="material-icons"
+              >
+                open_in_new
+              </i>
+              <span>
+                View Help Center
+              </span>
             </span>
           </button>
         </div>
@@ -404,12 +412,16 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   class="wrapper uploadButton fill secondary medium"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    attachment
-                  </i>
-                  Upload
+                    <i
+                      class="material-icons"
+                    >
+                      attachment
+                    </i>
+                    Upload
+                  </span>
                 </button>
               </label>
               <input
@@ -532,10 +544,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     id="color-picker-4"
                     type="button"
                   >
-                    <div
-                      class="color"
-                      style="background-color: rgb(74, 141, 249);"
-                    />
+                    <span
+                      class="content"
+                    >
+                      <div
+                        class="color"
+                        style="background-color: rgb(74, 141, 249);"
+                      />
+                    </span>
                   </button>
                   <input
                     class="input form-control"
@@ -996,7 +1012,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="wrapper mr-2 fill primary medium isDisabled"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save Changes
               </span>
             </button>
@@ -1005,7 +1023,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Cancel
               </span>
             </button>

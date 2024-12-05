@@ -4,7 +4,10 @@ import React, {ComponentProps} from 'react'
 import ConfirmButton from '../ConfirmButton'
 
 describe('<ConfirmButton />', () => {
-    const defaultProps: ComponentProps<typeof ConfirmButton> = {
+    const defaultProps: Omit<
+        ComponentProps<typeof ConfirmButton>,
+        'children'
+    > = {
         id: 'foo',
         confirmationContent: 'Are you sure?',
         confirmationTitle: "I'm a title",

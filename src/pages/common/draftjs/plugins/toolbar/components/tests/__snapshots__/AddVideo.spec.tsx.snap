@@ -8,11 +8,15 @@ exports[`<AddVideo/> should not render when the popover is closed 1`] = `
     id="toolbar-button-1"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      video_library
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        video_library
+      </i>
+    </span>
   </button>
 </div>
 `;

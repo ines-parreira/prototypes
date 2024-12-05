@@ -127,7 +127,9 @@ describe('TicketPreview', () => {
             />
         )
 
-        const generatePreviewBtn = screen.getByText('Generate preview')
+        const generatePreviewBtn = screen.getByRole('button', {
+            name: 'Generate preview',
+        })
 
         expect(
             screen.getByText(
@@ -166,7 +168,9 @@ describe('TicketPreview', () => {
                 onGenerateCustomToneOfVoicePreview={() => {}}
             />
         )
-        const generatePreviewBtn = screen.getByText('Generate preview')
+        const generatePreviewBtn = screen.getByRole('button', {
+            name: 'Loading... Generate preview',
+        })
         const skeletonElement = document.querySelector(
             '.react-loading-skeleton'
         )

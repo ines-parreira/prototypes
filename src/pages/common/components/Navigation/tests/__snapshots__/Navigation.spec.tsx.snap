@@ -12,11 +12,15 @@ exports[`Navigation component should render with (prev button disabled: false) a
     id="prev-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_left
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_left
+      </i>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -24,11 +28,15 @@ exports[`Navigation component should render with (prev button disabled: false) a
     id="next-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_right
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_right
+      </i>
+    </span>
   </button>
 </span>
 `;
@@ -43,11 +51,15 @@ exports[`Navigation component should render with (prev button disabled: false) a
     id="prev-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_left
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_left
+      </i>
+    </span>
   </button>
   <button
     aria-disabled="true"
@@ -55,11 +67,15 @@ exports[`Navigation component should render with (prev button disabled: false) a
     id="next-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_right
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_right
+      </i>
+    </span>
   </button>
 </span>
 `;
@@ -74,11 +90,15 @@ exports[`Navigation component should render with (prev button disabled: true) an
     id="prev-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_left
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_left
+      </i>
+    </span>
   </button>
   <button
     aria-disabled="false"
@@ -86,11 +106,15 @@ exports[`Navigation component should render with (prev button disabled: true) an
     id="next-btn"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      keyboard_arrow_right
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        keyboard_arrow_right
+      </i>
+    </span>
   </button>
 </span>
 `;

@@ -41,6 +41,16 @@ const storyConfig: Meta<typeof Button> = {
                 disable: true,
             },
         },
+        leadingIcon: {
+            control: {
+                type: 'text',
+            },
+        },
+        trailingIcon: {
+            control: {
+                type: 'text',
+            },
+        },
     },
 }
 
@@ -56,6 +66,8 @@ const templateParameters = {
             'size',
             'children',
             'onClick',
+            'leadingIcon',
+            'trailingIcon',
         ],
     },
 }
@@ -100,6 +112,26 @@ export const Destructive: Story = {
                 story: 'Only for destructive action!',
             },
         },
+    },
+}
+
+export const LeadingIcon: Story = {
+    args: {
+        ...defaultProps,
+        leadingIcon: 'add',
+    },
+    parameters: {
+        ...templateParameters,
+    },
+}
+
+export const TrailingIcon: Story = {
+    args: {
+        ...defaultProps,
+        trailingIcon: 'arrow_drop_down',
+    },
+    parameters: {
+        ...templateParameters,
     },
 }
 

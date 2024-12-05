@@ -235,14 +235,18 @@ exports[`BusinessHours component should render default values 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    add
-                  </i>
-                  Add business hours
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      add
+                    </i>
+                    Add business hours
+                  </span>
                 </span>
               </button>
             </div>
@@ -288,7 +292,9 @@ exports[`BusinessHours component should render default values 1`] = `
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -706,14 +712,18 @@ exports[`BusinessHours component should render values from state 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    add
-                  </i>
-                  Add business hours
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      add
+                    </i>
+                    Add business hours
+                  </span>
                 </span>
               </button>
             </div>
@@ -759,7 +769,9 @@ exports[`BusinessHours component should render values from state 1`] = `
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>

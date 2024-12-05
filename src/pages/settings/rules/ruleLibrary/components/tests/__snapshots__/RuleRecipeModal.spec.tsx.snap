@@ -228,7 +228,9 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -240,7 +242,9 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Install rule
                   </span>
                 </button>

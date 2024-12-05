@@ -210,22 +210,26 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                calendar_today
-              </i>
               <span
                 class="wrapper"
               >
-                October 1, 2018 12:00 AM - October 1, 2018 11:59 PM
                 <i
-                  class="material-icons icon isRight medium"
+                  class="material-icons icon isLeft medium"
                 >
-                  arrow_drop_down
+                  calendar_today
                 </i>
+                <span
+                  class="wrapper"
+                >
+                  October 1, 2018 12:00 AM - October 1, 2018 11:59 PM
+                  <i
+                    class="material-icons icon isRight medium"
+                  >
+                    arrow_drop_down
+                  </i>
+                </span>
               </span>
             </span>
           </button>
@@ -458,11 +462,15 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         id="prev-btn"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          keyboard_arrow_left
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            keyboard_arrow_left
+          </i>
+        </span>
       </button>
       <button
         aria-disabled="false"
@@ -470,11 +478,15 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         id="next-btn"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          keyboard_arrow_right
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
     </span>
   </div>

@@ -205,7 +205,9 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         class="wrapper import ghost primary small"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Import from CSV
         </span>
       </button>
@@ -266,7 +268,9 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Create field
         </span>
       </button>
@@ -275,7 +279,9 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Cancel
         </span>
       </button>

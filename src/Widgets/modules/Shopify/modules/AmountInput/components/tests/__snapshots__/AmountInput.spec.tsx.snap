@@ -30,22 +30,30 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
         class="wrapper button wrapper small fill secondary small top"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_up
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_up
+          </i>
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper button wrapper small fill secondary small bottom"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_down
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_down
+          </i>
+        </span>
       </button>
     </span>
   </span>
@@ -82,22 +90,30 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
         class="wrapper button wrapper small fill secondary small top"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_up
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_up
+          </i>
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper button wrapper small fill secondary small bottom"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_down
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_down
+          </i>
+        </span>
       </button>
     </span>
   </span>

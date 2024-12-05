@@ -404,10 +404,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -443,10 +447,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -815,22 +823,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -874,22 +890,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -903,7 +927,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="wrapper fill primary medium isDisabled"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Add new chat
                   </span>
                 </button>
@@ -912,7 +938,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Cancel
                   </span>
                 </button>
@@ -1642,10 +1670,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -1681,10 +1713,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -2268,22 +2304,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -2327,22 +2371,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -2386,7 +2438,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Loading...
                     </span>
                   </svg>
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -3116,10 +3170,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -3155,10 +3213,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -3742,22 +3804,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -3801,22 +3871,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -3830,7 +3908,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -4560,10 +4640,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -4599,10 +4683,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -5186,22 +5274,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -5245,22 +5341,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -5274,7 +5378,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -6004,10 +6110,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -6043,10 +6153,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -6630,22 +6744,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -6689,22 +6811,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -6718,7 +6848,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -7448,10 +7580,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -7487,10 +7623,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -8074,22 +8214,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -8133,22 +8281,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -8162,7 +8318,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -8988,10 +9146,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -9027,10 +9189,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -9399,22 +9565,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -9458,22 +9632,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -9487,7 +9669,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Add new chat
                   </span>
                 </button>
@@ -9496,7 +9680,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Cancel
                   </span>
                 </button>
@@ -10189,10 +10375,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -10228,10 +10418,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -10750,22 +10944,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -10809,22 +11011,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -10838,7 +11048,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -11535,10 +11747,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -11574,10 +11790,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -12238,22 +12458,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -12297,22 +12525,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -12326,7 +12562,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>
@@ -13180,10 +13418,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -13219,10 +13461,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -13591,22 +13837,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -13650,22 +13904,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -13679,7 +13941,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="wrapper fill primary medium isDisabled"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Add new chat
                   </span>
                 </button>
@@ -13688,7 +13952,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Cancel
                   </span>
                 </button>
@@ -14418,10 +14684,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -14457,10 +14727,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           id="color-picker-42"
                           type="button"
                         >
-                          <div
-                            class="color"
-                            style="background-color: rgb(17, 92, 181);"
-                          />
+                          <span
+                            class="content"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
                         </button>
                         <input
                           class="input form-control"
@@ -15044,22 +15318,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -15103,22 +15385,30 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_up
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
                           </button>
                           <button
                             aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
-                            <i
-                              class="material-icons icon"
+                            <span
+                              class="content"
                             >
-                              arrow_drop_down
-                            </i>
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
                           </button>
                         </span>
                       </span>
@@ -15132,7 +15422,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Save changes
                   </span>
                 </button>

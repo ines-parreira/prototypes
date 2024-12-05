@@ -81,7 +81,9 @@ describe('ExternalFilesSection', () => {
         })
         fireEvent.change(fileInput)
 
-        expect(screen.getByText('Uploading..')).toHaveClass('isDisabled')
+        expect(
+            screen.getByRole('button', {name: /Uploading../})
+        ).toBeAriaDisabled()
 
         await waitFor(() => {
             expect(mockIngestFile).toHaveBeenCalledWith({
@@ -126,7 +128,9 @@ describe('ExternalFilesSection', () => {
             ],
         })
 
-        expect(screen.getByText('Uploading..')).toHaveClass('isDisabled')
+        expect(
+            screen.getByRole('button', {name: /Uploading../})
+        ).toBeAriaDisabled()
         expect(screen.queryByText('test.pdf')).not.toBeInTheDocument()
         expect(screen.queryByText('test2.pdf')).not.toBeInTheDocument()
         expect(screen.queryByText('test3.pdf')).toBeInTheDocument()

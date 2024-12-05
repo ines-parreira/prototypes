@@ -507,19 +507,25 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
               class="wrapper actionsButton fill primary medium"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="content"
               >
-                refresh
-              </i>
-              Retry
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                Retry
+              </span>
             </button>
             <button
               aria-disabled="false"
               class="wrapper actionsButton fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Close
               </span>
             </button>
@@ -631,7 +637,9 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
             class="wrapper w-100 fill primary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Start migrating
             </span>
           </button>
@@ -1049,7 +1057,9 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 Loading...
               </span>
             </svg>
-            <span>
+            <span
+              class="content"
+            >
               Loading
             </span>
           </button>
@@ -1280,7 +1290,9 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                 Loading...
               </span>
             </svg>
-            <span>
+            <span
+              class="content"
+            >
               Loading
             </span>
           </button>
@@ -1421,7 +1433,9 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
                 Loading...
               </span>
             </svg>
-            <span>
+            <span
+              class="content"
+            >
               Start migrating
             </span>
           </button>
@@ -1758,12 +1772,16 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                 class="wrapper optionButton fill primary medium"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  refresh
-                </i>
-                Retry
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                  Retry
+                </span>
               </button>
               <div
                 class="optionDescription"
@@ -1779,12 +1797,16 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                 class="wrapper optionButton fill destructive medium"
                 type="button"
               >
-                <i
-                  class="material-icons mr-2"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
-                Revert
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    delete
+                  </i>
+                  Revert
+                </span>
               </button>
               <div
                 class="optionDescription"
@@ -1798,7 +1820,9 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             class="wrapper w-100 fill secondary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               End migration
             </span>
           </button>
@@ -1998,7 +2022,9 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
             class="wrapper w-100 fill primary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Finish
             </span>
           </button>

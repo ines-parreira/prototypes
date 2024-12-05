@@ -99,7 +99,8 @@ describe('AIAgentMessageFeedback', () => {
 
         const positiveFeedbackElement = screen
             .getAllByTestId(testId)[0]
-            .querySelector('.feedback i.material-icons')?.parentElement
+            .querySelector('.feedback i.material-icons')
+            ?.parentElement?.parentElement
         expect(positiveFeedbackElement).toHaveClass('positiveFeedback')
     })
 
@@ -118,7 +119,8 @@ describe('AIAgentMessageFeedback', () => {
 
         const negativeFeedbackElement = screen
             .getAllByTestId(testId)[1]
-            .querySelector('.feedback i.material-icons')?.parentElement
+            .querySelector('.feedback i.material-icons')
+            ?.parentElement?.parentElement
         expect(negativeFeedbackElement).toHaveClass('negativeFeedback')
     })
 

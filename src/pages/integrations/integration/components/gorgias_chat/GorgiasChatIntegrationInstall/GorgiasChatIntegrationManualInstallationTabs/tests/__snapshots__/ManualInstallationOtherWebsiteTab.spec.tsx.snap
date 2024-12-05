@@ -61,14 +61,18 @@ exports[`ManualInstallationOtherWebsiteTab should render the component 1`] = `
       type="button"
     >
       <span
-        class="wrapper"
+        class="content"
       >
-        <i
-          class="material-icons icon isLeft small"
+        <span
+          class="wrapper"
         >
-          content_copy
-        </i>
-        Copy Code
+          <i
+            class="material-icons icon isLeft small"
+          >
+            content_copy
+          </i>
+          Copy Code
+        </span>
       </span>
     </button>
   </div>

@@ -328,7 +328,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
           class="wrapper fill primary medium isDisabled"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -676,7 +678,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
           class="wrapper fill primary medium isDisabled"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1024,7 +1028,9 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           class="wrapper fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1197,7 +1203,9 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
           class="wrapper fill primary medium isDisabled"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>

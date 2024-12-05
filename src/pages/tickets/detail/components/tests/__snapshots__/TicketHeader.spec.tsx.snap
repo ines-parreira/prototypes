@@ -64,11 +64,15 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         id="ticket-actions-button"
         type="button"
       >
-        <i
-          class="icon material-icons"
+        <span
+          class="content"
         >
-          more_vert
-        </i>
+          <i
+            class="icon material-icons"
+          >
+            more_vert
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -87,14 +91,18 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              check
-            </i>
-            Close
+              <i
+                class="material-icons icon isLeft small"
+              >
+                check
+              </i>
+              Close
+            </span>
           </span>
         </button>
       </span>
@@ -192,11 +200,15 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
         id="ticket-actions-button"
         type="button"
       >
-        <i
-          class="icon material-icons"
+        <span
+          class="content"
         >
-          more_vert
-        </i>
+          <i
+            class="icon material-icons"
+          >
+            more_vert
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -215,14 +227,18 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              check
-            </i>
-            Close
+              <i
+                class="material-icons icon isLeft small"
+              >
+                check
+              </i>
+              Close
+            </span>
           </span>
         </button>
       </span>
@@ -279,11 +295,15 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         id="ticket-actions-button"
         type="button"
       >
-        <i
-          class="icon material-icons"
+        <span
+          class="content"
         >
-          more_vert
-        </i>
+          <i
+            class="icon material-icons"
+          >
+            more_vert
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -302,14 +322,18 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              check
-            </i>
-            Close
+              <i
+                class="material-icons icon isLeft small"
+              >
+                check
+              </i>
+              Close
+            </span>
           </span>
         </button>
       </span>

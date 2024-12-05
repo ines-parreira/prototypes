@@ -62,11 +62,15 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           id="copy-url-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            share
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              share
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -75,11 +79,15 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           id="close-edit-mode-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            keyboard_tab
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              keyboard_tab
+            </i>
+          </span>
         </button>
       </div>
     </div>
@@ -233,11 +241,15 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           id="copy-url-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            share
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              share
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -246,11 +258,15 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           id="close-edit-mode-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            keyboard_tab
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              keyboard_tab
+            </i>
+          </span>
         </button>
       </div>
     </div>
@@ -333,11 +349,15 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           id="copy-url-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            share
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              share
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -346,11 +366,15 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           id="close-edit-mode-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            keyboard_tab
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              keyboard_tab
+            </i>
+          </span>
         </button>
       </div>
     </div>

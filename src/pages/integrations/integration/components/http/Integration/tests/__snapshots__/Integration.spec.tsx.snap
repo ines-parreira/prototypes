@@ -365,11 +365,15 @@ exports[`Integration should display data about the integration 1`] = `
                 title="Remove header"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -427,11 +431,15 @@ exports[`Integration should display data about the integration 1`] = `
                 title="Remove header"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -441,15 +449,19 @@ exports[`Integration should display data about the integration 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft small"
+              <span
+                class="wrapper"
               >
-                add
-              </i>
-              Add 
-              header
+                <i
+                  class="material-icons icon isLeft small"
+                >
+                  add
+                </i>
+                Add 
+                header
+              </span>
             </span>
           </button>
         </div>
@@ -580,7 +592,9 @@ exports[`Integration should display data about the integration 1`] = `
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -589,7 +603,9 @@ exports[`Integration should display data about the integration 1`] = `
           class="wrapper fill destructive medium"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Deactivate HTTP integration
           </span>
         </button>
@@ -600,14 +616,18 @@ exports[`Integration should display data about the integration 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete HTTP integration
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete HTTP integration
+            </span>
           </span>
         </button>
       </div>
@@ -981,11 +1001,15 @@ exports[`Integration should display data with url-encoded format 1`] = `
                 title="Remove header"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -1043,11 +1067,15 @@ exports[`Integration should display data with url-encoded format 1`] = `
                 title="Remove header"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -1057,15 +1085,19 @@ exports[`Integration should display data with url-encoded format 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft small"
+              <span
+                class="wrapper"
               >
-                add
-              </i>
-              Add 
-              header
+                <i
+                  class="material-icons icon isLeft small"
+                >
+                  add
+                </i>
+                Add 
+                header
+              </span>
             </span>
           </button>
         </div>
@@ -1135,11 +1167,15 @@ exports[`Integration should display data with url-encoded format 1`] = `
                 title="Remove field"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -1199,11 +1235,15 @@ exports[`Integration should display data with url-encoded format 1`] = `
                 title="Remove field"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  delete
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    delete
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -1213,15 +1253,19 @@ exports[`Integration should display data with url-encoded format 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft small"
+              <span
+                class="wrapper"
               >
-                add
-              </i>
-              Add 
-              field
+                <i
+                  class="material-icons icon isLeft small"
+                >
+                  add
+                </i>
+                Add 
+                field
+              </span>
             </span>
           </button>
         </div>
@@ -1232,7 +1276,9 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Save changes
           </span>
         </button>
@@ -1241,7 +1287,9 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="wrapper fill destructive medium"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Deactivate HTTP integration
           </span>
         </button>
@@ -1252,14 +1300,18 @@ exports[`Integration should display data with url-encoded format 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete HTTP integration
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete HTTP integration
+            </span>
           </span>
         </button>
       </div>
@@ -1555,15 +1607,19 @@ exports[`Integration should display default values because there is no integrati
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft small"
+              <span
+                class="wrapper"
               >
-                add
-              </i>
-              Add 
-              header
+                <i
+                  class="material-icons icon isLeft small"
+                >
+                  add
+                </i>
+                Add 
+                header
+              </span>
             </span>
           </button>
         </div>
@@ -1574,7 +1630,9 @@ exports[`Integration should display default values because there is no integrati
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Add integration
           </span>
         </button>
@@ -1684,14 +1742,18 @@ exports[`Integration should display minimal information because integration is i
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete HTTP integration
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete HTTP integration
+            </span>
           </span>
         </button>
       </div>

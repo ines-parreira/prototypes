@@ -14,25 +14,33 @@ exports[`<RuleItemButtons /> rendering should handle deleting state 1`] = `
 `;
 
 exports[`<RuleItemButtons /> rendering should handle disabled duplicate 1`] = `
-<span>
+<span
+  class="content"
+>
   Update rule
 </span>
 `;
 
 exports[`<RuleItemButtons /> rendering should handle disabled duplicate 2`] = `
-<span>
+<span
+  class="content"
+>
   Duplicate rule
 </span>
 `;
 
 exports[`<RuleItemButtons /> rendering should handle disabled submit 1`] = `
-<span>
+<span
+  class="content"
+>
   Update rule
 </span>
 `;
 
 exports[`<RuleItemButtons /> rendering should handle disabled submit 2`] = `
-<span>
+<span
+  class="content"
+>
   Duplicate rule
 </span>
 `;
@@ -49,7 +57,9 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for cre
       id="rule-item-save"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Create rule
       </span>
     </button>
@@ -69,7 +79,9 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
       id="rule-item-save"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Update rule
       </span>
     </button>
@@ -79,7 +91,9 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
       id="rule-item-duplicate"
       type="submit"
     >
-      <span>
+      <span
+        class="content"
+      >
         Duplicate rule
       </span>
     </button>
@@ -92,14 +106,18 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
       type="button"
     >
       <span
-        class="wrapper"
+        class="content"
       >
-        <i
-          class="material-icons icon isLeft medium"
+        <span
+          class="wrapper"
         >
-          delete
-        </i>
-        Delete rule
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            delete
+          </i>
+          Delete rule
+        </span>
       </span>
     </button>
   </div>

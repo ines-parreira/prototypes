@@ -109,14 +109,18 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  delete
-                </i>
-                Delete App
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    delete
+                  </i>
+                  Delete App
+                </span>
               </span>
             </button>
           </div>

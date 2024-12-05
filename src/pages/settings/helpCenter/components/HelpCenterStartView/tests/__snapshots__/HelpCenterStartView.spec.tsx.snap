@@ -137,7 +137,9 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 class="wrapper full-width fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Create Help Center
                 </span>
               </button>
@@ -233,11 +235,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
           id="add-new-help-center-button"
           type="button"
         >
-          <div
-            class="createNewButton"
+          <span
+            class="content"
           >
-            Create Help Center
-          </div>
+            <div
+              class="createNewButton"
+            >
+              Create Help Center
+            </div>
+          </span>
         </button>
       </div>
     </div>
@@ -447,11 +453,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Duplicate Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          file_copy
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            file_copy
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -467,11 +477,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Open Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          chevron_right
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            chevron_right
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -556,11 +570,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Duplicate Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          file_copy
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            file_copy
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -576,11 +594,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Open Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          chevron_right
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            chevron_right
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -665,11 +687,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Duplicate Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          file_copy
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            file_copy
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -685,11 +711,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Open Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          chevron_right
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            chevron_right
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -774,11 +804,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Duplicate Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          file_copy
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            file_copy
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -794,11 +828,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         title="Open Help Center"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          chevron_right
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            chevron_right
+                          </i>
+                        </span>
                       </button>
                     </div>
                   </td>

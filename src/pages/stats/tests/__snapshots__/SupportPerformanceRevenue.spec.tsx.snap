@@ -23,14 +23,18 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              info_outline
-            </i>
-            Learn
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                info_outline
+              </i>
+              Learn
+            </span>
           </span>
         </button>
       </h1>
@@ -207,22 +211,26 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  calendar_today
-                </i>
                 <span
                   class="wrapper"
                 >
-                  Feb 3, 2021
                   <i
-                    class="material-icons icon isRight medium"
+                    class="material-icons icon isLeft medium"
                   >
-                    arrow_drop_down
+                    calendar_today
                   </i>
+                  <span
+                    class="wrapper"
+                  >
+                    Feb 3, 2021
+                    <i
+                      class="material-icons icon isRight medium"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
                 </span>
               </span>
             </button>

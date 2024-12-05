@@ -48,11 +48,15 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
       class="wrapper ml-2 wrapper fill secondary medium"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          add
+        </i>
+      </span>
     </button>
     <div />
   </div>
@@ -107,11 +111,15 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
       class="wrapper ml-2 wrapper fill secondary medium"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          add
+        </i>
+      </span>
     </button>
     <div />
   </div>

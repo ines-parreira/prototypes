@@ -106,7 +106,9 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           I am in snapshots
         </span>
       </button>
@@ -133,7 +135,9 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           I am in snapshots too
         </span>
       </button>
@@ -159,15 +163,19 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     type="button"
   >
     <span
-      class="wrapper"
+      class="content"
     >
-      <i
-        class="material-icons icon isLeft small"
+      <span
+        class="wrapper"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon isLeft small"
+        >
+          add
+        </i>
+      </span>
+      Add Button
     </span>
-    Add Button
   </button>
 </div>
 `;

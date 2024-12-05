@@ -7,7 +7,9 @@ exports[`<ConfirmButton /> should render 1`] = `
   id="foo"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Click me!
   </span>
 </button>

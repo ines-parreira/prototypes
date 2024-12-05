@@ -139,14 +139,18 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      Upgrade to New Enterprise
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        bolt
-                      </i>
+                        Upgrade to New Enterprise
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          bolt
+                        </i>
+                      </span>
                     </span>
                   </button>
                 </a>
@@ -315,14 +319,18 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      Upgrade to New Basic
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        bolt
-                      </i>
+                        Upgrade to New Basic
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          bolt
+                        </i>
+                      </span>
                     </span>
                   </button>
                 </a>
@@ -479,14 +487,18 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      Upgrade to Pro
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        bolt
-                      </i>
+                        Upgrade to Pro
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          bolt
+                        </i>
+                      </span>
                     </span>
                   </button>
                 </a>

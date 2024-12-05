@@ -191,7 +191,9 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Connect BigCommerce
               </span>
             </button>
@@ -397,14 +399,18 @@ exports[`<BigCommerce/> Integration should render 1`] = `
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  delete
-                </i>
-                Delete App
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    delete
+                  </i>
+                  Delete App
+                </span>
               </span>
             </button>
           </div>
@@ -458,7 +464,9 @@ exports[`<BigCommerce/> List should render 1`] = `
           class="wrapper fill primary medium"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Connect BigCommerce
           </span>
         </button>

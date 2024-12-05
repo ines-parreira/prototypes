@@ -29,7 +29,9 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       class="wrapper import ghost primary small"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Import from CSV
       </span>
     </button>
@@ -68,11 +70,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-1-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -110,11 +116,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-2-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -152,11 +162,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-3-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -194,11 +208,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-4-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -236,11 +254,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-5-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -278,11 +300,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-6-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -320,11 +346,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-7-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -362,11 +392,15 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         data-testid="dropdown-choice-8-remove"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          clear
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </span>
       </button>
     </div>
   </div>

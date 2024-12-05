@@ -34,14 +34,18 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              info_outline
-            </i>
-            Learn
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                info_outline
+              </i>
+              Learn
+            </span>
           </span>
         </button>
       </h1>
@@ -540,11 +544,15 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             id="prev-btn"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              keyboard_arrow_left
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                keyboard_arrow_left
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -552,11 +560,15 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             id="next-btn"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              keyboard_arrow_right
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                keyboard_arrow_right
+              </i>
+            </span>
           </button>
         </span>
       </div>

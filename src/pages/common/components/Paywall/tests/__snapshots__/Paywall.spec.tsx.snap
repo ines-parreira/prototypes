@@ -827,14 +827,18 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      Upgrade to Foo
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        bolt
-                      </i>
+                        Upgrade to Foo
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          bolt
+                        </i>
+                      </span>
                     </span>
                   </button>
                 </a>

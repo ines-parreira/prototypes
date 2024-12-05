@@ -10,7 +10,9 @@ exports[`<CantScanQRCode /> render() should render the component with extra hidd
       class="wrapper ghost primary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Can't scan the QR code?
       </span>
     </button>
@@ -28,7 +30,9 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
       class="wrapper ghost primary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Can't scan the QR code?
       </span>
     </button>
@@ -72,14 +76,18 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </span>
         </button>
       </span>
@@ -119,14 +127,18 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </span>
         </button>
       </span>
@@ -166,14 +178,18 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </span>
         </button>
       </span>

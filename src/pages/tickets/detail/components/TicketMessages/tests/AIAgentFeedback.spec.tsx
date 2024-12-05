@@ -147,9 +147,9 @@ describe('AIAgentFeedback', () => {
                 </Provider>
             </QueryClientProvider>
         )
-        expect(screen.getByText('thumb_up').parentElement).toHaveClass(
-            'withFeedback'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Thumbs up button'})
+        ).toHaveClass('withFeedback')
     })
 
     it('shows the thumbs up icon as red when the feedback is negative', () => {
@@ -178,9 +178,9 @@ describe('AIAgentFeedback', () => {
                 </Provider>
             </QueryClientProvider>
         )
-        expect(screen.getByText('thumb_down').parentElement).toHaveClass(
-            'withFeedback'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Thumbs down button'})
+        ).toHaveClass('withFeedback')
     })
 
     it('shows the thumbs up icon as neutral when not all feedback is positive', () => {

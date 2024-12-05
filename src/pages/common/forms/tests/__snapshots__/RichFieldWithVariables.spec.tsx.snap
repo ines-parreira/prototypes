@@ -21,14 +21,18 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            Ticket customer
-            <i
-              class="material-icons icon isRight medium"
+            <span
+              class="wrapper"
             >
-              arrow_drop_down
-            </i>
+              Ticket customer
+              <i
+                class="material-icons icon isRight medium"
+              >
+                arrow_drop_down
+              </i>
+            </span>
           </span>
         </button>
       </div>
@@ -98,14 +102,18 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            Current agent
-            <i
-              class="material-icons icon isRight medium"
+            <span
+              class="wrapper"
             >
-              arrow_drop_down
-            </i>
+              Current agent
+              <i
+                class="material-icons icon isRight medium"
+              >
+                arrow_drop_down
+              </i>
+            </span>
           </span>
         </button>
       </div>

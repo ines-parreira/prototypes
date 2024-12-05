@@ -172,14 +172,18 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            download
-          </i>
-          Download
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              download
+            </i>
+            Download
+          </span>
         </span>
       </button>
       <button
@@ -205,14 +209,18 @@ abcdefgh16"
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            content_copy
-          </i>
-          Copy
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              content_copy
+            </i>
+            Copy
+          </span>
         </span>
       </button>
       <a
@@ -227,14 +235,18 @@ abcdefgh16"
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              print
-            </i>
-            Print
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                print
+              </i>
+              Print
+            </span>
           </span>
         </button>
       </a>

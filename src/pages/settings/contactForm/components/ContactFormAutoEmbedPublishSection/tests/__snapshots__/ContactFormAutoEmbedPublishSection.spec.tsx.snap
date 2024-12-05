@@ -28,7 +28,9 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a no
     data-testid="contact-form-auto-embed-card__embed-button"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Embed Form
     </span>
   </button>
@@ -63,7 +65,9 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a sh
     data-testid="contact-form-auto-embed-card__embed-button"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Embed Form
     </span>
   </button>
@@ -128,7 +132,9 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - not connected to 
     data-testid="contact-form-auto-embed-card__embed-button"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Embed Form
     </span>
   </button>

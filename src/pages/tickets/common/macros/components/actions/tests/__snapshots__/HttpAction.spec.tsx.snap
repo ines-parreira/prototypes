@@ -144,11 +144,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
         class="wrapper wrapper fill secondary medium"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          add
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            add
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -166,11 +170,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
         class="wrapper wrapper fill secondary medium"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          add
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            add
+          </i>
+        </span>
       </button>
     </div>
   </div>

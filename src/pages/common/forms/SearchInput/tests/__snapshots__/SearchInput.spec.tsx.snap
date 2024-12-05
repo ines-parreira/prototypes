@@ -196,14 +196,18 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft small"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </span>
       </button>
       2 sub results

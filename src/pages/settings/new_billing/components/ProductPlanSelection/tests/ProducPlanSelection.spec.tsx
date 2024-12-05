@@ -318,7 +318,9 @@ describe('ProductPlanSelection', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Add Product')).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Add Product/})
+        ).toBeAriaDisabled()
         expect(
             screen.queryByText('Click allowance auto-upgrade')
         ).not.toBeInTheDocument()
@@ -344,7 +346,9 @@ describe('ProductPlanSelection', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Add Product')).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', {name: /Add Product/})
+        ).toBeAriaDisabled()
         expect(
             screen.queryByText('Click allowance auto-upgrade')
         ).not.toBeInTheDocument()
@@ -371,7 +375,9 @@ describe('ProductPlanSelection', () => {
                 </Provider>
             )
 
-            expect(screen.getByText('Add Product')).toBeAriaDisabled()
+            expect(
+                screen.getByRole('button', {name: /Add Product/})
+            ).toBeAriaDisabled()
         }
     )
 

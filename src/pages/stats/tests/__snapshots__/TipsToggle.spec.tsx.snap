@@ -8,14 +8,18 @@ exports[`<TipsToggle /> should render the tips toggle 1`] = `
     type="button"
   >
     <span
-      class="wrapper"
+      class="content"
     >
-      <i
-        class="material-icons icon isLeft medium"
+      <span
+        class="wrapper"
       >
-        visibility_off
-      </i>
-      Hide tips
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          visibility_off
+        </i>
+        Hide tips
+      </span>
     </span>
   </button>
 </div>

@@ -225,7 +225,9 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Save changes
         </span>
       </button>
@@ -234,7 +236,9 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Cancel
         </span>
       </button>
@@ -247,7 +251,9 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Archive field
         </span>
       </button>

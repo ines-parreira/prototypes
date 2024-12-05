@@ -24,7 +24,9 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
               color="primary"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save & Publish
               </span>
             </button>
@@ -38,11 +40,15 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
                 class="wrapper wrapper fill primary medium right"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  arrow_drop_down
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    arrow_drop_down
+                  </i>
+                </span>
               </button>
             </span>
           </span>
@@ -76,7 +82,9 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           class="wrapper fill secondary medium"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Discard changes
           </span>
         </button>
@@ -139,12 +147,16 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         class="wrapper deleteButton fill secondary medium"
         type="button"
       >
-        <i
-          class="material-icons"
+        <span
+          class="content"
         >
-          delete
-        </i>
-        Delete Article
+          <i
+            class="material-icons"
+          >
+            delete
+          </i>
+          Delete Article
+        </span>
       </button>
     </div>
   </footer>

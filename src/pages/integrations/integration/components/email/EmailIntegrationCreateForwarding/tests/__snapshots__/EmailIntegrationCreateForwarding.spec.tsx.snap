@@ -75,12 +75,16 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
               id="copy-forwarding-email"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="content"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </button>
           </div>
         </div>
@@ -99,65 +103,85 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Google Groups logo"
-              src="test-file-stub"
-            />
-            <div>
-              Google Groups
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Google Groups logo"
+                src="test-file-stub"
+              />
+              <div>
+                Google Groups
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Outlook logo"
-              src="test-file-stub"
-            />
-            <div>
-              Outlook
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Outlook logo"
+                src="test-file-stub"
+              />
+              <div>
+                Outlook
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Office 365 logo"
-              src="test-file-stub"
-            />
-            <div>
-              Office 365
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Office 365 logo"
+                src="test-file-stub"
+              />
+              <div>
+                Office 365
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Microsoft Exchange logo"
-              src="test-file-stub"
-            />
-            <div>
-              Microsoft Exchange
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Microsoft Exchange logo"
+                src="test-file-stub"
+              />
+              <div>
+                Microsoft Exchange
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Zoho Mail logo"
-              src="test-file-stub"
-            />
-            <div>
-              Zoho Mail
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Zoho Mail logo"
+                src="test-file-stub"
+              />
+              <div>
+                Zoho Mail
+              </div>
+            </span>
           </button>
         </div>
         <p>
@@ -176,7 +200,9 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
         color="primary"
         type="submit"
       >
-        <span>
+        <span
+          class="content"
+        >
           Verify email forwarding
         </span>
       </button>
@@ -260,12 +286,16 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
               id="copy-forwarding-email"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="content"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </button>
           </div>
         </div>
@@ -284,65 +314,85 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Google Groups logo"
-              src="test-file-stub"
-            />
-            <div>
-              Google Groups
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Google Groups logo"
+                src="test-file-stub"
+              />
+              <div>
+                Google Groups
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Outlook logo"
-              src="test-file-stub"
-            />
-            <div>
-              Outlook
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Outlook logo"
+                src="test-file-stub"
+              />
+              <div>
+                Outlook
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Office 365 logo"
-              src="test-file-stub"
-            />
-            <div>
-              Office 365
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Office 365 logo"
+                src="test-file-stub"
+              />
+              <div>
+                Office 365
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Microsoft Exchange logo"
-              src="test-file-stub"
-            />
-            <div>
-              Microsoft Exchange
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Microsoft Exchange logo"
+                src="test-file-stub"
+              />
+              <div>
+                Microsoft Exchange
+              </div>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper forwardingCard fill secondary medium"
             type="button"
           >
-            <img
-              alt="Zoho Mail logo"
-              src="test-file-stub"
-            />
-            <div>
-              Zoho Mail
-            </div>
+            <span
+              class="content"
+            >
+              <img
+                alt="Zoho Mail logo"
+                src="test-file-stub"
+              />
+              <div>
+                Zoho Mail
+              </div>
+            </span>
           </button>
         </div>
         <p>
@@ -361,7 +411,9 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
         color="primary"
         type="submit"
       >
-        <span>
+        <span
+          class="content"
+        >
           Verify email forwarding
         </span>
       </button>

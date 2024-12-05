@@ -24,22 +24,30 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
         class="wrapper button wrapper small fill secondary small top isAuxiliaryButton"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_up
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_up
+          </i>
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper button wrapper small fill secondary small bottom isAuxiliaryButton"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_down
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_down
+          </i>
+        </span>
       </button>
     </span>
   </span>
@@ -56,15 +64,19 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
         class="wrapper button fill secondary medium right isAuxiliaryButton"
         type="button"
       >
-        week(s) ago
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isRight medium"
+          week(s) ago
+          <span
+            class="wrapper"
           >
-            arrow_drop_down
-          </i>
+            <i
+              class="material-icons icon isRight medium"
+            >
+              arrow_drop_down
+            </i>
+          </span>
         </span>
       </button>
     </span>

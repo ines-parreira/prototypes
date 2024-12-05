@@ -119,7 +119,9 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
             class="wrapper fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Save changes
             </span>
           </button>
@@ -130,14 +132,18 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -296,7 +302,9 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
                 Loading...
               </span>
             </svg>
-            <span>
+            <span
+              class="content"
+            >
               Save changes
             </span>
           </button>
@@ -307,14 +315,18 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>

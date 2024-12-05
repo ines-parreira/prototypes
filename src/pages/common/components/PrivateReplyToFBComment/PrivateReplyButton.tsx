@@ -18,6 +18,7 @@ type ComponentProps = {
     id?: string
     href?: string
     type?: 'button' | 'reset' | 'submit'
+    children: React.ReactNode
 }
 
 type Component =

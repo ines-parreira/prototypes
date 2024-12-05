@@ -70,11 +70,15 @@ exports[`<Row /> should render 1`] = `
         class="wrapper wrapper ghost ghost destructive medium"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          delete
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            delete
+          </i>
+        </span>
       </button>
     </span>
   </span>

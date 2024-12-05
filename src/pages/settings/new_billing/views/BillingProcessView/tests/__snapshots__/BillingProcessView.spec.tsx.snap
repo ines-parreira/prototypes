@@ -104,7 +104,9 @@ exports[`UsageAndPlansView should render 1`] = `
                   class="wrapper ghost destructive small"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Cancel auto-renewal
                   </span>
                 </button>
@@ -254,12 +256,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   id="add-product-automation"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
-                  Add Product
+                    <i
+                      class="material-icons"
+                    >
+                      add
+                    </i>
+                    Add Product
+                  </span>
                 </button>
               </div>
             </div>
@@ -292,12 +298,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   id="add-product-voice"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
-                  Add Product
+                    <i
+                      class="material-icons"
+                    >
+                      add
+                    </i>
+                    Add Product
+                  </span>
                 </button>
               </div>
             </div>
@@ -330,12 +340,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   id="add-product-sms"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
-                  Add Product
+                    <i
+                      class="material-icons"
+                    >
+                      add
+                    </i>
+                    Add Product
+                  </span>
                 </button>
               </div>
             </div>
@@ -368,12 +382,16 @@ exports[`UsageAndPlansView should render 1`] = `
                   id="add-product-convert"
                   type="button"
                 >
-                  <i
-                    class="material-icons"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
-                  Add Product
+                    <i
+                      class="material-icons"
+                    >
+                      add
+                    </i>
+                    Add Product
+                  </span>
                 </button>
               </div>
             </div>
@@ -493,7 +511,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 id="update-subscription"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Update Subscription
                 </span>
               </button>

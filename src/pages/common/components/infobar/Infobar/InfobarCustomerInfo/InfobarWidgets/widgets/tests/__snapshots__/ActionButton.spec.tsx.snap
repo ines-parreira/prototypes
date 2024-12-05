@@ -12,16 +12,20 @@ exports[`ActionButton component should display a single option with a checkbox p
         type="button"
       >
         <span
-          id="action-button-4-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-4-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -33,16 +37,20 @@ exports[`ActionButton component should display a single option with a checkbox p
       type="button"
     >
       <span
-        id="action-button-4-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-4-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -111,16 +119,20 @@ exports[`ActionButton component should display a single option with a number par
         type="button"
       >
         <span
-          id="action-button-3-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-3-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -132,16 +144,20 @@ exports[`ActionButton component should display a single option with a number par
       type="button"
     >
       <span
-        id="action-button-3-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-3-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -210,16 +226,20 @@ exports[`ActionButton component should display a single option with a select par
         type="button"
       >
         <span
-          id="action-button-5-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-5-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -231,16 +251,20 @@ exports[`ActionButton component should display a single option with a select par
       type="button"
     >
       <span
-        id="action-button-5-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-5-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -309,16 +333,20 @@ exports[`ActionButton component should display a single option with a text param
         type="button"
       >
         <span
-          id="action-button-2-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-2-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -330,16 +358,20 @@ exports[`ActionButton component should display a single option with a text param
       type="button"
     >
       <span
-        id="action-button-2-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-2-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -408,16 +440,20 @@ exports[`ActionButton component should display a single option with no parameter
         type="button"
       >
         <span
-          id="action-button-1-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-1-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -429,16 +465,20 @@ exports[`ActionButton component should display a single option with no parameter
       type="button"
     >
       <span
-        id="action-button-1-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-1-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -507,16 +547,20 @@ exports[`ActionButton component should display multiple options with a common pa
         type="button"
       >
         <span
-          id="action-button-7-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-7-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -528,16 +572,20 @@ exports[`ActionButton component should display multiple options with a common pa
       type="button"
     >
       <span
-        id="action-button-7-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-7-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -606,16 +654,20 @@ exports[`ActionButton component should display multiple options with different p
         type="button"
       >
         <span
-          id="action-button-8-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-8-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -627,16 +679,20 @@ exports[`ActionButton component should display multiple options with different p
       type="button"
     >
       <span
-        id="action-button-8-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-8-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],
@@ -705,16 +761,20 @@ exports[`ActionButton component should display multiple options without paramete
         type="button"
       >
         <span
-          id="action-button-6-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
-          >
-            refresh
-          </i>
-           Little action
-        </div>
+          class="content"
+        >
+          <span
+            id="action-button-6-tooltip-target"
+          />
+          <div>
+            <i
+              class="material-icons mr-2"
+            >
+              refresh
+            </i>
+             Little action
+          </div>
+        </span>
       </button>
     </div>
   </body>,
@@ -726,16 +786,20 @@ exports[`ActionButton component should display multiple options without paramete
       type="button"
     >
       <span
-        id="action-button-6-tooltip-target"
-      />
-      <div>
-        <i
-          class="material-icons mr-2"
-        >
-          refresh
-        </i>
-         Little action
-      </div>
+        class="content"
+      >
+        <span
+          id="action-button-6-tooltip-target"
+        />
+        <div>
+          <i
+            class="material-icons mr-2"
+          >
+            refresh
+          </i>
+           Little action
+        </div>
+      </span>
     </button>
   </div>,
   "debug": [Function],

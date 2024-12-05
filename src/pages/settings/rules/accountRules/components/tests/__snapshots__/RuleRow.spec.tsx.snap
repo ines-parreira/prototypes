@@ -83,11 +83,15 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       title="Duplicate rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        file_copy
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          file_copy
+        </i>
+      </span>
     </button>
     <button
       aria-disabled="false"
@@ -96,11 +100,15 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       title="Delete rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        delete
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </span>
     </button>
   </td>
 </tr>
@@ -189,11 +197,15 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       title="Duplicate rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        file_copy
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          file_copy
+        </i>
+      </span>
     </button>
     <button
       aria-disabled="false"
@@ -202,11 +214,15 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       title="Delete rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        delete
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </span>
     </button>
   </td>
 </tr>
@@ -305,11 +321,15 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
       title="Duplicate rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        file_copy
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          file_copy
+        </i>
+      </span>
     </button>
     <button
       aria-disabled="false"
@@ -318,11 +338,15 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
       title="Delete rule"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        delete
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </span>
     </button>
   </td>
 </tr>

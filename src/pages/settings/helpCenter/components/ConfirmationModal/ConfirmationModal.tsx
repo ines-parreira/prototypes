@@ -17,7 +17,10 @@ export type ConfirmationModalProps = {
     title: React.ReactNode
     onClose: () => void
     onConfirm: () => void
-    additionalActionButtonConfig?: ComponentProps<typeof Button>
+    additionalActionButtonConfig?: Omit<
+        ComponentProps<typeof Button>,
+        'children'
+    >
 }
 
 export const ConfirmationModal = ({
@@ -45,7 +48,7 @@ export const ConfirmationModal = ({
                 <>
                     {additionalActionButtonConfig && (
                         <Button {...additionalActionButtonConfig}>
-                            {additionalActionButtonConfig?.content}
+                            {additionalActionButtonConfig.content}
                         </Button>
                     )}
                     <Button intent="secondary" onClick={onClose}>

@@ -43,7 +43,9 @@ exports[`<MacroButton /> should render the button 1`] = `
     id="macro-quick-reply-1"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       mock macro
     </span>
   </button>

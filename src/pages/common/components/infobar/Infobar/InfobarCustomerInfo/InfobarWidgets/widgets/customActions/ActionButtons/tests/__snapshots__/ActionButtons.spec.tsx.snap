@@ -10,7 +10,9 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
       class="wrapper actionButton fill secondary small left"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         I am in snapshots
       </span>
     </button>
@@ -19,7 +21,9 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
       class="wrapper actionButton fill secondary small right"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         I am in snapshots too
       </span>
     </button>
@@ -39,7 +43,9 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="wrapper fill secondary small"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         I am in snapshots
       </span>
     </button>
@@ -66,7 +72,9 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="wrapper fill secondary small"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         I am in snapshots too
       </span>
     </button>

@@ -84,11 +84,15 @@ exports[`Event component should display correctly a successful event for a Recha
           title="More details"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            expand_more
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              expand_more
+            </i>
+          </span>
         </button>
       </div>
       <div>
@@ -196,11 +200,15 @@ exports[`Event component should display the correct label for an action 1`] = `
           title="More details"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            expand_more
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              expand_more
+            </i>
+          </span>
         </button>
       </div>
       <div>

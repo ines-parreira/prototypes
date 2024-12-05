@@ -37,7 +37,11 @@ exports[`<FacebookIntegrationDetailSummary/> should display the icon, name, desc
     class="wrapper facebookButton fill secondary medium"
     type="submit"
   >
-    Reconnect
+    <span
+      class="content"
+    >
+      Reconnect
+    </span>
   </button>
 </div>
 `;

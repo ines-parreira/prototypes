@@ -178,7 +178,9 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
               class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Update Connection
               </span>
             </button>
@@ -189,14 +191,18 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  delete
-                </i>
-                Delete App
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    delete
+                  </i>
+                  Delete App
+                </span>
               </span>
             </button>
           </div>

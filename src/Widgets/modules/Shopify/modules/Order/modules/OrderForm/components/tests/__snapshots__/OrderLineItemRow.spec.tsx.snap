@@ -91,7 +91,9 @@ exports[`<OrderLineItemRow/> should render 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▲
           </span>
         </button>
@@ -101,7 +103,9 @@ exports[`<OrderLineItemRow/> should render 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▼
           </span>
         </button>
@@ -208,7 +212,9 @@ exports[`<OrderLineItemRow/> should render for multi-currency order 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▲
           </span>
         </button>
@@ -218,7 +224,9 @@ exports[`<OrderLineItemRow/> should render for multi-currency order 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▼
           </span>
         </button>
@@ -334,7 +342,9 @@ exports[`<OrderLineItemRow/> should render with discounted price 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▲
           </span>
         </button>
@@ -344,7 +354,9 @@ exports[`<OrderLineItemRow/> should render with discounted price 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▼
           </span>
         </button>
@@ -460,7 +472,9 @@ exports[`<OrderLineItemRow/> should render with the zero quantity 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▲
           </span>
         </button>
@@ -470,7 +484,9 @@ exports[`<OrderLineItemRow/> should render with the zero quantity 1`] = `
           tabindex="0"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             ▼
           </span>
         </button>

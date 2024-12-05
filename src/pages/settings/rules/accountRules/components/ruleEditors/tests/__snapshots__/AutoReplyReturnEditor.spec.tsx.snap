@@ -465,11 +465,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-3"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_bold
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_bold
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -477,11 +481,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-4"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_italic
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_italic
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -489,11 +497,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-5"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_underline
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_underline
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -501,11 +513,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-6"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  link
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    link
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -513,11 +529,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-7"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  insert_photo
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_photo
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -525,11 +545,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-8"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  insert_emoticon
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </span>
               </button>
               <div
                 class="hoverOverlay"
@@ -904,11 +928,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-9"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_bold
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_bold
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -916,11 +944,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-10"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_italic
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_italic
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -928,11 +960,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-11"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  format_underline
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_underline
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -940,11 +976,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-12"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  link
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    link
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -952,11 +992,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-13"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  insert_photo
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_photo
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -964,11 +1008,15 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 id="toolbar-button-14"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  insert_emoticon
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </span>
               </button>
               <div
                 class="hoverOverlay"

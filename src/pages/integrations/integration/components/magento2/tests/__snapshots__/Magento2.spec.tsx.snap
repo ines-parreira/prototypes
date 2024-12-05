@@ -209,8 +209,12 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Connect 
-              magento2
+              <span
+                class="content"
+              >
+                Connect 
+                magento2
+              </span>
             </button>
           </a>
         </div>
@@ -427,7 +431,9 @@ exports[`<Magento2/> Integration should render 1`] = `
               class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Update Connection
               </span>
             </button>
@@ -438,14 +444,18 @@ exports[`<Magento2/> Integration should render 1`] = `
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  delete
-                </i>
-                Delete App
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    delete
+                  </i>
+                  Delete App
+                </span>
               </span>
             </button>
           </div>
@@ -497,8 +507,12 @@ exports[`<Magento2/> List should render 1`] = `
           class="wrapper fill primary medium"
           type="button"
         >
-          Connect 
-          magento2
+          <span
+            class="content"
+          >
+            Connect 
+            magento2
+          </span>
         </button>
       </a>
     </div>
@@ -729,7 +743,9 @@ exports[`<Magento2/> New should render 1`] = `
               class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Connect App
               </span>
             </button>

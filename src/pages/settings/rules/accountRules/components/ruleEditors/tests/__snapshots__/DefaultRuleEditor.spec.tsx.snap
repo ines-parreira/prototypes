@@ -266,7 +266,9 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         id="rule-item-save"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Update rule
         </span>
       </button>
@@ -276,7 +278,9 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         id="rule-item-duplicate"
         type="submit"
       >
-        <span>
+        <span
+          class="content"
+        >
           Duplicate rule
         </span>
       </button>
@@ -289,14 +293,18 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete rule
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete rule
+          </span>
         </span>
       </button>
     </div>

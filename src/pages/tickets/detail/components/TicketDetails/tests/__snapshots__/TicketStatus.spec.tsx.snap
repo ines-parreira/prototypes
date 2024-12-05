@@ -9,11 +9,15 @@ exports[`TicketStatus component closed ticket 1`] = `
     class="wrapper wrapper small fill primary small"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      check
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        check
+      </i>
+    </span>
   </button>
 </span>
 `;
@@ -28,14 +32,18 @@ exports[`TicketStatus component open ticket 1`] = `
     type="button"
   >
     <span
-      class="wrapper"
+      class="content"
     >
-      <i
-        class="material-icons icon isLeft small"
+      <span
+        class="wrapper"
       >
-        check
-      </i>
-      Close
+        <i
+          class="material-icons icon isLeft small"
+        >
+          check
+        </i>
+        Close
+      </span>
     </span>
   </button>
 </span>

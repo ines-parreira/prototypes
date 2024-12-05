@@ -18,7 +18,9 @@ exports[`<TeamList /> should render with data 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Create Team
         </span>
       </button>

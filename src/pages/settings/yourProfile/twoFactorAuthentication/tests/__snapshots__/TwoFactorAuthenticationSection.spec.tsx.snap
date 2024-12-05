@@ -24,7 +24,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Update 2FA
       </span>
     </button>
@@ -33,7 +35,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="wrapper fill destructive medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Disable 2FA
       </span>
     </button>
@@ -73,7 +77,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Enable 2FA
       </span>
     </button>
@@ -113,7 +119,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Update 2FA
       </span>
     </button>
@@ -122,7 +130,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="wrapper fill destructive medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Disable 2FA
       </span>
     </button>
@@ -154,7 +164,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Enable 2FA
       </span>
     </button>

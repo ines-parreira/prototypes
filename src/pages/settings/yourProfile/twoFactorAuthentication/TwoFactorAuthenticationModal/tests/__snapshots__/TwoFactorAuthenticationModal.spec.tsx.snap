@@ -279,14 +279,18 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
+                      <span
+                        class="wrapper"
                       >
-                        download
-                      </i>
-                      Download
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          download
+                        </i>
+                        Download
+                      </span>
                     </span>
                   </button>
                   <button
@@ -312,14 +316,18 @@ abcdefgh16"
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
+                      <span
+                        class="wrapper"
                       >
-                        content_copy
-                      </i>
-                      Copy
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          content_copy
+                        </i>
+                        Copy
+                      </span>
                     </span>
                   </button>
                   <a
@@ -334,14 +342,18 @@ abcdefgh16"
                       type="button"
                     >
                       <span
-                        class="wrapper"
+                        class="content"
                       >
-                        <i
-                          class="material-icons icon isLeft medium"
+                        <span
+                          class="wrapper"
                         >
-                          print
-                        </i>
-                        Print
+                          <i
+                            class="material-icons icon isLeft medium"
+                          >
+                            print
+                          </i>
+                          Print
+                        </span>
                       </span>
                     </button>
                   </a>
@@ -356,7 +368,9 @@ abcdefgh16"
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   I Have Saved My Codes
                 </span>
               </button>
@@ -507,7 +521,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -545,7 +561,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -554,7 +572,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -690,7 +710,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -728,7 +750,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -737,7 +761,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -888,7 +914,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -926,7 +954,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -935,7 +965,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -1071,7 +1103,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -1109,7 +1143,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -1118,7 +1154,9 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -1260,7 +1298,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -1298,7 +1338,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -1307,7 +1349,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -1507,7 +1551,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Remind Me Later
                 </span>
               </button>
@@ -1516,7 +1562,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -1652,7 +1700,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -1690,7 +1740,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -1699,7 +1751,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -1835,7 +1889,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -1873,7 +1929,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -1882,7 +1940,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2067,7 +2127,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Remind Me Later
                 </span>
               </button>
@@ -2076,7 +2138,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2261,7 +2325,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Remind Me Later
                 </span>
               </button>
@@ -2270,7 +2336,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2427,7 +2495,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  <span>
+                  <span
+                    class="content"
+                  >
                     Can't scan the QR code?
                   </span>
                 </button>
@@ -2465,7 +2535,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Back
                 </span>
               </button>
@@ -2474,7 +2546,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2626,7 +2700,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2778,7 +2854,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>
@@ -2930,7 +3008,9 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 class="wrapper fill primary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Continue
                 </span>
               </button>

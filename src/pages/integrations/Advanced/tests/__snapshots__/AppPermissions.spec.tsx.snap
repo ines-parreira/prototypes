@@ -170,14 +170,18 @@ exports[`AppErrorRow should hide permissions if there are more than 5 1`] = `
     type="button"
   >
     <span
-      class="wrapper"
+      class="content"
     >
-      <i
-        class="material-icons icon isLeft medium"
+      <span
+        class="wrapper"
       >
-        unfold_more
-      </i>
-      Show all
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          unfold_more
+        </i>
+        Show all
+      </span>
     </span>
   </button>
 </div>

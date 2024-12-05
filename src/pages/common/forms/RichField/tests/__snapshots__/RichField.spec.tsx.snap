@@ -71,11 +71,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-7"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_bold
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_bold
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -83,11 +87,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-8"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_italic
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_italic
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -95,11 +103,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-9"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_underline
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_underline
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -107,11 +119,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-10"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            link
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              link
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -119,11 +135,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-11"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_photo
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_photo
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -131,11 +151,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="toolbar-button-12"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_emoticon
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_emoticon
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -143,11 +167,15 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
           id="contactFormButton"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            wysiwyg
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              wysiwyg
+            </i>
+          </span>
         </button>
         <div
           class="hoverOverlay"
@@ -234,11 +262,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-1"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_bold
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_bold
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -246,11 +278,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-2"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_italic
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_italic
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -258,11 +294,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-3"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_underline
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_underline
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -270,11 +310,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-4"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            link
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              link
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -282,11 +326,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-5"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_photo
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_photo
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -294,11 +342,15 @@ exports[`RichField should render a basic input 1`] = `
           id="toolbar-button-6"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_emoticon
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_emoticon
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -306,11 +358,15 @@ exports[`RichField should render a basic input 1`] = `
           id="contactFormButton"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            wysiwyg
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              wysiwyg
+            </i>
+          </span>
         </button>
         <div
           class="hoverOverlay"
@@ -397,11 +453,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-25"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_bold
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_bold
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -409,11 +469,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-26"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_italic
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_italic
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -421,11 +485,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-27"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_underline
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_underline
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -433,11 +501,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-28"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            link
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              link
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -445,11 +517,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-29"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_photo
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_photo
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -457,11 +533,15 @@ exports[`RichField should render default content state 1`] = `
           id="toolbar-button-30"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_emoticon
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_emoticon
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -469,11 +549,15 @@ exports[`RichField should render default content state 1`] = `
           id="contactFormButton"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            wysiwyg
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              wysiwyg
+            </i>
+          </span>
         </button>
         <div
           class="hoverOverlay"
@@ -601,11 +685,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-13"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_bold
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_bold
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -613,11 +701,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-14"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_italic
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_italic
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -625,11 +717,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-15"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            format_underline
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              format_underline
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -637,11 +733,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-16"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            link
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              link
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -649,11 +749,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-17"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_photo
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_photo
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -661,11 +765,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="toolbar-button-18"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            insert_emoticon
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              insert_emoticon
+            </i>
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -673,11 +781,15 @@ exports[`RichField should render immutable variable 1`] = `
           id="contactFormButton"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            wysiwyg
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              wysiwyg
+            </i>
+          </span>
         </button>
         <div
           class="hoverOverlay"
@@ -769,11 +881,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-19"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_bold
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_bold
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -781,11 +897,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-20"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_italic
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_italic
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -793,11 +913,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-21"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_underline
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_underline
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -805,11 +929,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-22"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              link
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                link
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -817,11 +945,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-23"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              insert_photo
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                insert_photo
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -829,11 +961,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="toolbar-button-24"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              insert_emoticon
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                insert_emoticon
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -841,11 +977,15 @@ exports[`RichField should render mutable variable 1`] = `
             id="contactFormButton"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              wysiwyg
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                wysiwyg
+              </i>
+            </span>
           </button>
           <div
             class="hoverOverlay"

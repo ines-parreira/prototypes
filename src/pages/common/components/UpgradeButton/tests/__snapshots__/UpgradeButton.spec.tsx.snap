@@ -13,14 +13,18 @@ exports[`UpgradeButton should display with custom callback 1`] = `
       type="button"
     >
       <span
-        class="wrapper"
+        class="content"
       >
-        a label
-        <i
-          class="material-icons icon isRight medium"
+        <span
+          class="wrapper"
         >
-          bolt
-        </i>
+          a label
+          <i
+            class="material-icons icon isRight medium"
+          >
+            bolt
+          </i>
+        </span>
       </span>
     </button>
   </div>
@@ -43,14 +47,18 @@ exports[`UpgradeButton should display with custom props 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          a label
-          <i
-            class="material-icons icon isRight medium"
+          <span
+            class="wrapper"
           >
-            bolt
-          </i>
+            a label
+            <i
+              class="material-icons icon isRight medium"
+            >
+              bolt
+            </i>
+          </span>
         </span>
       </button>
     </a>
@@ -72,14 +80,18 @@ exports[`UpgradeButton should display with default props 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          Upgrade
-          <i
-            class="material-icons icon isRight medium"
+          <span
+            class="wrapper"
           >
-            bolt
-          </i>
+            Upgrade
+            <i
+              class="material-icons icon isRight medium"
+            >
+              bolt
+            </i>
+          </span>
         </span>
       </button>
     </a>

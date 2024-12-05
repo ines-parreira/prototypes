@@ -57,14 +57,18 @@ exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  clear
-                </i>
-                Clear icon
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    clear
+                  </i>
+                  Clear icon
+                </span>
               </span>
             </button>
           </div>

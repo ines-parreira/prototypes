@@ -138,13 +138,17 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         class="wrapper button fill secondary medium"
         type="button"
       >
-        <i
-          class="material-icons"
+        <span
+          class="content"
         >
-          add
-        </i>
-        <span>
-          Add Subject Line
+          <i
+            class="material-icons"
+          >
+            add
+          </i>
+          <span>
+            Add Subject Line
+          </span>
         </span>
       </button>
     </div>
@@ -179,13 +183,17 @@ exports[`<SubjectLines /> should render the component with no subject lines and 
         class="wrapper button fill secondary medium"
         type="button"
       >
-        <i
-          class="material-icons"
+        <span
+          class="content"
         >
-          add
-        </i>
-        <span>
-          Add Subject Line
+          <i
+            class="material-icons"
+          >
+            add
+          </i>
+          <span>
+            Add Subject Line
+          </span>
         </span>
       </button>
     </div>

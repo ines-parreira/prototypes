@@ -17,14 +17,18 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            file_download
-          </i>
-          Export tickets
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              file_download
+            </i>
+            Export tickets
+          </span>
         </span>
       </button>
       <button>
@@ -197,7 +201,9 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
               id="confirm-1"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Update view
               </span>
             </button>
@@ -207,11 +213,15 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
               id="arrow-save-view-button"
               type="button"
             >
-              <i
-                class="material-icons icon"
+              <span
+                class="content"
               >
-                arrow_drop_down
-              </i>
+                <i
+                  class="material-icons icon"
+                >
+                  arrow_drop_down
+                </i>
+              </span>
             </button>
           </span>
           <span
@@ -246,7 +256,9 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
-          <span>
+          <span
+            class="content"
+          >
             Cancel
           </span>
         </button>
@@ -263,14 +275,18 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete view
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete view
+          </span>
         </span>
       </button>
     </div>

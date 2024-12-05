@@ -57,11 +57,15 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -76,14 +80,18 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </span>
         </button>
       </div>
@@ -130,11 +138,15 @@ exports[`<Infobar/> should ignore other keys 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -177,11 +189,15 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -217,14 +233,18 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                call_merge
-              </i>
-              Merge
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  call_merge
+                </i>
+                Merge
+              </span>
             </span>
           </button>
         </div>
@@ -269,11 +289,15 @@ exports[`<Infobar/> should render customer context 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -316,11 +340,15 @@ exports[`<Infobar/> should render loading state because the customer is being fe
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -367,11 +395,15 @@ exports[`<Infobar/> should render loading state because the search is in progres
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -414,11 +446,15 @@ exports[`<Infobar/> should render search results 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -433,14 +469,18 @@ exports[`<Infobar/> should render search results 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </span>
         </button>
       </div>
@@ -488,11 +528,15 @@ exports[`<Infobar/> should render selected customer 1`] = `
           id="toggle-widgets-edition-button"
           type="button"
         >
-          <i
-            class="material-icons icon"
+          <span
+            class="content"
           >
-            settings
-          </i>
+            <i
+              class="material-icons icon"
+            >
+              settings
+            </i>
+          </span>
         </button>
       </div>
       <div
@@ -507,14 +551,18 @@ exports[`<Infobar/> should render selected customer 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                arrow_back
-              </i>
-              Back
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  arrow_back
+                </i>
+                Back
+              </span>
             </span>
           </button>
           <div
@@ -525,7 +573,9 @@ exports[`<Infobar/> should render selected customer 1`] = `
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Merge
               </span>
             </button>
@@ -572,11 +622,15 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -591,14 +645,18 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </span>
         </button>
       </div>
@@ -646,11 +704,15 @@ exports[`<Infobar/> should render ticket context 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -693,11 +755,15 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         id="toggle-widgets-edition-button"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          settings
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            settings
+          </i>
+        </span>
       </button>
     </div>
     <div
@@ -721,7 +787,9 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         class="wrapper mr-2 fill primary medium isDisabled"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Save changes
         </span>
       </button>
@@ -730,7 +798,9 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         class="wrapper fill secondary medium isDisabled"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Cancel
         </span>
       </button>

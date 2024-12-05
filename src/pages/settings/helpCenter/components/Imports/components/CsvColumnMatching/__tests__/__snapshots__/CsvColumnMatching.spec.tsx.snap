@@ -3681,7 +3681,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Confirm Import
       </span>
     </button>
@@ -3690,7 +3692,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
       class="wrapper fill secondary medium"
       type="button"
     >
-      <span>
+      <span
+        class="content"
+      >
         Cancel
       </span>
     </button>

@@ -10,7 +10,9 @@ exports[`InfobarCustomerActions component should not render "merge" button becau
     id="confirm-1"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Set as customer
     </span>
   </button>
@@ -26,7 +28,9 @@ exports[`InfobarCustomerActions component should not render "set as customer" bu
     class="wrapper fill secondary medium"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Merge
     </span>
   </button>
@@ -49,7 +53,9 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
     id="confirm-2"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Set as customer
     </span>
   </button>
@@ -58,7 +64,9 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
     class="wrapper fill secondary medium"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Merge
     </span>
   </button>

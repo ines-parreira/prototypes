@@ -16,7 +16,7 @@ type Props = {
     position?: ButtonIconPosition
     segmentEventToSend?: SegmentEventToSend
     state?: any
-} & ComponentProps<typeof Button>
+} & Omit<ComponentProps<typeof Button>, 'children'>
 
 const UpgradeButton = ({
     className,

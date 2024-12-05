@@ -32,22 +32,26 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
                   <span
                     class="wrapper"
                   >
-                    Feb 3, 2021
                     <i
-                      class="material-icons icon isRight medium"
+                      class="material-icons icon isLeft medium"
                     >
-                      arrow_drop_down
+                      calendar_today
                     </i>
+                    <span
+                      class="wrapper"
+                    >
+                      Feb 3, 2021
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </span>
                   </span>
                 </span>
               </button>
@@ -59,14 +63,18 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  file_download
-                </i>
-                Download data
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    file_download
+                  </i>
+                  Download data
+                </span>
               </span>
             </button>
           </div>
@@ -128,14 +136,18 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                visibility_off
-              </i>
-              Hide tips
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
             </span>
           </button>
         </div>
@@ -627,22 +639,26 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                       type="button"
                     >
                       <span
-                        class="wrapper"
+                        class="content"
                       >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
                         <span
                           class="wrapper"
                         >
-                          Feb 3, 2021
                           <i
-                            class="material-icons icon isRight medium"
+                            class="material-icons icon isLeft medium"
                           >
-                            arrow_drop_down
+                            calendar_today
                           </i>
+                          <span
+                            class="wrapper"
+                          >
+                            Feb 3, 2021
+                            <i
+                              class="material-icons icon isRight medium"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
                         </span>
                       </span>
                     </button>
@@ -654,14 +670,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
+                      <span
+                        class="wrapper"
                       >
-                        file_download
-                      </i>
-                      Download data
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          file_download
+                        </i>
+                        Download data
+                      </span>
                     </span>
                   </button>
                 </div>
@@ -723,14 +743,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      visibility_off
-                    </i>
-                    Hide tips
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
                   </span>
                 </button>
               </div>
@@ -1326,22 +1350,26 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        calendar_today
-                      </i>
                       <span
                         class="wrapper"
                       >
-                        Feb 3, 2021
                         <i
-                          class="material-icons icon isRight medium"
+                          class="material-icons icon isLeft medium"
                         >
-                          arrow_drop_down
+                          calendar_today
                         </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 3, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </span>
                     </span>
                   </button>
@@ -1353,14 +1381,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      file_download
-                    </i>
-                    Download data
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
                   </span>
                 </button>
               </div>
@@ -1422,14 +1454,18 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    visibility_off
-                  </i>
-                  Hide tips
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
                 </span>
               </button>
             </div>
@@ -1974,22 +2010,26 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                       type="button"
                     >
                       <span
-                        class="wrapper"
+                        class="content"
                       >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
                         <span
                           class="wrapper"
                         >
-                          Feb 3, 2021
                           <i
-                            class="material-icons icon isRight medium"
+                            class="material-icons icon isLeft medium"
                           >
-                            arrow_drop_down
+                            calendar_today
                           </i>
+                          <span
+                            class="wrapper"
+                          >
+                            Feb 3, 2021
+                            <i
+                              class="material-icons icon isRight medium"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
                         </span>
                       </span>
                     </button>
@@ -2001,14 +2041,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
+                      <span
+                        class="wrapper"
                       >
-                        file_download
-                      </i>
-                      Download data
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          file_download
+                        </i>
+                        Download data
+                      </span>
                     </span>
                   </button>
                 </div>
@@ -2070,14 +2114,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      visibility_off
-                    </i>
-                    Hide tips
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
                   </span>
                 </button>
               </div>
@@ -2673,22 +2721,26 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        calendar_today
-                      </i>
                       <span
                         class="wrapper"
                       >
-                        Feb 3, 2021
                         <i
-                          class="material-icons icon isRight medium"
+                          class="material-icons icon isLeft medium"
                         >
-                          arrow_drop_down
+                          calendar_today
                         </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 3, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </span>
                     </span>
                   </button>
@@ -2700,14 +2752,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      file_download
-                    </i>
-                    Download data
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
                   </span>
                 </button>
               </div>
@@ -2769,14 +2825,18 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    visibility_off
-                  </i>
-                  Hide tips
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
                 </span>
               </button>
             </div>
@@ -3321,22 +3381,26 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                       type="button"
                     >
                       <span
-                        class="wrapper"
+                        class="content"
                       >
-                        <i
-                          class="material-icons icon isLeft medium"
-                        >
-                          calendar_today
-                        </i>
                         <span
                           class="wrapper"
                         >
-                          Feb 3, 2021
                           <i
-                            class="material-icons icon isRight medium"
+                            class="material-icons icon isLeft medium"
                           >
-                            arrow_drop_down
+                            calendar_today
                           </i>
+                          <span
+                            class="wrapper"
+                          >
+                            Feb 3, 2021
+                            <i
+                              class="material-icons icon isRight medium"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </span>
                         </span>
                       </span>
                     </button>
@@ -3348,14 +3412,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
+                      <span
+                        class="wrapper"
                       >
-                        file_download
-                      </i>
-                      Download data
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          file_download
+                        </i>
+                        Download data
+                      </span>
                     </span>
                   </button>
                 </div>
@@ -3417,14 +3485,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      visibility_off
-                    </i>
-                    Hide tips
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        visibility_off
+                      </i>
+                      Hide tips
+                    </span>
                   </span>
                 </button>
               </div>
@@ -4020,22 +4092,26 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                     type="button"
                   >
                     <span
-                      class="wrapper"
+                      class="content"
                     >
-                      <i
-                        class="material-icons icon isLeft medium"
-                      >
-                        calendar_today
-                      </i>
                       <span
                         class="wrapper"
                       >
-                        Feb 3, 2021
                         <i
-                          class="material-icons icon isRight medium"
+                          class="material-icons icon isLeft medium"
                         >
-                          arrow_drop_down
+                          calendar_today
                         </i>
+                        <span
+                          class="wrapper"
+                        >
+                          Feb 3, 2021
+                          <i
+                            class="material-icons icon isRight medium"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </span>
                       </span>
                     </span>
                   </button>
@@ -4047,14 +4123,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   type="button"
                 >
                   <span
-                    class="wrapper"
+                    class="content"
                   >
-                    <i
-                      class="material-icons icon isLeft medium"
+                    <span
+                      class="wrapper"
                     >
-                      file_download
-                    </i>
-                    Download data
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        file_download
+                      </i>
+                      Download data
+                    </span>
                   </span>
                 </button>
               </div>
@@ -4116,14 +4196,18 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    visibility_off
-                  </i>
-                  Hide tips
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      visibility_off
+                    </i>
+                    Hide tips
+                  </span>
                 </span>
               </button>
             </div>
@@ -4664,22 +4748,26 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
                   <span
                     class="wrapper"
                   >
-                    Feb 3, 2021
                     <i
-                      class="material-icons icon isRight medium"
+                      class="material-icons icon isLeft medium"
                     >
-                      arrow_drop_down
+                      calendar_today
                     </i>
+                    <span
+                      class="wrapper"
+                    >
+                      Feb 3, 2021
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </span>
                   </span>
                 </span>
               </button>
@@ -4691,14 +4779,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  file_download
-                </i>
-                Download data
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    file_download
+                  </i>
+                  Download data
+                </span>
               </span>
             </button>
           </div>
@@ -4760,14 +4852,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                visibility_off
-              </i>
-              Hide tips
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
             </span>
           </button>
         </div>
@@ -5238,22 +5334,26 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
                   <span
                     class="wrapper"
                   >
-                    Feb 3, 2021
                     <i
-                      class="material-icons icon isRight medium"
+                      class="material-icons icon isLeft medium"
                     >
-                      arrow_drop_down
+                      calendar_today
                     </i>
+                    <span
+                      class="wrapper"
+                    >
+                      Feb 3, 2021
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </span>
                   </span>
                 </span>
               </button>
@@ -5265,14 +5365,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  file_download
-                </i>
-                Download data
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    file_download
+                  </i>
+                  Download data
+                </span>
               </span>
             </button>
           </div>
@@ -5334,14 +5438,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                visibility_off
-              </i>
-              Hide tips
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
             </span>
           </button>
         </div>
@@ -5829,22 +5937,26 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
                   <span
                     class="wrapper"
                   >
-                    Feb 3, 2021
                     <i
-                      class="material-icons icon isRight medium"
+                      class="material-icons icon isLeft medium"
                     >
-                      arrow_drop_down
+                      calendar_today
                     </i>
+                    <span
+                      class="wrapper"
+                    >
+                      Feb 3, 2021
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </span>
                   </span>
                 </span>
               </button>
@@ -5856,14 +5968,18 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  file_download
-                </i>
-                Download data
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    file_download
+                  </i>
+                  Download data
+                </span>
               </span>
             </button>
           </div>
@@ -5925,14 +6041,18 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                visibility_off
-              </i>
-              Hide tips
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
             </span>
           </button>
         </div>
@@ -6420,22 +6540,26 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    calendar_today
-                  </i>
                   <span
                     class="wrapper"
                   >
-                    Feb 3, 2021
                     <i
-                      class="material-icons icon isRight medium"
+                      class="material-icons icon isLeft medium"
                     >
-                      arrow_drop_down
+                      calendar_today
                     </i>
+                    <span
+                      class="wrapper"
+                    >
+                      Feb 3, 2021
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </span>
                   </span>
                 </span>
               </button>
@@ -6447,14 +6571,18 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  file_download
-                </i>
-                Download data
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    file_download
+                  </i>
+                  Download data
+                </span>
               </span>
             </button>
           </div>
@@ -6516,14 +6644,18 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                visibility_off
-              </i>
-              Hide tips
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
             </span>
           </button>
         </div>

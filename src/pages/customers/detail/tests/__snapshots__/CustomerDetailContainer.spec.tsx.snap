@@ -22,7 +22,9 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
           class="wrapper fill secondary medium"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Create ticket
           </span>
         </button>
@@ -32,7 +34,9 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
         class="wrapper fill primary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Edit customer
         </span>
       </button>

@@ -220,11 +220,15 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       id="prev-btn"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        keyboard_arrow_left
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          keyboard_arrow_left
+        </i>
+      </span>
     </button>
     <button
       aria-disabled="false"
@@ -232,11 +236,15 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       id="next-btn"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        keyboard_arrow_right
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          keyboard_arrow_right
+        </i>
+      </span>
     </button>
   </span>
 </div>

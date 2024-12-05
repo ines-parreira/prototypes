@@ -54,11 +54,15 @@ exports[`<TitleWrapper/> should render the invoice sent status 1`] = `
         class="wrapper iconButton wrapper ghost small ghost primary small"
         type="button"
       >
-        <i
-          class="material-icons copyIcon icon"
+        <span
+          class="content"
         >
-          content_copy
-        </i>
+          <i
+            class="material-icons copyIcon icon"
+          >
+            content_copy
+          </i>
+        </span>
       </button>
     </span>
   </div>
@@ -96,11 +100,15 @@ exports[`<TitleWrapper/> should render the open status 1`] = `
         class="wrapper iconButton wrapper ghost small ghost primary small"
         type="button"
       >
-        <i
-          class="material-icons copyIcon icon"
+        <span
+          class="content"
         >
-          content_copy
-        </i>
+          <i
+            class="material-icons copyIcon icon"
+          >
+            content_copy
+          </i>
+        </span>
       </button>
     </span>
   </div>

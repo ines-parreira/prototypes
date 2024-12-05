@@ -37,12 +37,16 @@ exports[`<FacebookIntegrationList /> should render 1`] = `
         class="wrapper facebookButton primary fill primary medium"
         type="submit"
       >
-        <img
-          alt="facebook-logo"
-          class="facebookLogo"
-          src="test-file-stub"
-        />
-        Login with Facebook
+        <span
+          class="content"
+        >
+          <img
+            alt="facebook-logo"
+            class="facebookLogo"
+            src="test-file-stub"
+          />
+          Login with Facebook
+        </span>
       </button>
     </div>
   </div>

@@ -114,7 +114,9 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -125,14 +127,18 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -256,7 +262,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -267,14 +275,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -359,7 +371,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -370,14 +384,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -501,7 +519,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -512,14 +532,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -643,7 +667,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -654,14 +680,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -785,7 +815,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -796,14 +828,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -888,7 +924,9 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -897,7 +935,9 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             class="wrapper fill primary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Reconnect
             </span>
           </button>
@@ -908,14 +948,18 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -1025,7 +1069,9 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -1036,14 +1082,18 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -1165,7 +1215,9 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -1176,14 +1228,18 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -1335,7 +1391,9 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
                 Loading...
               </span>
             </svg>
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -1346,14 +1404,18 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>
@@ -1475,7 +1537,9 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Update integration
             </span>
           </button>
@@ -1486,14 +1550,18 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete integration
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
             </span>
           </button>
         </div>

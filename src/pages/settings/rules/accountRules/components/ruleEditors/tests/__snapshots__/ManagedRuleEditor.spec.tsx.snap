@@ -318,11 +318,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-33"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -330,11 +334,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-34"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -342,11 +350,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-35"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -354,11 +366,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-36"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -366,11 +382,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-37"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -378,11 +398,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-38"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -390,11 +414,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-39"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -639,11 +667,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-40"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -651,11 +683,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-41"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -663,11 +699,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-42"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -675,11 +715,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-43"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -687,11 +731,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-44"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -699,11 +747,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-45"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -711,11 +763,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     id="toolbar-button-46"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -776,7 +832,9 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           id="rule-item-save"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Update rule
           </span>
         </button>
@@ -789,14 +847,18 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete rule
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete rule
+            </span>
           </span>
         </button>
       </div>
@@ -902,11 +964,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-47"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -914,11 +980,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-48"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -926,11 +996,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-49"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -938,11 +1012,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-50"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -950,11 +1028,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-51"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -962,11 +1044,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-52"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -974,11 +1060,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -1125,11 +1215,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-53"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1137,11 +1231,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-54"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1149,11 +1247,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-55"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1161,11 +1263,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-56"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1173,11 +1279,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-57"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1185,11 +1295,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="toolbar-button-58"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -1197,11 +1311,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -1556,11 +1674,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-63"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1568,11 +1690,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-64"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1580,11 +1706,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-65"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1592,11 +1722,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-66"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1604,11 +1738,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-67"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1616,11 +1754,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-68"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1628,11 +1770,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-69"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -1877,11 +2023,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-70"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1889,11 +2039,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-71"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1901,11 +2055,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-72"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1913,11 +2071,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-73"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1925,11 +2087,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-74"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1937,11 +2103,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-75"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -1949,11 +2119,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     id="toolbar-button-76"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -2014,7 +2188,9 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           id="rule-item-save"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Update rule
           </span>
         </button>
@@ -2027,14 +2203,18 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete rule
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete rule
+            </span>
           </span>
         </button>
       </div>
@@ -2140,11 +2320,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-77"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2152,11 +2336,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-78"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2164,11 +2352,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-79"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2176,11 +2368,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-80"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2188,11 +2384,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-81"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2200,11 +2400,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-82"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2212,11 +2416,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -2237,7 +2445,9 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="wrapper button fill primary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Start a return
             </span>
           </button>
@@ -2315,11 +2525,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-83"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2327,11 +2541,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-84"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2339,11 +2557,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-85"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2351,11 +2573,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-86"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2363,11 +2589,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-87"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2375,11 +2605,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="toolbar-button-88"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -2387,11 +2621,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -2708,11 +2946,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-5"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2720,11 +2962,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-6"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2732,11 +2978,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-7"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2744,11 +2994,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-8"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2756,11 +3010,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-9"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2768,11 +3026,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-10"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -2780,11 +3042,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-11"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -3029,11 +3295,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-12"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_bold
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_bold
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3041,11 +3311,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-13"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_italic
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_italic
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3053,11 +3327,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-14"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      format_underline
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_underline
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3065,11 +3343,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-15"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      link
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3077,11 +3359,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-16"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_photo
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3089,11 +3375,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-17"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      insert_emoticon
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
@@ -3101,11 +3391,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     id="toolbar-button-18"
                     type="button"
                   >
-                    <i
-                      class="material-icons icon"
+                    <span
+                      class="content"
                     >
-                      shopify
-                    </i>
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </span>
                   </button>
                   <div
                     class="hoverOverlay"
@@ -3166,7 +3460,9 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           id="rule-item-save"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Update rule
           </span>
         </button>
@@ -3179,14 +3475,18 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete rule
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete rule
+            </span>
           </span>
         </button>
       </div>
@@ -3292,11 +3592,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-19"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3304,11 +3608,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-20"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3316,11 +3624,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-21"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3328,11 +3640,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-22"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3340,11 +3656,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-23"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3352,11 +3672,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-24"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3364,11 +3688,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -3536,11 +3864,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-25"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_bold
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3548,11 +3880,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-26"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_italic
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3560,11 +3896,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-27"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          format_underline
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3572,11 +3912,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-28"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          link
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3584,11 +3928,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-29"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_photo
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3596,11 +3944,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="toolbar-button-30"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          insert_emoticon
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </span>
                       </button>
                       <button
                         aria-disabled="false"
@@ -3608,11 +3960,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         id="contactFormButton"
                         type="button"
                       >
-                        <i
-                          class="material-icons icon"
+                        <span
+                          class="content"
                         >
-                          wysiwyg
-                        </i>
+                          <i
+                            class="material-icons icon"
+                          >
+                            wysiwyg
+                          </i>
+                        </span>
                       </button>
                       <div
                         class="hoverOverlay"
@@ -3824,7 +4180,9 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           id="rule-item-save"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Update rule
           </span>
         </button>
@@ -3837,14 +4195,18 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              delete
-            </i>
-            Delete rule
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete rule
+            </span>
           </span>
         </button>
       </div>

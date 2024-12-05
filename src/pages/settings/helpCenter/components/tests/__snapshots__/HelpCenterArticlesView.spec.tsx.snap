@@ -46,14 +46,18 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    bolt
-                  </i>
-                  Upgrade your help center with automate
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      bolt
+                    </i>
+                    Upgrade your help center with automate
+                  </span>
                 </span>
               </button>
             </div>
@@ -65,13 +69,17 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             id="preview-help-center"
             type="button"
           >
-            <i
-              class="material-icons"
+            <span
+              class="content"
             >
-              open_in_new
-            </i>
-            <span>
-              View Help Center
+              <i
+                class="material-icons"
+              >
+                open_in_new
+              </i>
+              <span>
+                View Help Center
+              </span>
             </span>
           </button>
         </div>
@@ -161,24 +169,32 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="wrapper createButton fill primary medium"
           type="button"
         >
-          <i
-            class="material-icons-outlined mr-1"
+          <span
+            class="content"
           >
-            add
-          </i>
-          Article
+            <i
+              class="material-icons-outlined mr-1"
+            >
+              add
+            </i>
+            Article
+          </span>
         </button>
         <button
           aria-disabled="false"
           class="wrapper createButton fill secondary medium"
           type="button"
         >
-          <i
-            class="material-icons mr-1"
+          <span
+            class="content"
           >
-            add
-          </i>
-          Category
+            <i
+              class="material-icons mr-1"
+            >
+              add
+            </i>
+            Category
+          </span>
         </button>
       </div>
       <section
@@ -195,12 +211,16 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="wrapper fill secondary medium"
           type="button"
         >
-          <i
-            class="material-icons mr-2"
+          <span
+            class="content"
           >
-            cloud_upload
-          </i>
-          Import Articles
+            <i
+              class="material-icons mr-2"
+            >
+              cloud_upload
+            </i>
+            Import Articles
+          </span>
         </button>
       </section>
     </div>
@@ -238,11 +258,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 class="wrapper wrapper ghost medium ghost secondary medium"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  open_in_new
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    open_in_new
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -250,11 +274,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 class="wrapper wrapper ghost medium ghost secondary medium"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  share
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    share
+                  </i>
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -263,11 +291,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 data-testid="close-drawer"
                 type="button"
               >
-                <i
-                  class="material-icons icon"
+                <span
+                  class="content"
                 >
-                  keyboard_tab
-                </i>
+                  <i
+                    class="material-icons icon"
+                  >
+                    keyboard_tab
+                  </i>
+                </span>
               </button>
             </div>
           </div>
@@ -594,14 +626,18 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft small"
+                  <span
+                    class="wrapper"
                   >
-                    content_copy
-                  </i>
-                  Copy URL
+                    <i
+                      class="material-icons icon isLeft small"
+                    >
+                      content_copy
+                    </i>
+                    Copy URL
+                  </span>
                 </span>
               </button>
             </div>
@@ -802,7 +838,9 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             data-testid="button-save"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Save
             </span>
           </button>
@@ -811,7 +849,9 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Discard Changes
             </span>
           </button>

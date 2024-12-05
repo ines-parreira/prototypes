@@ -126,7 +126,9 @@ exports[`<DropdownCSVImport/> should render when open 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Cancel
                 </span>
               </button>
@@ -135,7 +137,9 @@ exports[`<DropdownCSVImport/> should render when open 1`] = `
                 class="wrapper fill primary medium isDisabled"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Import File
                 </span>
               </button>

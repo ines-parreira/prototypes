@@ -27,7 +27,9 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
         id="macro-quick-reply-0"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           macro-0
         </span>
       </button>
@@ -41,7 +43,9 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
         id="macro-quick-reply-1"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           macro-1
         </span>
       </button>
@@ -55,7 +59,9 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
         id="macro-quick-reply-2"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           macro-2
         </span>
       </button>

@@ -262,7 +262,9 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               id="custom-fields-form-save-button"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save changes
               </span>
             </button>
@@ -271,7 +273,9 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Cancel
               </span>
             </button>
@@ -284,7 +288,9 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Archive field
               </span>
             </button>
@@ -511,7 +517,9 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               id="custom-fields-form-save-button"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save changes
               </span>
             </button>
@@ -520,7 +528,9 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Cancel
               </span>
             </button>
@@ -533,7 +543,9 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Archive field
               </span>
             </button>

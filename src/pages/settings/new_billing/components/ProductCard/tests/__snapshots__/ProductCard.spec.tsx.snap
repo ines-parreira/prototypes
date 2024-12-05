@@ -52,7 +52,9 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
           id="productCardButton_helpdesk"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Manage
           </span>
         </button>

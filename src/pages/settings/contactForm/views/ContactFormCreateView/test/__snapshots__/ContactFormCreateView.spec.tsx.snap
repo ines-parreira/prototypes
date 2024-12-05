@@ -317,7 +317,9 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="wrapper fill primary medium isDisabled"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Create Contact Form
             </span>
           </button>
@@ -326,7 +328,9 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="wrapper mlXs fill secondary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Cancel
             </span>
           </button>

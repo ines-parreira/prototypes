@@ -113,14 +113,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -243,14 +247,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -371,14 +379,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -501,14 +513,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -631,14 +647,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -761,14 +781,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -889,14 +913,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -1033,14 +1061,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -1161,14 +1193,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -1291,14 +1327,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>
@@ -1419,14 +1459,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete App
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete App
+              </span>
             </span>
           </button>
         </div>

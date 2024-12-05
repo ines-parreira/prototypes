@@ -197,7 +197,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               class="wrapper fill primary medium"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save Changes
               </span>
             </button>
@@ -642,7 +644,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               class="wrapper fill primary medium"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Save Changes
               </span>
             </button>

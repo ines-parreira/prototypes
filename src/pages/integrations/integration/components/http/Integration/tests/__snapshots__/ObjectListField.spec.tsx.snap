@@ -20,15 +20,19 @@ exports[`ObjectListField component should display the field as empty 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              add
-            </i>
-            Add 
-            field
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              field
+            </span>
           </span>
         </button>
       </div>
@@ -50,15 +54,19 @@ exports[`ObjectListField component should display the field as empty 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            add
-          </i>
-          Add 
-          field
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add 
+            field
+          </span>
         </span>
       </button>
     </div>
@@ -193,11 +201,15 @@ exports[`ObjectListField component should display the field with items 1`] = `
               title="Remove field"
               type="button"
             >
-              <i
-                class="material-icons icon"
+              <span
+                class="content"
               >
-                delete
-              </i>
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </span>
             </button>
           </div>
         </div>
@@ -207,15 +219,19 @@ exports[`ObjectListField component should display the field with items 1`] = `
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft small"
+            <span
+              class="wrapper"
             >
-              add
-            </i>
-            Add 
-            field
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              field
+            </span>
           </span>
         </button>
       </div>
@@ -293,11 +309,15 @@ exports[`ObjectListField component should display the field with items 1`] = `
             title="Remove field"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              delete
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </span>
           </button>
         </div>
       </div>
@@ -307,15 +327,19 @@ exports[`ObjectListField component should display the field with items 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft small"
+          <span
+            class="wrapper"
           >
-            add
-          </i>
-          Add 
-          field
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add 
+            field
+          </span>
         </span>
       </button>
     </div>

@@ -55,14 +55,18 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete integration
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete integration
+          </span>
         </span>
       </button>
     </div>

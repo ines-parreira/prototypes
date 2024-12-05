@@ -147,15 +147,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           type="button"
         >
           <span
-            class="wrapper buttonIcon"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper buttonIcon"
             >
-              search
-            </i>
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                search
+              </i>
+            </span>
+            Search
           </span>
-          Search
         </button>
         <div>
           NotificationsButton
@@ -607,15 +611,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           type="button"
         >
           <span
-            class="wrapper buttonIcon"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper buttonIcon"
             >
-              search
-            </i>
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                search
+              </i>
+            </span>
+            Search
           </span>
-          Search
         </button>
         <div>
           NotificationsButton
@@ -803,15 +811,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           type="button"
         >
           <span
-            class="wrapper buttonIcon"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper buttonIcon"
             >
-              search
-            </i>
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                search
+              </i>
+            </span>
+            Search
           </span>
-          Search
         </button>
         <div>
           NotificationsButton
@@ -1250,15 +1262,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           type="button"
         >
           <span
-            class="wrapper buttonIcon"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper buttonIcon"
             >
-              search
-            </i>
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                search
+              </i>
+            </span>
+            Search
           </span>
-          Search
         </button>
         <div>
           NotificationsButton

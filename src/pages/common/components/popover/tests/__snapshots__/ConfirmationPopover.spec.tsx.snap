@@ -7,7 +7,9 @@ exports[`<ConfirmationPopover /> should render 1`] = `
   id="foo"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Click Me!
   </span>
 </button>

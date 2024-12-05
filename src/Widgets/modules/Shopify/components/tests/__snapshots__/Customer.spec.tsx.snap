@@ -12,18 +12,22 @@ exports[`<AfterTitle/> should match snapshot 1`] = `
       type="button"
     >
       <span
-        id="action-button-1-tooltip-target"
-      />
-      <span
-        class="wrapper"
+        class="content"
       >
-        <i
-          class="material-icons icon isLeft small"
+        <span
+          id="action-button-1-tooltip-target"
+        />
+        <span
+          class="wrapper"
         >
-          add
-        </i>
+          <i
+            class="material-icons icon isLeft small"
+          >
+            add
+          </i>
+        </span>
+         Create order
       </span>
-       Create order
     </button>
   </span>
   <div

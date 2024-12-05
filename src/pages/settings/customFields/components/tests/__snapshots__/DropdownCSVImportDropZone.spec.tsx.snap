@@ -25,7 +25,9 @@ exports[`<DropdownCSVImportDropZone/> should render with a file 1`] = `
           class="wrapper fill secondary small"
           type="button"
         >
-          <span>
+          <span
+            class="content"
+          >
             Replace File
           </span>
         </button>

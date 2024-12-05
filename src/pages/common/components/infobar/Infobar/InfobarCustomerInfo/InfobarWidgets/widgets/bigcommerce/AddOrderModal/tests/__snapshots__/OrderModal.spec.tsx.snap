@@ -231,11 +231,15 @@ exports[`OrderModal should render Create Order 1`] = `
                   id="bigcommerce-add-custom-product-btn"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      add
+                    </i>
+                  </span>
                 </button>
                 
               </div>
@@ -297,11 +301,15 @@ exports[`OrderModal should render Create Order 1`] = `
                   class="wrapper ml-2 wrapper fill secondary medium isDisabled"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      add
+                    </i>
+                  </span>
                 </button>
                 <div />
               </div>
@@ -384,7 +392,9 @@ exports[`OrderModal should render Create Order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Cancel
               </span>
             </button>
@@ -394,7 +404,9 @@ exports[`OrderModal should render Create Order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Create Draft Order
               </span>
             </button>
@@ -645,11 +657,15 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   id="bigcommerce-add-custom-product-btn"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      add
+                    </i>
+                  </span>
                 </button>
                 
               </div>
@@ -711,11 +727,15 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   class="wrapper ml-2 wrapper fill secondary medium isDisabled"
                   type="button"
                 >
-                  <i
-                    class="material-icons icon"
+                  <span
+                    class="content"
                   >
-                    add
-                  </i>
+                    <i
+                      class="material-icons icon"
+                    >
+                      add
+                    </i>
+                  </span>
                 </button>
                 <div />
               </div>
@@ -801,7 +821,9 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Cancel
               </span>
             </button>
@@ -811,7 +833,9 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               tabindex="0"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Create Draft Order
               </span>
             </button>

@@ -46,14 +46,18 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
                 type="button"
               >
                 <span
-                  class="wrapper"
+                  class="content"
                 >
-                  <i
-                    class="material-icons icon isLeft medium"
+                  <span
+                    class="wrapper"
                   >
-                    bolt
-                  </i>
-                  Upgrade your help center with automate
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      bolt
+                    </i>
+                    Upgrade your help center with automate
+                  </span>
                 </span>
               </button>
             </div>
@@ -65,13 +69,17 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
             id="preview-help-center"
             type="button"
           >
-            <i
-              class="material-icons"
+            <span
+              class="content"
             >
-              open_in_new
-            </i>
-            <span>
-              View Help Center
+              <i
+                class="material-icons"
+              >
+                open_in_new
+              </i>
+              <span>
+                View Help Center
+              </span>
             </span>
           </button>
         </div>

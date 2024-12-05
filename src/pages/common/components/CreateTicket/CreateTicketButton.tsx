@@ -18,7 +18,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 type CreateTicketButtonProps = {
-    buttonProps?: ComponentProps<typeof Button>
+    buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>
     isDisabled?: boolean
     to?: LocationDescriptor<{
         receiver: {

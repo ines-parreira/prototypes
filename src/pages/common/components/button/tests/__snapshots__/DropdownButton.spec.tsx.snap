@@ -8,17 +8,27 @@ exports[`<DropdownButton /> should render a button with dropdown 1`] = `
     aria-disabled="false"
     class="wrapper mainAction fill primary medium"
     type="button"
-  />
+  >
+    <span
+      class="content"
+    >
+      Click
+    </span>
+  </button>
   <button
     aria-disabled="false"
     class="wrapper toggle wrapper fill primary medium"
     type="button"
   >
-    <i
-      class="material-icons icon"
+    <span
+      class="content"
     >
-      arrow_drop_down
-    </i>
+      <i
+        class="material-icons icon"
+      >
+        arrow_drop_down
+      </i>
+    </span>
   </button>
 </div>
 `;

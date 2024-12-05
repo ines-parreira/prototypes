@@ -126,14 +126,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
-                Learn
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    info_outline
+                  </i>
+                  Learn
+                </span>
               </span>
             </button>
           </h4>
@@ -211,14 +215,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            play_circle_filled
-          </i>
-          Resume
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              play_circle_filled
+            </i>
+            Resume
+          </span>
         </span>
       </button>
     </div>
@@ -391,7 +399,9 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               class="wrapper mb-4 fill primary medium"
               type="submit"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Restart import
               </span>
             </button>
@@ -414,14 +424,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
-                Learn
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    info_outline
+                  </i>
+                  Learn
+                </span>
               </span>
             </button>
           </h4>
@@ -622,14 +636,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               type="button"
             >
               <span
-                class="wrapper"
+                class="content"
               >
-                <i
-                  class="material-icons icon isLeft medium"
+                <span
+                  class="wrapper"
                 >
-                  info_outline
-                </i>
-                Learn
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    info_outline
+                  </i>
+                  Learn
+                </span>
               </span>
             </button>
           </h4>
@@ -729,14 +747,18 @@ exports[`<ImportZendeskDetail/> rendering should display the popover 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          Learn more
-          <i
-            class="material-icons icon isRight small"
+          <span
+            class="wrapper"
           >
-            arrow_forward
-          </i>
+            Learn more
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_forward
+            </i>
+          </span>
         </span>
       </button>
     </a>

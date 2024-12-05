@@ -7,7 +7,9 @@ exports[`<CustomizeTranslationButton /> should match snapshot 1`] = `
     class="wrapper ghost primary medium"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Customize Translations
     </span>
   </button>

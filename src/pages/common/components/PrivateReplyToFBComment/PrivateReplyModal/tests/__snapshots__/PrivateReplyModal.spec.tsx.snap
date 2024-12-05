@@ -71,7 +71,9 @@ exports[`<PrivateReplyModal/> should render the modal 1`] = `
                 id="private-reply-submit"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Send
                 </span>
               </button>
@@ -81,7 +83,9 @@ exports[`<PrivateReplyModal/> should render the modal 1`] = `
                 id="send-private-reply-and-close-button"
                 type="button"
               >
-                <span>
+                <span
+                  class="content"
+                >
                   Send & Close
                 </span>
               </button>

@@ -9,7 +9,9 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper fill secondary medium left isAuxiliaryButton"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Foo
     </span>
   </button>
@@ -32,22 +34,30 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
         class="wrapper button wrapper small fill secondary small top isAuxiliaryButton"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_up
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_up
+          </i>
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper button wrapper small fill secondary small bottom isAuxiliaryButton"
         type="button"
       >
-        <i
-          class="material-icons icon"
+        <span
+          class="content"
         >
-          arrow_drop_down
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            arrow_drop_down
+          </i>
+        </span>
       </button>
     </span>
   </span>
@@ -56,7 +66,9 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper fill secondary medium center isAuxiliaryButton"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Bar
     </span>
   </button>
@@ -65,7 +77,9 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper fill secondary medium right isAuxiliaryButton"
     type="button"
   >
-    <span>
+    <span
+      class="content"
+    >
       Baz
     </span>
   </button>

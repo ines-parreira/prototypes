@@ -98,10 +98,14 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
           id="color-picker-2"
           type="button"
         >
-          <div
-            class="color"
-            style="background-color: rgb(74, 141, 249);"
-          />
+          <span
+            class="content"
+          >
+            <div
+              class="color"
+              style="background-color: rgb(74, 141, 249);"
+            />
+          </span>
         </button>
         <input
           class="input form-control"

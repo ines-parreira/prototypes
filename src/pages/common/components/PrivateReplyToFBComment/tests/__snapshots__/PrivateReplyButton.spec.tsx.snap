@@ -10,15 +10,19 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
     href="#"
     type="submit"
   >
-    <div
-      class="logoWrapper"
+    <span
+      class="content"
     >
       <div
-        class="logo messengerIcon disabled"
-        style="mask-image: url(test-file-stub);"
-      />
-    </div>
-    Message
+        class="logoWrapper"
+      >
+        <div
+          class="logo messengerIcon disabled"
+          style="mask-image: url(test-file-stub);"
+        />
+      </div>
+      Message
+    </span>
   </button>
 </div>
 `;
@@ -33,15 +37,19 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
     href="#"
     type="submit"
   >
-    <div
-      class="logoWrapper"
+    <span
+      class="content"
     >
       <div
-        class="logo messengerIcon disabled"
-        style="mask-image: url(test-file-stub);"
-      />
-    </div>
-    Message
+        class="logoWrapper"
+      >
+        <div
+          class="logo messengerIcon disabled"
+          style="mask-image: url(test-file-stub);"
+        />
+      </div>
+      Message
+    </span>
   </button>
 </div>
 `;
@@ -56,15 +64,19 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
     href="#"
     type="submit"
   >
-    <div
-      class="logoWrapper"
+    <span
+      class="content"
     >
       <div
-        class="logo messengerIcon"
-        style="mask-image: url(test-file-stub);"
-      />
-    </div>
-    Message
+        class="logoWrapper"
+      >
+        <div
+          class="logo messengerIcon"
+          style="mask-image: url(test-file-stub);"
+        />
+      </div>
+      Message
+    </span>
   </button>
 </div>
 `;

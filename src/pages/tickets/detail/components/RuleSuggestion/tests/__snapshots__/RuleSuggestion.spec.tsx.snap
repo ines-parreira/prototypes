@@ -80,7 +80,9 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
               class="wrapper fill secondary small"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Install Rule
               </span>
             </button>
@@ -90,7 +92,9 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             class="wrapper fill primary small"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Apply Rule & Send
             </span>
           </button>
@@ -192,14 +196,18 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                             type="button"
                           >
                             <span
-                              class="wrapper button"
+                              class="content"
                             >
-                              Show less
-                              <i
-                                class="material-icons icon isRight small"
+                              <span
+                                class="wrapper button"
                               >
-                                expand_less
-                              </i>
+                                Show less
+                                <i
+                                  class="material-icons icon isRight small"
+                                >
+                                  expand_less
+                                </i>
+                              </span>
                             </span>
                           </button>
                         </div>
@@ -224,12 +232,16 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
           class="wrapper ghost secondary medium"
           type="button"
         >
-          Expand
-          <i
-            class="material-icons-round"
+          <span
+            class="content"
           >
-            expand_more
-          </i>
+            Expand
+            <i
+              class="material-icons-round"
+            >
+              expand_more
+            </i>
+          </span>
         </button>
       </div>
     </div>
@@ -317,7 +329,9 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
               class="wrapper fill secondary small"
               type="button"
             >
-              <span>
+              <span
+                class="content"
+              >
                 Install Rule
               </span>
             </button>
@@ -327,7 +341,9 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             class="wrapper fill primary small"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Apply Rule & Send
             </span>
           </button>
@@ -429,14 +445,18 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                             type="button"
                           >
                             <span
-                              class="wrapper button"
+                              class="content"
                             >
-                              Show less
-                              <i
-                                class="material-icons icon isRight small"
+                              <span
+                                class="wrapper button"
                               >
-                                expand_less
-                              </i>
+                                Show less
+                                <i
+                                  class="material-icons icon isRight small"
+                                >
+                                  expand_less
+                                </i>
+                              </span>
                             </span>
                           </button>
                         </div>

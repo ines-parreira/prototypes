@@ -69,7 +69,9 @@ exports[`<CreditShopifyBillingIntegration /> should render the form 1`] = `
             id="shopify-credit-button"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Add credit
             </span>
           </button>

@@ -35,11 +35,15 @@ exports[`<DropdownInputRow/> should render correctly 1`] = `
       data-testid="dropdown-choice-123-remove"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        clear
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </span>
     </button>
   </div>
 </div>
@@ -80,11 +84,15 @@ exports[`<DropdownInputRow/> should render correctly when validation fails 1`] =
       data-testid="dropdown-choice-123-remove"
       type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="content"
       >
-        clear
-      </i>
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </span>
     </button>
   </div>
   <div

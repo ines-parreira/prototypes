@@ -36,7 +36,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       Loading...
     </span>
   </svg>
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -78,7 +80,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       Loading...
     </span>
   </svg>
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -120,7 +124,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       Loading...
     </span>
   </svg>
-  <span>
+  <span
+    class="content"
+  >
     I Have Saved My Codes
   </span>
 </button>
@@ -132,7 +138,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
   class="wrapper fill primary medium isDisabled"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -144,7 +152,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
   class="wrapper fill primary medium isDisabled"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -156,7 +166,9 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
   class="wrapper fill primary medium isDisabled"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     I Have Saved My Codes
   </span>
 </button>
@@ -168,7 +180,9 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
   class="wrapper fill primary medium"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -180,7 +194,9 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
   class="wrapper fill primary medium"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     Continue
   </span>
 </button>
@@ -192,7 +208,9 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
   class="wrapper fill primary medium"
   type="button"
 >
-  <span>
+  <span
+    class="content"
+  >
     I Have Saved My Codes
   </span>
 </button>

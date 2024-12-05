@@ -82,7 +82,9 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
             color="primary"
             type="submit"
           >
-            <span>
+            <span
+              class="content"
+            >
               Verify your integration
             </span>
           </button>
@@ -106,12 +108,16 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         class="wrapper fill primary medium"
         type="button"
       >
-        <i
-          class="material-icons mr-2"
+        <span
+          class="content"
         >
-          mail
-        </i>
-         Re-send verification email
+          <i
+            class="material-icons mr-2"
+          >
+            mail
+          </i>
+           Re-send verification email
+        </span>
       </button>
       <button
         aria-disabled="false"
@@ -120,14 +126,18 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete email address
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete email address
+          </span>
         </span>
       </button>
     </div>
@@ -302,12 +312,16 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         class="wrapper fill primary medium"
         type="button"
       >
-        <i
-          class="material-icons mr-2"
+        <span
+          class="content"
         >
-          mail
-        </i>
-         Re-send verification email
+          <i
+            class="material-icons mr-2"
+          >
+            mail
+          </i>
+           Re-send verification email
+        </span>
       </button>
       <button
         aria-disabled="false"
@@ -316,14 +330,18 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         type="button"
       >
         <span
-          class="wrapper"
+          class="content"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete email address
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete email address
+          </span>
         </span>
       </button>
     </div>

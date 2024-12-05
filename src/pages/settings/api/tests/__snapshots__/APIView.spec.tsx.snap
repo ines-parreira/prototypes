@@ -70,14 +70,18 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </span>
           </button>
         </span>
@@ -112,14 +116,18 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </span>
           </button>
         </span>
@@ -144,7 +152,9 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             class="wrapper fill primary medium"
             type="button"
           >
-            <span>
+            <span
+              class="content"
+            >
               Create API key
             </span>
           </button>
@@ -201,7 +211,9 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Subscribe
         </span>
       </button>
@@ -280,14 +292,18 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </span>
           </button>
         </span>
@@ -322,14 +338,18 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </span>
           </button>
         </span>
@@ -363,11 +383,15 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             class="wrapper wrapper fill secondary medium center isAuxiliaryButton"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              visibility
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                visibility
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -375,14 +399,18 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                refresh
-              </i>
-              Reset
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  refresh
+                </i>
+                Reset
+              </span>
             </span>
           </button>
           <button
@@ -391,14 +419,18 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
             type="button"
           >
             <span
-              class="wrapper"
+              class="content"
             >
-              <i
-                class="material-icons icon isLeft medium"
+              <span
+                class="wrapper"
               >
-                file_copy
-              </i>
-              Copy
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_copy
+                </i>
+                Copy
+              </span>
             </span>
           </button>
         </span>
@@ -454,7 +486,9 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        <span>
+        <span
+          class="content"
+        >
           Subscribe
         </span>
       </button>

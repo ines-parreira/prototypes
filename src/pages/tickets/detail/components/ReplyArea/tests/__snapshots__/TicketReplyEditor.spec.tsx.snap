@@ -84,11 +84,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-1"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_bold
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_bold
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -96,11 +100,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-2"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_italic
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_italic
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -108,11 +116,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-3"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              format_underline
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                format_underline
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -120,11 +132,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-4"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              link
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                link
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -132,11 +148,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-5"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              insert_photo
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                insert_photo
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -144,11 +164,15 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-6"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              video_library
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                video_library
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -156,37 +180,45 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
             id="toolbar-button-7"
             type="button"
           >
-            <i
-              class="material-icons icon"
+            <span
+              class="content"
             >
-              insert_emoticon
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                insert_emoticon
+              </i>
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper button fill secondary small"
             type="button"
           >
-            <div
-              class="attachment"
+            <span
+              class="content"
             >
-              <label
-                class="m-0"
-                for="attachments-input"
-                id="attachment"
+              <div
+                class="attachment"
               >
-                <i
-                  class="material-icons"
+                <label
+                  class="m-0"
+                  for="attachments-input"
+                  id="attachment"
                 >
-                  attach_file
-                </i>
-              </label>
-              <input
-                id="attachments-input"
-                multiple=""
-                type="file"
-              />
-            </div>
+                  <i
+                    class="material-icons"
+                  >
+                    attach_file
+                  </i>
+                </label>
+                <input
+                  id="attachments-input"
+                  multiple=""
+                  type="file"
+                />
+              </div>
+            </span>
           </button>
           <div
             class="hoverOverlay"

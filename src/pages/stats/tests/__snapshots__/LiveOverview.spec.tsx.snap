@@ -23,14 +23,18 @@ exports[`LiveOverview should render the filters and stats when stats filters are
           type="button"
         >
           <span
-            class="wrapper"
+            class="content"
           >
-            <i
-              class="material-icons icon isLeft medium"
+            <span
+              class="wrapper"
             >
-              info_outline
-            </i>
-            Learn
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                info_outline
+              </i>
+              Learn
+            </span>
           </span>
         </button>
       </h1>

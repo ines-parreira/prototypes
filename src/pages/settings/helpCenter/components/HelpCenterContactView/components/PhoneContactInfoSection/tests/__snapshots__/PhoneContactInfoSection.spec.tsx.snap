@@ -72,12 +72,16 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
       class="wrapper addPhoneNumberButton fill secondary medium isDisabled"
       type="button"
     >
-      <i
-        class="material-icons"
+      <span
+        class="content"
       >
-        add
-      </i>
-       Add Number
+        <i
+          class="material-icons"
+        >
+          add
+        </i>
+         Add Number
+      </span>
     </button>
   </div>
   <div
