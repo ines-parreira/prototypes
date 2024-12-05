@@ -89,7 +89,7 @@ export default function EmailIntegrationListItem({
         isVerified
 
     const getTabURL = () => {
-        if (!isForwardEmail && !active) {
+        if (isBaseIntegration || (!isForwardEmail && !active)) {
             return ''
         }
 
@@ -187,16 +187,18 @@ export default function EmailIntegrationListItem({
                 </td>
             )}
             <td className="smallest align-middle text-left p-0">
-                <EmailIntegrationListVerificationStatus
-                    active={active}
-                    isForwardEmail={isForwardEmail}
-                    isVerified={isVerified}
-                    isRowSubmitting={isRowSubmitting}
-                    redirectURI={adapter.uri}
-                    isDomainVerificationWarningVisible={
-                        shouldDisplayDomainVerificationWarning
-                    }
-                />
+                {!isBaseIntegration && (
+                    <EmailIntegrationListVerificationStatus
+                        active={active}
+                        isForwardEmail={isForwardEmail}
+                        isVerified={isVerified}
+                        isRowSubmitting={isRowSubmitting}
+                        redirectURI={adapter.uri}
+                        isDomainVerificationWarningVisible={
+                            shouldDisplayDomainVerificationWarning
+                        }
+                    />
+                )}
             </td>
             <td className="smallest align-middle">
                 <i className="material-icons md-2 align-middle icon-go-forward">

@@ -175,62 +175,12 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 `;
 
 exports[`<IntegrationDetail /> should render the page of a specific integration for email 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            href="/app/settings/channels/email"
-          >
-            Email
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-           
-          <span
-            class="text-faded align-top"
-          />
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <nav
-    class="navbar navbar"
-  >
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/channels/email/1"
-    >
-      Preferences
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/channels/email/1/dns"
-    >
-      Domain Verification
-    </a>
-  </nav>
+<div>
+  EmailIntegrationUpdateLayout
   <div>
-    EmailIntegrationUpdate
+    <div>
+      EmailIntegrationUpdate
+    </div>
   </div>
 </div>
 `;

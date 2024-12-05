@@ -672,11 +672,24 @@ describe('<EmailIntegrationList/>', () => {
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
+                {
+                    description: 'unverified base integration',
+                    integration: getEmailIntegration(
+                        1,
+                        false,
+                        EmailProvider.Sendgrid
+                    ),
+                    isBaseIntegration: true,
+                    expected: `/app/settings/channels/email/${1}`,
+                },
             ])(
                 '(outbound verified) should redirect to the correct page when clicking on the integration - $description',
-                async ({integration, expected}) => {
+                async ({integration, expected, isBaseIntegration}) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundVerifiedSendgridMock.mockReturnValue(true)
+                    isBaseEmailIntegrationMock.mockReturnValue(
+                        !!isBaseIntegration
+                    )
 
                     const component = renderWithRouter(
                         <QueryClientProvider client={queryClient}>
@@ -695,6 +708,32 @@ describe('<EmailIntegrationList/>', () => {
                     expect(history.push).toHaveBeenCalledWith(expected)
                 }
             )
+        })
+
+        it('should not display verification status for base email integrations', () => {
+            fetchEmailDomainsMock.mockResolvedValueOnce([])
+            isBaseEmailIntegrationMock.mockReturnValue(true)
+
+            const integration = getEmailIntegration(
+                1,
+                false,
+                EmailProvider.Sendgrid
+            )
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([integration])}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+
+            expect(
+                screen.queryByText('EmailIntegrationListVerificationStatus')
+            ).not.toBeInTheDocument()
         })
     })
 })

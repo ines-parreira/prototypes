@@ -25,7 +25,7 @@ export default function EmailDomainVerificationActionButtons({
     const {
         domain,
         isCreatingDomain,
-        domainCreationError,
+        errors,
         isFetching,
         verifyDomain,
         isVerifying,
@@ -37,7 +37,7 @@ export default function EmailDomainVerificationActionButtons({
 
     const isDisabled = !domain || isCreatingDomain || isFetching
 
-    if (domainCreationError) {
+    if (errors.createDomain) {
         return (
             <div className={css.errorButtonsGroup}>
                 <Link to="/app/settings/channels/email">

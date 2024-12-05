@@ -19,7 +19,7 @@ describe('useDomainVerification', () => {
         const domain = {
             domain: 'domain',
             isFetching: false,
-            domainCreationError: undefined,
+            errors: {createDomain: undefined},
         }
 
         const {result} = renderHook(() => useDomainVerification(), {

@@ -13,7 +13,7 @@ export default function OnboardingDomainVerificationButtons() {
     const {
         domain,
         isCreatingDomain,
-        domainCreationError,
+        errors,
         isFetching,
         verifyDomain,
         isVerifying,
@@ -22,7 +22,7 @@ export default function OnboardingDomainVerificationButtons() {
 
     const isDisabled = !domain || isCreatingDomain || isFetching
 
-    if (domainCreationError) {
+    if (errors.createDomain) {
         return (
             <LinkButton intent="primary" href={`mailto:${SUPPORT_EMAIL}`}>
                 Contact support

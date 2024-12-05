@@ -43,6 +43,7 @@ describe('EmailDomainVerificationContent', () => {
         RecordsTableMock.mockImplementation(() => <div>RecordsTable</div>)
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
+            errors: {createDomain: null},
         } as ReturnType<typeof useDomainVerification>)
         getIntegrationsLoadingSpy.mockImplementation(() => ({
             integration: false,
@@ -64,6 +65,7 @@ describe('EmailDomainVerificationContent', () => {
     it('should pass domain to RecordsTable', () => {
         useDomainVerificationMock.mockReturnValue({
             domain: {name: 'gorgias.com'},
+            errors: {createDomain: null},
         } as ReturnType<typeof useDomainVerification>)
 
         renderComponent()
@@ -79,6 +81,7 @@ describe('EmailDomainVerificationContent', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
                 isCreatingDomain: true,
+                errors: {createDomain: null},
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
@@ -105,6 +108,7 @@ describe('EmailDomainVerificationContent', () => {
         it('should display loading state when domain is not fetched', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
+                errors: {createDomain: null},
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
@@ -119,6 +123,7 @@ describe('EmailDomainVerificationContent', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
                 isFetching: true,
+                errors: {createDomain: null},
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
@@ -134,6 +139,7 @@ describe('EmailDomainVerificationContent', () => {
         it('should display success message when domain is verified', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: {verified: true},
+                errors: {createDomain: null},
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
@@ -148,7 +154,7 @@ describe('EmailDomainVerificationContent', () => {
         it('should display error state when domain is not fetched and domain creation error is present', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
-                domainCreationError: {message: 'error'},
+                errors: {createDomain: {message: 'error'}},
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()

@@ -32,6 +32,7 @@ describe('EmailDomainVerificationActionButtons', () => {
     beforeEach(() => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
+            errors: {createDomain: null},
         } as ReturnType<typeof useDomainVerification>)
         useDeleteEmailIntegrationMock.mockReturnValue({} as any)
     })
@@ -44,6 +45,7 @@ describe('EmailDomainVerificationActionButtons', () => {
         } as any)
         useDomainVerificationMock.mockReturnValue({
             domain: {},
+            errors: {createDomain: null},
         } as ReturnType<typeof useDomainVerification>)
 
         renderComponent()
@@ -66,6 +68,7 @@ describe('EmailDomainVerificationActionButtons', () => {
             verifyDomain: verifyDomainFn,
             isVerifying: false,
             isPending: false,
+            errors: {createDomain: null},
         } as any)
 
         renderComponent()
@@ -80,7 +83,7 @@ describe('EmailDomainVerificationActionButtons', () => {
     describe('domain creation error state', () => {
         it('should render correct href for contact support button', () => {
             useDomainVerificationMock.mockReturnValue({
-                domainCreationError: true,
+                errors: {createDomain: true},
             } as any)
             renderComponent()
 
@@ -92,7 +95,7 @@ describe('EmailDomainVerificationActionButtons', () => {
 
         it('should render correct link for close button', () => {
             useDomainVerificationMock.mockReturnValue({
-                domainCreationError: true,
+                errors: {createDomain: true},
             } as any)
 
             renderComponent()
@@ -116,6 +119,7 @@ describe('EmailDomainVerificationActionButtons', () => {
                 useDomainVerificationMock.mockReturnValue({
                     ...useDomainVerificationState,
                     verifyDomain: verifyDomainFn,
+                    errors: {createDomain: null},
                 } as any)
 
                 renderComponent()

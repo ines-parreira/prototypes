@@ -23,6 +23,7 @@ describe('OnboardingDomainVerificationButtons', () => {
     beforeEach(() => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
+            errors: {createDomain: null},
         } as ReturnType<typeof useDomainVerification>)
         useDeleteEmailIntegrationMock.mockReturnValue({} as any)
     })
@@ -34,6 +35,7 @@ describe('OnboardingDomainVerificationButtons', () => {
             verifyDomain: verifyDomainFn,
             isVerifying: false,
             isPending: false,
+            errors: {createDomain: null},
         } as any)
 
         renderComponent()
@@ -47,7 +49,7 @@ describe('OnboardingDomainVerificationButtons', () => {
 
     it('should show "Contact support" button when domain creation error is present', () => {
         useDomainVerificationMock.mockReturnValue({
-            domainCreationError: 'error',
+            errors: {createDomain: 'error'},
         } as any)
 
         renderComponent()
@@ -79,6 +81,7 @@ describe('OnboardingDomainVerificationButtons', () => {
                 useDomainVerificationMock.mockReturnValue({
                     ...useDomainVerificationState,
                     verifyDomain: verifyDomainFn,
+                    errors: {createDomain: null},
                 } as any)
 
                 renderComponent()

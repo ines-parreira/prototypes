@@ -24,7 +24,7 @@ export default function EmailDomainVerificationContent({integration}: Props) {
     const isBaseIntegration = isBaseEmailAddress(address)
     const domainName = getDomainFromEmailAddress(address)
 
-    const {domain, isCreatingDomain, domainCreationError, isFetching} =
+    const {domain, isCreatingDomain, errors, isFetching} =
         useDomainVerification()
 
     const shouldDisplayLoadingState =
@@ -38,7 +38,7 @@ export default function EmailDomainVerificationContent({integration}: Props) {
         )
     }
 
-    if (!domain && domainCreationError) {
+    if (!domain && errors.createDomain) {
         return (
             <FormSection
                 title="There was an issue processing your request"

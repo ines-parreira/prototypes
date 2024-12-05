@@ -157,7 +157,9 @@ export default function DomainVerificationProvider({
                 isFetching,
                 isPending,
                 isCreatingDomain,
-                domainCreationError,
+                errors: {
+                    createDomain: domainCreationError,
+                },
             }}
         >
             {children}

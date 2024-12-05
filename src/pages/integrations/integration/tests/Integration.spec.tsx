@@ -61,6 +61,15 @@ jest.mock(
     '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification',
     () => () => <div>EmailIntegrationCreateVerification</div>
 )
+jest.mock(
+    '../components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout',
+    () =>
+        ({children}: any) => (
+            <div>
+                EmailIntegrationUpdateLayout<div>{children}</div>
+            </div>
+        )
+)
 
 jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>

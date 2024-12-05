@@ -4,34 +4,135 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {Integration} from 'models/integration/types'
+import {assumeMock} from 'utils/testing'
 
+import {isBaseEmailIntegration, isGenericEmailIntegration} from '../../helpers'
 import EmailIntegrationUpdateLayout from '../EmailIntegrationUpdateLayout'
 
-const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
-    integration: fromJS({
-        id: 1,
-        meta: {address: 'some-email@address.com'},
-    }),
+jest.mock('../../helpers')
+
+const isGenericEmailIntegrationMock = assumeMock(isGenericEmailIntegration)
+const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
+
+const integration = {
+    id: 1,
+    name: 'name',
+    meta: {address: 'some-email@address.com'},
 }
+
+const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
+    integration: integration as Integration,
+}
+
+const renderComponent = (
+    props: ComponentProps<typeof EmailIntegrationUpdateLayout>
+) => render(<EmailIntegrationUpdateLayout {...props} />)
 
 describe('EmailIntegrationUpdateLayout', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.NewDomainVerification]: false,
         })
+        isGenericEmailIntegrationMock.mockReturnValue(true)
+        isBaseEmailIntegrationMock.mockReturnValue(false)
+    })
+
+    it('should not render anything if the integration is not of type email', () => {
+        isGenericEmailIntegrationMock.mockReturnValue(false)
+
+        const {container} = renderComponent(minProps)
+
+        expect(container.innerHTML).toBe('')
     })
 
     it('should render the layout for an email integration update', () => {
-        const {container} = render(
-            <EmailIntegrationUpdateLayout {...minProps}>
-                <span>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur et.
-                </span>
-            </EmailIntegrationUpdateLayout>
+        renderComponent({
+            ...minProps,
+            children: (
+                <div>
+                    <p>
+                        Praesent commodo cursus magna, vel scelerisque nisl
+                        consectetur et.
+                    </p>
+                </div>
+            ),
+        })
+
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByText('name')).toBeInTheDocument()
+        expect(screen.getByText('some-email@address.com')).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
+            )
+        ).toBeInTheDocument()
+
+        const preferencesLink = screen.getByText('Preferences')
+        expect(preferencesLink).toBeInTheDocument()
+        expect(preferencesLink.closest('a')).toHaveAttribute(
+            'href',
+            `/app/settings/channels/email/${integration.id}`
+        )
+    })
+
+    it('should render the layout for an email integration update with Sendgrid provider', () => {
+        renderComponent({
+            ...minProps,
+            integration: {
+                ...integration,
+                meta: {provider: 'sendgrid'},
+            } as Integration,
+        })
+
+        expect(
+            screen.queryByText('Domain Verification')
+        ).not.toBeInTheDocument()
+
+        const outboundVerificationLink = screen.getByText(
+            'Outbound Verification'
+        )
+        expect(outboundVerificationLink).toBeInTheDocument()
+        expect(outboundVerificationLink.closest('a')).toHaveAttribute(
+            'href',
+            `/app/settings/channels/email/${integration.id}/outbound-verification`
+        )
+    })
+
+    it('should render the layout for an email integration update with Mailgun provider', () => {
+        renderComponent({
+            ...minProps,
+            integration: {
+                ...integration,
+                meta: {provider: 'mailgun'},
+            } as Integration,
+        })
+
+        const domainVerificationLink = screen.getByText('Domain Verification')
+        expect(domainVerificationLink).toBeInTheDocument()
+        expect(domainVerificationLink.closest('a')).toHaveAttribute(
+            'href',
+            `/app/settings/channels/email/${integration.id}/dns`
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.queryByText('Outbound Verification')
+        ).not.toBeInTheDocument()
+    })
+
+    it('should only render preferences tab for base email integration', () => {
+        isBaseEmailIntegrationMock.mockReturnValue(true)
+
+        renderComponent(minProps)
+
+        expect(screen.getByText('Preferences')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Domain Verification')
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Outbound Verification')
+        ).not.toBeInTheDocument()
     })
 
     it('should render Domain Verification tab name even if provider is Sendgrid when feature flag is enabled', () => {

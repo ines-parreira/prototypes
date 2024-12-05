@@ -653,7 +653,9 @@ export const IntegrationDetail = ({
                             extra === Tab.EmailOutboundVerification)
                     ) {
                         return (
-                            <EmailIntegrationLayout integration={integration}>
+                            <EmailIntegrationLayout
+                                integration={integration.toJS()}
+                            >
                                 <EmailDomainVerification
                                     integration={integration.toJS()}
                                 />
@@ -663,7 +665,9 @@ export const IntegrationDetail = ({
 
                     if (extra === Tab.EmailDomainVerification) {
                         return (
-                            <EmailIntegrationLayout integration={integration}>
+                            <EmailIntegrationLayout
+                                integration={integration.toJS()}
+                            >
                                 <DEPRECATED_EmailDomainVerificationContainer
                                     integration={integration.toJS()}
                                     loading={loading.toJS()}
@@ -677,7 +681,9 @@ export const IntegrationDetail = ({
                         integrationProvider === EmailProvider.Sendgrid
                     ) {
                         return (
-                            <EmailIntegrationLayout integration={integration}>
+                            <EmailIntegrationLayout
+                                integration={integration.toJS()}
+                            >
                                 <EmailOutboundVerification
                                     integration={integration.toJS()}
                                     loading={loading.toJS()}
@@ -687,7 +693,9 @@ export const IntegrationDetail = ({
                     }
 
                     return (
-                        <EmailIntegrationLayout integration={integration}>
+                        <EmailIntegrationLayout
+                            integration={integration.toJS()}
+                        >
                             <EmailIntegrationUpdate
                                 integration={integration}
                                 loading={loading}
