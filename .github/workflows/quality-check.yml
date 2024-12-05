@@ -80,6 +80,27 @@ jobs:
       - name: Tests
         run: yarn test:ci:cover --shard "${{ matrix.job-index }}/8"
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.job-index }}
+          path: coverage/jest
+
+  codecov:
+    name: Codecov
+    runs-on: gh-actions-small-runner-set
+    needs:
+      - tests
+    strategy:
+      matrix:
+        job-index: [1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-${{ matrix.job-index }}
+
       - name: Upload codecov report
         run: |
           cat ./codecov_pgp_key.asc | gpg --no-default-keyring --keyring trustedb.gpg --import
@@ -89,4 +110,4 @@ jobs:
           gpg --keyring ~/.gnupg/trustedb.gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
           shasum -a 256 -c codecov.SHA256SUM
           chmod +x codecov
-          ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z
