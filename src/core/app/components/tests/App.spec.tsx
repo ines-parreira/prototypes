@@ -1,80 +1,82 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import Core from '../Core' // Adjust the import path as necessary
+import {useSetBanners} from '../../hooks/useSetBanners'
+import App from '../App'
 
 jest.mock('common/notifications', () => ({
-    NotificationsProvider: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="notifications-provider">{children}</div>
-    ),
+    NotificationsToasts: jest.fn(() => <div>toasts</div>),
 }))
-
-jest.mock('pages/ErrorBoundary', () => ({
-    ErrorBoundary: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="error-boundary">{children}</div>
-    ),
+jest.mock('notifications', () => ({
+    AlertNotifications: jest.fn(() => <div>alerts</div>),
 }))
-
-jest.mock('providers/ui/SpotlightProvider', () => ({
-    SpotlightProvider: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="spotlight-provider">{children}</div>
-    ),
-}))
-
-jest.mock('split-ticket-view-toggle', () => ({
-    SplitTicketViewProvider: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="split-ticket-view-provider">{children}</div>
-    ),
-}))
-
-jest.mock('theme', () => ({
-    ThemeProvider: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="theme-provider">{children}</div>
-    ),
-}))
-
+jest.mock('pages/common/components/EmailDisconnectedBanner', () =>
+    jest.fn(() => <div>dull boy</div>)
+)
 jest.mock(
-    'pages/integrations/integration/components/voice/VoiceDeviceProvider',
-    () => ({
-        __esModule: true,
-        default: ({children}: {children: React.ReactNode}) => (
-            <div data-testid="voice-device-provider">{children}</div>
-        ),
-    })
+    'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner',
+    () => jest.fn(() => <div>dull boy</div>)
+)
+jest.mock(
+    'pages/common/components/EmailMigrationBanner/EmailMigrationBanner',
+    () => jest.fn(() => <div>dull boy</div>)
+)
+jest.mock('pages/common/components/KeyboardHelp/KeyboardHelp', () =>
+    jest.fn(() => <div>dull boy</div>)
+)
+jest.mock(
+    'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar',
+    () => jest.fn(() => <div>dull boy</div>)
+)
+jest.mock(
+    'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
+    () => jest.fn(() => <div>dull boy</div>)
+)
+jest.mock(
+    'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal',
+    () => jest.fn(() => <div>dull boy</div>)
+)
+jest.mock('pages/common/components/SessionChangeDetection', () =>
+    jest.fn(() => <div>dull boy</div>)
+)
+jest.mock('pages/common/components/Spotlight/Spotlight', () =>
+    jest.fn(() => <div>dull boy</div>)
+)
+jest.mock(
+    'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal',
+    () => jest.fn(() => <div>dull boy</div>)
 )
 
-jest.mock('react-cookie', () => ({
-    CookiesProvider: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="cookies-provider">{children}</div>
-    ),
-}))
+jest.mock('AlertBanners', () => jest.fn(() => <div>banners</div>))
 
-jest.mock('../App', () => ({
-    __esModule: true,
-    default: ({children}: {children: React.ReactNode}) => (
-        <div data-testid="app">{children}</div>
-    ),
+jest.mock('theme', () => ({useTheme: () => 'theme'}))
+jest.mock('../../hooks/useSetBanners', () => ({
+    useSetBanners: jest.fn(),
 }))
+jest.mock('../../hooks/useHasPhone', () => jest.fn(() => true))
+jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
+jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
 
-describe('Core component', () => {
-    it('should render all providers and pass children to App component', () => {
-        const childrenText = 'Test Child'
+describe('App component', () => {
+    it('should render its children', () => {
+        const child = '20-1RPZ'
+        render(<App>{child}</App>)
+
+        expect(screen.getByText(child)).toBeInTheDocument()
+    })
+
+    it('should use `useSetBanners` hook and render `AlertBanners`', () => {
         render(
-            <Core>
-                <div>{childrenText}</div>
-            </Core>
+            <App>
+                <span role="img" aria-label="cool">
+                    🆒
+                </span>
+            </App>
         )
 
-        expect(screen.getByTestId('error-boundary')).toBeInTheDocument()
-        expect(screen.getByTestId('theme-provider')).toBeInTheDocument()
-        expect(screen.getByTestId('notifications-provider')).toBeInTheDocument()
-        expect(screen.getByTestId('spotlight-provider')).toBeInTheDocument()
-        expect(screen.getByTestId('voice-device-provider')).toBeInTheDocument()
-        expect(
-            screen.getByTestId('split-ticket-view-provider')
-        ).toBeInTheDocument()
-        expect(screen.getByTestId('cookies-provider')).toBeInTheDocument()
-        expect(screen.getByTestId('app')).toBeInTheDocument()
-        expect(screen.getByText(childrenText)).toBeInTheDocument()
+        expect(useSetBanners).toHaveBeenCalledTimes(1)
+        expect(screen.getByText('banners')).toBeInTheDocument()
     })
 })

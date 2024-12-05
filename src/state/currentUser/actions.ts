@@ -2,9 +2,9 @@ import {createAction} from '@reduxjs/toolkit'
 import {AxiosError} from 'axios'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
-
 import moment from 'moment-timezone'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {
     User,
     EditableUserProfile,
@@ -14,7 +14,6 @@ import {
 } from 'config/types/user'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import client from 'models/api/resources'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import history from 'pages/history'
 import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {fetchChats} from 'state/chats/actions'
@@ -24,9 +23,7 @@ import {
     TWO_FA_REQUIRED_NOTIFICATION_ID,
 } from 'state/currentUser/constants'
 import {notify} from 'state/notifications/actions'
-
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-
 import {formatDatetime} from 'utils'
 import {getDateAndTimeFormat} from 'utils/datetime'
 

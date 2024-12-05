@@ -4,10 +4,10 @@ import React, {HTMLAttributes, ReactNode} from 'react'
 import IconButton from 'pages/common/components/button/IconButton'
 import {sanitizeHtmlDefault} from 'utils/html'
 
+import {AlertBannerTypes, AlertBannerCTATypes} from '../types'
 import css from './AlertBanner.less'
 import {CTA} from './CTA'
 import {Icon} from './Icon'
-import {AlertBannerTypes, AlertBannerCTATypes} from './types'
 
 export type AlertBannerProps = {
     CTA?: AlertBannerCTATypes
@@ -17,14 +17,14 @@ export type AlertBannerProps = {
     borderless?: boolean
 } & Pick<HTMLAttributes<HTMLDivElement>, 'aria-label'>
 
-const AlertBanner = ({
+export function AlertBanner({
     'aria-label': ariaLabel,
     borderless = false,
     message,
     CTA: CTAProps,
     onClose,
     type = AlertBannerTypes.Info,
-}: AlertBannerProps) => {
+}: AlertBannerProps) {
     return (
         <div
             aria-label={ariaLabel}
@@ -64,5 +64,3 @@ const AlertBanner = ({
         </div>
     )
 }
-
-export default AlertBanner

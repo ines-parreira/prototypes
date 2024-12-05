@@ -1,5 +1,5 @@
+import {AlertBannerTypes} from 'AlertBanners'
 import {IntegrationType} from 'models/integration/types'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {NodeEnv, envVars} from 'utils/environment'
 
 import {IncidentImpact} from './types'

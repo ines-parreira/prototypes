@@ -1,8 +1,8 @@
 import {screen, render} from '@testing-library/react'
 import React from 'react'
 
+import {AlertBannerTypes} from '../../types'
 import {Icon} from '../Icon'
-import {AlertBannerTypes} from '../types'
 
 describe('<Icon/>', () => {
     const types = [

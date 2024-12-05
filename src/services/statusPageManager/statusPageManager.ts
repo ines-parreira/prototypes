@@ -3,16 +3,15 @@ import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 import moment from 'moment'
 import {dismissNotification} from 'reapop'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {store as reduxStore} from 'common/store'
 import {HelpCenter} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+import {tryLocalStorage} from 'services/common/utils'
 import {getHelpCenters} from 'state/entities/helpCenter/helpCenters'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStyle} from 'state/notifications/types'
-
-import {tryLocalStorage} from '../common/utils'
 
 import {
     CLUSTER_GROUP_ID,
@@ -238,6 +237,8 @@ export class StatusPageManager {
         const cleanedNotificationIds = closedNotificationIds.filter((id) =>
             relevantIncidentsIds.includes(id)
         )
+
+        // clear local storage from irrelevant/outdated incidents ids
         StatusPageManager.saveNotificationIds(
             cleanedNotificationIds,
             DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
@@ -301,7 +302,6 @@ export class StatusPageManager {
     processScheduledMaintenances = (
         data: StatusPageScheduledMaintenanceResponseData
     ) => {
-        // remove all previous maintenance notifications
         this.store.dispatch(dismissNotification(MAINTENANCE_NOTIFICATION_ID))
 
         const now = moment()
@@ -346,16 +346,16 @@ export class StatusPageManager {
                 StatusPageManager.getSavedNotificationIds(
                     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
                 )
+
             const cleanedNotificationIds = closedNotificationIds.filter(
                 (id) => maintenance.id === id
             )
+
             StatusPageManager.saveNotificationIds(
                 cleanedNotificationIds,
                 DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
             )
 
-            // when maintenance is in progress and banner was previously closed,
-            // display it again, so remove it from local storage
             if (
                 maintenance.status === MaintenanceStatus.InProgress &&
                 cleanedNotificationIds.includes(maintenance.id)

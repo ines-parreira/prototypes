@@ -2,9 +2,8 @@ import {List} from 'immutable'
 import React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
-import {AlertBannerTypes} from 'pages/common/components//BannerNotifications/types'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
 import {getInactiveEmailChannels} from 'state/integrations/selectors'
 
 export default function EmailDisconnectedBanner() {

@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {dismissNotification} from 'reapop'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import {notify} from 'state/notifications/actions'

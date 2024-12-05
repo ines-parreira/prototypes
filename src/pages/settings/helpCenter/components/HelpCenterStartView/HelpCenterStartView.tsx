@@ -2,16 +2,13 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
 import {changeHelpCenterId} from 'state/ui/helpCenter'
 
 import {

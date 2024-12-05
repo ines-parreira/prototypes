@@ -1,10 +1,10 @@
 import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStyle} from 'state/notifications/types'
 

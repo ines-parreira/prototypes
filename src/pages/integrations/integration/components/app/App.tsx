@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,8 +17,6 @@ import {
     TrialPeriod,
 } from 'models/integration/types/app'
 import {ColorType} from 'pages/common/components/Badge/Badge'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'

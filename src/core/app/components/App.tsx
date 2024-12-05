@@ -1,8 +1,9 @@
 import React, {ReactNode} from 'react'
 
+import AlertBanners from 'AlertBanners'
 import {AppNode} from 'appNode'
 import {NotificationsToasts} from 'common/notifications'
-import {AlertNotifications, BannerNotifications} from 'notifications'
+import {AlertNotifications} from 'notifications'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
@@ -19,9 +20,8 @@ import useActivityTracker from '../hooks/useActivityTracker'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import useHasPhone from '../hooks/useHasPhone'
 import usePollingManager from '../hooks/usePollingManager'
+import {useSetBanners} from '../hooks/useSetBanners'
 import useSharedLogic from '../hooks/useSharedLogic'
-import useStatusPageManager from '../hooks/useStatusPageManager'
-import useUsageBanner from '../hooks/useUsageBanner'
 import UIKitRootNodeProvider from './UIKitRootNodeProvider'
 
 type Props = {
@@ -34,8 +34,7 @@ export default function App({children}: Props) {
 
     useAppShortcuts()
     usePollingManager()
-    useStatusPageManager()
-    useUsageBanner()
+    useSetBanners()
 
     useSharedLogic()
     useActivityTracker()
@@ -45,7 +44,8 @@ export default function App({children}: Props) {
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />
-                <BannerNotifications />
+                <AlertNotifications />
+                <AlertBanners />
                 <EmailMigrationBanner />
                 <EmailDisconnectedBanner />
                 <EmailDomainVerificationBanner />
@@ -54,7 +54,6 @@ export default function App({children}: Props) {
                 <Spotlight />
                 {children}
                 <KeyboardHelp />
-                <AlertNotifications />
                 {hasPhone && <PhoneIntegrationBar />}
                 <OutOfRecoveryCodesModal />
             </UIKitRootNodeProvider>

@@ -1,8 +1,7 @@
 import {ComponentProps} from 'react'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {EmailMigrationBannerStatus} from 'models/integration/types'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {getMoment, stringToDatetime} from 'utils/date'
 
 export const computeEmailMigrationStatusBanner = (

@@ -1,7 +1,7 @@
+import {AlertBannerTypes} from 'AlertBanners'
 import {EmailMigrationStatus} from 'models/integration/types'
 import * as dateUtils from 'utils/date'
 
-import {AlertBannerTypes} from '../../BannerNotifications/types'
 import {computeEmailMigrationStatusBanner} from '../helpers'
 
 describe('migration banner helpers', () => {

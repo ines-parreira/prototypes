@@ -2,6 +2,7 @@ import React, {ReactElement} from 'react'
 
 import {CookiesProvider} from 'react-cookie'
 
+import {BannersContextProvider} from 'AlertBanners'
 import {NotificationsProvider} from 'common/notifications'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
@@ -20,17 +21,19 @@ export default function Core({children}: Props) {
         <ErrorBoundary>
             <ThemeProvider>
                 <NotificationsProvider>
-                    <SpotlightProvider>
-                        <VoiceDeviceProvider>
-                            <SplitTicketViewProvider>
-                                <CookiesProvider
-                                    defaultSetOptions={{path: '/'}}
-                                >
-                                    <App>{children}</App>
-                                </CookiesProvider>
-                            </SplitTicketViewProvider>
-                        </VoiceDeviceProvider>
-                    </SpotlightProvider>
+                    <BannersContextProvider>
+                        <SpotlightProvider>
+                            <VoiceDeviceProvider>
+                                <SplitTicketViewProvider>
+                                    <CookiesProvider
+                                        defaultSetOptions={{path: '/'}}
+                                    >
+                                        <App>{children}</App>
+                                    </CookiesProvider>
+                                </SplitTicketViewProvider>
+                            </VoiceDeviceProvider>
+                        </SpotlightProvider>
+                    </BannersContextProvider>
                 </NotificationsProvider>
             </ThemeProvider>
         </ErrorBoundary>

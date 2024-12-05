@@ -5,7 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {handleUsageBanner} from 'state/notifications/actions'
 
-import useUsageBanner from '../useUsageBanner'
+import {useUsageBanner} from '../useUsageBanner'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())

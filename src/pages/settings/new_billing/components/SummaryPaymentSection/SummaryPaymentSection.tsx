@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import React, {useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {creditCard} from 'state/billing/selectors'
 import {

@@ -5,7 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {handleUsageBanner} from 'state/notifications/actions'
 
-export default function useUsageBanner() {
+export function useUsageBanner() {
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector((state) => state.currentAccount)
 

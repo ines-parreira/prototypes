@@ -2,7 +2,7 @@ import {useEffect} from 'react'
 
 import statusPageManager from 'services/statusPageManager/statusPageManager'
 
-export default function useStatusPageManager() {
+export function useStatusPageManager() {
     useEffect(() => {
         statusPageManager.startPolling()
 

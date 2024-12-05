@@ -1,6 +1,6 @@
 import React from 'react'
 
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
+import {AlertBanner} from 'AlertBanners'
 
 import css from './Detail.less'
 import Header from './Header'

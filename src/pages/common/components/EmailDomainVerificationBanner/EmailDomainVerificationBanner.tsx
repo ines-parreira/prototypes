@@ -2,10 +2,10 @@ import {Map} from 'immutable'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {usePersistedState} from 'common/hooks'
 import useAppSelector from 'hooks/useAppSelector'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,

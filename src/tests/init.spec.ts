@@ -1,20 +1,14 @@
 import {fromJS} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
-import {initApp, notifyAccountNotVerified, notifyUserImpersonated} from 'init'
-import {RootState} from 'state/types'
+import {initApp} from 'init'
 import {GorgiasInitialState, InitialReactQueryState} from 'types'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import * as envUtils from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {identifyUser} from 'utils/hotjar'
 import {assumeMock} from 'utils/testing'
-
-const mockStore = configureMockStore([thunk])
 
 type fromJSType = typeof fromJS
 
@@ -45,89 +39,11 @@ const isStagingMock = assumeMock(envUtils.isStaging)
 const isProductionMock = assumeMock(envUtils.isProduction)
 
 describe('init', () => {
-    let reduxStore: MockStoreEnhanced<unknown>
-
     beforeEach(() => {
         getEnvironmentMock.mockReturnValue(envUtils.GorgiasUIEnv.Development)
         isDevelopmentMock.mockReturnValue(false)
         isStagingMock.mockReturnValue(false)
         isProductionMock.mockReturnValue(false)
-    })
-
-    describe('notifyAccountNotVerified()', () => {
-        it('should not do anything because the base email integration is verified', () => {
-            reduxStore = mockStore({
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: EMAIL_INTEGRATION_TYPE,
-                            meta: {
-                                address: `asdasd@${
-                                    window.GORGIAS_STATE?.integrations
-                                        ?.authentication?.email
-                                        ?.forwarding_email_address || ''
-                                }`,
-                                verified: true,
-                            },
-                        },
-                    ],
-                }),
-            })
-
-            notifyAccountNotVerified(reduxStore)
-
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-
-        it('should dispatch a notification because the base email integration is not verified', () => {
-            reduxStore = mockStore({
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: EMAIL_INTEGRATION_TYPE,
-                            meta: {
-                                address: `asdasd@${
-                                    window.GORGIAS_STATE?.integrations
-                                        ?.authentication?.email
-                                        ?.forwarding_email_address || ''
-                                }`,
-                                verified: false,
-                            },
-                        },
-                    ],
-                }),
-            })
-
-            notifyAccountNotVerified(reduxStore)
-
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-    })
-
-    describe('notifyUserImpersonated()', () => {
-        beforeEach(() => {
-            window.USER_IMPERSONATED = null
-            window.GORGIAS_CLUSTER = 'us-east1-abcd'
-            reduxStore = mockStore({
-                currentUser: fromJS(user),
-                currentAccount: fromJS(account),
-            } as RootState)
-        })
-
-        it('should not do anything because user is not impersonated', () => {
-            notifyUserImpersonated(reduxStore)
-
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
-
-        it('should dispatch a notification because user is impersonated', () => {
-            window.USER_IMPERSONATED = true
-            notifyUserImpersonated(reduxStore)
-
-            expect(reduxStore.getActions()).toMatchSnapshot()
-        })
     })
 
     describe('initApp()', () => {

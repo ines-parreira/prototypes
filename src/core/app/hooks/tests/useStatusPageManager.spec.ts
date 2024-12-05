@@ -2,7 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import statusPageManager from 'services/statusPageManager/statusPageManager'
 
-import useStatusPageManager from '../useStatusPageManager'
+import {useStatusPageManager} from '../useStatusPageManager'
 
 jest.mock('services/statusPageManager/statusPageManager', () => ({
     startPolling: jest.fn(),

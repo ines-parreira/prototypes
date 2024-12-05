@@ -1,7 +1,6 @@
 import {Position, Status} from 'reapop'
 
-import {AlertBannerProps} from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+import {AlertBannerProps, AlertBannerTypes} from 'AlertBanners'
 
 export enum NotificationStatus {
     Success = 'success',

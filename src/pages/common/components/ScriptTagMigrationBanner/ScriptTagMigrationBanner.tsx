@@ -4,14 +4,10 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {FeatureFlagKey} from 'config/featureFlags'
-
 import useAppSelector from 'hooks/useAppSelector'
-
 import {IntegrationType} from 'models/integration/constants'
-
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
 import {isAdmin} from 'utils'

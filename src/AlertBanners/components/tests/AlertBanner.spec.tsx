@@ -1,9 +1,9 @@
 import {fireEvent, screen, render} from '@testing-library/react'
 import React from 'react'
 
-import AlertBanner, {AlertBannerProps} from '../AlertBanner'
+import {AlertBannerTypes} from '../../types'
+import {AlertBanner, AlertBannerProps} from '../AlertBanner'
 import {CTA} from '../CTA'
-import {AlertBannerTypes} from '../types'
 
 jest.mock('../CTA', () => ({
     CTA: jest.fn(() => <div>CTA</div>),

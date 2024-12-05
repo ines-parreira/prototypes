@@ -5,12 +5,12 @@ import moment from 'moment'
 import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {

@@ -11,7 +11,7 @@ function getNotifications(state: RootState) {
     return state.notifications
 }
 
-export default function useBannerNotifications() {
+export default function useLegacyAlertBanners() {
     const notifications = useAppSelector(getNotifications)
 
     return useMemo(

@@ -2,7 +2,7 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+import {AlertBannerTypes} from 'AlertBanners'
 
 import {StoreDispatch} from '../../types'
 import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'

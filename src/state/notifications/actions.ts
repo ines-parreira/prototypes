@@ -3,7 +3,6 @@ import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _omit from 'lodash/omit'
 import _words from 'lodash/words'
-
 import {
     notify as addNotification,
     dismissNotification,
@@ -11,7 +10,7 @@ import {
     POSITIONS,
 } from 'reapop'
 
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
+import {AlertBannerTypes} from 'AlertBanners'
 
 import {StoreDispatch, RootState} from '../types'
 
@@ -157,8 +156,8 @@ export const notify =
 export const handleUsageBanner =
     ({
         newAccountStatus,
-        notification,
         currentAccountStatus,
+        notification,
     }: HandleUsageBanner) =>
     (dispatch: StoreDispatch) => {
         const USAGE_NOTIFICATION_BANNER = '99'
@@ -170,7 +169,7 @@ export const handleUsageBanner =
         if (notification) {
             void dispatch(
                 notify({
-                    id: USAGE_NOTIFICATION_BANNER.toString(),
+                    id: USAGE_NOTIFICATION_BANNER,
                     style: NotificationStyle.Banner,
                     type:
                         // until we update backend types in `g/models/account.py`

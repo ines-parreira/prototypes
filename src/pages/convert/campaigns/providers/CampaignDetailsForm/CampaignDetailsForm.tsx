@@ -8,6 +8,7 @@ import _isEmpty from 'lodash/isEmpty'
 import _trim from 'lodash/trim'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
+import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -26,8 +27,6 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import AlertBanner from 'pages/common/components/BannerNotifications/AlertBanner'
-import {AlertBannerTypes} from 'pages/common/components/BannerNotifications/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
