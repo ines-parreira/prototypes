@@ -1,4 +1,4 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {createEvent, fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
 import CircularAudioPlayer from '../CircularAudioPlayer'
@@ -130,4 +130,20 @@ describe('CircularAudioPlayer', () => {
             expect(progressBar).toHaveTextContent(progressBarContent)
         }
     )
+
+    it('should prevent other actions when mouse down', () => {
+        const {getByText} = render(
+            <CircularAudioPlayer
+                src={AUDIO_SRC}
+                isActive={true}
+                onPlay={jest.fn()}
+            />
+        )
+
+        expect(getByText('play_arrow')).toBeInTheDocument()
+        const playArrow = getByText('play_arrow')
+        const event = createEvent.mouseDown(playArrow)
+        fireEvent(playArrow, event)
+        expect(event.defaultPrevented).toBe(true)
+    })
 })

@@ -67,7 +67,11 @@ const CircularAudioPlayer = ({
                 onTimeUpdate={updateProgressBar}
             />
             <div>
-                <div className={css.playButton} onClick={playOrPause}>
+                <div
+                    className={css.playButton}
+                    onClick={playOrPause}
+                    onMouseDown={(event) => event.preventDefault()}
+                >
                     <div className={`material-icons ${css.playButtonIcon}`}>
                         {isPaused ? 'play_arrow' : 'pause'}
                     </div>
