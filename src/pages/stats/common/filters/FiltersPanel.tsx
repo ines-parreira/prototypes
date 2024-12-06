@@ -226,6 +226,19 @@ export const FiltersPanelComponent = ({
                 ) === undefined
         )
         const updatedActiveFilters = activeFilters.map((filter) => {
+            if (filter.type === FilterKey.CustomFields) {
+                const getCustomFieldFilter = customFieldFilters.find(
+                    (customFieldFilter) =>
+                        customFieldFilter.customFieldId === filter.customFieldId
+                )
+                return {
+                    ...filter,
+                    initializeAsOpen: false,
+                    active:
+                        getCustomFieldFilter !== undefined &&
+                        getCustomFieldFilter.active,
+                }
+            }
             if (filter.type === FilterKey.Tags) {
                 const getTagsFilterByInstanceId = (
                     instanceId: TagFilterInstanceId
@@ -237,6 +250,7 @@ export const FiltersPanelComponent = ({
 
                 return {
                     ...filter,
+                    initializeAsOpen: false,
                     active:
                         (
                             getTagsFilterByInstanceId(filter.filterInstanceId)
@@ -276,6 +290,7 @@ export const FiltersPanelComponent = ({
     }, [
         activeFilters,
         cleanStatsFilters,
+        customFieldFilters,
         optionalFilters,
         previousCleanStatsFilters,
     ])
