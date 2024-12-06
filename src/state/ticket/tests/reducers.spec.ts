@@ -36,18 +36,6 @@ import {
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 
-jest.mock('state/newMessage/ticketReplyCache', () => {
-    const Immutable: {fromJS: typeof fromJS} = jest.requireActual('immutable')
-
-    return {
-        _keys: jest.fn(),
-        _id: jest.fn(),
-        set: jest.fn(),
-        get: jest.fn(() => Immutable.fromJS({}) as Map<any, any>),
-        delete: jest.fn(),
-    }
-})
-
 jest.mock('../helpers', () => {
     const helpers = jest.requireActual('../helpers')
 
@@ -668,24 +656,69 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle UPDATE_ACTION_ARGS_ON_APPLIED', () => {
-        expect(
-            reducer(
-                initialState.mergeDeep({
-                    state: {
-                        appliedMacro: {id: 1},
-                    },
-                }),
-                {
+    describe('UPDATE_ACTION_ARGS_ON_APPLIED', () => {
+        it('found in ticket cache', () => {
+            const newState = reducer(initialState, {
+                type: types.APPLY_MACRO,
+                macro: fromJS({id: 1, value: {hello: 'world1'}}),
+                ticketId: 1,
+            })
+
+            expect(
+                newState.getIn(['state', 'appliedMacro', 'value'])
+            ).toStrictEqual(fromJS({hello: 'world1'}))
+
+            expect(
+                reducer(newState, {
                     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
                     actionIndex: 0,
                     value: {
                         hello: 'world',
                     },
                     ticketId: 1,
-                } as unknown as GorgiasAction
-            ).toJS()
-        ).toMatchSnapshot()
+                } as unknown as GorgiasAction).getIn([
+                    'state',
+                    'appliedMacro',
+                    'actions',
+                    '0',
+                    'arguments',
+                ])
+            ).toStrictEqual({hello: 'world'})
+        })
+
+        it('found in ticket cache, but macro is null', () => {
+            const newState = reducer(initialState, {
+                type: types.CLEAR_APPLIED_MACRO,
+                ticketId: 2,
+            })
+
+            expect(newState.getIn(['state', 'appliedMacro'])).toStrictEqual(
+                null
+            )
+
+            expect(
+                reducer(newState, {
+                    type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
+                    actionIndex: 0,
+                    value: {
+                        hello: 'world2',
+                    },
+                    ticketId: 2,
+                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro'])
+            ).toStrictEqual(null)
+        })
+
+        it('ticketId not provided', () => {
+            expect(
+                reducer(initialState, {
+                    type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
+                    actionIndex: 0,
+                    value: {
+                        hello: 'world3',
+                    },
+                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro'])
+            ).toStrictEqual(null)
+        })
     })
 
     it('should handle DELETE_ACTION_ON_APPLIED', () => {

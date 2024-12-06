@@ -103,6 +103,7 @@ describe('ticket actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        localStorage.clear()
         store = mockStore({
             ticket: initialState,
             newMessage: newMessageState,

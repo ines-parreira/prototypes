@@ -365,9 +365,18 @@ export default function reducer(
 
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
             if (action.ticketId) {
-                const updatedCache = ticketReplyCache
-                    .get(action.ticketId as string)
-                    .setIn(
+                let updatedCache = ticketReplyCache.get(
+                    action.ticketId as string
+                )
+
+                const macro = updatedCache.get('macro')
+                // setIn will fail with `invalid keyPath` if the first key is null
+                if (!macro) {
+                    updatedCache = updatedCache.set('macro', Map<any, any>())
+                }
+                ticketReplyCache.set(
+                    action.ticketId as string,
+                    updatedCache.setIn(
                         [
                             'macro',
                             'actions',
@@ -376,8 +385,9 @@ export default function reducer(
                         ],
                         action.value
                     )
-                ticketReplyCache.set(action.ticketId as string, updatedCache)
+                )
             }
+
             return state.getIn(['state', 'appliedMacro'])
                 ? state.setIn(
                       [

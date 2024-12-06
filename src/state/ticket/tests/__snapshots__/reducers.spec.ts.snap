@@ -3062,64 +3062,6 @@ exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
 }
 `;
 
-exports[`ticket reducers should handle UPDATE_ACTION_ARGS_ON_APPLIED 1`] = `
-{
-  "_internal": {
-    "displayHistory": false,
-    "isPartialUpdating": false,
-    "isShopperTyping": false,
-    "isShopperTypingTimeoutId": undefined,
-    "loading": {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "custom_fields": {},
-  "customer": null,
-  "events": [],
-  "is_unread": false,
-  "messages": [],
-  "priority": "normal",
-  "reply_options": {
-    "email": {
-      "answerable": true,
-    },
-    "internal-note": {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": {
-    "appliedMacro": {
-      "actions": {
-        "0": {
-          "arguments": {
-            "hello": "world",
-          },
-        },
-      },
-      "id": 1,
-    },
-    "dirty": false,
-    "hasAttemptedToCloseTicket": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
 exports[`ticket reducers should handle UPDATE_TICKET_MESSAGE_START 1`] = `
 {
   "_internal": {

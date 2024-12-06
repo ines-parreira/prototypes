@@ -69,7 +69,16 @@ class WebStorageMock {
         this.store = {}
     }
 
-    length = 0
+    get length() {
+        return Object.keys(this.store).length
+    }
+
+    key(index: number) {
+        if (index > this.length) {
+            return null
+        }
+        return Object.keys(this.store)[index]
+    }
 
     clear() {
         this.store = {}
