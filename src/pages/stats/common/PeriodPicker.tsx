@@ -96,7 +96,7 @@ export const PeriodPickerContainer = ({
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
     const theme = useTheme()
-    const themes = theme.split(' ')
+    const themes = theme.resolvedName.split(' ')
 
     useEffect(() => {
         return endHandlingTooltipHover

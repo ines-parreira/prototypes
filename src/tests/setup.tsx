@@ -370,6 +370,16 @@ global.fetch = jest.fn(() =>
     Promise.resolve({arrayBuffer: () => ({})} as Response)
 )
 
-jest.mock('theme/useTheme.ts', () => () => 'light')
+jest.mock('theme/useTheme.ts', () => {
+    const {THEME_NAME, themeTokenMap} =
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('theme') as typeof import('theme')
+
+    return () => ({
+        name: THEME_NAME.Light,
+        resolvedName: THEME_NAME.Light,
+        tokens: themeTokenMap[THEME_NAME.Light],
+    })
+})
 
 jest.mock('utils/launchDarkly')

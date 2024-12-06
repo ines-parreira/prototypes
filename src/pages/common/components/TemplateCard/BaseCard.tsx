@@ -1,13 +1,8 @@
 import classNames from 'classnames'
-import React, {
-    CSSProperties,
-    MouseEventHandler,
-    ReactNode,
-    useContext,
-} from 'react'
+import React, {CSSProperties, MouseEventHandler, ReactNode} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {THEME_NAME, ThemeContext} from 'theme'
+import {THEME_NAME, useTheme} from 'theme'
 
 import css from './Card.less'
 
@@ -34,15 +29,15 @@ function BaseCard({
     tag,
     title,
 }: Props) {
-    const context = useContext(ThemeContext)
+    const theme = useTheme()
 
     return (
         <div
             className={classNames(
                 css.container,
                 {
-                    [css.default]: context?.theme !== THEME_NAME.Dark,
-                    [css.dark]: context?.theme === THEME_NAME.Dark,
+                    [css.default]: theme.resolvedName !== THEME_NAME.Dark,
+                    [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 },
                 className
             )}

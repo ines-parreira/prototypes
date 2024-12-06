@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -7,7 +7,7 @@ import {MacroAction} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import {setInTicketSuggestionState} from 'state/ticket/actions'
-import {ThemeContext} from 'theme'
+import {useTheme} from 'theme'
 
 import css from './InTicketSuggestion.less'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
@@ -120,13 +120,13 @@ function FadeLayer({
     onClick: () => void
     hideExpandButton: boolean
 }) {
-    const context = useContext(ThemeContext)
+    const theme = useTheme()
 
     return (
         <div
             style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0) ${gradientStart}px, ${
-                    context?.colorTokens.Neutral.Grey_0.value ?? '#fff'
+                    theme.tokens.Neutral.Grey_0.value ?? '#fff'
                 } 100%)`,
             }}
             className={css.fadeLayer}

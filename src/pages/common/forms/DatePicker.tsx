@@ -85,7 +85,7 @@ export const DatePicker = ({
     }, [startDate, userTimezone])
 
     const theme = useTheme()
-    const themes = theme.split(' ')
+    const themes = theme.resolvedName.split(' ')
 
     useEffect(() => {
         isOpenRef.current = isOpen

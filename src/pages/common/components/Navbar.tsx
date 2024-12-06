@@ -53,7 +53,7 @@ import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 import {THEME_CONFIGS, withTheme} from 'theme'
-import type {HelpdeskThemeName, ThemeContextType} from 'theme'
+import type {HelpdeskThemeName, WithThemeProps} from 'theme'
 
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
@@ -162,7 +162,7 @@ type OwnProps = {
     flags?: LDFlagSet
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector> & ThemeContextType
+type Props = OwnProps & ConnectedProps<typeof connector> & WithThemeProps
 
 type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 
@@ -364,7 +364,7 @@ export class Navbar extends Component<Props, State> {
             navbarContentRef,
             flags,
             splitTicketViewToggle,
-            savedTheme,
+            theme,
         } = this.props
         const {isResizing, navbarWidth} = this.state
         const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
@@ -372,7 +372,7 @@ export class Navbar extends Component<Props, State> {
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
 
         const selectedTheme = THEME_CONFIGS.find(
-            ({name}) => name === savedTheme
+            ({name}) => name === theme.name
         )!
 
         return (
@@ -1087,7 +1087,7 @@ export class Navbar extends Component<Props, State> {
                                             }
                                         >
                                             {label}
-                                            {savedTheme === name && (
+                                            {theme.name === name && (
                                                 <span
                                                     className={classnames(
                                                         css.check,

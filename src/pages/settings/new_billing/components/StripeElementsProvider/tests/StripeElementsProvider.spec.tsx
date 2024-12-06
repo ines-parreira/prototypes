@@ -1,7 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ThemeContext} from 'theme'
+import {THEME_NAME, themeTokenMap, useTheme} from 'theme'
+import {assumeMock} from 'utils/testing'
 
 import {StripeElementsProvider} from '../StripeElementsProvider'
 
@@ -13,14 +14,23 @@ jest.mock('@stripe/react-stripe-js', () => ({
     )),
 }))
 
+jest.mock('theme/useTheme.ts', () => jest.fn())
+const useThemeMock = assumeMock(useTheme)
+
 describe('StripeElementsProvider', () => {
+    beforeEach(() => {
+        useThemeMock.mockReturnValue({
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+            tokens: themeTokenMap[THEME_NAME.Classic],
+        })
+    })
+
     it('should render the Stripe elements provider with children', () => {
         render(
-            <ThemeContext.Provider value={{} as any}>
-                <StripeElementsProvider>
-                    <div>Stripe Elements</div>
-                </StripeElementsProvider>
-            </ThemeContext.Provider>
+            <StripeElementsProvider>
+                <div>Stripe Elements</div>
+            </StripeElementsProvider>
         )
 
         expect(screen.getByText('Elements Provider')).toBeInTheDocument()

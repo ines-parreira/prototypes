@@ -93,7 +93,9 @@ describe('<ConvertNavbar />', () => {
             useIsOverviewPageEnabledSpy.mockReturnValue(true)
             const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertNavbar />
+                    <ThemeProvider>
+                        <ConvertNavbar />
+                    </ThemeProvider>
                 </Provider>
             )
 
@@ -104,7 +106,9 @@ describe('<ConvertNavbar />', () => {
             useIsOverviewPageEnabledSpy.mockReturnValue(false)
             const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <ConvertNavbar />
+                    <ThemeProvider>
+                        <ConvertNavbar />
+                    </ThemeProvider>
                 </Provider>
             )
 

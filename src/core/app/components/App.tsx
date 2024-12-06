@@ -40,7 +40,7 @@ export default function App({children}: Props) {
     useActivityTracker()
 
     return (
-        <AppNode className={theme}>
+        <AppNode className={theme.resolvedName}>
             <UIKitRootNodeProvider>
                 <SessionChangeDetection />
                 <NotificationsToasts />

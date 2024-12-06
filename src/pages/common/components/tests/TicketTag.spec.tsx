@@ -4,7 +4,7 @@ import React from 'react'
 
 import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {THEME_NAME, ThemeContext, useThemeContext} from 'theme'
+import {THEME_NAME, useTheme} from 'theme'
 import {getEnoughContrastedColor} from 'utils/colors'
 
 import TicketTag from '../TicketTag'
@@ -17,6 +17,9 @@ const mockUseFlag = useFlag as jest.Mock
 const mockFlagSet = {
     [FeatureFlagKey.TagNewDesign]: false,
 }
+
+jest.mock('theme/useTheme.ts', () => jest.fn())
+const useThemeMock = useTheme as jest.Mock
 
 jest.mock('utils/launchDarkly')
 
@@ -36,6 +39,11 @@ describe('<TicketTag />', () => {
                 return mockFlagSet[featureFlag]
             }
         )
+
+        useThemeMock.mockReturnValue({
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+        })
     })
 
     it('should render the tag', () => {
@@ -63,19 +71,16 @@ describe('<TicketTag />', () => {
             >
         ).mockReturnValue('#123456')
 
+        useThemeMock.mockReturnValue({
+            name: THEME_NAME.Dark,
+            resolvedName: THEME_NAME.Dark,
+        })
+
         const label = 'shipping'
         const color = '#123456'
 
         const {container} = render(
-            <ThemeContext.Provider
-                value={
-                    {theme: THEME_NAME.Dark} as ReturnType<
-                        typeof useThemeContext
-                    >
-                }
-            >
-                <TicketTag text={label} decoration={fromJS({color})} />
-            </ThemeContext.Provider>
+            <TicketTag text={label} decoration={fromJS({color})} />
         )
 
         expect(screen.getByText(label)).toBeInTheDocument()

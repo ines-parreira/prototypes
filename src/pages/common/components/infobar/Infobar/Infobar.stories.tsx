@@ -84,7 +84,7 @@ export const WithDefaultAppTheme: Meta = {
         (Component) => {
             const theme = useTheme()
             return (
-                <div className={theme}>
+                <div className={theme.resolvedName}>
                     <Component />
                 </div>
             )

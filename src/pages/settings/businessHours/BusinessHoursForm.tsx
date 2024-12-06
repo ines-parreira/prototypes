@@ -31,7 +31,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
             />
             <Input
                 className={classNames(css.timeField, {
-                    [css.dark]: theme === THEME_NAME.Dark,
+                    [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 })}
                 onChange={(e) => handleOnChange({from_time: e.target.value})}
                 value={businessHour.get('from_time')}
@@ -42,7 +42,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
             <p>to</p>
             <Input
                 className={classNames(css.timeField, {
-                    [css.dark]: theme === THEME_NAME.Dark,
+                    [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 })}
                 onChange={(e) => handleOnChange({to_time: e.target.value})}
                 value={businessHour.get('to_time')}

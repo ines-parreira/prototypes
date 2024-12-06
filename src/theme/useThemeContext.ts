@@ -3,7 +3,7 @@ import {useEffect, useMemo} from 'react'
 import {usePersistedState} from 'common/hooks'
 
 import {THEME_NAME, themeTokenMap} from './constants'
-import {HelpdeskThemeName} from './types'
+import type {HelpdeskThemeName} from './types'
 
 export const themeValues = Object.values(THEME_NAME)
 
@@ -39,10 +39,12 @@ export default function useThemeContext() {
 
     const context = useMemo(
         () => ({
-            savedTheme: actualTheme,
-            theme,
             setTheme: setSavedTheme,
-            colorTokens: themeTokenMap[theme],
+            theme: {
+                name: actualTheme,
+                resolvedName: theme,
+                tokens: themeTokenMap[theme],
+            },
         }),
         [actualTheme, setSavedTheme, theme]
     )

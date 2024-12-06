@@ -13,8 +13,8 @@ export default function ThemeProvider({children}: Props) {
 
     const UIContext = useMemo(
         () => ({
-            theme: context.theme,
-            colorTokens: context.colorTokens,
+            theme: context.theme.resolvedName,
+            colorTokens: context.theme.tokens,
         }),
         [context]
     )

@@ -5,7 +5,17 @@ import React, {ComponentProps} from 'react'
 
 import DatePicker from 'pages/common/forms/DatePicker'
 
-jest.mock('theme/useTheme.ts', () => () => 'modern light')
+jest.mock('theme/useTheme.ts', () => {
+    const {THEME_NAME, themeTokenMap} =
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('theme') as typeof import('theme')
+
+    return () => ({
+        name: THEME_NAME.Classic,
+        resolvedName: THEME_NAME.Classic,
+        tokens: themeTokenMap[THEME_NAME.Classic],
+    })
+})
 
 describe('DatePicker', () => {
     const datetime = moment('2021-05-12')

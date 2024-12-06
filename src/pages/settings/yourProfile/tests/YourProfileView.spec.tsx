@@ -32,9 +32,11 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     submitSetting: jest.fn(),
     preferences: fromJS({data: {date_format: 'en_GB', time_format: '24-hour'}}),
     setTheme: jest.fn(),
-    theme: THEME_NAME.Dark,
-    savedTheme: THEME_NAME.Dark,
-    colorTokens: {} as ColorTokens,
+    theme: {
+        name: THEME_NAME.Dark,
+        resolvedName: THEME_NAME.Dark,
+        tokens: {} as ColorTokens,
+    },
 }
 
 const TIMEZONES = ['UTC', 'EST']

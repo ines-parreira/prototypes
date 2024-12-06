@@ -156,7 +156,10 @@ export const ConnectToShopSection = ({
 
             <DEPRECATED_Modal
                 isOpen={connectModalOpen}
-                className={classNames(css['modal-centered'], theme)}
+                className={classNames(
+                    css['modal-centered'],
+                    theme.resolvedName
+                )}
                 header={shopName ? 'Change store' : 'Connect store'}
                 onClose={() => setConnectModalOpen(false)}
                 footer={

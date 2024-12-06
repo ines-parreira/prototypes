@@ -2,15 +2,25 @@ import {render} from '@testing-library/react'
 import userEvent, {TargetElement} from '@testing-library/user-event'
 import React from 'react'
 
-import {ThemeContext, useThemeContext} from 'theme'
+import {THEME_NAME, useTheme} from 'theme'
 
 import BaseCard from '../BaseCard'
+
+jest.mock('theme/useTheme.ts', () => jest.fn())
+const useThemeMock = useTheme as jest.Mock
 
 describe('<BaseCard />', () => {
     const props = {
         description: 'I can help you create something out of the box',
         title: 'The best template',
     }
+
+    beforeEach(() => {
+        useThemeMock.mockReturnValue({
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+        })
+    })
 
     it('should display a base card', () => {
         const {getByText} = render(<BaseCard {...props} />)
@@ -47,20 +57,14 @@ describe('<BaseCard />', () => {
     })
 
     it.each([
-        ['non dark', 'default'],
-        ['dark', 'dark'],
-    ])('should apply specific style for %s theme', (theme, className) => {
-        const {container} = render(
-            <ThemeContext.Provider
-                value={
-                    {
-                        theme: theme,
-                    } as unknown as ReturnType<typeof useThemeContext>
-                }
-            >
-                <BaseCard {...props} />
-            </ThemeContext.Provider>
-        )
+        ['non dark', THEME_NAME.Light, 'default'],
+        ['dark', THEME_NAME.Dark, 'dark'],
+    ])('should apply specific style for %s theme', (_, theme, className) => {
+        useThemeMock.mockReturnValue({
+            name: theme,
+            resolvedName: theme,
+        })
+        const {container} = render(<BaseCard {...props} />)
 
         expect(container.firstChild).toHaveClass(className)
     })

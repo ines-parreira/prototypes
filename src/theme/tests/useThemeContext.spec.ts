@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {THEME_NAME} from '../constants'
+import {THEME_NAME, themeTokenMap} from '../constants'
 import useThemeContext from '../useThemeContext'
 
 describe('useThemeContext', () => {
@@ -9,8 +9,11 @@ describe('useThemeContext', () => {
 
         expect(result.current).toEqual(
             expect.objectContaining({
-                savedTheme: THEME_NAME.Classic,
-                theme: THEME_NAME.Classic,
+                theme: {
+                    name: THEME_NAME.Classic,
+                    resolvedName: THEME_NAME.Classic,
+                    tokens: themeTokenMap[THEME_NAME.Classic],
+                },
                 setTheme: expect.any(Function),
             })
         )
@@ -19,7 +22,11 @@ describe('useThemeContext', () => {
     it('should return the modern theme by default', () => {
         const {result} = renderHook(() => useThemeContext())
 
-        expect(result.current.theme).toEqual(THEME_NAME.Classic)
+        expect(result.current.theme).toEqual({
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+            tokens: themeTokenMap[THEME_NAME.Classic],
+        })
     })
 
     it('should return the dark theme if using preferred theme media query', () => {
@@ -37,7 +44,11 @@ describe('useThemeContext', () => {
 
         const {result} = renderHook(() => useThemeContext())
 
-        expect(result.current.theme).toEqual(THEME_NAME.Dark)
+        expect(result.current.theme).toEqual({
+            name: THEME_NAME.System,
+            resolvedName: THEME_NAME.Dark,
+            tokens: themeTokenMap[THEME_NAME.Dark],
+        })
     })
 
     it('should return the light theme if using preferred theme media query', () => {
@@ -55,8 +66,8 @@ describe('useThemeContext', () => {
 
         const {result} = renderHook(() => useThemeContext())
 
-        expect(result.current.savedTheme).toEqual(THEME_NAME.System)
-        expect(result.current.theme).toEqual(THEME_NAME.Light)
+        expect(result.current.theme.name).toEqual(THEME_NAME.System)
+        expect(result.current.theme.resolvedName).toEqual(THEME_NAME.Light)
     })
 
     it('should return the saved theme', () => {
@@ -66,7 +77,7 @@ describe('useThemeContext', () => {
 
         const {result} = renderHook(() => useThemeContext())
 
-        expect(result.current.savedTheme).toEqual(THEME_NAME.Light)
+        expect(result.current.theme.name).toEqual(THEME_NAME.Light)
     })
 
     it('should update state in local storage if the saved theme is not valid', () => {
@@ -78,6 +89,6 @@ describe('useThemeContext', () => {
             'theme',
             JSON.stringify(THEME_NAME.Classic)
         )
-        expect(result.current.savedTheme).toEqual(THEME_NAME.Classic)
+        expect(result.current.theme.name).toEqual(THEME_NAME.Classic)
     })
 })

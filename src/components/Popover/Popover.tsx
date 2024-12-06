@@ -20,13 +20,12 @@ import React, {
     PropsWithChildren,
     ReactNode,
     RefObject,
-    useContext,
     useLayoutEffect,
     useRef,
 } from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {ThemeContext} from 'theme'
+import {THEME_NAME, useTheme} from 'theme'
 
 import css from './Popover.less'
 
@@ -59,7 +58,7 @@ export default function Popover({
     setIsOpen,
     target,
 }: PropsWithChildren<Props>) {
-    const themeContext = useContext(ThemeContext)
+    const theme = useTheme()
 
     const arrowRef = useRef(null)
 
@@ -89,19 +88,16 @@ export default function Popover({
     return isOpen ? (
         <FloatingFocusManager context={context} modal={false}>
             <div
-                className={cn(
-                    css.popover,
-                    themeContext?.theme && css[themeContext.theme]
-                )}
+                className={cn(css.popover, css[theme.resolvedName])}
                 ref={refs.setFloating}
                 style={floatingStyles}
                 {...getFloatingProps()}
             >
                 <FloatingArrow
                     className={css.arrow}
-                    fill={themeContext?.colorTokens.Neutral.Grey_0.value}
-                    {...(themeContext?.theme === 'dark' && {
-                        stroke: themeContext?.colorTokens.Neutral.Grey_2.value,
+                    fill={theme.tokens.Neutral.Grey_0.value}
+                    {...(theme.resolvedName === THEME_NAME.Dark && {
+                        stroke: theme.tokens.Neutral.Grey_2.value,
                         strokeWidth: 1,
                     })}
                     ref={arrowRef}

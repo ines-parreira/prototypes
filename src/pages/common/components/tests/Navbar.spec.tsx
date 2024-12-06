@@ -57,10 +57,12 @@ describe('<Navbar />', () => {
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
         flags: {},
-        theme: THEME_NAME.Classic,
-        savedTheme: THEME_NAME.Classic,
         setTheme: jest.fn(),
-        colorTokens: {} as ColorTokens,
+        theme: {
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+            tokens: {} as ColorTokens,
+        },
     }
 
     window.noticeable = {

@@ -160,7 +160,7 @@ describe('PeriodPicker', () => {
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenCalledWith(
-            theme,
+            theme.resolvedName,
             'displayed'
         )
         expect(periodPickerRangesClassListMockSpy).toHaveBeenCalledWith(

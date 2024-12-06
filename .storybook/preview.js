@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-import {ThemeContext, useThemeContext} from '../src/theme'
+import {ThemeProvider, useSetTheme} from '../src/theme'
 import {initLaunchDarkly} from '../src/utils/launchDarkly.ts'
 import {decorator as LDDecorator} from './launchdarkly-js-client-sdk.tsx'
 
@@ -113,22 +113,29 @@ const ThemeBlock = ({background, children}) => (
     </div>
 )
 
+const ThemeConsumer = ({children, theme}) => {
+    const setTheme = useSetTheme()
+
+    useEffect(() => {
+        setTheme(theme)
+    }, [theme])
+
+    return children
+}
+
 const withTheme = (StoryFn, context) => {
     const theme = context.parameters.theme ?? context.globals.theme
     const background = theme === 'dark' ? '#333' : '#fff'
-    const themeContext = useThemeContext()
-
-    useEffect(() => {
-        themeContext.setTheme(theme)
-    }, [theme])
 
     return (
         <div className={theme} style={{height: '100%'}}>
-            <ThemeContext.Provider value={themeContext}>
-                <ThemeBlock background={background}>
-                    <StoryFn />
-                </ThemeBlock>
-            </ThemeContext.Provider>
+            <ThemeProvider>
+                <ThemeConsumer theme={theme}>
+                    <ThemeBlock background={background}>
+                        <StoryFn />
+                    </ThemeBlock>
+                </ThemeConsumer>
+            </ThemeProvider>
         </div>
     )
 }

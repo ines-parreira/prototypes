@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {THEME_NAME} from '../constants'
+import {THEME_NAME, themeTokenMap} from '../constants'
 import Provider from '../ThemeProvider'
 import useTheme from '../useTheme'
 
@@ -18,6 +18,10 @@ describe('useTheme', () => {
     it('should return the active theme', () => {
         const {result} = renderHook(() => useTheme(), {wrapper: Provider})
 
-        expect(result.current).toBe(THEME_NAME.Classic)
+        expect(result.current).toEqual({
+            name: THEME_NAME.Classic,
+            resolvedName: THEME_NAME.Classic,
+            tokens: themeTokenMap[THEME_NAME.Classic],
+        })
     })
 })

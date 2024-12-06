@@ -26,7 +26,7 @@ import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import {withTheme} from 'theme'
-import type {HelpdeskThemeName, ThemeContextType} from 'theme'
+import type {HelpdeskThemeName, WithThemeProps} from 'theme'
 
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
@@ -76,7 +76,7 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
-} & ThemeContextType
+} & WithThemeProps
 
 type State = {
     bio: string
@@ -102,7 +102,7 @@ export class YourProfileView extends Component<Props, State> {
         super(props)
 
         this.isInitialized = false
-        this.initialTheme = props.savedTheme
+        this.initialTheme = props.theme.name
         this.isDirty = false
 
         this.state = _merge(
@@ -143,13 +143,13 @@ export class YourProfileView extends Component<Props, State> {
         }
         this.isDirty = false
 
-        if (this.initialTheme !== this.props.savedTheme) {
+        if (this.initialTheme !== this.props.theme.name) {
             logEvent(SegmentEvent.ThemeUpdate, {
-                theme: this.props.savedTheme,
+                theme: this.props.theme.name,
             })
         }
 
-        this.initialTheme = this.props.savedTheme
+        this.initialTheme = this.props.theme.name
 
         const normalizedValues = _pick(
             this.state,
@@ -439,7 +439,7 @@ export class YourProfileView extends Component<Props, State> {
                                 </div>
                                 <div className={settingsCss.section}>
                                     <ThemeList
-                                        savedTheme={this.props.savedTheme}
+                                        savedTheme={this.props.theme.name}
                                         onChangeTheme={this.onChangeTheme}
                                     />
                                 </div>

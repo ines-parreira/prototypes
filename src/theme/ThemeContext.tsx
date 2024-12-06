@@ -1,5 +1,10 @@
 import {createContext} from 'react'
 
-import {ThemeContextType} from './types'
+import type {SetTheme, Theme} from './types'
+
+type ThemeContextType = {
+    setTheme: SetTheme
+    theme: Theme
+}
 
 export default createContext<ThemeContextType | null>(null)

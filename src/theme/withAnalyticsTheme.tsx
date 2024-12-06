@@ -6,7 +6,7 @@ import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
 import {THEME_NAME} from './constants'
 import ThemeContext from './ThemeContext'
-import {HelpdeskThemeName} from './types'
+import type {HelpdeskThemeName} from './types'
 
 interface ThemeColorValue {
     value: string
@@ -54,9 +54,11 @@ export default function withAnalyticsTheme<P extends object>(
     return (props: P) => {
         const themeContext = useContext(ThemeContext)
         const analyticsTheme =
-            AnalyticsColorTokens[themeContext?.theme ?? THEME_NAME.Classic]
+            AnalyticsColorTokens[
+                themeContext?.theme.resolvedName ?? THEME_NAME.Classic
+            ]
         const colorTokens = themeContext
-            ? {...themeContext.colorTokens, ...analyticsTheme}
+            ? {...themeContext.theme.tokens, ...analyticsTheme}
             : undefined
 
         return <Component {...props} colorTokens={colorTokens} />

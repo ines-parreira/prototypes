@@ -1,8 +1,8 @@
 import {Elements} from '@stripe/react-stripe-js'
 import {loadStripe} from '@stripe/stripe-js'
-import React, {useContext} from 'react'
+import React from 'react'
 
-import {ThemeContext} from 'theme'
+import {useTheme} from 'theme'
 
 const stripePromise = loadStripe(window.STRIPE_PUBLIC_KEY!, {locale: 'en'})
 
@@ -14,7 +14,7 @@ export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
     children,
     clientSecret,
 }) => {
-    const {colorTokens} = useContext(ThemeContext) ?? {}
+    const {tokens} = useTheme()
 
     return (
         <Elements
@@ -24,14 +24,14 @@ export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
                 appearance: {
                     theme: 'stripe',
                     variables: {
-                        colorText: colorTokens?.Neutral.Grey_6.value,
-                        colorPrimary: colorTokens?.Main.Primary.value,
-                        colorBackground: colorTokens?.Neutral.Grey_0.value,
-                        colorDanger: colorTokens?.Feedback.Error.value,
+                        colorText: tokens.Neutral.Grey_6.value,
+                        colorPrimary: tokens.Main.Primary.value,
+                        colorBackground: tokens.Neutral.Grey_0.value,
+                        colorDanger: tokens.Feedback.Error.value,
                         colorWarning: 'purple',
                         colorSuccess: 'orange',
-                        colorTextSecondary: colorTokens?.Neutral.Grey_4.value,
-                        colorTextPlaceholder: colorTokens?.Neutral.Grey_4.value,
+                        colorTextSecondary: tokens.Neutral.Grey_4.value,
+                        colorTextPlaceholder: tokens.Neutral.Grey_4.value,
                         spacingUnit: '2.33px',
                         gridRowSpacing: '16px',
                         fontSizeBase: '14px',
@@ -52,8 +52,7 @@ export const StripeElementsProvider: React.FC<IStripeElementsProviderProps> = ({
                         },
                         '.Input': {
                             boxShadow: 'none',
-                            borderColor: colorTokens?.Neutral.Grey_3
-                                .value as string,
+                            borderColor: tokens.Neutral.Grey_3.value,
                         },
                     },
                 },

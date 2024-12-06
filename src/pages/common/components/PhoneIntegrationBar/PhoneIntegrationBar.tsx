@@ -42,7 +42,7 @@ export default function PhoneIntegrationBar(): JSX.Element | null {
     if (isRinging) {
         return (
             <IncomingPhoneCall
-                className={classNames(css[theme], css.bar)}
+                className={classNames(css[theme.resolvedName], css.bar)}
                 call={call}
             />
         )
@@ -51,7 +51,7 @@ export default function PhoneIntegrationBar(): JSX.Element | null {
     if (isDialing) {
         return (
             <OutgoingPhoneCall
-                className={classNames(css[theme], css.bar)}
+                className={classNames(css[theme.resolvedName], css.bar)}
                 call={call}
             />
         )

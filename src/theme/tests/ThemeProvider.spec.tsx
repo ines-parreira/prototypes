@@ -28,10 +28,12 @@ describe('ThemeProvider', () => {
             colorTokens: expect.any(Object),
         })
         expect(AppTheme).toEqual({
-            savedTheme: THEME_NAME.Classic,
-            theme: THEME_NAME.Classic,
             setTheme: expect.any(Function),
-            colorTokens: expect.any(Object),
+            theme: {
+                name: THEME_NAME.Classic,
+                resolvedName: THEME_NAME.Classic,
+                tokens: expect.any(Object),
+            },
         })
     })
 })
