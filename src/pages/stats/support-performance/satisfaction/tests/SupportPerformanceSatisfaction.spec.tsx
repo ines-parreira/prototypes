@@ -19,7 +19,8 @@ import {TagFilterInstanceId} from 'models/stat/types'
 
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
+import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
+
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'

@@ -36,7 +36,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
+import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
