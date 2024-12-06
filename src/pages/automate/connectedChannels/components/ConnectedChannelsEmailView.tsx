@@ -145,7 +145,7 @@ export const ConnectedChannelsEmailView = () => {
                 <div className={cssEmail.emailSettingsContainer}>
                     <FeatureSettings
                         title="AI Agent"
-                        label="Enable AI agent for email"
+                        label="Enable AI Agent for email"
                         labelSubtitle="AI Agent uses Help Center articles, Macros, Guidance and Shopify data to automate responses, enabling your team to reduce wait time and increase customer satisfaction."
                         subtitle="When enabled, you can find tickets handled by AI Agent in a ticket view."
                         enabled={isAIAgentToggled}
