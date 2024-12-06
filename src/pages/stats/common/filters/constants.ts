@@ -31,7 +31,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.CustomFields]: 'Custom Field',
     [FilterKey.Score]: 'Satisfaction score',
     [FilterKey.SlaPolicies]: 'Report on',
-    [FilterKey.CommunicationSkills]: 'Communication skill',
+    [FilterKey.CommunicationSkills]: 'Communication',
     [FilterKey.LanguageProficiency]: 'Language proficiency',
     [FilterKey.ResolutionCompleteness]: 'Resolution completeness',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Report on',
