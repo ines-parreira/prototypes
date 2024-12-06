@@ -103,7 +103,7 @@ describe('<ActionsPlatformEditTemplateView />', () => {
         renderApp(template as ActionTemplate)
 
         expect(screen.getByDisplayValue(template.name)).toBeInTheDocument()
-        expect(screen.getByDisplayValue(template.name)).toBeDisabled()
+        expect(screen.getByDisplayValue(template.name)).toBeEnabled()
     })
 
     it('should render draft badge', () => {

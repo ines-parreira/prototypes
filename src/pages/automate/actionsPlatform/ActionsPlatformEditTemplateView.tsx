@@ -124,7 +124,6 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                                 shouldShowErrors &&
                                 !visualBuilderGraphDirty.name.trim()
                             }
-                            isDisabled={!isDraft}
                         />
                         {isDraft && <DraftBadge />}
                     </div>
@@ -166,7 +165,7 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                                 }}
                                 showCancelButton
                                 cancelButtonProps={{intent: 'secondary'}}
-                                content="Are you sure you want to publish this Action template? This will prevent you from updating settings like name, AI Agent instructions, conditions and deleting already existing inputs."
+                                content="Are you sure you want to publish this Action template? This will prevent you from updating settings like AI Agent instructions, conditions and deleting already existing inputs."
                             >
                                 {({uid, onDisplayConfirmation}) => (
                                     <Button
