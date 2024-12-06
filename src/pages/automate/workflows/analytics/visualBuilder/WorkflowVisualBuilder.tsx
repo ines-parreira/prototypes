@@ -4,6 +4,7 @@ import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
+    ControlButton,
     Controls,
     MiniMap,
     ReactFlow,
@@ -13,7 +14,9 @@ import {
     useReactFlow,
 } from 'reactflow'
 
+import {gorgiasColors} from 'gorgias-design-system/styles'
 import {useSearchParam} from 'hooks/useSearchParam'
+import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 
 import {TestFlowEditor} from '../../editor/visualBuilder/editors/TestFlowEditor'
 import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
@@ -98,6 +101,8 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
         setZoom(zoomLevel)
     }, [reactFlow, setZoom])
 
+    const handleFitView = useCallback(() => reactFlow.fitView(), [reactFlow])
+
     return (
         <div className={css.container}>
             {(isFetchPending || !areNodesInitialized) && (
@@ -146,13 +151,21 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
                                     pannable
                                     position="top-left"
                                     className={css.minimap}
+                                    maskColor={gorgiasColors.neutralGrey0}
+                                    nodeColor={gorgiasColors.neutralGrey3}
                                 />
                             )}
                             <Controls
+                                className={css.controls}
+                                showFitView={false}
                                 showInteractive={false}
                                 position="top-left"
                                 style={!isDegradedMode ? {left: 200 + 15} : {}}
-                            />
+                            >
+                                <ControlButton onClick={handleFitView}>
+                                    <FitViewIcon />
+                                </ControlButton>
+                            </Controls>
                         </ReactFlow>
                     </div>
                     {startFlowNode && (

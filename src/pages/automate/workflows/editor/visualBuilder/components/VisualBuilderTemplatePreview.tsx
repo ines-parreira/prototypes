@@ -1,6 +1,13 @@
-import React, {PropsWithChildren} from 'react'
-import {ReactFlow, ReactFlowProvider, Controls} from 'reactflow'
+import React, {PropsWithChildren, useCallback} from 'react'
+import {
+    ReactFlow,
+    ReactFlowProvider,
+    Controls,
+    ControlButton,
+    useReactFlow,
+} from 'reactflow'
 
+import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 import {
     createVisualBuilderContextForPreview,
     VisualBuilderContext,
@@ -29,6 +36,7 @@ import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
 import OrderSelectionNode from '../nodes/OrderSelectionNode'
 import ShopperAuthenticationNode from '../nodes/ShopperAuthenticationNode'
 import TextReplyNode from '../nodes/TextReplyNode'
+import css from '../WorkflowVisualBuilder.less'
 import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {
@@ -54,6 +62,8 @@ const edgeTypes = {
 function VisualBuilderTemplatePreview({
     visualBuilderGraph,
 }: VisualBuilderTemplatePreviewProps) {
+    const {fitView} = useReactFlow()
+    const handleFitView = useCallback(() => fitView(), [fitView])
     return (
         <ReactFlow
             proOptions={{
@@ -79,7 +89,16 @@ function VisualBuilderTemplatePreview({
             zoomOnScroll={false}
             panOnScroll={true}
         >
-            <Controls showInteractive={false} position="top-left" />
+            <Controls
+                className={css.controls}
+                showFitView={false}
+                showInteractive={false}
+                position="top-left"
+            >
+                <ControlButton onClick={handleFitView}>
+                    <FitViewIcon />
+                </ControlButton>
+            </Controls>
             <VisualBuilderBackground />
         </ReactFlow>
     )

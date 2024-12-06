@@ -4,14 +4,18 @@ import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {Dispatch, PropsWithChildren, useCallback, FC} from 'react'
 import {
+    ControlButton,
     Controls,
     MiniMap,
     NodeMouseHandler,
     ReactFlow,
     ReactFlowProvider,
     useNodesInitialized,
+    useReactFlow,
 } from 'reactflow'
 
+import {gorgiasColors} from 'gorgias-design-system/styles'
+import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 import {VisualBuilderBackground} from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
 
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
@@ -93,6 +97,9 @@ const WorkflowVisualBuilderWrapped = ({
     // for big flows we disable some features to improve performance
     const isDegradedMode = visualBuilderGraph.nodes.length > 800
 
+    const reactFlow = useReactFlow()
+    const handleFitView = useCallback(() => reactFlow.fitView(), [reactFlow])
+
     return (
         <div className={css.container}>
             {!areNodesInitialized && <LoadingSpinner size="big" />}
@@ -133,13 +140,21 @@ const WorkflowVisualBuilderWrapped = ({
                             pannable
                             position="top-left"
                             className={css.minimap}
+                            maskColor={gorgiasColors.neutralGrey0}
+                            nodeColor={gorgiasColors.neutralGrey3}
                         />
                     )}
                     <Controls
+                        className={css.controls}
+                        showFitView={false}
                         showInteractive={false}
                         position="top-left"
                         style={!isDegradedMode ? {left: 200 + 15} : {}}
-                    />
+                    >
+                        <ControlButton onClick={handleFitView}>
+                            <FitViewIcon />
+                        </ControlButton>
+                    </Controls>
                     <VisualBuilderBackground />
                 </ReactFlow>
             </div>
