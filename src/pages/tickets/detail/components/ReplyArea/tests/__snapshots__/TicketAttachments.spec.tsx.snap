@@ -124,7 +124,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       </div>
       <a
         class="productMeta"
-        href="#"
+        href="http://gorgias.io/bar"
         rel="noopener noreferrer"
         target="_blank"
       >

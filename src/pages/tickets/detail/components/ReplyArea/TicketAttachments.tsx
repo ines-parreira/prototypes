@@ -162,6 +162,21 @@ export default class TicketAttachments extends Component<Props, State> {
         this.setState({currentImage: index})
     }
 
+    redirectLink = (attachment: Attachment): string => {
+        const links = ['variant_link', 'product_link', 'shortened_product_link']
+
+        // Loop through the links array and return the first non-empty value
+        for (const link of links) {
+            const value = attachment.getIn(['extra', link])
+            if (value) {
+                return value as string
+            }
+        }
+
+        // Default return value
+        return '#'
+    }
+
     _renderProductAttachment(attachment: Attachment, idx: number) {
         const price = attachment.getIn(['extra', 'price'])
         const compareAtPrice = attachment.getIn(['extra', 'compare_at_price'])
@@ -211,7 +226,7 @@ export default class TicketAttachments extends Component<Props, State> {
                     </div>
                 </div>
                 <a
-                    href={attachment.get(['extra', 'product_link'], '#')}
+                    href={this.redirectLink(attachment)}
                     className={css.productMeta}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -221,9 +236,7 @@ export default class TicketAttachments extends Component<Props, State> {
                         <br />
                         {attachment.getIn(['extra', 'variant_name'])}
                     </div>
-
                     {this.renderAttachmentIcon(attachment.get('content_type'))}
-
                     {this.renderRemoveIcon(idx)}
                 </a>
             </div>
