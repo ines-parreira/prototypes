@@ -21,6 +21,8 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
+import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
+import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import LiveOverview from 'pages/stats/LiveOverview'
 import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
 import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
@@ -152,6 +154,10 @@ jest.mock('pages/stats/SupportPerformanceTags')
 const OldTagsMock = assumeMock(SupportPerformanceTags)
 jest.mock('pages/stats/quality-management/satisfaction/Satisfaction')
 const SatisfactionMock = assumeMock(Satisfaction)
+jest.mock('pages/stats/custom-reports/CustomReport')
+const CustomReportMock = assumeMock(CustomReport)
+jest.mock('pages/stats/custom-reports/CustomReports')
+const CustomReportsMock = assumeMock(CustomReports)
 
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
@@ -179,6 +185,8 @@ describe('<Routes/>', () => {
         TagsMock.mockImplementation(() => <div />)
         OldTagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
+        CustomReportMock.mockImplementation(() => <div />)
+        CustomReportsMock.mockImplementation(() => <div />)
     })
 
     afterEach(() => {
@@ -618,7 +626,7 @@ describe('<Routes/>', () => {
             expect(screen.getByText('LiveVoice')).toBeInTheDocument()
         })
 
-        it('should render Custom Report page', () => {
+        it('should render Custom Reports page', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsCustomReports]: true,
             })
@@ -632,10 +640,10 @@ describe('<Routes/>', () => {
                 state
             )
 
-            expect(screen.getByText('CUSTOM REPORTS')).toBeInTheDocument()
+            expect(CustomReportsMock).toHaveBeenCalled()
         })
 
-        it('should render Custom Reports pages', () => {
+        it('should render Custom Report page', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsCustomReports]: true,
             })
@@ -647,7 +655,7 @@ describe('<Routes/>', () => {
                 state
             )
 
-            expect(screen.getByText('CUSTOM REPORT ID: 1')).toBeInTheDocument()
+            expect(CustomReportMock).toHaveBeenCalled()
         })
 
         it('should the NoMatch component when the path doesn’t match any route', () => {

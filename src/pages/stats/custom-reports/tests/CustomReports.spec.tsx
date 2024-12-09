@@ -6,6 +6,10 @@ import {
     CUSTOM_REPORTS_TITLE,
 } from 'pages/stats/custom-reports/CustomReports'
 
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
+
 describe('CustomReports', () => {
     it('should render the component', () => {
         render(<CustomReports />)

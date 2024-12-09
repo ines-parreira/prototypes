@@ -11,6 +11,9 @@ import {assumeMock} from 'utils/testing'
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
+jest.mock('pages/stats/DrillDownModal.tsx', () => ({
+    DrillDownModal: () => null,
+}))
 
 const mockUseParams = assumeMock(useParams)
 const customReportId = '2'
