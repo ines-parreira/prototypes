@@ -8,6 +8,7 @@ import {
 import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
     customFieldsTicketCountQueryFactory,
+    customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {injectDrillDownCustomFieldId} from 'models/reporting/queryFactories/utils'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -355,6 +356,97 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     values: expect.arrayContaining(excludedCustomFields),
                 })
             )
+        })
+    })
+
+    describe('customFieldsTicketTotalCountQueryFactory', () => {
+        it('should build expected query', () => {
+            const query = customFieldsTicketTotalCountQueryFactory(
+                statsFilters,
+                timezone,
+                customFieldId
+            )
+
+            expect(query).toEqual({
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [],
+                timezone,
+                segments: [],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters
+                    ),
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(
+                                statsFilters.period.start_datetime
+                            ),
+                            formatReportingQueryDate(
+                                statsFilters.period.end_datetime
+                            ),
+                        ],
+                    },
+                ],
+            })
+        })
+
+        it('should build the query with sorting', () => {
+            const query = customFieldsTicketTotalCountQueryFactory(
+                statsFilters,
+                timezone,
+                customFieldId,
+                sorting
+            )
+
+            expect(query).toEqual({
+                measures: [
+                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                ],
+                dimensions: [],
+                timezone,
+                segments: [],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    ...statsFiltersToReportingFilters(
+                        TicketStatsFiltersMembers,
+                        statsFilters
+                    ),
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [customFieldId],
+                    },
+                    {
+                        member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [
+                            formatReportingQueryDate(
+                                statsFilters.period.start_datetime
+                            ),
+                            formatReportingQueryDate(
+                                statsFilters.period.end_datetime
+                            ),
+                        ],
+                    },
+                ],
+                order: [
+                    [
+                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                        sorting,
+                    ],
+                ],
+            })
         })
     })
 })

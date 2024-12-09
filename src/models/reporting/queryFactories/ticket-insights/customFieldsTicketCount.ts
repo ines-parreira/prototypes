@@ -133,3 +133,42 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
     ],
     timezone,
 })
+
+export const customFieldsTicketTotalCountQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    sorting?: OrderDirection
+): ReportingQuery<TicketCustomFieldsCube> => ({
+    measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+    dimensions: [],
+    timezone,
+    segments: [],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+            operator: ReportingFilterOperator.Equals,
+            values: [customFieldId],
+        },
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
+            ],
+        },
+    ],
+    ...(sorting
+        ? {
+              order: [
+                  [
+                      TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                      sorting,
+                  ],
+              ],
+          }
+        : {}),
+})

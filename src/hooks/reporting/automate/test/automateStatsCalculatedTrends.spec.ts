@@ -1,6 +1,8 @@
 import {
+    getAiAgentSuccessRate,
     getAutomationRateTrend,
     getAutomationRateUnfilteredDenominatorTrend,
+    getCoverageRateUnfilteredDenominatorTrend,
     getDecreaseInFirstResponseTimeTrend,
     getDecreaseInResolutionTimeTrend,
 } from '../automateStatsCalculatedTrends'
@@ -13,6 +15,9 @@ describe('Wrapper Functions for Trends Calculation', () => {
     const totalFirstResponseTimeIncludingAIAgent = {value: 300, prevValue: 500}
     const totalResolutionTimeExcludingAIAgent = {value: 5000, prevValue: 4000}
     const totalResolutionTimeResolvedByAIAgent = {value: 0, prevValue: 0}
+    const aiAgentTicketsAutomatedTickets = {value: 5, prevValue: 1}
+    const aiAgentTickets = {value: 10, prevValue: 5}
+
     describe('getAutomationRateTrend Function', () => {
         it('should calculate automation rate trend correctly', () => {
             const result = getAutomationRateTrend(
@@ -105,6 +110,35 @@ describe('Wrapper Functions for Trends Calculation', () => {
             )
             expect(result.data.value).toBe(0)
             expect(result.data.prevValue).toBe(0)
+        })
+    })
+
+    describe('getCoverageRateUnfilteredDenominatorTrend', () => {
+        it('calculates coverage rate with unfiltered denominator values', () => {
+            const result = getCoverageRateUnfilteredDenominatorTrend({
+                isFetching: false,
+                isError: false,
+                aiAgentTickets: interactions,
+                billableTicketsCount: billableTickets,
+                allAutomatedInteractions: {value: 50, prevValue: 100},
+                allAutomatedInteractionsByAutoResponders:
+                    interactionsByAutoResponders,
+            })
+            expect(result.data.value).toBeCloseTo(2.5, 3)
+            expect(result.data.prevValue).toBeCloseTo(3.08, 2)
+        })
+    })
+
+    describe('getAiAgentSuccessRate', () => {
+        it('calculates success rate for ai agent tickets', () => {
+            const result = getAiAgentSuccessRate({
+                isFetching: false,
+                isError: false,
+                aiAgentAutomatedInteractions: aiAgentTicketsAutomatedTickets,
+                aiAgentTickets,
+            })
+            expect(result.data.value).toBeCloseTo(0.5, 2)
+            expect(result.data.prevValue).toBeCloseTo(0.2, 2.8)
         })
     })
 })
