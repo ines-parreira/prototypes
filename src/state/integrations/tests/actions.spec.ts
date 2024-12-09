@@ -40,6 +40,7 @@ const neutralInstallationStatus: InstallationStatus = {
     applicationId: 1,
     hasBeenRequestedOnce: true,
     installed: true,
+    installedOnShopifyCheckout: true,
     minimumSnippetVersion: null,
 }
 
@@ -167,6 +168,11 @@ describe('integrations actions', () => {
         return store
             .dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('hideShopifyCheckoutChatBanner action', () => {
+        store.dispatch(actions.hideShopifyCheckoutChatBanner())
+        expect(store.getActions()).toMatchSnapshot()
     })
 
     describe('verifyEmailIntegration action', () => {

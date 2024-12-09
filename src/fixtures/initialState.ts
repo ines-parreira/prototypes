@@ -87,6 +87,7 @@ export const initialState: GorgiasInitialState = {
                 bundleUrl: 'https://chat-bundle.test.gorgias.chat',
                 chatUrl: 'chat-api.test.gorgias.chat',
                 wsUrl: 'chat-ws.test.gorgias.chat',
+                shopifyCheckoutChatBannerVisible: true,
             },
         },
         integrations: [],

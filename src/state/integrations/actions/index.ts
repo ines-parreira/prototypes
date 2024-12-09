@@ -1059,3 +1059,11 @@ export const getTranslations = getTranslationsAction
 export const getApplicationTexts = getApplicationTextsAction
 export const updateApplicationTexts = updateApplicationTextsAction
 export const getInstallationStatus = getInstallationStatusAction
+
+export const hideShopifyCheckoutChatBanner = () => {
+    return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
+        return dispatch({
+            type: constants.HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER,
+        })
+    }
+}

@@ -42,6 +42,11 @@ export type IntegrationsState = {
     migrations?: {
         email?: EmailMigrationInboundVerification[]
     }
+    extra?: {
+        [IntegrationType.GorgiasChat]: {
+            shopifyCheckoutChatBannerVisible?: boolean
+        }
+    }
 }
 
 export type IntegrationListItem = Pick<

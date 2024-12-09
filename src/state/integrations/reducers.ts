@@ -47,6 +47,9 @@ export const initialState: IntegrationsImmutableState = fromJS({
                 meta: {},
             },
         },
+        [IntegrationType.GorgiasChat]: {
+            shopifyCheckoutChatBannerVisible: true,
+        },
     },
 })
 
@@ -329,6 +332,15 @@ export default function reducer(
             return state.setIn(
                 ['authentication', 'email', 'forwarding_email_address'],
                 action.emailForwardingAddress
+            )
+        case constants.HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER:
+            return state.setIn(
+                [
+                    'extra',
+                    IntegrationType.GorgiasChat,
+                    'shopifyCheckoutChatBannerVisible',
+                ],
+                false
             )
         default:
             return state

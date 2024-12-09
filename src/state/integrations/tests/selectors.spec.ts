@@ -52,6 +52,7 @@ import {
     getIntegrationsByAppId,
     getStandardPhoneIntegrations,
     getInactiveEmailChannels,
+    getShowShopifyCheckoutChatBanner,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -1050,5 +1051,30 @@ describe('integrations selectors', () => {
             const expected = [standardIntegration]
             expect(standardPhoneIntegrations).toEqual(expected)
         })
+    })
+
+    describe('getShowShopifyCheckoutChatBanner()', () => {
+        it.each`
+            stateValue   | expectedValue
+            ${undefined} | ${false}
+            ${false}     | ${false}
+            ${true}      | ${true}
+        `(
+            'should return $expectedValue if the flag is in state is $stateValue',
+            ({stateValue, expectedValue}) => {
+                const state = {
+                    integrations: fromJS({
+                        extra: {
+                            [IntegrationType.GorgiasChat]: {
+                                shopifyCheckoutChatBannerVisible: stateValue,
+                            },
+                        },
+                    }),
+                } as RootState
+                expect(getShowShopifyCheckoutChatBanner(state)).toEqual(
+                    expectedValue
+                )
+            }
+        )
     })
 })

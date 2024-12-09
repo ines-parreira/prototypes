@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        padding: 20px;
+
+        .header {
+            display: flex;
+            column-gap: @layout-spacing-s;
+            align-items: center;
+            justify-content: space-between;
+
+            .leftSection {
+                display: flex;
+                align-items: center;
+
+                .installedIcon {
+                    margin-right: @layout-spacing-s;
+                }
+            }
+        }
+    }
+
+    .externalIcon {
+        margin-left: @layout-spacing-xs;
+    }
+
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+}

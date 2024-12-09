@@ -20,6 +20,7 @@ const neutralInstallationStatus: InstallationStatus = {
     applicationId: 1,
     hasBeenRequestedOnce: true,
     installed: true,
+    installedOnShopifyCheckout: true,
     minimumSnippetVersion: null,
 }
 

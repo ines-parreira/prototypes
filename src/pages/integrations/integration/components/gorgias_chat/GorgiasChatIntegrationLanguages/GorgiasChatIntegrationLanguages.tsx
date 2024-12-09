@@ -12,6 +12,7 @@ import DropdownButtonWithSearch, {
 } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {Tab} from 'pages/integrations/integration/types'
 
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {GorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable'
@@ -77,7 +78,10 @@ const GorgiasChatIntegrationLanguages = ({
                 />
             </PageHeader>
 
-            <GorgiasChatIntegrationHeader integration={integration} />
+            <GorgiasChatIntegrationHeader
+                integration={integration}
+                tab={Tab.Languages}
+            />
 
             <GorgiasChatIntegrationLanguagesTable>
                 {languagesRows.map((languageRow) => (

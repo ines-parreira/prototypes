@@ -230,6 +230,7 @@ describe('gorgias-chat.actions', () => {
                 applicationId: 1,
                 hasBeenRequestedOnce: false,
                 installed: false,
+                installedOnShopifyCheckout: false,
                 minimumSnippetVersion: null,
             }
             const applicationId = '1'

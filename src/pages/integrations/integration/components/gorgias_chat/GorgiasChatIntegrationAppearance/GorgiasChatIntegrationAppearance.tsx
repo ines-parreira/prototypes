@@ -83,6 +83,7 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import {Tab} from 'pages/integrations/integration/types'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import {
     Texts,
@@ -930,7 +931,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             </PageHeader>
 
             {isUpdate && (
-                <GorgiasChatIntegrationHeader integration={integration} />
+                <GorgiasChatIntegrationHeader
+                    integration={integration}
+                    tab={Tab.Appearance}
+                />
             )}
 
             <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>

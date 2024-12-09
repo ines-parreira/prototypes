@@ -208,6 +208,7 @@ describe('<IntegrationDetail />', () => {
             updateApplicationTexts: jest.fn(),
             getInstallationStatus: jest.fn(),
             fetchEmailMigrationStatus: jest.fn(),
+            hideShopifyCheckoutChatBanner: jest.fn(),
         },
         integrations: fromJS([]),
         hasTwitterFeature: true,

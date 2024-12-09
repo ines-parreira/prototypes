@@ -37,6 +37,7 @@ import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {Tab} from 'pages/integrations/integration/types'
 import {
     Texts,
     TextsMultiLanguage,
@@ -991,7 +992,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             )}
                     </PageHeader>
 
-                    <GorgiasChatIntegrationHeader integration={integration} />
+                    <GorgiasChatIntegrationHeader
+                        integration={integration}
+                        tab={Tab.Preferences}
+                    />
 
                     <GorgiasChatIntegrationPreviewContainer
                         preview={chatPreview}

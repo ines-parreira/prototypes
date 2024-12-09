@@ -601,6 +601,11 @@ export const integrationsState = {
         description: null,
         updated_datetime: '2017-02-07T06:21:05.655015+00:00',
     },
+    extra: {
+        [IntegrationType.GorgiasChat]: {
+            shopifyCheckoutChatBannerVisible: true,
+        },
+    },
 }
 
 export const integrationsStateWithShopify = fromJS({

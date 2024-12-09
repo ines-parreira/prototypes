@@ -25,6 +25,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {Tab} from 'pages/integrations/integration/types'
 import {RootState} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
 
@@ -262,7 +263,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         )}
                 </PageHeader>
 
-                <GorgiasChatIntegrationHeader integration={integration} />
+                <GorgiasChatIntegrationHeader
+                    integration={integration}
+                    tab={Tab.QuickReplies}
+                />
 
                 <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                     <Form onSubmit={this._submit}>

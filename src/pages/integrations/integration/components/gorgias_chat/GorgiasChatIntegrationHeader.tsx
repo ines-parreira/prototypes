@@ -4,13 +4,16 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {getShowShopifyCheckoutChatBanner} from 'state/integrations/selectors'
 
 import {Tab} from '../../types'
 
 import GorgiasChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import GorgiasChatIntegrationNotInstalledBanner from './GorgiasChatIntegrationNotInstalledBanner'
 import GorgiasChatIntegrationOutdatedSnippetBanner from './GorgiasChatIntegrationOutdatedSnippetBanner'
+import GorgiasChatShopifyCheckoutBanner from './GorgiasChatShopifyCheckoutChatBanner'
 import useChatMigrationBanner from './hooks/useChatMigrationBanner'
+import {useShouldShowShopifyCheckoutChatBanner} from './hooks/useShouldShowShopifyCheckoutChatBanner'
 
 type Props = {
     integration: Map<any, any>
@@ -19,8 +22,13 @@ type Props = {
 
 const GorgiasChatIntegrationHeader: React.FC<Props> = ({integration, tab}) => {
     const {installed} = useAppSelector(getChatInstallationStatus)
+    const shopifyCheckoutBannerVisible = useAppSelector(
+        getShowShopifyCheckoutChatBanner
+    )
 
     const {showSnippetV3MigrationBanner} = useChatMigrationBanner(integration)
+    const shouldShowShopifyCheckoutBanner =
+        useShouldShowShopifyCheckoutChatBanner(integration, tab)
 
     return (
         <>
@@ -38,6 +46,12 @@ const GorgiasChatIntegrationHeader: React.FC<Props> = ({integration, tab}) => {
                     tab={tab}
                 />
             )}
+            {shopifyCheckoutBannerVisible &&
+                shouldShowShopifyCheckoutBanner && (
+                    <GorgiasChatShopifyCheckoutBanner
+                        integration={integration}
+                    />
+                )}
         </>
     )
 }

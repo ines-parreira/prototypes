@@ -9,6 +9,7 @@ import {IntegrationType} from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import {Tab} from 'pages/integrations/integration/types'
 
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
@@ -47,7 +48,10 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
                 )}
             </PageHeader>
 
-            <GorgiasChatIntegrationHeader integration={integration} />
+            <GorgiasChatIntegrationHeader
+                integration={integration}
+                tab={Tab.Campaigns}
+            />
 
             <ConvertCampaignsListPlaceholder integration={integration} />
         </div>

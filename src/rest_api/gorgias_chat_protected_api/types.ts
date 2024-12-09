@@ -39,6 +39,7 @@ export type InstallationStatus = {
     applicationId: number
     hasBeenRequestedOnce: boolean
     installed: boolean
+    installedOnShopifyCheckout: boolean
     minimumSnippetVersion: GorgiasChatMinimumSnippetVersion | null
 }
 

@@ -749,3 +749,10 @@ export const getIntegrationByAddress = (address: string) =>
                 integration.meta.address === address
         )
     })
+
+export const getShowShopifyCheckoutChatBanner = createSelector(
+    getIntegrationsState,
+    (state) =>
+        !!state.extra?.[IntegrationType.GorgiasChat]
+            .shopifyCheckoutChatBannerVisible
+)

@@ -147,6 +147,14 @@ exports[`integrations actions fetchChatIntegrationStatus action should set statu
 ]
 `;
 
+exports[`integrations actions hideShopifyCheckoutChatBanner action 1`] = `
+[
+  {
+    "type": "HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER",
+  },
+]
+`;
+
 exports[`integrations actions on update success 1`] = `
 [
   {

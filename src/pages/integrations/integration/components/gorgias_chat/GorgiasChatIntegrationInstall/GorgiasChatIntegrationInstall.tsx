@@ -34,6 +34,7 @@ import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrati
 import InstallationStep from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import InstallationTab from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationTab'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
+import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 
 type Props = {
     integration: Map<any, any>
@@ -214,25 +215,34 @@ const GorgiasChatIntegrationInstall = ({
 
                             <div className={css.installationMethods}>
                                 {(!isConnected || isConnectedToShopify) && (
-                                    <GorgiasChatIntegrationOneClickInstallationCard
-                                        integration={integration}
-                                        updateOrCreateIntegration={
-                                            updateOrCreateIntegration
-                                        }
-                                        themeAppExtensionInstallation={
-                                            shouldUseThemeAppExtensionInstallation
-                                        }
-                                        themeAppExtensionInstallationUrl={
-                                            themeAppExtensionInstallationUrl
-                                        }
-                                        isConnected={isConnected}
-                                        isInstalled={
-                                            isOneClickInstallation ?? false
-                                        }
-                                        hasShopifyScriptTagScope={
-                                            hasShopifyScriptTagScope
-                                        }
-                                    />
+                                    <>
+                                        <GorgiasChatIntegrationOneClickInstallationCard
+                                            integration={integration}
+                                            updateOrCreateIntegration={
+                                                updateOrCreateIntegration
+                                            }
+                                            themeAppExtensionInstallation={
+                                                shouldUseThemeAppExtensionInstallation
+                                            }
+                                            themeAppExtensionInstallationUrl={
+                                                themeAppExtensionInstallationUrl
+                                            }
+                                            isConnected={isConnected}
+                                            isInstalled={
+                                                isOneClickInstallation ?? false
+                                            }
+                                            hasShopifyScriptTagScope={
+                                                hasShopifyScriptTagScope
+                                            }
+                                        />
+                                        <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
+                                            integration={integration}
+                                            isOneClickInstallation={
+                                                !!isConnected &&
+                                                !!isOneClickInstallation
+                                            }
+                                        />
+                                    </>
                                 )}
                                 <GorgiasChatIntegrationManualInstallationCard
                                     applicationId={applicationId}

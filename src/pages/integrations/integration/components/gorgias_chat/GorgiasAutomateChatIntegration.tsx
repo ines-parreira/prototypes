@@ -9,6 +9,7 @@ import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegratio
 import {ConnectedChannelsChatView} from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
 import PageHeader from 'pages/common/components/PageHeader'
 
+import {Tab} from '../../types'
 import css from './GorgiasAutomateChatIntegration.less'
 import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
 
@@ -44,7 +45,10 @@ export const GorgiasAutomateChatIntegration = ({integration}: Props) => {
                     </Breadcrumb>
                 }
             ></PageHeader>
-            <GorgiasChatIntegrationHeader integration={integration} />
+            <GorgiasChatIntegrationHeader
+                integration={integration}
+                tab={Tab.Automate}
+            />
             <ConnectedChannelsChatView
                 channelId={channelId}
                 shopType={storeIntegration?.type}

@@ -12,10 +12,12 @@ describe('chatInstallationStatus reducer', () => {
     it.each([
         {
             installed: true,
+            installedOnShopifyCheckout: true,
             minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V1,
         },
         {
             installed: false,
+            installedOnShopifyCheckout: false,
             minimumSnippetVersion: null,
         },
     ])('chatInstallationStatusFetched', (state) => {
@@ -30,12 +32,16 @@ describe('chatInstallationStatus reducer', () => {
         const newState = reducer(
             {
                 installed: !chatInstallationStatusInitialState.installed,
+                installedOnShopifyCheckout:
+                    !chatInstallationStatusInitialState.installedOnShopifyCheckout,
                 minimumSnippetVersion: null,
             },
             resetChatInstallationStatus()
         )
         expect(newState).toEqual({
-            installed: true,
+            installed: chatInstallationStatusInitialState.installed,
+            installedOnShopifyCheckout:
+                chatInstallationStatusInitialState.installedOnShopifyCheckout,
             minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
         })
     })

@@ -67,6 +67,32 @@ describe('integrations reducers', () => {
         expect(newState).toEqual(expected)
     })
 
+    it('should handle HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER', () => {
+        // Given
+        const action = {
+            type: types.HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER,
+        }
+        const initialFlagValue = state.integrations.getIn([
+            'extra',
+            IntegrationType.GorgiasChat,
+            'shopifyCheckoutChatBannerVisible',
+        ])
+
+        // When
+        const newState = reducer(state.integrations, action)
+        const expected = state.integrations.setIn(
+            [
+                'extra',
+                IntegrationType.GorgiasChat,
+                'shopifyCheckoutChatBannerVisible',
+            ],
+            false
+        )
+
+        expect(initialFlagValue).toEqual(true)
+        expect(newState).toEqual(expected)
+    })
+
     describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS', () => {
         const integrationTypes = [IntegrationType.Facebook]
 

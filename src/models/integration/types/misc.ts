@@ -40,6 +40,7 @@ export type IntegrationExtra<T extends IntegrationType> =
               bundleUrl: string
               chatUrl: string
               wsUrl: string
+              shopifyCheckoutChatBannerVisible: boolean
           }
         : never
 
