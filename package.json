@@ -344,7 +344,7 @@
         "typescript": "5.3.3",
         "url-loader": "1.1.2",
         "validator": "13.7.0",
-        "webpack": "5.88.0",
+        "webpack": "^5.97.1",
         "webpack-cli": "5.0.1",
         "webpack-dev-server": "4.11.1",
         "webpack-manifest-plugin": "5.0.0"
