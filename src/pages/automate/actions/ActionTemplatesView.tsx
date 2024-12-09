@@ -1,7 +1,9 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
+import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
@@ -23,6 +25,11 @@ const ActionTemplatesView = () => {
         logEvent(SegmentEvent.AutomateActionsTemplatesVisited)
     })
 
+    const isMultiStepActionEnabled = useFlag(
+        FeatureFlagKey.ActionsMultiStep,
+        false
+    )
+
     return (
         <AiAgentLayout
             shopName={shopName}
@@ -33,27 +40,32 @@ const ActionTemplatesView = () => {
                 <BackToActionButton />
             </div>
             <div className={css.header}>
-                Choose an Action and customize it to fit your needs
+                {isMultiStepActionEnabled
+                    ? 'Choose a template and customize it to fit your needs'
+                    : 'Choose an Action and customize it to fit your needs'}
                 <CreateCustomActionButton />
             </div>
             <ActionsTemplatesCards
                 templateConfigurations={templateConfigurations}
                 showCustomAction
             />
-            <div className={css.requestBannerContainer}>
-                <div className={css.requestBannerContent}>
-                    <div className={css.requestBannerTitle}>
-                        Which Actions should we build next?
+            {!isMultiStepActionEnabled && (
+                <div className={css.requestBannerContainer}>
+                    <div className={css.requestBannerContent}>
+                        <div className={css.requestBannerTitle}>
+                            Which Actions should we build next?
+                        </div>
+                        Let us know which Actions you would like AI Agent to
+                        handle.
                     </div>
-                    Let us know which Actions you would like AI Agent to handle.
+                    <LinkButton
+                        intent="secondary"
+                        href="https://link.gorgias.com/actions"
+                    >
+                        Request action
+                    </LinkButton>
                 </div>
-                <LinkButton
-                    intent="secondary"
-                    href="https://link.gorgias.com/actions"
-                >
-                    Request action
-                </LinkButton>
-            </div>
+            )}
         </AiAgentLayout>
     )
 }

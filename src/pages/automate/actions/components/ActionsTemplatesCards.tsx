@@ -2,6 +2,8 @@ import classnames from 'classnames'
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -13,6 +15,7 @@ import {TemplateConfiguration} from '../types'
 import css from './ActionsTemplatesCards.less'
 import AppActionTemplateCard from './AppActionTemplateCard'
 import NativeActionTemplateCard from './NativeActionTemplateCard'
+import UseCaseTemplateCard from './UseCaseTemplateCard'
 
 type Props = {
     showCustomAction?: boolean
@@ -33,11 +36,20 @@ const ActionsTemplatesCards = ({
     const enabledTemplates = useEnabledActionTemplates(templateConfigurations)
     const sortedTemplates = useSortedActionTemplates(enabledTemplates)
 
+    const isMultiStepActionEnabled = useFlag(
+        FeatureFlagKey.ActionsMultiStep,
+        false
+    )
+
     return (
         <div className={css.container}>
-            {sortedTemplates.slice(0, max).map(({id, name, apps}) => {
+            {sortedTemplates.slice(0, max).map((template) => {
+                const {id, apps, name} = template
                 const app = apps[0]
 
+                if (isMultiStepActionEnabled) {
+                    return <UseCaseTemplateCard key={id} template={template} />
+                }
                 if (app.type === 'app') {
                     return (
                         <AppActionTemplateCard
@@ -70,7 +82,9 @@ const ActionsTemplatesCards = ({
                         }}
                     >
                         <ButtonIconLabel position="right" icon="arrow_forward">
-                            See all Actions
+                            {isMultiStepActionEnabled
+                                ? 'See all Templates'
+                                : 'See all Actions'}
                         </ButtonIconLabel>
                     </Button>
                 </div>

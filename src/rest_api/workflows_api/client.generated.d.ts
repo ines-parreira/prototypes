@@ -491,6 +491,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -1599,6 +1600,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -4031,6 +4033,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -4448,6 +4451,26 @@ declare namespace Components {
         settings?: {
           success: boolean;
         } | null;
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
+        };
       })[];
       inputs?: ({
         id: string;
@@ -4553,6 +4576,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
@@ -5227,6 +5251,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -10777,6 +10802,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       triggers?: ({
         kind: "llm-prompt";
         settings: {
@@ -11467,6 +11493,7 @@ declare namespace Components {
         };
       }[];
       available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      category?: string | null;
       created_datetime?: string | null; // date-time
       updated_datetime?: string | null; // date-time
       deleted_datetime?: string | null; // date-time
@@ -11825,6 +11852,26 @@ declare namespace Components {
         settings?: {
           success: boolean;
         } | null;
+      } | {
+        id: string;
+        kind: "reusable-llm-prompt-call";
+        settings: {
+          configuration_id: string;
+          configuration_internal_id: string;
+          objects?: {
+            customer?: string | null;
+            order?: string | null;
+            products?: {
+              [name: string]: string;
+            } | null;
+          } | null;
+          custom_inputs?: {
+            [name: string]: string;
+          } | null;
+          values: {
+            [name: string]: string | number | boolean;
+          };
+        };
       })[];
       inputs?: ({
         id: string;

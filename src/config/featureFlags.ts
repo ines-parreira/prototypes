@@ -135,4 +135,5 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     VoiceCallSearch = 'voice-call-search',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    ActionsMultiStep = 'actions-multi-step',
 }

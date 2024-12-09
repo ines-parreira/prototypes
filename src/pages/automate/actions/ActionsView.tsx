@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 import {useParams, Link} from 'react-router-dom'
 
+import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import emptyState from 'assets/img/actions/empty-state.png'
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -23,6 +26,11 @@ const MAX_TEMPLATES = 7
 
 const ActionsView = () => {
     const dispatch = useAppDispatch()
+
+    const isMultiStepActionEnabled = useFlag(
+        FeatureFlagKey.ActionsMultiStep,
+        false
+    )
 
     const {shopName, shopType} = useParams<{
         shopType: string
@@ -83,15 +91,24 @@ const ActionsView = () => {
                 <>
                     <AutomateViewEmptyStateBanner
                         id="actions"
-                        title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
+                        title={
+                            isMultiStepActionEnabled
+                                ? 'Create Actions for AI Agent to automate top customer requests with your 3rd party apps'
+                                : 'Set up Actions for AI Agent to automate requests involving your 3rd party apps'
+                        }
                         description={ACTIONS_DESCRIPTION}
-                        image={emptyState}
+                        image={
+                            isMultiStepActionEnabled
+                                ? emptyStateTemplate
+                                : emptyState
+                        }
                     />
                     <div className={css.templateCards}>
                         <div className={css.templateHeader}>
                             <p>
-                                Choose an Action and customize it to fit your
-                                needs
+                                {isMultiStepActionEnabled
+                                    ? 'Allow AI Agent to perform Actions such as canceling orders, updating shipping addresses, and more.'
+                                    : 'Choose an Action and customize it to fit your needs'}
                             </p>
                             <div className={css.actionButtons}>
                                 <CreateCustomActionButton />

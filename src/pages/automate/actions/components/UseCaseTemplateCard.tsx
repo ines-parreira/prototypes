@@ -1,0 +1,64 @@
+import React, {useState} from 'react'
+
+import {TemplateCard} from 'pages/common/components/TemplateCard'
+
+import {TemplateConfiguration} from '../types'
+import css from './UseCaseTemplateCard.less'
+import UseCaseTemplateConfirmationModal from './UseCaseTemplateConfirmationModal'
+
+type Props = {
+    template: TemplateConfiguration
+}
+
+const categoryTagStyleMap: {
+    [key: string]: {
+        color: string
+        backgroundColor: string
+    }
+} = {
+    Subscriptions: {
+        color: 'var(--accessory-yellow-3)',
+        backgroundColor: 'var(--accessory-yellow-1)',
+    },
+    Orders: {
+        color: 'var(--accessory-blue-3)',
+        backgroundColor: 'var(--accessory-blue-1',
+    },
+    'Returns & Exchanges': {
+        color: 'var(--accessory-orange-3)',
+        backgroundColor: 'var(--accessory-orange-1)',
+    },
+}
+
+export default function UseCaseTemplateCard({template}: Props) {
+    const {category, name} = template
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const tagStyle = category ? categoryTagStyleMap[category] : {}
+
+    return (
+        <>
+            <TemplateCard
+                title={name}
+                tag={
+                    <>
+                        {category && (
+                            <div className={css.tag} style={tagStyle}>
+                                {category}
+                            </div>
+                        )}
+                    </>
+                }
+                showOnlyTitle
+                onClick={() => {
+                    setIsModalOpen(true)
+                }}
+            />
+            <UseCaseTemplateConfirmationModal
+                setOpen={setIsModalOpen}
+                templateConfiguration={template}
+                isOpen={isModalOpen}
+            />
+        </>
+    )
+}

@@ -15,6 +15,7 @@ import {
     useGetConfigurationExecutionLogs,
     useDeleteWorkflowConfigurationTemplate,
     useUpsertAccountOauth2Token,
+    useGetWorkflowConfigurationTemplateByIds,
 } from '../queries'
 
 const mockedServer = new MockAdapter(axios)
@@ -281,6 +282,33 @@ describe('queries', () => {
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data?.data).toEqual(
                 accountOauth2TokenResponse
+            )
+        })
+    })
+
+    describe('useGetWorkflowConfigurationTemplateByIds()', () => {
+        it('should get workflow configuration template by ids on success', async () => {
+            const workflowConfigurationTemplateResponse = {
+                id: 'someid',
+                internal_id: 'someid',
+                name: 'templateName',
+            }
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/configuration-templates\/\w+/)
+                .reply(200, workflowConfigurationTemplateResponse)
+
+            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+                useGetWorkflowConfigurationTemplateByIds(['someid'])
+            )
+
+            await waitFor(() =>
+                expect(result.current[0].isSuccess).toEqual(true)
+            )
+            expect(result.current[0].data).toEqual(
+                workflowConfigurationTemplateResponse
             )
         })
     })

@@ -1,4 +1,9 @@
-import {useQuery, useMutation, UseQueryOptions} from '@tanstack/react-query'
+import {
+    useQuery,
+    useQueries,
+    useMutation,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 import {isAxiosError} from 'axios'
 import _mapValues from 'lodash/mapValues'
 
@@ -214,6 +219,38 @@ export const useGetWorkflowConfiguration = (
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
+    })
+}
+
+export const useGetWorkflowConfigurationTemplateByIds = (
+    ids: string[],
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationTemplateControllerGet.Responses.$200>
+    >
+) => {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: workflowsConfigurationDefinitionKeys.get(id),
+            queryFn: async () => {
+                const client = await getGorgiasWfApiClient()
+                const response =
+                    await client.WfConfigurationTemplateController_get(
+                        {
+                            id,
+                        },
+                        {},
+                        {
+                            paramsSerializer: {
+                                indexes: false,
+                            },
+                        }
+                    )
+                return response.data
+            },
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+            ...overrides,
+        })),
     })
 }
 
