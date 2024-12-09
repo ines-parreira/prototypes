@@ -1,6 +1,5 @@
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -49,22 +48,25 @@ const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
     ({label: label}) => label
 )
 
-describe('ScoreFilter', () => {
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
-    const renderComponent = () =>
-        renderWithStore(
-            <ScoreFilter
-                onRemove={mockedRemove}
-                value={withLogicalOperator([])}
-                dispatchUpdate={dispatchUpdate}
-                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />,
-            defaultState
-        )
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
 
+const renderComponent = () =>
+    renderWithStore(
+        <ScoreFilter
+            onRemove={mockedRemove}
+            value={withLogicalOperator([])}
+            dispatchUpdate={dispatchUpdate}
+            dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+            dispatchStatFiltersClean={dispatchStatFiltersClean}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
+        />,
+        defaultState
+    )
+
+describe('ScoreFilter', () => {
     it('should render ScoreFilter component just fine if value is undefined', () => {
         renderWithStore(
             <ScoreFilter
@@ -178,7 +180,7 @@ describe('ScoreFilter', () => {
         renderComponent()
         fireEvent.click(screen.getByText('close'))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
         expect(mockedRemove).toHaveBeenCalled()
     })
 

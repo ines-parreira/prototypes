@@ -4,10 +4,7 @@ import React, {useCallback, useMemo} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
-import {
-    withDefaultLogicalOperator,
-    withLogicalOperator,
-} from 'models/reporting/queryFactories/utils'
+import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -34,11 +31,6 @@ const filterOptions = [
     },
 ]
 
-const emptyFilter: Exclude<
-    StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses],
-    undefined
-> = withDefaultLogicalOperator([])
-
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses]
     dispatchUpdate: (
@@ -59,6 +51,7 @@ export default function CampaignStatusesFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = _noop,
     dispatchStatFiltersClean = _noop,
+    dispatchRemoveDraftFilter = _noop,
     warningType,
 }: Props) {
     const selectedCampaignStatuses = useMemo(
@@ -112,9 +105,9 @@ export default function CampaignStatusesFilter({
     }, [handleFilterValuesChange])
 
     const onRemoveCampaignStatuses = useCallback(() => {
-        dispatchUpdate(emptyFilter)
+        dispatchRemoveDraftFilter()
         onRemove?.()
-    }, [dispatchUpdate, onRemove])
+    }, [onRemove, dispatchRemoveDraftFilter])
 
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
@@ -147,6 +140,7 @@ export const CampaignStatusesFilterFromContext = ({
     initializeAsOpen,
     onRemove,
     warningType,
+    dispatchRemoveDraftFilter,
 }: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const {selectedCampaignStatuses} = useCampaignStatsFilters()
@@ -172,6 +166,7 @@ export const CampaignStatusesFilterFromContext = ({
             }
             dispatchStatFiltersDirty={() => dispatch(statFiltersDirty())}
             dispatchStatFiltersClean={() => dispatch(statFiltersClean())}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             warningType={warningType}
         />
     )
@@ -181,6 +176,7 @@ export const CampaignStatusesFilterFromSavedContext = ({
     initializeAsOpen,
     onRemove,
     warningType,
+    dispatchRemoveDraftFilter,
 }: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const selectedCampaignStatuses = useAppSelector(
@@ -190,6 +186,7 @@ export const CampaignStatusesFilterFromSavedContext = ({
     return (
         <CampaignStatusesFilter
             value={selectedCampaignStatuses}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             initializeAsOpen={initializeAsOpen}
             onRemove={onRemove}
             warningType={warningType}

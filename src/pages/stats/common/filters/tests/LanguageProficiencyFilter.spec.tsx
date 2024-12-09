@@ -49,10 +49,12 @@ const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
     ({label}) => label
 )
 
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
+
 describe('LanguageProficiency', () => {
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
     const renderComponent = () =>
         renderWithStore(
             <LanguageProficiencyFilter
@@ -61,6 +63,7 @@ describe('LanguageProficiency', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
@@ -184,7 +187,7 @@ describe('LanguageProficiency', () => {
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
         expect(mockedRemove).toHaveBeenCalled()
     })
 

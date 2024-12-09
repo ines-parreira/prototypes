@@ -1,7 +1,5 @@
 import noop from 'lodash/noop'
-
 import React, {useCallback} from 'react'
-
 import {connect} from 'react-redux'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -18,13 +16,15 @@ import {
     emptyCustomFieldFilter,
     logSegmentEvent,
 } from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {DropdownOption} from 'pages/stats/types'
-
 import {
     getCustomFieldFilterById,
     getCustomFieldSavedFilterById,
@@ -46,7 +46,7 @@ type OwnProps = {
     customFieldId: number
 }
 
-type Props = OwnProps & DispatchProps & RemovableFilter
+type Props = OwnProps & DispatchProps & RemovableFilter & OptionalFilterProps
 
 const getOptions = (activeFields: CustomField[], customFieldId: number) => {
     const dropdownFieldDefinition: CustomField | undefined = activeFields
@@ -78,6 +78,7 @@ export default function CustomFieldsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    dispatchRemoveDraftFilter = noop,
     initializeAsOpen = false,
     onRemove,
     filterName,
@@ -158,7 +159,7 @@ export default function CustomFieldsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyCustomFieldFilter(customFieldId))
+                dispatchRemoveDraftFilter()
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}

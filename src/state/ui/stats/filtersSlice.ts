@@ -27,6 +27,12 @@ export type FiltersSliceState = {
     appliedSavedFilterId: number | null
 }
 
+type RemoveFiltersProps = {
+    filterKey: string
+    customFieldId?: number
+    filterInstanceId?: string
+}
+
 export const initialState: FiltersSliceState = {
     isFilterDirty: false,
     cleanStatsFilters: null,
@@ -189,12 +195,47 @@ export const filtersSlice = createSlice({
         },
         removeFilterFromSavedFilterDraft(
             state,
-            action: PayloadAction<SavedFilterSupportedFilters>
+            action: PayloadAction<RemoveFiltersProps>
         ) {
             if (state.savedFilterDraft !== null) {
                 state.savedFilterDraft.filter_group =
-                    state.savedFilterDraft.filter_group.filter(
-                        (filter) => filter.member !== action.payload.member
+                    state.savedFilterDraft.filter_group.reduce(
+                        (acc: SavedFilterSupportedFilters[], filterGroup) => {
+                            if (filterGroup.member === FilterKey.CustomFields) {
+                                const customFields = {
+                                    member: filterGroup.member,
+                                    values: filterGroup.values.filter(
+                                        (value) =>
+                                            value.custom_field_id !==
+                                            String(action.payload.customFieldId)
+                                    ),
+                                }
+                                if (customFields.values.length) {
+                                    acc.push(customFields)
+                                }
+                            } else if (filterGroup.member === FilterKey.Tags) {
+                                const tags = {
+                                    member: filterGroup.member,
+                                    values: filterGroup.values.filter(
+                                        (value) =>
+                                            value.filterInstanceId !==
+                                            action.payload.filterInstanceId
+                                    ),
+                                }
+                                if (tags.values.length) {
+                                    acc.push(tags)
+                                }
+                            } else {
+                                if (
+                                    filterGroup.member !==
+                                    action.payload.filterKey
+                                ) {
+                                    acc.push(filterGroup)
+                                }
+                            }
+                            return acc
+                        },
+                        []
                     )
             }
         },

@@ -53,6 +53,7 @@ export function CommunicationSkillsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const communicationSkills = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
@@ -127,7 +128,7 @@ export function CommunicationSkillsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemoveDraftFilter()
 
                 onRemove?.()
             }}

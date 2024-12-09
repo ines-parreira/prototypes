@@ -49,22 +49,24 @@ const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
     ({label}) => label
 )
 
-describe('CommunicationSkillsFilter', () => {
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
-    const renderComponent = () =>
-        renderWithStore(
-            <CommunicationSkillsFilter
-                onRemove={mockedRemove}
-                value={withLogicalOperator([])}
-                dispatchUpdate={dispatchUpdate}
-                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />,
-            defaultState
-        )
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
+const renderComponent = () =>
+    renderWithStore(
+        <CommunicationSkillsFilter
+            onRemove={mockedRemove}
+            value={withLogicalOperator([])}
+            dispatchUpdate={dispatchUpdate}
+            dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+            dispatchStatFiltersClean={dispatchStatFiltersClean}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
+        />,
+        defaultState
+    )
 
+describe('CommunicationSkillsFilter', () => {
     it('should render CommunicationSkillsFilter component just fine if value is undefined', () => {
         renderWithStore(
             <CommunicationSkillsFilter
@@ -184,7 +186,7 @@ describe('CommunicationSkillsFilter', () => {
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
         expect(mockedRemove).toHaveBeenCalled()
     })
 

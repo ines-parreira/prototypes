@@ -40,11 +40,12 @@ const defaultState = {
     },
 } as RootState
 
-describe('ResolutionCompletenessFilter', () => {
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
 
+describe('ResolutionCompletenessFilter', () => {
     const renderComponent = () =>
         renderWithStore(
             <ResolutionCompletenessFilter
@@ -53,6 +54,7 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
@@ -114,7 +116,7 @@ describe('ResolutionCompletenessFilter', () => {
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
         expect(mockedRemove).toHaveBeenCalled()
     })
 

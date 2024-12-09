@@ -46,6 +46,7 @@ export default function CampaignsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const getSelectedCampaigns = useMemo(() => {
@@ -117,7 +118,8 @@ export default function CampaignsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemoveDraftFilter()
+
                 onRemove?.()
             }}
             onChangeLogicalOperator={noop}
@@ -130,8 +132,10 @@ export default function CampaignsFilter({
 
 export const CampaignsFilterFromContext = ({
     initializeAsOpen,
+    dispatchRemoveDraftFilter,
     onRemove,
-}: RemovableFilter) => {
+    warningType,
+}: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const {campaigns, selectedCampaigns} = useCampaignStatsFilters()
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
@@ -144,6 +148,7 @@ export const CampaignsFilterFromContext = ({
             )}
             initializeAsOpen={initializeAsOpen}
             onRemove={onRemove}
+            warningType={warningType}
             dispatchUpdate={(
                 filter: StatsFiltersWithLogicalOperator[FilterKey.Campaigns]
             ) =>
@@ -155,14 +160,17 @@ export const CampaignsFilterFromContext = ({
             }
             dispatchStatFiltersDirty={() => dispatch(statFiltersDirty())}
             dispatchStatFiltersClean={() => dispatch(statFiltersClean())}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
         />
     )
 }
 
 export const CampaignsFilterFromSavedContext = ({
     initializeAsOpen,
+    dispatchRemoveDraftFilter,
     onRemove,
-}: RemovableFilter) => {
+    warningType,
+}: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const {campaigns} = useCampaignStatsFilters()
     const selectedCampaigns = useAppSelector(
@@ -174,7 +182,9 @@ export const CampaignsFilterFromSavedContext = ({
             campaigns={campaigns}
             value={selectedCampaigns}
             initializeAsOpen={initializeAsOpen}
+            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             onRemove={onRemove}
+            warningType={warningType}
             dispatchUpdate={(
                 filter: Exclude<
                     StatsFiltersWithLogicalOperator[FilterKey.Campaigns],

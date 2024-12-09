@@ -17,7 +17,6 @@ import {
 } from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
-
 import {
     IntegrationsFilter,
     IntegrationsFilterWithSavedState,
@@ -27,7 +26,6 @@ import {
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-
 import {renderWithStore} from 'utils/testing'
 
 jest.mock('common/segment', () => ({
@@ -50,6 +48,7 @@ const integrations: Integration[] =
 const dispatchUpdate = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
 
 const renderComponent = () =>
     renderWithStore(
@@ -217,14 +216,13 @@ describe('IntegrationsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
-        )
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalledWith()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {

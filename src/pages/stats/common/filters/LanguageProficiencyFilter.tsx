@@ -1,3 +1,4 @@
+import noop from 'lodash/noop'
 import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 
@@ -52,6 +53,7 @@ export function LanguageProficiencyFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty,
     dispatchStatFiltersClean,
+    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const languageProficiency = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
@@ -126,7 +128,7 @@ export function LanguageProficiencyFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemoveDraftFilter()
 
                 onRemove?.()
             }}

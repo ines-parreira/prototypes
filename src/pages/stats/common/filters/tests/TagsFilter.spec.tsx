@@ -36,6 +36,11 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
 }))
 
+const dispatchUpdate = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
+
 describe('<TagsFilter />', () => {
     const someTags = tags
     const tagState = tags.reduce<Record<string, Tag>>((state, tag) => {
@@ -60,9 +65,6 @@ describe('<TagsFilter />', () => {
             tagsState: tagState,
         })
     })
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
 
     it('Should render first batch of tags', () => {
         const selectedTags: number[] = []
@@ -310,13 +312,14 @@ describe('<TagsFilter />', () => {
                     dispatchUpdate={dispatchUpdate}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
+                    dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
                 />
             </Provider>
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith([])
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action with otherFilterValue intact on deselecting all tags when filters dropdown is closed', () => {
@@ -355,13 +358,14 @@ describe('<TagsFilter />', () => {
                     dispatchUpdate={dispatchUpdate}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
+                    dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
                 />
             </Provider>
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith([otherValue])
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalledWith()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {

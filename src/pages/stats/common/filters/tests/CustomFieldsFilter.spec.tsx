@@ -1,8 +1,6 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-
 import {Provider} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -25,7 +23,6 @@ import CustomFieldsFilter, {
     CustomFieldsFilterWithSavedState,
     CustomFieldsFilterWithState,
 } from 'pages/stats/common/filters/CustomFieldsFilter'
-
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
@@ -50,6 +47,7 @@ jest.mock('common/segment', () => ({
 const dispatchUpdate = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
 
 const renderComponent = () =>
     renderWithStore(
@@ -272,17 +270,14 @@ describe('CustomFieldsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            customFieldId,
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
@@ -349,17 +344,14 @@ describe('CustomFieldsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            customFieldId: wrongId,
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalledWith()
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {

@@ -53,6 +53,7 @@ export function IntegrationsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const getSelectedIntegrations = useCallback(() => {
@@ -137,7 +138,7 @@ export function IntegrationsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemoveDraftFilter()
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}

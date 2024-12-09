@@ -24,7 +24,6 @@ import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-
 import {renderWithStore} from 'utils/testing'
 
 const mockedDispatch = jest.fn()
@@ -50,11 +49,12 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
 }))
 
-describe('AgentsFilter', () => {
-    const dispatchUpdate = jest.fn()
-    const dispatchStatFiltersDirty = jest.fn()
-    const dispatchStatFiltersClean = jest.fn()
+const dispatchUpdate = jest.fn()
+const dispatchRemoveDraftFilter = jest.fn()
+const dispatchStatFiltersDirty = jest.fn()
+const dispatchStatFiltersClean = jest.fn()
 
+describe('AgentsFilter', () => {
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
@@ -272,7 +272,7 @@ describe('AgentsFilter', () => {
             />,
             defaultState
         )
-        const clearFilterIcon = 'close'
+        const closeFilterButton = 'close'
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
             extendedAgents.map((agents) => agents.id)
@@ -284,15 +284,14 @@ describe('AgentsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
+                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
 
-        userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+        userEvent.click(screen.getByText(new RegExp(closeFilterButton, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
-        )
+        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
