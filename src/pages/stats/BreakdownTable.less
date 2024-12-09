@@ -25,6 +25,8 @@
     }
 
     .tagsTableWrapperHeight {
+        display: flex;
+        flex-direction: column;
         max-height: calc(100vh - @table-header);
         overflow: hidden;
         @media @mobiles {
@@ -242,6 +244,7 @@
     }
 
     .pagination {
+        flex-shrink: 0;
         padding-left: @layout-spacing-xs;
         padding-bottom: @layout-spacing-xs;
     }
