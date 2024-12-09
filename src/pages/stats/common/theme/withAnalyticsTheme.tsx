@@ -1,12 +1,11 @@
-import React, {ComponentType, useContext} from 'react'
+import React, {ComponentType, useMemo} from 'react'
 
 import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 import analyticsColorsLight from 'assets/css/new/stats/light.json'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
-import {THEME_NAME} from './constants'
-import ThemeContext from './ThemeContext'
-import type {HelpdeskThemeName} from './types'
+import {THEME_NAME, useTheme} from 'theme'
+import type {ThemeName} from 'theme'
 
 interface ThemeColorValue {
     value: string
@@ -41,25 +40,24 @@ export interface AnalyticsTheme {
     }
 }
 
-const AnalyticsColorTokens: Record<HelpdeskThemeName, AnalyticsTheme> = {
+const AnalyticsColorTokens: Record<ThemeName, AnalyticsTheme> = {
     [THEME_NAME.Classic]: analyticsColorsModern,
     [THEME_NAME.Dark]: analyticsColorsDark,
     [THEME_NAME.Light]: analyticsColorsLight,
-    [THEME_NAME.System]: analyticsColorsModern,
 }
 
 export default function withAnalyticsTheme<P extends object>(
     Component: ComponentType<P>
 ) {
     return (props: P) => {
-        const themeContext = useContext(ThemeContext)
-        const analyticsTheme =
-            AnalyticsColorTokens[
-                themeContext?.theme.resolvedName ?? THEME_NAME.Classic
-            ]
-        const colorTokens = themeContext
-            ? {...themeContext.theme.tokens, ...analyticsTheme}
-            : undefined
+        const theme = useTheme()
+        const colorTokens = useMemo(
+            () => ({
+                ...theme.tokens,
+                ...AnalyticsColorTokens[theme.resolvedName],
+            }),
+            [theme]
+        )
 
         return <Component {...props} colorTokens={colorTokens} />
     }

@@ -109,7 +109,7 @@ describe('<BarChart />', () => {
     })
 
     it('should render chart grid with analytics theme wrapped colors', () => {
-        render(<BarChart data={[]} />)
+        render(<BarChartWithoutTheme data={[]} />)
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (

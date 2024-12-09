@@ -6,7 +6,7 @@ import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 
 import {ticketsCreatedDataItem} from 'fixtures/chart'
 
-import type {AnalyticsTheme} from 'theme'
+import type {AnalyticsTheme} from 'pages/stats/common/theme'
 
 import {ChartColors} from '../types'
 import {BarChart} from './BarChart'

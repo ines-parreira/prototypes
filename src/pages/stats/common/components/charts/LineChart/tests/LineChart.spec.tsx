@@ -120,7 +120,7 @@ describe('<LineChart />', () => {
     })
 
     it('should render chart grid with analytics theme wrapped colors', () => {
-        render(<LineChart data={[]} />)
+        render(<LineChartWithoutTheme data={[]} />)
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (

@@ -22,11 +22,11 @@ import {
     OPTIONS,
 } from 'pages/stats/common/components/charts/config'
 import {ChartColors} from 'pages/stats/common/components/charts/types'
+import {withAnalyticsTheme} from 'pages/stats/common/theme'
+import type {AnalyticsTheme} from 'pages/stats/common/theme'
 import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
 import {TwoDimensionalDataItem} from 'pages/stats/types'
 import {renderTickLabelAsNumber} from 'pages/stats/utils'
-import {withAnalyticsTheme} from 'theme'
-import type {AnalyticsTheme} from 'theme'
 
 type Props = {
     data: TwoDimensionalDataItem[]

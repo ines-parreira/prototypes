@@ -25,6 +25,11 @@ import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock('common/segment')
 
+jest.mock(
+    'pages/stats/common/components/charts/LineChart/LineChart',
+    () => () => <div>line-chart</div>
+)
+
 jest.mock('pages/stats/help-center/hooks/useHelpCenterTrend', () => ({
     useHelpCenterTrend: () => ({data: {value: 1}, isFetching: false}),
 }))
