@@ -60,7 +60,6 @@ export function ChannelsFilter({
     onRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
-    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const channels = filterChannels(getChannels(), channelsFilter)
@@ -150,7 +149,7 @@ export function ChannelsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchRemoveDraftFilter()
+                dispatchUpdate(emptyFilter)
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}

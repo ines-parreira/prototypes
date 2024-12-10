@@ -9,7 +9,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {connect, useDispatch} from 'react-redux'
+import {connect} from 'react-redux'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -39,7 +39,6 @@ import {
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {RootState} from 'state/types'
-import {removeFilterFromSavedFilterDraft} from 'state/ui/stats/filtersSlice'
 import {getCleanStatsFiltersWithLogicalOperators} from 'state/ui/stats/selectors'
 
 export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
@@ -209,7 +208,6 @@ export const FiltersPanelComponent = ({
     cleanStatsFilters,
     filterComponentMap,
 }: FiltersPanelProps) => {
-    const dispatch = useDispatch()
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getActiveFilters(optionalFilters, cleanStatsFilters)
     )
@@ -345,16 +343,8 @@ export const FiltersPanelComponent = ({
     )
 
     const createFilterElement = useCallback(
-        (filter: ActiveFilter) => {
-            const customFieldId =
-                filter.type === FilterKey.CustomFields
-                    ? filter.customFieldId
-                    : 0
-            const filterInstanceId =
-                filter.type === FilterKey.Tags
-                    ? filter?.filterInstanceId
-                    : undefined
-            return createElement(filterComponentMap[filter.type], {
+        (filter: ActiveFilter) =>
+            createElement(filterComponentMap[filter.type], {
                 onRemove: () =>
                     setActiveFilters(
                         activeFilters.map((activeFilter) => {
@@ -373,31 +363,26 @@ export const FiltersPanelComponent = ({
                     filter.type === FilterKey.CustomFields
                         ? filter.filterName
                         : '',
-                customFieldId,
-                filterInstanceId: filterInstanceId,
+                customFieldId:
+                    filter.type === FilterKey.CustomFields
+                        ? filter.customFieldId
+                        : 0,
+                filterInstanceId:
+                    filter.type === FilterKey.Tags
+                        ? filter?.filterInstanceId
+                        : undefined,
                 warningType: isFilterApplicable({
                     filterKey: filter.key,
                     applicableFilters,
                 }),
-                dispatchRemoveDraftFilter: () => {
-                    dispatch(
-                        removeFilterFromSavedFilterDraft({
-                            filterKey: filter.type,
-                            customFieldId,
-                            filterInstanceId,
-                        })
-                    )
-                },
                 ...getFilterSettings(filter.key, filterSettingsOverrides),
-            })
-        },
+            }),
         [
             activeFilters,
             filterComponentMap,
             filterSettingsOverrides,
             setActiveFilters,
             applicableFilters,
-            dispatch,
         ]
     )
 

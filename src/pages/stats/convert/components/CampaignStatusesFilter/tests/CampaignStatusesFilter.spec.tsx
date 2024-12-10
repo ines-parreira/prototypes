@@ -1,5 +1,6 @@
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -39,25 +40,24 @@ const defaultState = {
 } as RootState
 
 const CampaignStatusesCapitalized = Object.keys(InferredCampaignStatus)
-const dispatchUpdate = jest.fn()
-const dispatchStatFiltersDirty = jest.fn()
-const dispatchStatFiltersClean = jest.fn()
-const dispatchRemoveDraftFilter = jest.fn()
-
-const renderComponent = () =>
-    renderWithStore(
-        <CampaignStatusesFilter
-            onRemove={mockedRemove}
-            value={withLogicalOperator([])}
-            dispatchUpdate={dispatchUpdate}
-            dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-            dispatchStatFiltersClean={dispatchStatFiltersClean}
-            dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
-        />,
-        defaultState
-    )
 
 describe('CampaignStatusesFilter', () => {
+    const dispatchUpdate = jest.fn()
+    const dispatchStatFiltersDirty = jest.fn()
+    const dispatchStatFiltersClean = jest.fn()
+
+    const renderComponent = () =>
+        renderWithStore(
+            <CampaignStatusesFilter
+                onRemove={mockedRemove}
+                value={withLogicalOperator([])}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            defaultState
+        )
+
     it('should render CampaignStatusesFilter component', () => {
         renderComponent()
 
@@ -135,7 +135,7 @@ describe('CampaignStatusesFilter', () => {
         renderComponent()
         fireEvent.click(screen.getByText('close'))
 
-        expect(dispatchRemoveDraftFilter).toHaveBeenCalled()
+        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
         expect(mockedRemove).toHaveBeenCalled()
     })
 

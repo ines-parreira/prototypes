@@ -64,7 +64,6 @@ export const TagsFilter = ({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
-    dispatchRemoveDraftFilter = noop,
 }: Props) => {
     const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
         useTagSearch()
@@ -170,7 +169,11 @@ export const TagsFilter = ({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchRemoveDraftFilter()
+                const tagsToUpdate: TagFilter[] = []
+                if (otherValue) {
+                    tagsToUpdate.push(otherValue)
+                }
+                dispatchUpdate(tagsToUpdate)
                 handleTagsSearch('')
                 onRemove?.()
             }}

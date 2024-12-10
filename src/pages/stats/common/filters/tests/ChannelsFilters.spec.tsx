@@ -43,12 +43,10 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
 }))
 
-const dispatchUpdate = jest.fn()
-const dispatchStatFiltersDirty = jest.fn()
-const dispatchStatFiltersClean = jest.fn()
-const dispatchRemoveDraftFilter = jest.fn()
-
 describe('ChannelsFilter', () => {
+    const dispatchUpdate = jest.fn()
+    const dispatchStatFiltersDirty = jest.fn()
+    const dispatchStatFiltersClean = jest.fn()
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
@@ -242,13 +240,15 @@ describe('ChannelsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchRemoveDraftFilter).toHaveBeenCalledWith()
+        expect(dispatchUpdate).toHaveBeenCalledWith({
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [],
+        })
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {

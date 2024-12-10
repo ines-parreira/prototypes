@@ -25,6 +25,7 @@ import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersActions from 'state/ui/stats/actions'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
+
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
@@ -45,8 +46,6 @@ jest.mock('react-router-dom', () => ({
 const dispatchUpdate = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
-const dispatchRemoveDraftFilter = jest.fn()
-
 const defaultState = {
     stats: statsSlice.initialState,
     ui: {
@@ -229,14 +228,15 @@ describe('CampaignsFilter', () => {
                 dispatchUpdate={dispatchUpdate}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-                dispatchRemoveDraftFilter={dispatchRemoveDraftFilter}
             />,
             defaultState
         )
 
         userEvent.click(screen.getByText(new RegExp(FILTER_CLEAR_ICON, 'i')))
 
-        expect(dispatchRemoveDraftFilter).toHaveBeenCalledWith()
+        expect(dispatchUpdate).toHaveBeenCalledWith(
+            withDefaultLogicalOperator([])
+        )
     })
 
     it('should check mergeStatsFilters action calls on opening and closing dropdown', () => {

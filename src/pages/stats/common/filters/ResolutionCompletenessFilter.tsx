@@ -48,7 +48,6 @@ export function ResolutionCompletenessFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
-    dispatchRemoveDraftFilter = noop,
     warningType,
     onRemove,
 }: Props) {
@@ -121,7 +120,7 @@ export function ResolutionCompletenessFilter({
             isMultiple={true}
             showQuickSelect={true}
             onRemove={() => {
-                dispatchRemoveDraftFilter()
+                dispatchUpdate(emptyFilter)
 
                 onRemove?.()
             }}

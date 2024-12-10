@@ -48,7 +48,6 @@ export default function AgentsFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
-    dispatchRemoveDraftFilter = noop,
     initializeAsOpen = false,
     onRemove,
     warningType,
@@ -179,7 +178,7 @@ export default function AgentsFilter({
                 setSelectedTeamOption([])
             }}
             onRemove={() => {
-                dispatchRemoveDraftFilter()
+                dispatchUpdate(emptyFilter)
                 setSelectedTeamOption([])
                 onRemove?.()
             }}

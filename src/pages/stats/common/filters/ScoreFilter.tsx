@@ -53,7 +53,6 @@ export function ScoreFilter({
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
-    dispatchRemoveDraftFilter = noop,
     warningType,
 }: Props) {
     const scores = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
@@ -123,7 +122,7 @@ export function ScoreFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchRemoveDraftFilter()
+                dispatchUpdate(emptyFilter)
 
                 onRemove?.()
             }}
