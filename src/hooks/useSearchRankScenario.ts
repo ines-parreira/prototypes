@@ -32,6 +32,7 @@ export type SearchRankResponse = {
 export enum EntityType {
     Ticket = 'ticket',
     Customer = 'customer',
+    Call = 'call',
 }
 
 export type SearchRankSelectedItem = {
@@ -56,7 +57,7 @@ export const DATABASE_TYPE: Record<SearchEngine, string> = {
 
 const detailedSource = (
     source: SearchRankSource,
-    type?: 'ticket' | 'customer'
+    type?: 'ticket' | 'customer' | 'call'
 ) => {
     if (source === SearchRankSource.SpotlightAll) {
         return type === 'ticket'

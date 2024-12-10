@@ -6,6 +6,7 @@ import React from 'react'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 import {customer} from 'fixtures/customer'
 import {ticket} from 'fixtures/ticket'
+import {voiceCall} from 'fixtures/voiceCalls'
 import {Customer} from 'models/customer/types'
 import {
     PickedCustomerWithHighlights,
@@ -16,6 +17,7 @@ import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
+import SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import {
     MORE_RESULTS_LABEL,
@@ -33,6 +35,9 @@ const SpotlightTicketRowMock = assumeMock(SpotlightTicketRow)
 jest.mock('pages/common/components/Spotlight/SpotlightCustomerRow')
 const SpotlightCustomerRowMock = assumeMock(SpotlightCustomerRow)
 
+jest.mock('pages/common/components/Spotlight/SpotlightCallRow')
+const SpotlightCallRowMock = assumeMock(SpotlightCallRow)
+
 describe('<SpotlightModalContent />', () => {
     const defaultProps = {
         isLoading: false,
@@ -42,6 +47,7 @@ describe('<SpotlightModalContent />', () => {
         resultsWithHighlights: [],
         recentTickets: [],
         recentCustomers: [],
+        recentCalls: [],
         goToAdvancedSearch: jest.fn(),
         searchRank: {
             isRunning: false,
@@ -96,6 +102,7 @@ describe('<SpotlightModalContent />', () => {
     beforeEach(() => {
         SpotlightTicketRowMock.mockImplementation(() => <div />)
         SpotlightCustomerRowMock.mockImplementation(() => <div />)
+        SpotlightCallRowMock.mockImplementation(() => <div />)
     })
 
     it('should render tickets without highlights', () => {
@@ -215,6 +222,69 @@ describe('<SpotlightModalContent />', () => {
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: customerWithHighlights,
+                }),
+                {}
+            )
+            expect(SpotlightCallRowMock).not.toHaveBeenCalled()
+            expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
+        })
+    })
+
+    it('should render recent calls in Federated Search', async () => {
+        const props = {
+            ...defaultProps,
+            data: undefined,
+            searchItemsType: ViewType.All,
+            recentTickets: [ticketWithHighlights],
+            recentCustomers: [customerWithHighlights],
+            recentCalls: [voiceCall],
+            hasSearched: false,
+            showCallsTab: true,
+        }
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        await waitFor(() => {
+            expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: ticketWithHighlights,
+                }),
+                {}
+            )
+            expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: customerWithHighlights,
+                }),
+                {}
+            )
+            expect(SpotlightCallRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: voiceCall,
+                }),
+                {}
+            )
+            expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
+        })
+    })
+
+    it('should render recent calls in Calls tab', async () => {
+        const props = {
+            ...defaultProps,
+            data: undefined,
+            searchItemsType: ViewType.CallList,
+            recentTickets: [ticketWithHighlights],
+            recentCustomers: [customerWithHighlights],
+            recentCalls: [voiceCall],
+            hasSearched: false,
+            showCallsTab: true,
+        }
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        await waitFor(() => {
+            expect(SpotlightTicketRowMock).not.toHaveBeenCalled()
+            expect(SpotlightCustomerRowMock).not.toHaveBeenCalled()
+            expect(SpotlightCallRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: voiceCall,
                 }),
                 {}
             )

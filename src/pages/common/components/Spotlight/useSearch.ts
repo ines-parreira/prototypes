@@ -1,4 +1,5 @@
 import axios, {CancelToken} from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import {
     KeyboardEvent,
@@ -32,9 +33,11 @@ import {
     PickedTicket,
     PickedTicketWithHighlights,
     SearchEngine,
+    PicketVoiceCallWithHighlights,
 } from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'
+import {isVoiceCall} from 'models/voiceCall/types'
 import {
     FEDERATED_SEARCH_GROUP_SIZE,
     SEARCH_QUERY_EXPIRY_TIME,
@@ -43,6 +46,11 @@ import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {isMacOs} from 'utils/platform'
+
+import {FeatureFlagKey} from '../../../../config/featureFlags'
+import useAppSelector from '../../../../hooks/useAppSelector'
+import {ProductType} from '../../../../models/billing/types'
+import {currentAccountHasProduct} from '../../../../state/billing/selectors'
 
 type OldSearchPaginationMeta = {
     prev_items: string
@@ -81,9 +89,13 @@ const getSelectedItemUrl = (
         | PickedCustomer
         | PickedTicketWithHighlights
         | PickedCustomerWithHighlights
+        | PicketVoiceCallWithHighlights
 ) => {
     if (isTicket(selectedItem)) {
         return `/app/ticket/${selectedItem.id}`
+    }
+    if (isVoiceCall(selectedItem)) {
+        return `/app/ticket/${selectedItem.ticket_id}`
     }
     return `/app/customer/${selectedItem.id}`
 }
@@ -94,6 +106,12 @@ export const useSearch = () => {
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         defaultSearchItemsType
     )
+    const hasVoiceProduct = useAppSelector(
+        currentAccountHasProduct(ProductType.Voice)
+    )
+    const useVoiceCallSearch = !!useFlags()[FeatureFlagKey.VoiceCallSearch]
+    const showCallsTab = useVoiceCallSearch && hasVoiceProduct
+
     const {state: recentSearchQuery, setState: setRecentSearchQuery} =
         useLocalStorageWithExpiry<string>(
             'recent-search-query',
@@ -130,6 +148,9 @@ export const useSearch = () => {
     const {items: recentCustomers} = useRecentItems<PickedCustomer>(
         RecentItems.Customers
     )
+    const {items: recentCalls} = useRecentItems<PicketVoiceCallWithHighlights>(
+        RecentItems.Calls
+    )
 
     const maxIndex = useMemo(() => {
         switch (searchItemsType) {
@@ -152,13 +173,19 @@ export const useSearch = () => {
                               0,
                               FEDERATED_SEARCH_GROUP_SIZE
                           ),
+                          ...(showCallsTab
+                              ? recentCalls.slice(
+                                    0,
+                                    FEDERATED_SEARCH_GROUP_SIZE
+                                )
+                              : []),
                           ...recentCustomers.slice(
                               0,
                               FEDERATED_SEARCH_GROUP_SIZE
                           ),
                       ].length - 1
             case ViewType.CallList:
-                return 0
+                return hasSearched ? 0 : recentCalls.length - 1
         }
     }, [
         searchItemsType,
@@ -167,6 +194,8 @@ export const useSearch = () => {
         recentTickets,
         customers,
         recentCustomers,
+        recentCalls,
+        showCallsTab,
     ])
 
     const {
@@ -189,7 +218,7 @@ export const useSearch = () => {
                     ? customers[selectedIndex]
                     : recentCustomers[selectedIndex]
             case ViewType.CallList:
-                return 0
+                return hasSearched ? undefined : recentCalls[selectedIndex]
             case ViewType.All:
                 return hasSearched
                     ? [
@@ -201,6 +230,12 @@ export const useSearch = () => {
                               0,
                               FEDERATED_SEARCH_GROUP_SIZE
                           ),
+                          ...(showCallsTab
+                              ? recentCalls.slice(
+                                    0,
+                                    FEDERATED_SEARCH_GROUP_SIZE
+                                )
+                              : []),
                           ...recentCustomers.slice(
                               0,
                               FEDERATED_SEARCH_GROUP_SIZE
@@ -215,6 +250,8 @@ export const useSearch = () => {
         recentTickets,
         customers,
         recentCustomers,
+        recentCalls,
+        showCallsTab,
     ])
     const handleCustomerSearchResult = useCallback(
         (
@@ -419,7 +456,10 @@ export const useSearch = () => {
             ((searchItemsType === ViewType.TicketList &&
                 _isEmpty(recentTickets)) ||
                 (searchItemsType === ViewType.CustomerList &&
-                    _isEmpty(recentCustomers)))
+                    _isEmpty(recentCustomers)) ||
+                (showCallsTab &&
+                    searchItemsType === ViewType.CallList &&
+                    _isEmpty(recentCalls)))
         )
     }, [
         hasSearched,
@@ -427,6 +467,8 @@ export const useSearch = () => {
         searchItemsType,
         recentTickets,
         recentCustomers,
+        recentCalls,
+        showCallsTab,
     ])
 
     const nextCursor = useMemo(
@@ -487,7 +529,10 @@ export const useSearch = () => {
         async (
             event: KeyboardEvent,
             logRecentlyAccessedSegmentEvent: (
-                type: 'spotlight-ticket' | 'spotlight-customer'
+                type:
+                    | 'spotlight-ticket'
+                    | 'spotlight-customer'
+                    | 'spotlight-call'
             ) => void
         ) => {
             if (selectedItem) {
@@ -560,5 +605,7 @@ export const useSearch = () => {
         setSearchItemsType,
         setSelectedIndex,
         tickets,
+        recentCalls,
+        showCallsTab,
     }
 }

@@ -8,6 +8,7 @@ import {
 } from 'models/api/types'
 import {Customer} from 'models/customer/types'
 import {Ticket} from 'models/ticket/types'
+import {VoiceCall} from 'models/voiceCall/types'
 
 export enum SearchType {
     Agent = 'agent',
@@ -80,6 +81,7 @@ export const isTicket = (
         | PickedTicketWithHighlights
         | PickedCustomer
         | PickedCustomerWithHighlights
+        | PicketVoiceCallWithHighlights
 ): item is PickedTicketWithHighlights => {
     return 'channel' in item
 }
@@ -154,6 +156,7 @@ export const isCustomer = (
         | PickedTicketWithHighlights
         | PickedCustomer
         | PickedCustomerWithHighlights
+        | PicketVoiceCallWithHighlights
 ): item is PickedCustomerWithHighlights => {
     return 'email' in item
 }
@@ -179,3 +182,6 @@ export type CustomerSearchOptions = ApiPaginationParams & {
     cancelToken?: CancelToken
     withHighlights?: boolean
 }
+
+// to do add highlights from the SDK when ready
+export type PicketVoiceCallWithHighlights = VoiceCall

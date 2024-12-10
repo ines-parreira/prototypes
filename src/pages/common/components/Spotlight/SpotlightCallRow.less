@@ -1,0 +1,25 @@
+@import '~css/util';
+
+:local {
+    .callInfo {
+        display: flex;
+        align-items: center;
+
+        em {
+            .search-highlight();
+        }
+    }
+
+    .separator {
+        width: 12px;
+        height: 1px;
+        flex-shrink: 0;
+        margin: 0 8px;
+        background-color: var(--neutral-grey-4);
+    }
+
+    .customerLabel {
+        padding-bottom: 0;
+        font-weight: 400;
+    }
+}

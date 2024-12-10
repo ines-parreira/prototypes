@@ -10,8 +10,10 @@ import {
     PickedCustomerWithHighlights,
     PickedTicket,
     PickedTicketWithHighlights,
+    PicketVoiceCallWithHighlights,
 } from 'models/search/types'
 import {ViewType} from 'models/view/types'
+import {isVoiceCall} from 'models/voiceCall/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {
@@ -28,6 +30,8 @@ import SpotlightScrollArea, {
 } from 'pages/common/components/Spotlight/SpotlightScrollArea'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {Tabs} from 'pages/common/components/Spotlight/useSearch'
+
+import SpotlightCallRow from './SpotlightCallRow'
 
 export const RECENTLY_ACCESSED_LABEL = 'Recently accessed'
 export const MORE_RESULTS_LABEL = 'More results'
@@ -51,6 +55,7 @@ const hasNoResults = (
 const hasNoRecentResults = (
     tickets: unknown[],
     customers: unknown[],
+    calls: unknown[],
     searchItemsType: ViewType
 ) => {
     switch (searchItemsType) {
@@ -61,18 +66,21 @@ const hasNoRecentResults = (
         case ViewType.TicketList:
             return _isEmpty(tickets)
         case ViewType.CallList:
-            return true
+            return _isEmpty(calls)
     }
 }
 
 const getData = (
     searchItemsType: ViewType,
     displayedCustomers: PickedCustomerWithHighlights[],
-    displayedTicket: PickedTicketWithHighlights[]
-):
-    | PickedCustomerWithHighlights[]
-    | PickedTicketWithHighlights[]
-    | (PickedCustomerWithHighlights | PickedTicketWithHighlights)[] => {
+    displayedTicket: PickedTicketWithHighlights[],
+    displayedCalls: PicketVoiceCallWithHighlights[],
+    showCallsTab?: boolean
+): (
+    | PickedCustomerWithHighlights
+    | PickedTicketWithHighlights
+    | PicketVoiceCallWithHighlights
+)[] => {
     switch (searchItemsType) {
         case ViewType.CustomerList: {
             return displayedCustomers
@@ -85,14 +93,18 @@ const getData = (
                 0,
                 FEDERATED_SEARCH_GROUP_SIZE
             )
+            const calls = displayedCalls.slice(0, FEDERATED_SEARCH_GROUP_SIZE)
             const customers = displayedCustomers.slice(
                 0,
                 FEDERATED_SEARCH_GROUP_SIZE
             )
+            if (showCallsTab) {
+                return [...tickets, ...calls, ...customers]
+            }
             return [...tickets, ...customers]
         }
         case ViewType.CallList: {
-            return []
+            return showCallsTab ? displayedCalls : []
         }
     }
 }
@@ -115,10 +127,11 @@ type Props = {
     selectedIndex: number
     hasSearched: boolean
     logRecentlyAccessedSegmentEvent: (
-        type: 'spotlight-ticket' | 'spotlight-customer'
+        type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call'
     ) => void
     onTabChange: (tab: string) => void
     showCallsTab?: boolean
+    recentCalls: PicketVoiceCallWithHighlights[]
 }
 
 export const SpotlightModalContent = ({
@@ -141,6 +154,7 @@ export const SpotlightModalContent = ({
     logRecentlyAccessedSegmentEvent,
     onTabChange,
     showCallsTab,
+    recentCalls,
 }: Props) => {
     const virtuosoRef = useRef<VirtuosoHandle | GroupedVirtuosoHandle>(null)
     const groupedVirtuosoRef = useRef<GroupedVirtuosoHandle>(null)
@@ -175,7 +189,12 @@ export const SpotlightModalContent = ({
 
     if (
         !hasSearched &&
-        hasNoRecentResults(recentTickets, recentCustomers, searchItemsType)
+        hasNoRecentResults(
+            recentTickets,
+            recentCustomers,
+            recentCalls,
+            searchItemsType
+        )
     ) {
         const message = showCallsTab
             ? 'Try searching for a ticket, call or customer.'
@@ -192,7 +211,7 @@ export const SpotlightModalContent = ({
 
     const displayedTickets = hasSearched ? tickets : recentTickets
     const displayedCustomers = hasSearched ? customers : recentCustomers
-    const displayedCalls = []
+    const displayedCalls = hasSearched ? [] : recentCalls
 
     const shouldDisplayRecentItems =
         !hasSearched &&
@@ -200,16 +219,28 @@ export const SpotlightModalContent = ({
             !_isEmpty(recentTickets)) ||
             (searchItemsType === ViewType.CustomerList &&
                 !_isEmpty(recentCustomers)) ||
+            (showCallsTab &&
+                searchItemsType === ViewType.CallList &&
+                !_isEmpty(recentCalls)) ||
             (searchItemsType === ViewType.All &&
                 (!_isEmpty(recentCustomers) || !_isEmpty(recentTickets))))
 
-    const data = getData(searchItemsType, displayedCustomers, displayedTickets)
+    const data = getData(
+        searchItemsType,
+        displayedCustomers,
+        displayedTickets,
+        displayedCalls,
+        showCallsTab
+    )
 
     const ticketOnClickHandler = () => {
         logRecentlyAccessedSegmentEvent('spotlight-ticket')
     }
     const customerOnClickHandler = () => {
         logRecentlyAccessedSegmentEvent('spotlight-customer')
+    }
+    const callOnClickHandler = () => {
+        logRecentlyAccessedSegmentEvent('spotlight-call')
     }
 
     const itemContentCallback = (
@@ -219,6 +250,7 @@ export const SpotlightModalContent = ({
             | PickedCustomer
             | PickedCustomerWithHighlights
             | PickedTicketWithHighlights
+            | PicketVoiceCallWithHighlights
     ) => {
         const selected = index === selectedIndex
         if (isTicket(item)) {
@@ -233,7 +265,8 @@ export const SpotlightModalContent = ({
                     onClick={ticketOnClickHandler}
                 />
             )
-        } else if (isCustomer(item)) {
+        }
+        if (isCustomer(item)) {
             return (
                 <SpotlightCustomerRow
                     id={item.id}
@@ -243,6 +276,19 @@ export const SpotlightModalContent = ({
                     onHover={handleHover}
                     selected={selected}
                     onClick={customerOnClickHandler}
+                />
+            )
+        }
+        if (isVoiceCall(item)) {
+            return (
+                <SpotlightCallRow
+                    id={item.id}
+                    index={index}
+                    item={item}
+                    onCloseModal={onCloseModal}
+                    onHover={handleHover}
+                    selected={selected}
+                    onClick={callOnClickHandler}
                 />
             )
         }

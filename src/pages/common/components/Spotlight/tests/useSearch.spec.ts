@@ -1,8 +1,11 @@
 import {act, renderHook} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {KeyboardEvent} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
 import {ticket} from 'fixtures/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
@@ -30,6 +33,8 @@ jest.mock('hooks/useSearchRankScenario', () => ({
 }))
 
 jest.mock('hooks/useLocalStorageWithExpiry')
+jest.mock('hooks/useAppSelector', () => jest.fn())
+const useAppSelectorMock = useAppSelector as jest.Mock
 
 const useLocalStorageWithExpiryMock = useLocalStorageWithExpiry as jest.Mock
 
@@ -57,6 +62,8 @@ describe('useSearch', () => {
                 remove: jest.fn(),
             }
         })
+        mockFlags({[FeatureFlagKey.VoiceCallSearch]: true})
+        useAppSelectorMock.mockReturnValue(true)
     })
 
     it('should return fetched customers with highlights callback', async () => {

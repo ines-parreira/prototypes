@@ -11,6 +11,7 @@ import {
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
+    PicketVoiceCallWithHighlights,
 } from 'models/search/types'
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
@@ -27,16 +28,19 @@ type VirtuosoContext = {
 }
 
 type Props = {
-    data:
-        | PickedTicketWithHighlights[]
-        | PickedCustomerWithHighlights[]
-        | (PickedTicketWithHighlights | PickedCustomerWithHighlights)[]
+    data: (
+        | PickedTicketWithHighlights
+        | PickedCustomerWithHighlights
+        | PicketVoiceCallWithHighlights
+    )[]
     canLoadMore: boolean
     loadMore: () => Promise<void>
     isLoading: boolean
     scrollerRef: React.RefObject<HTMLDivElement>
     itemContent: VirtuosoProps<
-        PickedTicketWithHighlights | PickedCustomerWithHighlights,
+        | PickedTicketWithHighlights
+        | PickedCustomerWithHighlights
+        | PicketVoiceCallWithHighlights,
         unknown
     >['itemContent']
     header?: ComponentType
@@ -46,7 +50,10 @@ type GroupedProps = Omit<Props, 'itemContent' | 'data' | 'loadMore'> & {
     itemContent?: (
         index: number,
         groupIndex: number,
-        data: PickedTicketWithHighlights | PickedCustomerWithHighlights
+        data:
+            | PickedTicketWithHighlights
+            | PickedCustomerWithHighlights
+            | PicketVoiceCallWithHighlights
     ) => ReactNode
     groupCounts: number[]
     groupContent?: GroupContent
@@ -65,7 +72,11 @@ const SpotlightScrollArea = (
     ref: ForwardedRef<VirtuosoHandle>
 ) => {
     return (
-        <Virtuoso<PickedTicketWithHighlights | PickedCustomerWithHighlights>
+        <Virtuoso<
+            | PickedTicketWithHighlights
+            | PickedCustomerWithHighlights
+            | PicketVoiceCallWithHighlights
+        >
             data={data}
             ref={ref}
             customScrollParent={scrollerRef.current || undefined}

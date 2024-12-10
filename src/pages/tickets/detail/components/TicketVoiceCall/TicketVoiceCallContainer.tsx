@@ -1,9 +1,11 @@
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, useEffect} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
+import {RecentItems} from 'hooks/useRecentItems/constants'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {Customer} from 'models/customer/types'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -38,8 +40,13 @@ export default function TicketVoiceCallContainer({
 }: Props) {
     const {isRecordingOpened, toggleRecordingOpened} =
         useVoiceRecordingsContext()
+    const {setRecentItem} = useRecentItems<VoiceCall>(RecentItems.Calls)
 
     const useCallSummary = !!useFlags()[FeatureFlagKey.SummarizeCalls]
+
+    useEffect(() => {
+        void setRecentItem(voiceCall)
+    }, [setRecentItem, voiceCall])
 
     return (
         <div className={css.container}>

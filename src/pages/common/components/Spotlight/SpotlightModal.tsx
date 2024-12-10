@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {stringify} from 'qs'
 import React, {
     KeyboardEvent,
@@ -11,11 +10,9 @@ import React, {
 import {useLocation} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {ProductType} from 'models/billing/types'
 import {ViewType} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -35,7 +32,6 @@ import {Tabs, useSearch} from 'pages/common/components/Spotlight/useSearch'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {currentAccountHasProduct} from 'state/billing/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isMacOs} from 'utils/platform'
 
@@ -73,11 +69,6 @@ const viewToAdvancedSearchPath: Record<
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
-    const hasVoiceProduct = useAppSelector(
-        currentAccountHasProduct(ProductType.Voice)
-    )
-    const useVoiceCallSearch = !!useFlags()[FeatureFlagKey.VoiceCallSearch]
-    const showCallsTab = useVoiceCallSearch && hasVoiceProduct
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
 
@@ -96,6 +87,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         searchRank,
         setSearchItemsType,
         setSelectedIndex,
+        showCallsTab,
     } = search
 
     const hasAdvancedSearch =
@@ -203,7 +195,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     )
 
     const logRecentlyAccessedSegmentEvent = useCallback(
-        (type: 'spotlight-ticket' | 'spotlight-customer') => {
+        (
+            type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call'
+        ) => {
             if (!hasSearched) {
                 logEvent(SegmentEvent.RecentItemAccessed, {
                     type,
