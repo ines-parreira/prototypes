@@ -1,5 +1,5 @@
-import linkifyjsElement from 'linkifyjs/element'
-import linkifyjsString from 'linkifyjs/string'
+import linkifyjsElement from 'linkify-element'
+import linkifyjsString from 'linkify-string'
 import _get from 'lodash/get'
 import sanitizeHtml from 'sanitize-html'
 
@@ -7,6 +7,8 @@ const linkifyOptions = {
     attributes: {
         rel: 'noreferrer noopener',
     },
+    className: 'linkified',
+    target: (_href: unknown, type: string) => type === 'url' && '_blank',
 }
 
 /* Forgiving html parser:

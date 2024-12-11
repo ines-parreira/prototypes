@@ -12,7 +12,7 @@ import {
     Modifier,
 } from 'draft-js'
 import {Map} from 'immutable'
-import linkifyhtml from 'linkifyjs/html'
+import linkifyhtml from 'linkify-html'
 import _kebabeCase from 'lodash/kebabCase'
 import React from 'react'
 
@@ -271,8 +271,11 @@ export function convertToHTML(contentState: ContentState): string {
         (str) => {
             // linkify transforms linkified urls into actual HTML links
             return linkifyhtml(str, {
+                className: 'linkified',
+                target: (_href: unknown, type: string) =>
+                    type === 'url' && '_blank',
                 validate: {
-                    url(value) {
+                    url(value: any) {
                         return linkify.test(value)
                     },
                 },
