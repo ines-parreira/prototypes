@@ -85,4 +85,5 @@ export enum TicketVia {
     SelfService = 'self_service',
     WhatsApp = 'whatsapp',
     Rule = 'rule',
+    Api = 'api',
 }

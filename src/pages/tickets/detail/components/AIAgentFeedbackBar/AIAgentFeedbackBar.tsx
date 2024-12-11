@@ -1,10 +1,13 @@
 import React from 'react'
 
+import {TicketVia} from 'business/types/ticket'
+
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+
 import Button from 'pages/common/components/button/Button'
 import {getAIAgentMessages} from 'state/ticket/selectors'
 import {
@@ -43,7 +46,13 @@ const AIAgentFeedbackBar = () => {
         !!selectedMessage && isTrialMessageFromAIAgent(selectedMessage)
 
     const handleSelectFirstMessage = () => {
-        dispatch(changeTicketMessage({message: publicAIMessages[0]}))
+        dispatch(
+            changeTicketMessage({
+                message: publicAIMessages.find(
+                    (message) => message.via === TicketVia.Api
+                ),
+            })
+        )
         logEventWithSampling(
             SegmentEvent.AiAgentFeedbackFirstMessageButtonClicked,
             {}
