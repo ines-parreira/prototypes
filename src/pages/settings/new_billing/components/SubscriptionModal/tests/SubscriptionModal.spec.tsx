@@ -1,7 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
 import {UserRole} from 'config/types/user'
 import {account} from 'fixtures/account'
@@ -10,7 +9,7 @@ import {convertAvailablePlans} from 'fixtures/productPrices'
 import {ProductType} from 'models/billing/types'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
 import {RootState} from 'state/types'
-import {mockStore} from 'utils/testing'
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('SubscriptionModal', () => {
     const canduId = 'my-test-candu-id'
@@ -48,31 +47,25 @@ describe('SubscriptionModal', () => {
     }
 
     it('should not render', () => {
-        const {queryByText} = render(
-            <Provider store={mockStore(defaultState as any)}>
-                <SubscriptionModal {...minProps} isOpen={false} />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <SubscriptionModal {...minProps} isOpen={false} />,
+            defaultState
         )
 
-        expect(queryByText(headerDescription)).not.toBeInTheDocument()
-        expect(queryByText(confirmLabel)).not.toBeInTheDocument()
+        expect(screen.queryByText(headerDescription)).not.toBeInTheDocument()
+        expect(screen.queryByText(confirmLabel)).not.toBeInTheDocument()
     })
 
     it('should render', () => {
         const onClose = jest.fn()
 
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState as any)}>
-                <SubscriptionModal
-                    {...minProps}
-                    isOpen={true}
-                    onClose={onClose}
-                />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <SubscriptionModal {...minProps} isOpen={true} onClose={onClose} />,
+            defaultState
         )
 
-        expect(getByText(headerDescription)).toBeInTheDocument()
-        expect(getByText(confirmLabel)).toBeInTheDocument()
+        expect(screen.getByText(headerDescription)).toBeInTheDocument()
+        expect(screen.getByText(confirmLabel)).toBeInTheDocument()
 
         const canduDataId = document.querySelector(
             `[data-candu-id="${canduId}"]`

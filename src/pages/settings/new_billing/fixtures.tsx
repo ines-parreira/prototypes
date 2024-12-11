@@ -3,16 +3,27 @@ import configureMockStore from 'redux-mock-store'
 
 import {account} from 'fixtures/account'
 import {
+    automate02MonthlyMeteredPlan,
+    basicMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
+    proMonthlyHelpdeskPlan,
     SMS_PRODUCT_ID,
     smsPlan1,
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
+import {
+    BillingState,
+    PlanInterval,
+    ProductUsages,
+    SubscriptionStatus,
+    SubscriptionSummary,
+    UpcomingInvoiceSummary,
+} from 'models/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
@@ -58,3 +69,148 @@ export const storeWithActiveSubscriptionWithPhone = mockedStore({
     }),
     billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
 })
+
+export const usages: ProductUsages = {
+    helpdesk: {
+        num_tickets: 10,
+        num_extra_tickets: 0,
+        extra_tickets_cost_in_cents: 0,
+    },
+    automation: null,
+    voice: null,
+    sms: null,
+    convert: null,
+}
+
+const upcomingInvoice: UpcomingInvoiceSummary = {
+    coupon: null,
+    subtotal_in_cents: 9900,
+    subtotal_decimal: '99',
+    total_in_cents: 9900,
+    total_decimal: '99',
+    usages: usages,
+}
+
+const subscription: SubscriptionSummary = {
+    status: SubscriptionStatus.ACTIVE,
+    cadence: PlanInterval.Month,
+    is_trialing: false,
+    trial_start_datetime: null,
+    trial_end_datetime: null,
+    has_schedule: false,
+    downgrade_scheduled: false,
+    scheduled_to_cancel_at: null,
+    current_billing_cycle_start_datetime: '2024-07-22T00:00:00+00:00',
+    current_billing_cycle_end_datetime: '2024-08-22T00:00:00+00:00',
+    coupon: null,
+    trial_extended_until: null,
+}
+
+export const payingWithCreditCard: BillingState = {
+    upcoming_invoice: upcomingInvoice,
+    subscription: subscription,
+    customer: {
+        trial_extended_until: null,
+        coupon: null,
+        credit_card: {
+            brand: 'Visa',
+            last4: '4321',
+            exp_year: 2052,
+            exp_month: 12,
+        },
+        shopify_billing: null,
+        ach_debit_bank_account: null,
+        ach_credit_bank_account: null,
+    },
+    current_plans: {
+        helpdesk: basicMonthlyHelpdeskPlan,
+        automate: null,
+        sms: null,
+        voice: null,
+        convert: null,
+    },
+}
+
+export const payingWithExpiredCreditCard: BillingState = {
+    ...payingWithCreditCard,
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: {
+            brand: 'Visa',
+            last4: '4321',
+            exp_year: 2023,
+            exp_month: 12,
+        },
+    },
+}
+
+export const payingWithAchDebit: BillingState = {
+    ...payingWithCreditCard,
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: null,
+        ach_debit_bank_account: {
+            bank_name: 'Wells Fargo',
+            last4: '9876',
+        },
+    },
+}
+
+export const payingWithAchCredit: BillingState = {
+    ...payingWithCreditCard,
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: null,
+        ach_credit_bank_account: {
+            bank_name: 'Citigroup',
+            last4: '9988',
+        },
+    },
+}
+
+export const payWithShopifyButNotActivated: BillingState = {
+    ...payingWithCreditCard,
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: null,
+        shopify_billing: {
+            subscription_id: null,
+        },
+    },
+}
+
+export const payWithShopify: BillingState = {
+    ...payingWithCreditCard,
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: null,
+        shopify_billing: {
+            subscription_id: '28982542566',
+        },
+    },
+}
+
+export const trial: BillingState = {
+    upcoming_invoice: upcomingInvoice,
+    subscription: {
+        ...subscription,
+        status: SubscriptionStatus.TRIALING,
+        trial_start_datetime: '2024-07-22T00:00:00+00:00',
+        trial_end_datetime: '2024-07-29T00:00:00+00:00',
+    },
+    customer: {
+        trial_extended_until: null,
+        coupon: null,
+        credit_card: null,
+        shopify_billing: null,
+        ach_debit_bank_account: null,
+        ach_credit_bank_account: null,
+    },
+    current_plans: {
+        helpdesk: proMonthlyHelpdeskPlan,
+        automate: automate02MonthlyMeteredPlan,
+        sms: null,
+        voice: null,
+        convert: null,
+    },
+}

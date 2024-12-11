@@ -1,7 +1,9 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {PlanInterval, Plan, ProductType} from 'models/billing/types'
 import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
@@ -10,6 +12,7 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
+import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
 
 import {
@@ -17,6 +20,7 @@ import {
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
+import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
 import {fetchCreditCard} from 'state/billing/actions'
@@ -47,7 +51,9 @@ const PlanSubscriptionDescription = ({
     const dispatch = useAppDispatch()
     const ref = useRef(null)
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
-    const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
+    const newIsPaymentEnabled = !!useIsPaymentEnabled()
+    const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
+    const isPaymentEnabled = newIsPaymentEnabled || oldIsPaymentEnabled
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const filteredPlans = useMemo(
         () => availablePlans.filter((plan) => plan.interval === interval),
@@ -124,6 +130,9 @@ const PlanSubscriptionDescription = ({
     const isSummaryFooterVisible = useMemo(() => {
         return !isEnterprisePlan && !isTrialing && isPaymentEnabled
     }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
+
+    const isNewSummaryPaymentSectionON =
+        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
 
     return (
         <div className={css.container}>
@@ -219,12 +228,18 @@ const PlanSubscriptionDescription = ({
                         [css.show]: !isPaymentEnabled && isCreditCardFetched,
                     })}
                 >
-                    <SummaryPaymentSection
-                        isCreditCardFetched={isCreditCardFetched}
-                        setIsPaymentEnabled={setIsPaymentEnabled}
-                        isPaymentInformationView
-                        hasSmallFont
-                    />
+                    {isNewSummaryPaymentSectionON ? (
+                        <NewSummaryPaymentSection
+                            className={css.summaryPaymentSection}
+                        />
+                    ) : (
+                        <SummaryPaymentSection
+                            isCreditCardFetched={isCreditCardFetched}
+                            setIsPaymentEnabled={setIsPaymentEnabled}
+                            isPaymentInformationView
+                            hasSmallFont
+                        />
+                    )}
                 </div>
                 {isSummaryFooterVisible && (
                     <SummaryFooter

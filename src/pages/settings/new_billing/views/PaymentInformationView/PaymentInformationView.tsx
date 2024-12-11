@@ -13,6 +13,7 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import {isLegacyAutomate} from 'models/billing/utils'
+import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
@@ -58,6 +59,9 @@ const PaymentInformationView = ({
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
+
+    const isNewSummaryPaymentSectionON =
+        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
 
     // fetch card
     useEffect(() => {
@@ -161,10 +165,16 @@ const PaymentInformationView = ({
     return (
         <div className={css.container}>
             <Section icon="credit_card" title="Payment method">
-                <SummaryPaymentSection
-                    isCreditCardFetched={isCreditCardFetched}
-                    isPaymentInformationView
-                />
+                {isNewSummaryPaymentSectionON ? (
+                    <NewSummaryPaymentSection
+                        className={css.summaryPaymentSection}
+                    />
+                ) : (
+                    <SummaryPaymentSection
+                        isCreditCardFetched={isCreditCardFetched}
+                        isPaymentInformationView
+                    />
+                )}
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>

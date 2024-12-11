@@ -1,12 +1,16 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 
+import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
+import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import {getCorrespondingPlanAtInterval} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtInterval'
 import {fetchCreditCard} from 'state/billing/actions'
 import {creditCard} from 'state/billing/selectors'
@@ -62,7 +66,10 @@ const BillingFrequencyView = ({
         dispatchBillingError,
     })
 
-    const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
+    const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
+    const newIsPaymentEnabled = !!useIsPaymentEnabled()
+    const isPaymentEnabled = oldIsPaymentEnabled || newIsPaymentEnabled
+
     const [showAlert, setShowAlert] = useState(true)
 
     const card = useAppSelector(creditCard)
@@ -155,6 +162,9 @@ const BillingFrequencyView = ({
         void fetchCard()
     }, [card, dispatch])
 
+    const isNewSummaryPaymentSectionON =
+        !!useFlags()[FeatureFlagKey.BillingNewSummaryPaymentSection]
+
     return (
         <div className={css.container}>
             <BackLink />
@@ -231,7 +241,9 @@ const BillingFrequencyView = ({
                             isFrequencyChanged={true}
                         />
                     </div>
-                    {!isTrialing && (
+                    {!isTrialing && isNewSummaryPaymentSectionON ? (
+                        <NewSummaryPaymentSection />
+                    ) : (
                         <SummaryPaymentSection
                             setIsPaymentEnabled={setIsPaymentEnabled}
                             isCreditCardFetched={isCreditCardFetched}

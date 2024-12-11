@@ -1,10 +1,7 @@
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {TicketChannel} from 'business/types/ticket'
 import * as segment from 'common/segment'
@@ -12,6 +9,8 @@ import {billingState} from 'fixtures/billing'
 import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
 import {getHasAutomate} from 'state/billing/selectors'
 import {RootState} from 'state/types'
+
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 
@@ -57,23 +56,18 @@ const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
     typeof getHasAutomate
 >
 
-const mockStore = configureMockStore([thunk])
-
 const defaultState = {
     integrations: fromJS({
         integrations: [],
     }),
     billing: fromJS(billingState),
-} as RootState
-const mockedStore = mockStore({
-    ...defaultState,
     entities: {
         chatInstallationStatus: {
             installed: true,
             minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
         },
     },
-})
+} as RootState
 
 describe('HelpCenterNavigation', () => {
     beforeEach(() => {
@@ -82,47 +76,43 @@ describe('HelpCenterNavigation', () => {
         })
     })
     it('should render', () => {
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation
-                    helpCenterId={1}
-                    helpCenterShopName={'shopName'}
-                />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation
+                helpCenterId={1}
+                helpCenterShopName={'shopName'}
+            />,
+            defaultState
         )
     })
 
     it('should not render the automate tab when `hasAutomate` is false', () => {
         mockGetHasAutomate.mockReturnValue(false)
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation
-                    helpCenterId={1}
-                    helpCenterShopName={'shopName'}
-                />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation
+                helpCenterId={1}
+                helpCenterShopName={'shopName'}
+            />,
+            defaultState
         )
         expect(screen.queryByText(/Automate/i)).not.toBeInTheDocument()
     })
 
     it('should display automate menu item', () => {
         mockGetHasAutomate.mockReturnValue(true)
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation
-                    helpCenterId={1}
-                    helpCenterShopName={'shopName'}
-                />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation
+                helpCenterId={1}
+                helpCenterShopName={'shopName'}
+            />,
+            defaultState
         )
         expect(screen.getByText(/Automate/i)).toBeInTheDocument()
     })
 
     it('should display a red dot whenever shop name is not provided', () => {
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation helpCenterId={1} />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation helpCenterId={1} />,
+            defaultState
         )
         expect(screen.getByAltText('status icon')).toBeInTheDocument()
     })
@@ -136,10 +126,9 @@ describe('HelpCenterNavigation', () => {
         const log = jest.spyOn(segment, 'logEvent')
 
         mockGetHasAutomate.mockReturnValue(false)
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation helpCenterId={1} />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation helpCenterId={1} />,
+            defaultState
         )
 
         const button = screen.getByText(/Upgrade to automate/i)
@@ -163,13 +152,12 @@ describe('HelpCenterNavigation', () => {
 
         const log = jest.spyOn(segment, 'logEvent')
 
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation
-                    helpCenterId={1}
-                    helpCenterShopName={'shopName'}
-                />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation
+                helpCenterId={1}
+                helpCenterShopName={'shopName'}
+            />,
+            defaultState
         )
 
         const button = screen.getByText(/Automate Settings/i)
@@ -193,10 +181,9 @@ describe('HelpCenterNavigation', () => {
 
         const log = jest.spyOn(segment, 'logEvent')
 
-        render(
-            <Provider store={mockedStore}>
-                <HelpCenterNavigation helpCenterId={1} />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <HelpCenterNavigation helpCenterId={1} />,
+            defaultState
         )
 
         const button = screen.getByText(/Connect to Automate/i)

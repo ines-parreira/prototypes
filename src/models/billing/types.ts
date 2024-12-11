@@ -169,9 +169,33 @@ export type SubscriptionSummary = {
     trial_extended_until: string | null // isoformatted datetime
 }
 
+export type CreditCard = {
+    brand: string
+    last4: string
+    exp_month: number
+    exp_year: number
+}
+
+export type ShopifyBilling = {
+    subscription_id: string | null
+}
+export type AchCreditBankAccount = {
+    bank_name: string
+    last4: string
+}
+
+export type AchDebitBankAccount = {
+    bank_name: string
+    last4: string
+}
+
 type CustomerSummary = {
-    trial_extended_until: string | null // isoformatted datetime
-    coupon: CouponSummary | null
+    trial_extended_until?: string | null // isoformatted datetime
+    coupon?: CouponSummary | null
+    credit_card?: CreditCard | null
+    shopify_billing?: ShopifyBilling | null
+    ach_debit_bank_account?: AchDebitBankAccount | null
+    ach_credit_bank_account?: AchCreditBankAccount | null
 }
 
 export type CurrentPlans = {

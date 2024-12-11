@@ -5,23 +5,19 @@ import MockDate from 'mockdate'
 
 import React from 'react'
 
-import {
-    automate02MonthlyMeteredPlan,
-    basicMonthlyHelpdeskPlan,
-    proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    BillingState,
     CouponSummary,
-    PlanInterval,
     ProductType,
-    ProductUsages,
     SubscriptionStatus,
-    SubscriptionSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 import {BillingInternalViewUI} from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
+import {
+    trial,
+    payingWithCreditCard,
+    usages,
+} from 'pages/settings/new_billing/fixtures'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -41,26 +37,6 @@ const hdAoCoupon: CouponSummary = {
     products: [ProductType.Helpdesk, ProductType.Automation],
 }
 
-const usages: ProductUsages = {
-    helpdesk: {
-        num_tickets: 10,
-        num_extra_tickets: 0,
-        extra_tickets_cost_in_cents: 0,
-    },
-    automation: null,
-    voice: null,
-    sms: null,
-    convert: null,
-}
-
-const upcomingInvoice: UpcomingInvoiceSummary = {
-    coupon: null,
-    subtotal_in_cents: 9900,
-    subtotal_decimal: '99',
-    total_in_cents: 9900,
-    total_decimal: '99',
-    usages: usages,
-}
 const upcomingInvoiceWithHdAoCouponApplied: UpcomingInvoiceSummary = {
     coupon: hdAoCoupon,
     subtotal_in_cents: 10000,
@@ -68,58 +44,6 @@ const upcomingInvoiceWithHdAoCouponApplied: UpcomingInvoiceSummary = {
     total_in_cents: 8500,
     total_decimal: '85',
     usages: usages,
-}
-
-const subscription: SubscriptionSummary = {
-    status: SubscriptionStatus.ACTIVE,
-    cadence: PlanInterval.Month,
-    is_trialing: false,
-    trial_start_datetime: null,
-    trial_end_datetime: null,
-    has_schedule: false,
-    downgrade_scheduled: false,
-    scheduled_to_cancel_at: null,
-    current_billing_cycle_start_datetime: '2024-07-22T00:00:00+00:00',
-    current_billing_cycle_end_datetime: '2024-08-22T00:00:00+00:00',
-    coupon: null,
-    trial_extended_until: null,
-}
-
-const paying: BillingState = {
-    upcoming_invoice: upcomingInvoice,
-    subscription: subscription,
-    customer: {
-        trial_extended_until: null,
-        coupon: null,
-    },
-    current_plans: {
-        helpdesk: basicMonthlyHelpdeskPlan,
-        automate: null,
-        sms: null,
-        voice: null,
-        convert: null,
-    },
-}
-
-const trial: BillingState = {
-    upcoming_invoice: upcomingInvoice,
-    subscription: {
-        ...subscription,
-        status: SubscriptionStatus.TRIALING,
-        trial_start_datetime: '2024-07-22T00:00:00+00:00',
-        trial_end_datetime: '2024-07-29T00:00:00+00:00',
-    },
-    customer: {
-        trial_extended_until: null,
-        coupon: null,
-    },
-    current_plans: {
-        helpdesk: proMonthlyHelpdeskPlan,
-        automate: automate02MonthlyMeteredPlan,
-        sms: null,
-        voice: null,
-        convert: null,
-    },
 }
 
 const extendedTrial = {
@@ -195,7 +119,7 @@ describe('BillingInternalViewUI', () => {
             <QueryClientProvider client={queryClient}>
                 <BillingInternalViewUI
                     {...BillingInternalViewUIDefaultProps}
-                    billingState={paying}
+                    billingState={payingWithCreditCard}
                 />
             </QueryClientProvider>
         )

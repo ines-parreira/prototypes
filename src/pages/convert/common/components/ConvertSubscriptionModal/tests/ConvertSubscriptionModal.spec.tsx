@@ -1,8 +1,7 @@
-import {waitFor} from '@testing-library/react'
+import {waitFor, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 
 import {UserRole} from 'config/types/user'
@@ -10,7 +9,7 @@ import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import {RootState} from 'state/types'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 
@@ -59,10 +58,9 @@ describe('ConvertSubscriptionModal', () => {
     })
 
     it('should not render', () => {
-        renderWithRouter(
-            <Provider store={mockStore(defaultState as any)}>
-                <ConvertSubscriptionModal {...minProps} isOpen={false} />
-            </Provider>
+        renderWithStoreAndQueryClientAndRouter(
+            <ConvertSubscriptionModal {...minProps} isOpen={false} />,
+            defaultState
         )
 
         const canduDataId = document.querySelector(
@@ -72,10 +70,9 @@ describe('ConvertSubscriptionModal', () => {
     })
 
     it('should render', async () => {
-        const {getByText} = renderWithRouter(
-            <Provider store={mockStore(defaultState as any)}>
-                <ConvertSubscriptionModal {...minProps} />
-            </Provider>
+        renderWithStoreAndQueryClientAndRouter(
+            <ConvertSubscriptionModal {...minProps} />,
+            defaultState
         )
 
         const canduDataId = document.querySelector(
@@ -85,7 +82,7 @@ describe('ConvertSubscriptionModal', () => {
 
         await waitFor(() =>
             expect(
-                getByText('I agree to the', {exact: false})
+                screen.getByText('I agree to the', {exact: false})
             ).toBeInTheDocument()
         )
     })
@@ -111,12 +108,11 @@ describe('ConvertSubscriptionModal', () => {
             }),
         }
 
-        const {queryByText} = renderWithRouter(
-            <Provider store={mockStore(stateWithTrial as any)}>
-                <ConvertSubscriptionModal {...minProps} />
-            </Provider>
+        renderWithStoreAndQueryClientAndRouter(
+            <ConvertSubscriptionModal {...minProps} />,
+            stateWithTrial
         )
 
-        expect(queryByText('I agree to')).not.toBeInTheDocument()
+        expect(screen.queryByText('I agree to')).not.toBeInTheDocument()
     })
 })
