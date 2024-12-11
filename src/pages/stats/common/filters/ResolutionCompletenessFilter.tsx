@@ -22,7 +22,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 const COMPLETION_OPTIONS = [
     {value: '1', label: 'Complete'},
@@ -37,6 +40,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -46,9 +50,11 @@ export function ResolutionCompletenessFilter({
     value = emptyFilter,
     initializeAsOpen = false,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
     onRemove,
 }: Props) {
     const filterOptions = [
@@ -120,11 +126,12 @@ export function ResolutionCompletenessFilter({
             isMultiple={true}
             showQuickSelect={true}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
             selectedLogicalOperator={value.operator}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -139,6 +146,10 @@ export const ResolutionCompletenessFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 resolutionCompleteness: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                resolutionCompleteness: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -157,6 +168,10 @@ export const ResolutionCompletenessFilterWithSavedState = connect(
                 member: FilterKey.ResolutionCompleteness,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.ResolutionCompleteness,
             }),
     }
 )(ResolutionCompletenessFilter)

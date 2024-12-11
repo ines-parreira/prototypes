@@ -1,6 +1,5 @@
 import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -51,6 +50,7 @@ const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
 
 describe('ScoreFilter', () => {
     const dispatchUpdate = jest.fn()
+    const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
     const renderComponent = () =>
@@ -59,6 +59,7 @@ describe('ScoreFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -71,6 +72,7 @@ describe('ScoreFilter', () => {
                 onRemove={mockedRemove}
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -132,6 +134,7 @@ describe('ScoreFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -165,6 +168,7 @@ describe('ScoreFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`5`, `4`, `3`])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -178,7 +182,7 @@ describe('ScoreFilter', () => {
         renderComponent()
         fireEvent.click(screen.getByText('close'))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemove).toHaveBeenCalledWith()
         expect(mockedRemove).toHaveBeenCalled()
     })
 
@@ -228,6 +232,7 @@ describe('ScoreFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -258,12 +263,21 @@ describe('ScoreFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Score])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText('close'))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Score]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('ScoreFiltersWithSavedState', () => {
         it('should render ScoreFiltersWithSavedState component', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(<ScoreFiltersWithSavedState />, defaultState)
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -273,6 +287,11 @@ describe('ScoreFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Score])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText('close'))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.Score,
+            })
         })
     })
 })

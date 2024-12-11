@@ -51,7 +51,6 @@ import {
     duplicateSavedFilterDraftFromSavedFilter,
     initialiseSavedFilterDraftFromSavedFilter,
     initialState,
-    unapplySavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -805,7 +804,7 @@ describe('SavedFiltersPanel', () => {
 
         userEvent.click(screen.getByText(UNAPPLY_FILTER_ICON))
 
-        expect(store.getActions()).toContainEqual(unapplySavedFilter())
+        expect(store.getActions()).toContainEqual(clearSavedFilterDraft())
     })
 
     it('should cancel Saved Filter Draft of New Saved Filter', () => {
@@ -1254,6 +1253,19 @@ describe('SavedFiltersPanel', () => {
                     },
                 ],
             }
+
+            const otherSavedFilter: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['2'],
+                    },
+                ],
+            }
+
             const state = {
                 stats: statsSlice.initialState,
                 integrations: fromJS({
@@ -1272,9 +1284,12 @@ describe('SavedFiltersPanel', () => {
                 },
                 currentUser: defaultState.currentUser,
             } as RootState
+
             useListAnalyticsFiltersMock.mockReturnValue({
                 data: {
-                    data: {data: [savedFilter]},
+                    data: {
+                        data: [otherSavedFilter],
+                    },
                 },
             } as any)
 
@@ -1303,10 +1318,67 @@ describe('SavedFiltersPanel', () => {
 
             expect(store.getActions()).toContainEqual(
                 initialiseSavedFilterDraftFromSavedFilter(
-                    fromApiFormatted(savedFilter as SavedFilterAPI)
+                    fromApiFormatted(otherSavedFilter as SavedFilterAPI)
                 )
             )
             expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
+        })
+
+        it('should disable save button if not changes have been made', () => {
+            const savedFilterName = 'Some Name draft'
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft: savedFilter,
+                            appliedSavedFilterId: 123,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+
+            useListAnalyticsFiltersMock.mockReturnValue({
+                data: {
+                    data: {
+                        data: [savedFilter],
+                    },
+                },
+            } as any)
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+
+            userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
     })
 

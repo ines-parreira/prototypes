@@ -51,6 +51,7 @@ const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
 
 describe('LanguageProficiency', () => {
     const dispatchUpdate = jest.fn()
+    const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
     const renderComponent = () =>
@@ -59,6 +60,7 @@ describe('LanguageProficiency', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -71,6 +73,7 @@ describe('LanguageProficiency', () => {
                 onRemove={mockedRemove}
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -132,6 +135,7 @@ describe('LanguageProficiency', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -168,6 +172,7 @@ describe('LanguageProficiency', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['5', '4', '3'])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -184,7 +189,7 @@ describe('LanguageProficiency', () => {
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemove).toHaveBeenCalledWith()
         expect(mockedRemove).toHaveBeenCalled()
     })
 
@@ -235,6 +240,7 @@ describe('LanguageProficiency', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([`${numberOfStars}`])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -270,12 +276,21 @@ describe('LanguageProficiency', () => {
                 screen.getByText(FilterLabels[FilterKey.LanguageProficiency])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.LanguageProficiency]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('LanguageProficiencyFilterWithSavedState', () => {
         it('should render LanguageProficiencyFilterWithSavedState component', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(
                 <LanguageProficiencyFilterWithSavedState />,
@@ -288,6 +303,11 @@ describe('LanguageProficiency', () => {
                 screen.getByText(FilterLabels[FilterKey.LanguageProficiency])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.LanguageProficiency,
+            })
         })
     })
 })

@@ -29,7 +29,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]
@@ -40,6 +43,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -51,9 +55,11 @@ export function IntegrationsFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const getSelectedIntegrations = useCallback(() => {
         return integrations
@@ -137,13 +143,14 @@ export function IntegrationsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -159,6 +166,10 @@ export const IntegrationsFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 integrations: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -176,6 +187,10 @@ export const PhoneIntegrationsFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 integrations: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -195,6 +210,10 @@ export const IntegrationsFilterWithSavedState = connect(
                 member: FilterKey.Integrations,
                 operator: filter.operator,
                 values: filter.values.map(String),
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.Integrations,
             }),
     }
 )(IntegrationsFilter)

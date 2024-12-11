@@ -4,7 +4,10 @@ import React from 'react'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import {campaignsList} from 'fixtures/campaign'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {
     FILTER_CLEAR_ICON,
@@ -25,7 +28,6 @@ import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersActions from 'state/ui/stats/actions'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
@@ -44,6 +46,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const dispatchUpdate = jest.fn()
+const dispatchRemove = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
 const defaultState = {
@@ -61,6 +64,7 @@ const renderComponent = () =>
             value={emptyFilter}
             campaigns={mockedCampaignsList}
             dispatchUpdate={dispatchUpdate}
+            dispatchRemove={dispatchRemove}
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
@@ -88,6 +92,7 @@ describe('CampaignsFilter', () => {
                 value={undefined}
                 campaigns={[]}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -131,6 +136,7 @@ describe('CampaignsFilter', () => {
                 value={withDefaultLogicalOperator([mockedCampaignsList[0].id])}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -165,6 +171,7 @@ describe('CampaignsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -190,6 +197,7 @@ describe('CampaignsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -226,6 +234,7 @@ describe('CampaignsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableCampaignsIds)}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -234,9 +243,7 @@ describe('CampaignsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(FILTER_CLEAR_ICON, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
-        )
+        expect(dispatchRemove).toHaveBeenCalledWith()
     })
 
     it('should check mergeStatsFilters action calls on opening and closing dropdown', () => {
@@ -245,6 +252,7 @@ describe('CampaignsFilter', () => {
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -264,6 +272,7 @@ describe('CampaignsFilter', () => {
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -279,6 +288,7 @@ describe('CampaignsFilter', () => {
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -293,6 +303,7 @@ describe('CampaignsFilter', () => {
                 value={emptyFilter}
                 campaigns={mockedCampaignsList}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -326,12 +337,23 @@ describe('CampaignsFilter', () => {
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
             expect(spy2).toHaveBeenCalled()
+
+            userEvent.click(
+                screen.getByText(new RegExp(FILTER_CLEAR_ICON, 'i'))
+            )
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Campaigns]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('CampaignsFilterFromSavedContext', () => {
         it('should render', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(<CampaignsFilterFromSavedContext />, defaultState)
 
@@ -342,6 +364,13 @@ describe('CampaignsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Campaigns])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(
+                screen.getByText(new RegExp(FILTER_CLEAR_ICON, 'i'))
+            )
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.Campaigns,
+            })
         })
     })
 })

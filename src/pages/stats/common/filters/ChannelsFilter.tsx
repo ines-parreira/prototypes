@@ -36,7 +36,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Channels]
@@ -47,6 +50,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -55,12 +59,14 @@ type Props = {
 export function ChannelsFilter({
     value = emptyFilter,
     dispatchUpdate,
+    dispatchRemove,
     channelsFilter,
     initializeAsOpen = false,
     onRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const channels = filterChannels(getChannels(), channelsFilter)
     const allChannelsSlugs = channels.map((channel) => channel.slug)
@@ -149,13 +155,14 @@ export function ChannelsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -170,6 +177,10 @@ export const ChannelsFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 channels: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                channels: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -186,6 +197,10 @@ export const ChannelsFilterWithSavedState = connect(
                 member: FilterKey.Channels,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.Channels,
             }),
     }
 )(ChannelsFilter)

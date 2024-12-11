@@ -15,13 +15,15 @@ export type OptionGroup = {
 type Props = {
     onClick: (value: string) => void
     optionGroups: OptionGroup[]
+    isDisabled?: boolean
 }
 
 export const ADD_FILTER_BUTTON_LABEL = 'Add Filter'
 
-export const AddFilterButton = ({onClick, optionGroups}: Props) => {
+export const AddFilterButton = ({onClick, optionGroups, isDisabled}: Props) => {
     const buttonRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
+
     const onToggle = () => setIsOpen(!isOpen)
     const handleOnClick = (value: string) => {
         onClick(value)
@@ -34,6 +36,7 @@ export const AddFilterButton = ({onClick, optionGroups}: Props) => {
                 intent={'primary'}
                 onClick={onToggle}
                 title={ADD_FILTER_BUTTON_LABEL}
+                isDisabled={isDisabled}
                 fillStyle={'ghost'}
                 ref={buttonRef}
                 size={'small'}

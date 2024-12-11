@@ -5,13 +5,13 @@ import React, {useEffect, useRef, useState} from 'react'
 import css from 'pages/stats/common/components/Filter/components/FilterName/FilterName.less'
 import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import {FILTER_NAME_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
+import {OptionalFilterProps} from 'pages/stats/common/filters/types'
 
 type Props = {
     name: string
     className?: string
-    warningType?: 'non-existent' | 'not-applicable'
     warningMessage?: string
-}
+} & OptionalFilterProps
 
 export const getWarningTooltip = (
     warningType: 'non-existent' | 'not-applicable',
@@ -23,7 +23,13 @@ export const getWarningTooltip = (
     return `${filterName} filter is not applicable to this report.`
 }
 
-const FilterName = ({name, className, warningType, warningMessage}: Props) => {
+const FilterName = ({
+    name,
+    className,
+    warningType,
+    warningMessage,
+    isDisabled,
+}: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [showTooltip, setShowTooltip] = useState(false)
 
@@ -50,7 +56,13 @@ const FilterName = ({name, className, warningType, warningMessage}: Props) => {
                         }
                     />
                 )}
-                <div className={css.text}>{name}</div>
+                <div
+                    className={classNames(css.text, {
+                        [css.disabled]: isDisabled,
+                    })}
+                >
+                    {name}
+                </div>
             </div>
             {showTooltip && (
                 <Tooltip target={ref}>

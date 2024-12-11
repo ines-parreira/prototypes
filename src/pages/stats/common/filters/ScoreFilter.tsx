@@ -29,7 +29,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -41,6 +44,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -51,9 +55,11 @@ export function ScoreFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const scores = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -122,7 +128,7 @@ export function ScoreFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
@@ -130,6 +136,7 @@ export function ScoreFilter({
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
+            isDisabled={isDisabled}
             showSearch={false}
         />
     )
@@ -143,6 +150,10 @@ export const ScoreFiltersWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 score: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                score: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -160,5 +171,7 @@ export const ScoreFiltersWithSavedState = connect(
                 operator: filter.operator,
                 values: filter.values.map(String),
             }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({filterKey: FilterKey.Score}),
     }
 )(ScoreFilter)

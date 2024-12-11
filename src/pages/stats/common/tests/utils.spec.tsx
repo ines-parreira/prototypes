@@ -1,3 +1,4 @@
+import {AnalyticsFilter} from '@gorgias/api-queries'
 import {renderHook} from '@testing-library/react-hooks'
 import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
@@ -10,7 +11,17 @@ import {TicketChannel} from 'business/types/ticket'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {tags} from 'fixtures/tag'
 import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import {
+    FilterKey,
+    LegacyStatsFilters,
+    SavedFilterDraft,
+    TagFilterInstanceId,
+} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    areFiltersEqual,
+    getFormattedFilter,
+} from 'pages/stats/common/filters/utils'
 import {
     formatDuration,
     formatMetricTrend,
@@ -568,5 +579,202 @@ describe('stats components utils', () => {
                 ).toBe(expectedResult)
             }
         )
+    })
+
+    const filtersDraft: SavedFilterDraft = {
+        name: 'Copy of Saved Filter',
+        filter_group: [
+            {
+                member: FilterKey.CustomFields,
+                values: [
+                    {
+                        custom_field_id: '5421',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['5421::Handover::With message'],
+                    },
+                ],
+            },
+            {
+                member: FilterKey.Tags,
+                values: [
+                    {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['482613', '503339', '458422', '545141'],
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
+            },
+            {
+                member: FilterKey.Agents,
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['296794238'],
+            },
+        ],
+    }
+
+    const savedFilters: AnalyticsFilter = {
+        name: 'Copy of Saved Filter',
+        filter_group: [
+            {
+                member: 'customFields',
+                values: [
+                    {
+                        custom_field_id: '5421',
+                        operator: 'one-of',
+                        values: ['5421::Handover::With message'],
+                    },
+                ],
+            },
+            {
+                member: 'tags',
+                values: [
+                    {
+                        operator: 'one-of',
+                        values: ['482613', '503339', '458422', '545141'],
+                    },
+                ],
+            },
+            {
+                member: 'agents',
+                operator: 'one-of',
+                values: ['296794238'],
+            },
+        ],
+        account_id: 18370,
+        id: 37,
+        created_datetime: '2024-12-03T10:45:51.065322+00:00',
+        created_by: 29619422,
+        updated_datetime: '2024-12-04T12:23:34.945138+00:00',
+        updated_by: 29619422,
+        deleted_datetime: null,
+    }
+
+    describe('getFormattedFilter', () => {
+        it('should format a SavedFilterDraft correctly', () => {
+            expect(getFormattedFilter(filtersDraft)).toEqual({
+                name: 'Copy of Saved Filter',
+                filter_group: [
+                    {
+                        member: FilterKey.CustomFields,
+                        operator: undefined,
+                        values: [
+                            {
+                                operator: LogicalOperatorEnum.ONE_OF,
+                                values: ['5421::Handover::With message'],
+                                customFieldId: '5421',
+                                filterInstanceId: undefined,
+                            },
+                        ],
+                    },
+                    {
+                        member: FilterKey.Tags,
+                        operator: undefined,
+                        values: [
+                            {
+                                operator: LogicalOperatorEnum.ONE_OF,
+                                values: [
+                                    '482613',
+                                    '503339',
+                                    '458422',
+                                    '545141',
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['296794238'],
+                    },
+                ],
+            })
+        })
+
+        it('should return an empty array', () => {
+            expect(
+                getFormattedFilter({
+                    name: 'Copy of Saved Filter',
+                    filter_group: null,
+                } as any)
+            ).toEqual({
+                name: 'Copy of Saved Filter',
+                filter_group: [],
+            })
+        })
+
+        it('should format a AnalyticsFilter correctly', () => {
+            expect(getFormattedFilter(savedFilters)).toEqual({
+                name: 'Copy of Saved Filter',
+                filter_group: [
+                    {
+                        member: 'customFields',
+                        operator: undefined,
+                        values: [
+                            {
+                                operator: 'one-of',
+                                values: ['5421::Handover::With message'],
+                                customFieldId: '5421',
+                            },
+                        ],
+                    },
+                    {
+                        member: 'tags',
+                        operator: undefined,
+                        values: [
+                            {
+                                operator: 'one-of',
+                                customFieldId: undefined,
+                                values: [
+                                    '482613',
+                                    '503339',
+                                    '458422',
+                                    '545141',
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['296794238'],
+                    },
+                ],
+            })
+        })
+    })
+
+    describe('areFiltersEqual', () => {
+        it('should check for equal filters', () => {
+            expect(areFiltersEqual(savedFilters, filtersDraft)).toBeTruthy()
+
+            expect(
+                areFiltersEqual({...savedFilters, name: 'test'}, filtersDraft)
+            ).toBeFalsy()
+
+            expect(
+                areFiltersEqual(
+                    {
+                        ...savedFilters,
+                        filter_group: [
+                            {
+                                member: FilterKey.CustomFields,
+                                values: [
+                                    {
+                                        custom_field_id: '1234',
+                                        operator: 'one-of',
+                                        values: [
+                                            '5421::Handover::With message',
+                                        ],
+                                    },
+                                ],
+                            },
+                            savedFilters.filter_group[1],
+                            savedFilters.filter_group[2],
+                        ],
+                    },
+                    filtersDraft
+                )
+            ).toBeFalsy()
+        })
     })
 })

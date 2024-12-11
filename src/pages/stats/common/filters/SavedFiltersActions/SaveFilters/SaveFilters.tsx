@@ -9,16 +9,12 @@ export const SAVE_FILTERS = 'Save Filters'
 export const SAVE_FILTERS_ID = 'save-filters'
 export const SAVE_FILTERS_TOOLTIP = 'Save applied filters to use later'
 
-export const SaveFilters = ({
-    isVisible,
-    onClick,
-}: {
-    isVisible: boolean
+type Props = {
     onClick: () => void
-}) => {
-    if (!isVisible) {
-        return null
-    }
+    isDisabled?: boolean
+}
+
+export const SaveFilters = ({onClick, isDisabled}: Props) => {
     return (
         <Button
             fillStyle="fill"
@@ -26,6 +22,7 @@ export const SaveFilters = ({
             size="medium"
             onClick={onClick}
             id={SAVE_FILTERS_ID}
+            isDisabled={isDisabled}
         >
             <i className={classNames('material-icons', css.icon)}>tune</i>
             {SAVE_FILTERS}

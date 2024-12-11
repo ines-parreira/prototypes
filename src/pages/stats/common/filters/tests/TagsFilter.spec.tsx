@@ -7,7 +7,10 @@ import {Provider} from 'react-redux'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {tags} from 'fixtures/tag'
 import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
@@ -61,6 +64,7 @@ describe('<TagsFilter />', () => {
         })
     })
     const dispatchUpdate = jest.fn()
+    const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
 
@@ -74,6 +78,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
                 warningType="not-applicable"
@@ -102,6 +107,7 @@ describe('<TagsFilter />', () => {
                 value={currentInstance}
                 otherValue={anotherInstance}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
                 warningType="non-existent"
@@ -130,6 +136,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -162,6 +169,7 @@ describe('<TagsFilter />', () => {
                 }}
                 otherValue={otherValue}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -189,6 +197,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -216,6 +225,7 @@ describe('<TagsFilter />', () => {
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -238,6 +248,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -254,6 +265,7 @@ describe('<TagsFilter />', () => {
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -291,6 +303,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -308,6 +321,7 @@ describe('<TagsFilter />', () => {
                         filterInstanceId: TagFilterInstanceId.First,
                     }}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -316,7 +330,10 @@ describe('<TagsFilter />', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith([])
+        expect(dispatchRemove).toHaveBeenCalledWith({
+            filter: [],
+            filterInstanceId: 'first',
+        })
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action with otherFilterValue intact on deselecting all tags when filters dropdown is closed', () => {
@@ -335,6 +352,7 @@ describe('<TagsFilter />', () => {
                 }}
                 otherValue={otherValue}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -353,6 +371,7 @@ describe('<TagsFilter />', () => {
                     }}
                     otherValue={otherValue}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -361,7 +380,10 @@ describe('<TagsFilter />', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith([otherValue])
+        expect(dispatchRemove).toHaveBeenCalledWith({
+            filter: [otherValue],
+            filterInstanceId: 'first',
+        })
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
@@ -374,6 +396,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -442,6 +465,7 @@ describe('<TagsFilter />', () => {
                 }}
                 otherValue={otherValue}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -479,6 +503,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -502,6 +527,7 @@ describe('<TagsFilter />', () => {
                     filterInstanceId: TagFilterInstanceId.First,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -533,12 +559,26 @@ describe('<TagsFilter />', () => {
                 screen.getByText(FilterLabels[FilterKey.Tags])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp('close', 'i')))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Tags]: [
+                    {
+                        ...withLogicalOperator([2, 1, 4, 3]),
+                        filterInstanceId: TagFilterInstanceId.First,
+                    },
+                ],
+            })
         })
     })
 
     describe('TagsFilterWithSavedState', () => {
         it('should pass dispatch action', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(<TagsFilterWithSavedState />, defaultState)
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -548,6 +588,12 @@ describe('<TagsFilter />', () => {
                 screen.getByText(FilterLabels[FilterKey.Tags])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp('close', 'i')))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.Tags,
+                filterInstanceId: TagFilterInstanceId.First,
+            })
         })
     })
 })

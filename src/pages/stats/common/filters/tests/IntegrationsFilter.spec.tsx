@@ -6,7 +6,10 @@ import React from 'react'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {integrationsState} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
@@ -17,7 +20,6 @@ import {
 } from 'pages/stats/common/components/Filter/constants'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {emptyFilter} from 'pages/stats/common/filters/helpers'
-
 import {
     IntegrationsFilter,
     IntegrationsFilterWithSavedState,
@@ -27,7 +29,6 @@ import {
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-
 import {renderWithStore} from 'utils/testing'
 
 jest.mock('common/segment', () => ({
@@ -35,6 +36,7 @@ jest.mock('common/segment', () => ({
     SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
 }))
 
+const clearFilterIcon = 'close'
 const defaultState = {
     stats: statsSlice.initialState,
     ui: {
@@ -48,6 +50,7 @@ const integrations: Integration[] =
     integrationsState.integrations as Integration[]
 
 const dispatchUpdate = jest.fn()
+const dispatchRemove = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
 
@@ -57,6 +60,7 @@ const renderComponent = () =>
             value={emptyFilter}
             integrations={integrations}
             dispatchUpdate={dispatchUpdate}
+            dispatchRemove={dispatchRemove}
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
@@ -83,6 +87,7 @@ describe('IntegrationsFilter', () => {
                 value={undefined}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -124,6 +129,7 @@ describe('IntegrationsFilter', () => {
                 value={withDefaultLogicalOperator([integrations[0].id])}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -160,6 +166,7 @@ describe('IntegrationsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -185,6 +192,7 @@ describe('IntegrationsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -204,7 +212,6 @@ describe('IntegrationsFilter', () => {
 
     it('should dispatch mergeStatsFilters action on deselecting all integrations when filters dropdown is closed', () => {
         const {rerender} = renderComponent()
-        const clearFilterIcon = 'close'
 
         const allAvailableIntegrationsIds = integrations.map(
             (integration) => integration.id
@@ -215,6 +222,7 @@ describe('IntegrationsFilter', () => {
                 value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -222,9 +230,7 @@ describe('IntegrationsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
-        )
+        expect(dispatchRemove).toHaveBeenCalledWith()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
@@ -269,6 +275,7 @@ describe('IntegrationsFilter', () => {
                 value={withDefaultLogicalOperator([])}
                 integrations={integrations}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -291,6 +298,7 @@ describe('IntegrationsFilter', () => {
                 statsSlice,
                 'mergeStatsFiltersWithLogicalOperator'
             )
+
             const stateWithIntegrations = {
                 stats: defaultState.stats,
                 integrations: fromJS({
@@ -309,12 +317,21 @@ describe('IntegrationsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Integrations])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Integrations]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('IntegrationsFilterWithSavedState', () => {
         it('should render IntegrationsFilterWithState component', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
             const stateWithIntegrations = {
                 ...defaultState,
                 integrations: fromJS({
@@ -332,6 +349,11 @@ describe('IntegrationsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Integrations])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.Integrations,
+            })
         })
     })
 
@@ -341,6 +363,7 @@ describe('IntegrationsFilter', () => {
                 statsSlice,
                 'mergeStatsFiltersWithLogicalOperator'
             )
+
             const stateWithIntegrations = {
                 stats: defaultState.stats,
                 integrations: fromJS({
@@ -359,6 +382,11 @@ describe('IntegrationsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Integrations])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Integrations]: withLogicalOperator([]),
+            })
         })
     })
 })

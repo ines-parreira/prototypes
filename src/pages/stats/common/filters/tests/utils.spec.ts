@@ -1,4 +1,10 @@
-import {FilterKey, SavedFilter, SavedFilterDraft} from 'models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
+    SavedFilter,
+    SavedFilterDraft,
+} from 'models/stat/types'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
@@ -7,8 +13,6 @@ import {
     isFilterApplicable,
     areFiltersApplicable,
 } from 'pages/stats/common/filters/utils'
-
-import {LogicalOperatorEnum} from '../../components/Filter/constants'
 
 describe('utils', () => {
     describe('getScoreLabelsAndValues', () => {
@@ -223,7 +227,7 @@ describe('isFilterApplicable', () => {
 
     it('should correctly use the getValidMemberName function to validate the filterKey', () => {
         const result = isFilterApplicable({
-            filterKey: 'tags-first',
+            filterKey: 'tags',
             applicableFilters: [
                 FilterKey.Tags,
                 FilterKey.Channels,
@@ -277,14 +281,42 @@ describe('isFilterApplicable', () => {
 
         expect(result).toBe('not-applicable')
     })
+
+    it('should not return "not-applicable" for FilterComponentKey', () => {
+        const result = isFilterApplicable({
+            filterKey: FilterComponentKey.PhoneIntegrations,
+            applicableFilters: [
+                FilterKey.Tags,
+                FilterKey.CustomFields,
+                FilterComponentKey.PhoneIntegrations,
+            ],
+        })
+
+        expect(result).toBeUndefined()
+    })
 })
 
 describe('getValidMemberName', () => {
-    it('should return tags if the member name contains tags', () => {
-        expect(getValidMemberName('tags-first')).toEqual('tags')
+    it('should return integrations for Store key', () => {
+        expect(getValidMemberName(FilterComponentKey.Store)).toEqual(
+            FilterKey.Integrations
+        )
     })
-    it('should return any other member name if the name does not contain tags', () => {
-        expect(getValidMemberName('channel')).toEqual('channel')
+
+    it('should return integrations for PhoneIntegration key', () => {
+        expect(
+            getValidMemberName(FilterComponentKey.PhoneIntegrations)
+        ).toEqual(FilterKey.Integrations)
+    })
+
+    it('should return FilterKey for any other key', () => {
+        expect(getValidMemberName(FilterKey.Tags)).toEqual('tags')
+    })
+
+    it('should return CustomFields for CustomField key', () => {
+        expect(getValidMemberName(FilterComponentKey.CustomField)).toEqual(
+            FilterKey.CustomFields
+        )
     })
 })
 
@@ -377,7 +409,7 @@ describe('areFiltersApplicable function', () => {
                 name: 'draft',
                 filter_group: [
                     {
-                        member: 'tags-first',
+                        member: 'tags',
                         values: [],
                         operator: LogicalOperatorEnum.ONE_OF,
                     },

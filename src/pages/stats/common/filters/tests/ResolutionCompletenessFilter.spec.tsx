@@ -42,6 +42,7 @@ const defaultState = {
 
 describe('ResolutionCompletenessFilter', () => {
     const dispatchUpdate = jest.fn()
+    const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
 
@@ -51,6 +52,7 @@ describe('ResolutionCompletenessFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -63,6 +65,7 @@ describe('ResolutionCompletenessFilter', () => {
                 onRemove={mockedRemove}
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -114,7 +117,7 @@ describe('ResolutionCompletenessFilter', () => {
 
         fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
+        expect(dispatchRemove).toHaveBeenCalledWith()
         expect(mockedRemove).toHaveBeenCalled()
     })
 
@@ -156,6 +159,7 @@ describe('ResolutionCompletenessFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['0', '1'])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -181,6 +185,7 @@ describe('ResolutionCompletenessFilter', () => {
                 onRemove={mockedRemove}
                 value={withLogicalOperator(['1'])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -214,12 +219,21 @@ describe('ResolutionCompletenessFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.ResolutionCompleteness]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('ResolutionCompletenessFilterWithSavedState', () => {
         it('should render ResolutionCompletenessFilterWithSavedState component', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(
                 <ResolutionCompletenessFilterWithSavedState />,
@@ -232,6 +246,11 @@ describe('ResolutionCompletenessFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            fireEvent.click(screen.getByText(FILTER_CLEAR_ICON))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.ResolutionCompleteness,
+            })
         })
     })
 })

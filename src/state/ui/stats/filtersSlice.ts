@@ -27,6 +27,12 @@ export type FiltersSliceState = {
     appliedSavedFilterId: number | null
 }
 
+type RemoveFiltersProps = {
+    filterKey: string
+    customFieldId?: number
+    filterInstanceId?: string
+}
+
 export const initialState: FiltersSliceState = {
     isFilterDirty: false,
     cleanStatsFilters: null,
@@ -57,7 +63,7 @@ export const filtersSlice = createSlice({
         },
         initialiseSavedFilterDraft(state) {
             state.savedFilterDraft = {
-                name: EMPTY_DRAFT_NAME,
+                name: '',
                 filter_group: [],
             }
         },
@@ -66,7 +72,7 @@ export const filtersSlice = createSlice({
             action: PayloadAction<StatsFiltersWithLogicalOperator>
         ) {
             state.savedFilterDraft = {
-                name: EMPTY_DRAFT_NAME,
+                name: '',
                 filter_group:
                     savedFilterDraftFiltersFromFiltersWithLogicalOperators(
                         action.payload
@@ -91,14 +97,11 @@ export const filtersSlice = createSlice({
         },
         clearSavedFilterDraft(state) {
             state.savedFilterDraft = null
+            state.appliedSavedFilterId = null
         },
         applySavedFilter(state, action: PayloadAction<SavedFilter>) {
             state.appliedSavedFilterId = action.payload.id
             state.savedFilterDraft = action.payload
-        },
-        unapplySavedFilter(state) {
-            state.appliedSavedFilterId = null
-            state.savedFilterDraft = null
         },
         updateSavedFilterDraftName(state, action: PayloadAction<string>) {
             if (state.savedFilterDraft === null) {
@@ -189,12 +192,47 @@ export const filtersSlice = createSlice({
         },
         removeFilterFromSavedFilterDraft(
             state,
-            action: PayloadAction<SavedFilterSupportedFilters>
+            action: PayloadAction<RemoveFiltersProps>
         ) {
             if (state.savedFilterDraft !== null) {
                 state.savedFilterDraft.filter_group =
-                    state.savedFilterDraft.filter_group.filter(
-                        (filter) => filter.member !== action.payload.member
+                    state.savedFilterDraft.filter_group.reduce(
+                        (acc: SavedFilterSupportedFilters[], filterGroup) => {
+                            if (filterGroup.member === FilterKey.CustomFields) {
+                                const customFields = {
+                                    member: filterGroup.member,
+                                    values: filterGroup.values.filter(
+                                        (value) =>
+                                            value.custom_field_id !==
+                                            String(action.payload.customFieldId)
+                                    ),
+                                }
+                                if (customFields.values.length) {
+                                    acc.push(customFields)
+                                }
+                            } else if (filterGroup.member === FilterKey.Tags) {
+                                const tags = {
+                                    member: filterGroup.member,
+                                    values: filterGroup.values.filter(
+                                        (value) =>
+                                            value.filterInstanceId !==
+                                            action.payload.filterInstanceId
+                                    ),
+                                }
+                                if (tags.values.length) {
+                                    acc.push(tags)
+                                }
+                            } else {
+                                if (
+                                    filterGroup.member !==
+                                    action.payload.filterKey
+                                ) {
+                                    acc.push(filterGroup)
+                                }
+                            }
+                            return acc
+                        },
+                        []
                     )
             }
         },
@@ -208,7 +246,6 @@ export const {
     duplicateSavedFilterDraftFromSavedFilter,
     clearSavedFilterDraft,
     applySavedFilter,
-    unapplySavedFilter,
     updateSavedFilterDraftName,
     upsertSavedFilterFilter,
     upsertSavedFilterCustomFieldFilter,
@@ -243,4 +280,10 @@ export const getIsSavedFilterApplied = createSelector(
 export const getSavedFilterAppliedId = createSelector(
     getSliceState,
     (state) => state.appliedSavedFilterId
+)
+
+export const getShouldDisableFiltersPanelActions = createSelector(
+    getSliceState,
+    (state) =>
+        state.appliedSavedFilterId !== null || state.savedFilterDraft !== null
 )

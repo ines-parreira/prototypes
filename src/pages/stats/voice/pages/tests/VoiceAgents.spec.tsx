@@ -19,7 +19,11 @@ import {
 } from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
 import {user} from 'fixtures/users'
-import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
+    LegacyStatsFilters,
+} from 'models/stat/types'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {
@@ -47,8 +51,12 @@ const statsFilters: LegacyStatsFilters = {
         start_datetime: '2023-12-11T00:00:00.000Z',
         end_datetime: '2023-12-11T23:59:59.999Z',
     },
+    integrations: [123],
     agents: [agents[0].id],
     tags: [tags[0].id],
+    score: ['4'],
+    resolutionCompleteness: ['12'],
+    communicationSkills: ['1'],
 }
 
 const getState = (featureEnabled: boolean) =>
@@ -118,7 +126,7 @@ describe('VoiceAgents with the new filters', () => {
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
 
         expect(
-            getByText(FilterLabels[FilterKey.Integrations])
+            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations])
         ).toBeInTheDocument()
         expect(
             getAllByText(FilterLabels[FilterKey.Tags])[0]
@@ -140,7 +148,7 @@ describe('VoiceAgents with the new filters', () => {
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
 
         expect(
-            getByText(FilterLabels[FilterKey.Integrations])
+            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations])
         ).toBeInTheDocument()
         expect(
             getAllByText(FilterLabels[FilterKey.Tags])[0]

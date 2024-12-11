@@ -57,6 +57,7 @@ type Props = {
         warningType?: 'not-applicable' | 'non-existent'
         warningMessage?: string
     }
+    isDisabled?: boolean
 }
 
 type WithInfiniteScrollProps = PropsWithChildren<{
@@ -107,6 +108,7 @@ const Filter = ({
     showQuickSelect = true,
     showSearch = true,
     filterErrors,
+    isDisabled,
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(initializeAsOpen)
@@ -155,6 +157,7 @@ const Filter = ({
                 name={filterName}
                 warningType={warningType}
                 warningMessage={warningMessage}
+                isDisabled={isDisabled}
             />
             <FilterValue
                 ref={ref}
@@ -164,6 +167,7 @@ const Filter = ({
                 onChange={onToggle}
                 onRemove={onRemove}
                 pressedState={isDropdownOpen}
+                isDisabled={isDisabled}
             />
             <Dropdown
                 isMultiple={isMultiple}
@@ -172,6 +176,7 @@ const Filter = ({
                 target={ref}
                 value={selectedValues}
                 className={css.dropdown}
+                isDisabled={isDisabled}
             >
                 {logicalOperators.length > 0 && (
                     <LogicalOperator

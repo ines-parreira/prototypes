@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ReactElement} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     FiltersPanel,
     FiltersPanelProps,
@@ -9,6 +10,7 @@ import {
 import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
 import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {SavedFiltersPanel} from 'pages/stats/common/filters/SavedFiltersPanel'
+import {getShouldDisableFiltersPanelActions} from 'state/ui/stats/filtersSlice'
 
 type Props = Omit<
     FiltersPanelProps,
@@ -26,6 +28,8 @@ export const FiltersPanelWrapper = ({
     const isAnalyticsSavedFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
 
+    const isDisabled = useAppSelector(getShouldDisableFiltersPanelActions)
+
     return (
         <div className={css.outerWrapper}>
             <div className={css.wrapper}>
@@ -37,9 +41,13 @@ export const FiltersPanelWrapper = ({
                         ...(persistentFilters || []),
                         ...optionalFilters,
                     ]}
+                    isDisabled={isDisabled}
                 />
                 {isAnalyticsSavedFilters && withSavedFilters && (
-                    <SavedFiltersActions optionalFilters={optionalFilters} />
+                    <SavedFiltersActions
+                        optionalFilters={optionalFilters}
+                        isDisabled={isDisabled}
+                    />
                 )}
             </div>
             {isAnalyticsSavedFilters && withSavedFilters && (

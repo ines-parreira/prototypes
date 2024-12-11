@@ -70,6 +70,24 @@ describe('FilterValue', () => {
         expect(onRemoveMock).toHaveBeenCalled()
     })
 
+    it('should not call the onRemove when the remove button is clicked', () => {
+        const onRemoveMock = jest.fn()
+        render(
+            <FilterValue
+                optionsLabels={['value1']}
+                logicalOperator={null}
+                onChange={jest.fn()}
+                onRemove={onRemoveMock}
+                isDisabled
+            />
+        )
+
+        const removeButton = screen.getByText('close')
+        userEvent.click(removeButton)
+
+        expect(onRemoveMock).not.toHaveBeenCalled()
+    })
+
     it('displays the logical operator when it is not provided', () => {
         render(
             <FilterValue

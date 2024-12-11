@@ -5,7 +5,10 @@ import React from 'react'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {channels} from 'fixtures/channels'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {FilterKey} from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
@@ -28,6 +31,7 @@ import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceT
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const mockedChannels = channels
+const clearFilterIcon = 'close'
 
 jest.mock('services/channels')
 const mockedGetChannels = assumeMock(getChannels)
@@ -45,6 +49,7 @@ jest.mock('common/segment', () => ({
 
 describe('ChannelsFilter', () => {
     const dispatchUpdate = jest.fn()
+    const dispatchRemove = jest.fn()
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
     const isOneOfRegex = new RegExp(
@@ -73,6 +78,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -88,6 +94,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -103,6 +110,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -119,6 +127,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -142,6 +151,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -163,6 +173,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -182,6 +193,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -199,6 +211,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -220,12 +233,12 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
             defaultState
         )
-        const clearFilterIcon = 'close'
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
             getChannelFromSourceType(
@@ -238,6 +251,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />
@@ -245,10 +259,7 @@ describe('ChannelsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            operator: LogicalOperatorEnum.ONE_OF,
-            values: [],
-        })
+        expect(dispatchRemove).toHaveBeenCalledWith()
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
@@ -256,6 +267,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -293,6 +305,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -307,6 +320,7 @@ describe('ChannelsFilter', () => {
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -338,12 +352,21 @@ describe('ChannelsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Channels])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+            expect(spy).toHaveBeenCalledWith({
+                [FilterKey.Channels]: withLogicalOperator([]),
+            })
         })
     })
 
     describe('ChannelsFilterWithSavedState', () => {
         it('should render ChannelsFilterWithSavedState component', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
+            const removeSpy = jest.spyOn(
+                filtersSlice,
+                'removeFilterFromSavedFilterDraft'
+            )
 
             renderWithStore(<ChannelsFilterWithSavedState />, defaultState)
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -353,6 +376,11 @@ describe('ChannelsFilter', () => {
                 screen.getByText(FilterLabels[FilterKey.Channels])
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
+
+            userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+            expect(removeSpy).toHaveBeenCalledWith({
+                filterKey: FilterKey.Channels,
+            })
         })
     })
 })

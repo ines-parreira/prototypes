@@ -47,6 +47,7 @@ type Props = {
     onChange: () => void
     onRemove?: () => void
     pressedState?: boolean
+    isDisabled?: boolean
 }
 
 const FilterValue = (
@@ -58,6 +59,7 @@ const FilterValue = (
         onChange,
         onRemove,
         pressedState = false,
+        isDisabled = false,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -80,8 +82,10 @@ const FilterValue = (
     }, [optionsLabels, trailIconHovered])
 
     const handleTrailIconClick = (e: React.MouseEvent) => {
-        e.stopPropagation()
-        onRemove?.()
+        if (!isDisabled) {
+            e.stopPropagation()
+            onRemove?.()
+        }
     }
 
     return (
@@ -90,7 +94,7 @@ const FilterValue = (
                 ref={containerRef}
                 className={classNames(
                     css.container,
-                    {[css.pressedState]: pressedState},
+                    {[css.pressedState]: pressedState && !isDisabled},
                     className
                 )}
                 onClick={onChange}
@@ -104,7 +108,13 @@ const FilterValue = (
                         {LogicalOperatorLabel[logicalOperator]}
                     </div>
                 )}
-                <div className={css.text}>{filterText}</div>
+                <div
+                    className={classNames(css.text, {
+                        [css.disabled]: isDisabled,
+                    })}
+                >
+                    {filterText}
+                </div>
                 {trailIcon ? (
                     <i
                         ref={refTrailIcon}

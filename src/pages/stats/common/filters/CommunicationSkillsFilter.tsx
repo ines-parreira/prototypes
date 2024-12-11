@@ -29,7 +29,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -41,6 +44,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -51,9 +55,11 @@ export function CommunicationSkillsFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const communicationSkills = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -127,7 +133,7 @@ export function CommunicationSkillsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
@@ -136,6 +142,7 @@ export function CommunicationSkillsFilter({
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
             showSearch={false}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -150,6 +157,10 @@ export const CommunicationSkillsFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 communicationSkills: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                communicationSkills: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -168,6 +179,10 @@ export const CommunicationSkillsFilterWithSavedState = connect(
                 member: FilterKey.CommunicationSkills,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.CommunicationSkills,
             }),
     }
 )(CommunicationSkillsFilter)

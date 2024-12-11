@@ -28,7 +28,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -40,6 +43,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty: () => void
     dispatchStatFiltersClean: () => void
 } & RemovableFilter &
@@ -50,9 +54,11 @@ export function LanguageProficiencyFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty,
     dispatchStatFiltersClean,
     warningType,
+    isDisabled,
 }: Props) {
     const languageProficiency = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -126,7 +132,7 @@ export function LanguageProficiencyFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
@@ -135,6 +141,7 @@ export function LanguageProficiencyFilter({
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
             showSearch={false}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -149,6 +156,10 @@ export const LanguageProficiencyFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 languageProficiency: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                languageProficiency: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -167,6 +178,10 @@ export const LanguageProficiencyFilterWithSavedState = connect(
                 member: FilterKey.LanguageProficiency,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.LanguageProficiency,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,

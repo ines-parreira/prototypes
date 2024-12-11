@@ -1,3 +1,5 @@
+import {AnalyticsFilter} from '@gorgias/api-queries'
+import _isEqual from 'lodash/isEqual'
 import times from 'lodash/times'
 
 import {
@@ -80,7 +82,15 @@ export const getFilterError = ({
 }
 
 export const getValidMemberName = (member: string): string => {
-    return member.includes('tags') ? 'tags' : member
+    switch (member) {
+        case FilterComponentKey.Store:
+        case FilterComponentKey.PhoneIntegrations:
+            return FilterKey.Integrations
+        case FilterComponentKey.CustomField:
+            return FilterKey.CustomFields
+        default:
+            return member
+    }
 }
 
 export const isFilterApplicable = ({
@@ -94,7 +104,8 @@ export const isFilterApplicable = ({
         applicableFilters.length &&
         !applicableFilters.find(
             (applicableFilter) =>
-                applicableFilter === getValidMemberName(filterKey)
+                getValidMemberName(applicableFilter) ===
+                getValidMemberName(filterKey)
         )
     ) {
         return 'not-applicable'
@@ -114,7 +125,8 @@ export const areFiltersApplicable = ({
             (filter) =>
                 !applicableFilters.find(
                     (applicableFilter) =>
-                        applicableFilter === getValidMemberName(filter.member)
+                        getValidMemberName(applicableFilter) ===
+                        getValidMemberName(filter.member)
                 )
         )
         if (notApplicable) {
@@ -123,3 +135,53 @@ export const areFiltersApplicable = ({
     }
     return undefined
 }
+
+type MergedFiltersFormat =
+    | {
+          name: string
+          filter_group: {
+              member: string
+              operator?: string
+              values: (
+                  | string
+                  | number
+                  | {
+                        values: (string | number)[]
+                        operator: string
+                        customFieldId?: string
+                    }
+              )[]
+          }[]
+      }
+    | undefined
+
+export const getFormattedFilter = (
+    filters: AnalyticsFilter | SavedFilterDraft | null | undefined
+): MergedFiltersFormat =>
+    filters
+        ? {
+              name: filters.name,
+              filter_group: (filters.filter_group || []).map((group) => ({
+                  member: group.member,
+                  operator: 'operator' in group ? group.operator : undefined,
+                  values: group.values.map((value) => {
+                      return typeof value === 'object'
+                          ? {
+                                values: value.values,
+                                operator: value.operator,
+                                customFieldId:
+                                    'custom_field_id' in value
+                                        ? value.custom_field_id
+                                        : undefined,
+                            }
+                          : value
+                  }),
+              })),
+          }
+        : undefined
+
+export const areFiltersEqual = (
+    savedFilters: AnalyticsFilter | null | undefined,
+    filtersDraft: SavedFilterDraft | null | undefined
+) =>
+    _isEqual(getFormattedFilter(savedFilters), getFormattedFilter(filtersDraft))

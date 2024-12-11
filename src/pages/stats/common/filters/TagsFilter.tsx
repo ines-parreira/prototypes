@@ -27,10 +27,17 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type DispatchProps = {
     dispatchUpdate: (value: TagFilter[]) => void
+    dispatchRemove: (value: {
+        filter?: TagFilter[]
+        filterInstanceId?: string
+    }) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 }
@@ -62,8 +69,10 @@ export const TagsFilter = ({
     onRemove,
     warningType: tagsWarningType,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
+    isDisabled,
 }: Props) => {
     const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
         useTagSearch()
@@ -173,7 +182,10 @@ export const TagsFilter = ({
                 if (otherValue) {
                     tagsToUpdate.push(otherValue)
                 }
-                dispatchUpdate(tagsToUpdate)
+                dispatchRemove({
+                    filter: tagsToUpdate,
+                    filterInstanceId: value?.filterInstanceId,
+                })
                 handleTagsSearch('')
                 onRemove?.()
             }}
@@ -185,6 +197,7 @@ export const TagsFilter = ({
                 shouldLoadMore,
             }}
             initializeAsOpen={initializeAsOpen}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -226,6 +239,15 @@ export const TagsFilterWithState = connect(
             mergeStatsFiltersWithLogicalOperator({
                 tags: filter,
             }),
+        dispatchRemove: ({
+            filter,
+        }: {
+            filter?: TagFilter[]
+            filterInstanceId?: string
+        }) =>
+            mergeStatsFiltersWithLogicalOperator({
+                tags: filter,
+            }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
     }
@@ -246,6 +268,16 @@ export const TagsFilterWithSavedState = connect(
                     values: f.values.map(String),
                     filterInstanceId: f.filterInstanceId,
                 })),
+            }),
+        dispatchRemove: ({
+            filterInstanceId,
+        }: {
+            filter?: TagFilter[]
+            filterInstanceId?: string
+        }) =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.Tags,
+                filterInstanceId,
             }),
     }
 )(TagsFilter)

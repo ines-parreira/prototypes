@@ -20,7 +20,6 @@ import {
     clearSavedFilterDraft,
     COPY_OF_DRAFT_NAME,
     initialiseSavedFilterDraft,
-    EMPTY_DRAFT_NAME,
     filtersSlice,
     FiltersSliceState,
     getCanSaveFilter,
@@ -29,13 +28,13 @@ import {
     getSavedFilterDraft,
     initialState,
     removeFilterFromSavedFilterDraft,
-    unapplySavedFilter,
     updateSavedFilterDraftName,
     upsertSavedFilterFilter,
     initialiseSavedFilterDraftFromSavedFilter,
     initialiseSavedFilterDraftFromFilters,
     duplicateSavedFilterDraftFromSavedFilter,
     upsertSavedFilterCustomFieldFilter,
+    getShouldDisableFiltersPanelActions,
 } from 'state/ui/stats/filtersSlice'
 
 describe('filtersSlice', () => {
@@ -103,13 +102,13 @@ describe('filtersSlice', () => {
         })
     })
 
-    describe('savedFilters', () => {
-        const agentsSavedFilter: SavedFilterWithLogicalOperator = {
-            member: FilterKey.Agents,
-            operator: LogicalOperatorEnum.ONE_OF,
-            values: ['1', '2'],
-        }
+    const agentsSavedFilter: SavedFilterWithLogicalOperator = {
+        member: FilterKey.Agents,
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: ['1', '2'],
+    }
 
+    describe('savedFilters', () => {
         const channelsFilter: SavedFilterSupportedFilters = {
             member: FilterKey.Channels,
             operator: LogicalOperatorEnum.NOT_ONE_OF,
@@ -123,7 +122,7 @@ describe('filtersSlice', () => {
             )
 
             expect(newState.savedFilterDraft).toEqual({
-                name: EMPTY_DRAFT_NAME,
+                name: '',
                 filter_group: [],
             })
         })
@@ -176,7 +175,7 @@ describe('filtersSlice', () => {
             )
 
             expect(newState.savedFilterDraft).toEqual({
-                name: EMPTY_DRAFT_NAME,
+                name: '',
                 filter_group: [
                     {
                         member: FilterKey.Agents,
@@ -204,6 +203,7 @@ describe('filtersSlice', () => {
             )
 
             expect(newState.savedFilterDraft).toEqual(null)
+            expect(newState.appliedSavedFilterId).toEqual(null)
         })
 
         it('should applySavedFilter', () => {
@@ -220,18 +220,6 @@ describe('filtersSlice', () => {
 
             expect(newState.appliedSavedFilterId).toEqual(savedFilter.id)
             expect(newState.savedFilterDraft).toEqual(savedFilter)
-        })
-
-        it('should unapplySavedFilter', () => {
-            const savedFilterId = 123
-            const state = {
-                ...initialState,
-                appliedSavedFilterId: savedFilterId,
-            }
-
-            const newState = filtersSlice.reducer(state, unapplySavedFilter())
-
-            expect(newState.appliedSavedFilterId).toEqual(null)
         })
 
         it('should add a filter upsertSavedFilterFilter', () => {
@@ -530,7 +518,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                removeFilterFromSavedFilterDraft(agentFilter)
+                removeFilterFromSavedFilterDraft({filterKey: FilterKey.Agents})
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -538,13 +526,155 @@ describe('filtersSlice', () => {
             ])
         })
 
-        it('should do nothing if no filter on removedSavedFilterFilter', () => {
-            const agentFilter: SavedFilterSupportedFilters = {
+        it('should remove CustomFields object using removeFilterFromSavedFilterDraft', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                custom_field_id: '123',
+            }
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filter_group: [
+                    {
+                        member: FilterKey.CustomFields,
+                        values: [currentFilter],
+                    },
+                ],
+            }
+
+            const state = {
+                ...initialState,
+                savedFilterDraft,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.CustomFields,
+                    customFieldId: 123,
+                })
+            )
+
+            expect(newState.savedFilterDraft?.filter_group).toEqual([])
+        })
+
+        it('should remove one CustomField and keep the other using removeFilterFromSavedFilterDraft', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                custom_field_id: '123',
+            }
+            const otherFilter = {...currentFilter, custom_field_id: '456'}
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filter_group: [
+                    {
+                        member: FilterKey.CustomFields,
+                        values: [currentFilter, otherFilter],
+                    },
+                ],
+            }
+
+            const state = {
+                ...initialState,
+                savedFilterDraft,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.CustomFields,
+                    customFieldId: 123,
+                })
+            )
+
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
+                {
+                    member: FilterKey.CustomFields,
+                    values: [otherFilter],
+                },
+            ])
+        })
+
+        it('should remove TagsFilters object using removeFilterFromSavedFilterDraft', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                filterInstanceId: 'first',
+            } as any
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filter_group: [
+                    {
+                        member: FilterKey.Tags,
+                        values: [currentFilter],
+                    },
+                ],
+            }
+
+            const state = {
+                ...initialState,
+                savedFilterDraft,
+            }
+
+            const newState = filtersSlice.reducer(
+                state,
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.Tags,
+                    filterInstanceId: 'first',
+                })
+            )
+
+            expect(newState.savedFilterDraft?.filter_group).toEqual([])
+        })
+
+        it('should remove TagsFilters and keep the other using removeFilterFromSavedFilterDraft', () => {
+            const currentFilter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                filterInstanceId: 'first',
+            } as any
+
+            const otherFilter: SavedFilterSupportedFilters = {
                 member: FilterKey.Agents,
                 operator: LogicalOperatorEnum.ONE_OF,
+                values: ['Some::value'],
+                filterInstanceId: 'second',
+            } as any
+
+            const savedFilterDraft: SavedFilterDraft = {
+                name: 'someName',
+                filter_group: [
+                    {
+                        member: FilterKey.Tags,
+                        values: [currentFilter, otherFilter],
+                    },
+                ],
+            }
+
+            const state = {
+                ...initialState,
+                savedFilterDraft,
                 values: ['1', '2'],
             }
 
+            const newState = filtersSlice.reducer(
+                state,
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.Tags,
+                    filterInstanceId: 'first',
+                })
+            )
+
+            expect(newState.savedFilterDraft?.filter_group).toEqual([
+                {
+                    member: FilterKey.Tags,
+                    values: [otherFilter],
+                },
+            ])
+        })
+
+        it('should do nothing if no filter on removedSavedFilterFilter', () => {
             const state = {
                 ...initialState,
                 savedFilterDraft: null,
@@ -552,7 +682,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                removeFilterFromSavedFilterDraft(agentFilter)
+                removeFilterFromSavedFilterDraft({filterKey: FilterKey.Agents})
             )
 
             expect(newState.savedFilterDraft).toEqual(null)
@@ -680,6 +810,63 @@ describe('filtersSlice', () => {
             } as RootState
 
             expect(getIsSavedFilterApplied(state)).toEqual(false)
+        })
+    })
+
+    describe('getShouldDisableFiltersPanelActions', () => {
+        const savedFilterDraft = {
+            name: 'someName',
+            filter_group: [agentsSavedFilter],
+        }
+        const getState = (draft = {}) => ({
+            ui: {
+                stats: {
+                    filters: {
+                        ...initialState,
+                        ...draft,
+                    },
+                },
+            },
+        })
+
+        it('should return true', () => {
+            expect(
+                getShouldDisableFiltersPanelActions(
+                    getState({
+                        savedFilterDraft: savedFilterDraft,
+                        appliedSavedFilterId: null,
+                    }) as RootState
+                )
+            ).toBeTruthy()
+
+            expect(
+                getShouldDisableFiltersPanelActions(
+                    getState({
+                        savedFilterDraft: null,
+                        appliedSavedFilterId: 1,
+                    }) as RootState
+                )
+            ).toBeTruthy()
+
+            expect(
+                getShouldDisableFiltersPanelActions(
+                    getState({
+                        savedFilterDraft: {name: null},
+                        appliedSavedFilterId: 1,
+                    }) as RootState
+                )
+            ).toBeTruthy()
+        })
+
+        it('should return false', () => {
+            expect(
+                getShouldDisableFiltersPanelActions(
+                    getState({
+                        savedFilterDraft: null,
+                        appliedSavedFilterId: null,
+                    }) as RootState
+                )
+            ).toBeFalsy()
         })
     })
 })

@@ -28,7 +28,10 @@ import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {getFilterTeamsJS} from 'state/teams/selectors'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Agents]
@@ -38,6 +41,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -46,11 +50,13 @@ type Props = {
 export default function AgentsFilter({
     value = emptyFilter,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     initializeAsOpen = false,
     onRemove,
     warningType,
+    isDisabled,
 }: Props) {
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
@@ -178,7 +184,7 @@ export default function AgentsFilter({
                 setSelectedTeamOption([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
                 setSelectedTeamOption([])
                 onRemove?.()
             }}
@@ -186,6 +192,7 @@ export default function AgentsFilter({
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -198,6 +205,10 @@ export const AgentsFiltersWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 agents: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                agents: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -214,6 +225,10 @@ export const AgentsFiltersWithSavedState = connect(
                 operator: filter.operator,
                 values: filter.values.map(String),
                 member: FilterKey.Agents,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.Agents,
             }),
     }
 )(AgentsFilter)

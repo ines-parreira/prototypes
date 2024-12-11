@@ -1,8 +1,6 @@
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-
 import {Provider} from 'react-redux'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -25,7 +23,7 @@ import CustomFieldsFilter, {
     CustomFieldsFilterWithSavedState,
     CustomFieldsFilterWithState,
 } from 'pages/stats/common/filters/CustomFieldsFilter'
-
+import {emptyCustomFieldFilter} from 'pages/stats/common/filters/helpers'
 import * as statsSlice from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
@@ -48,6 +46,7 @@ jest.mock('common/segment', () => ({
 }))
 
 const dispatchUpdate = jest.fn()
+const dispatchRemove = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
 
@@ -57,6 +56,7 @@ const renderComponent = () =>
             customFieldId={customFieldId}
             filterName={filterName}
             dispatchUpdate={dispatchUpdate}
+            dispatchRemove={dispatchRemove}
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
@@ -152,6 +152,7 @@ describe('CustomFieldsFilter', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -199,6 +200,7 @@ describe('CustomFieldsFilter', () => {
                         operator: LogicalOperatorEnum.ONE_OF,
                     }}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -229,6 +231,7 @@ describe('CustomFieldsFilter', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -270,6 +273,7 @@ describe('CustomFieldsFilter', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                 }}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -278,11 +282,7 @@ describe('CustomFieldsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            customFieldId,
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
+        expect(dispatchRemove).toHaveBeenCalledWith(customFieldId)
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
@@ -313,6 +313,7 @@ describe('CustomFieldsFilter', () => {
                         operator: LogicalOperatorEnum.NOT_ONE_OF,
                     }}
                     dispatchUpdate={dispatchUpdate}
+                    dispatchRemove={dispatchRemove}
                     dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                     dispatchStatFiltersClean={dispatchStatFiltersClean}
                 />
@@ -347,6 +348,7 @@ describe('CustomFieldsFilter', () => {
                     values: allAvailableCustomFields,
                 })}
                 dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
@@ -355,11 +357,7 @@ describe('CustomFieldsFilter', () => {
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            customFieldId: wrongId,
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
+        expect(dispatchRemove).toHaveBeenCalledWith(wrongId)
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
@@ -407,6 +405,8 @@ describe('CustomFieldsFilterFilterWithState', () => {
     })
 
     it('should render CustomFieldsFilterWithState and select an option from redux state by default', () => {
+        const spy = jest.spyOn(statsSlice, 'mergeCustomFieldsFilter')
+
         renderWithStore(
             <CustomFieldsFilterWithState
                 customFieldId={customFieldId}
@@ -425,6 +425,9 @@ describe('CustomFieldsFilterFilterWithState', () => {
             screen.queryByText(customFieldOptions[0])
         ).not.toBeInTheDocument()
         expect(screen.getByText(customFieldOptions[1])).toBeInTheDocument()
+
+        userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+        expect(spy).toHaveBeenCalledWith(emptyCustomFieldFilter(customFieldId))
     })
 })
 
@@ -485,6 +488,10 @@ describe('CustomFieldsFilterWithSavedState', () => {
             filtersSlice,
             'upsertSavedFilterCustomFieldFilter'
         )
+        const removeSpy = jest.spyOn(
+            filtersSlice,
+            'removeFilterFromSavedFilterDraft'
+        )
 
         renderWithStore(
             <CustomFieldsFilterWithSavedState
@@ -498,5 +505,11 @@ describe('CustomFieldsFilterWithSavedState', () => {
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         expect(spy).toHaveBeenCalled()
+
+        userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
+        expect(removeSpy).toHaveBeenCalledWith({
+            filterKey: FilterKey.CustomFields,
+            customFieldId,
+        })
     })
 })

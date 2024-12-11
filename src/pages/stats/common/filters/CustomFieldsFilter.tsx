@@ -1,13 +1,11 @@
 import noop from 'lodash/noop'
-
 import React, {useCallback} from 'react'
-
 import {connect} from 'react-redux'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {CustomField} from 'custom-fields/types'
 import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
-import {CustomFieldFilter} from 'models/stat/types'
+import {CustomFieldFilter, FilterKey} from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -18,13 +16,15 @@ import {
     emptyCustomFieldFilter,
     logSegmentEvent,
 } from 'pages/stats/common/filters/helpers'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    OptionalFilterProps,
+    RemovableFilter,
+} from 'pages/stats/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
 import {DropdownOption} from 'pages/stats/types'
-
 import {
     getCustomFieldFilterById,
     getCustomFieldSavedFilterById,
@@ -32,10 +32,14 @@ import {
 import {mergeCustomFieldsFilter} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterCustomFieldFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterCustomFieldFilter,
+} from 'state/ui/stats/filtersSlice'
 
 type DispatchProps = {
     dispatchUpdate: (value: CustomFieldFilter) => void
+    dispatchRemove: (customFieldId: number) => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 }
@@ -46,7 +50,7 @@ type OwnProps = {
     customFieldId: number
 }
 
-type Props = OwnProps & DispatchProps & RemovableFilter
+type Props = OwnProps & DispatchProps & RemovableFilter & OptionalFilterProps
 
 const getOptions = (activeFields: CustomField[], customFieldId: number) => {
     const dropdownFieldDefinition: CustomField | undefined = activeFields
@@ -82,6 +86,9 @@ export default function CustomFieldsFilter({
     onRemove,
     filterName,
     customFieldId,
+    dispatchRemove,
+    isDisabled,
+    warningType,
 }: Props) {
     const value = inputValue ?? emptyCustomFieldFilter(customFieldId)
     const {data: {data: activeFields = []} = {}} =
@@ -158,13 +165,16 @@ export default function CustomFieldsFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyCustomFieldFilter(customFieldId))
+                dispatchRemove(customFieldId)
+
                 onRemove?.()
             }}
             onChangeLogicalOperator={handleFilterOperatorChange}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
+            filterErrors={{warningType}}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -175,6 +185,8 @@ export const CustomFieldsFilterWithState = connect(
     }),
     {
         dispatchUpdate: mergeCustomFieldsFilter,
+        dispatchRemove: (customFieldId: number) =>
+            mergeCustomFieldsFilter(emptyCustomFieldFilter(customFieldId)),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
     }
@@ -187,5 +199,10 @@ export const CustomFieldsFilterWithSavedState = connect(
     {
         dispatchUpdate: (value: CustomFieldFilter) =>
             upsertSavedFilterCustomFieldFilter(value),
+        dispatchRemove: (customFieldId: number) =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.CustomFields,
+                customFieldId,
+            }),
     }
 )(CustomFieldsFilter)

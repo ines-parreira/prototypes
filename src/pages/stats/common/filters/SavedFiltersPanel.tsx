@@ -31,7 +31,10 @@ import {
 } from 'pages/stats/common/filters/helpers'
 import {SavedFilterMenu} from 'pages/stats/common/filters/SavedFilterMenu'
 import css from 'pages/stats/common/filters/SavedFiltersPanel.less'
-import {areFiltersApplicable} from 'pages/stats/common/filters/utils'
+import {
+    areFiltersApplicable,
+    areFiltersEqual,
+} from 'pages/stats/common/filters/utils'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
@@ -44,7 +47,6 @@ import {
     getIsSavedFilterApplied,
     getSavedFilterDraft,
     initialiseSavedFilterDraftFromSavedFilter,
-    unapplySavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
 import {isAdmin} from 'utils'
@@ -124,13 +126,15 @@ export const SavedFiltersPanel = ({
 }: Props) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
+
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
     const currentUser = useAppSelector(getCurrentUser)
+    const isSavedFilterApplied = useAppSelector(getIsSavedFilterApplied)
+    const canSaveFilter = useAppSelector(getCanSaveFilter)
+
     const savedFilter = isSavedFilter(savedFilterDraft)
         ? savedFilterDraft
         : null
-    const isSavedFilterApplied = useAppSelector(getIsSavedFilterApplied)
-    const canSaveFilter = useAppSelector(getCanSaveFilter)
     const isEditingSavedFilterDraft =
         savedFilterDraft !== null && !isSavedFilterApplied
 
@@ -142,6 +146,7 @@ export const SavedFiltersPanel = ({
         useState(false)
     const [isSaveConfirmationModalOpen, setIsSaveConfirmationModalOpen] =
         useState(false)
+
     const toggleIsEditMode = () => {
         setIsEditMode(!isEditMode)
     }
@@ -159,6 +164,7 @@ export const SavedFiltersPanel = ({
         savedFilter !== null
             ? savedFilters.data?.data.data.find((f) => f.id === savedFilter.id)
             : null
+
     const createMutation = useCreateAnalyticsFilter(mutationConfig)
     const updateMutation = useUpdateAnalyticsFilter(mutationConfig)
     const deleteMutation = useDeleteAnalyticsFilter(mutationConfig)
@@ -183,7 +189,7 @@ export const SavedFiltersPanel = ({
     }, [dispatch, isEditingSavedFilterDraft, originalSavedFilter])
 
     const unApplyFilterHandler = () => {
-        dispatch(unapplySavedFilter())
+        dispatch(clearSavedFilterDraft())
         setErrorMessage(undefined)
     }
 
@@ -445,7 +451,13 @@ export const SavedFiltersPanel = ({
                                                     )
                                                 }
                                             }}
-                                            isDisabled={!canSaveFilter}
+                                            isDisabled={
+                                                !canSaveFilter ||
+                                                areFiltersEqual(
+                                                    originalSavedFilter,
+                                                    savedFilterDraft
+                                                )
+                                            }
                                         >
                                             {SAVE_BUTTON_LABEL}
                                         </Button>
