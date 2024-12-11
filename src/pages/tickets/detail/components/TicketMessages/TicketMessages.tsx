@@ -1,7 +1,7 @@
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment, {Moment} from 'moment'
-import React, {useEffect} from 'react'
+import React, {useEffect, useMemo} from 'react'
 
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
@@ -11,7 +11,7 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import {TicketMessage} from 'models/ticket/types'
+import {MessageMetadataType, TicketMessage} from 'models/ticket/types'
 import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
 
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
@@ -80,6 +80,11 @@ export default function TicketMessages({
         message?.body_html &&
         message?.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
     )
+
+    // Used to transfer metadata from chat without displaying a message
+    const isSignal = useMemo(() => {
+        return message?.meta?.type === MessageMetadataType.Signal
+    }, [message])
 
     const isAIAgentTrialMessage = isTrialMessageFromAIAgent(message)
 
@@ -167,6 +172,10 @@ export default function TicketMessages({
                 isTrial
             />
         )
+    }
+
+    if (isSignal) {
+        return null
     }
 
     return (

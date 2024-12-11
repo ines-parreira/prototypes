@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import {SegmentEvent} from 'common/segment'
 import {logEventWithSampling} from 'common/segment/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {MessageMetadataType} from 'models/ticket/types'
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
@@ -313,6 +314,29 @@ describe('TicketMessages', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
+            </Provider>
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('should identify signal metadata message type', () => {
+        const signalMessageProps = {
+            ...defaultProps,
+            messages: [
+                {
+                    ...defaultProps.messages[0],
+                    body_html: undefined,
+                    meta: {
+                        type: MessageMetadataType.Signal,
+                    },
+                },
+            ],
+        }
+
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMessages {...signalMessageProps} />
             </Provider>
         )
 

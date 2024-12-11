@@ -181,6 +181,14 @@ export type Action = {
     }
 }
 
+export enum MessageMetadataType {
+    Message = 'message',
+    /**
+     * Used to transfer metadata from chat without displaying a message
+     */
+    Signal = 'signal',
+}
+
 export enum ActionStatus {
     Error = 'error',
     Pending = 'pending',
@@ -245,6 +253,7 @@ export type Meta = {
     body_html_truncated?: boolean
     sms_deflection?: string
     hidden?: boolean
+    type?: MessageMetadataType
 }
 
 export type FacebookPrivateReply = {
