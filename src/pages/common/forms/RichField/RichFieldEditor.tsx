@@ -1,11 +1,5 @@
 import classnames from 'classnames'
-import {
-    EditorState,
-    Modifier,
-    RichUtils,
-    ContentState,
-    ContentBlock,
-} from 'draft-js'
+import {EditorState, Modifier, RichUtils, ContentState} from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
@@ -108,7 +102,6 @@ type Props = {
     noAutoScroll?: boolean
     uploadType?: UploadType
     getWorkflowVariables?: () => WorkflowVariableList
-    blockStyleFn?: (block: ContentBlock) => string
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -497,7 +490,6 @@ export class RichFieldEditor extends Component<Props, State> {
                             tabIndex={this.props.tabIndex}
                             spellCheck={this.props.spellCheck}
                             ticket={ticket}
-                            blockStyleFn={this.props.blockStyleFn}
                         />
                         <MentionSuggestions
                             onSearchChange={this.props.onMentionSearchChange}

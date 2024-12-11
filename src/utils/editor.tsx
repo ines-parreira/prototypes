@@ -47,7 +47,6 @@ export enum EditorBlockType {
     HeaderSix = 'header-six',
     Atomic = 'atomic',
     Blockquote = 'blockquote',
-    Paragraph = 'paragraph',
 }
 
 export enum EditorHandledNotHandled {
@@ -106,13 +105,12 @@ const BLOCK_TO_HTML: Record<
     [EditorBlockType.HeaderFive]: {element: <h5 />},
     // eslint-disable-next-line jsx-a11y/heading-has-content
     [EditorBlockType.HeaderSix]: {element: <h6 />},
-    [EditorBlockType.Paragraph]: {element: <p />},
 })
 
 const HTML_TO_BLOCK: Record<string, EditorBlockType> = Object.freeze({
     br: EditorBlockType.Unstyled,
     div: EditorBlockType.Unstyled,
-    p: EditorBlockType.Paragraph,
+    p: EditorBlockType.Unstyled,
     pre: EditorBlockType.CodeBlock,
     h1: EditorBlockType.HeaderOne,
     h2: EditorBlockType.HeaderTwo,

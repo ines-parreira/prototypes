@@ -6,14 +6,16 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 
+import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {setResponseText} from 'state/newMessage/actions'
-import {applyMacro, updateTicketMessage} from 'state/ticket/actions'
-
-import {contentStateFromTextOrHTML} from 'utils/editor'
+import {
+    applyMacro,
+    applyMacroAction,
+    updateTicketMessage,
+} from 'state/ticket/actions'
 
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
 
@@ -61,13 +63,14 @@ const AIAgentDraftMessage = ({
 
         if (draftMessage) {
             dispatch(
-                setResponseText(
+                applyMacroAction(
                     fromJS({
-                        contentState: contentStateFromTextOrHTML(
-                            undefined,
-                            draftMessage.content!
-                        ),
-                        forceUpdate: true,
+                        arguments: {
+                            body_html: draftMessage.content,
+                        },
+                        name: MacroActionName.SetResponseText,
+                        title: 'Set Response Text',
+                        type: MacroActionType.User,
                     })
                 )
             )
