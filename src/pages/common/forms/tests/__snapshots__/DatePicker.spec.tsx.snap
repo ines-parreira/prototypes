@@ -26,7 +26,7 @@ exports[`DatePicker should render a date range picker 1`] = `
     </button>
   </div>
   <div
-    class="daterangepicker ltr show-ranges single show-calendar opensleft modern light displayed picker-v2 apply-v2-styles ranges-on-left action-buttons-on-the-bottom"
+    class="daterangepicker ltr show-ranges single show-calendar opensleft classic displayed picker-v2 apply-v2-styles ranges-on-left action-buttons-on-the-bottom"
     style="top: 0px; left: 0px; right: 0px;"
   >
     <div

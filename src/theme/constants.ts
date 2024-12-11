@@ -1,21 +1,12 @@
-import dark from '@gorgias/design-tokens/dist/tokens/color/merchantDark.json'
-import light from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
-import legacyColors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {THEME_TYPES} from '@gorgias/merchant-ui-kit'
+import {THEME_NAME} from '@gorgias/design-tokens'
 
-import type {ColorTokens, ThemeConfig, ThemeName} from './types'
+import type {HelpdeskThemeName} from './types'
 
-const {Modern, ...UIKIT_THEME_TYPES} = THEME_TYPES
-export const THEME_NAME = {
-    ...UIKIT_THEME_TYPES,
-    Classic: Modern,
-    System: 'system',
-} as const
-
-export const themeTokenMap: Record<ThemeName, ColorTokens> = {
-    [THEME_NAME.Classic]: legacyColors['🖥 Modern'] as unknown as ColorTokens,
-    [THEME_NAME.Dark]: dark.Dark,
-    [THEME_NAME.Light]: light.Light,
+type ThemeConfig = {
+    icon: string
+    label: string
+    name: HelpdeskThemeName
+    settingsLabel?: string
 }
 
 export const THEME_CONFIGS: ThemeConfig[] = [

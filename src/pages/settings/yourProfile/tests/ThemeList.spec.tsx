@@ -36,7 +36,7 @@ describe('ThemeList', () => {
         expect(systemTheme).toHaveTextContent('System')
         userEvent.click(systemTheme)
         expect(onChangeThemeSpy).toHaveBeenCalledTimes(1)
-        expect(onChangeThemeSpy).toHaveBeenCalledWith(THEME_NAME.System)
+        expect(onChangeThemeSpy).toHaveBeenCalledWith('system')
 
         // Dark
         const darkTheme = screen.getAllByRole('radio')[1]

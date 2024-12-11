@@ -4,6 +4,7 @@ import moment from 'moment-timezone'
 import React, {ComponentProps} from 'react'
 
 import DatePicker from 'pages/common/forms/DatePicker'
+import {THEME_NAME} from 'theme'
 
 jest.mock('theme/useTheme.ts', () => {
     const {THEME_NAME, themeTokenMap} =
@@ -163,8 +164,9 @@ describe('DatePicker', () => {
             'daterangepicker'
         ) as unknown as HTMLDivElement[]
 
-        expect(dateRangePickerElement.classList.contains('modern')).toBe(true)
-        expect(dateRangePickerElement.classList.contains('light')).toBe(true)
+        expect(
+            dateRangePickerElement.classList.contains(THEME_NAME.Classic)
+        ).toBe(true)
     })
 
     it('should render date picker without the v2 classnames', () => {

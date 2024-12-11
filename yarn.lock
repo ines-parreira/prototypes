@@ -2301,9 +2301,9 @@
     regenerator-runtime "^0.14.0"
 
 "@babel/runtime@^7.24.5":
-  version "7.25.7"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.25.7.tgz#7ffb53c37a8f247c8c4d335e89cdf16a2e0d0fb6"
-  integrity sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==
+  version "7.26.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.0.tgz#8600c2f595f277c60815256418b85356a65173c1"
+  integrity sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -3045,10 +3045,10 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/config/0.2.0/d69dc876136d32495cf21fef9c3eb5955845ea39#d69dc876136d32495cf21fef9c3eb5955845ea39"
   integrity sha512-QBO7KRcX6WoGLVUuXLMWr4LwT5dXFvd0hdqVpNyG4P03HRDSOnqMHYL+zGZwfp00ZpoAEs/P3KHzOEhSpaMxSw==
 
-"@gorgias/design-tokens@^0.3.5":
-  version "0.3.5"
-  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.3.5/d70c391dd0295801dc7a4add6b88a1f0e9e20524#d70c391dd0295801dc7a4add6b88a1f0e9e20524"
-  integrity sha512-Ajiv+yKZLDEfY+T8qeJfTjvJeLcRW9blEFzrsPWb3J2MjG+q+XCdw0Wn+r6exBTXSxcSxj0/EkCwKc6DI2AZ3w==
+"@gorgias/design-tokens@^0.4.0":
+  version "0.4.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.4.0/07df81961cf78ee2e549aba4234546df0c60d4e7#07df81961cf78ee2e549aba4234546df0c60d4e7"
+  integrity sha512-XGuTxKvgvr9/IfQxvhh1F9cjsWlZlpOjLEWBT/8f8hT2zPAQwUVKJ97Q5r0d8DUb8alBhC3rF0PYCIxPewo2MA==
 
 "@gorgias/event-tracker-api@*":
   version "1.0.4"
@@ -3074,10 +3074,10 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7#25a551ebe4ce428f03e1157f60263b2ef049d5c7"
   integrity sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==
 
-"@gorgias/merchant-ui-kit@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.1.0/5d688808f7a79a0f4519d5d0ec5bef4adeca7f09#5d688808f7a79a0f4519d5d0ec5bef4adeca7f09"
-  integrity sha512-2WwciNurM2w0ENld919V2ZGCk1NJaMRq3EgpRZKeAeNqocaYYRCRrZo8xCUhZ8J4WZGPi1ox9gwJ23ObyvZ/UQ==
+"@gorgias/merchant-ui-kit@^0.2.0":
+  version "0.2.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/merchant-ui-kit/0.2.0/28c04d81327692120d3b084a7545fc7c42808f3b#28c04d81327692120d3b084a7545fc7c42808f3b"
+  integrity sha512-0TwQdBxH3exOKRI1JEHxH2MkOm1MrQbMF8NqyDlrpJS1JiCOZGpS/HfklaMR4jBud7XG7soLReHyYFkaAEGlXw==
   dependencies:
     "@floating-ui/react" "^0.25.1"
     downshift "^9.0.6"

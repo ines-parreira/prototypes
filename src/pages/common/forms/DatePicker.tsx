@@ -85,7 +85,6 @@ export const DatePicker = ({
     }, [startDate, userTimezone])
 
     const theme = useTheme()
-    const themes = theme.resolvedName.split(' ')
 
     useEffect(() => {
         isOpenRef.current = isOpen
@@ -223,7 +222,7 @@ export const DatePicker = ({
                 onShow={(event, target) => {
                     dateRangerPickerElement.current = target.container?.get(0)
                     dateRangerPickerElement.current.classList.add(
-                        ...themes,
+                        theme.resolvedName,
                         'displayed'
                     )
 
@@ -295,7 +294,7 @@ export const DatePicker = ({
                 onHide={() => {
                     endHandlingTooltipHover()
                     dateRangerPickerElement.current?.classList.remove(
-                        ...themes,
+                        theme.resolvedName,
                         'displayed'
                     )
                     onHide?.()

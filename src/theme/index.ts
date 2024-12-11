@@ -1,5 +1,8 @@
-export {THEME_CONFIGS, THEME_NAME, themeTokenMap} from './constants'
-export type {ColorTokens, HelpdeskThemeName, ThemeName} from './types'
+export {THEME_NAME, themeTokenMap} from '@gorgias/design-tokens'
+export type {ColorTokens, ThemeName} from '@gorgias/design-tokens'
+
+export {THEME_CONFIGS} from './constants'
+export type {HelpdeskThemeName} from './types'
 export {default as ThemeProvider} from './ThemeProvider'
 export {default as useSetTheme} from './useSetTheme'
 export {default as useTheme} from './useTheme'

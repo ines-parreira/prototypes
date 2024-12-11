@@ -1,8 +1,8 @@
+import {THEME_NAME} from '@gorgias/design-tokens'
 import {ThemeContext as UIKitThemeContext} from '@gorgias/merchant-ui-kit'
 import {render} from '@testing-library/react'
 import React, {useContext} from 'react'
 
-import {THEME_NAME} from '../constants'
 import AppThemeContext from '../ThemeContext'
 import ThemeProvider from '../ThemeProvider'
 
@@ -24,8 +24,8 @@ describe('ThemeProvider', () => {
 
         expect(getByText('Test component')).toBeInTheDocument()
         expect(UIKitTheme).toEqual({
-            theme: THEME_NAME.Classic,
-            colorTokens: expect.any(Object),
+            name: THEME_NAME.Classic,
+            tokens: expect.any(Object),
         })
         expect(AppTheme).toEqual({
             setTheme: expect.any(Function),

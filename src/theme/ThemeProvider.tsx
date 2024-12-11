@@ -1,29 +1,22 @@
-import {ThemeContext as UIKitThemeContext} from '@gorgias/merchant-ui-kit'
-import React, {ReactElement, useMemo} from 'react'
+import {ThemeProvider as UIKitThemeProvider} from '@gorgias/merchant-ui-kit'
+import React from 'react'
+import type {ReactNode} from 'react'
 
 import ThemeContext from './ThemeContext'
 import useThemeContext from './useThemeContext'
 
 type Props = {
-    children: ReactElement | ReactElement[]
+    children: ReactNode
 }
 
 export default function ThemeProvider({children}: Props) {
-    const context = useThemeContext()
-
-    const UIContext = useMemo(
-        () => ({
-            theme: context.theme.resolvedName,
-            colorTokens: context.theme.tokens,
-        }),
-        [context]
-    )
+    const ctx = useThemeContext()
 
     return (
-        <ThemeContext.Provider value={context}>
-            <UIKitThemeContext.Provider value={UIContext}>
+        <ThemeContext.Provider value={ctx}>
+            <UIKitThemeProvider name={ctx.theme.resolvedName}>
                 {children}
-            </UIKitThemeContext.Provider>
+            </UIKitThemeProvider>
         </ThemeContext.Provider>
     )
 }

@@ -1,5 +1,6 @@
 @import '~@gorgias/design-tokens/dist/css/colorTokens';
 @import 'stats/colors';
+@import '~@gorgias/design-tokens/dist/css/color/merchantClassic.css';
 @import '~@gorgias/design-tokens/dist/css/color/merchantDark.css';
 @import '~@gorgias/design-tokens/dist/css/color/merchantLight.css';
 
@@ -19,20 +20,7 @@
         --scrollbar-track: var(--neutral-grey-1);
     }
 
-    :global(.modern) {
-        // these `--navigation` values should be removed
-        // once we replace the modern theme with classic
-        --navigation-background: var(--neutral-grey-6);
-        --navigation-background-h: var(--neutral-grey-6-h);
-        --navigation-background-s: var(--neutral-grey-6-s);
-        --navigation-background-l: var(--neutral-grey-6-l);
-        --navigation-text-item: var(--neutral-grey-4);
-        --navigation-title-item: var(--neutral-grey-0);
-        --navigation-title-item-h: var(--neutral-grey-0-h);
-        --navigation-title-item-s: var(--neutral-grey-0-s);
-        --navigation-title-item-l: var(--neutral-grey-0-l);
-        --navigation-border: var(--neutral-grey-6);
-
+    :global(.classic) {
         --navbar-link-hover-background-color: var(--neutral-grey-5);
         --navbar-link-hover-text: var(--neutral-grey-2);
         --navbar-chat-ticket-new: var(--neutral-grey-2);

@@ -1,53 +1,31 @@
-import {useEffect, useMemo} from 'react'
+import {THEME_NAME, themeTokenMap} from '@gorgias/design-tokens'
+import {useMemo} from 'react'
 
-import {usePersistedState} from 'common/hooks'
-
-import {THEME_NAME, themeTokenMap} from './constants'
-import type {HelpdeskThemeName} from './types'
-
-export const themeValues = Object.values(THEME_NAME)
+import useActualTheme from './useActualTheme'
 
 export default function useThemeContext() {
-    const [savedTheme, setSavedTheme] = usePersistedState<HelpdeskThemeName>(
-        'theme',
-        THEME_NAME.Classic
-    )
+    const [theme, setTheme] = useActualTheme()
+
     const prefersDarkTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'
     ).matches
 
-    // Properly sanitize the value from localstorage, since it can
-    // technically be anything as it's in the user's cintrol
-    const actualTheme = themeValues.includes(savedTheme)
-        ? savedTheme
-        : THEME_NAME.Classic
-    useEffect(() => {
-        if (actualTheme !== savedTheme) {
-            setSavedTheme(actualTheme)
-        }
-    }, [actualTheme, savedTheme, setSavedTheme])
+    const resolvedTheme =
+        theme === 'system'
+            ? prefersDarkTheme
+                ? THEME_NAME.Dark
+                : THEME_NAME.Light
+            : theme
 
-    const theme = useMemo(
-        () =>
-            actualTheme === THEME_NAME.System
-                ? prefersDarkTheme
-                    ? THEME_NAME.Dark
-                    : THEME_NAME.Light
-                : actualTheme,
-        [prefersDarkTheme, actualTheme]
-    )
-
-    const context = useMemo(
+    return useMemo(
         () => ({
-            setTheme: setSavedTheme,
+            setTheme: setTheme,
             theme: {
-                name: actualTheme,
-                resolvedName: theme,
-                tokens: themeTokenMap[theme],
+                name: theme,
+                resolvedName: resolvedTheme,
+                tokens: themeTokenMap[resolvedTheme],
             },
         }),
-        [actualTheme, setSavedTheme, theme]
+        [resolvedTheme, theme, setTheme]
     )
-
-    return context
 }

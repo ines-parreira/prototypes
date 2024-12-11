@@ -96,7 +96,6 @@ export const PeriodPickerContainer = ({
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
     const theme = useTheme()
-    const themes = theme.resolvedName.split(' ')
 
     useEffect(() => {
         return endHandlingTooltipHover
@@ -268,7 +267,7 @@ export const PeriodPickerContainer = ({
                                 target.container?.get(0)
 
                             dateRangerPickerElement.current.classList.add(
-                                ...themes,
+                                theme.resolvedName,
                                 'displayed'
                             )
 
@@ -338,7 +337,7 @@ export const PeriodPickerContainer = ({
                         onHide={() => {
                             endHandlingTooltipHover()
                             dateRangerPickerElement.current?.classList.remove(
-                                ...themes,
+                                theme.resolvedName,
                                 'displayed'
                             )
                         }}
