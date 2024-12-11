@@ -11,7 +11,6 @@ import React from 'react'
 
 import {PhoneRingingBehaviour} from 'models/integration/types'
 
-import {isValueInRange} from '../utils'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
 
 jest.mock('models/team/queries', () => ({
@@ -30,12 +29,6 @@ jest.mock(
             />
         )
 )
-
-jest.mock('../utils', () => {
-    return {
-        isValueInRange: jest.fn(),
-    }
-})
 
 describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     const handleChange = jest.fn()
@@ -82,8 +75,8 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         expect(screen.getByTestId('team-select')).toBeInTheDocument()
         expect(screen.getByText('Set ringing behaviour')).toBeInTheDocument()
-        expect(screen.getByText('Ring Time')).toBeInTheDocument()
-        expect(screen.getByText('Wait Time')).toBeInTheDocument()
+        expect(screen.getByText('Ring time per agent')).toBeInTheDocument()
+        expect(screen.getByText('Max wait time')).toBeInTheDocument()
     })
 
     it('should not display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
@@ -139,7 +132,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     it('should not display ring time input when customizable agent ring time FF is off', () => {
         renderComponent(props)
 
-        expect(screen.queryByLabelText(/Ring Time/i)).toBeNull()
+        expect(screen.queryByLabelText(/Ring time per agent/i)).toBeNull()
     })
 
     it.each([
@@ -152,7 +145,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
             renderComponent(props)
 
-            fireEvent.input(screen.getByLabelText(/Ring Time/i), {
+            fireEvent.input(screen.getByLabelText(/Ring time per agent/i), {
                 target: {value: ringTimeInput},
             })
 
@@ -185,7 +178,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         renderComponent(props)
 
-        expect(screen.queryByText('Wait Time')).toBeNull()
+        expect(screen.queryByLabelText(/Max wait time/i)).toBeNull()
     })
 
     it.each([
@@ -198,7 +191,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
             renderComponent(props)
 
-            fireEvent.input(screen.getByLabelText('Wait Time'), {
+            fireEvent.input(screen.getByLabelText(/Max wait time/i), {
                 target: {value: waitTimeInput},
             })
 
@@ -213,7 +206,11 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         renderComponent(props)
 
-        fireEvent.click(screen.getByText('Enable wait time'))
+        fireEvent.click(
+            screen.getByText(
+                'Hold calls in queue until an agent becomes available'
+            )
+        )
 
         expect(props.onPreferencesChange).toHaveBeenCalledWith({
             wait_time: {enabled: false, value: 120},
@@ -243,68 +240,11 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
 
         renderComponent(props)
 
-        expect(screen.getByText('Enable wait time')).toBeChecked()
-        expect(screen.getByLabelText('Wait Time')).toBeEnabled()
-    })
-
-    it.each([
-        {
-            preferences: {wait_time: {enabled: true, value: 0}},
-            integrationPreferences: {wait_time: {enabled: true, value: 40}},
-            expectedWaitTimeValue: 40,
-        },
-        {
-            preferences: {wait_time: {enabled: true, value: 0}},
-            integrationPreferences: {},
-            expectedWaitTimeValue: 120,
-        },
-    ])(
-        'should revert to the integration wait value when wait time is disabled with an invalid value',
-        ({preferences, integrationPreferences, expectedWaitTimeValue}) => {
-            ;(isValueInRange as jest.Mock).mockReturnValue(false)
-
-            mockFlags({CustomizableWaitTime: true})
-
-            renderComponent({
-                ...props,
-                preferences: {
-                    ...props.preferences,
-                    ...preferences,
-                },
-                integrationPreferences: {
-                    ...props.integrationPreferences,
-                    ...integrationPreferences,
-                },
-            })
-
-            fireEvent.click(screen.getByText('Enable wait time'))
-
-            expect(props.onPreferencesChange).toHaveBeenCalledWith({
-                wait_time: {enabled: false, value: expectedWaitTimeValue},
-            })
-        }
-    )
-
-    it('should pass previos wait time value when enabling it', () => {
-        ;(isValueInRange as jest.Mock).mockReturnValue(true)
-
-        mockFlags({CustomizableWaitTime: true})
-
-        renderComponent({
-            ...props,
-            preferences: {
-                ...props.preferences,
-                wait_time: {
-                    enabled: false,
-                    value: 30,
-                },
-            },
-        })
-
-        fireEvent.click(screen.getByText('Enable wait time'))
-
-        expect(props.onPreferencesChange).toHaveBeenCalledWith({
-            wait_time: {enabled: true, value: 30},
-        })
+        expect(screen.getByLabelText(/Max wait time/i)).toBeEnabled()
+        expect(
+            screen.getByLabelText(
+                'Hold calls in queue until an agent becomes available'
+            )
+        ).toBeChecked()
     })
 })

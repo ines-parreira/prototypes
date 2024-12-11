@@ -12,7 +12,6 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
@@ -25,7 +24,6 @@ import {
     WAIT_TIME_MAX_VALUE,
     WAIT_TIME_MIN_VALUE,
 } from './constants'
-import {isValueInRange} from './utils'
 import css from './VoiceIntegrationPreferences.less'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
 
@@ -37,7 +35,6 @@ type Props = {
     ) => void
     phoneTeamId: Maybe<number | undefined>
     onPhoneTeamIdChange: (teamId: number | null) => void
-    integrationPreferences: PhoneIntegrationPreferences
     errors: Record<string, string>
 }
 
@@ -47,7 +44,6 @@ export default function VoiceIntegrationPreferencesInboundCalls({
     onPreferencesChange,
     phoneTeamId,
     onPhoneTeamIdChange,
-    integrationPreferences,
     errors,
 }: Props): JSX.Element {
     const showCustomizableAgentRingTime: boolean | undefined =
@@ -60,26 +56,6 @@ export default function VoiceIntegrationPreferencesInboundCalls({
         preferences.wait_time?.value ?? WAIT_TIME_DEFAULT_VALUE
     const preferencesWaitTimeEnabled =
         preferences.wait_time?.enabled ?? WAIT_TIME_DEFAULT_ENABLED
-
-    const validWaitTimeValue = (
-        isWaitTimeEnabled: boolean,
-        waitTimeValue: number
-    ) => {
-        if (
-            !isWaitTimeEnabled &&
-            !isValueInRange(
-                waitTimeValue,
-                WAIT_TIME_MIN_VALUE,
-                WAIT_TIME_MAX_VALUE
-            )
-        ) {
-            return (
-                integrationPreferences.wait_time?.value ??
-                WAIT_TIME_DEFAULT_VALUE
-            )
-        }
-        return waitTimeValue
-    }
 
     return (
         <>
@@ -135,7 +111,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                             <InputField
                                 label={
                                     <>
-                                        <span>Ring Time</span>
+                                        <span>Ring time per agent</span>
                                         <HintTooltip title="The time in seconds we ring each individual agent before moving to the next one." />
                                     </>
                                 }
@@ -157,64 +133,67 @@ export default function VoiceIntegrationPreferencesInboundCalls({
                         </div>
                     )}
                     {showCustomizableWaitTime && (
-                        <div className={css.toggleInputCombo}>
-                            <ToggleInput
-                                isToggled={preferencesWaitTimeEnabled}
-                                onClick={(value) =>
-                                    onPreferencesChange({
-                                        wait_time: {
-                                            enabled: value,
-                                            value: validWaitTimeValue(
-                                                value,
-                                                preferencesWaitTimeValue
-                                            ),
-                                        },
-                                    })
-                                }
-                                caption="Time before a call is forwarded to voicemail."
-                            >
-                                Enable wait time
-                            </ToggleInput>
-                            <InputField
-                                label="Wait Time"
-                                type="number"
-                                value={preferencesWaitTimeValue}
-                                onChange={(value) =>
-                                    onPreferencesChange({
-                                        wait_time: {
-                                            enabled: preferencesWaitTimeEnabled,
-                                            value:
-                                                value === ''
-                                                    ? Number.NaN
-                                                    : Number(value),
-                                        },
-                                    })
-                                }
-                                caption="Set a time between 10 and 3600 seconds (1 hour)."
-                                isDisabled={!preferencesWaitTimeEnabled}
-                                error={errors?.wait_time}
-                                min={WAIT_TIME_MIN_VALUE}
-                                max={WAIT_TIME_MAX_VALUE}
-                            />
-                        </div>
+                        <InputField
+                            label={
+                                <>
+                                    <span>Max wait time</span>
+                                    <HintTooltip title="The maximum time in seconds we wait before sending the call to voicemail." />
+                                </>
+                            }
+                            type="number"
+                            value={preferencesWaitTimeValue}
+                            onChange={(value) =>
+                                onPreferencesChange({
+                                    wait_time: {
+                                        enabled: preferencesWaitTimeEnabled,
+                                        value:
+                                            value === ''
+                                                ? Number.NaN
+                                                : Number(value),
+                                    },
+                                })
+                            }
+                            caption="Set a time between 10 and 3600 seconds (1 hour)."
+                            error={errors?.wait_time}
+                            min={WAIT_TIME_MIN_VALUE}
+                            max={WAIT_TIME_MAX_VALUE}
+                        />
                     )}
                 </>
             )}
             <div>
                 <Label className="control-label">Other settings</Label>
-                <CheckBox
-                    isChecked={preferences.voicemail_outside_business_hours}
-                    onChange={(value) =>
-                        onPreferencesChange({
-                            voicemail_outside_business_hours: value,
-                        })
-                    }
-                    caption="If a customer calls outside of
+                <div className={css.otherSettings}>
+                    {showCustomizableWaitTime && (
+                        <CheckBox
+                            isChecked={preferencesWaitTimeEnabled}
+                            onChange={(value) =>
+                                onPreferencesChange({
+                                    wait_time: {
+                                        enabled: value,
+                                        value: preferencesWaitTimeValue,
+                                    },
+                                })
+                            }
+                            caption="If toggled off, calls will go directly to voicemail when agents are not available."
+                        >
+                            Hold calls in queue until an agent becomes available
+                        </CheckBox>
+                    )}
+                    <CheckBox
+                        isChecked={preferences.voicemail_outside_business_hours}
+                        onChange={(value) =>
+                            onPreferencesChange({
+                                voicemail_outside_business_hours: value,
+                            })
+                        }
+                        caption="If a customer calls outside of
                                                     business hours, they will be
                                                     immediately forwarded to voicemail."
-                >
-                    Send calls to voicemail outside business hours
-                </CheckBox>
+                    >
+                        Send calls to voicemail outside business hours
+                    </CheckBox>
+                </div>
             </div>
         </>
     )

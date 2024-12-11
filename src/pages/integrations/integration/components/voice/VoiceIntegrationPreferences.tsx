@@ -258,9 +258,6 @@ export default function VoiceIntegrationPreferences({
                             onPreferencesChange={handlePreferencesChange}
                             phoneTeamId={phoneTeamId}
                             onPhoneTeamIdChange={setPhoneTeamId}
-                            integrationPreferences={
-                                integration.meta.preferences
-                            }
                             errors={validationErrors}
                         />
                     </div>
