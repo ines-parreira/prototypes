@@ -350,15 +350,15 @@ describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
         expect(getByLabelText('Choose from library')).toBeChecked()
 
         fireEvent.click(getByText('arrow_drop_down'))
-        fireEvent.click(getByText('Ringtone'))
+        fireEvent.click(getByText('Clockwork Waltz'))
 
         expect(setWaitMusicPayloadMock).toHaveBeenCalledWith({
             type: WaitMusicType.Library,
             library: {
-                key: 'ringtone',
-                name: 'Ringtone',
+                key: 'clockwork_waltz',
+                name: 'Clockwork Waltz',
                 audio_file_path:
-                    'https://github.com/msilvestro/custom-wait-music/raw/refs/heads/main/Australia_ringing_tone.mp3',
+                    'https://assets.gorgias.io/phone/ClockworkWaltz.mp3',
             },
         })
     })

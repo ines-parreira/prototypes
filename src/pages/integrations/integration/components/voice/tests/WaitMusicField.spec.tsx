@@ -92,16 +92,16 @@ describe('<WaitMusicField />', () => {
         )
 
         fireEvent.click(getByText('arrow_drop_down'))
-        fireEvent.click(getByText('Moonlight Coffee'))
+        fireEvent.click(getByText('Soothe'))
 
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith({
                 type: WaitMusicType.Library,
                 library: {
-                    key: 'moonlight_coffee',
-                    name: 'Moonlight Coffee',
+                    key: 'soothe',
+                    name: 'Soothe',
                     audio_file_path:
-                        'https://assets.gorgias.io/phone/moonlightcoffee.mp3',
+                        'https://assets.gorgias.io/phone/waiting_music_soothe.mp3',
                 },
             })
         })

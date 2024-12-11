@@ -1,7 +1,6 @@
 import {UpdateWaitMusicLibrary} from '@gorgias/api-queries'
 import React, {useRef, useState} from 'react'
 
-import {PhoneCountry} from 'models/phoneNumber/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -11,6 +10,8 @@ import SelectInputBox, {
 
 import CircularAudioPlayer from './CircularAudioPlayer'
 import {
+    DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX,
+    DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX,
     RINGTONE_AUDIO_FILE_PATHS,
     STATIC_WAIT_MUSIC_LIBRARY,
 } from './waitMusicLibraryConstants'
@@ -19,7 +20,7 @@ import css from './WaitMusicLibrarySelect.less'
 type Props = {
     library?: UpdateWaitMusicLibrary
     onChange: (selectedLibrary: UpdateWaitMusicLibrary) => void
-    integrationCountry: PhoneCountry
+    integrationCountry: string
 }
 
 const WaitMusicLibrarySelect = ({
@@ -40,14 +41,19 @@ const WaitMusicLibrarySelect = ({
             key: 'ringtone',
             name: 'Ringtone',
             audio_file_path:
-                RINGTONE_AUDIO_FILE_PATHS.find(
-                    (RINGTONE_AUDIO_FILE_PATHS) =>
-                        RINGTONE_AUDIO_FILE_PATHS.country === integrationCountry
-                )?.audioFilePath ?? RINGTONE_AUDIO_FILE_PATHS[0].audioFilePath,
+                RINGTONE_AUDIO_FILE_PATHS.find((RINGTONE_AUDIO_FILE_PATHS) =>
+                    RINGTONE_AUDIO_FILE_PATHS.countries.includes(
+                        integrationCountry
+                    )
+                )?.audioFilePath ??
+                RINGTONE_AUDIO_FILE_PATHS[
+                    DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX
+                ].audioFilePath,
         },
         ...STATIC_WAIT_MUSIC_LIBRARY,
     ]
-    const selectedLibraryWaitMusic = library ?? waitMusicLibrary[0]
+    const selectedLibraryWaitMusic =
+        library ?? waitMusicLibrary[DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX + 1]
 
     return (
         <SelectInputBox
