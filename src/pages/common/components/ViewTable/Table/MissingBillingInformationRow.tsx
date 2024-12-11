@@ -1,25 +1,24 @@
-import {fromJS} from 'immutable'
-import React, {FormEvent, useEffect, useMemo, useState} from 'react'
-import {Modal, ModalHeader, Form, ModalBody, ModalFooter} from 'reactstrap'
-import {AnyAction} from 'redux'
+import React, {useMemo, useState} from 'react'
 
 import {useAppNode} from 'appNode'
 import {UserRole} from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
 import useDimensions from 'hooks/useDimensions'
 import useWindowSize from 'hooks/useWindowSize'
+import {useBillingContact} from 'models/billing/queries'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Button from 'pages/common/components/button/Button'
-import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
-import {fetchContact, updateContact} from 'state/billing/actions'
-import {
-    isMissingContactInformation as getIsMissingContactInformation,
-    getContact,
-} from 'state/billing/selectors'
-import {BillingContact, PaymentMethodType} from 'state/billing/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
+import {BillingInformationSetupForm} from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
+import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
+import {isMissingContactInformation as getIsMissingContactInformation} from 'state/billing/selectors'
+import {PaymentMethodType} from 'state/billing/types'
 import {
     paymentMethod as getPaymentMethod,
     hasCreditCard as getHasCreditCard,
@@ -30,10 +29,7 @@ import {hasRole} from 'utils'
 import css from './MissingBillingInformationRow.less'
 
 export default function MissingBillingInformationRow() {
-    const dispatch = useAppDispatch()
     const [isModalOpened, setIsModalOpened] = useState(false)
-    const [contactForm, setContactForm] = useState<BillingContact | null>(null)
-    const contact = useAppSelector(getContact)
     const currentUser = useAppSelector(getCurrentUser)
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const paymentMethod = useAppSelector(getPaymentMethod)
@@ -52,37 +48,7 @@ export default function MissingBillingInformationRow() {
     )
     const appNode = useAppNode()
 
-    const [{loading: isFetching}, startFetchingContact] = useAsyncFn(
-        async () => {
-            if (!contact && isAdmin) {
-                await dispatch(fetchContact())
-            }
-        },
-        [],
-        {loading: true}
-    )
-
-    useEffect(() => void startFetchingContact(), [startFetchingContact])
-
-    useEffect(() => {
-        if (contact) {
-            setContactForm(contact.toJS())
-        }
-    }, [contact])
-
-    const [{loading}, handleSubmit] = useAsyncFn(
-        async (event: FormEvent) => {
-            event.preventDefault()
-            const res = (await dispatch(
-                updateContact(fromJS(contactForm))
-            )) as AnyAction
-
-            if (!res.error) {
-                setIsModalOpened(false)
-            }
-        },
-        [contactForm]
-    )
+    const billingInformation = useBillingContact({refetchOnWindowFocus: false})
 
     return (
         <>
@@ -90,7 +56,7 @@ export default function MissingBillingInformationRow() {
                 hasCreditCard &&
                 paymentMethod !== PaymentMethodType.Shopify &&
                 isMissingContactInformation &&
-                !isFetching && (
+                !billingInformation.isFetching && (
                     <tr>
                         <td colSpan={20} ref={rowRef}>
                             <div
@@ -114,39 +80,33 @@ export default function MissingBillingInformationRow() {
                     </tr>
                 )}
             <Modal
-                className={css.modal}
-                centered
                 isOpen={isModalOpened}
-                toggle={() => setIsModalOpened(false)}
+                onClose={() => setIsModalOpened(false)}
                 container={appNode ?? undefined}
             >
-                <Form onSubmit={handleSubmit}>
-                    <ModalHeader
-                        tag="div"
-                        toggle={() => setIsModalOpened(false)}
-                    >
-                        <h3 className={css.modalHeader}>
-                            Missing information - Billing address
-                        </h3>
-                        <p className={css.modalDescription}>
-                            According to the regulation, we need to collect this
-                            data from all our customers.
-                        </p>
-                    </ModalHeader>
-                    <ModalBody>
-                        {contactForm && (
-                            <BillingAddressInputs
-                                onChange={setContactForm}
-                                value={contactForm}
+                {!billingInformation.data?.data ? (
+                    <Loader />
+                ) : (
+                    <StripeElementsProvider>
+                        <BillingInformationSetupForm
+                            billingInformation={billingInformation.data.data}
+                            onSuccess={() => setIsModalOpened(false)}
+                        >
+                            <ModalHeader
+                                title="Missing information - Billing"
+                                subtitle="According to the regulation, we need to collect this data from all our customers."
                             />
-                        )}
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button type="submit" isLoading={loading}>
-                            Update Address
-                        </Button>
-                    </ModalFooter>
-                </Form>
+                            <ModalBody>
+                                <BillingInformationFields title={null} />
+                            </ModalBody>
+                            <ModalFooter className={css.modalFooter}>
+                                <FormSubmitButton>
+                                    Save Billing Information
+                                </FormSubmitButton>
+                            </ModalFooter>
+                        </BillingInformationSetupForm>
+                    </StripeElementsProvider>
+                )}
             </Modal>
         </>
     )

@@ -1,22 +1,62 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
+import type {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+
+import client from 'models/api/resources'
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+
+import {assumeMock} from 'utils/testing'
 
 import {UserRole} from '../../../../../../config/types/user'
-import * as billingActions from '../../../../../../state/billing/actions'
 import {PaymentMethodType} from '../../../../../../state/billing/types'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
-jest.spyOn(billingActions, 'updateContact')
+jest.mock('@stripe/stripe-js')
+jest.mock('@stripe/react-stripe-js')
+
+assumeMock(Elements).mockImplementation(({children}: any) => (
+    <div data-testid="stripe-elements">{children}</div>
+))
+
+let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
+
+assumeMock(AddressElement).mockImplementation(({onChange}) => {
+    handleAddressChange = onChange ?? (() => {})
+
+    return <div data-testid="stripe-address-element" />
+})
+
+const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
+    assumeMock(useElements).mockReturnValue({
+        getElement: jest.fn().mockReturnValue({
+            getValue: jest.fn().mockResolvedValue(event),
+        }),
+    } as any)
+
+    act(() => {
+        handleAddressChange(event as any)
+    })
+}
+
+const mockedServer = new MockAdapter(client)
+
+mockedServer.onGet('/api/billing/contact/').reply(200, {
+    email: 'foo@bar.baz',
+    shipping: {
+        address: {
+            country: 'US',
+            postal_code: 12345,
+            state: '',
+        },
+    },
+})
+
+mockedServer.onPut('/api/billing/contact/').reply(201, {})
 
 describe('<MissingBillingInformationRow />', () => {
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
     const initialState = {
         currentUser: fromJS({
             role: {name: UserRole.Admin},
@@ -26,30 +66,22 @@ describe('<MissingBillingInformationRow />', () => {
         }) as Map<any, any>,
         billing: fromJS({
             paymentMethod: PaymentMethodType.Stripe,
-            contact: {
-                email: 'foo@bar.baz',
-                shipping: {
-                    address: {
-                        country: 'US',
-                        postal_code: 12345,
-                        state: '',
-                    },
-                },
-            },
         }) as Map<any, any>,
     }
 
     it('should render a row when conditions are met', async () => {
-        const store = mockStore(initialState)
-        const {container, getByText} = render(
-            <Provider store={store}>
-                <MissingBillingInformationRow />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <MissingBillingInformationRow />,
+            initialState
         )
 
-        await waitFor(() => getByText('Update Now'))
+        expect(await screen.findByText('Update Now')).toBeVisible()
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByText(
+                'You need to complete your billing profile, please update it now.'
+            )
+        ).toBeVisible()
     })
 
     it.each([
@@ -94,46 +126,75 @@ describe('<MissingBillingInformationRow />', () => {
             },
         ],
     ])('should not render a row when %s', (testName, state) => {
-        const store = mockStore(state)
-        const {container} = render(
-            <Provider store={store}>
-                <MissingBillingInformationRow />
-            </Provider>
+        const {container} = renderWithStoreAndQueryClientProvider(
+            <MissingBillingInformationRow />,
+            state
         )
 
         expect(container.firstChild).toBe(null)
     })
 
     it('should open the modal when clicking on update button', async () => {
-        const store = mockStore(initialState)
-        const {getByText} = render(
-            <Provider store={store}>
-                <MissingBillingInformationRow />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <MissingBillingInformationRow />,
+            initialState
         )
 
-        fireEvent.click(await waitFor(() => getByText('Update Now')))
-        expect(getByText('Missing information - Billing address')).toBeTruthy()
+        fireEvent.click(await screen.findByText('Update Now'))
+
+        expect(
+            await screen.findByText('Missing information - Billing')
+        ).toBeVisible()
     })
 
     it('should submit the billing information when submiting the modal form', async () => {
-        const store = mockStore(initialState)
-        const {getByText, getByPlaceholderText} = render(
-            <Provider store={store}>
-                <MissingBillingInformationRow />
-            </Provider>
+        renderWithStoreAndQueryClientProvider(
+            <MissingBillingInformationRow />,
+            initialState
         )
 
-        fireEvent.click(await waitFor(() => getByText('Update Now')))
-        fireEvent.change(getByPlaceholderText('New York'), {
-            target: {value: 'Paris'},
+        fireEvent.click(await screen.findByText('Update Now'))
+
+        expect(
+            await screen.findByRole('button', {
+                name: 'Save Billing Information',
+            })
+        ).toBeVisible()
+
+        mockAddressValue({
+            complete: true,
+            value: {
+                name: 'John Doe',
+                address: {
+                    city: 'New York',
+                    country: 'US',
+                    line1: '123 Main St',
+                    line2: null,
+                    postal_code: '12345',
+                    state: 'NY',
+                },
+            },
         })
-        fireEvent.submit(getByText('Update Address'))
-        expect(billingActions.updateContact).toHaveBeenCalledWith(
-            (initialState.billing.get('contact') as Map<any, any>).setIn(
-                ['shipping', 'address', 'city'],
-                'Paris'
-            )
+
+        fireEvent.click(
+            screen.getByRole('button', {name: 'Save Billing Information'})
         )
+
+        await waitFor(() => {
+            expect(JSON.parse(mockedServer.history.put[0]?.data)).toEqual({
+                email: 'foo@bar.baz',
+                shipping: {
+                    name: 'John Doe',
+                    address: {
+                        city: 'New York',
+                        country: 'US',
+                        line1: '123 Main St',
+                        line2: null,
+                        postal_code: '12345',
+                        state: 'NY',
+                    },
+                },
+            })
+        })
     })
 })

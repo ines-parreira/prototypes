@@ -6,19 +6,15 @@ import Button from 'pages/common/components/button/Button'
 
 import {FormSubmitButtonError} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
 
-import css from './FormSubmitButton.less'
-
-export function FormSubmitButton({children}: React.PropsWithChildren<object>) {
+export function FormSubmitButton({
+    children,
+    className,
+}: React.PropsWithChildren<{className?: string}>) {
     const {isSubmitting} = useFormState()
 
     return (
-        <div>
-            <Button
-                className={css.submitButton}
-                type="submit"
-                intent="primary"
-                isLoading={isSubmitting}
-            >
+        <div className={className}>
+            <Button type="submit" intent="primary" isLoading={isSubmitting}>
                 {children}
             </Button>
             <FormSubmitButtonError />

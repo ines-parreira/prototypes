@@ -84,7 +84,7 @@ export const FormContainer: React.FC<
                         {isStartingSubscription ? (
                             <BillingInformationFields />
                         ) : (
-                            <FormSubmitButton>
+                            <FormSubmitButton className={css.submitButton}>
                                 {hasCreditCard
                                     ? 'Update card'
                                     : 'Add payment method'}

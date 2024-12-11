@@ -8,12 +8,14 @@ import {StripeAddressFields} from 'pages/settings/new_billing/components/StripeA
 
 import css from './BillingInformationFields.less'
 
-export const BillingInformationFields: React.FC = () => {
+export const BillingInformationFields = ({title}: {title?: string | null}) => {
     const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
 
     return (
         <>
-            <h1 className={css.title}>Billing Information</h1>
+            {title !== null ? (
+                <h1 className={css.title}>{title ?? 'Billing Information'}</h1>
+            ) : null}
             <EmailField />
             <StripeAddressFields />
             {isTaxIdFieldEnabled ? <TaxIdFields /> : null}

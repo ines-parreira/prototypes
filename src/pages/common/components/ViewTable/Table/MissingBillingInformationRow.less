@@ -1,20 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .bannerWrapper {
         padding: 16px;
     }
 
-    .modal {
-        min-width: 704px;
-    }
-
-    .modalHeader {
-        margin-bottom: 0;
-    }
-
-    .modalDescription {
-        font-size: 14px;
-        margin-bottom: 0;
-        font-weight: 400;
+    .modalFooter {
+        justify-content: flex-end;
+        padding: @layout-spacing-s;
+        background-color: var(--neutral-grey-0);
     }
 
     .alert a {
