@@ -1,8 +1,17 @@
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -52,6 +61,7 @@ describe('BusiestTimesOfDays page', () => {
         ui: {
             stats: {[busiestTimesSlice.name]: initialState},
         },
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {
@@ -115,6 +125,20 @@ describe('BusiestTimesOfDays page', () => {
     })
 
     it('should render FiltersPanel with New Filters and Resolution Completeness and Communication Skills filters', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+        }
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQAFilters]: true,
@@ -125,10 +149,7 @@ describe('BusiestTimesOfDays page', () => {
             FilterKey.CommunicationSkills,
         ]
 
-        const {getByText} = renderWithStore(
-            <BusiestTimesOfDays />,
-            defaultState
-        )
+        const {getByText} = renderWithStore(<BusiestTimesOfDays />, state)
 
         extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

@@ -1,7 +1,16 @@
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
@@ -58,6 +67,7 @@ describe('ChannelsReport', () => {
         ui: {
             stats: {[channelsSlice.name]: initialState},
         },
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {
@@ -119,6 +129,20 @@ describe('ChannelsReport', () => {
     })
 
     it('should render channels report component with filters panel, default optional filters and a Resolution Completeness and Communication Skills filters', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+        }
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQAFilters]: true,
@@ -129,7 +153,7 @@ describe('ChannelsReport', () => {
             FilterKey.CommunicationSkills,
         ]
 
-        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
+        const {getByText} = renderWithStore(<ChannelsReport />, state)
 
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

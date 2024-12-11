@@ -1,10 +1,18 @@
-import {render, screen} from '@testing-library/react'
+import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
@@ -22,7 +30,8 @@ import SupportPerformanceAgentsReport, {
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {assumeMock} from 'utils/testing'
+import {RootState} from 'state/types'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.unmock('react-router-dom')
 
@@ -64,6 +73,10 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 }))
 const componentMock = () => <div />
 
+const defaultState = {
+    billing: fromJS(billingState),
+} as RootState
+
 describe('SupportPerformanceAgents', () => {
     SupportPerformanceFiltersMock.mockImplementation(componentMock)
     AgentsShoutoutsMock.mockImplementation(componentMock)
@@ -94,10 +107,11 @@ describe('SupportPerformanceAgents', () => {
     } as any)
 
     it('should render the page title and section title', () => {
-        render(
+        renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            defaultState
         )
 
         expect(screen.getByText(AGENTS_PAGE_TITLE)).toBeInTheDocument()
@@ -107,20 +121,22 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should render the export data button', () => {
-        render(
+        renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            defaultState
         )
 
         expect(DownloadAgentsPerformanceDataButtonMock).toHaveBeenCalled()
     })
 
     it('should render the HeatmapSwitch and Agents Shoutout', () => {
-        render(
+        renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            defaultState
         )
 
         expect(AgentsPerformanceCardExtraMock).toHaveBeenCalled()
@@ -130,10 +146,11 @@ describe('SupportPerformanceAgents', () => {
     it('should render New FiltersPanel and hide legacy filters', () => {
         mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
 
-        const {getByText, queryByText} = render(
+        const {getByText, queryByText} = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            defaultState
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
@@ -156,10 +173,11 @@ describe('SupportPerformanceAgents', () => {
             FilterKey.Score,
         ]
 
-        const {getByText} = render(
+        const {getByText} = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            defaultState
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
@@ -172,6 +190,20 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should render New FiltersPanel and resolution completeness and communication skills filters should be present in the FiltersPanel', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+        } as RootState
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQAFilters]: true,
@@ -182,10 +214,11 @@ describe('SupportPerformanceAgents', () => {
             FilterKey.CommunicationSkills,
         ]
 
-        const {getByText} = render(
+        const {getByText} = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
-            </MemoryRouter>
+            </MemoryRouter>,
+            state
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(

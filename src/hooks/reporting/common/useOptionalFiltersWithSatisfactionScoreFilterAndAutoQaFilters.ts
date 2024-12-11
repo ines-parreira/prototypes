@@ -1,8 +1,10 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
 import {FilterKey} from 'models/stat/types'
 import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import {getHasAutomate} from 'state/billing/selectors'
 
 type UseOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters = (
     optionalFilters: OptionalFilter[]
@@ -10,6 +12,7 @@ type UseOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters = (
 
 export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters =
     (optionalFilters) => {
+        const hasAutomate = useAppSelector(getHasAutomate)
         const analyticsNewCSATFilter =
             !!useFlags()[FeatureFlagKey.AnalyticsNewCSATFilter]
         const autoQaFilters = !!useFlags()[FeatureFlagKey.AutoQAFilters]
@@ -18,13 +21,13 @@ export const useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters: UseO
         return [
             ...optionalFilters,
             ...(analyticsNewCSATFilter ? [FilterKey.Score] : []),
-            ...(autoQaFilters
+            ...(autoQaFilters && hasAutomate
                 ? [
                       FilterKey.CommunicationSkills,
                       FilterKey.ResolutionCompleteness,
                   ]
                 : []),
-            ...(autoQaFilters && autoQaLanguageProficiency
+            ...(autoQaFilters && autoQaLanguageProficiency && hasAutomate
                 ? [FilterKey.LanguageProficiency]
                 : []),
         ]

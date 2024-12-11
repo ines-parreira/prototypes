@@ -1,4 +1,5 @@
 import {render, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps, PropsWithChildren} from 'react'
 import {Provider} from 'react-redux'
@@ -6,6 +7,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
@@ -63,6 +72,10 @@ jest.mock(
     }
 )
 
+const defaultState = {
+    billing: fromJS(billingState),
+}
+
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
         AchievedAndBreachedTicketsChartMock.mockImplementation(() => <div />)
@@ -76,7 +89,7 @@ describe('ServiceLevelAgreements', () => {
     })
     it('should render service level agreements', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -91,7 +104,7 @@ describe('ServiceLevelAgreements', () => {
 
     it('should render SLAPolicySelect', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -116,7 +129,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
     it('should render service level agreements', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -135,7 +148,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <ServiceLevelAgreements />
             </Provider>
         )
@@ -144,6 +157,21 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
     })
 
     describe('FilterPanel', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+        } as RootState
+
         beforeEach(() => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
@@ -154,7 +182,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
 
         it('should show New Filters Panel and render expected filters', () => {
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(state)}>
                     <ServiceLevelAgreements />
                 </Provider>
             )
@@ -170,7 +198,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             })
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(state)}>
                     <ServiceLevelAgreements />
                 </Provider>
             )
@@ -189,7 +217,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
                 [FeatureFlagKey.AutoQAFilters]: true,
             })
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(state)}>
                     <ServiceLevelAgreements />
                 </Provider>
             )

@@ -1,12 +1,20 @@
 import {fireEvent, render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -76,6 +84,10 @@ jest.mock(
     }
 )
 
+const defaultState = {
+    billing: fromJS(billingState),
+}
+
 describe('<SupportPerformanceOverview />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
@@ -109,7 +121,7 @@ describe('<SupportPerformanceOverview />', () => {
         'should render customer experience section with TrendCards %#',
         (customerMetricTrend) => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -126,7 +138,7 @@ describe('<SupportPerformanceOverview />', () => {
 
     it('should render productivity section with OneTouchTickets TrendCard', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>
         )
@@ -142,7 +154,7 @@ describe('<SupportPerformanceOverview />', () => {
     describe('Performance Tips', () => {
         it('should show tips by default', () => {
             const {queryAllByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -154,7 +166,7 @@ describe('<SupportPerformanceOverview />', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'false')
 
             const {getByText, queryAllByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -169,7 +181,7 @@ describe('<SupportPerformanceOverview />', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'true')
 
             const {getByText, queryAllByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -194,7 +206,7 @@ describe('<SupportPerformanceOverview />', () => {
 
         it('should show New Filters Panel and render expected filters', () => {
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -210,7 +222,7 @@ describe('<SupportPerformanceOverview />', () => {
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: true,
             })
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )
@@ -224,13 +236,28 @@ describe('<SupportPerformanceOverview />', () => {
         })
 
         it('should show New Filters Panel and render expected filters with resolution completeness and communication skills filters', () => {
+            const state = {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyHelpdeskPlan.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicYearlyAutomationPlan.price_id,
+                        },
+                        status: 'active',
+                    },
+                }),
+            }
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
                 [FeatureFlagKey.AnalyticsNewCSATFilter]: false,
                 [FeatureFlagKey.AutoQAFilters]: true,
             })
             const {getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(state)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>
             )

@@ -1,7 +1,9 @@
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {billingState} from 'fixtures/billing'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AverageScoreTrendCard} from 'pages/stats/quality-management/satisfaction/AverageScoreTrendCard'
@@ -63,6 +65,7 @@ describe('<Satisfaction>', () => {
                 [drillDownSlice.name]: initialState,
             },
         },
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {

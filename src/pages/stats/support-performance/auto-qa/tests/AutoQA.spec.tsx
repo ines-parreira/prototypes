@@ -1,8 +1,17 @@
 import {screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import AutoQA, {
@@ -16,6 +25,7 @@ import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import {RootState} from 'state/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 const componentMock = () => <div />
@@ -71,6 +81,20 @@ jest.mock(
     }
 )
 
+const state = {
+    billing: fromJS(billingState),
+    currentAccount: fromJS({
+        ...account,
+        current_subscription: {
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.price_id,
+            },
+            status: 'active',
+        },
+    }),
+} as RootState
+
 describe('AutoQA', () => {
     beforeEach(() => {
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(
@@ -87,7 +111,7 @@ describe('AutoQA', () => {
     })
 
     it('should render page title', () => {
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
@@ -112,7 +136,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
     })
 
     it('should render page title', () => {
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
@@ -131,7 +155,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQaLanguageProficiency]: false,
         })
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(LanguageProficiencyTrendCardMock).not.toHaveBeenCalled()
     })
@@ -146,7 +170,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             FilterKey.Score,
         ]
 
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         extendedAutoQAFilters.forEach((optionalFilter) => {
@@ -165,7 +189,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             FilterKey.CommunicationSkills,
         ]
 
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         extendedAutoQAFilters.forEach((optionalFilter) => {

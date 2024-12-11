@@ -11,7 +11,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
-import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    VOICE_PRODUCT_ID,
+    voicePlan1,
+} from 'fixtures/productPrices'
 import {tags} from 'fixtures/tag'
 import {user} from 'fixtures/users'
 import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
@@ -106,6 +111,8 @@ describe('VoiceOverview', () => {
                     ...account.current_subscription,
                     products: {
                         ...account.current_subscription.products,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
                         ...(featureEnabled && {
                             [VOICE_PRODUCT_ID]: voicePlan1.price_id,
                         }),

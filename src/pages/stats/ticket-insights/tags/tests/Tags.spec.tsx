@@ -1,8 +1,16 @@
+import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
@@ -53,6 +61,7 @@ describe('<Tags>', () => {
                 [drillDownSlice.name]: initialState,
             },
         },
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {
@@ -97,6 +106,20 @@ describe('<Tags>', () => {
     })
 
     it('should contain filters panel component and Resolution Completeness and Communication Skills filters should be one of the optional filters', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicYearlyAutomationPlan.price_id,
+                    },
+                    status: 'active',
+                },
+            }),
+        } as RootState
         mockFlags({
             [FeatureFlagKey.AutoQAFilters]: true,
         })
@@ -105,7 +128,7 @@ describe('<Tags>', () => {
             FilterKey.ResolutionCompleteness,
             FilterKey.CommunicationSkills,
         ]
-        const {getByText} = renderWithStore(<Tags />, defaultState)
+        const {getByText} = renderWithStore(<Tags />, state)
 
         extendedTagsOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
