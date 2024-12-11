@@ -36,7 +36,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
           tabindex="-1"
         >
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/tickets"
@@ -49,7 +49,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Tickets
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/automation"
@@ -62,7 +62,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Automate
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/convert"
@@ -75,7 +75,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Convert
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/customers"
@@ -88,7 +88,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Customers
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/stats"
@@ -101,7 +101,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Statistics
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/settings"
@@ -246,7 +246,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
           tabindex="-1"
         >
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/tickets"
@@ -259,7 +259,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Tickets
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/automation"
@@ -272,7 +272,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Automate
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/convert"
@@ -285,7 +285,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Convert
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/customers"
@@ -298,7 +298,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Customers
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/stats"
@@ -311,7 +311,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Statistics
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/settings"
@@ -456,7 +456,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
           tabindex="-1"
         >
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/tickets"
@@ -469,7 +469,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
             Tickets
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/automation"
@@ -482,7 +482,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
             Automate
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/convert"
@@ -495,7 +495,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
             Convert
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/customers"
@@ -508,7 +508,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
             Customers
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/stats"
@@ -521,7 +521,7 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
             Statistics
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/settings"
@@ -669,7 +669,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
           tabindex="-1"
         >
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/tickets"
@@ -682,7 +682,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Tickets
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/automation"
@@ -695,7 +695,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Automate
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/convert"
@@ -708,7 +708,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Convert
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/customers"
@@ -721,7 +721,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Customers
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/stats"
@@ -734,7 +734,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Statistics
           </a>
           <a
-            class="dropdown-item dropdown-item menu-item"
+            class="menuItem dropdown-item dropdown-item"
             role="menuitem"
             tabindex="0"
             to="/app/settings"

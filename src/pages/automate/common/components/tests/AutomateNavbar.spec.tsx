@@ -1,10 +1,11 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
+import type {ReactNode} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {useFlag} from 'common/flags'
@@ -24,7 +25,6 @@ import {assumeMock} from 'utils/testing'
 import AutomateNavbar from '../AutomateNavbar'
 
 jest.mock('utils/launchDarkly')
-jest.mock('react-router')
 jest.mock('common/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -33,8 +33,6 @@ jest.mock('pages/automate/aiAgent/hooks/useStoreConfiguration')
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
-const useParamsMock = useParams as jest.Mock
-useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
@@ -46,6 +44,10 @@ jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
+
+const wrapper = ({children}: {children: ReactNode}) => (
+    <StaticRouter location="/app">{children}</StaticRouter>
+)
 
 describe('<AutomateNavbar />', () => {
     beforeEach(() => {
@@ -99,7 +101,8 @@ describe('<AutomateNavbar />', () => {
                             <AutomateNavbar />
                         </ThemeProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(container).toMatchSnapshot()
@@ -129,7 +132,8 @@ describe('<AutomateNavbar />', () => {
                             <AutomateNavbar />
                         </ThemeProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(container).toMatchSnapshot()
@@ -152,7 +156,8 @@ describe('<AutomateNavbar />', () => {
                             <AutomateNavbar />
                         </ThemeProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(container).toMatchSnapshot()
@@ -178,7 +183,8 @@ describe('<AutomateNavbar />', () => {
                             <AutomateNavbar />
                         </ThemeProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(container).toMatchSnapshot()
@@ -206,7 +212,8 @@ describe('<AutomateNavbar />', () => {
                             <AutomateNavbar />
                         </ThemeProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(screen.getByText('Actions platform')).toBeInTheDocument()

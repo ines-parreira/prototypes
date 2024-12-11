@@ -38,7 +38,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             tabindex="-1"
           >
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -51,7 +51,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Tickets
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -64,7 +64,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Automate
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/convert"
@@ -77,7 +77,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Convert
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -90,7 +90,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Customers
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -103,7 +103,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Statistics
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -502,7 +502,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
             tabindex="-1"
           >
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -515,7 +515,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Tickets
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -528,7 +528,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Automate
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/convert"
@@ -541,7 +541,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Convert
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -554,7 +554,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Customers
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -567,7 +567,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Statistics
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -715,7 +715,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             tabindex="-1"
           >
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -728,7 +728,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Tickets
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -741,7 +741,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Automate
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -754,7 +754,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Customers
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -767,7 +767,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Statistics
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -1166,7 +1166,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
             tabindex="-1"
           >
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -1179,7 +1179,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Tickets
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -1192,7 +1192,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Automate
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -1205,7 +1205,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Customers
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -1218,7 +1218,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Statistics
             </a>
             <a
-              class="dropdown-item dropdown-item menu-item"
+              class="menuItem dropdown-item dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"

@@ -2,9 +2,11 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
+import type {ReactNode} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
+import {StaticRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {account} from 'fixtures/account'
@@ -24,8 +26,6 @@ import {assumeMock} from 'utils/testing'
 import ConvertNavbar from '../ConvertNavbar'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
-
-jest.mock('react-router')
 
 jest.mock('pages/convert/common/hooks/useIsOverviewPageEnabled')
 const useIsOverviewPageEnabledSpy = assumeMock(useIsOverviewPageEnabled)
@@ -54,6 +54,10 @@ const isConvertSubscriberMock = useIsConvertSubscriber as jest.Mock
 const mockStore = configureMockStore()
 
 const queryClient = mockQueryClient()
+
+const wrapper = ({children}: {children: ReactNode}) => (
+    <StaticRouter location="/app">{children}</StaticRouter>
+)
 
 describe('<ConvertNavbar />', () => {
     const defaultState: Partial<RootState> = {
@@ -96,7 +100,8 @@ describe('<ConvertNavbar />', () => {
                     <ThemeProvider>
                         <ConvertNavbar />
                     </ThemeProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(queryByText('Overview')).toBeInTheDocument()
@@ -109,7 +114,8 @@ describe('<ConvertNavbar />', () => {
                     <ThemeProvider>
                         <ConvertNavbar />
                     </ThemeProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(queryByText('Overview')).not.toBeInTheDocument()
@@ -125,7 +131,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </DndProvider>
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(queryByText('forum')).not.toBeInTheDocument()
@@ -150,7 +157,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </QueryClientProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(getAllByText('forum').length).toBe(2)
@@ -182,7 +190,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </QueryClientProvider>
                     </DndProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
             expect(getAllByText('Settings').length).toBe(1)
         })
@@ -204,7 +213,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </DndProvider>
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(getAllByText('forum').length).toBe(2)
@@ -252,7 +262,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </DndProvider>
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(queryAllByText('Set up').length).toBe(1)
@@ -280,7 +291,8 @@ describe('<ConvertNavbar />', () => {
                             </ThemeProvider>
                         </DndProvider>
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
+                {wrapper}
             )
 
             expect(queryByText('forum')).not.toBeInTheDocument()

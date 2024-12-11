@@ -7,7 +7,6 @@ import _kebabCase from 'lodash/kebabCase'
 import PropTypes from 'prop-types'
 import React, {
     Component,
-    ComponentProps,
     createRef,
     ReactNode,
     MouseEvent as MouseEventReact,
@@ -15,7 +14,6 @@ import React, {
     RefObject,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {
     DropdownItem,
     DropdownMenu,
@@ -23,6 +21,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import {NavbarLink} from 'common/navigation'
 import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -72,33 +71,6 @@ const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
 const MIN_WIDTH = 200
 const MAX_WIDTH = 350
-
-type NavLinkProps = {
-    to: string
-    className?: string
-} & ComponentProps<typeof Link>
-
-// A <Link /> with some default styles
-function NavLink(props: NavLinkProps) {
-    const {className, to} = props
-
-    let url = to || ''
-
-    // if the url ends with an "s", then we also count the urls without an "s"
-    // ex: we highlight "Tickets" when we are on /app/tickets/something or /app/ticket/something
-    if (url.endsWith('s')) {
-        url = url.slice(0, -1)
-    }
-
-    return (
-        <Link
-            {...props}
-            className={classnames(className, css['menu-item'], {
-                current: window.location.pathname.includes(url),
-            })}
-        />
-    )
-}
 
 type MenuItem = {
     url: string
@@ -433,7 +405,7 @@ export class Navbar extends Component<Props, State> {
                                     return (
                                         <DropdownItem
                                             key={item.label}
-                                            tag={NavLink}
+                                            tag={NavbarLink}
                                             to={item.url}
                                             onClick={() => {
                                                 this.setState({
@@ -579,7 +551,7 @@ export class Navbar extends Component<Props, State> {
                                 </div>
                                 <hr className={css.separator} />
                                 <DropdownBody>
-                                    <NavLink
+                                    <NavbarLink
                                         to="/app/settings/profile"
                                         onClick={() => {
                                             logEvent(
@@ -603,7 +575,7 @@ export class Navbar extends Component<Props, State> {
                                             person
                                         </i>
                                         Your profile
-                                    </NavLink>
+                                    </NavbarLink>
                                     <div
                                         onClick={() => {
                                             this.setState({
@@ -705,7 +677,7 @@ export class Navbar extends Component<Props, State> {
                                             </span>
                                         </a>
                                     )}
-                                    <NavLink
+                                    <NavbarLink
                                         to="/app/referral-program"
                                         onClick={() => {
                                             logEvent(
@@ -729,7 +701,7 @@ export class Navbar extends Component<Props, State> {
                                             favorite_border
                                         </i>
                                         Refer a friend & earn
-                                    </NavLink>
+                                    </NavbarLink>
 
                                     <div
                                         className={classnames(

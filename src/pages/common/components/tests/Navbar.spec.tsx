@@ -3,6 +3,8 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import React from 'react'
+import type {ReactNode} from 'react'
+import {StaticRouter} from 'react-router-dom'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_PREFERENCES} from 'config'
@@ -39,6 +41,10 @@ allFlagsMock.mockReturnValue({})
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const pageTitleTestCases = [['Tickets'], ['Customers']]
+
+const wrapper = ({children}: {children: ReactNode}) => (
+    <StaticRouter location="/app">{children}</StaticRouter>
+)
 
 describe('<Navbar />', () => {
     const minProps = {
@@ -86,7 +92,7 @@ describe('<Navbar />', () => {
     })
 
     it('should render the navbar', () => {
-        const {container} = render(<Navbar {...minProps} />)
+        const {container} = render(<Navbar {...minProps} />, {wrapper})
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -95,30 +101,38 @@ describe('<Navbar />', () => {
             <Navbar
                 splitTicketViewToggle={<button>Split ticket view</button>}
                 {...minProps}
-            />
+            />,
+            {wrapper}
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the title', () => {
         const {getAllByText} = render(
-            <Navbar {...minProps} activeContent="tickets" />
+            <Navbar {...minProps} activeContent="tickets" />,
+            {wrapper}
         )
         expect(getAllByText('Tickets')).toHaveLength(2)
     })
 
     it('should render the opened panel', () => {
-        const {container} = render(<Navbar {...minProps} isOpenedPanel />)
+        const {container} = render(<Navbar {...minProps} isOpenedPanel />, {
+            wrapper,
+        })
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the user as unavailable', () => {
-        const {container} = render(<Navbar {...minProps} available={false} />)
+        const {container} = render(<Navbar {...minProps} available={false} />, {
+            wrapper,
+        })
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should toggle the user availability when clicking the availability toggle', () => {
-        const {getByText} = render(<Navbar {...minProps} isOpenedPanel />)
+        const {getByText} = render(<Navbar {...minProps} isOpenedPanel />, {
+            wrapper,
+        })
 
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/available/i))
@@ -143,7 +157,8 @@ describe('<Navbar />', () => {
                 flags={{
                     [FeatureFlagKey.OfficeHours]: false,
                 }}
-            />
+            />,
+            {wrapper}
         )
 
         userEvent.click(getByText(user.name))
@@ -156,7 +171,8 @@ describe('<Navbar />', () => {
                 {...minProps}
                 currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 isTrialing={true}
-            />
+            />,
+            {wrapper}
         )
 
         userEvent.click(getByText(user.name))
@@ -245,7 +261,7 @@ describe('<Navbar />', () => {
     ])(
         `should log ${SegmentEvent.MenuUserLinkClicked} event clicking on %s dropdown item`,
         (text, segmentValue, props, extraActions) => {
-            render(<Navbar {...minProps} {...props} />)
+            render(<Navbar {...minProps} {...props} />, {wrapper})
 
             userEvent.click(screen.getByText(user.name))
             extraActions()
@@ -270,7 +286,8 @@ describe('<Navbar />', () => {
                     ...user,
                     name: '',
                 })}
-            />
+            />,
+            {wrapper}
         )
 
         const {getByText} = within(getAllByRole('button')[2])
@@ -279,7 +296,7 @@ describe('<Navbar />', () => {
     })
 
     it('should render the noticeable widget when the user menu displays the updates', () => {
-        const {getByText} = render(<Navbar {...minProps} />)
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
 
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/gorgias updates/i))
@@ -289,7 +306,7 @@ describe('<Navbar />', () => {
     })
 
     it('should not render the noticeable widget when it has already been rendered', () => {
-        const {getByText} = render(<Navbar {...minProps} />)
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
 
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/gorgias updates/i))
@@ -300,7 +317,9 @@ describe('<Navbar />', () => {
     })
 
     it('should reopen the user menu at the initial main screen', () => {
-        const {getByText, queryByText} = render(<Navbar {...minProps} />)
+        const {getByText, queryByText} = render(<Navbar {...minProps} />, {
+            wrapper,
+        })
 
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/gorgias updates/i))
@@ -316,14 +335,14 @@ describe('<Navbar />', () => {
     it('should render Automate', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(true)
 
-        const {getByText} = render(<Navbar {...minProps} />)
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
 
         expect(getByText('Automate')).toBeInTheDocument()
     })
 
     it('should not render Automate if not have Agent privilege', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(false)
-        const {queryByText} = render(<Navbar {...minProps} />)
+        const {queryByText} = render(<Navbar {...minProps} />, {wrapper})
 
         expect(queryByText('Automate')).not.toBeInTheDocument()
     })
@@ -331,14 +350,14 @@ describe('<Navbar />', () => {
     it('should render Convert', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(true)
 
-        const {getByText} = render(<Navbar {...minProps} />)
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
 
         expect(getByText('Convert')).toBeInTheDocument()
     })
 
     it('should not render Convert if not have Admin privilege', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(false)
-        const {queryByText} = render(<Navbar {...minProps} />)
+        const {queryByText} = render(<Navbar {...minProps} />, {wrapper})
 
         expect(queryByText('Convert')).not.toBeInTheDocument()
     })
@@ -347,7 +366,8 @@ describe('<Navbar />', () => {
         'should render CreateTicketNavbarButton and PlaceCallNavbarButton if on a ticket page',
         (title) => {
             const {queryByText} = render(
-                <Navbar {...minProps} activeContent={title} />
+                <Navbar {...minProps} activeContent={title} />,
+                {wrapper}
             )
 
             if (title === 'Tickets') {
