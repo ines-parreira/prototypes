@@ -125,7 +125,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
             renderVoiceIntegrationVoicemail({} as RootState, ivrIntegration)
 
         expect(getByText('Custom recording')).toBeInTheDocument()
-        expect(getByText('Text To Speech')).toBeInTheDocument()
+        expect(getByText('Text-to-speech')).toBeInTheDocument()
         expect(getByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()
 
@@ -146,7 +146,7 @@ describe('<VoiceIntegrationVoicemail /> render', () => {
             )
         expect(getByText('During business hours')).toBeInTheDocument()
         expect(getByText('Custom recording')).toBeInTheDocument()
-        expect(getByText('Text To Speech')).toBeInTheDocument()
+        expect(getByText('Text-to-speech')).toBeInTheDocument()
         expect(getByText('None')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeChecked()
 
@@ -372,7 +372,7 @@ describe('<VoiceIntegrationVoicemail /> outside business hours', () => {
                 standardIntegrationWithDifferentSettings
             )
 
-        const textToSpeechButtons = getAllByLabelText('Text To Speech')
+        const textToSpeechButtons = getAllByLabelText('Text-to-speech')
         expect(textToSpeechButtons).toHaveLength(2)
         const outsideBHTextToSpeechButton = textToSpeechButtons[1]
 

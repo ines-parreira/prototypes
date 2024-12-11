@@ -50,8 +50,8 @@ export default function VoiceIntegrationSecondaryNavigation({
                 Voicemail
             </NavLink>
             {!isIvr && (
-                <NavLink to={`${baseURL}/greeting-message`} exact>
-                    Greeting Message
+                <NavLink to={`${baseURL}/greetings-music`} exact>
+                    Greetings & Music
                 </NavLink>
             )}
             {isIvr && (

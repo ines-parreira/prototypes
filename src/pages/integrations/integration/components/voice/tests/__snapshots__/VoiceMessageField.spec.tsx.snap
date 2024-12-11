@@ -14,7 +14,7 @@ exports[`<VoiceMessageField /> should render 1`] = `
       id="text_to_speech"
       type="radio"
     />
-    Text To Speech
+    Text-to-speech
   </label>
 </div>
 `;

@@ -39,7 +39,7 @@ const WaitMusicLibrarySelect = ({
     const waitMusicLibrary: UpdateWaitMusicLibrary[] = [
         {
             key: 'ringtone',
-            name: 'Ringtone',
+            name: 'Ringing Tone',
             audio_file_path:
                 RINGTONE_AUDIO_FILE_PATHS.find((RINGTONE_AUDIO_FILE_PATHS) =>
                     RINGTONE_AUDIO_FILE_PATHS.countries.includes(

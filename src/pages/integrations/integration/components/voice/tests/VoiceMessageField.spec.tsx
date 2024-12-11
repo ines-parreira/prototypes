@@ -184,7 +184,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
 
     it('should render', () => {
         const {getByLabelText} = renderComponent()
-        expect(getByLabelText('Text To Speech')).toBeInTheDocument()
+        expect(getByLabelText('Text-to-speech')).toBeInTheDocument()
         expect(getByLabelText('Custom recording')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeInTheDocument()
     })
@@ -236,7 +236,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         const {getByText} = renderComponent(message)
 
         expect(
-            getByText('Text To Speech message is required')
+            getByText('Text-to-speech message is required')
         ).toBeInTheDocument()
     })
 

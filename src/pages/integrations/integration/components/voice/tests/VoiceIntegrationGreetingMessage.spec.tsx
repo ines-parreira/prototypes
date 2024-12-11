@@ -111,8 +111,8 @@ describe('<VoiceIntegrationGreetingMessage /> render', () => {
 
         const {getByLabelText, queryByText, getByRole, getAllByText} =
             renderVoiceIntegrationGreetingMessage(standardIntegration)
-        expect(queryByText('Set greeting message')).toBeInTheDocument()
-        expect(queryByText('Text To Speech')).toBeInTheDocument()
+        expect(queryByText('Greeting message')).toBeInTheDocument()
+        expect(queryByText('Text-to-speech')).toBeInTheDocument()
         const customRecordingFields = getAllByText('Custom recording')
         expect(customRecordingFields.length).toBe(2)
         expect(customRecordingFields[0]).toBeInTheDocument()
@@ -135,7 +135,7 @@ describe('<VoiceIntegrationGreetingMessage /> render', () => {
         const {getByRole, queryByText} =
             renderVoiceIntegrationGreetingMessage(standardIntegration)
 
-        expect(queryByText('Set greeting message')).toBeInTheDocument()
+        expect(queryByText('Greeting message')).toBeInTheDocument()
         expect(queryByText('Wait music')).not.toBeInTheDocument()
 
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
@@ -177,7 +177,7 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
                 standardIntegrationWithDifferentSettings
             )
 
-        expect(getByLabelText('Text To Speech')).toBeChecked()
+        expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
 
         fireEvent.click(getByLabelText('None'))
@@ -214,7 +214,7 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
                 standardIntegrationWithDifferentSettings
             )
 
-        expect(getByLabelText('Text To Speech')).toBeChecked()
+        expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
 
         fireEvent.click(getByRole('button', {name: 'Save changes'}))

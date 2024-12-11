@@ -74,7 +74,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
     return (
         <Container fluid className={settingsCss.pageContainer}>
             <div className={css.greetingMessageInfo}>
-                <h4 className={css.header}>Set greeting message</h4>
+                <h4 className={css.header}>Greeting message</h4>
                 <p>
                     Callers will be informed of all IVR options through this
                     message, which must be updated if options change.

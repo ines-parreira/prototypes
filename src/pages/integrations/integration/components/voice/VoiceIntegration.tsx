@@ -91,7 +91,7 @@ export default function VoiceIntegration() {
                             />
                         </Route>
                         <Route
-                            path={`${baseURL}/:integrationId/greeting-message`}
+                            path={`${baseURL}/:integrationId/greetings-music`}
                             exact
                         >
                             <VoiceIntegrationGreetingMessage

@@ -201,7 +201,7 @@ const NoneRadioButton = ({
 const TextToSpeechRadioButton = ({
     selectedVoiceMessageType,
     onChange,
-    label = 'Text To Speech',
+    label = 'Text-to-speech',
     id = '',
 }: VoiceMessageRadioButtonProps) => {
     return (
@@ -274,7 +274,7 @@ const TextToSpeechRecordingInput = ({
                 placeholder={'Write a message to convert to speech'}
                 error={
                     noMessageProvided
-                        ? 'Text To Speech message is required'
+                        ? 'Text-to-speech message is required'
                         : ''
                 }
             />

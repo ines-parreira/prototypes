@@ -67,9 +67,7 @@ export default function VoiceIntegrationGreetingMessage({
             <SettingsContent>
                 <Form onSubmit={onSubmit}>
                     <div className={css.section}>
-                        <h4 className={css.sectionTitle}>
-                            Set greeting message
-                        </h4>
+                        <h4 className={css.sectionTitle}>Greeting message</h4>
                         <p className={css.sectionSubtitle}>
                             Message the caller will hear before the calls
                             starts.
@@ -86,8 +84,7 @@ export default function VoiceIntegrationGreetingMessage({
                         <div className={css.section}>
                             <h4 className={css.sectionTitle}>Wait music</h4>
                             <p className={css.sectionSubtitle}>
-                                The music callers will hear while they are
-                                waiting.
+                                Music callers will hear while they are waiting.
                             </p>
                             <WaitMusicField
                                 preferences={

@@ -78,13 +78,13 @@ describe('<VoiceIntegrationIvr />', () => {
     it('renders component', () => {
         const {getByText, getByLabelText, getByRole} = renderComponent()
 
-        expect(getByText('Set greeting message')).toBeInTheDocument()
+        expect(getByText('Greeting message')).toBeInTheDocument()
         expect(
             getByText(
                 'Callers will be informed of all IVR options through this message, which must be updated if options change.'
             )
         ).toBeInTheDocument()
-        expect(getByLabelText('Text To Speech')).toBeChecked()
+        expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(
             getByText(
                 'Hello, thanks for calling. 1 for message 2 for forward 3 for message'

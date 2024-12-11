@@ -13,7 +13,7 @@ export enum Tab {
     Campaigns = 'campaigns',
     Appearance = 'appearance',
     PhoneVoicemail = 'voicemail',
-    PhoneGreetingMessage = 'greeting-message',
+    PhoneGreetingsMusic = 'greetings-music',
     PhoneIvr = 'ivr',
     CreateWizard = 'create-wizard',
     Languages = 'languages',

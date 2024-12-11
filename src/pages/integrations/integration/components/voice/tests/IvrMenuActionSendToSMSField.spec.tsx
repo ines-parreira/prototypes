@@ -53,7 +53,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         expect(getByText('SMS confirmation message')).toBeInTheDocument()
         expect(getByText('Outbound SMS Message')).toBeInTheDocument()
         expect(getByLabelText('Custom recording')).not.toBeChecked()
-        expect(getByLabelText('Text To Speech')).toBeChecked()
+        expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(
             getByText(DEFAULT_IVR_DEFLECTION_SMS_CONTENT)
         ).toBeInTheDocument()

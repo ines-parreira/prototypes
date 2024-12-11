@@ -43,7 +43,7 @@ describe('<WaitMusicLibrarySelect />', () => {
         expect(getByText('Clockwork Waltz')).toBeInTheDocument()
 
         fireEvent.click(getByText('arrow_drop_down'))
-        expect(getByText('Ringtone')).toBeInTheDocument()
+        expect(getByText('Ringing Tone')).toBeInTheDocument()
         expect(getByText('Chill While Waiting')).toBeInTheDocument()
         expect(getByText('Soothe')).toBeInTheDocument()
         expect(getByText('Bright Lights')).toBeInTheDocument()
@@ -77,7 +77,7 @@ describe('<WaitMusicLibrarySelect />', () => {
         ({libraryName, expectedLibrary}) => {
             const {getByText} = renderComponent({
                 key: 'ringtone',
-                name: 'Ringtone',
+                name: 'Ringing Tone',
                 audio_file_path:
                     RINGTONE_AUDIO_FILE_PATHS[
                         DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX
@@ -145,10 +145,10 @@ describe('<WaitMusicLibrarySelect />', () => {
             )
 
             fireEvent.click(getByText('arrow_drop_down'))
-            fireEvent.click(getByText('Ringtone'))
+            fireEvent.click(getByText('Ringing Tone'))
             expect(onChangeMock).toHaveBeenCalledWith({
                 key: 'ringtone',
-                name: 'Ringtone',
+                name: 'Ringing Tone',
                 audio_file_path: expectedAudioFilePath,
             })
         }

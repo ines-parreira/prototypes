@@ -24,9 +24,9 @@ exports[`<VoiceIntegrationSecondaryNavigation /> render() should render 1`] = `
     class="link"
     data-active-class-name="active"
     data-exact="true"
-    href="/app/settings/channels/phone/1/greeting-message"
+    href="/app/settings/channels/phone/1/greetings-music"
   >
-    Greeting Message
+    Greetings & Music
   </a>
 </nav>
 `;
