@@ -27,9 +27,14 @@ const AIAgentBanner = ({
 
     const ticketFeedback = data?.data
 
-    const messageFeedback = ticketFeedback?.messages?.find((messageFeedback) =>
-        messageIds.includes(messageFeedback.messageId)
-    )
+    const messageFeedback = ticketFeedback?.messages
+        // Creating a shallow copy to not mutate the original array
+        ?.slice()
+        // We want to get the last message that contains feedback
+        ?.reverse()
+        ?.find((messageFeedback) =>
+            messageIds.includes(messageFeedback.messageId)
+        )
 
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
