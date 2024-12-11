@@ -20,220 +20,311 @@ exports[`SatisfactionSurveyView should render current survey settings form 1`] =
       class="contentWrapper body-regular"
     >
       <div
-        class="mb24"
+        class="mb-4"
       >
         <p>
-          Keep track of the performance of your support team by sending a satisfaction survey after a ticket is closed.
+          Keep track of your team’s support performance by sending a satisfaction survey after a ticket is closed. Exclude tickets using rules or create rules based on CSAT scores to get notified.
         </p>
+        <a
+          class="link d-block"
+          href="https://docs.gorgias.com/en-US/exclude-tickets-from-receiving-the-satisfaction-survey-(csat)-188964"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="material-icons"
+          >
+            menu_book
+          </i>
+           
+          <span>
+            Learn About Ticket Exclusion
+          </span>
+        </a>
+        <a
+          class="link d-block"
+          href="https://updates.gorgias.com/publications/csat-scores-are-now-available-in-rules"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="material-icons"
+          >
+            menu_book
+          </i>
+           
+          <span>
+            Learn About Creating CSAT Rules
+          </span>
+        </a>
       </div>
       <div>
         <form
           class=""
         >
           <div
-            class="inputField form-group"
-          >
-            <label
-              class="control-label"
-            >
-              Send survey after the ticket has been closed for
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      1 hour
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                    <i
-                      class="material-icons dropdownIcon"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      5 minutes
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      30 minutes
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      2 hours
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      4 hours
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      6 hours
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      8 hours
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      1 day
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      2 days
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      7 days
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div
-              class="mt4 caption-regular"
-            >
-              No survey will be sent after the ticket is snoozed.
-            </div>
-          </div>
-          <div
-            class="mb24 form-group"
+            class="mb-4 form-group"
           >
             <label
               class="control-label mb8"
             >
-              Send survey email for following channels
+              Send a satisfaction survey email to customers with closed tickets for the following channels:
             </label>
             <div
-              class="mb8"
+              class="ml-0 row"
             >
-              <label
-                class="Label--label--QAnfT label"
-                for="send_survey_on_email"
+              <div
+                class="mr-4"
               >
-                <input
-                  checked=""
-                  class="input"
-                  id="send_survey_on_email"
-                  name="send_survey_on_email"
-                  type="checkbox"
-                />
-                Email
-              </label>
-            </div>
-            <div>
-              <label
-                class="Label--label--QAnfT label"
-                for="send_survey_on_chat"
+                <label
+                  class="Label--label--QAnfT label"
+                  for="send_survey_for_email"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="send_survey_for_email"
+                    name="send_survey_for_email"
+                    type="checkbox"
+                  />
+                  Email
+                </label>
+              </div>
+              <div
+                class="mr-4"
               >
-                <input
-                  checked=""
-                  class="input"
-                  id="send_survey_on_chat"
-                  name="send_survey_on_chat"
-                  type="checkbox"
-                />
-                Chat
-              </label>
+                <label
+                  class="Label--label--QAnfT label"
+                  for="send_survey_for_chat"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="send_survey_for_chat"
+                    name="send_survey_for_chat"
+                    type="checkbox"
+                  />
+                  Chat
+                </label>
+              </div>
+              <div
+                class="mr-4"
+              >
+                <label
+                  class="Label--label--QAnfT Label--isDisabled--cM4ye label"
+                  for="send_survey_for_contact_form"
+                >
+                  <input
+                    class="input"
+                    disabled=""
+                    id="send_survey_for_contact_form"
+                    name="send_survey_for_contact_form"
+                    type="checkbox"
+                  />
+                  Contact Form
+                </label>
+              </div>
+              <div
+                class="mr-4"
+              >
+                <label
+                  class="Label--label--QAnfT label"
+                  for="send_survey_for_help_center"
+                >
+                  <input
+                    class="input"
+                    id="send_survey_for_help_center"
+                    name="send_survey_for_help_center"
+                    type="checkbox"
+                  />
+                  Help Center
+                </label>
+              </div>
             </div>
           </div>
           <div
-            class="inputField mb24 form-group"
+            class="inputField mb-4 form-group"
           >
             <div>
               RichFieldWithVariables
             </div>
           </div>
+          <div
+            class="inputField mb-5 form-group"
+          >
+            <div
+              class="ml-0 align-items-center  row"
+            >
+              <label
+                class="control-label mr-2 mb-0"
+              >
+                Email satisfaction survey
+              </label>
+              <div>
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <span
+                        class="label"
+                        style="min-width: 10px; opacity: 1;"
+                      >
+                        1 hour
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    
+                    <button
+                      class="option option--focused dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        5 minutes
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        30 minutes
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        2 hours
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        4 hours
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        6 hours
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        8 hours
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        1 day
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        2 days
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        7 days
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <label
+                class="control-label ml-2 mb-0"
+              >
+                after tickets are closed.
+              </label>
+            </div>
+            <div
+              class="mt4 caption-regular"
+            >
+              Note: Surveys will not be sent for snoozed tickets.
+            </div>
+          </div>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="wrapper mr-2 fill primary medium"
             type="submit"
           >
             <span
               class="content"
             >
-              Save
+              Save Changes
+            </span>
+          </button>
+          <button
+            aria-disabled="true"
+            class="wrapper fill secondary medium isDisabled"
+            type="button"
+          >
+            <span
+              class="content"
+            >
+              Cancel
             </span>
           </button>
         </form>

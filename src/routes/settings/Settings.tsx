@@ -16,6 +16,7 @@ import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import BusinessHours from 'pages/settings/businessHours/BusinessHours'
+import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import ManageTags from 'pages/settings/tags/ManageTags'
@@ -148,25 +149,30 @@ export function SettingRoutes() {
             <Route path={`${path}/auto-merge`} exact>
                 {renderAppSettings(AutoMergeSettings)}
             </Route>
-            <Route path={`${path}/satisfaction-surveys`} exact>
-                {renderAppSettings(SatisfactionSurveyView, {
-                    roleParams: [ADMIN_ROLE, PageSection.SatisfactionSurveys],
-                    paywallParams: [
-                        AccountFeature.SatisfactionSurveys,
-                        undefined,
-                        {
-                            [AccountFeature.SatisfactionSurveys]: {
-                                ...defaultPaywallConfigs[
-                                    AccountFeature.SatisfactionSurveys
-                                ],
-                                preview: assetsUrl(
-                                    '/img/paywalls/screens/satisfaction-surveys-settings.png'
-                                ),
-                            } as PaywallConfig,
-                        },
-                    ],
-                })}
-            </Route>
+            <HelpCenterApiClientProvider>
+                <Route path={`${path}/satisfaction-surveys`} exact>
+                    {renderAppSettings(SatisfactionSurveyView, {
+                        roleParams: [
+                            ADMIN_ROLE,
+                            PageSection.SatisfactionSurveys,
+                        ],
+                        paywallParams: [
+                            AccountFeature.SatisfactionSurveys,
+                            undefined,
+                            {
+                                [AccountFeature.SatisfactionSurveys]: {
+                                    ...defaultPaywallConfigs[
+                                        AccountFeature.SatisfactionSurveys
+                                    ],
+                                    preview: assetsUrl(
+                                        '/img/paywalls/screens/satisfaction-surveys-settings.png'
+                                    ),
+                                } as PaywallConfig,
+                            },
+                        ],
+                    })}
+                </Route>
+            </HelpCenterApiClientProvider>
         </Switch>
     )
 }
