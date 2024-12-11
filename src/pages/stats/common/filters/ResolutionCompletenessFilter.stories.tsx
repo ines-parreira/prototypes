@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
 
-import {ResolutionCompletenessFilter} from './ResolutionCompletenessFilter'
+import {ResolutionCompletenessFilter} from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/ResolutionCompletenessFilter',

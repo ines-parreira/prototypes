@@ -2,10 +2,18 @@ import {ComponentType} from 'react'
 
 import {FilterComponentKey, FilterKey} from 'models/stat/types'
 import {
+    AccuracyFilterWithSavedState,
+    AccuracyFilterWithState,
+} from 'pages/stats/common/filters/AccuracyFilter'
+import {
     AgentsFiltersWithSavedState,
     AgentsFiltersWithState,
 } from 'pages/stats/common/filters/AgentsFilter'
 import {AggregationWindowFilterWithState} from 'pages/stats/common/filters/AggregationWindowFilter'
+import {
+    BrandVoiceFilterWithSavedState,
+    BrandVoiceFilterWithState,
+} from 'pages/stats/common/filters/BrandVoiceFilter'
 import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {
     CampaignsFilterFromContext,
@@ -24,6 +32,10 @@ import {
     CustomFieldsFilterWithSavedState,
     CustomFieldsFilterWithState,
 } from 'pages/stats/common/filters/CustomFieldsFilter'
+import {
+    EfficiencyFilterWithSavedState,
+    EfficiencyFilterWithState,
+} from 'pages/stats/common/filters/EfficiencyFilter'
 import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
 import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
 import {
@@ -31,6 +43,10 @@ import {
     IntegrationsFilterWithState,
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
+import {
+    InternalComplianceFilterWithSavedState,
+    InternalComplianceFilterWithState,
+} from 'pages/stats/common/filters/InternalComplianceFilter'
 import {
     LanguageProficiencyFilterWithSavedState,
     LanguageProficiencyFilterWithState,
@@ -64,15 +80,19 @@ export const FilterComponentMap: Record<
     [FilterComponentKey.CustomField]: CustomFieldFilter,
     [FilterComponentKey.PhoneIntegrations]: PhoneIntegrationsFilterWithState,
     [FilterComponentKey.Store]: StoreFilterFromContext,
+    [FilterKey.Accuracy]: AccuracyFilterWithState,
     [FilterKey.Agents]: AgentsFiltersWithState,
     [FilterKey.AggregationWindow]: AggregationWindowFilterWithState,
+    [FilterKey.BrandVoice]: BrandVoiceFilterWithState,
     [FilterKey.Campaigns]: CampaignsFilterFromContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.Channels]: ChannelsFilterWithState,
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
     [FilterKey.CustomFields]: CustomFieldsFilterWithState,
+    [FilterKey.Efficiency]: EfficiencyFilterWithState,
     [FilterKey.HelpCenters]: HelpCenterFilterWithState,
     [FilterKey.Integrations]: IntegrationsFilterWithState,
+    [FilterKey.InternalCompliance]: InternalComplianceFilterWithState,
     [FilterKey.LanguageProficiency]: LanguageProficiencyFilterWithState,
     [FilterKey.LocaleCodes]: HelpCenterLanguageFilterWithState,
     [FilterKey.Period]: PeriodFilterWithState,
@@ -94,6 +114,10 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.CustomFields]: CustomFieldsFilterWithSavedState,
     [FilterKey.Integrations]: IntegrationsFilterWithSavedState,
     [FilterKey.LanguageProficiency]: LanguageProficiencyFilterWithSavedState,
+    [FilterKey.Accuracy]: AccuracyFilterWithSavedState,
+    [FilterKey.Efficiency]: EfficiencyFilterWithSavedState,
+    [FilterKey.InternalCompliance]: InternalComplianceFilterWithSavedState,
+    [FilterKey.BrandVoice]: BrandVoiceFilterWithSavedState,
     [FilterKey.ResolutionCompleteness]:
         ResolutionCompletenessFilterWithSavedState,
     [FilterKey.Score]: ScoreFiltersWithSavedState,

@@ -58,6 +58,10 @@ describe('reporting utils', () => {
                     resolutionCompleteness: ['3', '4'],
                     communicationSkills: ['3', '4'],
                     languageProficiency: ['3', '4'],
+                    accuracy: ['3', '4'],
+                    efficiency: ['3', '4'],
+                    internalCompliance: ['3', '4'],
+                    brandVoice: ['3', '4'],
                 })
             ).toEqual([
                 {
@@ -107,6 +111,26 @@ describe('reporting utils', () => {
                 },
                 {
                     member: TicketMember.LanguageProficiencyScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.AccuracyScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.EfficiencyScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.InternalComplianceScore,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3', '4'],
+                },
+                {
+                    member: TicketMember.BrandVoiceScore,
                     operator: ReportingFilterOperator.Equals,
                     values: ['3', '4'],
                 },

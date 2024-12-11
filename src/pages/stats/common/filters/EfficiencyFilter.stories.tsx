@@ -1,16 +1,16 @@
 import {Meta, StoryFn} from '@storybook/react'
+
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-
-import {CommunicationSkillsFilter} from 'pages/stats/common/filters/CommunicationSkillsFilter'
+import {EfficiencyFilter} from 'pages/stats/common/filters//EfficiencyFilter'
 
 const storyConfig: Meta = {
-    title: 'Stats/Filters/CommunicationSkillsFilter',
-    component: CommunicationSkillsFilter,
+    title: 'Stats/Filters/EfficiencyFilter',
+    component: EfficiencyFilter,
     parameters: {
         chromatic: {disableSnapshot: false},
     },
@@ -20,12 +20,10 @@ const defaultState = {}
 
 const store = configureMockStore([thunk])(defaultState)
 
-const Template: StoryFn<ComponentProps<typeof CommunicationSkillsFilter>> = (
-    props
-) => {
+const Template: StoryFn<ComponentProps<typeof EfficiencyFilter>> = (props) => {
     return (
         <Provider store={store}>
-            <CommunicationSkillsFilter {...props} />
+            <EfficiencyFilter {...props} />
         </Provider>
     )
 }

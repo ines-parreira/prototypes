@@ -141,4 +141,68 @@ describe('useGetOptionalFilters', () => {
             FilterKey.LanguageProficiency,
         ])
     })
+
+    it('should return the optional filters with manually scored dimensions', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQAFilters]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: true,
+        })
+
+        const {result} = renderHook(
+            () =>
+                useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
+                    FilterKey.Channels,
+                ] as OptionalFilter[]),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(stateWithSubscription)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        expect(result.current).toEqual([
+            FilterKey.Channels,
+            FilterKey.CommunicationSkills,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.Accuracy,
+            FilterKey.BrandVoice,
+            FilterKey.Efficiency,
+            FilterKey.InternalCompliance,
+        ])
+    })
+
+    it('should return the optional filters with LanguageProficiency and manually scored dimensions', () => {
+        mockFlags({
+            [FeatureFlagKey.AutoQAFilters]: true,
+            [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: true,
+        })
+
+        const {result} = renderHook(
+            () =>
+                useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters([
+                    FilterKey.Channels,
+                ] as OptionalFilter[]),
+            {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore(stateWithSubscription)}>
+                        {children}
+                    </Provider>
+                ),
+            }
+        )
+
+        expect(result.current).toEqual([
+            FilterKey.Channels,
+            FilterKey.CommunicationSkills,
+            FilterKey.ResolutionCompleteness,
+            FilterKey.LanguageProficiency,
+            FilterKey.Accuracy,
+            FilterKey.BrandVoice,
+            FilterKey.Efficiency,
+            FilterKey.InternalCompliance,
+        ])
+    })
 })

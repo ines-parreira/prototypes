@@ -34,6 +34,10 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.CommunicationSkills]: 'Communication',
     [FilterKey.LanguageProficiency]: 'Language proficiency',
     [FilterKey.ResolutionCompleteness]: 'Resolution completeness',
+    [FilterKey.Accuracy]: 'Accuracy',
+    [FilterKey.Efficiency]: 'Efficiency',
+    [FilterKey.InternalCompliance]: 'Internal compliance',
+    [FilterKey.BrandVoice]: 'Brand voice',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Report on',
     [FilterComponentKey.CustomField]: 'Report on',
     [FilterComponentKey.Store]: 'Report on',
@@ -83,6 +87,26 @@ export const languageProficiencyFilterLogicalOperators = [
 ]
 
 export const resolutionCompletenessFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const accuracyFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const efficiencyFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const internalComplianceFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const brandVoiceFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]

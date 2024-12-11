@@ -60,6 +60,10 @@ export enum TicketMember {
     ResolutionCompletenessScore = 'TicketEnriched.resolutionCompletenessScore',
     CommunicationSkillsScore = 'TicketEnriched.communicationSkillsScore',
     LanguageProficiencyScore = 'TicketEnriched.languageProficiencyScore',
+    AccuracyScore = 'TicketEnriched.accuracyScore',
+    EfficiencyScore = 'TicketEnriched.efficiencyScore',
+    InternalComplianceScore = 'TicketEnriched.internalComplianceScore',
+    BrandVoiceScore = 'TicketEnriched.brandVoiceScore',
 }
 
 export type TicketTimeDimensions =

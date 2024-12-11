@@ -65,6 +65,10 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
     languageProficiency: TicketMember.LanguageProficiencyScore,
+    accuracy: TicketMember.AccuracyScore,
+    efficiency: TicketMember.EfficiencyScore,
+    internalCompliance: TicketMember.InternalComplianceScore,
+    brandVoice: TicketMember.BrandVoiceScore,
 }
 
 export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
@@ -91,6 +95,10 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
     communicationSkills: TicketMember.CommunicationSkillsScore,
     languageProficiency: TicketMember.LanguageProficiencyScore,
+    accuracy: TicketMember.AccuracyScore,
+    efficiency: TicketMember.EfficiencyScore,
+    internalCompliance: TicketMember.InternalComplianceScore,
+    brandVoice: TicketMember.BrandVoiceScore,
 }
 
 export const HelpdeskTicketsRepliedStatsFiltersMembers: StatsFiltersMembers = {
@@ -175,6 +183,10 @@ export const statsFiltersToReportingFilters = (
         resolutionCompleteness,
         communicationSkills,
         languageProficiency,
+        accuracy,
+        efficiency,
+        internalCompliance,
+        brandVoice,
     } = statsFilters
     let filters: ReportingFilter[] = [
         {
@@ -257,6 +269,30 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(languageProficiency) && members.languageProficiency) {
         filters = addOptionalFilter(filters, languageProficiency, {
             member: members.languageProficiency,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(accuracy) && members.accuracy) {
+        filters = addOptionalFilter(filters, accuracy, {
+            member: members.accuracy,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(efficiency) && members.efficiency) {
+        filters = addOptionalFilter(filters, efficiency, {
+            member: members.efficiency,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(internalCompliance) && members.internalCompliance) {
+        filters = addOptionalFilter(filters, internalCompliance, {
+            member: members.internalCompliance,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(brandVoice) && members.brandVoice) {
+        filters = addOptionalFilter(filters, brandVoice, {
+            member: members.brandVoice,
             operator: ReportingFilterOperator.Equals,
         })
     }

@@ -4,15 +4,19 @@ import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 
 export enum FilterKey {
+    Accuracy = 'accuracy',
     Agents = 'agents',
     AggregationWindow = 'aggregationWindow',
+    BrandVoice = 'brandVoice',
     Campaigns = 'campaigns',
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
     CommunicationSkills = 'communicationSkills',
     CustomFields = 'customFields',
+    Efficiency = 'efficiency',
     HelpCenters = 'helpCenters',
     Integrations = 'integrations',
+    InternalCompliance = 'internalCompliance',
     LanguageProficiency = 'languageProficiency',
     LocaleCodes = 'localeCodes',
     Period = 'period',
@@ -53,6 +57,10 @@ export type StaticFilter =
     | FilterKey.SlaPolicies
     | FilterKey.CommunicationSkills
     | FilterKey.LanguageProficiency
+    | FilterKey.Accuracy
+    | FilterKey.Efficiency
+    | FilterKey.InternalCompliance
+    | FilterKey.BrandVoice
     | FilterKey.ResolutionCompleteness
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
@@ -88,15 +96,19 @@ export interface TagFilter extends WithLogicalOperator<number> {
 }
 
 export type LegacyStatsFilters = {
+    [FilterKey.Accuracy]?: string[]
     [FilterKey.Agents]?: number[]
     [FilterKey.AggregationWindow]?: AggregationWindow
+    [FilterKey.BrandVoice]?: string[]
     [FilterKey.Campaigns]?: string[]
     [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Channels]?: string[]
     [FilterKey.CommunicationSkills]?: string[]
     [FilterKey.CustomFields]?: string[]
+    [FilterKey.Efficiency]?: string[]
     [FilterKey.HelpCenters]?: number[]
     [FilterKey.Integrations]?: number[]
+    [FilterKey.InternalCompliance]?: string[]
     [FilterKey.LanguageProficiency]?: string[]
     [FilterKey.LocaleCodes]?: string[]
     [FilterKey.Period]: Period
@@ -126,18 +138,22 @@ export type AggregationWindow =
 
 export type SavedFilterWithLogicalOperator = {
     member:
+        | FilterKey.Accuracy
         | FilterKey.Agents
+        | FilterKey.BrandVoice
         | FilterKey.Campaigns
         | FilterKey.CampaignStatuses
         | FilterKey.Channels
+        | FilterKey.CommunicationSkills
+        | FilterKey.Efficiency
         | FilterKey.HelpCenters
         | FilterKey.Integrations
+        | FilterKey.InternalCompliance
+        | FilterKey.LanguageProficiency
         | FilterKey.LocaleCodes
+        | FilterKey.ResolutionCompleteness
         | FilterKey.Score
         | FilterKey.SlaPolicies
-        | FilterKey.CommunicationSkills
-        | FilterKey.LanguageProficiency
-        | FilterKey.ResolutionCompleteness
     operator: LogicalOperatorEnum
     values: string[]
 }
@@ -185,15 +201,19 @@ export type SavedFilterAPIDraft = {
 }
 
 export type StatsFiltersWithLogicalOperator = {
+    [FilterKey.Accuracy]?: WithLogicalOperator<string>
     [FilterKey.Agents]?: WithLogicalOperator<number>
     [FilterKey.AggregationWindow]?: AggregationWindow
+    [FilterKey.BrandVoice]?: WithLogicalOperator<string>
     [FilterKey.Campaigns]?: WithLogicalOperator<string>
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Channels]?: WithLogicalOperator<string>
     [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
     [FilterKey.CustomFields]?: CustomFieldFilter[]
+    [FilterKey.Efficiency]?: WithLogicalOperator<string>
     [FilterKey.HelpCenters]?: WithLogicalOperator<number>
     [FilterKey.Integrations]?: WithLogicalOperator<number>
+    [FilterKey.InternalCompliance]?: WithLogicalOperator<string>
     [FilterKey.LanguageProficiency]?: WithLogicalOperator<string>
     [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
     [FilterKey.Period]: Period

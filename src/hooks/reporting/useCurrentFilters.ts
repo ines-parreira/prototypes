@@ -26,13 +26,17 @@ export const getValidator = (
             return isTagFilter
         case FilterKey.AggregationWindow:
             return isAggregationWindowFilter
+        case FilterKey.Accuracy:
         case FilterKey.Agents:
+        case FilterKey.BrandVoice:
         case FilterKey.Campaigns:
         case FilterKey.CampaignStatuses:
         case FilterKey.Channels:
         case FilterKey.CommunicationSkills:
+        case FilterKey.Efficiency:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
+        case FilterKey.InternalCompliance:
         case FilterKey.LanguageProficiency:
         case FilterKey.LocaleCodes:
         case FilterKey.ResolutionCompleteness:

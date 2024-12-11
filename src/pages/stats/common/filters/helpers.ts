@@ -152,6 +152,10 @@ const qaFilterTypes = [
     FilterKey.LanguageProficiency,
     FilterKey.ResolutionCompleteness,
     FilterKey.CommunicationSkills,
+    FilterKey.Accuracy,
+    FilterKey.Efficiency,
+    FilterKey.InternalCompliance,
+    FilterKey.BrandVoice,
 ]
 
 type FilterOption = {

@@ -26,6 +26,10 @@ export const isFilterFilled = (
         case FilterKey.SlaPolicies:
         case FilterKey.CommunicationSkills:
         case FilterKey.LanguageProficiency:
+        case FilterKey.Accuracy:
+        case FilterKey.Efficiency:
+        case FilterKey.InternalCompliance:
+        case FilterKey.BrandVoice:
         case FilterKey.ResolutionCompleteness:
             return !_isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:
