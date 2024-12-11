@@ -122,6 +122,7 @@ export enum FeatureFlagKey {
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
+    PubNubRealtime = 'pubnub-realtime',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
