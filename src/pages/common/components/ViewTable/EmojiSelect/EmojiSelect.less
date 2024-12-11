@@ -1,5 +1,5 @@
-@fontSize: 20px;
-@size: @fontSize + 4px;
+@fontSize: 24px;
+@size: @fontSize;
 
 :local .picker {
     width: @size;
@@ -10,12 +10,15 @@
     .icon {
         color: var(--neutral-grey-4);
         font-size: @fontSize;
-        line-height: @size;
-        transition: 0.2s all;
+        line-height: 1;
+        transition:
+            0.2s transform,
+            colors;
+        transform: scale(0.8);
         cursor: pointer;
 
         &.empty:hover {
-            font-size: @size;
+            transform: scale(1);
             color: var(--neutral-grey-6);
         }
     }

@@ -136,6 +136,7 @@ export type Icon =
     | 'mail'
     | 'markunread'
     | 'mode_edit'
+    | 'more_vert'
     | 'open_in_new'
     | 'pause'
     | 'pause_circle_filled'
