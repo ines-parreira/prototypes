@@ -87,12 +87,18 @@ export const STATIC_WAIT_MUSIC_LIBRARY: UpdateWaitMusicLibrary[] = [
             'https://assets.gorgias.io/phone/waiting_music_soothe.mp3',
     },
     {
+        key: 'uplifting_acoustic',
+        name: 'Bright Lights',
+        audio_file_path:
+            'https://assets.gorgias.io/phone/waiting_music_bright_lights.mp3',
+    },
+    {
         key: 'clockwork_waltz',
         name: 'Clockwork Waltz',
         audio_file_path: 'https://assets.gorgias.io/phone/ClockworkWaltz.mp3',
     },
 ]
-export const DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX = 2
+export const DEFAULT_STATIC_WAIT_MUSIC_LIBRARY_INDEX = 3
 
 export const DEFAULT_WAIT_MUSIC_PREFERENCES = {
     type: WaitMusicType.Library,

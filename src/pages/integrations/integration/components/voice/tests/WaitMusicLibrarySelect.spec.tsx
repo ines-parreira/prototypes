@@ -46,9 +46,10 @@ describe('<WaitMusicLibrarySelect />', () => {
         expect(getByText('Ringtone')).toBeInTheDocument()
         expect(getByText('Chill While Waiting')).toBeInTheDocument()
         expect(getByText('Soothe')).toBeInTheDocument()
+        expect(getByText('Bright Lights')).toBeInTheDocument()
 
         const circularAudioPlayers = getAllByTestId('circular-audio-player')
-        expect(circularAudioPlayers.length).toBe(4)
+        expect(circularAudioPlayers.length).toBe(5)
         expect(circularAudioPlayers[0]).toHaveTextContent(
             'https://assets.gorgias.io/phone/US_ringing_tone.wav'
         )
@@ -59,6 +60,9 @@ describe('<WaitMusicLibrarySelect />', () => {
             'https://assets.gorgias.io/phone/waiting_music_soothe.mp3'
         )
         expect(circularAudioPlayers[3]).toHaveTextContent(
+            'https://assets.gorgias.io/phone/waiting_music_bright_lights.mp3'
+        )
+        expect(circularAudioPlayers[4]).toHaveTextContent(
             'https://assets.gorgias.io/phone/ClockworkWaltz.mp3'
         )
     })
@@ -155,7 +159,7 @@ describe('<WaitMusicLibrarySelect />', () => {
 
         fireEvent.click(getByText('arrow_drop_down'))
         const circularAudioPlayers = getAllByTestId('circular-audio-player')
-        expect(circularAudioPlayers.length).toBe(4)
+        expect(circularAudioPlayers.length).toBe(5)
 
         fireEvent.click(
             circularAudioPlayers[2].querySelector('button') as Element
@@ -165,5 +169,6 @@ describe('<WaitMusicLibrarySelect />', () => {
         expect(circularAudioPlayers[1]).toHaveTextContent('Inactive')
         expect(circularAudioPlayers[2]).toHaveTextContent('Active')
         expect(circularAudioPlayers[3]).toHaveTextContent('Inactive')
+        expect(circularAudioPlayers[4]).toHaveTextContent('Inactive')
     })
 })
