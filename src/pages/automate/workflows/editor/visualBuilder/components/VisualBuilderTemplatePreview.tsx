@@ -95,7 +95,11 @@ function VisualBuilderTemplatePreview({
                 showInteractive={false}
                 position="top-left"
             >
-                <ControlButton onClick={handleFitView}>
+                <ControlButton
+                    aria-label="fit view"
+                    title="fit view"
+                    onClick={handleFitView}
+                >
                     <FitViewIcon />
                 </ControlButton>
             </Controls>

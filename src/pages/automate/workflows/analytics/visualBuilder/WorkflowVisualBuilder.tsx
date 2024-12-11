@@ -162,7 +162,11 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
                                 position="top-left"
                                 style={!isDegradedMode ? {left: 200 + 15} : {}}
                             >
-                                <ControlButton onClick={handleFitView}>
+                                <ControlButton
+                                    aria-label="fit view"
+                                    title="fit view"
+                                    onClick={handleFitView}
+                                >
                                     <FitViewIcon />
                                 </ControlButton>
                             </Controls>
