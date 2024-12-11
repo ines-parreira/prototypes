@@ -3,6 +3,7 @@ import React, {useRef, useState} from 'react'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import {TagDropdownMenu} from 'tags'
 
+import {AI_AGENT_TAGS_SET} from '../../constants'
 import css from './TagSearchSelect.less'
 
 type Props = {
@@ -52,6 +53,7 @@ const TagSearchSelect = ({onSelect, defaultTag}: Props) => {
             >
                 <TagDropdownMenu
                     onClick={(item) => handleTagSelection(item.name)}
+                    filterBy={(tag) => !AI_AGENT_TAGS_SET.has(tag.name)}
                 />
             </Dropdown>
         </>

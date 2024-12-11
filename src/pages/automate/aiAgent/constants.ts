@@ -175,3 +175,17 @@ export const AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET = {
     subject: 'Return policy',
     bodyText: 'What is your return policy?',
 }
+
+// Note: this needs to be kept in sync with https://github.com/gorgias/ai-agent/blob/main/src/shared/types/enums/ticket-tags.enum.ts
+export const AI_AGENT_TAGS = {
+    AI_PROCESSING: 'ai_processing',
+    AI_CLOSE: 'ai_close',
+    AI_HANDOVER: 'ai_handover',
+    AI_SNOOZE: 'ai_snooze',
+    AI_EXECUTED_ACTION: 'ai_executed_action',
+    AI_ANSWERED: 'ai_answered',
+    AI_IGNORE: 'ai_ignore',
+    AI_PREVIEW: 'ai_preview',
+}
+
+export const AI_AGENT_TAGS_SET = new Set(Object.values(AI_AGENT_TAGS))
