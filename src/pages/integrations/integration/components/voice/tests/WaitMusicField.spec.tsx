@@ -130,7 +130,7 @@ describe('<WaitMusicField />', () => {
             />
         )
 
-        expect(container).toHaveTextContent('Supported file: .mp3 (Max 10MB)')
+        expect(container).toHaveTextContent('Supported file: .mp3 (Max 3MB)')
 
         const input = container.querySelector('input[type="file"]')
         expect(input).toBeInTheDocument()
