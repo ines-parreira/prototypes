@@ -18,10 +18,14 @@ import Button from 'pages/common/components/button/Button'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import {fetchCreditCard} from 'state/billing/actions'
 import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
-import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import {
+    getCurrentSubscription,
+    shouldPayWithShopify as getShouldPayWithShopify,
+} from 'state/currentAccount/selectors'
 
 import BackLink from '../../components/BackLink'
 import Card from '../../components/Card'
@@ -39,7 +43,6 @@ import {
 } from '../../constants'
 
 import {useBillingPlans} from '../../hooks/useBillingPlan'
-import {useCreditCard} from '../../hooks/useCreditCard'
 import {formatNumTickets} from '../../utils/formatAmount'
 import css from './BillingProcessView.less'
 
@@ -152,9 +155,8 @@ const BillingProcessView = ({
         filterByInterval: true,
     })
 
-    const {hasCreditCard, shouldPayWithShopify} = useCreditCard({
-        dispatchBillingError,
-    })
+    const {data: hasCreditCard} = useHasCreditCard()
+    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const ctaText = useMemo(() => {
         if (isCurrentSubscriptionCanceled && hasCreditCard) {

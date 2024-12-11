@@ -43,14 +43,6 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-jest.mock('utils', () => {
-    const utils: Record<string, unknown> = jest.requireActual('utils')
-    return {
-        ...utils,
-        loadScript: jest.fn(),
-    }
-})
-
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const storeInitialState = {

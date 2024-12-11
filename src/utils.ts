@@ -838,18 +838,6 @@ export const createImmutableSelector = createSelectorCreator(
     Immutable.is
 ) as typeof createSelector
 
-export function loadScript(url: string, callback: () => void) {
-    const elem = document.createElement('script')
-    const script = document.getElementsByTagName('script')[0]
-    elem.src = url
-
-    if (callback) {
-        elem.addEventListener('load', callback)
-    }
-
-    script.parentNode?.insertBefore(elem, script)
-}
-
 /**
  * Clean error message sent from server before we display it
  */
