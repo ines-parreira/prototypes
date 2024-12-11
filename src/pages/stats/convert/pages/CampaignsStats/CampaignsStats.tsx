@@ -80,6 +80,7 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
                                     FilterKey.Campaigns,
                                     FilterKey.CampaignStatuses,
                                 ]}
+                                withSavedFilters={false}
                             />
                         </DashboardGridCell>
                     </DashboardSection>

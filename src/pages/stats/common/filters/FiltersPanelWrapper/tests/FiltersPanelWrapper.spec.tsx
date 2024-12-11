@@ -71,4 +71,23 @@ describe('FiltersPanelWrapper', () => {
             screen.queryByText(new RegExp('SavedFiltersFormMock'))
         ).toBeFalsy()
     })
+
+    it('should not show the buttons when withSavedFilters prop is false', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.AnalyticsSavedFilters]: true,
+        })
+
+        renderWithStore(
+            <FiltersPanelWrapper
+                optionalFilters={filterKeysMock}
+                withSavedFilters={false}
+            />,
+            {}
+        )
+
+        expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
+        expect(
+            screen.queryByText(new RegExp('SavedFiltersFormMock'))
+        ).toBeFalsy()
+    })
 })

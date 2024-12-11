@@ -10,14 +10,19 @@ import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrap
 import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {SavedFiltersPanel} from 'pages/stats/common/filters/SavedFiltersPanel'
 
+type Props = Omit<
+    FiltersPanelProps,
+    'cleanStatsFilters' | 'filterComponentMap'
+> & {
+    withSavedFilters?: boolean
+}
+
 export const FiltersPanelWrapper = ({
     optionalFilters = [],
     filterSettingsOverrides,
     persistentFilters,
-}: Omit<
-    FiltersPanelProps,
-    'cleanStatsFilters' | 'filterComponentMap'
->): ReactElement => {
+    withSavedFilters = true,
+}: Props): ReactElement => {
     const isAnalyticsSavedFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
 
@@ -33,11 +38,11 @@ export const FiltersPanelWrapper = ({
                         ...optionalFilters,
                     ]}
                 />
-                {isAnalyticsSavedFilters && (
+                {isAnalyticsSavedFilters && withSavedFilters && (
                     <SavedFiltersActions optionalFilters={optionalFilters} />
                 )}
             </div>
-            {isAnalyticsSavedFilters && (
+            {isAnalyticsSavedFilters && withSavedFilters && (
                 <SavedFiltersPanel
                     persistentFilters={persistentFilters}
                     optionalFilters={optionalFilters}

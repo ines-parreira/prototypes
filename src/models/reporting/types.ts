@@ -133,6 +133,4 @@ export const SAVABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Integrations,
     FilterKey.Agents,
     FilterKey.Tags,
-    FilterKey.Campaigns,
-    FilterKey.CampaignStatuses,
 ]
