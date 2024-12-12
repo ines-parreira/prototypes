@@ -106,7 +106,7 @@ function LiveOverview() {
         <StatsPage
             title="Live overview"
             description="Get a live overview of the current activity of your support team, including agent status, open tickets, and volume of tickets you are handling throughout the day."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
+            helpUrl="https://link.gorgias.com/f0l"
             titleExtra={<LiveOverviewFilters />}
         >
             {pageStatsFilters && (

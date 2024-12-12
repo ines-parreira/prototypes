@@ -48,6 +48,7 @@ function LiveVoice() {
         <StatsPage
             title={LIVE_VOICE_PAGE_TITLE}
             description={LIVE_VOICE_PAGE_TITLE_DESCRIPTION}
+            helpUrl="https://link.gorgias.com/x0q"
         >
             <div className={css.wrapper}>
                 <div className={css.content}>
