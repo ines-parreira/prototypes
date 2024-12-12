@@ -5,6 +5,8 @@ import {AI_MANAGED_TYPES, MANAGED_TYPES, OBJECT_TYPES} from './constants'
 export type CustomFieldObjectTypes =
     (typeof OBJECT_TYPES)[keyof typeof OBJECT_TYPES]
 
+export type CustomFieldRequirementType = 'required' | 'visible' | 'conditional'
+
 export type ListParams = ApiPaginationParams & {
     archived?: boolean
     object_type: CustomFieldObjectTypes
@@ -72,6 +74,7 @@ export interface CustomFieldInput {
     description?: string
     priority?: number
     required: boolean
+    requirement_type?: CustomFieldRequirementType
     managed_type: CustomFieldManagedType | null
     definition: CustomFieldDefinition
 }

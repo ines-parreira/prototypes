@@ -25,6 +25,7 @@ import history from 'pages/history'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import css from 'pages/settings/customFields/components/FieldForm.less'
+import RequirementTypeInput from 'pages/settings/customFields/components/RequirementTypeInput'
 import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
@@ -42,19 +43,30 @@ const pickMap = {
     input_number: ['min', 'max'],
 }
 
-function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
+function sanitizeInput(
+    input: CustomFieldInput,
+    useRequirementType: boolean
+): CustomFieldInput {
     input.definition.input_settings = pick(
         input.definition.input_settings,
         ['input_type'].concat(
             pickMap[input.definition.input_settings.input_type]
         )
     ) as CustomFieldInput['definition']['input_settings']
+
+    if (!useRequirementType) {
+        delete input.requirement_type
+    }
+
     return input
 }
 
 export default function FieldForm(props: FieldFormProps) {
+    const flags = useFlags()
     const isAnalyticsSavedFilters =
-        !!useFlags()[FeatureFlagKey.AnalyticsSavedFilters]
+        !!flags[FeatureFlagKey.AnalyticsSavedFilters]
+    const useRequirementType = !!flags[FeatureFlagKey.TicketConditionalFields]
+
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTypeLabel = objectTypeSettings.LABEL
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
@@ -80,6 +92,7 @@ export default function FieldForm(props: FieldFormProps) {
                 'label',
                 'description',
                 'required',
+                'requirement_type',
                 'managed_type',
                 'definition',
             ])
@@ -99,7 +112,7 @@ export default function FieldForm(props: FieldFormProps) {
     const save = async () => {
         setIsLoading(true)
         try {
-            await props.onSubmit(sanitizeInput(form))
+            await props.onSubmit(sanitizeInput(form, useRequirementType))
             setIsFormDirty(false)
             return true
         } catch (e) {
@@ -147,6 +160,9 @@ export default function FieldForm(props: FieldFormProps) {
         return 'Note: The values you have changed may be in use in rules and macros. Make sure to edit the rules and macros, as they will not be able to apply an invalid value.'
     }, [isAnalyticsSavedFilters])
 
+    const showRequired =
+        props.field.object_type === OBJECT_TYPES.TICKET && !isAIManaged
+
     return (
         <form onSubmit={(evt) => evt.preventDefault()} ref={formRef}>
             {isCustomField(props.field) && (
@@ -187,17 +203,23 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
                 isDisabled={isAIManaged}
             />
-            {props.field.object_type === OBJECT_TYPES.TICKET &&
-                !isAIManaged && (
-                    <CheckBox
-                        isChecked={form.required}
-                        caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
-                        onChange={(val) => setValue('required', val)}
-                        className={css.formRow}
-                    >
-                        Required to close {customFieldTypeLabel}
-                    </CheckBox>
-                )}
+            {showRequired && useRequirementType && (
+                <RequirementTypeInput
+                    value={form.requirement_type}
+                    onChange={(val) => setValue('requirement_type', val)}
+                    className={css.formRow}
+                />
+            )}
+            {showRequired && !useRequirementType && (
+                <CheckBox
+                    isChecked={form.required}
+                    caption={`Enable to prevent agents from closing the ${customFieldTypeLabel} if the field is left empty. Snooze and Send actions will still work.`}
+                    onChange={(val) => setValue('required', val)}
+                    className={css.formRow}
+                >
+                    Required to close {customFieldTypeLabel}
+                </CheckBox>
+            )}
             <div className={css.formRow}>
                 <Label
                     htmlFor="type"

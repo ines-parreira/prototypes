@@ -63,6 +63,7 @@ describe('<FieldForm/>', () => {
         })
         mockFlags({
             [FeatureFlagKey.AnalyticsSavedFilters]: false,
+            [FeatureFlagKey.TicketConditionalFields]: false,
         })
     })
 
@@ -196,6 +197,42 @@ describe('<FieldForm/>', () => {
             expect(screen.getByLabelText(/Required to close ticket/))
                 .toBeChecked
         })
+    })
+
+    it('should show three options instead of a checkbox when conditional fields are enabled', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsSavedFilters]: false,
+            [FeatureFlagKey.TicketConditionalFields]: true,
+        })
+
+        render(<FieldForm {...defaultProps} />)
+
+        // All three options should be visible
+        for (const label of [
+            'Always optional',
+            'Always required',
+            'Conditionally visible',
+        ]) {
+            const input = screen.getByLabelText(label, {selector: 'input'})
+            expect(input).toBeInTheDocument()
+
+            fireEvent.click(input)
+            expect(input).toBeChecked()
+        }
+
+        // Change the value to "conditional"
+        userEvent.click(
+            screen.getByLabelText('Conditionally visible', {selector: 'input'})
+        )
+
+        // Submit the form
+        fireEvent.click(screen.getByText('Save changes'))
+
+        // The submit event must contain "requirement_type=conditional"
+        expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
+        expect(defaultProps.onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({requirement_type: 'conditional'})
+        )
     })
 
     it('should prompt for confirmation when closing the page with unsaved changes', () => {
