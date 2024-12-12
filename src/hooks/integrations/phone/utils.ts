@@ -104,7 +104,7 @@ export const createDevice = (token: string): Device => {
         closeProtection: true,
         codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
         tokenRefreshMs: 30 * 1000,
-        logLevel: 'debug',
+        logLevel: 'error',
         allowIncomingWhileBusy: true,
     })
 }
