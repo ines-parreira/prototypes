@@ -84,6 +84,7 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         articlesOptions: [],
         guidanceOptions: [],
         snippetsOptions: [],
+        fileSnippetsOptions: [],
         macrosOptions: [],
         actionsOptions: [],
         isOtherResourceListLoading: false,
@@ -217,6 +218,26 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             resourceId: '2',
             label: 'Snippet Label',
             optionsOverride: 'Knowledge::External websites',
+        })
+
+        renderComponent({initialValues})
+
+        await waitFor(() => {
+            expect(mockChildComponent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    values: expectedValues,
+                })
+            )
+        })
+    })
+
+    it('renders multi select component correctly with preselected file external snippet option', async () => {
+        const {initialValues, expectedValues} = setupMockResourcesValues({
+            optionName: 'fileSnippets',
+            resourceType: 'file_external_snippet',
+            resourceId: '2',
+            label: 'File Snippet Label',
+            optionsOverride: 'Knowledge::External files',
         })
 
         renderComponent({initialValues})

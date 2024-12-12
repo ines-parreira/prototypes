@@ -4,6 +4,7 @@ import React from 'react'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {useGetAICompatibleMacros} from 'models/macro/queries'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
+import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
 import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {assumeMock} from 'utils/testing'
@@ -13,6 +14,7 @@ import * as useAIAgentGetOtherResources from '../useAIAgentGetOtherResources'
 jest.mock('models/helpCenter/queries')
 jest.mock('models/macro/queries')
 jest.mock('pages/automate/aiAgent/hooks/usePublicResources')
+jest.mock('pages/automate/aiAgent/hooks/useFileIngestion')
 jest.mock('pages/automate/aiAgent/hooks/useGuidanceArticles')
 jest.mock('models/workflows/queries')
 
@@ -21,6 +23,7 @@ const mockedUseGetHelpCenterArticleList = assumeMock(
 )
 const mockedUseGetAICompatibleMacros = assumeMock(useGetAICompatibleMacros)
 const mockedUsePublicResources = assumeMock(usePublicResources)
+const mockedUseFileIngestion = assumeMock(useFileIngestion)
 const mockedUseGuidanceArticles = assumeMock(useGuidanceArticles)
 const mockedUseGetStoreWorkflowsConfigurations = assumeMock(
     useGetStoreWorkflowsConfigurations
@@ -53,6 +56,13 @@ describe('useAIAgentGetOtherResources', () => {
                 sourceItems: [],
                 isSourceItemsListLoading: false,
             } as unknown as ReturnType<typeof usePublicResources>)
+
+            mockedUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                ingestFile: jest.fn(),
+                deleteIngestedFile: jest.fn(),
+                isIngesting: false,
+            })
 
             mockedUseGuidanceArticles.mockReturnValue({
                 guidanceArticles: [],
@@ -94,6 +104,7 @@ describe('useAIAgentGetOtherResources', () => {
                     articlesOptions: [],
                     guidanceOptions: [],
                     snippetsOptions: [],
+                    fileSnippetsOptions: [],
                     macrosOptions: [],
                     actionsOptions: [],
                     isOtherResourceListLoading: false,
@@ -154,6 +165,16 @@ describe('useAIAgentGetOtherResources', () => {
             } as unknown as ReturnType<
                 typeof useGetStoreWorkflowsConfigurations
             >)
+
+            mockedUseFileIngestion.mockReturnValue({
+                ingestedFiles: [
+                    {id: 11, filename: 'test1', status: 'PENDING'},
+                    {id: 12, filename: 'test2', status: 'SUCCESSFUL'},
+                ],
+                ingestFile: jest.fn(),
+                deleteIngestedFile: jest.fn(),
+                isIngesting: false,
+            } as unknown as ReturnType<typeof useFileIngestion>)
         })
 
         it('should return data when available', () => {
@@ -200,6 +221,7 @@ describe('useAIAgentGetOtherResources', () => {
                         {value: 9, label: 'test1'},
                         {value: 10, label: 'test2'},
                     ],
+                    fileSnippetsOptions: [{value: 12, label: 'test2'}],
                     isOtherResourceListLoading: false,
                     getResourcesFromLabels: expect.any(Function),
                 })
@@ -269,6 +291,13 @@ describe('useAIAgentGetOtherResources', () => {
                     type: 'resource',
                     resourceType: 'external_snippet',
                     resourceId: '6',
+                },
+            ])
+            expect(getResourcesFromLabels(['External files::test2'])).toEqual([
+                {
+                    type: 'resource',
+                    resourceType: 'file_external_snippet',
+                    resourceId: '12',
                 },
             ])
 

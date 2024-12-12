@@ -54,6 +54,7 @@ const FeedbackOtherResourcesSelect = ({
         articlesOptions,
         guidanceOptions,
         snippetsOptions,
+        fileSnippetsOptions,
         macrosOptions,
         actionsOptions,
         isOtherResourceListLoading,
@@ -133,6 +134,14 @@ const FeedbackOtherResourcesSelect = ({
                             )?.label
                         }`
                     }
+                    case 'file_external_snippet': {
+                        return `${RESOURCE_LABELS.file_external_snippet}${
+                            fileSnippetsOptions.find(
+                                (option) =>
+                                    option.value.toString() === v.resourceId
+                            )?.label
+                        }`
+                    }
                     case 'other': {
                         return NO_RELEVANT_RESOURCES_LABEL
                     }
@@ -143,6 +152,7 @@ const FeedbackOtherResourcesSelect = ({
     }, [
         actionsOptions,
         articlesOptions,
+        fileSnippetsOptions,
         guidanceOptions,
         initialValues,
         macrosOptions,
@@ -267,6 +277,10 @@ const FeedbackOtherResourcesSelect = ({
                     ...snippetsOptions.map(
                         (snippet) =>
                             `${RESOURCE_LABELS.external_snippet}${snippet.label}`
+                    ),
+                    ...fileSnippetsOptions.map(
+                        (snippet) =>
+                            `${RESOURCE_LABELS.file_external_snippet}${snippet.label}`
                     ),
                     ...macrosOptions.map(
                         (macro) => `${RESOURCE_LABELS.macro}${macro.label}`

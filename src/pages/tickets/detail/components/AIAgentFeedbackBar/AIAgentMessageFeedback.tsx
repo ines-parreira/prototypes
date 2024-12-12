@@ -351,7 +351,11 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     resourceType={knowledge.type}
                                     resourceSection={ResourceSection.KNOWLEDGE}
                                     handleSubmitFeedback={handleSubmitFeedback}
-                                    href={getKnowledgeUrl(knowledge)}
+                                    href={getKnowledgeUrl(
+                                        knowledge,
+                                        messageFeedback.shopType,
+                                        messageFeedback.shopName
+                                    )}
                                     dataTestId={
                                         FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID
                                     }

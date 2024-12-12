@@ -10,7 +10,7 @@ export type Guidance = {
 }
 
 export type Knowledge = {
-    type: 'article' | 'external_snippet' | 'macro'
+    type: 'article' | 'external_snippet' | 'macro' | 'file_external_snippet'
     id: number | string
     name: string
     url?: string
@@ -31,6 +31,7 @@ export type FeedbackOnResource = {
         | 'article'
         | 'macro'
         | 'external_snippet'
+        | 'file_external_snippet'
     type: 'binary'
     feedback: Feedback
 }
@@ -54,6 +55,7 @@ export type ResourceFeedbackOnMessage = {
         | 'article'
         | 'macro'
         | 'external_snippet'
+        | 'file_external_snippet'
         | 'other'
     resourceId: number | string
 }

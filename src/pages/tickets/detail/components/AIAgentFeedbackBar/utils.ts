@@ -3,11 +3,17 @@ import {TicketMessage} from 'models/ticket/types'
 
 import {TRIAL_MESSAGE_TAG} from './constants'
 
-export const getKnowledgeUrl = (knowledge: Knowledge) => {
+export const getKnowledgeUrl = (
+    knowledge: Knowledge,
+    shopType: string,
+    shopName: string
+) => {
     switch (knowledge.type) {
         case 'article':
         case 'external_snippet':
             return knowledge.url
+        case 'file_external_snippet':
+            return `/app/automation/${shopType}/${shopName}/ai-agent/knowledge`
         case 'macro':
             return `/app/settings/macros/${knowledge.id}`
         default:
@@ -39,6 +45,8 @@ export const mapResourceLabelToType = (label: string) => {
             return 'article'
         case 'External websites':
             return 'external_snippet'
+        case 'External files':
+            return 'file_external_snippet'
         case 'Macros':
             return 'macro'
         case 'Hard action':

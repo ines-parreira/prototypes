@@ -5,6 +5,7 @@ import {ResourceFeedbackOnMessage} from 'models/aiAgentFeedback/types'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {useGetAICompatibleMacros} from 'models/macro/queries'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
+import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
 import {useGuidanceArticles} from 'pages/automate/aiAgent/hooks/useGuidanceArticles'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 
@@ -49,6 +50,19 @@ export const useAIAgentGetOtherResources = ({
     const {sourceItems, isSourceItemsListLoading} = usePublicResources({
         helpCenterId: snippetHelpCenterId,
     })
+
+    /** Fetch file snippets */
+    const {ingestedFiles, isIngesting} = useFileIngestion({
+        helpCenterId: snippetHelpCenterId,
+        onSuccess: () => {},
+        onFailure: () => {},
+    })
+
+    const successfullyIngestedFiles = useMemo(() => {
+        return (
+            ingestedFiles?.filter((file) => file.status === 'SUCCESSFUL') ?? []
+        )
+    }, [ingestedFiles])
 
     /** Fetch macros */
     const getMacrosList = useGetAICompatibleMacros()
@@ -100,6 +114,15 @@ export const useAIAgentGetOtherResources = ({
         )
     }, [sourceItems])
 
+    const fileSnippetsOptions = useMemo(() => {
+        return (
+            successfullyIngestedFiles?.map((snippet) => ({
+                value: snippet.id,
+                label: snippet.filename,
+            })) ?? []
+        )
+    }, [successfullyIngestedFiles])
+
     const macrosOptions = useMemo(() => {
         return macrosList.map((macro) => ({
             value: macro.id,
@@ -121,7 +144,8 @@ export const useAIAgentGetOtherResources = ({
         getMacrosList.isLoading ||
         isGuidanceArticleListLoading ||
         isSourceItemsListLoading ||
-        isActionsListLoading
+        isActionsListLoading ||
+        isIngesting
 
     const getResourcesFromLabels = (labels: string[]) => {
         const resources: ResourceFeedbackOnMessage[] = []
@@ -211,6 +235,19 @@ export const useAIAgentGetOtherResources = ({
                     }
                     break
                 }
+                case 'file_external_snippet': {
+                    const fileSnippet = fileSnippetsOptions.find(
+                        (option) => option.label === text
+                    )
+                    if (fileSnippet) {
+                        resource = {
+                            type: 'resource',
+                            resourceType: 'file_external_snippet',
+                            resourceId: fileSnippet.value.toString(),
+                        }
+                    }
+                    break
+                }
                 case 'other': {
                     resource = {
                         type: 'resource',
@@ -233,6 +270,7 @@ export const useAIAgentGetOtherResources = ({
         articlesOptions,
         guidanceOptions,
         snippetsOptions,
+        fileSnippetsOptions,
         macrosOptions,
         actionsOptions,
         isOtherResourceListLoading,

@@ -149,7 +149,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         key={knowledge.id}
                         href={
                             hasAgentPrivileges
-                                ? getKnowledgeUrl(knowledge)
+                                ? getKnowledgeUrl(knowledge, shopType, shopName)
                                 : undefined
                         }
                         className={css.resource}

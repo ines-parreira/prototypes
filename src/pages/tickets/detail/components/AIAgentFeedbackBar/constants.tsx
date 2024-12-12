@@ -6,6 +6,7 @@ export const RESOURCE_ICONS: Record<string, JSX.Element> = {
     'Help Center articles': <i className="material-icons">article</i>,
     Macros: <i className="material-icons">article</i>,
     'External websites': <i className="material-icons">article</i>,
+    'External files': <i className="material-icons">article</i>,
     Guidance: <i className="material-icons">map</i>,
 }
 
@@ -17,6 +18,7 @@ export const RESOURCE_LABELS: Record<string, string> = {
     article: 'Knowledge::Help Center articles::',
     external_snippet: 'Knowledge::External websites::',
     macro: 'Knowledge::Macros::',
+    file_external_snippet: 'Knowledge::External files::',
 }
 
 export const QA_FAILED_MESSAGE =
