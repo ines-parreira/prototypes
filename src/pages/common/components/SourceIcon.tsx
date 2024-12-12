@@ -7,6 +7,9 @@ import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
 
 import css from './SourceIcon.less'
 
+export const AUTOMATE_ICON = 'automate_icon'
+export const AI_AGENT_ICON = 'ai_agent_icon'
+
 type Props = {
     type?: ChannelLike
     className?: string
@@ -121,6 +124,12 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
         case TicketMessageSourceType.WhatsAppMessage:
             icon.custom = true
             icon.name = 'whatsapp'
+            break
+        case AUTOMATE_ICON:
+            icon.name = 'bolt'
+            break
+        case AI_AGENT_ICON:
+            icon.name = 'auto_awesome'
             break
     }
 

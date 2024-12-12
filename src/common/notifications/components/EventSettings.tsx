@@ -1,11 +1,12 @@
 import React, {Fragment} from 'react'
 
+import useLaunchDarklyClient from 'common/hooks/useLaunchDarklyClient'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {SoundValue} from 'services/NotificationSounds'
 
 import {categories, notifications} from '../data'
-import {Settings} from '../types'
+import {CategoryConfig, Settings} from '../types'
 
 import css from './EventSettings.less'
 import EventSettingsRow from './EventSettingsRow'
@@ -26,9 +27,25 @@ export default function EventSettings({
     onChangeChannel,
     onChangeSound,
 }: Props) {
+    const {isLdInitialized} = useLaunchDarklyClient()
+
+    if (!isLdInitialized) {
+        return null
+    }
+
+    const filteredEnabledCategories = categories.filter(
+        (category) => category.isEnabled?.() ?? true
+    )
+
+    const filteredEnabledNotifications = (category: CategoryConfig) =>
+        (category.notifications || []).filter(
+            (notificationType) =>
+                notifications[notificationType].isEnabled?.() ?? true
+        )
+
     return (
         <>
-            {categories.map((category) => (
+            {filteredEnabledCategories.map((category) => (
                 <Fragment key={category.type}>
                     <h2 className={css.heading}>{category.label}</h2>
                     <p className={css.subtitle}>{category.description}</p>
@@ -38,7 +55,7 @@ export default function EventSettings({
                             typeHeader={category.typeLabel}
                         />
                         <TableBody>
-                            {(category.notifications || []).map(
+                            {filteredEnabledNotifications(category).map(
                                 (notificationType) => (
                                     <EventSettingsRow
                                         key={notificationType}

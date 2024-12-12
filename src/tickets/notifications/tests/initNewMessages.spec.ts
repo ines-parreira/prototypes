@@ -5,22 +5,16 @@ jest.mock('common/notifications', () => ({
     registerNotification: jest.fn(),
 }))
 
-describe('init', () => {
+describe('initNewMessages', () => {
     it('should register categories and notifications', () => {
-        require('../init')
+        require('../initNewMessages')
 
-        const categories = ['ticket-updates', 'ticket-message-created']
-        categories.forEach((categoryType) => {
-            expect(registerCategory).toHaveBeenCalledWith(
-                expect.objectContaining({type: categoryType})
-            )
-        })
+        const categoryType = 'ticket-message-created'
+        expect(registerCategory).toHaveBeenCalledWith(
+            expect.objectContaining({type: categoryType})
+        )
 
         const notifications = [
-            'legacy-chat-and-messaging',
-            'user.mentioned',
-            'ticket.snooze-expired',
-            'ticket.assigned',
             'ticket-message.created.email',
             'ticket-message.created.chat',
             'ticket-message.created.phone',

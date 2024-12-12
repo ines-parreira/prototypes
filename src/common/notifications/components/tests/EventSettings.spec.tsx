@@ -1,10 +1,16 @@
 import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import {getLDClient} from 'utils/launchDarkly'
+
 import {categories, notifications} from '../../data'
 import {Settings} from '../../types'
 
 import EventSettings from '../EventSettings'
+
+jest.mock('utils/launchDarkly', () => ({
+    getLDClient: jest.fn(),
+}))
 
 jest.mock(
     '../SoundSelect',
@@ -89,9 +95,15 @@ const notificationsWithSettings = categories
     .map((n) => notifications[n])
 
 describe('EventSettings', () => {
+    beforeEach(() => {
+        const mockLDClient = {
+            waitForInitialization: jest.fn().mockResolvedValueOnce(undefined),
+        }
+        ;(getLDClient as jest.Mock).mockReturnValue(mockLDClient)
+    })
     it.each(notificationsWithSettings.map((n) => [n.type, n.settings?.label]))(
         'should render event %s',
-        (_, label) => {
+        async (_, label) => {
             const {getByText} = render(
                 <EventSettings
                     settings={settings}
@@ -100,11 +112,13 @@ describe('EventSettings', () => {
                 />
             )
 
+            await getLDClient()?.waitForInitialization()
+
             expect(getByText(label as string)).toBeInTheDocument()
         }
     )
 
-    it('should call a function to handle a channel change', () => {
+    it('should call a function to handle a channel change', async () => {
         const onChangeChannel = jest.fn()
 
         const {getAllByRole} = render(
@@ -114,6 +128,8 @@ describe('EventSettings', () => {
                 onChangeSound={jest.fn()}
             />
         )
+
+        await getLDClient()?.waitForInitialization()
 
         const checkbox = getAllByRole('checkbox')[1]
         fireEvent.click(checkbox)
@@ -125,7 +141,7 @@ describe('EventSettings', () => {
         )
     })
 
-    it('should call a function to handle a sound change', () => {
+    it('should call a function to handle a sound change', async () => {
         const onChangeSound = jest.fn()
 
         const {getAllByRole} = render(
@@ -135,6 +151,8 @@ describe('EventSettings', () => {
                 onChangeSound={onChangeSound}
             />
         )
+
+        await getLDClient()?.waitForInitialization()
 
         const combobox = getAllByRole('combobox')[0]
         fireEvent.change(combobox, {target: {value: 'sound 1'}})
