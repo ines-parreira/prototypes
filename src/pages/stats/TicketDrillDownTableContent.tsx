@@ -75,6 +75,11 @@ const isAutoQAAgentsTableColumn = (
         AutoQAAgentsTableColumn.ResolutionCompleteness,
         AutoQAAgentsTableColumn.ReviewedClosedTickets,
         AutoQAAgentsTableColumn.CommunicationSkills,
+        AutoQAAgentsTableColumn.LanguageProficiency,
+        AutoQAAgentsTableColumn.Accuracy,
+        AutoQAAgentsTableColumn.Efficiency,
+        AutoQAAgentsTableColumn.InternalCompliance,
+        AutoQAAgentsTableColumn.BrandVoice,
     ]
         .map(String)
         .includes(String(metricName))
