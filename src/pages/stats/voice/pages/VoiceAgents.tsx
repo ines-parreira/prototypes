@@ -36,6 +36,8 @@ import {
     getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 
+import VoicePaywall from '../VoicePaywall'
+
 export const VOICE_AGENTS_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterComponentKey.PhoneIntegrations,
     FilterKey.Tags,
@@ -139,7 +141,7 @@ function VoiceAgents() {
 export default withProductEnabledPaywall(
     ProductType.Voice,
     AccountFeature.PhoneNumber,
-    undefined,
+    VoicePaywall,
     {
         [AccountFeature.PhoneNumber]: {
             ...paywallConfigs[AccountFeature.PhoneNumber],

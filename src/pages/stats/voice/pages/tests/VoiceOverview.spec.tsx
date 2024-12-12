@@ -31,7 +31,6 @@ import {
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
-    VOICE_LEARN_MORE_URL,
     VOICE_OVERVIEW_PAGE_TITLE,
     CALLER_EXPERIENCE_METRICS_TITLE,
     AVERAGE_TALK_TIME_METRIC_TITLE,
@@ -60,6 +59,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('services/reporting/voiceOverviewReportingService')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
+jest.mock('../../VoicePaywall', () => () => <div>VoicePaywall</div>)
 
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
@@ -253,15 +253,7 @@ describe('VoiceOverview', () => {
     it('should render paywall page', () => {
         const {getByText} = renderVoiceOverview(false)
 
-        expect(getByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
-        expect(getByText('Voice add-on features')).toBeInTheDocument()
-        expect(getByText('Learn more')).toBeInTheDocument()
-        fireEvent.click(getByText('Learn more'))
-        expect(window.open).toHaveBeenCalledWith(
-            VOICE_LEARN_MORE_URL,
-            '_blank',
-            'noopener noreferrer'
-        )
+        expect(getByText('VoicePaywall')).toBeInTheDocument()
     })
 
     it('should pass correct props to VoiceCallCallerExperienceMetric', () => {

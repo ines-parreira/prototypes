@@ -60,6 +60,8 @@ import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {VoiceMetric} from 'state/ui/stats/types'
 
+import VoicePaywall from '../VoicePaywall'
+
 export const VOICE_OVERVIEW_OPTIONAL_FILTERS: OptionalFilter[] = [
     FilterComponentKey.PhoneIntegrations,
     FilterKey.Tags,
@@ -309,5 +311,6 @@ function VoiceOverview() {
 
 export default withProductEnabledPaywall(
     ProductType.Voice,
-    AccountFeature.PhoneNumber
+    AccountFeature.PhoneNumber,
+    VoicePaywall
 )(VoiceOverview)

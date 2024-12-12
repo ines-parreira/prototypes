@@ -30,7 +30,6 @@ import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
-import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import {AccountFeature} from 'state/currentAccount/types'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -42,6 +41,8 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
+
+jest.mock('../../VoicePaywall', () => () => <div>VoicePaywall</div>)
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -222,14 +223,6 @@ describe('VoiceAgents', () => {
     it('should render paywall page', () => {
         const {getByText} = renderVoiceAgents(false)
 
-        expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
-        expect(getByText('Voice add-on features')).toBeInTheDocument()
-        expect(getByText('Learn more')).toBeInTheDocument()
-        fireEvent.click(getByText('Learn more'))
-        expect(window.open).toHaveBeenCalledWith(
-            VOICE_LEARN_MORE_URL,
-            '_blank',
-            'noopener noreferrer'
-        )
+        expect(getByText('VoicePaywall')).toBeInTheDocument()
     })
 })

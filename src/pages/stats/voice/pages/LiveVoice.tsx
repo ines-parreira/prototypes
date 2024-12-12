@@ -19,6 +19,7 @@ import {
     LIVE_VOICE_PAGE_TITLE,
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
 } from '../constants/liveVoice'
+import VoicePaywall from '../VoicePaywall'
 import css from './LiveVoice.less'
 
 function LiveVoice() {
@@ -77,7 +78,7 @@ function LiveVoice() {
 export default withProductEnabledPaywall(
     ProductType.Voice,
     AccountFeature.PhoneNumber,
-    undefined,
+    VoicePaywall,
     {
         [AccountFeature.PhoneNumber]: {
             ...paywallConfigs[AccountFeature.PhoneNumber],
