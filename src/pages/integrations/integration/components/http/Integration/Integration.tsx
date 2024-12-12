@@ -83,7 +83,7 @@ export class Integration extends Component<Props, State> {
 
     isInitialized: boolean | undefined
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {integration, isUpdate} = this.props
 
         // populating the form when updating an integration
@@ -93,7 +93,7 @@ export class Integration extends Component<Props, State> {
         }
     }
 
-    componentWillUpdate(nextProps: Props) {
+    UNSAFE_componentWillUpdate(nextProps: Props) {
         const {integration, isUpdate} = nextProps
 
         // populating the form when updating an integration

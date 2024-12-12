@@ -70,7 +70,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Props): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (
             this.props.integration.isEmpty() &&
             !nextProps.integration.isEmpty()

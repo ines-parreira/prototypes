@@ -14,7 +14,7 @@ import YourProfileView from './components/YourProfileView'
 type Props = ConnectedProps<typeof connector>
 
 class YourProfileContainer extends Component<Props> {
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         // Reload the page when modifying currentUser.language (e.g. the timeformat), to refresh all moment instances
         if (
             this.props.currentUser.get('language') !==

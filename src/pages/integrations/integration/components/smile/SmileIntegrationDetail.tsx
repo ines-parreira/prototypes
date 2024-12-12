@@ -50,7 +50,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         if (
             this.props.integration.isEmpty() &&
             !nextProps.integration.isEmpty()

@@ -126,7 +126,7 @@ export class Widget extends Component<Props, State> {
         } as unknown as State
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const {config, parent, properties} = nextProps
         // update text field state when props changes
         if (config.widget === 'rich-field' && config.textField) {

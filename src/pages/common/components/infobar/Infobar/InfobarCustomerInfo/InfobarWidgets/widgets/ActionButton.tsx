@@ -125,7 +125,7 @@ export class ActionButtonContainer extends Component<Props, State> {
     /**
      * Everytime the action parameters are updated, update the actionId.
      */
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const actionId = this.generateActionId(nextProps, this.state)
         this.setState({
             isLoading: !!nextProps.getPendingActionCallback(actionId),

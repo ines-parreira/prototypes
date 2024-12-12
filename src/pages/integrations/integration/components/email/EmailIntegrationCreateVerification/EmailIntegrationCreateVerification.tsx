@@ -67,7 +67,7 @@ export class EmailIntegrationCreateVerification extends Component<
         isVerificationLoading: false,
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {integration} = this.props
 
         if (integration.get('id')) {
@@ -75,7 +75,7 @@ export class EmailIntegrationCreateVerification extends Component<
         }
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         if (
             !this.props.integration.get('id') &&
             nextProps.integration.get('id')

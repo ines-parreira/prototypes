@@ -41,11 +41,11 @@ export default class RichField extends Component<Props, State> {
         } as State
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this._updateEditorState(this.props.value)
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         // when we do a preview we're changing the value directly and so we need to update the editor state
         if (
             !_isEqual(nextProps.value, this.props.value) &&

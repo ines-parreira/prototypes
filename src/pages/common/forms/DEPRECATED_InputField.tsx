@@ -28,7 +28,7 @@ export default class InputField<
 
     id?: string
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.id = this._getId()
     }
 

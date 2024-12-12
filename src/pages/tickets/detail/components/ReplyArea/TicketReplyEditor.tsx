@@ -78,7 +78,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         attachments: fromJS([]),
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // set the initial state of the editor - there might be drafts
         const editorState = this.getEditorStateFromReducer(this.props)
         editorState && this.updateEditorState(editorState)
@@ -91,7 +91,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         updateMessageText.cancel()
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         // only update if forceUpdate is true and it changed
         const prevForceUpdate = this.props.newMessage.getIn([
             'state',

@@ -102,7 +102,7 @@ export class MacroModalContainer extends Component<Props, State> {
         this.setState({isModalOpen: true})
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         // if it is the first time we receive a macro, set its actions
         if (
             this.props.currentMacro.isEmpty() &&

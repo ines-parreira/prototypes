@@ -64,7 +64,7 @@ class ViewNavbarView extends Component<Props, State> {
         shortcutManager.unbind('ViewNavbar')
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         this.setState({
             viewCursor: this._getViewCursor(
                 nextProps.activeView,

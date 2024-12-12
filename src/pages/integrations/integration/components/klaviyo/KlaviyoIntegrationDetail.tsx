@@ -169,7 +169,7 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
         }
     }
 
-    componentWillMount(): void {
+    UNSAFE_componentWillMount(): void {
         const {integration, isUpdate, loading} = this.props
 
         if (
@@ -183,7 +183,7 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
         }
     }
 
-    componentWillUpdate(nextProps: Props): void {
+    UNSAFE_componentWillUpdate(nextProps: Props): void {
         const {integration, isUpdate, loading} = nextProps
 
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {

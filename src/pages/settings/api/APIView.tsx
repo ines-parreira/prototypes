@@ -47,7 +47,7 @@ export class APIViewContainer extends Component<Props, State> {
         this.clipboardData = fromJS({})
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // Load postman js
         ;(function (
             p: Window & {_pm?: () => void; PostmanRunObject?: any[]},

@@ -119,7 +119,7 @@ export class YourProfileView extends Component<Props, State> {
         }
     }
 
-    componentWillUpdate(nextProps: Props) {
+    UNSAFE_componentWillUpdate(nextProps: Props) {
         if (!this.isInitialized && !nextProps.currentUser.isEmpty()) {
             this.setState(this._getForm(nextProps))
             this.isInitialized = true

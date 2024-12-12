@@ -105,7 +105,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         }
     }
 
-    componentWillUpdate(nextProps: Props) {
+    UNSAFE_componentWillUpdate(nextProps: Props) {
         const {integration, loading} = nextProps
 
         // populating the form when updating an integration

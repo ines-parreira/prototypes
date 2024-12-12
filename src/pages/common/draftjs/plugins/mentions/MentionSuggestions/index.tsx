@@ -66,12 +66,12 @@ export default class MentionSuggestions extends Component<Props, State> {
         focusedOptionIndex: 0,
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.key = genKey()
         this.props.callbacks.onChange = this.onEditorStateChange
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         if (nextProps.suggestions.size === 0 && this.state.isActive) {
             this.closeDropdown()
         }

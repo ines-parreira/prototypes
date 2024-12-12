@@ -118,7 +118,7 @@ export default class SelectField extends Component<Props, State> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const hasNewOptions = !_isEqual(this.props.options, nextProps.options)
 
         if (

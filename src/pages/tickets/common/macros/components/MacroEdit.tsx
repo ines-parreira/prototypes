@@ -55,7 +55,7 @@ export class MacroEdit extends Component<Props> {
     _isTagAction = (action: Map<any, any>) =>
         action.get('name') === MacroActionName.AddTags
 
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         if (!this.props.actions?.find(this._isTagAction))
             this._addAction(MacroActionName.AddTags)
     }

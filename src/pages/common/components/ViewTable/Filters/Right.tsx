@@ -109,7 +109,7 @@ export class RightContainer extends Component<Props, State> {
         }
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>) {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>) {
         const {node} = nextProps
 
         if (

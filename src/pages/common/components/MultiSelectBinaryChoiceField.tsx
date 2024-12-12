@@ -36,7 +36,7 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
         propertiesToCompare: [],
         onChange: _noop,
     }
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
         const {requiredValues} = nextProps
         const activeIds = nextProps.value.map(
             (channel: CustomerChannel) => channel.id

@@ -172,7 +172,7 @@ export class Navbar extends Component<Props, State> {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             navbarWidth:
                 (window.localStorage.getItem(
