@@ -35,6 +35,7 @@ import {
     getDrillDownMetricData,
     AutoQAAgentsTableColumn,
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     getHeatmapMode,
@@ -67,6 +68,8 @@ const getSortingQuery = (
 export const AutoQAAgentsTable = () => {
     const isAutoQaLanguageProficiency =
         !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
+    const isAutoQaManualDimensions =
+        !!useFlags()[FeatureFlagKey.AutoQaManualDimensions]
     const dispatch = useDispatch()
     const {
         currentPage,
@@ -91,9 +94,16 @@ export const AutoQAAgentsTable = () => {
         }
     }
 
-    const tableColumns = isAutoQaLanguageProficiency
+    const tableColumnsLanguage = isAutoQaLanguageProficiency
         ? AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE
         : AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER
+
+    const tableColumns = isAutoQaManualDimensions
+        ? [
+              ...tableColumnsLanguage,
+              ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+          ]
+        : tableColumnsLanguage
 
     return (
         <>

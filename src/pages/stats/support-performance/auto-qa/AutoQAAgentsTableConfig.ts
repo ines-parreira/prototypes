@@ -1,5 +1,9 @@
 import {User} from 'config/types/user'
+import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
+import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
 import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
@@ -13,7 +17,11 @@ import {
     MOBILE_METRIC_COLUMN_WIDTH,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
+    ACCURACY_LABEL,
+    BRAND_VOICE_LABEL,
     COMMUNICATION_SKILLS_LABEL,
+    EFFICIENCY_LABEL,
+    INTERNAL_COMPLIANCE_LABEL,
     LANGUAGE_PROFICIENCY_SKILLS_LABEL,
     RESOLUTION_COMPLETENESS_LABEL,
     REVIEWED_CLOSED_TICKETS_LABEL,
@@ -29,6 +37,10 @@ export enum AutoQAAgentsTableColumn {
     ResolutionCompleteness = 'auto_qa_table_resolution_completeness',
     CommunicationSkills = 'auto_qa_table_communication_skills',
     LanguageProficiency = 'auto_qa_table_language_proficiency',
+    Accuracy = 'auto_qa_table_accuracy',
+    Efficiency = 'auto_qa_table_efficiency',
+    InternalCompliance = 'auto_qa_table_internal_compliance',
+    BrandVoice = 'auto_qa_table_brand_voice',
 }
 
 export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER = [
@@ -43,6 +55,13 @@ export const AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE = [
     AutoQAAgentsTableColumn.LanguageProficiency,
 ]
 
+export const AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS = [
+    AutoQAAgentsTableColumn.Accuracy,
+    AutoQAAgentsTableColumn.Efficiency,
+    AutoQAAgentsTableColumn.InternalCompliance,
+    AutoQAAgentsTableColumn.BrandVoice,
+]
+
 export const TableLabels: Record<AutoQAAgentsTableColumn, string> = {
     [AutoQAAgentsTableColumn.AgentName]: 'Agent',
     [AutoQAAgentsTableColumn.ResolutionCompleteness]:
@@ -52,6 +71,10 @@ export const TableLabels: Record<AutoQAAgentsTableColumn, string> = {
     [AutoQAAgentsTableColumn.CommunicationSkills]: COMMUNICATION_SKILLS_LABEL,
     [AutoQAAgentsTableColumn.LanguageProficiency]:
         LANGUAGE_PROFICIENCY_SKILLS_LABEL,
+    [AutoQAAgentsTableColumn.Accuracy]: ACCURACY_LABEL,
+    [AutoQAAgentsTableColumn.Efficiency]: EFFICIENCY_LABEL,
+    [AutoQAAgentsTableColumn.InternalCompliance]: INTERNAL_COMPLIANCE_LABEL,
+    [AutoQAAgentsTableColumn.BrandVoice]: BRAND_VOICE_LABEL,
 }
 
 export const AutoQAAgentsColumnConfig: Record<
@@ -89,6 +112,26 @@ export const AutoQAAgentsColumnConfig: Record<
         format: TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat,
         hint: TrendCardConfig[AutoQAMetric.LanguageProficiency].hint,
     },
+    [AutoQAAgentsTableColumn.Accuracy]: {
+        title: TrendCardConfig[AutoQAMetric.Accuracy].title,
+        format: TrendCardConfig[AutoQAMetric.Accuracy].metricFormat,
+        hint: TrendCardConfig[AutoQAMetric.Accuracy].hint,
+    },
+    [AutoQAAgentsTableColumn.Efficiency]: {
+        title: TrendCardConfig[AutoQAMetric.Efficiency].title,
+        format: TrendCardConfig[AutoQAMetric.Efficiency].metricFormat,
+        hint: TrendCardConfig[AutoQAMetric.Efficiency].hint,
+    },
+    [AutoQAAgentsTableColumn.InternalCompliance]: {
+        title: TrendCardConfig[AutoQAMetric.InternalCompliance].title,
+        format: TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat,
+        hint: TrendCardConfig[AutoQAMetric.InternalCompliance].hint,
+    },
+    [AutoQAAgentsTableColumn.BrandVoice]: {
+        title: TrendCardConfig[AutoQAMetric.BrandVoice].title,
+        format: TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat,
+        hint: TrendCardConfig[AutoQAMetric.BrandVoice].hint,
+    },
 }
 
 export const getQuery = (
@@ -109,6 +152,14 @@ export const getQuery = (
             return useCommunicationSkillsPerAgent
         case AutoQAAgentsTableColumn.LanguageProficiency:
             return useLanguageProficiencyPerAgent
+        case AutoQAAgentsTableColumn.Accuracy:
+            return useAccuracyPerAgent
+        case AutoQAAgentsTableColumn.Efficiency:
+            return useEfficiencyPerAgent
+        case AutoQAAgentsTableColumn.InternalCompliance:
+            return useInternalCompliancePerAgent
+        case AutoQAAgentsTableColumn.BrandVoice:
+            return useBrandVoicePerAgent
     }
 }
 

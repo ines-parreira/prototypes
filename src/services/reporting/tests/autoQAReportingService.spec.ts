@@ -10,6 +10,7 @@ import {
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
     TableLabels,
@@ -48,10 +49,18 @@ describe('autoQAReportingService', () => {
         agents: [],
         communicationSkillsPerAgent: {data: null},
         languageProficiencyPerAgent: {data: null},
+        accuracyPerAgent: {data: null},
+        efficiencyPerAgent: {data: null},
+        internalCompliancePerAgent: {data: null},
+        brandVoicePerAgent: {data: null},
         resolutionCompletenessPerAgent: {data: null},
         reviewedClosedTicketsPerAgent: {data: null},
         communicationSkillsTrend: {data: undefined},
         languageProficiencyTrend: {data: undefined},
+        accuracyTrend: {data: undefined},
+        efficiencyTrend: {data: undefined},
+        internalComplianceTrend: {data: undefined},
+        brandVoiceTrend: {data: undefined},
         resolutionCompletenessTrend: {data: undefined},
         reviewedClosedTicketsTrend: {data: undefined},
     } as any
@@ -112,6 +121,10 @@ describe('autoQAReportingService', () => {
 
         const agentACommunicationSkills = 5
         const agentALanguageProficiency = 4
+        const agentAAccuracy = 3
+        const agentAEfficiency = 2
+        const agentAInternalCompliance = 5
+        const agentABrandVoice = 4
         const agentAResolutionCompleteness = 0.65
         const agentAReviewedTickets = 3
         const data = {
@@ -126,6 +139,26 @@ describe('autoQAReportingService', () => {
                 TicketQAScoreMeasure.AverageScore,
                 agentALanguageProficiency
             ),
+            accuracyPerAgent: exampleData(
+                agentA.id,
+                TicketQAScoreMeasure.AverageScore,
+                agentAAccuracy
+            ),
+            efficiencyPerAgent: exampleData(
+                agentA.id,
+                TicketQAScoreMeasure.AverageScore,
+                agentAEfficiency
+            ),
+            internalCompliancePerAgent: exampleData(
+                agentA.id,
+                TicketQAScoreMeasure.AverageScore,
+                agentAInternalCompliance
+            ),
+            brandVoicePerAgent: exampleData(
+                agentA.id,
+                TicketQAScoreMeasure.AverageScore,
+                agentABrandVoice
+            ),
             resolutionCompletenessPerAgent: exampleData(
                 agentA.id,
                 TicketQAScoreMeasure.AverageScore,
@@ -138,14 +171,20 @@ describe('autoQAReportingService', () => {
             ),
             communicationSkillsTrend: exampleTrendData,
             languageProficiencyTrend: exampleTrendData,
+            accuracyTrend: exampleTrendData,
+            efficiencyTrend: exampleTrendData,
+            internalComplianceTrend: exampleTrendData,
+            brandVoiceTrend: exampleTrendData,
             resolutionCompletenessTrend: exampleTrendData,
             reviewedClosedTicketsTrend: exampleTrendData,
         }
-        await saveReport(
-            data,
-            AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
-            period
-        )
+
+        const tableColumns = [
+            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+        ]
+
+        await saveReport(data, tableColumns, period)
 
         const headers = [
             'Metric',
@@ -206,6 +245,52 @@ describe('autoQAReportingService', () => {
                         .metricFormat
                 ),
             ],
+            [
+                TrendCardConfig[AutoQAMetric.Accuracy].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                ),
+            ],
+            [
+                TrendCardConfig[AutoQAMetric.Efficiency].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                ),
+            ],
+            [
+                TrendCardConfig[AutoQAMetric.InternalCompliance].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.InternalCompliance]
+                        .metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.InternalCompliance]
+                        .metricFormat
+                ),
+            ],
+            [
+                TrendCardConfig[AutoQAMetric.BrandVoice].title,
+                formatMetricValue(
+                    exampleTrendData.data.value,
+                    TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat
+                ),
+                formatMetricValue(
+                    exampleTrendData.data.prevValue,
+                    TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat
+                ),
+            ],
         ])
 
         expect(createCsvSpy).toHaveBeenCalledWith([
@@ -215,6 +300,10 @@ describe('autoQAReportingService', () => {
                 TableLabels[AutoQAAgentsTableColumn.ResolutionCompleteness],
                 TableLabels[AutoQAAgentsTableColumn.CommunicationSkills],
                 TableLabels[AutoQAAgentsTableColumn.LanguageProficiency],
+                TableLabels[AutoQAAgentsTableColumn.Accuracy],
+                TableLabels[AutoQAAgentsTableColumn.Efficiency],
+                TableLabels[AutoQAAgentsTableColumn.InternalCompliance],
+                TableLabels[AutoQAAgentsTableColumn.BrandVoice],
             ],
             [
                 agents[0].name,
@@ -242,9 +331,34 @@ describe('autoQAReportingService', () => {
                         AutoQAAgentsTableColumn.LanguageProficiency
                     ].format
                 ),
+                formatMetricValue(
+                    agentAAccuracy,
+                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Accuracy]
+                        .format
+                ),
+                formatMetricValue(
+                    agentAEfficiency,
+                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Efficiency]
+                        .format
+                ),
+                formatMetricValue(
+                    agentAInternalCompliance,
+                    AutoQAAgentsColumnConfig[
+                        AutoQAAgentsTableColumn.InternalCompliance
+                    ].format
+                ),
+                formatMetricValue(
+                    agentABrandVoice,
+                    AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.BrandVoice]
+                        .format
+                ),
             ],
             [
                 agents[1].name,
+                NOT_AVAILABLE_PLACEHOLDER,
+                NOT_AVAILABLE_PLACEHOLDER,
+                NOT_AVAILABLE_PLACEHOLDER,
+                NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,
                 NOT_AVAILABLE_PLACEHOLDER,

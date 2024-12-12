@@ -16,12 +16,13 @@ export const dimensionOrder: SupportedTicketQADimensionName[] = [
 export const dimensionOrderWithLanguageProficiency: SupportedTicketQADimensionName[] =
     [...dimensionOrder, TicketQAScoreDimensionName.LanguageProficiency]
 
-export const manualDimensionsOrder: SupportedTicketQADimensionName[] = [
-    TicketQAScoreDimensionName.Accuracy,
-    TicketQAScoreDimensionName.Efficiency,
-    TicketQAScoreDimensionName.InternalCompliance,
-    TicketQAScoreDimensionName.BrandVoice,
-]
+export const dimensionOrderOfManualDimensions: SupportedTicketQADimensionName[] =
+    [
+        TicketQAScoreDimensionName.Accuracy,
+        TicketQAScoreDimensionName.Efficiency,
+        TicketQAScoreDimensionName.InternalCompliance,
+        TicketQAScoreDimensionName.BrandVoice,
+    ]
 
 export type SupportedTicketQADimensionName =
     | typeof TicketQAScoreDimensionName.ResolutionCompleteness

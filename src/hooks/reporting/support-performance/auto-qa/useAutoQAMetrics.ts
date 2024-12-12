@@ -1,8 +1,16 @@
 import {useMemo} from 'react'
 
 import {User} from 'config/types/user'
+import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
+import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import {useBrandVoiceTrend} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+import {useInternalComplianceTrend} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
 import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
@@ -34,6 +42,13 @@ export const useAutoQAMetrics = () => {
         cleanStatsFilters,
         userTimezone
     )
+    const accuracyTrend = useAccuracyTrend(cleanStatsFilters, userTimezone)
+    const efficiencyTrend = useEfficiencyTrend(cleanStatsFilters, userTimezone)
+    const internalComplianceTrend = useInternalComplianceTrend(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const brandVoiceTrend = useBrandVoiceTrend(cleanStatsFilters, userTimezone)
 
     const resolutionCompletenessPerAgent = useResolutionCompletenessPerAgent(
         cleanStatsFilters,
@@ -51,6 +66,22 @@ export const useAutoQAMetrics = () => {
         cleanStatsFilters,
         userTimezone
     )
+    const accuracyPerAgent = useAccuracyPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const efficiencyPerAgent = useEfficiencyPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const internalCompliancePerAgent = useInternalCompliancePerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const brandVoicePerAgent = useBrandVoicePerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return [
@@ -58,6 +89,10 @@ export const useAutoQAMetrics = () => {
             resolutionCompletenessTrend,
             communicationSkillsTrend,
             languageProficiencyTrend,
+            accuracyTrend,
+            efficiencyTrend,
+            internalComplianceTrend,
+            brandVoiceTrend,
             resolutionCompletenessPerAgent,
             reviewedClosedTicketsPerAgent,
             communicationSkillsPerAgent,
@@ -67,6 +102,10 @@ export const useAutoQAMetrics = () => {
         communicationSkillsPerAgent,
         communicationSkillsTrend,
         languageProficiencyTrend,
+        accuracyTrend,
+        efficiencyTrend,
+        internalComplianceTrend,
+        brandVoiceTrend,
         resolutionCompletenessPerAgent,
         resolutionCompletenessTrend,
         reviewedClosedTicketsPerAgent,
@@ -85,6 +124,14 @@ export const useAutoQAMetrics = () => {
             reviewedClosedTicketsTrend,
             languageProficiencyPerAgent,
             languageProficiencyTrend,
+            accuracyTrend,
+            accuracyPerAgent,
+            efficiencyTrend,
+            efficiencyPerAgent,
+            internalComplianceTrend,
+            internalCompliancePerAgent,
+            brandVoiceTrend,
+            brandVoicePerAgent,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

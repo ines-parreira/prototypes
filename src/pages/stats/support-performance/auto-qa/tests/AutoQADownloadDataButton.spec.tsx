@@ -10,6 +10,7 @@ import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useA
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import * as autoQAReportingService from 'services/reporting/autoQAReportingService'
@@ -37,6 +38,7 @@ describe('ChannelsDownloadDataButton', () => {
         })
         mockFlags({
             [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
 
@@ -48,9 +50,13 @@ describe('ChannelsDownloadDataButton', () => {
         render(<AutoQADownloadDataButton />)
         userEvent.click(screen.getByRole('button'))
 
+        const tableColumns = [
+            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+        ]
         expect(reportServiceSpy).toHaveBeenCalledWith(
             reportData,
-            AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+            tableColumns,
             period
         )
         expect(logEventMock).toHaveBeenCalledWith(

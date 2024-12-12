@@ -202,7 +202,7 @@ describe('useAutoQA', () => {
         ])
     })
 
-    it('should return the dimensions containing Manual Dimensions only', () => {
+    it('should return the dimensions containing manually scored dimensions', () => {
         const mockFlagSet = {
             [FeatureFlagKey.AutoQaLanguageProficiency]: false,
             [FeatureFlagKey.AutoQaManualDimensions]: true,
@@ -237,7 +237,7 @@ describe('useAutoQA', () => {
         ])
     })
 
-    it('should return the dimensions containing Manual Dimensions and Language Proficiency', () => {
+    it('should return the dimensions containing Language Proficiency and manually scored dimensions', () => {
         mockUseFlag.mockReturnValue(true)
 
         const {result} = renderHook(() => useAutoQA(1))

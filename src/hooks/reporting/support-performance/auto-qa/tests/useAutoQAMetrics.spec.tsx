@@ -4,9 +4,17 @@ import React from 'react'
 import {Provider} from 'react-redux'
 
 import {agents} from 'fixtures/agents'
+import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
 import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
+import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import {useBrandVoiceTrend} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
 import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+import {useInternalComplianceTrend} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
 import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
@@ -47,6 +55,29 @@ jest.mock(
 const useLanguageProficiencyPerAgentMock = assumeMock(
     useLanguageProficiencyPerAgent
 )
+jest.mock('hooks/reporting/support-performance/auto-qa/useAccuracyTrend')
+const useAccuracyTrendMock = assumeMock(useAccuracyTrend)
+jest.mock('hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent')
+const useAccuracyPerAgentMock = assumeMock(useAccuracyPerAgent)
+jest.mock('hooks/reporting/support-performance/auto-qa/useEfficiencyTrend')
+const useEfficiencyTrendMock = assumeMock(useEfficiencyTrend)
+jest.mock('hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent')
+const useEfficiencyPerAgentMock = assumeMock(useEfficiencyPerAgent)
+jest.mock(
+    'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
+)
+const useInternalComplianceTrendMock = assumeMock(useInternalComplianceTrend)
+jest.mock(
+    'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+)
+const useInternalCompliancePerAgentMock = assumeMock(
+    useInternalCompliancePerAgent
+)
+jest.mock('hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend')
+const useBrandVoiceTrendMock = assumeMock(useBrandVoiceTrend)
+jest.mock('hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent')
+const useBrandVoicePerAgentMock = assumeMock(useBrandVoicePerAgent)
+
 jest.mock(
     'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 )
@@ -99,6 +130,14 @@ describe('useAutoQAMetrics', () => {
     useReviewedClosedTicketsTrendMock.mockReturnValue(someTrendData)
     useLanguageProficiencyPerAgentMock.mockReturnValue(someMetricData)
     useLanguageProficiencyTrendMock.mockReturnValue(someTrendData)
+    useAccuracyPerAgentMock.mockReturnValue(someMetricData)
+    useAccuracyTrendMock.mockReturnValue(someTrendData)
+    useEfficiencyPerAgentMock.mockReturnValue(someMetricData)
+    useEfficiencyTrendMock.mockReturnValue(someTrendData)
+    useInternalCompliancePerAgentMock.mockReturnValue(someMetricData)
+    useInternalComplianceTrendMock.mockReturnValue(someTrendData)
+    useBrandVoicePerAgentMock.mockReturnValue(someMetricData)
+    useBrandVoiceTrendMock.mockReturnValue(someTrendData)
     useNewStatsFiltersMock.mockReturnValue({
         cleanStatsFilters: initialState.filters,
         userTimezone: 'UTC',
@@ -125,6 +164,14 @@ describe('useAutoQAMetrics', () => {
                 reviewedClosedTicketsTrend: someTrendData,
                 languageProficiencyPerAgent: someMetricData,
                 languageProficiencyTrend: someTrendData,
+                accuracyPerAgent: someMetricData,
+                accuracyTrend: someTrendData,
+                efficiencyPerAgent: someMetricData,
+                efficiencyTrend: someTrendData,
+                internalCompliancePerAgent: someMetricData,
+                internalComplianceTrend: someTrendData,
+                brandVoicePerAgent: someMetricData,
+                brandVoiceTrend: someTrendData,
             },
             isLoading: false,
             period: initialState.filters.period,
@@ -156,6 +203,14 @@ describe('useAutoQAMetrics', () => {
                 reviewedClosedTicketsTrend: loadingTrendData,
                 languageProficiencyPerAgent: someMetricData,
                 languageProficiencyTrend: someTrendData,
+                accuracyPerAgent: someMetricData,
+                accuracyTrend: someTrendData,
+                efficiencyPerAgent: someMetricData,
+                efficiencyTrend: someTrendData,
+                internalCompliancePerAgent: someMetricData,
+                internalComplianceTrend: someTrendData,
+                brandVoicePerAgent: someMetricData,
+                brandVoiceTrend: someTrendData,
             },
             isLoading: true,
             period: initialState.filters.period,

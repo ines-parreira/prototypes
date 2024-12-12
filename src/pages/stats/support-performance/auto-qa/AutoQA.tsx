@@ -1,5 +1,4 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -13,10 +12,14 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
 import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
+import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import {AutoQAAgentsCardExtra} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsCardExtra'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
+import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
@@ -40,12 +43,15 @@ export default function AutoQA() {
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const isAutoQaLanguageProficiency =
         !!useFlags()[FeatureFlagKey.AutoQaLanguageProficiency]
+    const isManualAutoQaDimensions =
+        !!useFlags()[FeatureFlagKey.AutoQaManualDimensions]
     const autoQAOptionalFilters =
         useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters(
             AUTO_QA_OPTIONAL_FILTERS
         )
 
     const trendCardColumnWidth = isAutoQaLanguageProficiency ? 3 : 4
+    const manualDimensionTrendCardColumnWidth = 3
 
     return (
         <div className="full-width">
@@ -101,6 +107,42 @@ export default function AutoQA() {
                             size={getGridCellSize(trendCardColumnWidth)}
                         >
                             <LanguageProficiencyTrendCard />
+                        </DashboardGridCell>
+                    )}
+                    {isManualAutoQaDimensions && (
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                manualDimensionTrendCardColumnWidth
+                            )}
+                        >
+                            <AccuracyTrendCard />
+                        </DashboardGridCell>
+                    )}
+                    {isManualAutoQaDimensions && (
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                manualDimensionTrendCardColumnWidth
+                            )}
+                        >
+                            <EfficiencyTrendCard />
+                        </DashboardGridCell>
+                    )}
+                    {isManualAutoQaDimensions && (
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                manualDimensionTrendCardColumnWidth
+                            )}
+                        >
+                            <InternalComplianceTrendCard />
+                        </DashboardGridCell>
+                    )}
+                    {isManualAutoQaDimensions && (
+                        <DashboardGridCell
+                            size={getGridCellSize(
+                                manualDimensionTrendCardColumnWidth
+                            )}
+                        >
+                            <BrandVoiceTrendCard />
                         </DashboardGridCell>
                     )}
                     <DashboardGridCell size={getGridCellSize(12)}>

@@ -29,6 +29,10 @@ export enum AutoQAMetric {
     ResolutionCompleteness = 'auto_qa_resolution_completeness',
     CommunicationSkills = 'auto_qa_communication_skills',
     LanguageProficiency = 'auto_qa_language_proficiency',
+    Accuracy = 'auto_qa_accuracy',
+    Efficiency = 'auto_qa_efficiency',
+    InternalCompliance = 'auto_qa_internal_compliance',
+    BrandVoice = 'auto_qa_brand_voice',
 }
 
 export enum SatisfactionMetric {

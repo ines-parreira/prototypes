@@ -14,6 +14,7 @@ import {
 } from 'fixtures/productPrices'
 import {FilterKey} from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA, {
     AUTO_QA_OPTIONAL_FILTERS,
     AUTO_QA_PAGE_TITLE,
@@ -21,7 +22,10 @@ import AutoQA, {
 import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
 import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
 import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
+import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
 import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
 import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
 import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
@@ -61,6 +65,14 @@ jest.mock(
 const LanguageProficiencyTrendCardMock = assumeMock(
     LanguageProficiencyTrendCard
 )
+jest.mock('pages/stats/support-performance/auto-qa/AccuracyTrendCard')
+const AccuracyTrendCardMock = assumeMock(AccuracyTrendCard)
+jest.mock('pages/stats/support-performance/auto-qa/EfficiencyTrendCard')
+const EfficiencyTrendCardMock = assumeMock(EfficiencyTrendCard)
+jest.mock('pages/stats/support-performance/auto-qa/InternalComplianceTrendCard')
+const InternalComplianceTrendCardMock = assumeMock(InternalComplianceTrendCard)
+jest.mock('pages/stats/support-performance/auto-qa/BrandVoiceTrendCard')
+const BrandVoiceTrendCardMock = assumeMock(BrandVoiceTrendCard)
 jest.mock('pages/stats/support-performance/auto-qa/AutoQAAgentsTable')
 const AutoQAAgentsTableMock = assumeMock(AutoQAAgentsTable)
 jest.mock(
@@ -103,6 +115,10 @@ describe('AutoQA', () => {
         ResolutionCompletenessTrendCardMock.mockImplementation(componentMock)
         CommunicationSkillsTrendCardMock.mockImplementation(componentMock)
         LanguageProficiencyTrendCardMock.mockImplementation(componentMock)
+        AccuracyTrendCardMock.mockImplementation(componentMock)
+        EfficiencyTrendCardMock.mockImplementation(componentMock)
+        InternalComplianceTrendCardMock.mockImplementation(componentMock)
+        BrandVoiceTrendCardMock.mockImplementation(componentMock)
         AutoQAAgentsTableMock.mockImplementation(componentMock)
         AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
             componentMock
@@ -132,6 +148,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
 
@@ -143,6 +160,10 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         expect(ResolutionCompletenessTrendCardMock).toHaveBeenCalled()
         expect(CommunicationSkillsTrendCardMock).toHaveBeenCalled()
         expect(LanguageProficiencyTrendCardMock).toHaveBeenCalled()
+        expect(AccuracyTrendCardMock).toHaveBeenCalled()
+        expect(EfficiencyTrendCardMock).toHaveBeenCalled()
+        expect(InternalComplianceTrendCardMock).toHaveBeenCalled()
+        expect(BrandVoiceTrendCardMock).toHaveBeenCalled()
         expect(AutoQAAgentsTableMock).toHaveBeenCalled()
         expect(AutoQAAgentPerformanceHeatmapSwitchMock).toHaveBeenCalled()
         AUTO_QA_OPTIONAL_FILTERS.forEach((optionalFilter) => {
@@ -158,6 +179,19 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         renderWithStore(<AutoQA />, state)
 
         expect(LanguageProficiencyTrendCardMock).not.toHaveBeenCalled()
+    })
+
+    it('should render without Manual Dimensions', () => {
+        mockFlags({
+            [FeatureFlagKey.AnalyticsNewFilters]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: false,
+        })
+        renderWithStore(<AutoQA />, {})
+
+        expect(AccuracyTrendCardMock).not.toHaveBeenCalled()
+        expect(EfficiencyTrendCardMock).not.toHaveBeenCalled()
+        expect(InternalComplianceTrendCardMock).not.toHaveBeenCalled()
+        expect(BrandVoiceTrendCardMock).not.toHaveBeenCalled()
     })
 
     it('should render AutoQA page with optional filters and Score filter added', () => {

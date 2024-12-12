@@ -96,6 +96,10 @@ export type AutoQAAgentMetric =
     | AutoQAAgentsTableColumn.ReviewedClosedTickets
     | AutoQAAgentsTableColumn.CommunicationSkills
     | AutoQAAgentsTableColumn.LanguageProficiency
+    | AutoQAAgentsTableColumn.Accuracy
+    | AutoQAAgentsTableColumn.Efficiency
+    | AutoQAAgentsTableColumn.InternalCompliance
+    | AutoQAAgentsTableColumn.BrandVoice
 
 export type AutoQAAgentMetrics = {
     metricName: AutoQAAgentMetric
@@ -390,7 +394,11 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAMetric.CommunicationSkills ||
         metricData.metricName === AutoQAMetric.ResolutionCompleteness ||
-        metricData.metricName === AutoQAMetric.LanguageProficiency
+        metricData.metricName === AutoQAMetric.LanguageProficiency ||
+        metricData.metricName === AutoQAMetric.Accuracy ||
+        metricData.metricName === AutoQAMetric.Efficiency ||
+        metricData.metricName === AutoQAMetric.InternalCompliance ||
+        metricData.metricName === AutoQAMetric.BrandVoice
     ) {
         metricTitle = TrendCardConfig[metricData.metricName].title
         metricValueFormat = TrendCardConfig[metricData.metricName].metricFormat
@@ -400,7 +408,11 @@ export const getDrillDownMetricColumn = (
             AutoQAAgentsTableColumn.ResolutionCompleteness ||
         metricData.metricName ===
             AutoQAAgentsTableColumn.ReviewedClosedTickets ||
-        metricData.metricName === AutoQAAgentsTableColumn.LanguageProficiency
+        metricData.metricName === AutoQAAgentsTableColumn.LanguageProficiency ||
+        metricData.metricName === AutoQAAgentsTableColumn.Accuracy ||
+        metricData.metricName === AutoQAAgentsTableColumn.Efficiency ||
+        metricData.metricName === AutoQAAgentsTableColumn.InternalCompliance ||
+        metricData.metricName === AutoQAAgentsTableColumn.BrandVoice
     ) {
         metricTitle = AutoQAAgentsColumnConfig[metricData.metricName].title
         metricValueFormat =

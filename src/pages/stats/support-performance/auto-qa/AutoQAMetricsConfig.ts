@@ -1,4 +1,8 @@
+import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
+import {useBrandVoiceTrend} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
 import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import {useInternalComplianceTrend} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
 import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
 import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
@@ -12,6 +16,10 @@ export const RESOLUTION_COMPLETENESS_LABEL = 'Resolution completeness rate'
 export const RESOLUTION_COMPLETENESS_SHORT_LABEL = 'Resolution'
 export const COMMUNICATION_SKILLS_LABEL = 'Communication'
 export const LANGUAGE_PROFICIENCY_SKILLS_LABEL = 'Language proficiency'
+export const ACCURACY_LABEL = 'Accuracy'
+export const EFFICIENCY_LABEL = 'Efficiency'
+export const INTERNAL_COMPLIANCE_LABEL = 'Internal compliance'
+export const BRAND_VOICE_LABEL = 'Brand voice'
 export const COMPLETENESS_STATUS_COMPLETE = 'Complete'
 export const COMPLETENESS_STATUS_INCOMPLETE = 'Incomplete'
 
@@ -68,5 +76,49 @@ export const TrendCardConfig: Record<
         metricFormat: 'decimal',
         useTrend: useLanguageProficiencyTrend,
         drillDownMetric: AutoQAMetric.LanguageProficiency,
+    },
+    [AutoQAMetric.Accuracy]: {
+        title: ACCURACY_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent provided accurate information and resolution.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useAccuracyTrend,
+        drillDownMetric: AutoQAMetric.Accuracy,
+    },
+    [AutoQAMetric.Efficiency]: {
+        title: EFFICIENCY_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent handled the ticket quickly and minimized the number of touches.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useEfficiencyTrend,
+        drillDownMetric: AutoQAMetric.Efficiency,
+    },
+    [AutoQAMetric.InternalCompliance]: {
+        title: INTERNAL_COMPLIANCE_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent followed internal processes: used the correct macros, tags, escalation and merging procedures.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useInternalComplianceTrend,
+        drillDownMetric: AutoQAMetric.InternalCompliance,
+    },
+    [AutoQAMetric.BrandVoice]: {
+        title: BRAND_VOICE_LABEL,
+        hint: {
+            title: 'Average score assessing whether the agent used the brand vocabulary, greetings, sign-offs and tone of voice.\n\nNote: This category needs to be manually scored.',
+            link: 'https://link.gorgias.com/oau',
+        },
+        interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
+        useTrend: useBrandVoiceTrend,
+        drillDownMetric: AutoQAMetric.BrandVoice,
     },
 }

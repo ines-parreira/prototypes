@@ -21,6 +21,7 @@ import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAA
 import {
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER,
     AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+    AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
@@ -113,6 +114,7 @@ describe('<AutoQAAgentsTable />', () => {
         AgentsTableSummaryCellMock.mockImplementation(cellMock)
         mockFlags({
             [FeatureFlagKey.AutoQaLanguageProficiency]: true,
+            [FeatureFlagKey.AutoQaManualDimensions]: true,
         })
     })
 
@@ -123,8 +125,13 @@ describe('<AutoQAAgentsTable />', () => {
             </Provider>
         )
 
+        const tableColumns = [
+            ...AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE,
+            ...AUTO_QA_AGENTS_TABLE_MANUAL_DIMENSIONS_COLUMNS,
+        ]
+
         expect(screen.getByRole('table')).toBeInTheDocument()
-        AUTO_QA_AGENTS_TABLE_COLUMNS_ORDER_WITH_LANGUAGE.forEach((column) => {
+        tableColumns.forEach((column) => {
             expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     title: TableLabels[column],

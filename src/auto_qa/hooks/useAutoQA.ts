@@ -16,7 +16,7 @@ import {
     dimensionOrder,
     SupportedTicketQAScoreDimension,
     dimensionOrderWithLanguageProficiency,
-    manualDimensionsOrder,
+    dimensionOrderOfManualDimensions,
 } from '../config'
 import type {DimensionSummary} from '../types'
 
@@ -44,7 +44,7 @@ export default function useAutoQA(ticketId: number) {
             isAutoQaManualDimensions
                 ? [
                       ...supportedDimensionsOrderWithLanguage,
-                      ...manualDimensionsOrder,
+                      ...dimensionOrderOfManualDimensions,
                   ]
                 : supportedDimensionsOrderWithLanguage,
         [isAutoQaManualDimensions, supportedDimensionsOrderWithLanguage]

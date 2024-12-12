@@ -40,6 +40,10 @@ export enum TicketQAScoreDimensionName {
     CommunicationSkills = 'communication_skills',
     ResolutionCompleteness = 'resolution_completeness',
     LanguageProficiency = 'language_proficiency',
+    Accuracy = 'accuracy',
+    Efficiency = 'efficiency',
+    InternalCompliance = 'internal_compliance',
+    BrandVoice = 'brand_voice',
 }
 
 type TicketQAScoreCube = Cube<

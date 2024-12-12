@@ -3,7 +3,7 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import cn from 'classnames'
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 
-import {manualDimensionsOrder} from 'auto_qa/config'
+import {dimensionOrderOfManualDimensions} from 'auto_qa/config'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -89,7 +89,9 @@ export default function Dimension({
         [dimension.prediction, onChange]
     )
 
-    const isManualDimension = manualDimensionsOrder.includes(dimension.name)
+    const isManualDimension = dimensionOrderOfManualDimensions.includes(
+        dimension.name
+    )
     const dimensionFooter = isManualDimension ? (
         <></>
     ) : (

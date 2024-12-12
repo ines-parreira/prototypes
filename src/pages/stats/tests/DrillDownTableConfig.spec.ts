@@ -123,6 +123,18 @@ describe('getDrillDownQuery', () => {
             metricName: AutoQAMetric.LanguageProficiency,
         },
         {
+            metricName: AutoQAMetric.Accuracy,
+        },
+        {
+            metricName: AutoQAMetric.Efficiency,
+        },
+        {
+            metricName: AutoQAMetric.InternalCompliance,
+        },
+        {
+            metricName: AutoQAMetric.BrandVoice,
+        },
+        {
             metricName: AutoQAAgentsTableColumn.ResolutionCompleteness,
             perAgentId: 123,
         },
@@ -136,6 +148,22 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: AutoQAAgentsTableColumn.LanguageProficiency,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.Accuracy,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.Efficiency,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.InternalCompliance,
+            perAgentId: 123,
+        },
+        {
+            metricName: AutoQAAgentsTableColumn.BrandVoice,
             perAgentId: 123,
         },
     ]

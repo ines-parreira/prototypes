@@ -2,7 +2,11 @@ import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {accuracyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import {brandVoiceDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
 import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import {efficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import {internalComplianceDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
 import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
@@ -219,6 +223,26 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 languageProficiencyDrillDownQueryFactory
             )
+        case AutoQAAgentsTableColumn.Accuracy:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                accuracyDrillDownQueryFactory
+            )
+        case AutoQAAgentsTableColumn.Efficiency:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                efficiencyDrillDownQueryFactory
+            )
+        case AutoQAAgentsTableColumn.InternalCompliance:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                internalComplianceDrillDownQueryFactory
+            )
+        case AutoQAAgentsTableColumn.BrandVoice:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                brandVoiceDrillDownQueryFactory
+            )
         case AutoQAAgentsTableColumn.ReviewedClosedTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
@@ -236,6 +260,14 @@ export const getDrillDownQuery = (
             return responseRateDrillDownQueryFactory
         case SatisfactionMetric.SurveysSent:
             return surveysSentDrillDownQueryFactory
+        case AutoQAMetric.Accuracy:
+            return languageProficiencyDrillDownQueryFactory
+        case AutoQAMetric.Efficiency:
+            return languageProficiencyDrillDownQueryFactory
+        case AutoQAMetric.InternalCompliance:
+            return languageProficiencyDrillDownQueryFactory
+        case AutoQAMetric.BrandVoice:
+            return languageProficiencyDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:
