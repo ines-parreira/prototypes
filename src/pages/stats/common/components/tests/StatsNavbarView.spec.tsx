@@ -242,10 +242,8 @@ describe('StatsNavbarView', () => {
         const TagsReportLink = container.querySelector(
             'a[href="/app/stats/tags"]'
         )
-        const newBadgeText = TagsReportLink?.children?.[0]?.innerHTML
 
         expect(TagsReportLink).toBeInTheDocument()
-        expect(newBadgeText).toBe('NEW')
     })
 
     it('should render the link to the New Channels Reports', () => {

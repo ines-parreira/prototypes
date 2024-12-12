@@ -35,8 +35,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isAutoQAEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const isNewTagsReportEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.NewTagsReport]
     const isNewSatisfactionReportEnabled: FeatureFlag =
         useFlags()[FeatureFlagKey.NewSatisfactionReport]
     const isAnalyticsCustomReports: FeatureFlag =
@@ -247,15 +245,7 @@ export default function StatsNavbarView() {
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/tags"
                         >
-                            Tags{' '}
-                            {isNewTagsReportEnabled && (
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
-                            )}
+                            Tags
                         </NavbarLink>
                     </div>
 
