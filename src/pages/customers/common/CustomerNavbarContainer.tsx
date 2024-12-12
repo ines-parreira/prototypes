@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
+import {ActiveContent} from 'common/navigation'
 import {UserSettingType} from 'config/types/user'
 
 import useSearch from '../../../hooks/useSearch'
@@ -28,7 +29,7 @@ export const CustomerNavbarContainer = ({
     }, [viewId, viewIdSearch])
 
     return (
-        <Navbar activeContent="customers">
+        <Navbar activeContent={ActiveContent.Customers}>
             <CustomersNavbarView
                 settingType={UserSettingType.CutomerViews}
                 isLoading={isLoading}

@@ -99,16 +99,6 @@
             );
     }
 
-    .nav-dropdown {
-        &:global.show > button {
-            background-color: hsl(
-                var(--navigation-background-h),
-                var(--navigation-background-s),
-                calc(var(--navigation-background-l) - 4%)
-            );
-        }
-    }
-
     .dropdown-toggle {
         padding: 16px 20px;
         width: 100%;
@@ -173,18 +163,6 @@
         }
     }
 
-    .dropdown-menu {
-        width: 100%;
-        /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
-        * Need the negativ margin until we can configure it in bootstrap:
-        * https://github.com/twbs/bootstrap/issues/25529
-        */
-        margin: 0 0 0 -5px;
-        border-radius: 0;
-        border-top: none;
-        padding: 4px 0;
-    }
-
     .dropdown-item {
         display: flex;
         padding: 8px 16px;
@@ -224,10 +202,6 @@
     .icon {
         font-size: 16px !important;
         vertical-align: middle !important;
-    }
-
-    .icon-more {
-        font-size: 21px !important;
     }
 
     .separator {

@@ -6,6 +6,7 @@ import {useHistory, useParams} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 
+import {ActiveContent} from 'common/navigation'
 import {
     UserRole,
     UserSetting,
@@ -445,7 +446,7 @@ export function TicketNavbarContainer({
 
     return (
         <Navbar
-            activeContent="tickets"
+            activeContent={ActiveContent.Tickets}
             disableResize={disableResize}
             navbarContentRef={scrollableAreaRef}
             splitTicketViewToggle={

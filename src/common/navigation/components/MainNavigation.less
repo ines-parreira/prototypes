@@ -1,0 +1,84 @@
+@import (reference) '~css/typography';
+
+:local {
+    .dropdown {
+        &:global.show > button {
+            background-color: hsl(
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 4%)
+            );
+        }
+    }
+
+    .toggle {
+        padding: 16px 20px;
+        width: 100%;
+        transition: all 0.1s linear;
+        box-shadow: none;
+        border: 0;
+        border-radius: 0;
+
+        color: var(--navigation-title-item);
+        .heading-subsection-semibold();
+
+        > div {
+            // content is wrapped in div because some browsers forbid flex in buttons
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+        }
+
+        &:hover {
+            background-color: hsl(
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 4%)
+            );
+            color: var(--navigation-title-item);
+        }
+
+        &:active {
+            background-color: hsl(
+                var(--navigation-background-h),
+                var(--navigation-background-s),
+                calc(var(--navigation-background-l) - 8%)
+            );
+        }
+    }
+
+    .iconMore {
+        font-size: 21px !important;
+    }
+
+    .dropdownMenu {
+        width: 100%;
+        /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
+        * Need the negativ margin until we can configure it in bootstrap:
+        * https://github.com/twbs/bootstrap/issues/25529
+        */
+        margin: 0 0 0 -5px;
+        border-radius: 0;
+        border-top: none;
+        padding: 4px 0;
+    }
+
+    .dropdownItem {
+        display: flex;
+        padding: 8px 16px;
+        align-items: center;
+        color: var(--neutral-grey-6);
+        font-weight: normal;
+        outline: none;
+
+        &:global.current {
+            font-weight: 600;
+        }
+
+        &:global:hover {
+            background-color: var(--neutral-grey-2);
+        }
+    }
+}

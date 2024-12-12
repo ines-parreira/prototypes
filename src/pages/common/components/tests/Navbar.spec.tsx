@@ -1,11 +1,11 @@
-import {within} from '@testing-library/dom'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 import React from 'react'
-import type {ReactNode} from 'react'
+import type {ComponentProps, ReactNode} from 'react'
 import {StaticRouter} from 'react-router-dom'
 
+import {ActiveContent} from 'common/navigation'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_PREFERENCES} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -14,41 +14,51 @@ import {
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
-import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import {THEME_NAME} from 'theme'
 import type {ColorTokens} from 'theme'
-import * as utils from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {Navbar} from '../Navbar'
-import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
+import css from '../Navbar.less'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('common/segment')
+
+jest.mock(
+    'pages/common/components/CreateTicket/CreateTicketNavbarButton',
+    () => () => <div>CreateTicketNavbarButton</div>
+)
+jest.mock('pages/common/components/PlaceCallNavbarButton', () => () => (
+    <div>PlaceCallNavbarButton</div>
+))
+
 jest.mock('utils/launchDarkly')
-jest.mock('pages/common/components/CreateTicket/CreateTicketNavbarButton')
-jest.mock('pages/common/components/PlaceCallNavbarButton')
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
-const MockedCreateTicketNavbarButton = CreateTicketNavbarButton as jest.Mock
-const MockedPlaceCallNavbarButton = PlaceCallNavbarButton as jest.Mock
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
-const pageTitleTestCases = [['Tickets'], ['Customers']]
+jest.mock(
+    'common/navigation',
+    () =>
+        ({
+            ...jest.requireActual('common/navigation'),
+            MainNavigation: () => <div>main navigation</div>,
+        }) as typeof import('common/navigation')
+)
 
 const wrapper = ({children}: {children: ReactNode}) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 
-describe('<Navbar />', () => {
-    const minProps = {
-        activeContent: undefined,
+describe('Navbar', () => {
+    const minProps: ComponentProps<typeof Navbar> = {
+        activeContent: ActiveContent.Tickets,
         available: true,
         children: null,
         closePanels: jest.fn(),
@@ -78,62 +88,45 @@ describe('<Navbar />', () => {
         destroy: jest.fn(() => Promise.resolve()),
     }
 
-    beforeEach(() => {
-        MockedCreateTicketNavbarButton.mockImplementation(() => (
-            <div>CreateTicketNavbarButton</div>
-        ))
-        MockedPlaceCallNavbarButton.mockImplementation(() => (
-            <div>PlaceCallNavbarButton</div>
-        ))
-    })
-
     afterEach(() => {
         allFlagsMock.mockReturnValue({})
     })
 
-    it('should render the navbar', () => {
-        const {container} = render(<Navbar {...minProps} />, {wrapper})
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the split ticket view toggle', () => {
-        const {container} = render(
+        const {getByText} = render(
             <Navbar
                 splitTicketViewToggle={<button>Split ticket view</button>}
                 {...minProps}
             />,
             {wrapper}
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('Split ticket view')).toBeInTheDocument()
     })
 
-    it('should render the title', () => {
-        const {getAllByText} = render(
-            <Navbar {...minProps} activeContent="tickets" />,
-            {wrapper}
-        )
-        expect(getAllByText('Tickets')).toHaveLength(2)
+    it('should render the main navigation', () => {
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
+        expect(getByText('main navigation')).toBeInTheDocument()
     })
 
     it('should render the opened panel', () => {
         const {container} = render(<Navbar {...minProps} isOpenedPanel />, {
             wrapper,
         })
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            container.querySelector(`.${css['hidden-panel']}`)
+        ).not.toBeInTheDocument()
     })
 
     it('should render the user as unavailable', () => {
         const {container} = render(<Navbar {...minProps} available={false} />, {
             wrapper,
         })
-        expect(container.firstChild).toMatchSnapshot()
+        const el = container.querySelector('.dropdown-toggle-dropup .badge')
+        expect(el).toHaveStyle({'background-color': 'rgb(255, 150, 0)'})
     })
 
     it('should toggle the user availability when clicking the availability toggle', () => {
-        const {getByText} = render(<Navbar {...minProps} isOpenedPanel />, {
-            wrapper,
-        })
-
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/available/i))
         expect(minProps.submitSetting).toHaveBeenCalledWith(
@@ -162,7 +155,7 @@ describe('<Navbar />', () => {
         )
 
         userEvent.click(getByText(user.name))
-        expect(queryByText(/book office hours/i)).not.toBeInTheDocument()
+        expect(queryByText('Book office hours')).not.toBeInTheDocument()
     })
 
     it('should not render item to book office hours for trialing customers', () => {
@@ -277,7 +270,7 @@ describe('<Navbar />', () => {
     )
 
     it('should fallback user name to email', () => {
-        const {getAllByRole} = render(
+        const {getByText} = render(
             <Navbar
                 {...minProps}
                 currentHelpdeskProduct={proMonthlyHelpdeskPlan}
@@ -289,8 +282,6 @@ describe('<Navbar />', () => {
             />,
             {wrapper}
         )
-
-        const {getByText} = within(getAllByRole('button')[2])
 
         expect(getByText(user.email)).toBeInTheDocument()
     })
@@ -332,55 +323,28 @@ describe('<Navbar />', () => {
         expect(getByText(/your profile/i)).toBeInTheDocument()
     })
 
-    it('should render Automate', () => {
-        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
-
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        expect(getByText('Automate')).toBeInTheDocument()
-    })
-
-    it('should not render Automate if not have Agent privilege', () => {
-        jest.spyOn(utils, 'hasRole').mockReturnValue(false)
-        const {queryByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        expect(queryByText('Automate')).not.toBeInTheDocument()
-    })
-
-    it('should render Convert', () => {
-        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
-
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        expect(getByText('Convert')).toBeInTheDocument()
-    })
-
-    it('should not render Convert if not have Admin privilege', () => {
-        jest.spyOn(utils, 'hasRole').mockReturnValue(false)
-        const {queryByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        expect(queryByText('Convert')).not.toBeInTheDocument()
-    })
-
-    it.each(pageTitleTestCases)(
+    it.each([['tickets'], ['customers']])(
         'should render CreateTicketNavbarButton and PlaceCallNavbarButton if on a ticket page',
-        (title) => {
+        (content) => {
             const {queryByText} = render(
-                <Navbar {...minProps} activeContent={title} />,
+                <Navbar
+                    {...minProps}
+                    activeContent={content as ActiveContent}
+                />,
                 {wrapper}
             )
 
-            if (title === 'Tickets') {
+            if (content === 'tickets') {
                 expect(
-                    queryByText(`CreateTicketNavbarButton`)
+                    queryByText('CreateTicketNavbarButton')
                 ).toBeInTheDocument()
-                expect(queryByText(`PlaceCallNavbarButton`)).toBeInTheDocument()
+                expect(queryByText('PlaceCallNavbarButton')).toBeInTheDocument()
             } else {
                 expect(
-                    queryByText(`CreateTicketNavbarButton`)
+                    queryByText('CreateTicketNavbarButton')
                 ).not.toBeInTheDocument()
                 expect(
-                    queryByText(`PlaceCallNavbarButton`)
+                    queryByText('PlaceCallNavbarButton')
                 ).not.toBeInTheDocument()
             }
         }

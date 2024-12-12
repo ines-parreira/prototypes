@@ -13,19 +13,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="nav-dropdown-wrapper"
       >
         <div
-          class="nav-dropdown dropdown"
+          class="dropdown dropdown"
         >
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
+            class="toggle btn btn-transparent"
             data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
               Automate
               <i
-                class="material-icons icon-more"
+                class="material-icons iconMore"
               >
                 arrow_drop_down
               </i>
@@ -33,12 +33,12 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </button>
           <div
             aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
+            class="dropdownMenu dropdown-menu"
             role="menu"
             tabindex="-1"
           >
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -51,7 +51,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Tickets
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -64,7 +64,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Automate
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/convert"
@@ -77,7 +77,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Convert
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -90,7 +90,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Customers
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -103,7 +103,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Statistics
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -477,19 +477,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="nav-dropdown-wrapper"
       >
         <div
-          class="nav-dropdown dropdown"
+          class="dropdown dropdown"
         >
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
+            class="toggle btn btn-transparent"
             data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
               Automate
               <i
-                class="material-icons icon-more"
+                class="material-icons iconMore"
               >
                 arrow_drop_down
               </i>
@@ -497,12 +497,12 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </button>
           <div
             aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
+            class="dropdownMenu dropdown-menu"
             role="menu"
             tabindex="-1"
           >
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -515,7 +515,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Tickets
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -528,7 +528,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Automate
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/convert"
@@ -541,7 +541,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Convert
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -554,7 +554,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Customers
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -567,7 +567,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               Statistics
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -690,19 +690,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         class="nav-dropdown-wrapper"
       >
         <div
-          class="nav-dropdown dropdown"
+          class="dropdown dropdown"
         >
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
+            class="toggle btn btn-transparent"
             data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
               Automate
               <i
-                class="material-icons icon-more"
+                class="material-icons iconMore"
               >
                 arrow_drop_down
               </i>
@@ -710,12 +710,12 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </button>
           <div
             aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
+            class="dropdownMenu dropdown-menu"
             role="menu"
             tabindex="-1"
           >
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -728,7 +728,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Tickets
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -741,7 +741,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Automate
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -754,7 +754,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Customers
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -767,7 +767,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Statistics
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"
@@ -1141,19 +1141,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         class="nav-dropdown-wrapper"
       >
         <div
-          class="nav-dropdown dropdown"
+          class="dropdown dropdown"
         >
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="dropdown-toggle btn btn-transparent"
+            class="toggle btn btn-transparent"
             data-candu-id="navbar-section-automate"
             type="button"
           >
             <div>
               Automate
               <i
-                class="material-icons icon-more"
+                class="material-icons iconMore"
               >
                 arrow_drop_down
               </i>
@@ -1161,12 +1161,12 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </button>
           <div
             aria-hidden="true"
-            class="dropdown-menu dropdown-menu"
+            class="dropdownMenu dropdown-menu"
             role="menu"
             tabindex="-1"
           >
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/tickets"
@@ -1179,7 +1179,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Tickets
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/automation"
@@ -1192,7 +1192,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Automate
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/customers"
@@ -1205,7 +1205,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Customers
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/stats"
@@ -1218,7 +1218,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               Statistics
             </a>
             <a
-              class="menuItem dropdown-item dropdown-item"
+              class="menuItem dropdownItem dropdown-item"
               role="menuitem"
               tabindex="0"
               to="/app/settings"

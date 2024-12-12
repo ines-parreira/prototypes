@@ -6,6 +6,7 @@ import {useLocation} from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
 
+import {ActiveContent} from 'common/navigation'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -27,7 +28,7 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
 
     return (
-        <Navbar activeContent="settings">
+        <Navbar activeContent={ActiveContent.Settings}>
             {NavbarConfig.map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)

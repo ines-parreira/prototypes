@@ -2,8 +2,6 @@ import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import _capitalize from 'lodash/capitalize'
-import _kebabCase from 'lodash/kebabCase'
 import PropTypes from 'prop-types'
 import React, {
     Component,
@@ -14,19 +12,11 @@ import React, {
     RefObject,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown,
-} from 'reactstrap'
 
-import {NavbarLink} from 'common/navigation'
+import {ActiveContent, MainNavigation, NavbarLink} from 'common/navigation'
 import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {AGENT_ROLE, ADMIN_ROLE} from 'config/user'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
@@ -54,7 +44,7 @@ import {RootState} from 'state/types'
 import {THEME_CONFIGS, withTheme} from 'theme'
 import type {HelpdeskThemeName, WithThemeProps} from 'theme'
 
-import {hasRole, isTouchEvent} from 'utils'
+import {isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
 
 import Avatar from './Avatar/Avatar'
@@ -72,61 +62,8 @@ const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 const MIN_WIDTH = 200
 const MAX_WIDTH = 350
 
-type MenuItem = {
-    url: string
-    label: string
-    className?: string
-    icon: string
-    segmentProp: {link: string}
-    content?: ReactNode
-    requiredRole?: UserRole
-    requiredFeatureFlag?: FeatureFlagKey
-}
-
-const mainMenu: MenuItem[] = [
-    {
-        url: '/app/tickets',
-        label: 'Tickets',
-        icon: 'question_answer',
-        segmentProp: {link: 'tickets'},
-    },
-    {
-        url: '/app/automation',
-        label: 'Automate',
-        icon: 'bolt',
-        segmentProp: {link: 'automation'},
-        requiredRole: AGENT_ROLE,
-    },
-    {
-        url: '/app/convert',
-        label: 'Convert',
-        icon: 'monetization_on',
-        segmentProp: {link: 'convert'},
-        requiredRole: ADMIN_ROLE,
-    },
-    {
-        url: '/app/customers',
-        label: 'Customers',
-        icon: 'people',
-        segmentProp: {link: 'customers'},
-    },
-    {
-        url: '/app/stats',
-        label: 'Statistics',
-        className: 'd-none d-md-block',
-        icon: 'bar_chart',
-        segmentProp: {link: 'statistics'},
-    },
-    {
-        url: '/app/settings',
-        label: 'Settings',
-        icon: 'settings',
-        segmentProp: {link: 'settings'},
-    },
-]
-
 type OwnProps = {
-    activeContent: Maybe<string>
+    activeContent: ActiveContent
     children: ReactNode
     disableResize?: boolean
     navbarContentRef?: RefObject<HTMLDivElement>
@@ -141,7 +78,6 @@ type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 type State = {
     bottomDropdownOpen: boolean
     noticeableWidgetRendered: boolean
-    title: Maybe<string>
     activeScreen: ActiveScreen
     noticeableCount: number
     isResizing: boolean
@@ -159,7 +95,6 @@ export class Navbar extends Component<Props, State> {
     state = {
         bottomDropdownOpen: false,
         noticeableWidgetRendered: false,
-        title: null,
         activeScreen: 'main' as ActiveScreen,
         noticeableCount: 0,
         isResizing: false,
@@ -178,11 +113,6 @@ export class Navbar extends Component<Props, State> {
                 (window.localStorage.getItem(
                     'navbar-width'
                 ) as unknown as number) ?? 238,
-        })
-        this.setState({
-            title: this.props.activeContent
-                ? _capitalize(this.props.activeContent)
-                : null,
         })
     }
 
@@ -327,6 +257,7 @@ export class Navbar extends Component<Props, State> {
 
     render() {
         const {
+            activeContent,
             available,
             currentHelpdeskProduct,
             currentUser,
@@ -360,79 +291,7 @@ export class Navbar extends Component<Props, State> {
                     })}
                 >
                     <div className={css['nav-dropdown-wrapper']}>
-                        <UncontrolledDropdown className={css['nav-dropdown']}>
-                            <DropdownToggle
-                                color="transparent"
-                                className={css['dropdown-toggle']}
-                                {...(this.state.title
-                                    ? {
-                                          ['data-candu-id']: `navbar-section-${_kebabCase(
-                                              this.state.title
-                                          )}`,
-                                      }
-                                    : {})}
-                            >
-                                <div>
-                                    {this.state.title || ''}
-                                    <i
-                                        className={classnames(
-                                            'material-icons',
-                                            css['icon-more']
-                                        )}
-                                    >
-                                        arrow_drop_down
-                                    </i>
-                                </div>
-                            </DropdownToggle>
-
-                            <DropdownMenu className={css['dropdown-menu']}>
-                                {mainMenu.map((item) => {
-                                    const shouldHideItem =
-                                        (item.requiredFeatureFlag &&
-                                            !flags?.[
-                                                item.requiredFeatureFlag
-                                            ]) ||
-                                        (item.requiredRole &&
-                                            !hasRole(
-                                                currentUser,
-                                                item.requiredRole
-                                            ))
-
-                                    if (shouldHideItem) {
-                                        return null
-                                    }
-
-                                    return (
-                                        <DropdownItem
-                                            key={item.label}
-                                            tag={NavbarLink}
-                                            to={item.url}
-                                            onClick={() => {
-                                                this.setState({
-                                                    title: item.label,
-                                                })
-                                                logEvent(
-                                                    SegmentEvent.MenuMainLinkClicked,
-                                                    item.segmentProp
-                                                )
-                                                this._closePanel()
-                                            }}
-                                            className={css['dropdown-item']}
-                                        >
-                                            <i
-                                                className={classnames(
-                                                    'material-icons mr-2',
-                                                    css.icon
-                                                )}
-                                            >
-                                                {item.icon}
-                                            </i>
-                                            {item.content ?? item.label}
-                                        </DropdownItem>
-                                    )
-                                })}
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        <MainNavigation activeContent={activeContent} />
                         {splitTicketViewToggle}
                     </div>
                     <div className={css['navbar-cta-group']}>
@@ -442,7 +301,7 @@ export class Navbar extends Component<Props, State> {
 
                         <SpotlightButton />
                         <NotificationsButton />
-                        {this.state.title === 'Tickets' ? (
+                        {activeContent === ActiveContent.Tickets ? (
                             <>
                                 <CreateTicketNavbarButton
                                     isDisabled={window.location.pathname.includes(
