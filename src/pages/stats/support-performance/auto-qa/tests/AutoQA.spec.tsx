@@ -186,7 +186,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
             [FeatureFlagKey.AnalyticsNewFilters]: true,
             [FeatureFlagKey.AutoQaManualDimensions]: false,
         })
-        renderWithStore(<AutoQA />, {})
+        renderWithStore(<AutoQA />, state)
 
         expect(AccuracyTrendCardMock).not.toHaveBeenCalled()
         expect(EfficiencyTrendCardMock).not.toHaveBeenCalled()
