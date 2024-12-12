@@ -9,6 +9,7 @@ import {within} from '@testing-library/dom'
 import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
+import randomstring from 'randomstring'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
 
@@ -41,6 +42,8 @@ import {
     getSaveConfirmationTitle,
     CLOSE_MODAL_BUTTON_LABEL,
     CANCEL_MODAL_BUTTON_LABEL,
+    getMaxSavedFilterNameLengthErrorText,
+    MAX_SAVED_FILTER_NAME_LENGTH,
 } from 'pages/stats/common/filters/SavedFiltersPanel'
 import {exampleGorgiasApiError} from 'pages/stats/common/filters/tests/fixtures/errors'
 import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
@@ -1322,6 +1325,77 @@ describe('SavedFiltersPanel', () => {
                 )
             )
             expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
+        })
+
+        it('should show an error is you try to input a string length greater than 255', async () => {
+            const savedFilterName = randomstring.generate(
+                MAX_SAVED_FILTER_NAME_LENGTH
+            )
+            const savedFilter: SavedFilter = {
+                id: 123,
+                name: savedFilterName,
+                filter_group: [
+                    {
+                        member: FilterKey.Agents,
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1'],
+                    },
+                ],
+            }
+            const state = {
+                stats: statsSlice.initialState,
+                integrations: fromJS({
+                    integration: {
+                        id: 1,
+                    },
+                }),
+                ui: {
+                    stats: {
+                        filters: {
+                            ...initialState,
+                            savedFilterDraft: savedFilter,
+                            appliedSavedFilterId: 123,
+                        },
+                    },
+                },
+                currentUser: defaultState.currentUser,
+            } as RootState
+            useListAnalyticsFiltersMock.mockReturnValue({
+                data: {
+                    data: {data: [savedFilter]},
+                },
+            } as any)
+
+            renderWithStore(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <SavedFiltersPanel optionalFilters={[]} />
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                state
+            )
+
+            expect(
+                screen.queryByText(
+                    getMaxSavedFilterNameLengthErrorText(
+                        MAX_SAVED_FILTER_NAME_LENGTH
+                    )
+                )
+            ).not.toBeInTheDocument()
+
+            userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+            await userEvent.type(
+                screen.getByPlaceholderText('Name Filter'),
+                'asdf'
+            )
+
+            expect(
+                screen.getByText(
+                    getMaxSavedFilterNameLengthErrorText(
+                        MAX_SAVED_FILTER_NAME_LENGTH
+                    )
+                )
+            ).toBeInTheDocument()
         })
 
         it('should disable save button if not changes have been made', () => {

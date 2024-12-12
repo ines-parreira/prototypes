@@ -37,6 +37,8 @@ export const NOT_ADMIN_CONTENT =
     'No Saved Filters available. Check with your admin for permissions to create Saved Filters.'
 export const APPLY_SAVED_FILTERS = 'Apply Saved Filter'
 
+const MAX_FILTER_NAME_LENGTH = 40
+
 const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
     logEvent(SegmentEvent.StatSavedFilterSelected, {
         name,
@@ -95,8 +97,17 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                     label: filter.name,
                     value: filter.id,
                 }}
+                className={css.dropdownItem}
+                id={`dropdown-item-${filter.id}`}
             >
-                {filter.name}
+                <Tooltip
+                    target={`dropdown-item-${filter.id}`}
+                    placement="top"
+                    disabled={filter.name.length < MAX_FILTER_NAME_LENGTH}
+                >
+                    {filter.name}
+                </Tooltip>
+                <span>{filter.name}</span>
             </DropdownItem>
         ))
     }, [savedFilters, isAdmin, applySavedFilterHandler])
@@ -120,10 +131,13 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                 size="medium"
                 ref={buttonRef}
                 id={APPLY_SAVED_FILTER_ID}
+                className={css.applyFiltersButton}
             >
-                {applyFiltersButtonName}
+                <span>{applyFiltersButtonName}</span>
                 <Tooltip target={APPLY_SAVED_FILTER_ID} placement="top">
-                    {APPLY_SAVED_FILTER_TOOLTIP}
+                    {!!savedFilterDraft || !!savedFilterAppliedId
+                        ? applyFiltersButtonName
+                        : APPLY_SAVED_FILTER_TOOLTIP}
                 </Tooltip>
             </DropdownButton>
             <Dropdown

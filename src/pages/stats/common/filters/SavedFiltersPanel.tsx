@@ -74,6 +74,11 @@ export const SAVE_MODAL_BUTTON_LABEL = 'Save Changes'
 export const CLOSE_MODAL_BUTTON_LABEL = 'Back To Editing'
 export const CANCEL_MODAL_BUTTON_LABEL = 'Discard Changes'
 
+export const MAX_SAVED_FILTER_NAME_LENGTH = 255
+
+export const getMaxSavedFilterNameLengthErrorText = (length: number) =>
+    `Filter name must be less than ${length} characters`
+
 type SavedFiltersError = {
     [SAVED_FILTER_NAME_FIELD_KEY]?: string[]
     [SAVED_FILTER_FIELD_GROUP_FIELD_KEY]?: unknown
@@ -170,6 +175,15 @@ export const SavedFiltersPanel = ({
     const deleteMutation = useDeleteAnalyticsFilter(mutationConfig)
 
     const titleOnChangeHandler = (name: string) => {
+        if (name.length > MAX_SAVED_FILTER_NAME_LENGTH) {
+            dispatch(updateSavedFilterDraftName(name))
+            setErrorMessage(
+                getMaxSavedFilterNameLengthErrorText(
+                    MAX_SAVED_FILTER_NAME_LENGTH
+                )
+            )
+            return
+        }
         dispatch(updateSavedFilterDraftName(name))
         setErrorMessage(undefined)
     }

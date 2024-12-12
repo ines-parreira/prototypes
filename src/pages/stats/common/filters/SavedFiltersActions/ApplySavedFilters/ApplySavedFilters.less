@@ -8,4 +8,20 @@
         letter-spacing: -0.14px;
         padding: 12px;
     }
+    .dropdownItem,
+    .applyFiltersButton {
+        & span {
+            max-width: 305px;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .applyFiltersButton {
+        & span {
+            max-width: 130px;
+        }
+    }
 }
