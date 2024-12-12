@@ -261,13 +261,13 @@ export const getDrillDownQuery = (
         case SatisfactionMetric.SurveysSent:
             return surveysSentDrillDownQueryFactory
         case AutoQAMetric.Accuracy:
-            return languageProficiencyDrillDownQueryFactory
+            return accuracyDrillDownQueryFactory
         case AutoQAMetric.Efficiency:
-            return languageProficiencyDrillDownQueryFactory
+            return efficiencyDrillDownQueryFactory
         case AutoQAMetric.InternalCompliance:
-            return languageProficiencyDrillDownQueryFactory
+            return internalComplianceDrillDownQueryFactory
         case AutoQAMetric.BrandVoice:
-            return languageProficiencyDrillDownQueryFactory
+            return brandVoiceDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:
