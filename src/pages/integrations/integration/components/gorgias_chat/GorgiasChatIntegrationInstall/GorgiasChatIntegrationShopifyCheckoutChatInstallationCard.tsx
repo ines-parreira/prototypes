@@ -19,8 +19,8 @@ const CardSubtext = ({
     if (installedOnShopifyCheckout) {
         return (
             <div>
-                Manage Chat on the Checkout and Thank You pages via the Shopify
-                Checkout editor.
+                Manage Chat on the checkout and thank you pages via the Shopify
+                checkout editor.
             </div>
         )
     }
@@ -28,16 +28,23 @@ const CardSubtext = ({
     if (!isOneClickInstallation) {
         return (
             <div>
-                First, install Chat using the quick installation method above.
+                You must use the quick installation method to add Chat to
+                Shopify before you can access this option.
             </div>
         )
     }
 
     return (
         <div>
-            Add Chat to the Checkout (Shopify Plus and Enterprise merchants
-            only) and Thank You pages (all merchants) via the Shopify Checkout
-            editor.
+            Add Chat to your checkout and thank you pages via the Shopify
+            checkout editor.{' '}
+            <a
+                href="https://link.gorgias.com/wzv"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Learn more.
+            </a>
         </div>
     )
 }
@@ -70,7 +77,7 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
                     )}
                     <div>
                         <div className={css.title}>
-                            Shopify Checkout and Thank You pages
+                            Shopify checkout and thank you pages
                         </div>
                         <CardSubtext
                             installedOnShopifyCheckout={
@@ -93,16 +100,14 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
                                         ? 'Manage'
                                         : 'Install'}
                                 </span>
-                                {installedOnShopifyCheckout && (
-                                    <div className={css.externalIcon}>
-                                        <i
-                                            className="material-icons"
-                                            style={{fontSize: 24}}
-                                        >
-                                            open_in_new
-                                        </i>
-                                    </div>
-                                )}
+                                <div className={css.externalIcon}>
+                                    <i
+                                        className="material-icons"
+                                        style={{fontSize: 24}}
+                                    >
+                                        open_in_new
+                                    </i>
+                                </div>
                             </LinkButton>
                         </div>
                     )}

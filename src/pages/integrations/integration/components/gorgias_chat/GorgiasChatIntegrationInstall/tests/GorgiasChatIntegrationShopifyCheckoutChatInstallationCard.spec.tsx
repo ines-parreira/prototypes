@@ -35,15 +35,15 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
 
         // Then
         expect(
-            screen.getByText('Shopify Checkout and Thank You pages')
+            screen.getByText('Shopify checkout and thank you pages')
         ).toBeInTheDocument()
-        expect(
-            screen.getByText(/Manage Chat on the Checkout and Thank You pages/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Manage Chat/)).toBeInTheDocument()
         expect(screen.getByRole('link', {name: /Manage/})).toHaveAttribute(
             'href',
             shopifyCheckoutChatInstallationUrl
         )
+        expect(screen.getByText('check_circle')).toBeInTheDocument()
+        expect(screen.getByText('open_in_new')).toBeInTheDocument()
     })
 
     it('renders correctly when the chat widget is not installed on Shopify Checkout, and one-click installation is not used', () => {
@@ -63,14 +63,14 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
 
         // Then
         expect(
-            screen.getByText('Shopify Checkout and Thank You pages')
+            screen.getByText('Shopify checkout and thank you pages')
         ).toBeInTheDocument()
         expect(
-            screen.getByText(
-                /First, install Chat using the quick installation method above./
-            )
+            screen.getByText(/quick installation method/)
         ).toBeInTheDocument()
         expect(screen.queryByRole('link')).not.toBeInTheDocument()
+        expect(screen.queryByText('check_circle')).not.toBeInTheDocument()
+        expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
     })
 
     it('renders correctly when the chat widget is not installed on Shopify Checkout, and one-click installation is used', () => {
@@ -90,52 +90,20 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
 
         // Then
         expect(
-            screen.getByText('Shopify Checkout and Thank You pages')
+            screen.getByText('Shopify checkout and thank you pages')
         ).toBeInTheDocument()
-        expect(screen.getByText(/Add Chat to the Checkout/)).toBeInTheDocument()
+        expect(
+            screen.getByText(/Add Chat to your checkout/)
+        ).toBeInTheDocument()
+        expect(screen.getByRole('link', {name: /Learn more/})).toHaveAttribute(
+            'href',
+            'https://link.gorgias.com/wzv'
+        )
         expect(screen.getByRole('link', {name: /Install/})).toHaveAttribute(
             'href',
             shopifyCheckoutChatInstallationUrl
         )
-    })
-
-    it('renders the installed icons when the chat widget is installed on Shopify Checkout', () => {
-        // Given
-        ;(useShopifyCheckoutChatInstallation as jest.Mock).mockReturnValue({
-            installedOnShopifyCheckout: true,
-            shopifyCheckoutChatInstallationUrl,
-        })
-
-        // When
-        render(
-            <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
-                integration={mockIntegration}
-                isOneClickInstallation={true}
-            />
-        )
-
-        // Then
-        expect(screen.getByText('check_circle')).toBeInTheDocument()
-        expect(screen.getByText('open_in_new')).toBeInTheDocument()
-    })
-
-    it('does not render the installed icon when the chat widget is not installed on Shopify Checkout', () => {
-        // Given
-        ;(useShopifyCheckoutChatInstallation as jest.Mock).mockReturnValue({
-            installedOnShopifyCheckout: false,
-            shopifyCheckoutChatInstallationUrl: null,
-        })
-
-        // When
-        render(
-            <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
-                integration={mockIntegration}
-                isOneClickInstallation={false}
-            />
-        )
-
-        // Then
         expect(screen.queryByText('check_circle')).not.toBeInTheDocument()
-        expect(screen.queryByText('open_in_new')).not.toBeInTheDocument()
+        expect(screen.getByText('open_in_new')).toBeInTheDocument()
     })
 })
