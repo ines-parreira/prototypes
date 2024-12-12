@@ -23,6 +23,7 @@ import {PLAYGROUND_CUSTOMER_MOCK} from '../constants'
 import {PlaygroundCustomer} from '../types'
 import {handleAiAgentResponse} from '../utils/playground-handler.utils'
 import {
+    getLastShopperMessage,
     getPlaygroundInitialMessage,
     getPlaygroundMessageMeta,
     mapPlaygroundMessagesToServerMessages,
@@ -101,7 +102,8 @@ export const usePlaygroundMessages = ({
             const filteredMessages = newMessages.filter(
                 isApiEligiblePlaygroundMessage
             )
-            const lastMessage = filteredMessages[filteredMessages.length - 1]
+
+            const lastMessage = getLastShopperMessage(filteredMessages)
 
             let messageCustomer = PLAYGROUND_CUSTOMER_MOCK
             try {
@@ -134,11 +136,18 @@ export const usePlaygroundMessages = ({
                         from_agent: lastMessage.sender === AI_AGENT_SENDER,
                         channel,
                         customer: messageCustomer,
-                        messages:
-                            mapPlaygroundMessagesToServerMessages(
-                                filteredMessages
-                            ),
-                        meta: getPlaygroundMessageMeta(lastMessage),
+                        messages: mapPlaygroundMessagesToServerMessages(
+                            filteredMessages,
+                            channel
+                        ),
+                        meta: getPlaygroundMessageMeta(
+                            lastMessage,
+                            // If the only message is coming from the user, it's the first message and we should mark it as such
+                            channel === 'chat' &&
+                                filteredMessages.filter(
+                                    (m) => m.sender !== AI_AGENT_SENDER
+                                ).length === 1
+                        ),
                         subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,

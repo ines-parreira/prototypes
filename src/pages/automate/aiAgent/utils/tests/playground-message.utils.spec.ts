@@ -7,9 +7,11 @@ import {
     isApiEligiblePlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
 
+import {GREETING_MESSAGE} from '../../components/PlaygroundMessage/PlaygroundMessage'
 import {DEFAULT_PLAYGROUND_CUSTOMER} from '../../constants'
 import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {
+    getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundMessagesToServerMessages,
     shouldDisplayActions,
@@ -82,9 +84,9 @@ describe('playground-message utils', () => {
                     createdDatetime: '2021-07-29T09:00:00Z',
                 },
             ]
-            expect(mapPlaygroundMessagesToServerMessages(messages)).toEqual(
-                expected
-            )
+            expect(
+                mapPlaygroundMessagesToServerMessages(messages, 'email')
+            ).toEqual(expected)
         })
     })
 
@@ -130,6 +132,84 @@ describe('playground-message utils', () => {
                 },
             })
             expect(shouldDisplayActions(aiAgentResponse)).toBe(false)
+        })
+    })
+
+    describe('getPlaygroundMessageMeta', () => {
+        it('should return entry customer message type for first shopper message', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.MESSAGE,
+                content: 'Test message',
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta(message, true)
+
+            expect(result).toEqual({
+                ai_agent_message_type:
+                    AiAgentMessageType.ENTRY_CUSTOMER_MESSAGE,
+            })
+        })
+
+        it('should return relevant true for prompt message with relevant response', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.PROMPT,
+                prompt: PlaygroundPromptType.RELEVANT_RESPONSE,
+                content: 'Test prompt',
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta(message)
+
+            expect(result).toEqual({
+                ai_agent_message_type: 'ai_agent_response_relevant_true',
+            })
+        })
+
+        it('should return relevant false for prompt message with non-relevant response', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.PROMPT,
+                prompt: PlaygroundPromptType.NOT_RELEVANT_RESPONSE,
+                content: 'Test prompt',
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta(message)
+
+            expect(result).toEqual({
+                ai_agent_message_type: 'ai_agent_response_relevant_false',
+            })
+        })
+
+        it('should return greeting type for greeting message', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.MESSAGE,
+                content: GREETING_MESSAGE,
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta(message)
+
+            expect(result).toEqual({
+                ai_agent_message_type: AiAgentMessageType.GREETING,
+            })
+        })
+
+        it('should return undefined for non-matching message', () => {
+            const message: PlaygroundMessage = {
+                type: MessageType.MESSAGE,
+                content: 'Regular message',
+                sender: 'User',
+                createdDatetime: '2021-07-29T09:00:00Z',
+            }
+
+            const result = getPlaygroundMessageMeta(message)
+
+            expect(result).toBeUndefined()
         })
     })
 })

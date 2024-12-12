@@ -173,6 +173,7 @@ export enum AiAgentMessageType {
     AI_AGENT_RESPONSE_RELEVANT_TRUE = 'ai_agent_response_relevant_true',
     AI_AGENT_RESPONSE_RELEVANT_FALSE = 'ai_agent_response_relevant_false',
     ERROR = 'error',
+    ENTRY_CUSTOMER_MESSAGE = 'entry_customer_message',
 }
 
 export type AiAgentResponse = {

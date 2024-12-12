@@ -25,7 +25,15 @@ import {
     PLAYGROUND_PROMPT_CONTENT,
 } from '../constants'
 
-export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
+export const getPlaygroundMessageMeta = (
+    message: PlaygroundMessage,
+    firstShopperMessage = false
+) => {
+    if (firstShopperMessage) {
+        return {
+            ai_agent_message_type: AiAgentMessageType.ENTRY_CUSTOMER_MESSAGE,
+        }
+    }
     if (message.type === MessageType.PROMPT) {
         return {
             ai_agent_message_type:
@@ -46,17 +54,22 @@ export const getPlaygroundMessageMeta = (message: PlaygroundMessage) => {
 }
 
 export const mapPlaygroundMessagesToServerMessages = (
-    messages: PlaygroundMessage[]
+    messages: PlaygroundMessage[],
+    channel: PlaygroundChannels
 ): CreatePlaygroundMessage[] => {
     return messages
         .slice(1) // remove initial message
         .filter(isApiEligiblePlaygroundMessage)
-        .map((m) => {
+        .map((m, index) => {
             return {
                 bodyText: m.content,
                 fromAgent: m.sender === AI_AGENT_SENDER,
                 createdDatetime: m.createdDatetime,
-                meta: getPlaygroundMessageMeta(m),
+                // We should annotate the first message as an entry message
+                meta: getPlaygroundMessageMeta(
+                    m,
+                    channel === 'chat' && index === 0
+                ),
             }
         })
 }
@@ -90,6 +103,15 @@ export const shouldDisplayActions = (aiAgentResponse: AiAgentResponse) => {
         aiAgentResponse.postProcessing.chatTicketMessageMeta
             ?.ai_agent_message_type ===
         AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION
+    )
+}
+
+export const getLastShopperMessage = (
+    messages: (PlaygroundTextMessage | PlaygroundPromptMessage)[]
+): PlaygroundTextMessage | PlaygroundPromptMessage => {
+    return (
+        [...messages].reverse().find((m) => m.sender !== AI_AGENT_SENDER) ??
+        messages[messages.length - 1]
     )
 }
 
