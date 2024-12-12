@@ -22,6 +22,7 @@ export const INTERNAL_COMPLIANCE_LABEL = 'Internal compliance'
 export const BRAND_VOICE_LABEL = 'Brand voice'
 export const COMPLETENESS_STATUS_COMPLETE = 'Complete'
 export const COMPLETENESS_STATUS_INCOMPLETE = 'Incomplete'
+export const HINT_LINK_TEXT = 'Learn more'
 
 export const TrendCardConfig: Record<
     AutoQAMetric,
@@ -49,6 +50,7 @@ export const TrendCardConfig: Record<
         hint: {
             title: 'Percentage of tickets where the agent addressed ALL customer inquiries. \n\nNote: Only closed tickets with at least 1 customer message and 1 agent message are auto-evaluated for response completeness.',
             link: 'https://link.gorgias.com/oau',
+            linkText: HINT_LINK_TEXT,
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-to-percent',
@@ -60,6 +62,7 @@ export const TrendCardConfig: Record<
         hint: {
             title: 'Average score assessing agent’s empathy, clarity, patience, positivity, and adaptability.\n\nNote: Only closed tickets with at least 1 customer message and 1 agent message are auto-evaluated for communication.',
             link: 'https://link.gorgias.com/oau',
+            linkText: HINT_LINK_TEXT,
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
@@ -71,6 +74,7 @@ export const TrendCardConfig: Record<
         hint: {
             title: 'Average score assessing whether the agent showed high proficiency in the language of the conversation: flawless spelling, grammar, syntax. \n \nThe score (1-5) is computed by AI on closed tickets with at least 1 customer message and 1 agent message.',
             link: 'https://link.gorgias.com/oau',
+            linkText: HINT_LINK_TEXT,
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',

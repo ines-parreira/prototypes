@@ -7,21 +7,30 @@ import css from 'pages/stats/common/HintTooltip.less'
 import {TooltipData} from 'pages/stats/types'
 import {DOCUMENTATION_LINK_TEXT} from 'services/reporting/constants'
 
-export const HintTooltipContent = ({title, link}: TooltipData) => {
+export const HintTooltipContent = ({
+    title,
+    link,
+    linkText = DOCUMENTATION_LINK_TEXT,
+}: TooltipData) => {
     return (
         <>
             {title}
             {typeof title !== 'boolean' && title !== '' && <br />}
             {link && (
                 <a href={link} target="_blank" rel="noopener noreferrer">
-                    {DOCUMENTATION_LINK_TEXT}
+                    {linkText}
                 </a>
             )}
         </>
     )
 }
 
-export const HintTooltip = ({title, link, className}: TooltipData) => {
+export const HintTooltip = ({
+    title,
+    link,
+    linkText,
+    className,
+}: TooltipData) => {
     return (
         <IconTooltip
             tooltipProps={{
@@ -35,7 +44,7 @@ export const HintTooltip = ({title, link, className}: TooltipData) => {
             }}
             className={classnames(css.tooltip, className)}
         >
-            <HintTooltipContent title={title} link={link} />
+            <HintTooltipContent title={title} link={link} linkText={linkText} />
         </IconTooltip>
     )
 }

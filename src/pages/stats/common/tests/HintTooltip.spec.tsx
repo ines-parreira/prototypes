@@ -27,4 +27,20 @@ describe('<HintTooltip />', () => {
             ).toBeInTheDocument()
         )
     })
+
+    it('should render with custom link text', async () => {
+        const customLinkText = 'Custom link text'
+        render(
+            <HintTooltip
+                title={content}
+                link="gorgias.com"
+                linkText={customLinkText}
+            />
+        )
+
+        fireEvent.mouseOver(screen.getByText('info'))
+        await waitFor(() =>
+            expect(screen.getByText(customLinkText)).toBeInTheDocument()
+        )
+    })
 })

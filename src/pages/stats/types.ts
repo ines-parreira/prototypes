@@ -28,6 +28,7 @@ export type TwoDimensionalDataItem = {
 export type TooltipData = {
     title: ReactNode
     link?: string
+    linkText?: string
     className?: string
 }
 
