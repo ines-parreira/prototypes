@@ -1,6 +1,7 @@
 import {screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -17,11 +18,11 @@ import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {
     BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
-    BUSIEST_TIME_OF_DAY_PAGE_TITLE,
     BusiestTimesOfDays,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+import {BUSIEST_TIME_OF_DAY_PAGE_TITLE} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
