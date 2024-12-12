@@ -53,7 +53,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <div
             class="badge"
           >
-            23
+            22
           </div>
         </label>
       </div>
@@ -401,7 +401,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <span
             id="label-tooltip-35"
           >
-            Internal Note
+            Phone
           </span>
         </label>
       </div>
@@ -421,7 +421,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <span
             id="label-tooltip-37"
           >
-            Phone
+            SMS
           </span>
         </label>
       </div>
@@ -441,7 +441,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <span
             id="label-tooltip-39"
           >
-            SMS
+            Twitter
           </span>
         </label>
       </div>
@@ -461,7 +461,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <span
             id="label-tooltip-41"
           >
-            Twitter
+            Twitter Direct Message
           </span>
         </label>
       </div>
@@ -481,7 +481,7 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           <span
             id="label-tooltip-43"
           >
-            Twitter Direct Message
+            Yotpo Review
           </span>
         </label>
       </div>
@@ -500,26 +500,6 @@ exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] 
           />
           <span
             id="label-tooltip-45"
-          >
-            Yotpo Review
-          </span>
-        </label>
-      </div>
-      <div
-        class="wrapperItem"
-      >
-        <label
-          class="Label--label--QAnfT label labelItem"
-          for="checkbox-46"
-        >
-          <input
-            class="input"
-            id="checkbox-46"
-            name="checkbox-46"
-            type="checkbox"
-          />
-          <span
-            id="label-tooltip-47"
           >
             WhatsApp
           </span>

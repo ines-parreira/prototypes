@@ -48,9 +48,11 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
 
         expect(queryByText('All channels')).toBeInTheDocument()
 
-        mockChannels.forEach((channel: Channel) => {
-            expect(queryByText(channel.name)).toBeInTheDocument()
-        })
+        mockChannels
+            .filter((channel) => channel?.slug !== TicketChannel.InternalNote)
+            .forEach((channel: Channel) => {
+                expect(queryByText(channel.name)).toBeInTheDocument()
+            })
     })
 
     describe('restricting the list of displayed channels', () => {

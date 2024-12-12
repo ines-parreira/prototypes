@@ -24,6 +24,8 @@ import {getMomentUtcISOString} from 'utils/date'
 import {sanitizeHtmlDefault} from 'utils/html'
 import {getLDClient} from 'utils/launchDarkly'
 
+import {TicketChannel} from '../business/types/ticket'
+
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
 export const MAX_RECENT_VIEWS = 8
@@ -265,7 +267,11 @@ export const defaultTicketView = {
             name: ViewField.Channel,
             title: 'Channel',
             filter: {
-                enum: getChannels()
+                enum: getChannels() // Filtering is done due: https://linear.app/gorgias/issue/APPS-2219
+                    .filter(
+                        (channel) =>
+                            channel?.slug !== TicketChannel.InternalNote
+                    )
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((channel) => channel.slug),
             },

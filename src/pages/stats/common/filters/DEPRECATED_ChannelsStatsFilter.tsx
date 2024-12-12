@@ -1,6 +1,7 @@
 import isString from 'lodash/isString'
 import React, {useCallback} from 'react'
 
+import {TicketChannel} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {LegacyStatsFilters} from 'models/stat/types'
 
@@ -33,7 +34,9 @@ export default function DEPRECATED_ChannelsStatsFilter({
 }: Props) {
     const dispatch = useAppDispatch()
     const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
-    const channels = filterChannels(getChannels(), channelsFilter)
+    const channels = filterChannels(getChannels(), channelsFilter).filter(
+        (channel) => channel?.slug !== TicketChannel.InternalNote
+    )
 
     const handleFilterChange = useCallback(
         (values: (string | number)[]) => {

@@ -57,3 +57,6 @@ storybook-static
 
 # yalc
 .yalc
+
+# npmrc
+.npmrc
