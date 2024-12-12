@@ -52,6 +52,10 @@ jest.mock(
         }) as typeof import('common/navigation')
 )
 
+jest.mock('../NoticeableIndicator', () => () => (
+    <span>NoticeableIndicator</span>
+))
+
 const wrapper = ({children}: {children: ReactNode}) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
@@ -291,20 +295,7 @@ describe('Navbar', () => {
 
         userEvent.click(getByText(user.name))
         userEvent.click(getByText(/gorgias updates/i))
-
-        expect(window.noticeable.render).toHaveBeenCalled()
-        expect(window.noticeable.on).toHaveBeenCalled()
-    })
-
-    it('should not render the noticeable widget when it has already been rendered', () => {
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/gorgias updates/i))
-        userEvent.click(getByText(user.name))
-        userEvent.click(getByText(user.name))
-
-        expect(window.noticeable.render).toHaveBeenCalledTimes(1)
+        expect(getByText('NoticeableIndicator')).toBeInTheDocument()
     })
 
     it('should reopen the user menu at the initial main screen', () => {

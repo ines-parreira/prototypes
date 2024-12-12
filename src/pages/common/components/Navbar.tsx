@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
@@ -19,6 +18,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
+import NoticeableIndicator from 'pages/common/components/NoticeableIndicator'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
@@ -45,7 +45,6 @@ import {THEME_CONFIGS, withTheme} from 'theme'
 import type {HelpdeskThemeName, WithThemeProps} from 'theme'
 
 import {isTouchEvent} from 'utils'
-import {reportError} from 'utils/errors'
 
 import Avatar from './Avatar/Avatar'
 import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
@@ -56,8 +55,6 @@ import css from './Navbar.less'
 import PlaceCallNavbarButton from './PlaceCallNavbarButton'
 import Screen from './screens/Screen'
 import Screens from './screens/Screens'
-
-const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
 const MIN_WIDTH = 200
 const MAX_WIDTH = 350
@@ -77,9 +74,7 @@ type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 
 type State = {
     bottomDropdownOpen: boolean
-    noticeableWidgetRendered: boolean
     activeScreen: ActiveScreen
-    noticeableCount: number
     isResizing: boolean
     navbarWidth: number
 }
@@ -94,9 +89,7 @@ export class Navbar extends Component<Props, State> {
 
     state = {
         bottomDropdownOpen: false,
-        noticeableWidgetRendered: false,
         activeScreen: 'main' as ActiveScreen,
-        noticeableCount: 0,
         isResizing: false,
         navbarWidth: 238,
     }
@@ -128,62 +121,6 @@ export class Navbar extends Component<Props, State> {
         window.removeEventListener('mouseup', this.stopResizing)
         window.removeEventListener('touchmove', this.resize)
         window.removeEventListener('touchend', this.stopResizing)
-    }
-
-    componentDidUpdate() {
-        // render and update the noticeable widget and notification
-        if (
-            this.state.bottomDropdownOpen &&
-            this.state.activeScreen === 'gorgias-updates'
-        ) {
-            if (this.state.noticeableWidgetRendered) {
-                return
-            }
-
-            try {
-                void window.noticeable
-                    .render('widget', window.noticeableWidgetId)
-                    .then(() => {
-                        this.setState({noticeableWidgetRendered: true})
-                        Sentry.addBreadcrumb({
-                            category: 'noticeable',
-                            message: 'widget rendered',
-                        })
-                    })
-                    .catch((error: Error) => {
-                        // https://linear.app/gorgias/issue/COR-1285/error-error-while-retrieving-publication-data-for-project
-                        reportError(error)
-                    })
-            } catch (error) {
-                // https://linear.app/gorgias/issue/COR-1272/typeerror-windownoticeablerenderthen-is-not-a-function
-                reportError(error)
-            }
-
-            window.noticeable.on(
-                unreadCountChangedEvent,
-                window.noticeableWidgetId,
-                (e: Record<string, any>) => {
-                    this.setState({
-                        noticeableCount: (e.detail as Record<string, any>)
-                            .value,
-                    })
-                    Sentry.addBreadcrumb({
-                        category: 'noticeable',
-                        message: 'widget unread_count changed',
-                    })
-                }
-            )
-        } else if (this.state.noticeableWidgetRendered) {
-            void window.noticeable
-                .destroy('widget', window.noticeableWidgetId)
-                .then(() => {
-                    this.setState({noticeableWidgetRendered: false})
-                    Sentry.addBreadcrumb({
-                        category: 'noticeable',
-                        message: 'widget destroyed',
-                    })
-                })
-        }
     }
 
     _closePanel = () => {
@@ -814,15 +751,7 @@ export class Navbar extends Component<Props, State> {
                                             </i>
                                             Latest updates
                                         </div>
-                                        <span
-                                            id="noticeable-widget-notification"
-                                            style={{
-                                                visibility: !!this.state
-                                                    .noticeableCount
-                                                    ? 'visible'
-                                                    : 'hidden',
-                                            }}
-                                        />
+                                        <NoticeableIndicator />
                                     </div>
                                     <div
                                         className={
