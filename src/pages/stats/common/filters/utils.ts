@@ -65,16 +65,10 @@ export const getFilterError = ({
                 .map((selectedOption) => selectedOption.label)) ||
         []
 
-    if (nonExistentValues.length === 1) {
+    if (nonExistentValues.length >= 1) {
         return {
             warningType: 'non-existent',
-            warningMessage: `${nonExistentValues.join(', ')} no longer exists and has been removed from saved filters.`,
-        }
-    }
-    if (nonExistentValues.length > 1) {
-        return {
-            warningType: 'non-existent',
-            warningMessage: `${nonExistentValues.join(', ')} no longer exist and have been removed from saved filters.`,
+            warningMessage: `${nonExistentValues.join(', ')} no longer ${nonExistentValues.length > 1 ? 'exist and have' : 'exists and has'} been removed from filters results.`,
         }
     }
 

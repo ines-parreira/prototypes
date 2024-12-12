@@ -116,7 +116,7 @@ describe('getFilterError', () => {
         expect(result).toEqual({
             warningType: 'non-existent',
             warningMessage:
-                'Option 5 no longer exists and has been removed from saved filters.',
+                'Option 5 no longer exists and has been removed from filters results.',
         })
     })
 
@@ -135,7 +135,7 @@ describe('getFilterError', () => {
         expect(result).toEqual({
             warningType: 'non-existent',
             warningMessage:
-                'Option 5, Option 6 no longer exist and have been removed from saved filters.',
+                'Option 5, Option 6 no longer exist and have been removed from filters results.',
         })
     })
 

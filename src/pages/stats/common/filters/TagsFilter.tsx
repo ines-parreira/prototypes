@@ -77,10 +77,15 @@ export const TagsFilter = ({
     const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
         useTagSearch()
 
-    const selectedOptions = value.values.map((id) => ({
-        value: id.toString(),
-        label: tagsState[id.toString()].name,
-    }))
+    const selectedOptions = value.values
+        .filter((id) => tagsState[String(id)] !== undefined)
+        .map((id) => {
+            const idAsAString = String(id)
+            return {
+                value: idAsAString,
+                label: tagsState[idAsAString].name,
+            }
+        })
 
     const options = tags
         .filter((tag) => !otherValue?.values.includes(tag.id))
@@ -89,10 +94,12 @@ export const TagsFilter = ({
             label: tag.name,
         }))
 
-    const stateOptions = Object.values(tagsState).map((tag) => ({
-        value: String(tag.id),
-        label: tag.name,
-    }))
+    const stateOptions = Object.values(tagsState)
+        .filter((tag) => !!tag)
+        .map((tag) => ({
+            value: String(tag.id),
+            label: tag.name,
+        }))
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {

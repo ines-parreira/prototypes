@@ -1,5 +1,6 @@
 import {ListTagsOrderBy, ListTagsParams, Tag} from '@gorgias/api-queries'
 import {CancelToken} from 'axios'
+import {filter} from 'lodash'
 import {useCallback, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -14,6 +15,7 @@ import {tagsFetched} from 'state/entities/tags/actions'
 import {getEntitiesTags} from 'state/entities/tags/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {notUndefined} from 'utils/types'
 
 const ORDER_OPTIONS: {order_by: OrderByOrderDir} = {
     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
@@ -23,7 +25,8 @@ export const TAGS_FETCH_ERROR_MESSAGE = 'Failed to fetch tags'
 
 export const useTagSearch = () => {
     const dispatch = useAppDispatch()
-    const tags = useAppSelector(getEntitiesTags)
+    const tags: Record<string, Tag | undefined> =
+        useAppSelector(getEntitiesTags)
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [debouncedTagSearch, setDebouncedTagSearch] = useState('')
@@ -96,12 +99,22 @@ export const useTagSearch = () => {
         await handleFetchTags(tagSearch, true)
     }, [handleFetchTags, tagSearch])
 
+    const tagsStateWithoutUndefined: Tag[] = filter(tags, notUndefined)
+
     return {
         handleTagsSearch,
         onLoad,
         tagIds,
-        tagsState: tags,
+        tagsState: tagsStateWithoutUndefined.reduce<Record<string, Tag>>(
+            (state, tag) => {
+                state[tag.id] = tag
+                return state
+            },
+            {}
+        ),
         shouldLoadMore: !!nextCursor && !isFetchingTags,
-        tags: tagIds.map((tagId) => tags[tagId.toString()]),
+        tags: tagIds
+            .map((tagId) => tags[tagId.toString()])
+            .filter(notUndefined),
     }
 }

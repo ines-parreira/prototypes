@@ -324,7 +324,7 @@ describe('Filter', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'New Option no longer exists and has been removed from saved filters.'
+                    'New Option no longer exists and has been removed from filters results.'
                 )
             ).toBeInTheDocument()
         })
