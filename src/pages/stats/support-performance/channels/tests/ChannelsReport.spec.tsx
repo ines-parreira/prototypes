@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentProps} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,9 +17,9 @@ import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {
     ChannelsReport,
-    CHANNELS_REPORT_PAGE_TITLE,
     CHANNEL_REPORT_OPTIONAL_FILTERS,
 } from 'pages/stats/support-performance/channels/ChannelsReport'
+import {CHANNELS_REPORT_PAGE_TITLE} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {RootState} from 'state/types'
 import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
 import {renderWithStore} from 'utils/testing'

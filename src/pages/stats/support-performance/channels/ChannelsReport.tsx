@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -6,18 +7,18 @@ import {useOptionalFiltersWithSatisfactionScoreFilterAndAutoQaFilters} from 'hoo
 import {useGridSize} from 'hooks/useGridSize'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import ChartCard from 'pages/stats/ChartCard'
+import {CustomReportComponent} from 'pages/stats/common/CustomReport/CustomReportComponent'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
-import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
+import {
+    ChannelsChart,
+    ChannelsReportConfig,
+} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
 
-export const CHANNELS_REPORT_PAGE_TITLE = 'Channels'
-export const CHANNEL_PERFORMANCE_TABLE_TITLE = 'Channel performance'
 export const CHANNEL_REPORT_OPTIONAL_FILTERS = [
     FilterKey.Channels,
     FilterKey.Integrations,
@@ -39,7 +40,7 @@ export function ChannelsReport() {
     return (
         <div className="full-width">
             <StatsPage
-                title={CHANNELS_REPORT_PAGE_TITLE}
+                title={ChannelsReportConfig.reportName}
                 titleExtra={
                     <>
                         <SupportPerformanceFilters
@@ -71,13 +72,10 @@ export function ChannelsReport() {
                 )}
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(12)}>
-                        <ChartCard
-                            title={CHANNEL_PERFORMANCE_TABLE_TITLE}
-                            noPadding
-                            titleExtra={<ChannelsCardExtra />}
-                        >
-                            <ChannelsTable />
-                        </ChartCard>
+                        <CustomReportComponent
+                            chart={ChannelsChart.ChannelsPerformanceTable}
+                            config={ChannelsReportConfig}
+                        />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />
