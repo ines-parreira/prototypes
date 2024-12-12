@@ -68,7 +68,17 @@ export const getDrillDownMetricOrder = (
         metricName === AutoQAAgentsTableColumn.ResolutionCompleteness ||
         metricName === AutoQAMetric.ResolutionCompleteness ||
         metricName === AutoQAAgentsTableColumn.CommunicationSkills ||
-        metricName === AutoQAMetric.CommunicationSkills
+        metricName === AutoQAMetric.CommunicationSkills ||
+        metricName === AutoQAAgentsTableColumn.LanguageProficiency ||
+        metricName === AutoQAMetric.LanguageProficiency ||
+        metricName === AutoQAAgentsTableColumn.Accuracy ||
+        metricName === AutoQAMetric.Accuracy ||
+        metricName === AutoQAAgentsTableColumn.Efficiency ||
+        metricName === AutoQAMetric.Efficiency ||
+        metricName === AutoQAAgentsTableColumn.InternalCompliance ||
+        metricName === AutoQAMetric.InternalCompliance ||
+        metricName === AutoQAAgentsTableColumn.BrandVoice ||
+        metricName === AutoQAMetric.BrandVoice
         ? OrderDirection.Asc
         : OrderDirection.Desc
 }
