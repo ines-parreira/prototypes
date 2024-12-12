@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import React, {useEffect, useRef} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 import {Navbar} from 'reactstrap'
 
 import {TicketStatus} from 'business/types/ticket'
@@ -70,6 +70,8 @@ export const TicketInfobarContainer = ({
     const hasAIAgent = useHasAIAgent()
     const hasAutoQA = useFlag<boolean>(FeatureFlagKey.AutoQA, false)
     const hasTicketFeedback = hasAutomate && (hasAIAgent || hasAutoQA)
+
+    const location = useLocation()
 
     useEffect(() => {
         dispatch(actions.selectContext())
@@ -139,6 +141,8 @@ export const TicketInfobarContainer = ({
 
     const showTicketFeedback = activeTab === TicketAIAgentFeedbackTab.AIAgent
 
+    const hideAiFeedbackTab = location.pathname.includes('edit-widgets')
+
     return (
         <div
             className={classNames('infobar-panel', css.container, {
@@ -159,14 +163,16 @@ export const TicketInfobarContainer = ({
                     >
                         {CUSTOMER_DETAILS_TAB}
                     </div>
-                    <div
-                        className={classNames(css.link, {
-                            [css.active]: showTicketFeedback,
-                        })}
-                        onClick={handleAIAgentTabClick}
-                    >
-                        {AI_FEEDBACK_TAB}
-                    </div>
+                    {!hideAiFeedbackTab && (
+                        <div
+                            className={classNames(css.link, {
+                                [css.active]: showTicketFeedback,
+                            })}
+                            onClick={handleAIAgentTabClick}
+                        >
+                            {AI_FEEDBACK_TAB}
+                        </div>
+                    )}
                 </Navbar>
             )}
             {hasTicketFeedback && showTicketFeedback ? (
