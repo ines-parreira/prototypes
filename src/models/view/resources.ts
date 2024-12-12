@@ -28,7 +28,7 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
 
 export const getViewItems = async ({url, viewId, ...params}: ListParams) => {
     const launchDarklyClient = getLDClient()
-    await launchDarklyClient.waitForInitialization()
+    await launchDarklyClient.waitForInitialization(3)
 
     return await client.get<
         ApiListResponseCursorPagination<Ticket[], OldCursorMeta>

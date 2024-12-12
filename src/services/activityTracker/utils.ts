@@ -7,7 +7,7 @@ export const isSessionImpersonated = () => {
 
 export const checkIfTrackerIsEnabled = async () => {
     const launchDarklyClient = getLDClient()
-    await launchDarklyClient.waitForInitialization()
+    await launchDarklyClient.waitForInitialization(3)
     const isActivityTrackerEnabled = !!launchDarklyClient.variation(
         FeatureFlagKey.AgentActivityTracking
     )
