@@ -316,22 +316,6 @@ export const invoices = createSelector(
         ) as List<any>
 )
 
-export const getContact = createSelector(
-    DEPRECATED_getBillingState,
-    (billing) => (billing.get('contact') as Map<any, any> | null) || null
-)
-
-export const isMissingContactInformation = createSelector(
-    getContact,
-    (contact) =>
-        !contact ||
-        !contact.get('email') ||
-        !contact.getIn(['shipping', 'address', 'country']) ||
-        !contact.getIn(['shipping', 'address', 'postal_code']) ||
-        (contact.getIn(['shipping', 'address', 'country']) === 'US' &&
-            !contact.getIn(['shipping', 'address', 'state']))
-)
-
 export const creditCard = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({})

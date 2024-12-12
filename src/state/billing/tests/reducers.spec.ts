@@ -12,22 +12,6 @@ const card = {
     exp_year: 35,
 }
 
-const billingContact = {
-    email: 'hello@acme.gorgias.io',
-    shipping: {
-        name: 'Gorgias',
-        phone: '4155555556',
-        address: {
-            line1: '52 Washburn St',
-            line2: '',
-            city: 'San Francisco',
-            state: 'CA',
-            country: 'United States',
-            postal_code: '94103',
-        },
-    },
-}
-
 describe('billing reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
@@ -51,26 +35,6 @@ describe('billing reducers', () => {
                 resp: invoices,
             })
         ).toMatchSnapshot()
-    })
-
-    describe('should update the billing contact information', () => {
-        it('on successful contact fetch action', () => {
-            expect(
-                reducer(initialState, {
-                    type: types.FETCH_BILLING_CONTACT_SUCCESS,
-                    billingContact,
-                })
-            ).toMatchSnapshot()
-        })
-
-        it('on successful contact update action', () => {
-            expect(
-                reducer(initialState, {
-                    type: types.UPDATE_BILLING_CONTACT_SUCCESS,
-                    billingContact,
-                })
-            ).toMatchSnapshot()
-        })
     })
 
     it('fetch credit card', () => {

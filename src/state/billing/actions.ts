@@ -2,17 +2,13 @@ import {Map} from 'immutable'
 
 import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants'
 import {
-    BillingContactImmutable,
     CurrentUsage,
     Invoice,
     PaymentMethod,
-    BillingContact,
     CurrentProductsUsages,
 } from './types'
 
@@ -155,68 +151,5 @@ export const setCreditCard = (
     return {
         type: constants.SET_CREDIT_CARD,
         creditCard,
-    }
-}
-
-/**
- * Fetch the billing contact information for the current account
- * @returns {Promise} the async action promise
- */
-export function fetchContact() {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
-            .get<BillingContact>('/api/billing/contact/')
-            .then((json) => json?.data)
-            .then(
-                (billingContact) => {
-                    return dispatch({
-                        type: constants.FETCH_BILLING_CONTACT_SUCCESS,
-                        billingContact,
-                    })
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.FETCH_BILLING_CONTACT_ERROR,
-                        error,
-                        reason: 'Unable to get billing contact information.',
-                    })
-                }
-            )
-    }
-}
-
-/**
- * Update the billing contact information for the current account
- * @param {billingContactType} billingContact - The billing contact object
- * @returns {Promise} the async action promise
- */
-export function updateContact(billingContact: BillingContactImmutable) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
-            .put<BillingContact>('/api/billing/contact/', billingContact.toJS())
-            .then((json) => json?.data)
-            .then(
-                (billingContact) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Billing contact information updated',
-                        })
-                    )
-
-                    return dispatch({
-                        type: constants.UPDATE_BILLING_CONTACT_SUCCESS,
-                        billingContact,
-                    })
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.UPDATE_BILLING_CONTACT_ERROR,
-                        error,
-                        reason: 'Unable to update billing contact information.',
-                        verbose: true,
-                    })
-                }
-            )
     }
 }

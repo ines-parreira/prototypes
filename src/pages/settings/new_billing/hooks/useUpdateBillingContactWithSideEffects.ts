@@ -3,10 +3,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {billingKeys, useUpdateBillingContact} from 'models/billing/queries'
 import {updateBillingContact} from 'models/billing/resources'
-import {
-    UPDATE_BILLING_CONTACT_ERROR,
-    UPDATE_BILLING_CONTACT_SUCCESS,
-} from 'state/billing/constants'
+import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {MutationOverrides} from 'types/query'
@@ -29,11 +26,6 @@ export const useUpdateBillingContactWithSideEffects = (
 
             void queryClient.invalidateQueries({
                 queryKey: billingKeys.contact(),
-            })
-
-            dispatch({
-                type: UPDATE_BILLING_CONTACT_SUCCESS,
-                billingContact: response.data,
             })
 
             return overrides?.onSuccess?.(response, ...args)
