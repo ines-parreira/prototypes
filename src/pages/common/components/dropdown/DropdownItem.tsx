@@ -17,11 +17,9 @@ import React, {
 } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
+import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import css from 'pages/common/components/dropdown/DropdownItem.less'
 import CheckBox from 'pages/common/forms/CheckBox'
-
-import {DropdownContext} from './Dropdown'
-
-import css from './DropdownItem.less'
 
 export type Props<T extends boolean | number | string | null> = {
     autoFocus?: boolean
