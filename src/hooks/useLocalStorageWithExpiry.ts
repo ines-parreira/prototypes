@@ -5,12 +5,12 @@ import useLocalStorage from 'hooks/useLocalStorage'
 export default function useLocalStorageWithExpiry<T>(
     key: string,
     expiryTime: number,
-    initialValue?: T
+    defaultValue: T
 ) {
-    const [value, setValue, removeValue] = useLocalStorage<T>(key, initialValue)
+    const [value, setValue, removeValue] = useLocalStorage<T>(key, defaultValue)
     const [timestamp, setTimestamp, removeTimestamp] = useLocalStorage<number>(
         `${key}-timestamp`,
-        initialValue ? Date.now() : undefined
+        Date.now()
     )
 
     const isExpired = useCallback(
@@ -32,12 +32,12 @@ export default function useLocalStorageWithExpiry<T>(
     )
 
     const resetValue = useCallback(() => {
-        if (initialValue != null) {
-            setState(initialValue)
+        if (defaultValue != null) {
+            setState(defaultValue)
         } else {
             remove()
         }
-    }, [setState, initialValue, remove])
+    }, [setState, defaultValue, remove])
 
     useLayoutEffect(() => {
         if (isExpired()) {

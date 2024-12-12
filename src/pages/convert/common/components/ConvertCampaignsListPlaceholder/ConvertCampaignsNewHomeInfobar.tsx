@@ -20,8 +20,10 @@ const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
 
     const [visible, setVisible] = useState(false)
 
-    const [isHiddenPermanently, setIsHiddenPermanently] =
-        useLocalStorage<boolean>(storageKey)
+    const [isHiddenPermanently, setIsHiddenPermanently] = useLocalStorage(
+        storageKey,
+        false
+    )
 
     useEffect(() => {
         if (!isHiddenPermanently) {

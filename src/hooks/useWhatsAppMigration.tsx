@@ -170,8 +170,10 @@ function useMigration(): Migration {
         DEFAULT_TARGET
     )
 
-    const [progress, setProgress] =
-        useLocalStorage<Maybe<Progress>>(PROGRESS_STORAGE_KEY)
+    const [progress, setProgress] = useLocalStorage<Maybe<Progress>>(
+        PROGRESS_STORAGE_KEY,
+        null
+    )
     const [verification, setVerification] = useLocalStorage<
         Maybe<Verification>
     >(VERIFICATION_STORAGE_KEY, DEFAULT_VERIFICATION)

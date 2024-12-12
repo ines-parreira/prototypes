@@ -1,14 +1,14 @@
 import {THEME_NAME} from '@gorgias/design-tokens'
 import {useEffect} from 'react'
 
-import {usePersistedState} from 'common/hooks'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 import type {HelpdeskThemeName} from './types'
 
 const themeValues = [...Object.values(THEME_NAME), 'system']
 
 export default function useActualTheme() {
-    const [theme, setTheme] = usePersistedState<HelpdeskThemeName>(
+    const [theme, setTheme] = useLocalStorage<HelpdeskThemeName>(
         'theme',
         THEME_NAME.Classic
     )

@@ -7,8 +7,9 @@ import {ProductBannerItem} from './types/ProductBannerItem'
 import {ProductBannerRecord} from './types/ProductBannerRecord'
 
 export function useProductBannerStorage() {
-    const [products, setProducts] = useLocalStorage<ProductBannerRecord>(
-        'gorgias:productBanners'
+    const [products, setProducts] = useLocalStorage<ProductBannerRecord | null>(
+        'gorgias:productBanners',
+        null
     )
 
     const getProductBanner = useCallback(

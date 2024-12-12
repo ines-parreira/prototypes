@@ -168,8 +168,9 @@ export default function DomainVerificationProvider({
 }
 
 function useRequestStatus(domainName: string) {
-    const [requestedAt, setRequestedAt] = useLocalStorage<Date | undefined>(
-        domainVerificationStorageKey(domainName)
+    const [requestedAt, setRequestedAt] = useLocalStorage<Date | null>(
+        domainVerificationStorageKey(domainName),
+        null
     )
 
     const [currentTime, setCurrentTime] = useState(new Date())
@@ -188,7 +189,7 @@ function useRequestStatus(domainName: string) {
 }
 
 export function computeIsPending(
-    requestedAt: Date | undefined,
+    requestedAt: Date | null,
     currentTime: Date
 ): boolean {
     if (!requestedAt) {

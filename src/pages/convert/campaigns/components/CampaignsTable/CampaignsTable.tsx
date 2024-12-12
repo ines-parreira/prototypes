@@ -108,9 +108,10 @@ export const CampaignsTable = ({
             LightCampaignModalType.DeactivateCampaign
         }`
     }, [integration])
-    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
-        boolean | undefined
-    >(storageKey)
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
+        storageKey,
+        false
+    )
 
     const handleChangeSort = useCallback(
         (key: SortingKeys) => () => changeSorting(key),

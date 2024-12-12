@@ -1,17 +1,22 @@
 import {THEME_NAME} from '@gorgias/design-tokens'
 import {renderHook} from '@testing-library/react-hooks'
 
-import {usePersistedState} from 'common/hooks'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {assumeMock} from 'utils/testing'
 
 import useActualTheme from '../useActualTheme'
 
-jest.mock('common/hooks', () => ({usePersistedState: jest.fn()}))
-const usePersistedStateMock = usePersistedState as jest.Mock
+jest.mock('hooks/useLocalStorage', () => jest.fn())
+const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('useActualTheme', () => {
     it('should return the theme from localstorage', () => {
         const setTheme = jest.fn()
-        usePersistedStateMock.mockReturnValue([THEME_NAME.Classic, setTheme])
+        useLocalStorageMock.mockReturnValue([
+            THEME_NAME.Classic,
+            setTheme,
+            () => {},
+        ])
         const {result} = renderHook(() => useActualTheme())
 
         expect(result.current).toEqual([
@@ -23,7 +28,7 @@ describe('useActualTheme', () => {
 
     it('should return and set the classic theme if localstorage returns an unknown value', () => {
         const setTheme = jest.fn()
-        usePersistedStateMock.mockReturnValue(['modern', setTheme])
+        useLocalStorageMock.mockReturnValue(['modern', setTheme, () => {}])
         const {result} = renderHook(() => useActualTheme())
 
         expect(result.current).toEqual([

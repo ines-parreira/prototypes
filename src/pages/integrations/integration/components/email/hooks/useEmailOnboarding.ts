@@ -360,8 +360,9 @@ type UseVerificationStateHookResult = {
 function useVerificationRequestStatus(
     integration: EmailIntegration | undefined
 ): UseVerificationStateHookResult {
-    const [requestedAt, setRequestedAt] = useLocalStorage<Date | undefined>(
-        forwardingVerificationStorageKey(integration?.id ?? 0)
+    const [requestedAt, setRequestedAt] = useLocalStorage<Date | null>(
+        forwardingVerificationStorageKey(integration?.id ?? 0),
+        null
     )
 
     const [currentTime, setCurrentTime] = useState(new Date())
@@ -380,7 +381,7 @@ function useVerificationRequestStatus(
 }
 
 function computeIsPending(
-    requestedAt: Date | undefined,
+    requestedAt: Date | null,
     currentTime: Date
 ): boolean {
     if (!requestedAt) {

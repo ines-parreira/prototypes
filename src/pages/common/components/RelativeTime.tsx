@@ -1,7 +1,7 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
 
-import {useNow} from 'common/hooks'
+import {useNow} from 'hooks/useNow'
 import {shortenRelativeDurationLabel} from 'utils/date'
 
 type Props = {

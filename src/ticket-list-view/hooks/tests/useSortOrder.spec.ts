@@ -1,15 +1,15 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
-import usePersistedState from 'common/hooks/usePersistedState'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 import useSortOrder from '../useSortOrder'
 
-jest.mock('common/hooks/usePersistedState', () => jest.fn())
-const usePersistedStateMock = usePersistedState as jest.Mock
+jest.mock('hooks/useLocalStorage', () => jest.fn())
+const useLocalStorageMock = useLocalStorage as jest.Mock
 
 describe('useSortOrder', () => {
     beforeEach(() => {
-        usePersistedStateMock.mockReturnValue([{}, jest.fn()])
+        useLocalStorageMock.mockReturnValue([{}, jest.fn()])
     })
 
     it('should return the given sort order if it is supported', () => {
@@ -54,7 +54,7 @@ describe('useSortOrder', () => {
     })
 
     it('should return the persisted sort order if one is defined', () => {
-        usePersistedStateMock.mockReturnValue([
+        useLocalStorageMock.mockReturnValue([
             {'1': 'last_received_message_datetime:asc'},
             jest.fn(),
         ])
@@ -68,7 +68,7 @@ describe('useSortOrder', () => {
 
     it('should persist the new sort order when set', () => {
         const persist = jest.fn()
-        usePersistedStateMock.mockReturnValue([{}, persist])
+        useLocalStorageMock.mockReturnValue([{}, persist])
 
         const {result} = renderHook(() => useSortOrder(1, ''))
 

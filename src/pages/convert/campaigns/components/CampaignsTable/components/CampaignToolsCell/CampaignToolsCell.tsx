@@ -39,9 +39,10 @@ export const CampaignToolsCell = ({
             LightCampaignModalType.DeleteCampaign
         }`
     }, [integration])
-    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
-        boolean | undefined
-    >(storageKey)
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
+        storageKey,
+        false
+    )
 
     const isLight = campaign.is_light
     const isShopifyStore = chatIsShopifyStore(integration)

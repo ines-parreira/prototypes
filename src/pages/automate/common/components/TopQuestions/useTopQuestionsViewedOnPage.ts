@@ -18,10 +18,10 @@ export const useTopQuestionsViewedOnPage = (
     const previousPage = usePrevious(page)
 
     const [localStorageBatches, setLocalStorageBatches] =
-        useLocalStorage<LocalStorageTopQuestionsBatches>(LOCAL_STORAGE_KEY)
+        useLocalStorage<LocalStorageTopQuestionsBatches>(LOCAL_STORAGE_KEY, {})
 
     useEffectOnce(() => {
-        setLocalStorageBatches(removeOldValues(localStorageBatches ?? {}))
+        setLocalStorageBatches(removeOldValues(localStorageBatches))
     })
 
     const viewedOnPage = useMemo(

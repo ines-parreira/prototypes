@@ -28,7 +28,7 @@ export default function useRuleSuggestionForDemos(
     shouldCheckFrequency: boolean
 ) {
     const [demoSuggestionDismissedTickets, setDemoSuggestionDismissedTickets] =
-        useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS)
+        useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS, [])
 
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)

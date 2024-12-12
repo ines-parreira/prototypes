@@ -4,8 +4,8 @@ import moment from 'moment'
 import React, {SyntheticEvent, useCallback, useRef} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 
-import {useNow} from 'common/hooks'
 import {declineCall} from 'hooks/integrations/phone/api'
+import {useNow} from 'hooks/useNow'
 import Button from 'pages/common/components/button/Button'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'

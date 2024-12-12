@@ -1,6 +1,6 @@
 import {useCallback, useMemo} from 'react'
 
-import usePersistedState from 'common/hooks/usePersistedState'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 export const sortOrderOptions = [
     {
@@ -52,7 +52,7 @@ export default function useSortOrder(viewId: number, viewSortOrder: string) {
         [viewSortOrder]
     )
 
-    const [sortOrders, setSortOrders] = usePersistedState(
+    const [sortOrders, setSortOrders] = useLocalStorage(
         'ticket-list-view-sort-orders',
         initialSortOrders
     )

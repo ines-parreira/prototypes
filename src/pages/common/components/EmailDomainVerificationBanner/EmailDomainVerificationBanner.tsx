@@ -3,9 +3,8 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {usePersistedState} from 'common/hooks'
 import useAppSelector from 'hooks/useAppSelector'
-
+import useLocalStorage from 'hooks/useLocalStorage'
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
@@ -17,7 +16,7 @@ import {isAdmin} from 'utils'
 const BANNER_VISIBILITY_KEY = 'email-domain-verification-banner-visibility'
 
 export default function EmailDomainVerificationBanner() {
-    const [isBannerVisible, setIsBannerVisible] = usePersistedState<
+    const [isBannerVisible, setIsBannerVisible] = useLocalStorage<
         Maybe<boolean>
     >(BANNER_VISIBILITY_KEY, true)
 

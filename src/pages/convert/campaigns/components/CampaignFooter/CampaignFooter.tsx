@@ -72,9 +72,10 @@ export const CampaignFooter = ({
     const storageKey = useMemo(() => {
         return `convert:lightModal:${integrationId}:${LightCampaignModalType.DeleteCampaign}`
     }, [integrationId])
-    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
-        boolean | undefined
-    >(storageKey)
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
+        storageKey,
+        false
+    )
 
     const onCreate = useCallback(
         (activate?: boolean) => {

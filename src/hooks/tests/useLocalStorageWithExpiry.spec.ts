@@ -21,23 +21,23 @@ describe('useLocalStorageWithExpiry', () => {
         jest.setSystemTime(mockedDate)
     })
 
-    it('should return the initial value', () => {
+    it('should return the default value', () => {
         useLocalStorageMock.mockReturnValue([
-            'initial value',
+            'default value',
             jest.fn(),
             jest.fn(),
         ])
 
         const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'initial value')
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value')
         )
 
-        expect(result.current.state).toBe('initial value')
+        expect(result.current.state).toBe('default value')
     })
 
     it('should set the value passed and update the timestamp', () => {
         const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME)
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, '')
         )
 
         result.current.setState('new value')
@@ -46,9 +46,9 @@ describe('useLocalStorageWithExpiry', () => {
         expect(mockSetter).toHaveBeenNthCalledWith(2, mockedDate)
     })
 
-    it('should remove the key / value pair if expired and replace with initial value on render cycle', () => {
+    it('should remove the key / value pair if expired and replace with default value on render cycle', () => {
         useLocalStorageMock
-            .mockReturnValueOnce(['initial value', mockSetter, jest.fn()])
+            .mockReturnValueOnce(['default value', mockSetter, jest.fn()])
             .mockReturnValueOnce([
                 mockedDate - (EXPIRY_TIME + 1),
                 mockSetter,
@@ -56,31 +56,17 @@ describe('useLocalStorageWithExpiry', () => {
             ])
 
         renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'initial value')
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value')
         )
 
         expect(mockSetter).toHaveBeenCalledTimes(2)
-        expect(mockSetter).toHaveBeenCalledWith('initial value')
+        expect(mockSetter).toHaveBeenCalledWith('default value')
         expect(mockSetter).toHaveBeenCalledWith(mockedDate)
-    })
-
-    it('should remove the key / value pair if expired and not replace with initial value on render cycle', () => {
-        useLocalStorageMock
-            .mockReturnValueOnce(['initial value', mockSetter, mockRemover])
-            .mockReturnValueOnce([
-                mockedDate - (EXPIRY_TIME + 1),
-                mockSetter,
-                mockRemover,
-            ])
-
-        renderHook(() => useLocalStorageWithExpiry('key', EXPIRY_TIME))
-
-        expect(mockRemover).toHaveBeenCalledTimes(2)
     })
 
     it('should remove the key / value pair as well as the writing datetime', () => {
         const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME)
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, '')
         )
 
         result.current.remove()

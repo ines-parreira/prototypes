@@ -20,27 +20,25 @@ declare global {
 
 const useLocalStorage = <T>(
     key: string,
-    initialValue?: T
-): [T | undefined, Dispatch<SetStateAction<T | undefined>>, () => void] => {
-    const initializer = useRef((key: string): T | undefined => {
+    defaultValue: T
+): [T, Dispatch<SetStateAction<T | undefined>>, () => void] => {
+    const initializer = useRef((key: string): T => {
         try {
             const localStorageValue = localStorage.getItem(key)
             if (localStorageValue !== null) {
                 return JSON.parse(localStorageValue) as T
             }
-            if (initialValue) {
-                localStorage.setItem(key, JSON.stringify(initialValue))
+            if (defaultValue) {
+                localStorage.setItem(key, JSON.stringify(defaultValue))
             }
-            return initialValue
+            return defaultValue
         } catch {
             // localStorage, JSON.parse and JSON.stringify can throw
-            return initialValue
+            return defaultValue
         }
     })
 
-    const [state, setState] = useState<T | undefined>(() =>
-        initializer.current(key)
-    )
+    const [state, setState] = useState<T>(() => initializer.current(key))
 
     const stateRef = useRef(state)
     stateRef.current = state
@@ -79,11 +77,11 @@ const useLocalStorage = <T>(
     const remove = useCallback(() => {
         try {
             localStorage.removeItem(key)
-            setState(undefined)
+            setState(defaultValue)
         } catch {
             // localStorage can throw
         }
-    }, [key, setState])
+    }, [key, setState, defaultValue])
 
     const handleStorageChange = useCallback(
         (event: StorageEvent | CustomLocalStorageEvent) => {
@@ -97,14 +95,15 @@ const useLocalStorage = <T>(
 
             try {
                 const localStorageValue = localStorage.getItem(key)
-                if (localStorageValue !== null) {
-                    setState(JSON.parse(localStorageValue) as T)
+                if (localStorageValue === null) {
+                    return setState(defaultValue)
                 }
+                setState(JSON.parse(localStorageValue) as T)
             } catch {
                 // localStorage, JSON.parse and JSON.stringify can throw
             }
         },
-        [key]
+        [key, defaultValue]
     )
 
     // Triggered when changing local storage value in other tabs

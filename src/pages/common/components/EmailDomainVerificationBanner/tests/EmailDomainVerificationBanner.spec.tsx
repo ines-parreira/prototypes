@@ -4,15 +4,16 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 
-import * as hooks from 'common/hooks'
 import {UserRole} from 'config/types/user'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {IntegrationType} from 'models/integration/constants'
 import {OutboundVerificationStatusValue} from 'models/integration/types'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
-const usePersistedStateSpy = jest.spyOn(hooks, 'usePersistedState')
+jest.mock('hooks/useLocalStorage')
+const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('EmailDomainVerificationBanner', () => {
     const renderComponent = (
@@ -49,6 +50,10 @@ describe('EmailDomainVerificationBanner', () => {
             </Provider>,
             {route}
         )
+    const dismissFn = jest.fn()
+    beforeEach(() => {
+        useLocalStorageMock.mockReturnValue([true, dismissFn, dismissFn])
+    })
     afterEach(cleanup)
 
     it('should display the banner text', () => {
@@ -57,8 +62,7 @@ describe('EmailDomainVerificationBanner', () => {
     })
 
     it('should not display the banner if it was previously dismissed', () => {
-        const dismissFn = jest.fn()
-        usePersistedStateSpy.mockReturnValue([false, dismissFn])
+        useLocalStorageMock.mockReturnValue([false, dismissFn, dismissFn])
 
         renderComponent()
         expect(
@@ -67,9 +71,6 @@ describe('EmailDomainVerificationBanner', () => {
     })
 
     it('should not display the banner if all email domains are verified', () => {
-        const dismissFn = jest.fn()
-        usePersistedStateSpy.mockReturnValue([false, dismissFn])
-
         renderComponent(UserRole.Admin, OutboundVerificationStatusValue.Success)
         expect(
             screen.queryByLabelText('Email domain verification')
@@ -77,9 +78,6 @@ describe('EmailDomainVerificationBanner', () => {
     })
 
     it('should not display to non-admin users', () => {
-        const dismissFn = jest.fn()
-        usePersistedStateSpy.mockReturnValue([false, dismissFn])
-
         renderComponent(UserRole.Agent)
         expect(
             screen.queryByTestId('email-domain-verification-banner')
@@ -87,9 +85,6 @@ describe('EmailDomainVerificationBanner', () => {
     })
 
     it('should have the option to dismiss the banner', () => {
-        const dismissFn = jest.fn()
-        usePersistedStateSpy.mockReturnValue([true, dismissFn])
-
         renderComponent()
 
         const closeIcon = screen.getByText('close')

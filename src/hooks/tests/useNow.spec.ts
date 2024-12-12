@@ -1,6 +1,6 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 
-import useNow from '../useNow'
+import {useNow} from '../useNow'
 
 describe('useNow', () => {
     beforeEach(() => {
