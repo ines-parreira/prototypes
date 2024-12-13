@@ -1,6 +1,9 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
+import {useFlag} from 'common/flags'
+import {globalNavigationPanel} from 'common/navigation'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -16,6 +19,11 @@ import {
 import type {OnToggleUnreadFn} from './types'
 
 export default function useSplitTicketPage() {
+    const hasGlobalNav = useFlag<boolean>(
+        FeatureFlagKey.GlobalNavigation,
+        false
+    )
+
     const match = useRouteMatch<{
         ticketId: string
         viewId: string
@@ -33,7 +41,8 @@ export default function useSplitTicketPage() {
     )
 
     const config = useMemo(
-        (): PanelLayoutConfig => [
+        (): PanelLayoutConfig[] => [
+            ...(hasGlobalNav ? [globalNavigationPanel] : []),
             {
                 key: 'navbar-panel',
                 content: <TicketNavbar disableResize />,
@@ -77,7 +86,7 @@ export default function useSplitTicketPage() {
                 ],
             },
         ],
-        [ticketId, viewId, onToggleUnread, registerToggleUnread]
+        [hasGlobalNav, ticketId, viewId, onToggleUnread, registerToggleUnread]
     )
 
     return useMemo(() => ({config, layoutKey: LayoutKeys.TICKET}), [config])

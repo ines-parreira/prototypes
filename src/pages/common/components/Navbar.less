@@ -4,6 +4,7 @@
 
 :local {
     .sidebar {
+        position: relative;
         flex-grow: 0;
         flex-shrink: 0;
         min-width: 200px;
@@ -29,8 +30,9 @@
 
     .sidebar .sidebar-resizer {
         position: absolute;
-        top: 0px;
-        bottom: 0px;
+        top: 0;
+        right: -3px;
+        bottom: 0;
         width: 5px;
         z-index: 100;
         cursor: col-resize;

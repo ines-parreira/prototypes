@@ -41,16 +41,21 @@ export default function Panels({
 
     return (
         <div className={css.panels}>
-            {Children.map(children, (child, index) => (
-                <Fragment>
-                    {index > 0 && (
-                        <Handle
-                            onResizeStart={resizeStartHandlers[index - 1]}
-                        />
-                    )}
-                    {cloneElement(child, {width: panelWidths[index]})}
-                </Fragment>
-            ))}
+            {Children.map(children, (child, index) => {
+                const [, min, max] = config[index - 1] || []
+                const shouldRenderHandle =
+                    index > 0 && (min || 0) < (max || Infinity)
+                return (
+                    <Fragment>
+                        {shouldRenderHandle && (
+                            <Handle
+                                onResizeStart={resizeStartHandlers[index - 1]}
+                            />
+                        )}
+                        {cloneElement(child, {width: panelWidths[index]})}
+                    </Fragment>
+                )
+            })}
         </div>
     )
 }

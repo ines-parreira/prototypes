@@ -9,10 +9,10 @@ export type PanelLayoutConfig = {
     key: string
     content: ReactElement
     panelConfig: PanelConfig
-}[]
+}
 
 type Props = {
-    config: PanelLayoutConfig
+    config: PanelLayoutConfig[]
     fallbackComponent?: ReactElement
     fallbackWidth?: number
     layoutKey: LayoutKeys

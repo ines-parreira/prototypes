@@ -1,6 +1,9 @@
 import React, {useMemo} from 'react'
 
+import {useFlag} from 'common/flags'
+import {globalNavigationPanel} from 'common/navigation'
 import {useIsOnboardingHidden} from 'common/onboarding'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
 import App from 'pages/App'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
@@ -14,10 +17,16 @@ import {
 } from 'split-ticket-view/constants'
 
 export default function useViewPage() {
+    const hasGlobalNav = useFlag<boolean>(
+        FeatureFlagKey.GlobalNavigation,
+        false
+    )
+
     const [isHidden, onHide] = useIsOnboardingHidden()
 
     const defaultConfig = useMemo(
-        (): PanelLayoutConfig => [
+        (): PanelLayoutConfig[] => [
+            ...(hasGlobalNav ? [globalNavigationPanel] : []),
             {
                 key: 'navbar-panel',
                 content: <TicketNavbar disableResize />,
@@ -47,12 +56,15 @@ export default function useViewPage() {
                 ],
             },
         ],
-        [isHidden, onHide]
+        [hasGlobalNav, isHidden, onHide]
     )
 
     const config = useMemo(
-        () => (isHidden ? defaultConfig.slice(0, 2) : defaultConfig),
-        [defaultConfig, isHidden]
+        () =>
+            isHidden
+                ? defaultConfig.slice(0, hasGlobalNav ? 3 : 2)
+                : defaultConfig,
+        [defaultConfig, hasGlobalNav, isHidden]
     )
 
     return useMemo(

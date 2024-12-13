@@ -5,6 +5,9 @@ import {Container} from 'reactstrap'
 
 import 'assets/css/main.less'
 
+import {useFlag} from 'common/flags'
+import {GlobalNavigation} from 'common/navigation'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -43,6 +46,10 @@ const App = ({
     infobar: Infobar,
     children,
 }: Props) => {
+    const hasGlobalNav = useFlag<boolean>(
+        FeatureFlagKey.GlobalNavigation,
+        false
+    )
     const dispatch = useAppDispatch()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
@@ -67,6 +74,7 @@ const App = ({
 
     return (
         <div id="app-root" className={css.app}>
+            {hasGlobalNav && <GlobalNavigation />}
             {Navbar && <Navbar />}
 
             <div

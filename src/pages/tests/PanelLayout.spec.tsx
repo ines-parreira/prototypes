@@ -25,7 +25,7 @@ describe('PanelLayout', () => {
     })
 
     it('should convert the given config', () => {
-        const config: PanelLayoutConfig = [
+        const config: PanelLayoutConfig[] = [
             {
                 key: 'navbar-panel',
                 content: <p>Navbar</p>,

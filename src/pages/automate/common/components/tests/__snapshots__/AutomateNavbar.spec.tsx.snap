@@ -458,7 +458,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 238px;"
     />
   </div>
 </div>
@@ -671,7 +670,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 238px;"
     />
   </div>
 </div>
@@ -1122,7 +1120,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 238px;"
     />
   </div>
 </div>
@@ -1322,7 +1319,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
     </div>
     <div
       class="sidebar-resizer"
-      style="left: 238px;"
     />
   </div>
 </div>

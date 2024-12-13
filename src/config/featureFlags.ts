@@ -96,6 +96,7 @@ export enum FeatureFlagKey {
     FlowsStepsShopperAuthentication = 'flows-steps-shopper-authentication-1',
     FlowsStepsShopperInput = 'flows-steps-shopper-input',
     FollowUpAiAgentPreviewMode = 'follow-up-ai-agent-preview-mode',
+    GlobalNavigation = 'global-navigation',
     HelpCenterAnalytics = 'help-center-analytics',
     HelpCenterAutoEmbed = 'help-center-auto-embed',
     HelpCenterCreationWizard = 'help-center-creation-wizard',

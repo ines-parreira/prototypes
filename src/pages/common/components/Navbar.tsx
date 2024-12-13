@@ -178,6 +178,10 @@ export class Navbar extends Component<Props, State> {
         } else {
             navbarWidth = event.clientX
         }
+        const rect = this.navbarRef.current?.getBoundingClientRect()
+        if (rect) {
+            navbarWidth = navbarWidth - rect.left
+        }
         if (this.state.isResizing) {
             const newWidth =
                 navbarWidth < MIN_WIDTH
@@ -215,6 +219,7 @@ export class Navbar extends Component<Props, State> {
 
         return (
             <div
+                ref={this.navbarRef}
                 className={classnames(css.sidebar, {
                     [css.isResizing]: isResizing,
                 })}
@@ -845,7 +850,6 @@ export class Navbar extends Component<Props, State> {
                         className={classnames(css['sidebar-resizer'], {
                             [css.isTouched]: isResizing,
                         })}
-                        style={{left: `${navbarWidth}px`}}
                         onMouseDown={this.startResizing}
                         onTouchMove={this.startResizing}
                     />
