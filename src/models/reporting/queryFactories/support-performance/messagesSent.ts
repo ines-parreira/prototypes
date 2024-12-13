@@ -92,9 +92,7 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const baseQuery = filters?.agents
-        ? messagesSentMetricPerAgentQueryFactory(filters, timezone)
-        : messagesSentQueryFactory(filters, timezone)
+    const baseQuery = messagesSentQueryFactory(filters, timezone)
 
     return {
         ...baseQuery,

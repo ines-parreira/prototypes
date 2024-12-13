@@ -228,11 +228,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
         ).toEqual({
             ...messagesSentMetricPerAgentQueryFactory(filters, timezone),
             measures: [HelpdeskMessageMeasure.MessageCount],
-            dimensions: [
-                TicketDimension.TicketId,
-                ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
-                    .dimensions,
-            ],
+            dimensions: [TicketDimension.TicketId],
             filters: [
                 ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
                     .filters,
