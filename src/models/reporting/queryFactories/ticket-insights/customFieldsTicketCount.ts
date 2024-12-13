@@ -12,6 +12,7 @@ import {
     injectDrillDownCustomFieldId,
 } from 'models/reporting/queryFactories/utils'
 import {
+    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
@@ -32,7 +33,8 @@ export const customFieldsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
+    additionalFilter?: ReportingFilter
 ): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
@@ -54,6 +56,7 @@ export const customFieldsTicketCountQueryFactory = (
                 formatReportingQueryDate(filters.period.end_datetime),
             ],
         },
+        ...(additionalFilter ? [additionalFilter] : []),
     ],
     ...(sorting
         ? {
@@ -160,6 +163,47 @@ export const customFieldsTicketTotalCountQueryFactory = (
                 formatReportingQueryDate(filters.period.end_datetime),
             ],
         },
+    ],
+    ...(sorting
+        ? {
+              order: [
+                  [
+                      TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+                      sorting,
+                  ],
+              ],
+          }
+        : {}),
+})
+
+export const customFieldsTicketFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    customFieldId: string,
+    additionalFilter?: ReportingFilter,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+    dimensions: [TicketDimension.TicketId],
+    timezone,
+    segments: [],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+            operator: ReportingFilterOperator.Equals,
+            values: [customFieldId],
+        },
+        {
+            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                formatReportingQueryDate(filters.period.start_datetime),
+                formatReportingQueryDate(filters.period.end_datetime),
+            ],
+        },
+        ...(additionalFilter ? [additionalFilter] : []),
     ],
     ...(sorting
         ? {

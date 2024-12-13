@@ -2,12 +2,21 @@ import {renderHook} from '@testing-library/react-hooks'
 import {TooltipItem} from 'chart.js'
 import moment from 'moment'
 
+import {
+    customFieldsMetric,
+    emptyMetric,
+    totalTicketsMetric,
+} from 'fixtures/aiAgentInsights'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
+import {OrderDirection} from 'models/api/types'
 import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
 
+import {CUSTOM_FIELD_COUNT, TICKET_COUNT} from '../types'
 import {useAutomateStatsMeasureLabelMap} from '../useAutomateStatsMeasureLabelMap'
 import {
     addZeroValueTimeSeriesForGreyArea,
@@ -20,6 +29,9 @@ import {
     automateInteractionsByEventTypeToTimeSeries,
     addNonExistingEventTypesForGraph,
     calculateGreyArea,
+    sortAllData,
+    enrichWithAutomationOpportunity,
+    enrichWithSuccessRate,
 } from '../utils'
 
 describe('mergeAutomateDataByEventType', () => {
@@ -569,5 +581,229 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
 
         expect(result[0][0].label).toBe('Others')
         expect(result[0][0].value).toBe(5)
+    })
+})
+
+describe('sortAllData', () => {
+    const mockDataWithAutomationOpportunity = [
+        {
+            automationOpportunity: 0.5,
+            [BREAKDOWN_FIELD]: 'A',
+            [TICKET_COUNT]: '2',
+            [CUSTOM_FIELD_COUNT]: '1',
+        },
+        {
+            automationOpportunity: 0.2,
+            [BREAKDOWN_FIELD]: 'B',
+            [TICKET_COUNT]: '5',
+            [CUSTOM_FIELD_COUNT]: '1',
+        },
+        {
+            automationOpportunity: 0.8,
+            [BREAKDOWN_FIELD]: 'C',
+            [TICKET_COUNT]: '4',
+            [CUSTOM_FIELD_COUNT]: '3',
+        },
+    ]
+    it('should sort data with automationOpportunity in ascending order', () => {
+        const result = sortAllData(
+            mockDataWithAutomationOpportunity,
+            'automationOpportunity',
+            OrderDirection.Asc
+        )
+        expect(result).toEqual([
+            {
+                automationOpportunity: 0.2,
+                [BREAKDOWN_FIELD]: 'B',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+            },
+            {
+                automationOpportunity: 0.5,
+                [BREAKDOWN_FIELD]: 'A',
+                [TICKET_COUNT]: '2',
+                [CUSTOM_FIELD_COUNT]: '1',
+            },
+            {
+                automationOpportunity: 0.8,
+                [BREAKDOWN_FIELD]: 'C',
+                [TICKET_COUNT]: '4',
+                [CUSTOM_FIELD_COUNT]: '3',
+            },
+        ])
+    })
+
+    it('should sort data with automationOpportunity in descending order', () => {
+        const result = sortAllData(
+            mockDataWithAutomationOpportunity,
+            'automationOpportunity',
+            OrderDirection.Desc
+        )
+        expect(result).toEqual([
+            {
+                automationOpportunity: 0.8,
+                [BREAKDOWN_FIELD]: 'C',
+                [TICKET_COUNT]: '4',
+                [CUSTOM_FIELD_COUNT]: '3',
+            },
+
+            {
+                automationOpportunity: 0.5,
+                [BREAKDOWN_FIELD]: 'A',
+                [TICKET_COUNT]: '2',
+                [CUSTOM_FIELD_COUNT]: '1',
+            },
+            {
+                automationOpportunity: 0.2,
+                [BREAKDOWN_FIELD]: 'B',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+            },
+        ])
+    })
+
+    it('should handle empty array', () => {
+        const result = sortAllData(
+            [],
+            'automationOpportunity',
+            OrderDirection.Asc
+        )
+        expect(result).toEqual([])
+    })
+})
+
+describe('enrichWithAutomationOpportunity', () => {
+    it('should return enriched data sorted in descending order by default', () => {
+        const result = enrichWithAutomationOpportunity(
+            customFieldsMetric,
+            '5',
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        )
+        expect(result).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '3',
+                automationOpportunity: 0.6,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+        ])
+    })
+
+    it('should return enriched data sorted in ascending order', () => {
+        const result = enrichWithAutomationOpportunity(
+            customFieldsMetric,
+            '5',
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            OrderDirection.Asc
+        )
+        expect(result).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '3',
+                automationOpportunity: 0.6,
+            },
+        ])
+    })
+
+    it('should return an empty array if allData is empty', () => {
+        const result = enrichWithAutomationOpportunity(
+            emptyMetric,
+            '5',
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        )
+        expect(result).toEqual([])
+    })
+})
+
+describe('enrichWithSuccessRate', () => {
+    it('should return enriched data sorted in ascending order by default', () => {
+        const result = enrichWithSuccessRate(
+            customFieldsMetric,
+            totalTicketsMetric,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        )
+        expect(result).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '4',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.25,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '10',
+                [CUSTOM_FIELD_COUNT]: '3',
+                successRate: 0.3,
+            },
+        ])
+    })
+
+    it('should return enriched data sorted in descending order', () => {
+        const result = enrichWithSuccessRate(
+            customFieldsMetric,
+            totalTicketsMetric,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            OrderDirection.Desc
+        )
+        expect(result).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '10',
+                [CUSTOM_FIELD_COUNT]: '3',
+                successRate: 0.3,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '4',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.25,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.2,
+            },
+        ])
+    })
+
+    it('should return an empty array if filteredData is empty', () => {
+        const result = enrichWithSuccessRate(
+            customFieldsMetric,
+            emptyMetric,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        )
+        expect(result).toEqual([])
     })
 })

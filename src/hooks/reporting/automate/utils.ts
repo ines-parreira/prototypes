@@ -1,10 +1,13 @@
+import {OrderDirection} from '@gorgias/api-queries'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {Scale, TooltipItem} from 'chart.js'
+import difference from 'lodash/difference'
 import flatMap from 'lodash/flatMap'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
 import map from 'lodash/map'
 import mapValues from 'lodash/mapValues'
+import orderBy from 'lodash/orderBy'
 
 import moment, {Moment} from 'moment'
 
@@ -14,7 +17,11 @@ import {
     workflowEndStepDropoff,
 } from 'hooks/reporting/automate/automateStatsFormulae'
 import {
+    BREAKDOWN_FIELD,
+    CUSTOM_FIELD_COUNT,
     DEFAULT_WORKFLOW_ANALYTICS_DATA,
+    EnrichedTicketCustomFieldsWithAutomationOpportunity,
+    EnrichedTicketCustomFieldsWithSuccessRate,
     FLOW_ENDED_WITH_TICKET_HANDOVER,
     FLOW_HANDOVER_TICKET_CREATED,
     FLOW_PROMPT_NOT_HELPFUL,
@@ -22,9 +29,13 @@ import {
     FLOW_STEP_ENDED,
     FLOW_STEP_STARTED,
     GreyArea,
+    TICKET_COUNT,
     WorkflowTrendMetrics,
 } from 'hooks/reporting/automate/types'
-import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
+import {
+    MetricWithDecile,
+    QueryReturnType,
+} from 'hooks/reporting/useMetricPerDimension'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {Cubes} from 'models/reporting/cubes'
 import {
@@ -35,6 +46,11 @@ import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import {
+    TicketCustomFieldsCube,
+    TicketCustomFieldsMeasure,
+    TicketCustomFieldsDimension,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {ReportingGranularity} from 'models/reporting/types'
 import {Period, StatsFilters} from 'models/stat/types'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
@@ -494,4 +510,87 @@ export function computeWorkflowStepsMetrics(
     )
 
     return groupedDataByWorkflowsStep
+}
+
+export const sortAllData = <
+    T extends
+        | EnrichedTicketCustomFieldsWithAutomationOpportunity
+        | EnrichedTicketCustomFieldsWithSuccessRate,
+>(
+    allData: T[],
+    sortingField: keyof T,
+    sorting: OrderDirection
+): T[] => {
+    const nonNullValues = allData.filter((item) => item[sortingField] !== null)
+
+    const sortedArray = orderBy(nonNullValues, (v) => Number(v[sortingField]), [
+        sorting,
+    ])
+
+    return sortedArray.concat(difference(allData, nonNullValues))
+}
+
+export const enrichWithAutomationOpportunity = (
+    metric: MetricWithDecile<TicketCustomFieldsCube>,
+    totalTicketCount: string,
+    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+    sorting: OrderDirection = OrderDirection.Desc
+): EnrichedTicketCustomFieldsWithAutomationOpportunity[] => {
+    const allData = metric?.data?.allData
+
+    if (!allData || !totalTicketCount) {
+        return []
+    }
+
+    const enrichedData: EnrichedTicketCustomFieldsWithAutomationOpportunity[] =
+        allData.map((item) => ({
+            [BREAKDOWN_FIELD]: item[BREAKDOWN_FIELD],
+            [TICKET_COUNT]: totalTicketCount,
+            [CUSTOM_FIELD_COUNT]: item[valueField],
+            automationOpportunity: calculateRate(
+                Number(item[valueField]),
+                Number(totalTicketCount)
+            ),
+        }))
+
+    return sortAllData(enrichedData, 'automationOpportunity', sorting)
+}
+
+export const enrichWithSuccessRate = (
+    filteredMetric: MetricWithDecile<TicketCustomFieldsCube>,
+    totalMetrics: MetricWithDecile<TicketCustomFieldsCube>,
+    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+    sorting: OrderDirection = OrderDirection.Asc
+): EnrichedTicketCustomFieldsWithSuccessRate[] => {
+    const filteredData = filteredMetric?.data?.allData
+    const allData = totalMetrics?.data?.allData
+
+    if (!allData || !filteredData) {
+        return []
+    }
+
+    const filteredMetricsMap = keyBy(
+        filteredData,
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+    )
+
+    const enrichedData = allData.map((item) => {
+        const customFieldLabel =
+            item[TicketCustomFieldsDimension.TicketCustomFieldsValueString]
+        const ticketCountTotal = Number(item[valueField])
+        const filteredItem = filteredMetricsMap[customFieldLabel!]
+
+        const ticketCountFiltered = Number(filteredItem?.[valueField])
+        const successRate = calculateRate(ticketCountFiltered, ticketCountTotal)
+
+        return {
+            [BREAKDOWN_FIELD]: customFieldLabel,
+            [TICKET_COUNT]: String(ticketCountTotal),
+            [CUSTOM_FIELD_COUNT]: filteredItem
+                ? String(ticketCountFiltered)
+                : null,
+            successRate,
+        }
+    })
+    return sortAllData(enrichedData, 'successRate', sorting)
 }

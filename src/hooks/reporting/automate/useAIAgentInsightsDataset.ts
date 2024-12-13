@@ -4,8 +4,10 @@ import {AI_MANAGED_TYPES} from 'custom-fields/constants'
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {OrderDirection} from 'models/api/types'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
@@ -20,10 +22,21 @@ import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFiel
 import {getPreviousPeriod} from 'utils/reporting'
 
 import {
+    useTotalAiAgentTicketsByCustomField,
+    useAiAgenTickets,
+    useAiAgentTicketCountPerIntent,
+    useCustomerSatisfactionMetricPerIntent,
+} from './aiAgentMetrics'
+import {
     getAiAgentSuccessRate,
     getCoverageRateUnfilteredDenominatorTrend,
 } from './automateStatsCalculatedTrends'
+import {
+    CUSTOM_FIELD_AI_AGENT_CLOSE,
+    CUSTOM_FIELD_AI_AGENT_HANDOVER,
+} from './types'
 import {useAIAgentUserId} from './useAIAgentUserId'
+import {enrichWithAutomationOpportunity, enrichWithSuccessRate} from './utils'
 
 // COVERAGE_RATE: #AI_AGENT_TICKETS / Billable interactions (same as automation rate denomitor)
 // AUTOMATED INTERACTIONS: fully automated interactions by AI Agent
@@ -187,4 +200,194 @@ export const useAIAgentMetrics = (
             data: aiAgentCustomerSatisfaction,
         },
     }
+}
+
+// AUTOMATION OPPORTUNITY: #tickets not automated by AI AGENT per intent / #AI Agent Tickets
+export const useAutomationOpportunityPerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+
+    const customFieldOutcome = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME
+    )
+
+    const customFieldAiIntent = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
+    )
+
+    const aiAgentTickets = useTotalAiAgentTicketsByCustomField(
+        filters,
+        timezone,
+        customFieldOutcome
+    )
+
+    const aiAgentNotAutomatedTicketsData = useAiAgenTickets(
+        filters,
+        timezone,
+        customFieldOutcome,
+        CUSTOM_FIELD_AI_AGENT_HANDOVER
+    )
+
+    const ticketIds = aiAgentNotAutomatedTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => id !== null)
+
+    const aiAgentTicketsNotAutomatedGroupedByIntent =
+        useAiAgentTicketCountPerIntent(
+            filters,
+            timezone,
+            customFieldAiIntent,
+            ticketIds
+        )
+
+    const enrichedTickets = useMemo(() => {
+        if (!aiAgentTicketsNotAutomatedGroupedByIntent || !aiAgentTickets) {
+            return []
+        }
+
+        const totalTicketCount = String(aiAgentTickets.data?.value)
+
+        return enrichWithAutomationOpportunity(
+            aiAgentTicketsNotAutomatedGroupedByIntent,
+            totalTicketCount,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            sorting
+        )
+    }, [aiAgentTickets, aiAgentTicketsNotAutomatedGroupedByIntent, sorting])
+
+    return {
+        isError:
+            aiAgentTicketsNotAutomatedGroupedByIntent.isError ||
+            aiAgentTickets.isError,
+        isFetching:
+            aiAgentTicketsNotAutomatedGroupedByIntent.isFetching ||
+            aiAgentTickets.isFetching,
+        data: enrichedTickets,
+    }
+}
+
+// AI AGENT TICKETS
+export const useAIAgentTicketsPerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+
+    const customFieldOutcome = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME
+    )
+
+    const customFieldAiIntent = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
+    )
+
+    const aiAgentTicketsData = useAiAgenTickets(
+        filters,
+        timezone,
+        customFieldOutcome
+    )
+
+    const ticketIds = aiAgentTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => id !== null)
+
+    const aiAgentTicketsGroupedByIntent = useAiAgentTicketCountPerIntent(
+        filters,
+        timezone,
+        customFieldAiIntent,
+        ticketIds,
+        sorting
+    )
+
+    return aiAgentTicketsGroupedByIntent
+}
+
+// SUCCESS RATE: # of Automated AI Agent tickets per intent / AI Agent Tickets per intent
+export const useSuccessRatePerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+
+    const customFieldOutcome = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_OUTCOME
+    )
+
+    const customFieldAiIntent = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
+    )
+
+    const aiAgentAutomatedTicketsData = useAiAgenTickets(
+        filters,
+        timezone,
+        customFieldOutcome,
+        CUSTOM_FIELD_AI_AGENT_CLOSE
+    )
+
+    const ticketsPerIntent = useAIAgentTicketsPerIntent(filters, timezone)
+
+    const automatedTicketIds = aiAgentAutomatedTicketsData.data?.allData
+        .map((item) => item[TicketDimension.TicketId])
+        .filter((id): id is string => id !== null)
+
+    const aiAgentAutomatedTicketsGroupedByIntent =
+        useAiAgentTicketCountPerIntent(
+            filters,
+            timezone,
+            customFieldAiIntent,
+            automatedTicketIds
+        )
+
+    const enrichedTickets = useMemo(() => {
+        if (!aiAgentAutomatedTicketsGroupedByIntent || !ticketsPerIntent) {
+            return []
+        }
+
+        return enrichWithSuccessRate(
+            aiAgentAutomatedTicketsGroupedByIntent,
+            ticketsPerIntent,
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            sorting
+        )
+    }, [ticketsPerIntent, aiAgentAutomatedTicketsGroupedByIntent, sorting])
+
+    return {
+        isError:
+            ticketsPerIntent.isError ||
+            aiAgentAutomatedTicketsGroupedByIntent.isError,
+        isFetching:
+            ticketsPerIntent.isFetching ||
+            aiAgentAutomatedTicketsGroupedByIntent.isFetching,
+        data: enrichedTickets,
+    }
+}
+
+export const useCustomerSatisfactionPerIntent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => {
+    const {data: {data: activeFields = []} = {}} =
+        useCustomFieldDefinitions(activeParams)
+
+    const customFieldAiIntent = activeFields.find(
+        (field) => field.managed_type === AI_MANAGED_TYPES.AI_INTENT
+    )
+
+    const csatPerIntent = useCustomerSatisfactionMetricPerIntent(
+        filters,
+        timezone,
+        customFieldAiIntent,
+        sorting
+    )
+
+    return csatPerIntent
 }

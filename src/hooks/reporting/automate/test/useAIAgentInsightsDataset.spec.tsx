@@ -4,26 +4,46 @@ import moment from 'moment'
 import React from 'react'
 
 import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import {
+    csatPerIntentMetric,
+    customFieldsMetric,
+    totalTicketsMetric,
+} from 'fixtures/aiAgentInsights'
 import {ticketFieldDefinitions} from 'fixtures/customField'
+import {useMetric} from 'hooks/reporting/useMetric'
+import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {useAIAgentMetrics} from '../useAIAgentInsightsDataset'
+import {BREAKDOWN_FIELD, CUSTOM_FIELD_COUNT, TICKET_COUNT} from '../types'
+import {
+    useAIAgentMetrics,
+    useAIAgentTicketsPerIntent,
+    useAutomationOpportunityPerIntent,
+    useCustomerSatisfactionPerIntent,
+    useSuccessRatePerIntent,
+} from '../useAIAgentInsightsDataset'
 import {useAIAgentUserId} from '../useAIAgentUserId'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
 
 jest.mock('hooks/reporting/timeSeries')
+jest.mock('hooks/reporting/useMetric')
+jest.mock('hooks/reporting/useMetricPerDimension')
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
+
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+const useMetricMock = assumeMock(useMetric)
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 
 const statsFilters: StatsFilters = {
     period: {
@@ -145,5 +165,253 @@ describe('useAiAgentInsightsDataset', () => {
                 value: 5,
             })
         })
+    })
+})
+
+describe('useAutomationOpportunityPerIntent', () => {
+    it('should calculate ai agent insights correctly', () => {
+        useMetricMock.mockReturnValueOnce({
+            // aiAgentTickets
+            data: {
+                value: 5,
+            },
+            isFetching: false,
+            isError: false,
+        } as any)
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                // aiAgentNotAutomatedTicketsData
+                data: {
+                    allData: [
+                        {[TicketDimension.TicketId]: '1'},
+                        {[TicketDimension.TicketId]: '2'},
+                        {[TicketDimension.TicketId]: '3'},
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+            // useAiAgentTicketCountPerIntent
+            .mockReturnValueOnce(customFieldsMetric)
+
+        jest.spyOn(queryClient, 'invalidateQueries')
+        const {result} = renderHook(
+            () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+
+        expect(result.current.isError).toBe(false)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.data).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '3',
+                automationOpportunity: 0.6,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+        ])
+    })
+})
+
+describe('useAutomationOpportunityPerIntent', () => {
+    it('should enrich automation opportunity per intent correctly', () => {
+        useMetricMock.mockReturnValueOnce({
+            // aiAgentTickets
+            data: {
+                value: 5,
+            },
+            isFetching: false,
+            isError: false,
+        } as any)
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                // aiAgentNotAutomatedTicketsData
+                data: {
+                    allData: [
+                        {[TicketDimension.TicketId]: '1'},
+                        {[TicketDimension.TicketId]: '2'},
+                        {[TicketDimension.TicketId]: '3'},
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+            // useAiAgentTicketCountPerIntent
+            .mockReturnValueOnce(customFieldsMetric)
+
+        jest.spyOn(queryClient, 'invalidateQueries')
+        const {result} = renderHook(
+            () => useAutomationOpportunityPerIntent(statsFilters, timezone),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+
+        expect(result.current.isError).toBe(false)
+        expect(result.current.isFetching).toBe(false)
+        expect(result.current.data).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '3',
+                automationOpportunity: 0.6,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                automationOpportunity: 0.2,
+            },
+        ])
+    })
+})
+
+describe('useAIAgentTicketsPerIntent', () => {
+    it('should return ai agent tickets correctly', () => {
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                // aiAgentTicketsData
+                data: {
+                    allData: [
+                        {[TicketDimension.TicketId]: '1'},
+                        {[TicketDimension.TicketId]: '2'},
+                        {[TicketDimension.TicketId]: '3'},
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+            // aiAgentTicketsGroupedByIntent
+            .mockReturnValueOnce(totalTicketsMetric)
+
+        jest.spyOn(queryClient, 'invalidateQueries')
+        const {result} = renderHook(
+            () => useAIAgentTicketsPerIntent(statsFilters, timezone),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+        expect(result.current).toEqual(totalTicketsMetric)
+    })
+})
+
+describe('useSuccessRatePerIntent', () => {
+    it('should enrich success rate per intent correctly', () => {
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                // aiAgentAutomatedTicketsData
+                data: {
+                    decile: null,
+                    value: null,
+                    allData: [
+                        {[TicketDimension.TicketId]: '1'},
+                        {[TicketDimension.TicketId]: '2'},
+                        {[TicketDimension.TicketId]: '3'},
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                // aiAgentTicketsData
+                data: {
+                    decile: null,
+                    value: null,
+                    allData: [
+                        {[TicketDimension.TicketId]: '1'},
+                        {[TicketDimension.TicketId]: '2'},
+                        {[TicketDimension.TicketId]: '3'},
+                    ],
+                },
+                isFetching: false,
+                isError: false,
+            })
+            // aiAgentTicketsGroupedByIntent
+            .mockReturnValueOnce(totalTicketsMetric)
+            //useAiAgentTicketCountPerIntent
+            .mockReturnValueOnce(customFieldsMetric)
+
+        jest.spyOn(queryClient, 'invalidateQueries')
+        const {result} = renderHook(
+            () => useSuccessRatePerIntent(statsFilters, timezone),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+        expect(result.current.data).toEqual([
+            {
+                [BREAKDOWN_FIELD]: 'Other::Other',
+                [TICKET_COUNT]: '5',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.2,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::App',
+                [TICKET_COUNT]: '4',
+                [CUSTOM_FIELD_COUNT]: '1',
+                successRate: 0.25,
+            },
+            {
+                [BREAKDOWN_FIELD]: 'Other::Platform',
+                [TICKET_COUNT]: '10',
+                [CUSTOM_FIELD_COUNT]: '3',
+                successRate: 0.3,
+            },
+        ])
+    })
+})
+
+describe('useCustomerSatisfactionPerIntent', () => {
+    it('should return csat per intent correctly', () => {
+        useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
+
+        jest.spyOn(queryClient, 'invalidateQueries')
+        const {result} = renderHook(
+            () => useCustomerSatisfactionPerIntent(statsFilters, timezone),
+            {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            }
+        )
+        expect(result.current).toEqual(csatPerIntentMetric)
     })
 })

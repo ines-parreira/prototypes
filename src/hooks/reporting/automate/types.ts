@@ -2,6 +2,12 @@ import {Moment} from 'moment'
 
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
+
 export enum AutomateTrendMetrics {
     AutomationRate = 'automationRateTrend',
     Interactions = 'automatedInteractionTrend',
@@ -54,3 +60,32 @@ export const DEFAULT_WORKFLOW_ANALYTICS_DATA = {
     ticketsCreated: 0,
     ticketsCreatedRate: 0,
 }
+
+export const BREAKDOWN_FIELD =
+    TicketCustomFieldsDimension.TicketCustomFieldsValueString
+export const TICKET_COUNT = TicketMeasure.TicketCount
+export const CUSTOM_FIELD_COUNT =
+    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+
+export type EnrichedTicketCustomFields = {
+    [BREAKDOWN_FIELD]: string | null
+    [TICKET_COUNT]: string | null
+    [CUSTOM_FIELD_COUNT]: string | null
+}
+
+export type EnrichedTicketCustomFieldsWithAutomationOpportunity =
+    EnrichedTicketCustomFields & {
+        automationOpportunity: number
+    }
+
+export type EnrichedTicketCustomFieldsWithSuccessRate =
+    EnrichedTicketCustomFields & {
+        successRate: number
+    }
+
+export type SortingField =
+    | keyof EnrichedTicketCustomFieldsWithAutomationOpportunity
+    | keyof EnrichedTicketCustomFieldsWithSuccessRate
+
+export const CUSTOM_FIELD_AI_AGENT_HANDOVER = 'Handover'
+export const CUSTOM_FIELD_AI_AGENT_CLOSE = 'Close'
