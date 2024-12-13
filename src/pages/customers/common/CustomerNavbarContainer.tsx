@@ -29,7 +29,7 @@ export const CustomerNavbarContainer = ({
     }, [viewId, viewIdSearch])
 
     return (
-        <Navbar activeContent={ActiveContent.Customers}>
+        <Navbar activeContent={ActiveContent.Customers} title="Customers">
             <CustomersNavbarView
                 settingType={UserSettingType.CutomerViews}
                 isLoading={isLoading}

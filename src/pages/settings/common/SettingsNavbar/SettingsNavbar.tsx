@@ -28,7 +28,7 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
 
     return (
-        <Navbar activeContent={ActiveContent.Settings}>
+        <Navbar activeContent={ActiveContent.Settings} title="Settings">
             {NavbarConfig.map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)

@@ -83,6 +83,7 @@ describe('Navbar', () => {
             resolvedName: THEME_NAME.Classic,
             tokens: {} as ColorTokens,
         },
+        title: '',
     }
 
     window.noticeable = {
@@ -94,6 +95,19 @@ describe('Navbar', () => {
 
     afterEach(() => {
         allFlagsMock.mockReturnValue({})
+    })
+
+    it('should render the title if the user has the global nav flag', () => {
+        const {getByText} = render(
+            <Navbar
+                {...minProps}
+                title="beep-boop-title"
+                flags={{
+                    [FeatureFlagKey.GlobalNavigation]: true,
+                }}
+            />
+        )
+        expect(getByText('beep-boop-title')).toBeInTheDocument()
     })
 
     it('should render the split ticket view toggle', () => {

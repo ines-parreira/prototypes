@@ -71,6 +71,7 @@ type OwnProps = {
     navbarContentRef?: RefObject<HTMLDivElement>
     splitTicketViewToggle?: ReactNode
     flags?: LDFlagSet
+    title: string
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector> & WithThemeProps
@@ -207,6 +208,7 @@ export class Navbar extends Component<Props, State> {
             flags,
             splitTicketViewToggle,
             theme,
+            title,
         } = this.props
         const {isResizing, navbarWidth} = this.state
         const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
@@ -232,7 +234,11 @@ export class Navbar extends Component<Props, State> {
                     })}
                 >
                     <div className={css['nav-dropdown-wrapper']}>
-                        <MainNavigation activeContent={activeContent} />
+                        {hasGlobalNav ? (
+                            <div className={css.title}>{title}</div>
+                        ) : (
+                            <MainNavigation activeContent={activeContent} />
+                        )}
                         {splitTicketViewToggle}
                     </div>
                     <div className={css['navbar-cta-group']}>

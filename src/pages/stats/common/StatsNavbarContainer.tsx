@@ -8,7 +8,7 @@ import StatsNavbarView from './components/StatsNavbarView'
 
 export default function StatsNavbarContainer() {
     return (
-        <Navbar activeContent={ActiveContent.Statistics}>
+        <Navbar activeContent={ActiveContent.Statistics} title="Statistics">
             <StatsNavbarView />
         </Navbar>
     )

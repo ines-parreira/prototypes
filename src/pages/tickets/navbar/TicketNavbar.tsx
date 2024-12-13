@@ -454,6 +454,7 @@ export function TicketNavbarContainer({
                     <SplitTicketViewToggle />
                 ) : undefined
             }
+            title="Tickets"
         >
             <RecentChats />
             {!!systemTopElements.length && (

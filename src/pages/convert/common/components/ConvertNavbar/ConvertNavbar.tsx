@@ -14,7 +14,7 @@ const ConvertNavbar = () => {
     const isOverviewPageEnabled = useIsOverviewPageEnabled()
 
     return (
-        <Navbar activeContent={ActiveContent.Convert}>
+        <Navbar activeContent={ActiveContent.Convert} title="Convert">
             {isOverviewPageEnabled && (
                 <div
                     className={classNames(
