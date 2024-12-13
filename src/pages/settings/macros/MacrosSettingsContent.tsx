@@ -1,107 +1,146 @@
-import {CancelToken} from 'axios'
+import {
+    ListMacrosParams,
+    queryKeys,
+    useListMacros,
+    useCreateMacro,
+    useDeleteMacro,
+    Macro,
+} from '@gorgias/api-queries'
+import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
 import React, {useEffect, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import useCancellableRequest from 'hooks/useCancellableRequest'
-import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
-import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
-import {fetchMacros} from 'models/macro/resources'
-import {
-    FetchMacrosOptions,
-    MacroSortableProperties,
-    Macro,
-} from 'models/macro/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {OrderDirection, GorgiasApiError} from 'models/api/types'
+import {MacroSortableProperties} from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import Video from 'pages/common/components/Video/Video'
+import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {macrosFetched} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
+import {errorToChildren} from 'utils'
 
 import {MacrosCreateDropdown} from './MacrosCreateDropdown'
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
 
-export function MacrosSettingsContentContainer({
-    macros,
-    macrosFetched,
-    notify,
-}: ConnectedProps<typeof connector>) {
-    const [options, setOptions] = useState<FetchMacrosOptions>({
-        orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
-    })
-    const [macroIds, setMacroIds] = useState<number[]>([])
-    const [meta, setMeta] = useState<CursorMeta | null>(null)
-    const [currentCursor, setCurrentCursor] = useState<string | null>()
-    const [cancellableFetchMacros] = useCancellableRequest(
-        (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>
-            await fetchMacros(options, {cancelToken})
-    )
-    const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(
-        async (direction?: CursorDirection, cursor?: string) => {
-            const params = {...options}
+export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
-            if (direction === CursorDirection.PrevCursor && meta?.prev_cursor) {
-                params.cursor = meta?.prev_cursor
-            } else if (
-                direction === CursorDirection.NextCursor &&
-                meta?.next_cursor
-            ) {
-                params.cursor = meta?.next_cursor
-            } else if (!!cursor) {
-                params.cursor = cursor
-            }
-            try {
-                const {data} = await cancellableFetchMacros(params)
-                if (!data) {
-                    return
-                }
-                macrosFetched(data.data)
-                setMacroIds(data.data.map((macro: Macro) => macro.id))
-                setMeta(data.meta)
-                setCurrentCursor(params.cursor)
-            } catch (error) {
-                void notify({
+export function MacrosSettingsContent() {
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+    const queryKey = queryKeys.macros.listMacros() as string[]
+    queryKey.pop()
+
+    const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
+        order_by: 'created_datetime:asc',
+    })
+    const {data, isLoading, isError} = useListMacros(listMacrosParams, {
+        query: {
+            staleTime: STALE_TIME_MS,
+        },
+    })
+
+    const {mutateAsync: createMacro} = useCreateMacro()
+    const {mutateAsync: deleteMacro} = useDeleteMacro()
+
+    useEffect(() => {
+        if (isError) {
+            void dispatch(
+                notify({
                     message: 'Failed to fetch macros',
                     status: NotificationStatus.Error,
                 })
-            }
-        },
-        [meta, options],
-        200
-    )
-
-    useEffect(() => {
-        void handleFetchMacros()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [options])
-
-    useEffect(() => {
-        const filteredMacroIds = macroIds.filter((macroId) => macros[macroId])
-        if (filteredMacroIds.length < macroIds.length && !isFetchPending) {
-            setMacroIds(filteredMacroIds)
-
-            // we deleted the last macro of the current page which is not the first one
-            if (
-                filteredMacroIds.length === 0 &&
-                !meta?.next_cursor &&
-                !!meta?.prev_cursor
-            ) {
-                void handleFetchMacros(undefined, meta?.prev_cursor)
-            }
-
-            // we deleted a macro and will refetch the same page which is not the first and only one
-            if (!!filteredMacroIds.length && !!meta?.next_cursor) {
-                void handleFetchMacros(undefined, currentCursor)
-            }
+            )
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentCursor, macros, meta])
+    }, [dispatch, isError])
+
+    const onMacroDelete = async (id: number) => {
+        await deleteMacro(
+            {
+                id,
+            },
+            {
+                onSettled: () => {
+                    // we are on the first page
+                    if (
+                        !data?.data.meta.prev_cursor &&
+                        !!listMacrosParams.cursor
+                    ) {
+                        setListMacrosParams({
+                            ...listMacrosParams,
+                            cursor: undefined,
+                        })
+                    } else if (data?.data.data.length === 1) {
+                        // there is no other item so go back to previous page
+                        setListMacrosParams({
+                            ...listMacrosParams,
+                            cursor: data?.data.meta.prev_cursor ?? undefined,
+                        })
+                    }
+
+                    void queryClient.invalidateQueries({
+                        queryKey,
+                    })
+                },
+                onError: (error) => {
+                    void dispatch(
+                        notify({
+                            title: (error as GorgiasApiError).response.data
+                                .error.msg,
+                            message: errorToChildren(error)!,
+                            allowHTML: true,
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                },
+                onSuccess: () => {
+                    void dispatch(
+                        notify({
+                            message: 'Successfully deleted macro',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                },
+            }
+        )
+    }
+
+    const onMacroDuplicate = async (macro: Macro) => {
+        if (!macro) {
+            return
+        }
+        const {actions, name, language} = macro
+        await createMacro(
+            {
+                data: {
+                    actions,
+                    name: `(Copy) ${name}`,
+                    language,
+                },
+            },
+            {
+                onSettled: () => {
+                    void queryClient.invalidateQueries({
+                        queryKey,
+                    })
+                },
+                onError: () => {
+                    void notify({
+                        message: 'Failed to duplicate macro',
+                        status: NotificationStatus.Error,
+                    })
+                },
+                onSuccess: (resp) => {
+                    history.push(`/app/settings/macros/${resp.data.id}`)
+                },
+            }
+        )
+    }
 
     return (
         <div className="full-width">
@@ -109,24 +148,27 @@ export function MacrosSettingsContentContainer({
                 <div className="d-flex">
                     <Search
                         className="mr-2"
-                        value={options.search || ''}
-                        onChange={(search: string) =>
-                            setOptions({
-                                ...options,
-                                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                        value={listMacrosParams.search || ''}
+                        onChange={(search: string) => {
+                            setListMacrosParams({
+                                ...listMacrosParams,
+                                order_by: 'created_datetime:asc',
                                 search,
                             })
-                        }
+                        }}
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
                     <MacroFilters
                         selectedProperties={{
-                            languages: options.languages,
-                            tags: options.tags,
+                            languages: listMacrosParams.languages,
+                            tags: listMacrosParams.tags,
                         }}
                         onChange={(values) =>
-                            setOptions({...options, ...values})
+                            setListMacrosParams({
+                                ...listMacrosParams,
+                                ...values,
+                            })
                         }
                     />
                     <MacrosCreateDropdown />
@@ -156,44 +198,42 @@ export function MacrosSettingsContentContainer({
             </div>
 
             <MacrosSettingsTable
-                isLoading={isFetchPending}
-                macroIds={macroIds}
+                isLoading={isLoading}
+                macros={data?.data.data}
                 onSortOptionsChange={(
-                    orderBy: MacroSortableProperties,
-                    orderDir: OrderDirection
+                    order_by: MacroSortableProperties,
+                    order_dir: OrderDirection
                 ) =>
-                    !options.search &&
-                    setOptions({
-                        ...options,
-                        orderBy: `${orderBy}:${orderDir}`,
+                    !listMacrosParams.search &&
+                    setListMacrosParams({
+                        ...listMacrosParams,
+                        order_by: `${order_by}:${order_dir}`,
                     })
                 }
-                options={options}
+                options={listMacrosParams}
+                onMacroDelete={onMacroDelete}
+                onMacroDuplicate={onMacroDuplicate}
             />
 
             <Navigation
                 className={css.navigation}
-                hasNextItems={!!meta?.next_cursor}
-                hasPrevItems={!!meta?.prev_cursor}
-                fetchNextItems={() =>
-                    handleFetchMacros(CursorDirection.NextCursor)
-                }
-                fetchPrevItems={() =>
-                    handleFetchMacros(CursorDirection.PrevCursor)
-                }
+                hasNextItems={!!data?.data.meta.next_cursor}
+                hasPrevItems={!!data?.data.meta.prev_cursor}
+                fetchNextItems={() => {
+                    setListMacrosParams({
+                        ...listMacrosParams,
+                        cursor: data?.data.meta.next_cursor ?? undefined,
+                    })
+                }}
+                fetchPrevItems={() => {
+                    setListMacrosParams({
+                        ...listMacrosParams,
+                        cursor: data?.data.meta.prev_cursor ?? undefined,
+                    })
+                }}
             />
         </div>
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        macros: state.entities.macros,
-    }),
-    {
-        macrosFetched,
-        notify,
-    }
-)
-
-export default connector(MacrosSettingsContentContainer)
+export default MacrosSettingsContent

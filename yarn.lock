@@ -3002,20 +3002,20 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.4.1":
-  version "0.4.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.4.1/dfb07b7f8ee9f6271375caf7bd21406479160d7b#dfb07b7f8ee9f6271375caf7bd21406479160d7b"
-  integrity sha512-ve/o7hav1zwneS7FAelsaWBHKo3bZDVxjFu9+UTfBn1T+LOr/tDb7mnOoZYmJnlIAoyHI1dL8XJqydyi9h/yPw==
+"@gorgias/api-client@^0.4.2":
+  version "0.4.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.4.2/474740e7c2d7cc012f305fb0ec5d5f4edbd1cc7c#474740e7c2d7cc012f305fb0ec5d5f4edbd1cc7c"
+  integrity sha512-gUFLLO48duBIDKuLJz6LxTGMD2BlKFH7W5BhH9oXj46GM7jMmim7wRms11LJXcEVJ4kqzT2kRPLyrOdQqi+Riw==
   dependencies:
     "@gorgias/api-types" "^0.4.1"
     axios "^1.7.7"
 
 "@gorgias/api-queries@^0.4.1":
-  version "0.4.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.4.1/7f3df3e8131f7160abb8bc00687124c2007e3f82#7f3df3e8131f7160abb8bc00687124c2007e3f82"
-  integrity sha512-Guu0EglTClj59pt5nXhJs89evWOJVBsOQiBytb0Gb7HiS3ePM80MM/PjKaxBbDSWSZgPDFrBUgoqnZkBUIYnsw==
+  version "0.4.2"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.4.2/20cbd03510d66d01eaac6ec42dedcb50ed1f4bf1#20cbd03510d66d01eaac6ec42dedcb50ed1f4bf1"
+  integrity sha512-Sif1Hv1ItYdV/xthagWM5+l3iBDbbl2Uqa96n3P0IxBp0D+ID5tUOi5ShBCMiI8LXMJNmkhz36OBFEuH7b1Oow==
   dependencies:
-    "@gorgias/api-client" "^0.4.1"
+    "@gorgias/api-client" "^0.4.2"
     "@gorgias/api-types" "^0.4.1"
 
 "@gorgias/api-spec@^0.4.1":

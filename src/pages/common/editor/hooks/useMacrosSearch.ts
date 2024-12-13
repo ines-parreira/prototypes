@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import _isEqual from 'lodash/isEqual'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
@@ -6,11 +7,7 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import {OrderDirection} from 'models/api/types'
 import {fetchMacros} from 'models/macro/resources'
-import {
-    Macro,
-    MacroSortableProperties,
-    MacrosProperties,
-} from 'models/macro/types'
+import {MacroSortableProperties, MacrosProperties} from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
 
 export const SEARCH_DEBOUNCE_DELAY = 350

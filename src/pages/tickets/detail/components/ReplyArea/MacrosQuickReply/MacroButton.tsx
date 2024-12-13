@@ -1,6 +1,6 @@
+import {Macro} from '@gorgias/api-queries'
 import React, {useState} from 'react'
 
-import type {Macro} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 
 import css from './MacroButton.less'

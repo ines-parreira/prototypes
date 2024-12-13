@@ -1,3 +1,4 @@
+import {Macro as MacroModel} from '@gorgias/api-queries'
 import {createAction} from '@reduxjs/toolkit'
 import {AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
@@ -30,7 +31,6 @@ import {
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
 import {CustomerExternalData} from 'models/customerExternalData/types'
-import {Macro as MacroModel} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Member, Team} from 'models/team/types'
 import {mapNormalizedToArray} from 'models/ticket/mappers'

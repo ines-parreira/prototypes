@@ -1,3 +1,4 @@
+import type {Language, Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
@@ -116,7 +117,7 @@ export function MacrosSettingsFormContainer({
                                     action.arguments.value !== ''))
                     ) ?? null,
                 language: language || null,
-            }
+            } as Macro
 
             let res
             try {
@@ -124,7 +125,7 @@ export function MacrosSettingsFormContainer({
                     res = await updateMacro({
                         ...macros[macroId],
                         ...macroFormData,
-                    })
+                    } as Macro)
                     macroUpdated(res)
                 } else {
                     res = await createMacro(macroFormData)
@@ -255,8 +256,8 @@ export function MacrosSettingsFormContainer({
                             actions={fromJS(macroForm.actions)}
                             agents={agents}
                             currentMacro={fromJS(macroForm)}
-                            name={macroForm.name}
-                            language={macroForm.language}
+                            name={macroForm.name!}
+                            language={macroForm.language!}
                             setActions={(actions) =>
                                 !isActionDisabled &&
                                 handleActionsChange(actions)
@@ -267,7 +268,10 @@ export function MacrosSettingsFormContainer({
                             }
                             setLanguage={(language: string | null) =>
                                 !isActionDisabled &&
-                                setMacroForm({...macroForm, language})
+                                setMacroForm({
+                                    ...macroForm,
+                                    language: language as Language,
+                                })
                             }
                             container={appNode ?? undefined}
                         />

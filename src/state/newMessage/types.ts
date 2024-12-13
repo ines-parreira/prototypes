@@ -1,10 +1,10 @@
+import {Macro} from '@gorgias/api-queries'
 import {ContentState, SelectionState} from 'draft-js'
 import {List, Map} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {GenericAttachment} from 'common/types'
 import {DiscountCode} from 'models/discountCodes/types'
-import {Macro} from 'models/macro/types'
 import {MacroAction} from 'models/macroAction/types'
 import {Source, SourceAddress} from 'models/ticket/types'
 

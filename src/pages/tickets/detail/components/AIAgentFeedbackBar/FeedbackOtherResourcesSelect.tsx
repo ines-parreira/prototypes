@@ -122,7 +122,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.macro}${
                             macrosOptions.find(
                                 (option) =>
-                                    option.value.toString() === v.resourceId
+                                    option.value?.toString() === v.resourceId
                             )?.label
                         }`
                     }

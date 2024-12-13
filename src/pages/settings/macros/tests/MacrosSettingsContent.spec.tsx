@@ -1,67 +1,37 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {
+    useListMacros,
+    useCreateMacro,
+    useDeleteMacro,
+} from '@gorgias/api-queries'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import axios from 'axios'
-import _pick from 'lodash/pick'
-import React, {ComponentProps} from 'react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {macros as macrosFixtures} from 'fixtures/macro'
+import {user} from 'fixtures/users'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection} from 'models/api/types'
-import {fetchMacros} from 'models/macro/resources'
-import {Macro, MacroSortableProperties} from 'models/macro/types'
-import Navigation from 'pages/common/components/Navigation/Navigation'
+import {MacroSortableProperties} from 'models/macro/types'
+import history from 'pages/history'
+import {notify} from 'state/notifications/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock} from 'utils/testing'
 
-import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
-import MacroSettingsTable from '../MacrosSettingsTable'
+import {MacrosSettingsContent} from '../MacrosSettingsContent'
 
-jest.mock('models/macro/resources')
-jest.mock(
-    'pages/common/components/Navigation/Navigation',
-    () =>
-        ({
-            fetchPrevItems,
-            fetchNextItems,
-        }: Partial<ComponentProps<typeof Navigation>>) => (
-            <>
-                <div id="previous" onClick={() => fetchPrevItems?.()} />
-                <div id="next" onClick={() => fetchNextItems?.()} />
-            </>
-        )
-)
-jest.mock(
-    'pages/common/components/Search',
-    () =>
-        ({onChange}: {onChange: (value: string) => void}) => (
-            <input
-                placeholder={'Search macros...'}
-                onChange={(e) => onChange((e.target as HTMLInputElement).value)}
-            />
-        )
-)
-jest.mock(
-    '../MacrosSettingsTable',
-    () =>
-        ({onSortOptionsChange}: ComponentProps<typeof MacroSettingsTable>) => {
-            //eslint-disable-next-line  @typescript-eslint/no-var-requires
-            const {OrderDirection} = require('models/api/types')
-            const {
-                MacroSortableProperties,
-                //eslint-disable-next-line  @typescript-eslint/no-var-requires
-            } = require('models/macro/types')
-            return (
-                <table
-                    onClick={() =>
-                        onSortOptionsChange(
-                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            MacroSortableProperties.Name,
-                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            OrderDirection.Asc
-                        )
-                    }
-                />
-            )
-        }
-)
+const mockProperty = MacroSortableProperties.CreatedDatetime
+const mockOrder = OrderDirection.Asc
+
+jest.mock('pages/history')
+
+jest.mock('@tanstack/react-query')
+const useQueryClientMock = assumeMock(useQueryClient)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('../MacrosCreateDropdown', () => ({
     MacrosCreateDropdown: () => <div />,
@@ -72,231 +42,473 @@ jest.mock(
     () => () => 'MacroFilters'
 )
 
+jest.mock('state/notifications/actions')
+const mockNotify = notify as jest.Mock
+
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = useAppDispatch as jest.Mock
+
+const mockMutateAsyncCreate = jest.fn()
+const mockMutateAsyncDelete = jest.fn()
+const invalidateQueriesMock = jest.fn()
+
+jest.mock('@gorgias/api-queries', () => ({
+    __esModule: true,
+    useListMacros: jest.fn(),
+    useCreateMacro: jest.fn(),
+    useDeleteMacro: jest.fn(),
+    queryKeys: {
+        macros: {
+            listMacros: () => ({pop: () => null}),
+        },
+    },
+}))
+
+const mockUseListMacros = assumeMock(useListMacros)
+const mockUseCreateMacro = assumeMock(useCreateMacro)
+const mockUseDeleteMacro = assumeMock(useDeleteMacro)
+
 describe('<MacrosSettingsContent/>', () => {
-    const mappedMacrosFixtures = macrosFixtures
-    const mockFetchMacros: jest.MockedFunction<typeof fetchMacros> =
-        fetchMacros as any
-    const mockMacrosFetched = jest.fn()
-    const mockNotify = jest.fn()
-    const macrosState = {
-        '1': mappedMacrosFixtures[0],
-        '2': mappedMacrosFixtures[0],
-        '3': mappedMacrosFixtures[0],
-    }
-    const minProps = {
-        macros: {},
-        macrosFetched: mockMacrosFetched,
-        notify: mockNotify,
-    } as any as ComponentProps<typeof MacrosSettingsContentContainer>
-
-    mockFetchMacros.mockResolvedValue(
-        axiosSuccessResponse({
-            data: mappedMacrosFixtures,
-            meta: {
-                prev_cursor: 'xxx',
-                next_cursor: 'yyy',
-            },
-            uri: '',
-            object: '',
-        })
-    )
-
-    it('should match snapshot', () => {
-        const {container} = render(
-            <MacrosSettingsContentContainer {...minProps} />
+    beforeEach(() => {
+        useAppDispatchMock.mockReturnValue(jest.fn())
+        useQueryClientMock.mockImplementation(
+            () =>
+                ({
+                    invalidateQueries: invalidateQueriesMock,
+                }) as unknown as QueryClient
         )
-
-        expect(container.firstChild).toMatchSnapshot()
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: macrosFixtures,
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: false,
+        } as ReturnType<typeof useListMacros>)
+        mockUseCreateMacro.mockReturnValue({
+            mutateAsync: mockMutateAsyncCreate,
+        } as unknown as ReturnType<typeof useCreateMacro>)
+        mockUseDeleteMacro.mockReturnValue({
+            mutateAsync: mockMutateAsyncDelete,
+        } as unknown as ReturnType<typeof useDeleteMacro>)
     })
 
-    it('should fetch macros on mount', (done) => {
-        render(<MacrosSettingsContentContainer {...minProps} />)
+    it('should display list of macros', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
 
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(
-            1,
+        expect(useListMacros).toHaveBeenCalledWith(
             {
-                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                order_by: 'created_datetime:asc',
             },
-            {cancelToken: expect.any(axios.CancelToken)}
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
         )
-        setImmediate(() => {
-            expect(mockMacrosFetched).toHaveBeenNthCalledWith(
-                1,
-                mappedMacrosFixtures
+        expect(
+            screen.getByText(
+                /Macros are pre-made responses to customer questions/
             )
-            done()
-        })
+        ).toBeInTheDocument()
     })
 
-    it('should notify when fetching macros fails', (done) => {
-        mockFetchMacros.mockRejectedValueOnce('error')
-        render(<MacrosSettingsContentContainer {...minProps} />)
+    it('should notify when fetching macros fails', () => {
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: [],
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: true,
+        } as ReturnType<typeof useListMacros>)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
 
-        setImmediate(() => {
-            expect(mockNotify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to fetch macros',
-                status: 'error',
-            })
-            done()
+        expect(mockNotify).toHaveBeenCalledWith({
+            message: 'Failed to fetch macros',
+            status: 'error',
         })
     })
 
     it('should fetch the next macros when changing page', () => {
-        render(<MacrosSettingsContentContainer {...minProps} />)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
 
-        const next = document.getElementById('next')
-        if (next) {
-            userEvent.click(next)
-        }
-
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(
+        screen.getByText('keyboard_arrow_right').click()
+        expect(mockUseListMacros).toHaveBeenNthCalledWith(
             2,
             {
-                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                order_by: 'created_datetime:asc',
+                cursor: 'next_cursor',
             },
-            {cancelToken: expect.any(axios.CancelToken)}
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
+
+        screen.getByText('keyboard_arrow_left').click()
+        expect(mockUseListMacros).toHaveBeenNthCalledWith(
+            3,
+            {
+                order_by: 'created_datetime:asc',
+                cursor: 'prev_cursor',
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
         )
     })
 
     it('should fetch macros when sorting options change', () => {
-        render(<MacrosSettingsContentContainer {...minProps} />)
-
-        act(() => {
-            userEvent.click(screen.getByRole('table'))
-        })
-
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(
-            2,
-            {
-                orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
-            },
-            {cancelToken: expect.any(axios.CancelToken)}
-        )
-    })
-
-    it('should refetch macros when deleting macro', async () => {
-        const {rerender} = render(
-            <MacrosSettingsContentContainer
-                {...minProps}
-                macros={macrosState}
-            />
-        )
-
-        act(() => {
-            rerender(
-                <MacrosSettingsContentContainer
-                    {...minProps}
-                    macros={_pick(macrosState, ['1', '3'])}
-                />
-            )
-        })
-
-        await waitFor(() => {
-            expect(mockFetchMacros).toHaveBeenNthCalledWith(
-                2,
-                {
-                    orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
-                },
-                {cancelToken: expect.any(axios.CancelToken)}
-            )
-        })
-    })
-
-    it('should refetch macros at previous page if last page is empty', async () => {
-        const prevCursor = 'prevCursor'
-        mockFetchMacros.mockResolvedValue(
-            axiosSuccessResponse({
-                data: mappedMacrosFixtures,
-                meta: {
-                    prev_cursor: prevCursor,
-                    next_cursor: null,
-                },
-                uri: '',
-                object: '',
-            })
-        )
-
-        const {rerender} = render(
-            <MacrosSettingsContentContainer
-                {...minProps}
-                macros={macrosState}
-            />
-        )
-
-        act(() => {
-            rerender(
-                <MacrosSettingsContentContainer {...minProps} macros={{}} />
-            )
-        })
-
-        await waitFor(() => {
-            expect(mockFetchMacros).toHaveBeenNthCalledWith(
-                2,
-                {
-                    orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
-                    cursor: prevCursor,
-                },
-                {cancelToken: expect.any(axios.CancelToken)}
-            )
-        })
-    })
-
-    it('should not refetch macros when the only page is empty', async () => {
-        mockFetchMacros.mockResolvedValueOnce(
-            axiosSuccessResponse({
-                data: [{id: 1} as unknown as Macro],
-                meta: {
-                    prev_cursor: null,
-                    next_cursor: null,
-                },
-                uri: '',
-                object: '',
-            })
-        )
         render(
-            <MacrosSettingsContentContainer
-                {...minProps}
-                macros={macrosState}
-            />
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
         )
 
-        await waitFor(() => {
-            expect(mockFetchMacros).toHaveBeenCalledTimes(1)
+        userEvent.click(screen.getByText('Macro'))
+
+        expect(mockUseListMacros).toHaveBeenNthCalledWith(
+            2,
+            {
+                order_by: `name:${mockOrder}`,
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
+    })
+
+    it('should refetch macros at previous page if last page is empty', () => {
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: [macrosFixtures[0]],
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: false,
+        } as ReturnType<typeof useListMacros>)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        screen.getByText('delete').click()
+        screen.getByText('Confirm').click()
+
+        expect(mockMutateAsyncDelete).toHaveBeenCalled()
+        ;(
+            mockMutateAsyncDelete.mock.calls[0] as {onSettled: () => void}[]
+        )[1].onSettled()
+
+        expect(mockUseListMacros).toHaveBeenNthCalledWith(
+            2,
+            {
+                order_by: `${mockProperty}:${mockOrder}`,
+                cursor: 'prev_cursor',
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
+    })
+
+    it('should refetch macros once a macro has been deleted', () => {
+        mockUseListMacros
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        data: macrosFixtures,
+                        meta: {
+                            next_cursor: 'next_cursor',
+                            prev_cursor: 'prev_cursor',
+                        },
+                    },
+                },
+                isError: false,
+            } as ReturnType<typeof useListMacros>)
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        data: [macrosFixtures[0]],
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                        },
+                    },
+                },
+                isError: false,
+            } as ReturnType<typeof useListMacros>)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        screen.getByText('keyboard_arrow_right').click()
+        screen.getByText('delete').click()
+        screen.getByText('Confirm').click()
+        ;(
+            mockMutateAsyncDelete.mock.calls[0] as {onSettled: () => void}[]
+        )[1].onSettled()
+
+        expect(mockUseListMacros).toHaveBeenNthCalledWith(
+            3,
+            {
+                order_by: `${mockProperty}:${mockOrder}`,
+                cursor: undefined,
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
+    })
+
+    it('should notice when macro deletion succeeded', () => {
+        mockUseListMacros.mockReturnValue({
+            data: {
+                data: {
+                    data: [macrosFixtures[0]],
+                    meta: {
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    },
+                },
+            },
+            isError: false,
+        } as ReturnType<typeof useListMacros>)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        screen.getByText('delete').click()
+        screen.getByText('Confirm').click()
+
+        expect(mockMutateAsyncDelete).toHaveBeenCalled()
+        ;(
+            mockMutateAsyncDelete.mock.calls[0] as {
+                onSuccess: () => void
+            }[]
+        )[1].onSuccess()
+
+        expect(mockNotify).toHaveBeenCalledWith({
+            message: 'Successfully deleted macro',
+            status: 'success',
         })
     })
 
-    it('should fetch macros when searching', () => {
-        render(<MacrosSettingsContentContainer {...minProps} />)
+    it('should notice when macro deletion failed', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
 
-        act(() => {
-            fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
-                target: {value: 'foobar'},
-            })
+        screen.getAllByText('delete')[0].click()
+        screen.getByText('Confirm').click()
+
+        const msg = 'nope'
+        expect(mockMutateAsyncDelete).toHaveBeenCalled()
+        ;(
+            mockMutateAsyncDelete.mock.calls[0] as {
+                onError: (a: unknown) => void
+            }[]
+        )[1].onError({
+            response: {
+                data: {
+                    error: {
+                        msg,
+                    },
+                },
+            },
         })
 
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(
-            2,
-            {
-                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
-                search: 'foobar',
-            },
-            {cancelToken: expect.any(axios.CancelToken)}
+        expect(mockNotify).toHaveBeenCalledWith({
+            title: msg,
+            allowHTML: true,
+            message: null,
+            status: 'error',
+        })
+    })
+
+    it('should duplicate macro with success', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        screen.getAllByText('file_copy')[0].click()
+        ;(
+            mockMutateAsyncCreate.mock.calls[0] as {onSettled: () => void}[]
+        )[1].onSettled()
+
+        const id = 18
+        expect(invalidateQueriesMock).toHaveBeenCalled()
+        ;(
+            mockMutateAsyncCreate.mock.calls[0] as {
+                onSuccess: (resp: unknown) => void
+            }[]
+        )[1].onSuccess({data: {id}})
+
+        expect(history.push).toHaveBeenCalledWith(`/app/settings/macros/${id}`)
+    })
+
+    it('should fail to duplicate macro', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        screen.getAllByText('file_copy')[0].click()
+        ;(
+            mockMutateAsyncCreate.mock.calls[0] as {onError: () => void}[]
+        )[1].onError()
+
+        expect(mockNotify).toHaveBeenCalledWith({
+            message: 'Failed to duplicate macro',
+            status: 'error',
+        })
+    })
+
+    it('should fetch macros when searching', async () => {
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
+
+        const searchTerm = 'foobar'
+        fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
+            target: {value: searchTerm},
+        })
+
+        await waitFor(() =>
+            expect(mockUseListMacros).toHaveBeenNthCalledWith(
+                2,
+                {
+                    order_by: `${mockProperty}:${mockOrder}`,
+                    search: searchTerm,
+                },
+                {
+                    query: {
+                        staleTime: expect.any(Number),
+                    },
+                }
+            )
         )
     })
 
     it('should not sort when searching', () => {
-        render(<MacrosSettingsContentContainer {...minProps} />)
+        render(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>
+        )
 
-        act(() => {
-            fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
-                target: {value: 'foobar'},
-            })
-        })
-        jest.resetAllMocks()
-        act(() => {
-            userEvent.click(screen.getByRole('table'))
+        const searchTerm = 'foobar'
+        fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
+            target: {value: searchTerm},
         })
 
-        expect(mockFetchMacros).not.toHaveBeenCalled()
+        userEvent.click(screen.getByText('Macro'))
+
+        expect(mockUseListMacros).not.toHaveBeenNthCalledWith(
+            2,
+            {
+                order_by: `name:${mockOrder}`,
+                search: searchTerm,
+            },
+            {
+                query: {
+                    staleTime: expect.any(Number),
+                },
+            }
+        )
     })
 })

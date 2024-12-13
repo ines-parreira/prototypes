@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import {createAction} from '@reduxjs/toolkit'
 import * as Sentry from '@sentry/react'
 import axios, {AxiosError, CancelToken} from 'axios'
@@ -32,7 +33,6 @@ import client from 'models/api/resources'
 import {Customer} from 'models/customer/types'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {DiscountCode} from 'models/discountCodes/types'
-import {Macro} from 'models/macro/types'
 import {
     MacroAction,
     MacroActionName,
@@ -788,7 +788,7 @@ export function prepareTicketDataToSend(
         const state = getState()
         let actions = actionsForMacro
 
-        //Transform empty message with macro to internal note
+        // Transform empty message with macro to internal note
         if (!selectors.hasContent(state) && !!ticket.state?.appliedMacro) {
             const {newMessage: editedNewMessage, newActions} =
                 transformToInternalNote(

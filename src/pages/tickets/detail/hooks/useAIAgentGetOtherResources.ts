@@ -217,7 +217,7 @@ export const useAIAgentGetOtherResources = ({
                         resource = {
                             type: 'resource',
                             resourceType: 'macro',
-                            resourceId: macro.value.toString(),
+                            resourceId: macro.value!.toString(),
                         }
                     }
                     break

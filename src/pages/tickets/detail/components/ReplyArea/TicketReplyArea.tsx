@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {ContentState, EditorState} from 'draft-js'
 import {fromJS, List, Map} from 'immutable'
@@ -6,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {clearMacroBeforeApply} from 'business/macro'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {Macro, MacrosProperties} from 'models/macro/types'
+import {MacrosProperties} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {

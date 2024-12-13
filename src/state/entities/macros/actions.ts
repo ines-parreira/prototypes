@@ -1,6 +1,5 @@
+import {Macro} from '@gorgias/api-queries'
 import {createAction} from '@reduxjs/toolkit'
-
-import {Macro} from '../../../models/macro/types'
 
 import {
     MACRO_CREATED,

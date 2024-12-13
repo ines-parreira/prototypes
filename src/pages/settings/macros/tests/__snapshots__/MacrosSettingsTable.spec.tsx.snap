@@ -392,21 +392,120 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         </div>
       </td>
     </tr>
+    <tr
+      class="row tableBodyRow"
+    >
+      <td
+        class="macroTitle wrapper"
+      >
+        <a
+          to="/app/settings/macros/3"
+        >
+          <div
+            class="cellContent"
+          >
+            Cancel Order
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper"
+      >
+        <a
+          tabindex="-1"
+          to="/app/settings/macros/3"
+        >
+          <div
+            class="cellContent"
+          >
+            -
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper"
+      >
+        <a
+          tabindex="-1"
+          to="/app/settings/macros/3"
+        >
+          <div
+            class="cellContent"
+          >
+            -
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper"
+      >
+        <a
+          tabindex="-1"
+          to="/app/settings/macros/3"
+        >
+          <div
+            class="cellContent"
+          >
+            0
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper dateCell"
+      >
+        <a
+          tabindex="-1"
+          to="/app/settings/macros/3"
+        >
+          <div
+            class="cellContent"
+          >
+            01/08/2017
+          </div>
+        </a>
+      </td>
+      <td
+        class="wrapper smallest actions"
+      >
+        <div
+          class="cellContent"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost secondary medium"
+            title="Duplicate macro"
+            type="button"
+          >
+            <span
+              class="content"
+            >
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </span>
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper mr-1 wrapper ghost ghost destructive medium"
+            id="delete-button-3"
+            title="Delete macro"
+            type="button"
+          >
+            <span
+              class="content"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </span>
+          </button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
-`;
-
-exports[`<MacrosSettingsTable/> should notify when failing to delete macro 1`] = `
-[
-  {
-    "allowHTML": true,
-    "message": "
-        <ul className="m-0">
-            <li>Rules: Rule1</li><li>Rules: Rule2</li>
-        </ul>
-    ",
-    "status": "error",
-    "title": "Cannot delete macro because it is used in the following places:",
-  },
-]
 `;

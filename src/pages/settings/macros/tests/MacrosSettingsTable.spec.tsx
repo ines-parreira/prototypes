@@ -1,16 +1,14 @@
+import {ListMacrosOrderBy} from '@gorgias/api-queries'
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
+import React from 'react'
 
 import {macros as macrosFixtures} from 'fixtures/macro'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection} from 'models/api/types'
-import {createMacro, deleteMacro} from 'models/macro/resources'
-import {Macro, MacroSortableProperties} from 'models/macro/types'
-import history from 'pages/history'
-import {MacrosState} from 'state/entities/macros/types'
+import {MacroSortableProperties} from 'models/macro/types'
 
-import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
+import {MacrosSettingsTable} from '../MacrosSettingsTable'
 
 jest.mock('models/macro/resources')
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -41,125 +39,49 @@ const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
 describe('<MacrosSettingsTable/>', () => {
     useHasAgentPrivilegesMock.mockReturnValue(true)
 
-    const macrosState: MacrosState = macrosFixtures.reduce(
-        (acc: MacrosState, macro: Macro) => ({
-            ...acc,
-            [macro.id]: macro,
-        }),
-        {}
-    )
-    const mockCreateMacro: jest.MockedFunction<typeof createMacro> =
-        createMacro as any
-    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> =
-        deleteMacro as any
-    const mockMacroCreated = jest.fn()
-    const mockMacroDeleted = jest.fn()
-    const mockNotify = jest.fn()
-    const mockOnSortOptionsChange = jest.fn()
     const minProps = {
         isLoading: false,
-        macroIds: [],
-        macros: {},
-        macroCreated: mockMacroCreated,
-        macroDeleted: mockMacroDeleted,
-        notify: mockNotify,
-        onSortOptionsChange: mockOnSortOptionsChange,
+        macros: [],
+        onMacroDelete: jest.fn(),
+        onMacroDuplicate: jest.fn(),
+        onSortOptionsChange: jest.fn(),
         options: {
-            orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+            order_by: ListMacrosOrderBy.CreatedDatetimeAsc,
         },
-    } as any as ComponentProps<typeof MacrosSettingsTableContainer>
-
-    mockCreateMacro.mockResolvedValue({
-        ...macrosState['1'],
-        id: 3,
-    })
-    mockDeleteMacro.mockResolvedValue(undefined)
+    }
 
     it('should display a loading when fetching macros', () => {
         const {rerender} = render(
-            <MacrosSettingsTableContainer {...minProps} isLoading={true} />
+            <MacrosSettingsTable {...minProps} isLoading={true} />
         )
 
         expect(document.getElementsByClassName('md-spin')).toHaveLength(1)
 
-        rerender(
-            <MacrosSettingsTableContainer {...minProps} isLoading={false} />
-        )
+        rerender(<MacrosSettingsTable {...minProps} isLoading={false} />)
 
         expect(document.getElementsByClassName('md-spin')).toHaveLength(0)
     })
 
     it('should display a list of macros', () => {
         const {container} = render(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
+            <MacrosSettingsTable {...minProps} macros={macrosFixtures} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should duplicate a macro', (done) => {
-        render(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
-        )
+    it('should duplicate a macro', () => {
+        render(<MacrosSettingsTable {...minProps} macros={macrosFixtures} />)
 
         userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
 
-        const {actions, name} = macrosState['1']
-        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
-            actions,
-            name: `(Copy) ${name}`,
-            language: null,
-        })
-        setImmediate(() => {
-            expect(mockMacroCreated).toHaveBeenNthCalledWith(1, {
-                ...macrosState['1'],
-                id: 3,
-            })
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/settings/macros/3'
-            )
-            done()
-        })
+        expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(
+            macrosFixtures[0]
+        )
     })
 
-    it('should notify when failing to duplicate macro', (done) => {
-        mockCreateMacro.mockRejectedValue('error')
-        render(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
-        )
-
-        userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
-
-        setImmediate(() => {
-            expect(mockNotify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to duplicate macro',
-                status: 'error',
-            })
-            done()
-        })
-    })
-
-    it('should delete macro', (done) => {
-        render(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
-        )
+    it('should delete macro', () => {
+        render(<MacrosSettingsTable {...minProps} macros={macrosFixtures} />)
 
         act(() => {
             userEvent.click(screen.getAllByTitle('Delete macro')[0])
@@ -168,57 +90,15 @@ describe('<MacrosSettingsTable/>', () => {
             userEvent.click(screen.getByText('Confirm', {exact: false}))
         })
 
-        setImmediate(() => {
-            expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)
-            expect(mockNotify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully deleted macro',
-                status: 'success',
-            })
-            done()
-        })
-    })
-
-    it('should notify when failing to delete macro', (done) => {
-        mockDeleteMacro.mockRejectedValue({
-            response: {
-                data: {
-                    error: {
-                        msg: 'Cannot delete macro because it is used in the following places:',
-                        data: {
-                            Rules: ['Rule1', 'Rule2'],
-                        },
-                    },
-                },
-            },
-        })
-        render(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
-        )
-
-        act(() => {
-            userEvent.click(screen.getAllByTitle('Delete macro')[0])
-        })
-        act(() => {
-            userEvent.click(screen.getByText('Confirm', {exact: false}))
-        })
-
-        setImmediate(() => {
-            expect(mockNotify.mock.calls[0]).toMatchSnapshot()
-            done()
-        })
+        expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
     })
 
     it('should change sort column when clicking header cell', () => {
-        render(<MacrosSettingsTableContainer {...minProps} />)
+        render(<MacrosSettingsTable {...minProps} />)
 
         userEvent.click(document.getElementsByTagName('th')[0])
 
-        expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(
-            1,
+        expect(minProps.onSortOptionsChange).toHaveBeenCalledWith(
             MacroSortableProperties.Name,
             OrderDirection.Asc
         )

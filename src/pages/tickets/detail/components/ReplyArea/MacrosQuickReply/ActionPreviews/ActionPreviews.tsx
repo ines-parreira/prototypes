@@ -93,12 +93,17 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
                                 action.name as AvailableActions
                             ]
                         return ActionPreview ? (
-                            <ActionPreview key={action.name} action={action} />
+                            <ActionPreview
+                                key={action.name}
+                                action={action as MacroAction}
+                            />
                         ) : null
                     })}
 
                     {hasComplexActions && (
-                        <ComplexActionPreview actions={complexActions} />
+                        <ComplexActionPreview
+                            actions={complexActions as MacroAction[]}
+                        />
                     )}
                 </div>
             )}

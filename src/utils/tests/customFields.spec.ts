@@ -1,6 +1,7 @@
+import {Macro} from '@gorgias/api-queries'
+
 import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
-import {Macro} from 'models/macro/types'
 
 import {
     getInvalidTicketFieldIds,

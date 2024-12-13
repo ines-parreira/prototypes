@@ -1,7 +1,12 @@
+import {Macro} from '@gorgias/api-queries'
 import {fromJS, List, Map} from 'immutable'
 
-import {Macro} from '../../models/macro/types'
-import {MacroActionName, MacroActionType} from '../../models/macroAction/types'
+import {
+    MacroAction,
+    MacroActionName,
+    MacroActionType,
+} from 'models/macroAction/types'
+
 import {clearMacroBeforeApply} from '../macro'
 import {TicketMessageSourceType} from '../types/ticket'
 
@@ -42,7 +47,9 @@ describe('Business', () => {
 
             it('should clear attachments when applied on chat with more than one', () => {
                 // Given
-                macro.actions?.[0].arguments.attachments?.push({
+                ;(
+                    macro.actions as MacroAction[]
+                )?.[0].arguments.attachments?.push({
                     url: 'https://dev.gorgias.io/img2.png',
                 })
 

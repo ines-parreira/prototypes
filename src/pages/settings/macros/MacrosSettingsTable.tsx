@@ -1,16 +1,15 @@
+import {ListMacrosParams, Macro} from '@gorgias/api-queries'
 import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import React, {useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {ISO639English} from 'constants/languages'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {OrderDirection, GorgiasApiError} from 'models/api/types'
-import {createMacro, deleteMacro} from 'models/macro/resources'
-import {FetchMacrosOptions, MacroSortableProperties} from 'models/macro/types'
+import {OrderDirection} from 'models/api/types'
+import {MacroSortableProperties} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Badge, {ColorType} from 'pages/common/components/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -26,88 +25,43 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TicketTag from 'pages/common/components/TicketTag'
-import history from 'pages/history'
-import {macroCreated, macroDeleted} from 'state/entities/macros/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-import {formatDatetime, errorToChildren} from 'utils'
+import {formatDatetime} from 'utils'
 
 import css from './MacrosSettingsTable.less'
 
-type OwnProps = {
+type Props = {
     isLoading: boolean
-    macroIds: number[]
+    macros?: Macro[]
     onSortOptionsChange: (
         orderBy: MacroSortableProperties,
         orderDir: OrderDirection
     ) => void
-    options: FetchMacrosOptions
+    onMacroDelete: (id: number) => Promise<void>
+    onMacroDuplicate: (macro: Macro) => Promise<void>
+    options: ListMacrosParams
 }
 
-export function MacrosSettingsTableContainer({
+export function MacrosSettingsTable({
     isLoading,
-    macroIds,
     macros,
-    macroCreated,
-    macroDeleted,
-    notify,
     onSortOptionsChange,
+    onMacroDelete,
+    onMacroDuplicate,
     options,
-}: OwnProps & ConnectedProps<typeof connector>) {
+}: Props) {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate
     )
 
     const orderByValue = useMemo(
-        () => options.orderBy?.split(':')[0],
-        [options.orderBy]
+        () => options.order_by?.split(':')[0],
+        [options.order_by]
     )
     const orderDirValue = useMemo(
-        () => options.orderBy?.split(':')[1] as OrderDirection,
-        [options.orderBy]
+        () => options.order_by?.split(':')[1] as OrderDirection,
+        [options.order_by]
     )
     const hasAgentPrivileges = useHasAgentPrivileges()
-
-    const handleMacroDelete = async (macroId: number) => {
-        try {
-            await deleteMacro(macroId)
-            macroDeleted(macroId)
-            void notify({
-                message: 'Successfully deleted macro',
-                status: NotificationStatus.Success,
-            })
-        } catch (error) {
-            void notify({
-                title: (error as GorgiasApiError).response.data.error.msg,
-                message: errorToChildren(error)!,
-                allowHTML: true,
-                status: NotificationStatus.Error,
-            })
-        }
-    }
-    const handleMacroDuplicate = async (macroId: number) => {
-        const macro = macros[macroId.toString()]
-
-        if (!macro) {
-            return
-        }
-        const {actions, name, language} = macro
-        try {
-            const res = await createMacro({
-                actions,
-                name: `(Copy) ${name}`,
-                language,
-            })
-            macroCreated(res)
-            history.push(`/app/settings/macros/${res.id}`)
-        } catch (error) {
-            void notify({
-                message: 'Failed to duplicate macro',
-                status: NotificationStatus.Error,
-            })
-        }
-    }
 
     const defaultDescendingSort = [
         MacroSortableProperties.Usage,
@@ -179,15 +133,13 @@ export function MacrosSettingsTableContainer({
                         </BodyCell>
                     </TableBodyRow>
                 ) : (
-                    macroIds.map((macroId) => {
-                        const macro = macros[macroId.toString()]
-
+                    macros?.map((macro) => {
                         if (!macro) {
                             return null
                         }
 
                         const {name, language, updated_datetime, usage} = macro
-                        const to = `/app/settings/macros/${macroId}`
+                        const to = `/app/settings/macros/${macro.id}`
 
                         const tags = macro.actions
                             ?.filter(
@@ -195,7 +147,9 @@ export function MacrosSettingsTableContainer({
                                     action.name === MacroActionName.AddTags
                             )
                             .reduce((allTags: string[], action) => {
-                                const tags = action.arguments.tags?.split(',')
+                                const tags = (
+                                    action.arguments as {tags: string}
+                                ).tags?.split(',')
                                 if (tags) allTags.push(...tags)
                                 return allTags
                             }, [])
@@ -212,7 +166,7 @@ export function MacrosSettingsTableContainer({
                             }
                         }
 
-                        const tagId = `tags-${macroId}`
+                        const tagId = `tags-${macro.id}`
                         const tag = tags?.length ? (
                             <div className={css.tags} id={tagId}>
                                 <TicketTag text={tags[0]} />
@@ -237,7 +191,7 @@ export function MacrosSettingsTableContainer({
                         return (
                             <TableBodyRow
                                 className={css.tableBodyRow}
-                                key={macroId}
+                                key={macro.id}
                             >
                                 <td
                                     className={classnames(
@@ -280,10 +234,11 @@ export function MacrosSettingsTableContainer({
                                 >
                                     <Link to={to} tabIndex={-1}>
                                         <BodyCellContent>
-                                            {formatDatetime(
-                                                updated_datetime,
-                                                datetimeFormat
-                                            )}
+                                            {!!updated_datetime &&
+                                                formatDatetime(
+                                                    updated_datetime,
+                                                    datetimeFormat
+                                                )}
                                         </BodyCellContent>
                                     </Link>
                                 </td>
@@ -300,9 +255,8 @@ export function MacrosSettingsTableContainer({
                                             fillStyle="ghost"
                                             intent="secondary"
                                             onClick={() => {
-                                                void handleMacroDuplicate(
-                                                    macroId
-                                                )
+                                                !!macro.id &&
+                                                    void onMacroDuplicate(macro)
                                             }}
                                             title="Duplicate macro"
                                             isDisabled={!hasAgentPrivileges}
@@ -320,9 +274,10 @@ export function MacrosSettingsTableContainer({
                                                     macro.
                                                 </>
                                             }
-                                            id={`delete-button-${macroId}`}
+                                            id={`delete-button-${macro.id}`}
                                             onConfirm={() =>
-                                                handleMacroDelete(macroId)
+                                                !!macro.id &&
+                                                void onMacroDelete(macro.id)
                                             }
                                             placement="left"
                                         >
@@ -355,15 +310,4 @@ export function MacrosSettingsTableContainer({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        macros: state.entities.macros,
-    }),
-    {
-        macroCreated,
-        macroDeleted,
-        notify,
-    }
-)
-
-export default connector(MacrosSettingsTableContainer)
+export default MacrosSettingsTable

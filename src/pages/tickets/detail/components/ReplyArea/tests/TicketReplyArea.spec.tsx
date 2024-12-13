@@ -1,3 +1,4 @@
+import {Language} from '@gorgias/api-queries'
 import {fireEvent, getByTestId, render, waitFor} from '@testing-library/react'
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
@@ -241,7 +242,7 @@ describe('<TicketReplyArea/>', () => {
                     created_datetime: '',
                     external_id: null,
                     id: 1,
-                    language: 'en',
+                    language: 'en' as Language,
                     name: 'Macro 1',
                     relevance_rank: 1,
                     score: 0.99,

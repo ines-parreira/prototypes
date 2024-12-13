@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import {CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -9,11 +10,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {CursorMeta, OrderDirection} from 'models/api/types'
-import {
-    FetchMacrosOptions,
-    Macro,
-    MacroSortableProperties,
-} from 'models/macro/types'
+import {FetchMacrosOptions, MacroSortableProperties} from 'models/macro/types'
 import {getHumanAgents} from 'state/agents/selectors'
 import {fetchMacros} from 'state/macro/actions'
 import {notify} from 'state/notifications/actions'

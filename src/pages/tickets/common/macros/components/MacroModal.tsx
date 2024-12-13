@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
@@ -9,7 +10,7 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DEFAULT_ACTIONS} from 'config'
 import {JobParams, JobType} from 'models/job/types'
-import {FetchMacrosOptions, Macro} from 'models/macro/types'
+import {FetchMacrosOptions} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

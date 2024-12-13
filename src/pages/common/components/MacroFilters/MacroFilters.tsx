@@ -41,7 +41,7 @@ const MacroFilters = ({
                         languages: languages as string[],
                     })
                 }}
-                value={selectedProperties.languages ?? []}
+                value={(selectedProperties.languages as string[]) ?? []}
                 isMultiple={false}
                 size={size}
             >
@@ -50,8 +50,8 @@ const MacroFilters = ({
                     .map((code) => (
                         <SelectFilter.Item
                             key={code}
-                            value={code}
-                            label={ISO639English[code]}
+                            value={code as string}
+                            label={code ? ISO639English[code] : ''}
                         />
                     ))}
             </SelectFilter>
@@ -63,12 +63,16 @@ const MacroFilters = ({
                         tags: values as string[],
                     })
                 }
-                value={selectedProperties.tags ?? []}
+                value={(selectedProperties.tags as string[]) ?? []}
                 size={size}
                 dropdownMenuProps={tagDropdownMenuProps}
             >
                 {properties.tags?.map((tag) => (
-                    <SelectFilter.Item key={tag} value={tag} label={tag} />
+                    <SelectFilter.Item
+                        key={tag}
+                        value={tag as string}
+                        label={tag ?? ''}
+                    />
                 ))}
             </SelectFilter>
         </div>

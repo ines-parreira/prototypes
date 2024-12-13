@@ -1,7 +1,9 @@
+import {Macro} from '@gorgias/api-queries'
+
 import {TicketStatus} from 'business/types/ticket'
 
 import {HttpMethod} from '../models/api/types'
-import {Macro} from '../models/macro/types'
+
 import {
     MacroAction,
     MacroActionType,

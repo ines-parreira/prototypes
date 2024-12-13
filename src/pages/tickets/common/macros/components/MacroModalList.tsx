@@ -1,9 +1,10 @@
+import {Macro} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import {List, Map} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import {FetchMacrosOptions, Macro} from 'models/macro/types'
+import {FetchMacrosOptions} from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'

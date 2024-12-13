@@ -1,25 +1,8 @@
+import {ListMacrosParams, Macro} from '@gorgias/api-queries'
+
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
-import {MacroAction} from 'models/macroAction/types'
 
-export type Macro = MacroDraft & {
-    id: number
-    category: string | null
-    created_datetime: string
-    deactivated_datetime?: string
-    deleted_datetime?: string
-    external_id: string | null
-    relevance_rank?: number
-    score?: number
-    updated_datetime: string
-    uri: string
-    usage: number
-}
-
-export type MacroDraft = {
-    actions: MacroAction[] | null
-    name: string
-    language: string | null
-}
+export type MacroDraft = Pick<Macro, 'actions' | 'language' | 'name'>
 
 export enum MacroSortableProperties {
     CreatedDatetime = 'created_datetime',
@@ -38,10 +21,7 @@ export type FetchMacrosOptions = OrderParams<MacroSortableProperties> &
         numberPredictions?: number
     }
 
-export type MacrosProperties = {
-    [MacroPropertiesOptions.Languages]?: string[]
-    [MacroPropertiesOptions.Tags]?: string[]
-}
+export type MacrosProperties = Pick<ListMacrosParams, 'languages' | 'tags'>
 
 export enum MacroPropertiesOptions {
     Languages = 'languages',

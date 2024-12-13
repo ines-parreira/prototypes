@@ -1,3 +1,4 @@
+import {Macro} from '@gorgias/api-queries'
 import {waitFor, render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
@@ -11,7 +12,6 @@ import {
     fetchMacro,
     updateMacro,
 } from 'models/macro/resources'
-import {Macro} from 'models/macro/types'
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import history from 'pages/history'
@@ -269,7 +269,6 @@ describe('<MacrosSettingsForm/>', () => {
             usage: 0,
             language: null,
             uri: '',
-            category: null,
             external_id: null,
         }
         render(
