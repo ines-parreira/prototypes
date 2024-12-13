@@ -212,6 +212,7 @@ export class Navbar extends Component<Props, State> {
         const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
 
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
+        const hasGlobalNav = !!flags?.[FeatureFlagKey.GlobalNavigation]
 
         const selectedTheme = THEME_CONFIGS.find(
             ({name}) => name === theme.name
@@ -235,9 +236,12 @@ export class Navbar extends Component<Props, State> {
                         {splitTicketViewToggle}
                     </div>
                     <div className={css['navbar-cta-group']}>
-                        <HomePageLink />
-
-                        <div data-candu-id="navbar-home-spacer" />
+                        {!hasGlobalNav && (
+                            <>
+                                <HomePageLink />
+                                <div data-candu-id="navbar-home-spacer" />
+                            </>
+                        )}
 
                         <SpotlightButton />
                         <NotificationsButton />

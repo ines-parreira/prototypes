@@ -1,0 +1,31 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background-color: transparent;
+        font-size: 24px;
+        color: var(--navigation-text-item);
+        transition:
+            background-color 0.2s ease-out,
+            color 0.2s ease-out;
+    }
+
+    .icon:hover {
+        background-color: var(--navigation-selected);
+        color: var(--navigation-text-item);
+    }
+
+    .active,
+    .active:hover {
+        border: 1px solid var(--navigation-selected);
+        background: var(--navigation-border);
+        color: var(--navigation-title-item);
+    }
+}
