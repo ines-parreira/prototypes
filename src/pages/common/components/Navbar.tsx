@@ -17,6 +17,7 @@ import {
     AvailabilityToggle,
     MainNavigation,
     NavbarLink,
+    OfficeHours,
     ThemeMenu,
 } from 'common/navigation'
 import {NotificationsButton} from 'common/notifications'
@@ -34,8 +35,6 @@ import {
 } from 'services/activityTracker'
 import {tryLocalStorage} from 'services/common/utils'
 import shortcutManager from 'services/shortcutManager/index'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {isTrialing} from 'state/currentAccount/selectors'
 import {getCurrentUser, isAvailable} from 'state/currentUser/selectors'
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
@@ -183,10 +182,8 @@ export class Navbar extends Component<Props, State> {
         const {
             activeContent,
             available,
-            currentHelpdeskProduct,
             currentUser,
             disableResize,
-            isTrialing,
             navbarContentRef,
             flags,
             splitTicketViewToggle,
@@ -194,9 +191,7 @@ export class Navbar extends Component<Props, State> {
             title,
         } = this.props
         const {isResizing, navbarWidth} = this.state
-        const isPro = currentHelpdeskProduct?.name.toLowerCase() === 'pro'
 
-        const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
         const hasGlobalNav = !!flags?.[FeatureFlagKey.GlobalNavigation]
 
         const selectedTheme = THEME_CONFIGS.find(
@@ -422,39 +417,11 @@ export class Navbar extends Component<Props, State> {
                                             Learn
                                         </DropdownItemLabel>
                                     </div>
-                                    {isPro && !isTrialing && hasOfficeHours && (
-                                        <a
-                                            className={classnames(
-                                                css['dropdown-item-user-menu']
-                                            )}
-                                            onClick={() => {
-                                                logEvent(
-                                                    SegmentEvent.MenuUserLinkClicked,
-                                                    {
-                                                        link: 'office-hours',
-                                                    }
-                                                )
-                                                window.open(
-                                                    'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu',
-                                                    '_blank',
-                                                    'noopener'
-                                                )
-                                                this._toggleBottomDropdown()
-                                            }}
-                                        >
-                                            <span title="Book a meeting with a Customer Success Manager at Gorgias.">
-                                                <i
-                                                    className={classnames(
-                                                        'material-icons mr-2',
-                                                        css.icon
-                                                    )}
-                                                >
-                                                    event
-                                                </i>
-                                                Book office hours
-                                            </span>
-                                        </a>
-                                    )}
+                                    <OfficeHours
+                                        onToggleDropdown={
+                                            this._toggleBottomDropdown
+                                        }
+                                    />
                                     <NavbarLink
                                         to="/app/referral-program"
                                         onClick={() => {
@@ -840,11 +807,9 @@ export class Navbar extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        currentHelpdeskProduct: getCurrentHelpdeskPlan(state),
         currentUser: getCurrentUser(state),
         available: isAvailable(state),
         isOpenedPanel: isOpenedPanel('navbar')(state),
-        isTrialing: isTrialing(state),
     }),
     {
         closePanels,

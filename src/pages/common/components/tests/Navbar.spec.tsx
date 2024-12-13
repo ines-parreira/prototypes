@@ -8,10 +8,6 @@ import {StaticRouter} from 'react-router-dom'
 import {ActiveContent} from 'common/navigation'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    advancedMonthlyHelpdeskPlan,
-    proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
 import {THEME_NAME} from 'theme'
 import type {ColorTokens} from 'theme'
@@ -49,6 +45,7 @@ jest.mock(
             ...jest.requireActual('common/navigation'),
             AvailabilityToggle: () => <div>AvailabilityToggle</div>,
             MainNavigation: () => <div>main navigation</div>,
+            OfficeHours: () => <div>OfficeHours</div>,
             ThemeMenu: () => <div>ThemeMenu</div>,
         }) as typeof import('common/navigation')
 )
@@ -67,11 +64,8 @@ describe('Navbar', () => {
         available: true,
         children: null,
         closePanels: jest.fn(),
-        currentHelpdeskProduct: advancedMonthlyHelpdeskPlan,
         currentUser: fromJS(user),
         isOpenedPanel: false,
-        isTrialing: false,
-        flags: {},
         setTheme: jest.fn(),
         theme: {
             name: THEME_NAME.Classic,
@@ -144,49 +138,15 @@ describe('Navbar', () => {
         expect(getByText('AvailabilityToggle')).toBeInTheDocument()
     })
 
-    it('should not render additional item to book office hours if FF is disabled', () => {
-        const {getByText, queryByText} = render(
-            <Navbar
-                {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
-                flags={{
-                    [FeatureFlagKey.OfficeHours]: false,
-                }}
-            />,
-            {wrapper}
-        )
+    it('should render the office hours', () => {
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
 
         userEvent.click(getByText(user.name))
-        expect(queryByText('Book office hours')).not.toBeInTheDocument()
-    })
-
-    it('should not render item to book office hours for trialing customers', () => {
-        const {queryByText, getByText} = render(
-            <Navbar
-                {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
-                isTrialing={true}
-            />,
-            {wrapper}
-        )
-
-        userEvent.click(getByText(user.name))
-        expect(queryByText(/book office hours/i)).not.toBeInTheDocument()
+        expect(getByText('OfficeHours')).toBeInTheDocument()
     })
 
     it.each([
         ['your profile', 'your-profile', {}, () => {}],
-        [
-            'book office hours',
-            'office-hours',
-            {
-                flags: {
-                    [FeatureFlagKey.OfficeHours]: true,
-                },
-                currentHelpdeskProduct: proMonthlyHelpdeskPlan,
-            },
-            () => {},
-        ],
         ['refer a friend & earn', 'referral-program', {}, () => {}],
         ['log out', 'log-out', {}, () => {}],
         [
@@ -275,8 +235,6 @@ describe('Navbar', () => {
         const {getByText} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
-                isTrialing={true}
                 currentUser={fromJS({
                     ...user,
                     name: '',

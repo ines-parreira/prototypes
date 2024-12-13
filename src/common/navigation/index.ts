@@ -5,5 +5,6 @@ export {
     ActiveContent,
 } from './components/MainNavigation'
 export {default as NavbarLink} from './components/NavbarLink'
+export {default as OfficeHours} from './components/OfficeHours'
 export {default as ThemeMenu} from './components/ThemeMenu'
 export {globalNavigationPanel} from './config'
