@@ -388,8 +388,9 @@ export const useSearch = () => {
                         })
                     }
                     if (
-                        viewType === ViewType.CallList ||
-                        viewType === ViewType.All
+                        showCallsTab &&
+                        (viewType === ViewType.CallList ||
+                            viewType === ViewType.All)
                     ) {
                         callPromise = searchVoiceCallsWithHighlights({
                             search: searchTerm,
@@ -450,6 +451,7 @@ export const useSearch = () => {
             handleTicketSearchResult,
             handleCallSearchResult,
             dispatch,
+            showCallsTab,
         ]
     )
 
