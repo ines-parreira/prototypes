@@ -1,3 +1,4 @@
+export {default as AvailabilityToggle} from './components/AvailabilityToggle'
 export {default as GlobalNavigation} from './components/GlobalNavigation'
 export {
     default as MainNavigation,

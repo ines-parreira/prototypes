@@ -157,6 +157,8 @@ export const isLoading = (name: string | string[]) =>
             ) as boolean
     )
 
+export const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
+
 export const getNotificationSettings = createSelector(
     getSettingsByType(UserSettingType.NotificationPreferences),
     (notificationSettings) =>

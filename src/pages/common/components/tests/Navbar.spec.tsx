@@ -7,7 +7,6 @@ import {StaticRouter} from 'react-router-dom'
 
 import {ActiveContent} from 'common/navigation'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {DEFAULT_PREFERENCES} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     advancedMonthlyHelpdeskPlan,
@@ -48,7 +47,9 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('common/navigation'),
+            AvailabilityToggle: () => <div>AvailabilityToggle</div>,
             MainNavigation: () => <div>main navigation</div>,
+            ThemeMenu: () => <div>ThemeMenu</div>,
         }) as typeof import('common/navigation')
 )
 
@@ -68,14 +69,8 @@ describe('Navbar', () => {
         closePanels: jest.fn(),
         currentHelpdeskProduct: advancedMonthlyHelpdeskPlan,
         currentUser: fromJS(user),
-        currentUserPreferences: fromJS({
-            type: 'preferences',
-            data: DEFAULT_PREFERENCES,
-        }),
         isOpenedPanel: false,
         isTrialing: false,
-        submitSetting: jest.fn(),
-        isPreferencesLoading: false,
         flags: {},
         setTheme: jest.fn(),
         theme: {
@@ -143,21 +138,10 @@ describe('Navbar', () => {
         expect(el).toHaveStyle({'background-color': 'rgb(255, 150, 0)'})
     })
 
-    it('should toggle the user availability when clicking the availability toggle', () => {
+    it('should render the availability toggle', () => {
         const {getByText} = render(<Navbar {...minProps} />, {wrapper})
         userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/available/i))
-        expect(minProps.submitSetting).toHaveBeenCalledWith(
-            {
-                data: {
-                    available: false,
-                    show_macros: false,
-                    prefill_best_macro: true,
-                },
-                type: 'preferences',
-            },
-            false
-        )
+        expect(getByText('AvailabilityToggle')).toBeInTheDocument()
     })
 
     it('should not render additional item to book office hours if FF is disabled', () => {

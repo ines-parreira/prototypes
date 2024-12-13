@@ -18,6 +18,9 @@ import SettingsNavbar from '../SettingsNavbar'
 
 const mockedDispatch = jest.fn()
 jest.mock('utils')
+jest.mock('common/navigation', () => ({
+    ActiveContent: {Settings: 'settings'},
+}))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {SettingsNavigationClicked: 'navEvent'},

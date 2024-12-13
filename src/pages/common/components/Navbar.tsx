@@ -14,6 +14,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {
     ActiveContent,
+    AvailabilityToggle,
     MainNavigation,
     NavbarLink,
     ThemeMenu,
@@ -25,7 +26,6 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import NoticeableIndicator from 'pages/common/components/NoticeableIndicator'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
     ActivityEvents,
     clearActivityTrackerSession,
@@ -36,13 +36,7 @@ import {tryLocalStorage} from 'services/common/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {isTrialing} from 'state/currentAccount/selectors'
-import {submitSetting} from 'state/currentUser/actions'
-import {
-    getCurrentUser,
-    getPreferences,
-    isAvailable,
-    isLoading,
-} from 'state/currentUser/selectors'
+import {getCurrentUser, isAvailable} from 'state/currentUser/selectors'
 import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
@@ -140,16 +134,6 @@ export class Navbar extends Component<Props, State> {
         }))
     }
 
-    _updateAvailableForChatPreference = () => {
-        const {currentUserPreferences, submitSetting} = this.props
-        const newPreferences = currentUserPreferences.updateIn(
-            ['data', 'available'],
-            (status) => !status
-        )
-        logEvent(SegmentEvent.MenuUserLinkClicked, {link: 'available-on-off'})
-        return submitSetting(newPreferences.toJS(), false)
-    }
-
     startResizing = (event: MouseEventReact | TouchEventReact) => {
         // disable resizing width for right-click event
         if (!isTouchEvent(event) && event.button === 2) {
@@ -203,7 +187,6 @@ export class Navbar extends Component<Props, State> {
             currentUser,
             disableResize,
             isTrialing,
-            isPreferencesLoading,
             navbarContentRef,
             flags,
             splitTicketViewToggle,
@@ -309,21 +292,7 @@ export class Navbar extends Component<Props, State> {
                     >
                         <Screens activeScreen={this.state.activeScreen}>
                             <Screen name="main">
-                                <div
-                                    className={classnames(
-                                        css['dropdown-item-user-menu'],
-                                        css.availabilityToggle
-                                    )}
-                                    onClick={
-                                        this._updateAvailableForChatPreference
-                                    }
-                                >
-                                    <span>Available</span>
-                                    <ToggleInput
-                                        isToggled={available}
-                                        isLoading={isPreferencesLoading}
-                                    />
-                                </div>
+                                <AvailabilityToggle />
                                 <hr className={css.separator} />
                                 <div
                                     onClick={() => {
@@ -870,21 +839,14 @@ export class Navbar extends Component<Props, State> {
 }
 
 const connector = connect(
-    (state: RootState) => {
-        const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
-
-        return {
-            currentHelpdeskProduct: getCurrentHelpdeskPlan(state),
-            currentUser: getCurrentUser(state),
-            currentUserPreferences: getPreferences(state),
-            available: isAvailable(state),
-            isOpenedPanel: isOpenedPanel('navbar')(state),
-            isTrialing: isTrialing(state),
-            isPreferencesLoading: getIsPreferencesLoading(state),
-        }
-    },
+    (state: RootState) => ({
+        currentHelpdeskProduct: getCurrentHelpdeskPlan(state),
+        currentUser: getCurrentUser(state),
+        available: isAvailable(state),
+        isOpenedPanel: isOpenedPanel('navbar')(state),
+        isTrialing: isTrialing(state),
+    }),
     {
-        submitSetting,
         closePanels,
     }
 )
