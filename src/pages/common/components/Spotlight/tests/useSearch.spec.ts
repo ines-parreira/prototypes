@@ -5,11 +5,13 @@ import {KeyboardEvent} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
 import {ticket} from 'fixtures/ticket'
+import {voiceCall} from 'fixtures/voiceCalls'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'
+import {searchVoiceCallsWithHighlights} from 'models/voiceCall/resources'
 import {useSearch} from 'pages/common/components/Spotlight/useSearch'
 import {assumeMock} from 'utils/testing'
 
@@ -19,6 +21,8 @@ const searchCustomersWithHighlightsMock = assumeMock(
 )
 jest.mock('models/ticket/resources')
 const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
+jest.mock('models/voiceCall/resources')
+const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useSearchRankScenario', () => ({
     ...jest.requireActual<Record<string, unknown>>(
@@ -45,6 +49,10 @@ describe('useSearch', () => {
     }
     const ticketWithHighlightsResponse = {
         ...ticket,
+        highlights: {},
+    }
+    const callWithHighlightsResponse = {
+        ...voiceCall,
         highlights: {},
     }
 
@@ -110,6 +118,28 @@ describe('useSearch', () => {
         ])
     })
 
+    it('should return fetched calls with highlights callback', async () => {
+        searchCallsWithHighlightsMock.mockResolvedValue({
+            data: {
+                data: [callWithHighlightsResponse],
+                meta: {next_cursor: '', prev_cursor: null},
+                object: '',
+                uri: '',
+            },
+        } as any)
+        const {result} = renderHook(() => useSearch())
+        await act(async () => {
+            await result.current.fetchSearchItems('john', ViewType.CallList)
+        })
+
+        expect(result.current.calls).toEqual([
+            {
+                ...callWithHighlightsResponse,
+                highlights: callWithHighlightsResponse.highlights,
+            },
+        ])
+    })
+
     it('should update state after fetching tickets with highlights in federated search', async () => {
         searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {
@@ -122,6 +152,14 @@ describe('useSearch', () => {
         searchCustomersWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [customerWithHighlightsResponse],
+                meta: {next_cursor: '', prev_cursor: null},
+                object: '',
+                uri: '',
+            },
+        } as any)
+        searchCallsWithHighlightsMock.mockResolvedValue({
+            data: {
+                data: [callWithHighlightsResponse],
                 meta: {next_cursor: '', prev_cursor: null},
                 object: '',
                 uri: '',
@@ -146,6 +184,12 @@ describe('useSearch', () => {
             {
                 ...ticketWithHighlightsResponse,
                 highlights: ticketWithHighlightsResponse.highlights,
+            },
+        ])
+        expect(result.current.calls).toEqual([
+            {
+                ...callWithHighlightsResponse,
+                highlights: callWithHighlightsResponse.highlights,
             },
         ])
     })

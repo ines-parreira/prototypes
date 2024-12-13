@@ -1,5 +1,13 @@
+import {searchVoiceCalls as apiSearchVoiceCalls} from '@gorgias/api-client'
+
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
+import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import {
+    VoiceCallSearchOptions,
+    VoiceCallWithHighlightsResponse,
+} from 'models/search/types'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 
 import {
     VoiceCall,
@@ -43,3 +51,40 @@ export async function listVoiceCallEvents(params?: ListCallEventsParams) {
 
     return response
 }
+
+export const searchVoiceCalls = async ({
+    search,
+    cancelToken,
+    withHighlights,
+    cursor,
+    ...rest
+}: VoiceCallSearchOptions) => {
+    return await apiSearchVoiceCalls(
+        {
+            search: search ?? '',
+        },
+        {
+            ...deepMapKeysToSnakeCase({
+                ...rest,
+                cursor,
+                withHighlights,
+            }),
+        },
+        {
+            ...(cancelToken ? {cancelToken} : {}),
+        }
+    )
+}
+
+export const searchVoiceCallsWithHighlights = (
+    options: Omit<VoiceCallSearchOptions, 'withHighlights'>
+) =>
+    searchVoiceCalls({...options, withHighlights: true}).then((resp) => ({
+        ...resp,
+        data: {
+            ...resp.data,
+            data: (resp.data?.data as VoiceCallWithHighlightsResponse[]).map(
+                mergeEntitiesWithHighlights
+            ),
+        },
+    }))

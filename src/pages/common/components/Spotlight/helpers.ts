@@ -2,6 +2,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
+    PicketVoiceCallWithHighlights,
 } from 'models/search/types'
 
 export const HIGHLIGHT_TAG = '<em>'
@@ -85,6 +86,25 @@ export const customerHighlightsTransform = (
         orderId: highlights?.order_ids?.[0]
             ? `Order ID: ${highlights?.order_ids[0]}`
             : undefined,
+    }
+}
+
+export const callHighlightsTransform = (
+    item: PicketVoiceCallWithHighlights
+) => {
+    const highlights = item.highlights
+
+    const sourcePhoneNumber =
+        highlights?.phone_number_source?.[0] ?? item.phone_number_source
+    const destinationPhoneNumber =
+        highlights?.phone_number_destination?.[0] ??
+        item.phone_number_destination
+
+    return {
+        ...item,
+        phone_number_source: sourcePhoneNumber,
+        phone_number_destination: destinationPhoneNumber,
+        highlightedText: highlights?.transcripts?.[0],
     }
 }
 

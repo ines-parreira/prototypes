@@ -39,17 +39,18 @@ export const MORE_RESULTS_LABEL = 'More results'
 const hasNoResults = (
     tickets: unknown[],
     customers: unknown[],
+    calls: unknown[],
     searchItemsType: ViewType
 ) => {
     switch (searchItemsType) {
         case ViewType.All:
-            return _isEmpty(customers) && _isEmpty(tickets)
+            return _isEmpty(customers) && _isEmpty(tickets) && _isEmpty(calls)
         case ViewType.CustomerList:
             return _isEmpty(customers)
         case ViewType.TicketList:
             return _isEmpty(tickets)
         case ViewType.CallList:
-            return true
+            return _isEmpty(calls)
     }
 }
 const hasNoRecentResults = (
@@ -131,6 +132,7 @@ type Props = {
     ) => void
     onTabChange: (tab: string) => void
     showCallsTab?: boolean
+    calls: PicketVoiceCallWithHighlights[]
     recentCalls: PicketVoiceCallWithHighlights[]
 }
 
@@ -154,6 +156,7 @@ export const SpotlightModalContent = ({
     logRecentlyAccessedSegmentEvent,
     onTabChange,
     showCallsTab,
+    calls,
     recentCalls,
 }: Props) => {
     const virtuosoRef = useRef<VirtuosoHandle | GroupedVirtuosoHandle>(null)
@@ -176,7 +179,10 @@ export const SpotlightModalContent = ({
         return <SkeletonLoader className={css.loader} />
     }
 
-    if (hasSearched && hasNoResults(tickets, customers, searchItemsType)) {
+    if (
+        hasSearched &&
+        hasNoResults(tickets, customers, calls, searchItemsType)
+    ) {
         return (
             <SpotlightNoResults
                 title="No results"
@@ -211,7 +217,7 @@ export const SpotlightModalContent = ({
 
     const displayedTickets = hasSearched ? tickets : recentTickets
     const displayedCustomers = hasSearched ? customers : recentCustomers
-    const displayedCalls = hasSearched ? [] : recentCalls
+    const displayedCalls = hasSearched ? calls : recentCalls
 
     const shouldDisplayRecentItems =
         !hasSearched &&
@@ -223,7 +229,9 @@ export const SpotlightModalContent = ({
                 searchItemsType === ViewType.CallList &&
                 !_isEmpty(recentCalls)) ||
             (searchItemsType === ViewType.All &&
-                (!_isEmpty(recentCustomers) || !_isEmpty(recentTickets))))
+                (!_isEmpty(recentCustomers) ||
+                    !_isEmpty(recentTickets) ||
+                    (showCallsTab && !_isEmpty(recentCalls)))))
 
     const data = getData(
         searchItemsType,

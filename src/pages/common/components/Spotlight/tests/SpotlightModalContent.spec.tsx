@@ -44,6 +44,7 @@ describe('<SpotlightModalContent />', () => {
         searchItemsType: ViewType.TicketList,
         tickets: [],
         customers: [],
+        calls: [],
         resultsWithHighlights: [],
         recentTickets: [],
         recentCustomers: [],

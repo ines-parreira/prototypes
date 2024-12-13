@@ -31,9 +31,36 @@ describe('<SpotlightCallRow/>', () => {
 
         expect(
             getByText(
-                `${voiceCall.phone_number_source} called ${voiceCall.phone_number_source}`
+                `${voiceCall.phone_number_source} called ${voiceCall.phone_number_destination}`
             )
         ).toBeInTheDocument()
+        expect(
+            getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`)
+        ).toBeInTheDocument()
+        expect(getByText('Answered')).toBeInTheDocument()
+        expect(getByText('Aug 31st, 23')).toBeInTheDocument()
+    })
+
+    it('should render highlights', () => {
+        const {getByText} = renderWithStore(
+            <SpotlightCallRow
+                {...defaultProps}
+                item={{
+                    ...voiceCall,
+                    highlights: {
+                        phone_number_source: ['highlighted source'],
+                        phone_number_destination: ['highlighted destination'],
+                        transcripts: ['highlighted transcript'],
+                    },
+                }}
+            />,
+            {}
+        )
+
+        expect(
+            getByText('highlighted source called highlighted destination')
+        ).toBeInTheDocument()
+        expect(getByText('highlighted transcript')).toBeInTheDocument()
         expect(
             getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`)
         ).toBeInTheDocument()

@@ -1,3 +1,7 @@
+import {
+    SearchVoiceCalls200DataItemHighlights,
+    SearchVoiceCallsParams,
+} from '@gorgias/api-types'
 import {CancelToken} from 'axios'
 import {isObject} from 'lodash'
 
@@ -183,5 +187,17 @@ export type CustomerSearchOptions = ApiPaginationParams & {
     withHighlights?: boolean
 }
 
-// to do add highlights from the SDK when ready
-export type PicketVoiceCallWithHighlights = VoiceCall
+export type VoiceCallWithHighlightsResponse = {
+    entity: VoiceCall
+    highlights: SearchVoiceCalls200DataItemHighlights
+}
+
+export type PicketVoiceCallWithHighlights = VoiceCall & {
+    highlights?: SearchVoiceCalls200DataItemHighlights
+}
+
+export type VoiceCallSearchOptions = SearchVoiceCallsParams & {
+    search?: string
+    cancelToken?: CancelToken
+    withHighlights?: boolean
+}

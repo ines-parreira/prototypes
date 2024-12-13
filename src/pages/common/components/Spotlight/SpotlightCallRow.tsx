@@ -6,6 +6,7 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {EntityType} from 'hooks/useSearchRankScenario'
 import {PicketVoiceCallWithHighlights} from 'models/search/types'
+import {callHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
@@ -33,12 +34,17 @@ const SpotlightCallRow = ({
     selected,
     onClick,
 }: SpotlightCallRowProps) => {
+    const itemWithHighlights = useMemo(
+        () => callHighlightsTransform(item),
+        [item]
+    )
+
     return (
         <SpotlightRow
             id={id}
             index={index}
             icon={<TicketIcon channel={'phone'} status={TicketStatus.Open} />}
-            title={`${item.phone_number_source} called ${item.phone_number_source}`}
+            title={`${itemWithHighlights.phone_number_source} called ${itemWithHighlights.phone_number_destination}`}
             info={<SpotlightCallInfo voiceCall={item} />}
             link={`/app/ticket/${item.ticket_id}`}
             onCloseModal={onCloseModal}
@@ -46,6 +52,7 @@ const SpotlightCallRow = ({
             selected={selected}
             onClick={onClick}
             entityType={EntityType.Call}
+            message={itemWithHighlights.highlightedText}
         />
     )
 }
@@ -96,6 +103,7 @@ const SpotlightCallInfo = ({
                 <VoiceCallStatusLabel
                     voiceCallStatus={voiceCall.status}
                     direction={voiceCall.direction}
+                    lastAnsweredByAgentId={voiceCall.last_answered_by_agent_id}
                 />
                 <span className={css.separator} />
                 <span>{formattedDate}</span>

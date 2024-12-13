@@ -179,6 +179,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 break
             case Tabs.Calls:
                 setSearchItemsType(ViewType.CallList)
+                logEvent(SegmentEvent.GlobalSearchCallTabClick)
                 break
         }
     }

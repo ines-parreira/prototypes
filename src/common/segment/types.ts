@@ -142,6 +142,7 @@ export enum SegmentEvent {
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchAllTabClick = 'all-tab-click',
     GlobalSearchCustomerTabClick = 'customer-tab-click',
+    GlobalSearchCallTabClick = 'call-tab-click',
     GlobalSearchOpenButtonClick = 'search-open-button-click',
     GlobalSearchOpenShortcut = 'search-open-shortcut',
     GlobalSearchTicketTabClick = 'ticket-tab-click',

@@ -10,7 +10,9 @@ import {
     useState,
 } from 'react'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
@@ -23,6 +25,7 @@ import useSearchRankScenario, {
 } from 'hooks/useSearchRankScenario'
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {CursorMeta} from 'models/api/types'
+import {ProductType} from 'models/billing/types'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
@@ -32,25 +35,22 @@ import {
     PickedCustomerWithHighlights,
     PickedTicket,
     PickedTicketWithHighlights,
-    SearchEngine,
     PicketVoiceCallWithHighlights,
+    SearchEngine,
 } from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {ViewType} from 'models/view/types'
+import {searchVoiceCallsWithHighlights} from 'models/voiceCall/resources'
 import {isVoiceCall} from 'models/voiceCall/types'
 import {
     FEDERATED_SEARCH_GROUP_SIZE,
     SEARCH_QUERY_EXPIRY_TIME,
 } from 'pages/common/components/Spotlight/constants'
 import history from 'pages/history'
+import {currentAccountHasProduct} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {isMacOs} from 'utils/platform'
-
-import {FeatureFlagKey} from '../../../../config/featureFlags'
-import useAppSelector from '../../../../hooks/useAppSelector'
-import {ProductType} from '../../../../models/billing/types'
-import {currentAccountHasProduct} from '../../../../state/billing/selectors'
 
 type OldSearchPaginationMeta = {
     prev_items: string
@@ -64,6 +64,11 @@ type CustomerSearchResponse = {
 
 type TicketSearchResponse = {
     data?: PickedTicketWithHighlights[]
+    meta: MetaType
+}
+
+type CallSearchResponse = {
+    data?: PicketVoiceCallWithHighlights[]
     meta: MetaType
 }
 
@@ -127,6 +132,7 @@ export const useSearch = () => {
     )
     const [ticketsSearchMeta, setTicketsSearchMeta] = useState<MetaType>()
     const [customersSearchMeta, setCustomersSearchMeta] = useState<MetaType>()
+    const [callSearchMeta, setCallSearchMeta] = useState<MetaType>()
     const [lastSearchQueries, setLastSearchQueries] = useState<
         Record<Tabs, string>
     >({
@@ -142,6 +148,7 @@ export const useSearch = () => {
     const [customers, setCustomers] = useState<PickedCustomerWithHighlights[]>(
         []
     )
+    const [calls, setCalls] = useState<PicketVoiceCallWithHighlights[]>([])
     const {items: recentTickets} = useRecentItems<PickedTicket>(
         RecentItems.Tickets
     )
@@ -166,6 +173,9 @@ export const useSearch = () => {
                 return hasSearched
                     ? [
                           ...tickets.slice(0, FEDERATED_SEARCH_GROUP_SIZE),
+                          ...(showCallsTab
+                              ? calls.slice(0, FEDERATED_SEARCH_GROUP_SIZE)
+                              : []),
                           ...customers.slice(0, FEDERATED_SEARCH_GROUP_SIZE),
                       ].length - 1
                     : [
@@ -185,7 +195,7 @@ export const useSearch = () => {
                           ),
                       ].length - 1
             case ViewType.CallList:
-                return hasSearched ? 0 : recentCalls.length - 1
+                return hasSearched ? calls.length - 1 : recentCalls.length - 1
         }
     }, [
         searchItemsType,
@@ -194,6 +204,7 @@ export const useSearch = () => {
         recentTickets,
         customers,
         recentCustomers,
+        calls,
         recentCalls,
         showCallsTab,
     ])
@@ -218,11 +229,16 @@ export const useSearch = () => {
                     ? customers[selectedIndex]
                     : recentCustomers[selectedIndex]
             case ViewType.CallList:
-                return hasSearched ? undefined : recentCalls[selectedIndex]
+                return hasSearched
+                    ? calls[selectedIndex]
+                    : recentCalls[selectedIndex]
             case ViewType.All:
                 return hasSearched
                     ? [
                           ...tickets.slice(0, FEDERATED_SEARCH_GROUP_SIZE),
+                          ...(showCallsTab
+                              ? calls.slice(0, FEDERATED_SEARCH_GROUP_SIZE)
+                              : []),
                           ...customers.slice(0, FEDERATED_SEARCH_GROUP_SIZE),
                       ][selectedIndex]
                     : [
@@ -250,6 +266,7 @@ export const useSearch = () => {
         recentTickets,
         customers,
         recentCustomers,
+        calls,
         recentCalls,
         showCallsTab,
     ])
@@ -310,6 +327,31 @@ export const useSearch = () => {
         [searchRank]
     )
 
+    const handleCallSearchResult = useCallback(
+        (
+            data: CallSearchResponse,
+            viewType: ViewType,
+            searchTerm: string,
+            cursor?: string
+        ) => {
+            const results = data?.data ?? []
+            searchRank.registerResultsResponse({
+                responseTime: Date.now(),
+                numberOfResults: results.length,
+                searchEngine: SearchEngine.ES,
+            })
+            setLastSearchQueries({
+                [Tabs.Tickets]: '',
+                [Tabs.Customers]: '',
+                [Tabs.All]: viewType === ViewType.All ? searchTerm : '',
+                [Tabs.Calls]: viewType === ViewType.CallList ? searchTerm : '',
+            })
+            setCalls((calls) => (cursor ? [...calls, ...results] : results))
+            setCallSearchMeta(data.meta)
+        },
+        [searchRank]
+    )
+
     const createFetchSearchItems = useCallback(
         (cancelToken: CancelToken) =>
             async (searchTerm: string, viewType: ViewType, cursor?: string) => {
@@ -322,6 +364,7 @@ export const useSearch = () => {
                 try {
                     let ticketPromise
                     let customerPromise
+                    let callPromise
                     if (
                         viewType === ViewType.TicketList ||
                         viewType === ViewType.All
@@ -344,10 +387,22 @@ export const useSearch = () => {
                             cancelToken,
                         })
                     }
-                    const [ticketData, customerData] = await Promise.all([
-                        ticketPromise,
-                        customerPromise,
-                    ])
+                    if (
+                        viewType === ViewType.CallList ||
+                        viewType === ViewType.All
+                    ) {
+                        callPromise = searchVoiceCallsWithHighlights({
+                            search: searchTerm,
+                            cancelToken,
+                            cursor,
+                        })
+                    }
+                    const [ticketData, customerData, callData] =
+                        await Promise.all([
+                            ticketPromise,
+                            customerPromise,
+                            callPromise,
+                        ])
                     if (ticketData) {
                         handleTicketSearchResult(
                             ticketData.data,
@@ -359,6 +414,14 @@ export const useSearch = () => {
                     if (customerData) {
                         handleCustomerSearchResult(
                             customerData.data,
+                            viewType,
+                            searchTerm,
+                            cursor
+                        )
+                    }
+                    if (callData) {
+                        handleCallSearchResult(
+                            callData.data,
                             viewType,
                             searchTerm,
                             cursor
@@ -385,6 +448,7 @@ export const useSearch = () => {
             searchRank,
             handleCustomerSearchResult,
             handleTicketSearchResult,
+            handleCallSearchResult,
             dispatch,
         ]
     )
@@ -420,9 +484,11 @@ export const useSearch = () => {
     const resetSearch = () => {
         !_isEmpty(tickets) && setTickets([])
         !_isEmpty(customers) && setCustomers([])
+        !_isEmpty(calls) && setCalls([])
         hasSearched && setHasSearched(false)
         !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
         !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
+        !_isEmpty(callSearchMeta) && setCallSearchMeta(undefined)
         setSearchItemsType(defaultSearchItemsType)
         setLastSearchQueries({
             customers: '',
@@ -441,8 +507,10 @@ export const useSearch = () => {
             setHasSearched(false)
             setTicketsSearchMeta(undefined)
             setCustomersSearchMeta(undefined)
+            setCallSearchMeta(undefined)
             setTickets([])
             setCustomers([])
+            setCalls([])
         }
         setSearchQuery(query)
         setRecentSearchQuery(query)
@@ -471,17 +539,32 @@ export const useSearch = () => {
         showCallsTab,
     ])
 
-    const nextCursor = useMemo(
-        () =>
-            searchItemsType === ViewType.CustomerList
-                ? (customersSearchMeta as CursorMeta)?.next_cursor ||
-                  (customersSearchMeta as OldSearchPaginationMeta)?.next_items
-                : searchItemsType === ViewType.TicketList
-                  ? (ticketsSearchMeta as CursorMeta)?.next_cursor ||
+    const nextCursor = useMemo(() => {
+        switch (searchItemsType) {
+            case ViewType.CustomerList:
+                return (
+                    (customersSearchMeta as CursorMeta)?.next_cursor ||
+                    (customersSearchMeta as OldSearchPaginationMeta)?.next_items
+                )
+            case ViewType.TicketList:
+                return (
+                    (ticketsSearchMeta as CursorMeta)?.next_cursor ||
                     (ticketsSearchMeta as OldSearchPaginationMeta)?.next_items
-                  : undefined,
-        [searchItemsType, customersSearchMeta, ticketsSearchMeta]
-    )
+                )
+            case ViewType.CallList:
+                return (
+                    (callSearchMeta as CursorMeta)?.next_cursor ||
+                    (callSearchMeta as OldSearchPaginationMeta)?.next_items
+                )
+            default:
+                return undefined
+        }
+    }, [
+        searchItemsType,
+        customersSearchMeta,
+        ticketsSearchMeta,
+        callSearchMeta,
+    ])
 
     useLayoutEffect(() => {
         if (
@@ -509,6 +592,13 @@ export const useSearch = () => {
                         ? lastSearchQueries[Tabs.Customers]
                         : searchQuery
                 void fetchSearchItems(query, ViewType.TicketList)
+            } else if (searchItemsType === ViewType.CallList) {
+                const query =
+                    lastSearchQueries[Tabs.Calls] &&
+                    searchQuery !== lastSearchQueries[Tabs.Calls]
+                        ? lastSearchQueries[Tabs.Calls]
+                        : searchQuery
+                void fetchSearchItems(query, ViewType.CallList)
             } else if (searchItemsType === ViewType.All) {
                 void fetchSearchItems(searchQuery, ViewType.All)
             }
@@ -559,6 +649,9 @@ export const useSearch = () => {
                         lastSearchQueries[Tabs.Tickets] !== searchQuery) ||
                     (searchItemsType === ViewType.All &&
                         lastSearchQueries[Tabs.All] !== searchQuery) ||
+                    (showCallsTab &&
+                        searchItemsType === ViewType.CallList &&
+                        lastSearchQueries[Tabs.Calls] !== searchQuery) ||
                     !hasSearched)
             ) {
                 await delayedFetchSearchItems(searchQuery, searchItemsType)
@@ -572,6 +665,7 @@ export const useSearch = () => {
             searchItemsType,
             searchQuery,
             selectedItem,
+            showCallsTab,
         ]
     )
 
@@ -605,6 +699,7 @@ export const useSearch = () => {
         setSearchItemsType,
         setSelectedIndex,
         tickets,
+        calls,
         recentCalls,
         showCallsTab,
     }

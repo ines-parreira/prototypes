@@ -18,6 +18,7 @@ import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {ticket} from 'fixtures/ticket'
 import {user} from 'fixtures/users'
+import {voiceCall} from 'fixtures/voiceCalls'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
@@ -25,12 +26,14 @@ import useSelectedIndex from 'hooks/useSelectedIndex'
 import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {SearchEngine} from 'models/search/types'
 import {searchTicketsWithHighlights} from 'models/ticket/resources'
+
+import {searchVoiceCallsWithHighlights} from 'models/voiceCall/resources'
 import {
     CALLS_LABEL,
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-
+import SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import SpotlightModal, {
     CUSTOMERS_ADVANCED_SEARCH_PATH,
@@ -42,12 +45,12 @@ import history from 'pages/history'
 import * as billingSelectors from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-
 import * as platform from 'utils/platform'
 import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
+const CALL_SPOTLIGHT_ROW_TEST_ID = 'spotlight-call-row'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -83,6 +86,19 @@ jest.mock(
             </div>
         )
 )
+jest.mock(
+    'pages/common/components/Spotlight/SpotlightCallRow',
+    () =>
+        ({onClick, onHover}: ComponentProps<typeof SpotlightCallRow>) => (
+            <div
+                onClick={onClick}
+                onMouseEnter={onHover}
+                data-testid={CALL_SPOTLIGHT_ROW_TEST_ID}
+            >
+                MockedSpotlightCallRow
+            </div>
+        )
+)
 
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
     (element) => element as ReactPortal
@@ -92,6 +108,9 @@ jest.mock('models/customer/resources')
 const searchCustomersWithHighlightsMock = assumeMock(
     searchCustomersWithHighlights
 )
+
+jest.mock('models/voiceCall/resources')
+const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 
 jest.mock('models/ticket/resources')
 const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
@@ -235,9 +254,21 @@ describe('<SpotlightModal/>', () => {
             expect(callsTab).toHaveClass('activeTab')
         })
 
-        it('should not render calls if FF is off', async () => {
+        it('should not render calls tab if FF is off', async () => {
             mockFlags({[FeatureFlagKey.VoiceCallSearch]: false})
             mockCurrentAccountHasProduct.mockReturnValue((() => true) as any)
+
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+
+            expect(screen.queryByRole('tab', {name: CALLS_LABEL})).toBeNull()
+            expect(getFederatedTab()).toHaveClass('activeTab')
+            expect(getCustomersTab()).toBeInTheDocument()
+            expect(getTicketsTab()).toBeInTheDocument()
+        })
+
+        it('should not render calls tab if voice product is disabled', async () => {
+            mockCurrentAccountHasProduct.mockReturnValue((() => false) as any)
 
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
@@ -447,6 +478,31 @@ describe('<SpotlightModal/>', () => {
         )
     })
 
+    it('should not display calls in federated tab if product is disabled', async () => {
+        mockCurrentAccountHasProduct.mockReturnValue((() => false) as any)
+        searchCallsWithHighlightsMock.mockResolvedValue({
+            data: {data: [voiceCall]},
+        } as any)
+        jest.useFakeTimers()
+
+        const {rerender} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+        rerender(<WrappedSpotlightModal {...minProps} />)
+
+        const tab = getFederatedTab()
+        const searchInput = screen.getByPlaceholderText('Search...')
+        tab?.focus()
+
+        await userEvent.type(searchInput, 'foo')
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+        await act(flushPromises)
+
+        expect(screen.queryByTestId(CALL_SPOTLIGHT_ROW_TEST_ID)).toBeNull()
+    })
+
     it('should end previous searchRank scenario and register a new one on enter keypress', async () => {
         searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {data: [{foo: 'foo'}]},
@@ -519,6 +575,7 @@ describe('<SpotlightModal/>', () => {
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
         expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(1)
+        expect(searchCallsWithHighlightsMock).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
@@ -551,6 +608,11 @@ describe('<SpotlightModal/>', () => {
                 search: searchQuery,
             })
         )
+        expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                search: searchQuery,
+            })
+        )
     })
 
     it('should not fetch items on tab switch if a search has been performed for that item type', async () => {
@@ -561,6 +623,7 @@ describe('<SpotlightModal/>', () => {
         const searchInput = screen.getByPlaceholderText('Search...')
         const ticketsTab = getTicketsTab()
         const customersTab = getCustomersTab()
+        const callsTab = getCallsTab()
 
         ticketsTab?.focus()
         await userEvent.type(searchInput, 'foo')
@@ -571,8 +634,11 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         ticketsTab?.focus()
         await act(flushPromises)
+        callsTab?.focus()
+        await act(flushPromises)
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(1)
+        expect(searchCallsWithHighlightsMock).toHaveBeenCalledTimes(1)
         expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(2)
     })
 
@@ -612,6 +678,31 @@ describe('<SpotlightModal/>', () => {
         await userEvent.type(searchInput, '{enter}')
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                search: searchQuery,
+            })
+        )
+    })
+
+    it('should fetch calls on enter keypress', async () => {
+        searchCallsWithHighlightsMock.mockResolvedValue({
+            data: {data: []},
+        } as any)
+        jest.useFakeTimers()
+        const searchQuery = 'foo2'
+
+        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+        await act(flushPromises)
+
+        const searchInput = screen.getByPlaceholderText('Search...')
+        const callsTab = getCallsTab()
+
+        callsTab?.focus()
+        await userEvent.type(searchInput, searchQuery)
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+
+        expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
             })
@@ -737,6 +828,7 @@ describe('<SpotlightModal/>', () => {
     it.each([
         [TICKETS_LABEL, ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
         [CUSTOMERS_LABEL, customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
+        [CALLS_LABEL, voiceCall, CALL_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the fetched result set with SpotlightRow for %s tab',
         async (_, item, componentName) => {
@@ -767,6 +859,7 @@ describe('<SpotlightModal/>', () => {
     it.each([
         [TICKETS_LABEL, ticket],
         [CUSTOMERS_LABEL, customer],
+        [CALLS_LABEL, voiceCall],
     ])(
         'should fetch more from new endpoint on end reached if meta indicates more items are available',
         async (name, item) => {
@@ -781,6 +874,9 @@ describe('<SpotlightModal/>', () => {
                 data: response,
             } as any)
             searchCustomersWithHighlightsMock.mockResolvedValue({
+                data: response,
+            } as any)
+            searchCallsWithHighlightsMock.mockResolvedValue({
                 data: response,
             } as any)
             jest.useFakeTimers()
@@ -809,8 +905,12 @@ describe('<SpotlightModal/>', () => {
                 expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
                     expect.objectContaining({cursor: 'foo'})
                 )
-            } else {
+            } else if (name === CUSTOMERS_LABEL) {
                 expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
+                    expect.objectContaining({cursor: 'foo'})
+                )
+            } else {
+                expect(searchCallsWithHighlightsMock).toHaveBeenCalledWith(
                     expect.objectContaining({cursor: 'foo'})
                 )
             }
@@ -867,6 +967,7 @@ describe('<SpotlightModal/>', () => {
 
         const ticketsTab = getTicketsTab()
         const customersTab = getCustomersTab()
+        const callsTab = getCallsTab()
 
         customersTab?.focus()
         expect(logEvent).toHaveBeenCalledWith(
@@ -876,6 +977,10 @@ describe('<SpotlightModal/>', () => {
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchTicketTabClick
         )
+        callsTab?.focus()
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchCallTabClick
+        )
     })
 
     it('should end previous searchRank scenario on tab switch', async () => {
@@ -884,17 +989,21 @@ describe('<SpotlightModal/>', () => {
 
         const ticketsTab = getTicketsTab()
         const customersTab = getCustomersTab()
+        const callsTab = getCallsTab()
 
         customersTab?.focus()
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(1)
         ticketsTab?.focus()
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(2)
+        callsTab?.focus()
+        expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(3)
     })
 
     describe('Recent items', () => {
         it.each([
             [TICKETS_LABEL, ticket, TICKET_SPOTLIGHT_ROW_TEST_ID],
             [CUSTOMERS_LABEL, customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
+            [CALLS_LABEL, voiceCall, CALL_SPOTLIGHT_ROW_TEST_ID],
         ])(
             'should render the recent %s searches with SpotlightRow',
             async (name, item, componentName) => {
@@ -935,6 +1044,61 @@ describe('<SpotlightModal/>', () => {
             }
         )
 
+        it('should not render the recent calls searches if voice product is disabled', async () => {
+            mockCurrentAccountHasProduct.mockReturnValue((() => false) as any)
+            mockUseRecentItems.mockImplementation((itemType: RecentItems) => {
+                if (itemType.toLowerCase() === CALLS_LABEL.toLowerCase()) {
+                    return {
+                        items: [voiceCall],
+                        setRecentItem: jest.fn() as any,
+                        isGettingItems: false,
+                    }
+                }
+                return {
+                    items: [ticket],
+                    setRecentItem: jest.fn() as any,
+                    isGettingItems: false,
+                }
+            })
+
+            const {rerender} = renderWithRouter(
+                <WrappedSpotlightModal {...minProps} />
+            )
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+
+            expect(screen.getByText('Recently accessed')).toBeInTheDocument()
+            expect(screen.queryByTestId(CALL_SPOTLIGHT_ROW_TEST_ID)).toBeNull()
+        })
+
+        it('should ignore recent calls searches if voice product is disabled and no other recent items exist', async () => {
+            mockCurrentAccountHasProduct.mockReturnValue((() => false) as any)
+            mockUseRecentItems.mockImplementation((itemType: RecentItems) => {
+                if (itemType.toLowerCase() === CALLS_LABEL.toLowerCase()) {
+                    return {
+                        items: [voiceCall],
+                        setRecentItem: jest.fn() as any,
+                        isGettingItems: false,
+                    }
+                }
+                return {
+                    items: [],
+                    setRecentItem: jest.fn() as any,
+                    isGettingItems: false,
+                }
+            })
+
+            const {rerender} = renderWithRouter(
+                <WrappedSpotlightModal {...minProps} />
+            )
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+
+            expect(screen.getByText('No recent results')).toBeInTheDocument()
+        })
+
         it.each([
             [
                 TICKETS_LABEL,
@@ -947,6 +1111,12 @@ describe('<SpotlightModal/>', () => {
                 customer,
                 CUSTOMER_SPOTLIGHT_ROW_TEST_ID,
                 'spotlight-customer',
+            ],
+            [
+                CALLS_LABEL,
+                voiceCall,
+                CALL_SPOTLIGHT_ROW_TEST_ID,
+                'spotlight-call',
             ],
         ])(
             'should log segment event when a recent %s row is clicked',
@@ -1009,6 +1179,15 @@ describe('<SpotlightModal/>', () => {
                 },
             ],
             [
+                CALLS_LABEL,
+                voiceCall,
+                {
+                    KBkey: '{enter}',
+                    shouldCall: history.push,
+                    expectedResult: [`/app/ticket/${voiceCall.ticket_id}`],
+                },
+            ],
+            [
                 TICKETS_LABEL,
                 ticket,
                 {
@@ -1029,6 +1208,19 @@ describe('<SpotlightModal/>', () => {
                     shouldCall: window.open,
                     expectedResult: [
                         `/app/customer/${customer.id}`,
+                        '_blank',
+                        'noopener',
+                    ],
+                },
+            ],
+            [
+                CALLS_LABEL,
+                voiceCall,
+                {
+                    KBkey: '{ctrl}{enter}',
+                    shouldCall: window.open,
+                    expectedResult: [
+                        `/app/ticket/${voiceCall.ticket_id}`,
                         '_blank',
                         'noopener',
                     ],
@@ -1058,6 +1250,9 @@ describe('<SpotlightModal/>', () => {
                 } as any)
                 jest.useFakeTimers()
                 searchCustomersWithHighlightsMock.mockResolvedValue({
+                    data: response,
+                } as any)
+                searchCallsWithHighlightsMock.mockResolvedValue({
                     data: response,
                 } as any)
                 jest.useFakeTimers()
@@ -1111,6 +1306,15 @@ describe('<SpotlightModal/>', () => {
                 },
             ],
             [
+                CALLS_LABEL,
+                voiceCall,
+                {
+                    KBkey: '{enter}',
+                    shouldCall: history.push,
+                    expectedResult: [`/app/ticket/${voiceCall.ticket_id}`],
+                },
+            ],
+            [
                 TICKETS_LABEL,
                 ticket,
                 {
@@ -1131,6 +1335,19 @@ describe('<SpotlightModal/>', () => {
                     shouldCall: window.open,
                     expectedResult: [
                         `/app/customer/${customer.id}`,
+                        '_blank',
+                        'noopener',
+                    ],
+                },
+            ],
+            [
+                CALLS_LABEL,
+                voiceCall,
+                {
+                    KBkey: '{meta}{enter}',
+                    shouldCall: window.open,
+                    expectedResult: [
+                        `/app/ticket/${voiceCall.ticket_id}`,
                         '_blank',
                         'noopener',
                     ],
@@ -1160,6 +1377,12 @@ describe('<SpotlightModal/>', () => {
                     },
                 }
                 searchTicketsWithHighlightsMock.mockResolvedValue({
+                    data: response,
+                } as any)
+                searchCallsWithHighlightsMock.mockResolvedValue({
+                    data: response,
+                } as any)
+                searchCustomersWithHighlightsMock.mockResolvedValue({
                     data: response,
                 } as any)
                 jest.useFakeTimers()

@@ -1,17 +1,37 @@
+import {searchVoiceCalls as apiSearchVoiceCalls} from '@gorgias/api-client'
+import {SearchVoiceCalls200} from '@gorgias/api-types'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import {voiceCall} from 'fixtures/voiceCalls'
 import client from 'models/api/resources'
+import {assumeMock} from 'utils/testing'
 
 import {
     listVoiceCalls,
     listVoiceCallRecordings,
     listVoiceCallEvents,
+    searchVoiceCalls,
+    searchVoiceCallsWithHighlights,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
+jest.mock('@gorgias/api-client')
+const searchCallsMock = assumeMock(apiSearchVoiceCalls)
+
 describe('list voice calls resources', () => {
+    const defaultSearchData: SearchVoiceCalls200 = {
+        data: [
+            {
+                entity: voiceCall as any,
+                highlights: {},
+            },
+        ],
+        meta: {next_cursor: '', prev_cursor: null},
+        object: 'list',
+        uri: '/integrations/phone/search',
+    }
     beforeEach(() => {
         mockedServer.reset()
     })
@@ -74,6 +94,108 @@ describe('list voice calls resources', () => {
             return expect(listVoiceCallEvents()).rejects.toEqual(
                 new Error('Request failed with status code 404')
             )
+        })
+    })
+
+    describe('searchVoiceCalls', () => {
+        beforeEach(() => {
+            searchCallsMock.mockResolvedValue({data: defaultSearchData} as any)
+        })
+
+        it('should resolve with the call list and meta on success', async () => {
+            const res = await searchVoiceCalls({
+                search: '',
+            })
+
+            expect(res.data).toEqual(defaultSearchData)
+        })
+
+        it('should pass the search phrase and filters in the payload', async () => {
+            const options = {
+                search: 'foo',
+            }
+
+            await searchVoiceCalls(options)
+
+            expect(searchCallsMock).toHaveBeenCalledWith(options, {}, {})
+        })
+
+        it('should pass cursor and limit in the params', async () => {
+            const options = {
+                search: 'foo',
+            }
+            const cursor = 'some_cursor'
+            const limit = 10
+
+            await searchVoiceCalls({
+                ...options,
+                cursor,
+                limit,
+            })
+
+            expect(searchCallsMock).toHaveBeenCalledWith(
+                options,
+                {cursor, limit},
+                {}
+            )
+        })
+
+        it('should pass cancel token', async () => {
+            const source = axios.CancelToken.source()
+            source.cancel()
+
+            await searchVoiceCalls({
+                search: '',
+                cancelToken: source.token,
+            })
+
+            expect(searchCallsMock).toHaveBeenCalledWith(
+                {
+                    search: '',
+                },
+                {},
+                {cancelToken: source.token}
+            )
+        })
+
+        it('should add with_highlights prop', async () => {
+            const options = {
+                search: 'foo',
+            }
+            const params = {
+                withHighlights: true,
+            }
+
+            await searchVoiceCalls({...options, ...params})
+
+            expect(searchCallsMock).toHaveBeenCalledWith(
+                {...options},
+                {with_highlights: params.withHighlights},
+                {}
+            )
+        })
+    })
+
+    describe('searchVoiceCallsWithHighlights', () => {
+        it('should call searchTickets withHighlights and merge Tickets with their highlights', async () => {
+            const options = {search: 'foo'}
+
+            const response = await searchVoiceCallsWithHighlights(options)
+
+            expect(searchCallsMock).toHaveBeenCalledWith(
+                {
+                    ...options,
+                },
+                {with_highlights: true},
+                {}
+            )
+
+            expect(response.data.data).toEqual([
+                {
+                    ...voiceCall,
+                    highlights: {},
+                },
+            ])
         })
     })
 })
