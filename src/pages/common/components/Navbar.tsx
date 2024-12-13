@@ -12,7 +12,12 @@ import React, {
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {ActiveContent, MainNavigation, NavbarLink} from 'common/navigation'
+import {
+    ActiveContent,
+    MainNavigation,
+    NavbarLink,
+    ThemeMenu,
+} from 'common/navigation'
 import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -42,7 +47,7 @@ import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 import {THEME_CONFIGS, withTheme} from 'theme'
-import type {HelpdeskThemeName, WithThemeProps} from 'theme'
+import type {WithThemeProps} from 'theme'
 
 import {isTouchEvent} from 'utils'
 
@@ -183,13 +188,6 @@ export class Navbar extends Component<Props, State> {
 
             this.setState({navbarWidth: newWidth})
         }
-    }
-
-    updateTheme = (name: string) => {
-        this.props.setTheme(name as HelpdeskThemeName)
-        logEvent(SegmentEvent.ThemeUpdate, {
-            theme: name,
-        })
     }
 
     render() {
@@ -835,30 +833,7 @@ export class Navbar extends Component<Props, State> {
                                     Back
                                 </DropdownHeader>
                                 <DropdownBody>
-                                    {THEME_CONFIGS.map(({label, name}) => (
-                                        <div
-                                            key={name}
-                                            className={classnames(
-                                                css['dropdown-item-user-menu'],
-                                                css.justify
-                                            )}
-                                            onClick={() =>
-                                                this.updateTheme(name)
-                                            }
-                                        >
-                                            {label}
-                                            {theme.name === name && (
-                                                <span
-                                                    className={classnames(
-                                                        css.check,
-                                                        'material-icons'
-                                                    )}
-                                                >
-                                                    done
-                                                </span>
-                                            )}
-                                        </div>
-                                    ))}
+                                    <ThemeMenu />
                                 </DropdownBody>
                             </Screen>
                             <div id="noticeable-widget" />
