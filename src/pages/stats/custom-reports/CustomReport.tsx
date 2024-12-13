@@ -1,40 +1,41 @@
-import {noop} from 'lodash'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {CustomReportNameInput} from 'pages/stats/custom-reports/CustomReportNameInput'
-import {
-    StatsPageContent,
-    StatsPageHeader,
-    StatsPageWrapper,
-} from 'pages/stats/StatsPage'
+import {useGridSize} from 'hooks/useGridSize'
+import {FilterKey} from 'models/stat/types'
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import {renderCustomReportChildWithKeys} from 'pages/stats/custom-reports/utils'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
 
-export const CUSTOM_REPORT_TITLE = 'CUSTOM REPORT ID:'
-export const CUSTOM_REPORT_ID_CTA = 'Actions'
+type Props = {
+    customReport: CustomReportSchema
+}
 
-export const CustomReport = () => {
-    const {id} = useParams<{id: string}>()
+export const CustomReport = ({customReport}: Props) => {
+    const getGridCellSize = useGridSize()
 
     return (
-        <StatsPageWrapper>
-            <StatsPageHeader
-                left={
-                    <CustomReportNameInput
-                        initialValues={{name: 'My Custom Report', emoji: '🤘'}}
-                        onChange={noop}
+        <>
+            <DashboardSection>
+                <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
+                    <FiltersPanelWrapper
+                        persistentFilters={[
+                            FilterKey.Period,
+                            FilterKey.AggregationWindow,
+                        ]}
+                        optionalFilters={[]}
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
+                                    maxSpan: 365,
+                                },
+                            },
+                        }}
                     />
-                }
-                right={
-                    // TODO: Implement dropdown
-                    <ButtonIconLabel position="right" icon="more_vert">
-                        {CUSTOM_REPORT_ID_CTA}
-                    </ButtonIconLabel>
-                }
-            />
-            <StatsPageContent>
-                {CUSTOM_REPORT_TITLE} {id}
-            </StatsPageContent>
-        </StatsPageWrapper>
+                </DashboardGridCell>
+            </DashboardSection>
+            {customReport.children.map(renderCustomReportChildWithKeys)}
+        </>
     )
 }

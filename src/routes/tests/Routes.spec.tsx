@@ -2,6 +2,7 @@ import {act, render, screen} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
 import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
@@ -21,7 +22,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {user} from 'fixtures/users'
-import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
+import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import LiveOverview from 'pages/stats/LiveOverview'
 import Satisfaction from 'pages/stats/quality-management/satisfaction/Satisfaction'
@@ -140,6 +141,8 @@ jest.mock(
             </>
         )
 )
+jest.mock('pages/stats/custom-reports/CustomReportPage')
+const CustomReportPageMock = assumeMock(CustomReportPage)
 jest.mock('pages/stats/support-performance/channels/ChannelsReport')
 const ChannelsReportMock = assumeMock(ChannelsReport)
 jest.mock('pages/stats/sla/ServiceLevelAgreements')
@@ -154,8 +157,6 @@ jest.mock('pages/stats/SupportPerformanceTags')
 const OldTagsMock = assumeMock(SupportPerformanceTags)
 jest.mock('pages/stats/quality-management/satisfaction/Satisfaction')
 const SatisfactionMock = assumeMock(Satisfaction)
-jest.mock('pages/stats/custom-reports/CustomReport')
-const CustomReportMock = assumeMock(CustomReport)
 jest.mock('pages/stats/custom-reports/CustomReports')
 const CustomReportsMock = assumeMock(CustomReports)
 
@@ -185,7 +186,7 @@ describe('<Routes/>', () => {
         TagsMock.mockImplementation(() => <div />)
         OldTagsMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
-        CustomReportMock.mockImplementation(() => <div />)
+        CustomReportPageMock.mockImplementation(() => <div />)
         CustomReportsMock.mockImplementation(() => <div />)
     })
 
@@ -655,7 +656,7 @@ describe('<Routes/>', () => {
                 state
             )
 
-            expect(CustomReportMock).toHaveBeenCalled()
+            expect(CustomReportPageMock).toHaveBeenCalled()
         })
 
         it('should the NoMatch component when the path doesn’t match any route', () => {

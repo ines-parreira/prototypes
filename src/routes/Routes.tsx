@@ -116,7 +116,7 @@ import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
+import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
 import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
@@ -555,7 +555,7 @@ export function StatsRoutes() {
                         path={`${path}/custom-reports/:id`}
                         render={() => (
                             <App
-                                content={CustomReport}
+                                content={CustomReportPage}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

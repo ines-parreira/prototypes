@@ -1,49 +1,63 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {useParams} from 'react-router-dom'
+
+import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
+
+import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
+import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
+import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
 
 import {
-    CUSTOM_REPORT_ID_CTA,
-    CUSTOM_REPORT_TITLE,
-    CustomReport,
-} from 'pages/stats/custom-reports/CustomReport'
-import {CustomReportNameInput} from 'pages/stats/custom-reports/CustomReportNameInput'
+    CustomReportSchema,
+    CustomReportChartSchema,
+    CustomReportChildType,
+    CustomReportRowSchema,
+    CustomReportSectionSchema,
+} from 'pages/stats/custom-reports/types'
+import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-jest.mock('react-router-dom', () => ({
-    useParams: jest.fn(),
-}))
-jest.mock('pages/stats/DrillDownModal.tsx', () => ({
-    DrillDownModal: () => null,
-}))
-jest.mock('pages/stats/custom-reports/CustomReportNameInput.tsx')
-const CustomReportNameInputMock = assumeMock(CustomReportNameInput)
-
-const mockUseParams = assumeMock(useParams)
-const customReportId = '2'
+jest.mock('pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper')
+const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
+jest.mock('pages/stats/custom-reports/CustomReportChart')
+const CustomReportChartMock = assumeMock(CustomReportChart)
+jest.mock('pages/stats/custom-reports/CustomReportSection')
+const CustomReportSectionMock = assumeMock(CustomReportSection)
+jest.mock('pages/stats/DrillDownModal')
+const DrillDownModalMock = assumeMock(DrillDownModal)
 
 describe('CustomReport', () => {
+    const section: CustomReportSectionSchema = {
+        children: [],
+        type: CustomReportChildType.Section,
+    }
+    const chart: CustomReportChartSchema = {
+        type: CustomReportChildType.Chart,
+        config_id: OverviewMetric.TicketsCreated,
+    }
+
+    const row: CustomReportRowSchema = {
+        type: CustomReportChildType.Row,
+        children: [chart],
+    }
+    const customReport: CustomReportSchema = {
+        id: 2,
+        analytics_filter_id: null,
+        name: 'some report',
+        emoji: null,
+        children: [row, section],
+    }
+
     beforeEach(() => {
-        CustomReportNameInputMock.mockImplementation(() => <div />)
+        FiltersPanelWrapperMock.mockReturnValue(<div />)
+        CustomReportSectionMock.mockReturnValue(<div />)
+        CustomReportChartMock.mockReturnValue(<div />)
+        DrillDownModalMock.mockReturnValue(<div />)
     })
 
-    it('should render the component', () => {
-        mockUseParams.mockReturnValue({
-            id: customReportId,
-        })
+    it('renders correctly', () => {
+        renderWithStore(<CustomReport customReport={customReport} />, {})
 
-        render(<CustomReport />)
-        expect(screen.getByText(`${CUSTOM_REPORT_TITLE} ${customReportId}`))
-    })
-
-    it('should render <CustomReportNameInput />', () => {
-        render(<CustomReport />)
-        expect(CustomReportNameInput).toHaveBeenCalled()
-    })
-
-    it('should render actions button', () => {
-        render(<CustomReport />)
-        expect(screen.getByText(CUSTOM_REPORT_ID_CTA)).toBeInTheDocument()
+        expect(CustomReportChartMock).toHaveBeenCalled()
     })
 })
