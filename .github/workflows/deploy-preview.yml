@@ -65,7 +65,7 @@ jobs:
     runs-on: gh-actions-default-runner-set
     needs: Build-preview
     container:
-      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:2.6.10
+      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
       credentials:
         username: _json_key
         password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
