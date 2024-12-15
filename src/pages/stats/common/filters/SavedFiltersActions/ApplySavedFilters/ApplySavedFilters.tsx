@@ -133,7 +133,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                 id={APPLY_SAVED_FILTER_ID}
                 className={css.applyFiltersButton}
             >
-                <span>{applyFiltersButtonName}</span>
+                {applyFiltersButtonName}
                 <Tooltip target={APPLY_SAVED_FILTER_ID} placement="top">
                     {!!savedFilterDraft || !!savedFilterAppliedId
                         ? applyFiltersButtonName
