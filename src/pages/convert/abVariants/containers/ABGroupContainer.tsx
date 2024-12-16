@@ -7,7 +7,6 @@ import {useDismissFlag} from 'hooks/useDismissFlag'
 import {useModalManager} from 'hooks/useModalManager'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -192,20 +191,18 @@ export const ABGroupContainer: React.FC<Props> = ({
                                         intent="secondary"
                                         onClick={handlePauseABGroup}
                                         isLoading={isLoadingPauseABGroup}
+                                        leadingIcon="pause"
                                     >
-                                        <ButtonIconLabel icon="pause">
-                                            Pause Test
-                                        </ButtonIconLabel>
+                                        Pause Test
                                     </Button>
                                     <Button
                                         onClick={() =>
                                             stopModalManager.openModal()
                                         }
                                         intent="destructive"
+                                        leadingIcon="stop"
                                     >
-                                        <ButtonIconLabel icon="stop">
-                                            Stop Test
-                                        </ButtonIconLabel>
+                                        Stop Test
                                     </Button>
                                 </>
                             )}
@@ -216,13 +213,12 @@ export const ABGroupContainer: React.FC<Props> = ({
                                         isDisabled={isStartButtonDisabled}
                                         isLoading={isLoadingStartABGroup}
                                         onClick={onStartClick}
+                                        leadingIcon="play_arrow"
                                     >
-                                        <ButtonIconLabel icon="play_arrow">
-                                            {campaign.ab_group?.status ===
-                                            ABGroupStatus.Paused
-                                                ? 'Resume Test'
-                                                : 'Start'}
-                                        </ButtonIconLabel>
+                                        {campaign.ab_group?.status ===
+                                        ABGroupStatus.Paused
+                                            ? 'Resume Test'
+                                            : 'Start'}
                                     </Button>
                                     {!campaign.variants ||
                                         (campaign.variants?.length < 1 && (

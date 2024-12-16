@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -90,10 +89,12 @@ const StartABTestModal: React.FC<Props> = (props) => {
                 <Button intent="secondary" onClick={onClose}>
                     Cancel
                 </Button>
-                <Button isLoading={isLoading} onClick={onSubmitClick}>
-                    <ButtonIconLabel icon="play_arrow">
-                        Start Test
-                    </ButtonIconLabel>
+                <Button
+                    isLoading={isLoading}
+                    onClick={onSubmitClick}
+                    leadingIcon="play_arrow"
+                >
+                    Start Test
                 </Button>
             </ModalActionsFooter>
         </Modal>

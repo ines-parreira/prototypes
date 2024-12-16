@@ -2,7 +2,6 @@ import {produce} from 'immer'
 import React, {useMemo, useCallback} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DEFAULT_SCHEDULE_VALUE,
@@ -102,10 +101,9 @@ const CampaignCustomSchedule: React.FC<Props> = ({
                     size="medium"
                     onClick={addCustomSchedule}
                     isDisabled={customSchedule.length >= MAX_ENTRIES}
+                    leadingIcon="add"
                 >
-                    <ButtonIconLabel icon="add">
-                        Add Date-Specific Hours
-                    </ButtonIconLabel>
+                    Add Date-Specific Hours
                 </Button>
             </div>
         </>

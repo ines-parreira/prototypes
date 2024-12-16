@@ -6,7 +6,6 @@ import {useDismissFlag} from 'hooks/useDismissFlag'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
@@ -218,10 +217,9 @@ export const CampaignFooter = ({
                                         actionInProgress === 'delete',
                                 })}
                                 isLoading={actionInProgress === 'delete'}
+                                leadingIcon="delete"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete Campaign
-                                </ButtonIconLabel>
+                                Delete Campaign
                             </ConfirmButton>
                         ) : (
                             <>
@@ -236,10 +234,9 @@ export const CampaignFooter = ({
                                         'btn-loading':
                                             actionInProgress === 'delete',
                                     })}
+                                    leadingIcon="delete"
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete Campaign
-                                    </ButtonIconLabel>
+                                    Delete Campaign
                                 </Button>
                                 <LightCampaignModal
                                     modalType={
