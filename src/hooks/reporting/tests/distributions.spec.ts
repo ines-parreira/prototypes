@@ -4,12 +4,16 @@ import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
 import {
+    CHANNEL_DIMENSION,
+    fetchWorkloadPerChannelDistribution,
+    fetchWorkloadPerChannelDistributionForPreviousPeriod,
     selectPerChannel,
+    TICKET_COUNT_MEASURE,
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
 import {StatsFilters} from 'models/stat/types'
 import {humanizeChannel} from 'state/ticket/utils'
@@ -18,6 +22,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 describe('distributions', () => {
     const defaultReportingResponse = {
@@ -35,6 +40,9 @@ describe('distributions', () => {
     const timezone = 'UTC'
     beforeEach(() => {
         usePostReportingMock.mockReturnValue(defaultReportingResponse)
+        fetchPostReportingMock.mockResolvedValue({
+            data: defaultReportingResponse,
+        } as any)
     })
 
     describe('useWorkloadPerChannelDistribution', () => {
@@ -78,6 +86,42 @@ describe('distributions', () => {
                 ],
                 {select: expect.any(Function), enabled}
             )
+        })
+    })
+
+    describe('fetchWorkloadPerChannelDistribution', () => {
+        it('should pass a Workload query and selectPerChannel callback', async () => {
+            const apiResponse = {
+                ...defaultReportingResponse,
+                data: [
+                    {
+                        [TICKET_COUNT_MEASURE]: '123',
+                        [CHANNEL_DIMENSION]: 'api',
+                    },
+                ],
+            }
+            fetchPostReportingMock.mockResolvedValue({
+                data: apiResponse,
+            } as any)
+
+            const response = await fetchWorkloadPerChannelDistribution(
+                statsFilters,
+                timezone
+            )
+
+            expect(fetchPostReportingMock).toHaveBeenCalledWith([
+                workloadPerChannelDistributionQueryFactory(
+                    statsFilters,
+                    timezone
+                ),
+            ])
+            expect(response).toEqual({
+                data: selectPerChannel(
+                    {data: apiResponse} as any,
+                    CHANNEL_DIMENSION,
+                    TICKET_COUNT_MEASURE
+                ),
+            })
         })
     })
 
@@ -131,6 +175,46 @@ describe('distributions', () => {
                 ],
                 {select: expect.any(Function), enabled}
             )
+        })
+    })
+
+    describe('fetchWorkloadPerChannelDistributionForPreviousPeriod', () => {
+        it('should pass a Workload query and selectPerChannel callback', async () => {
+            const apiResponse = {
+                ...defaultReportingResponse,
+                data: [
+                    {
+                        [TICKET_COUNT_MEASURE]: '123',
+                        [CHANNEL_DIMENSION]: 'api',
+                    },
+                ],
+            }
+            fetchPostReportingMock.mockResolvedValue({
+                data: apiResponse,
+            } as any)
+
+            const response =
+                await fetchWorkloadPerChannelDistributionForPreviousPeriod(
+                    statsFilters,
+                    timezone
+                )
+
+            expect(fetchPostReportingMock).toHaveBeenCalledWith([
+                workloadPerChannelDistributionQueryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                ),
+            ])
+            expect(response).toEqual({
+                data: selectPerChannel(
+                    {data: apiResponse} as any,
+                    CHANNEL_DIMENSION,
+                    TICKET_COUNT_MEASURE
+                ),
+            })
         })
     })
 

@@ -13,10 +13,10 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
+import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
 import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {RootState} from 'state/types'
@@ -28,8 +28,12 @@ import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/useMessagesSentPerHourPerAgent')
-jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent')
-jest.mock('hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent')
+jest.mock(
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+)
+jest.mock(
+    'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+)
 jest.mock('hooks/reporting/useTicketsClosedPerHourPerAgent')
 jest.mock('hooks/reporting/useTicketsRepliedPerHourPerAgent')
 const useCustomerSatisfactionMetricPerAgentMock = assumeMock(

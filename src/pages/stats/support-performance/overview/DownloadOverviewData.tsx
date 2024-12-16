@@ -1,32 +1,13 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
+
+import React, {useEffect, useState} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    useWorkloadPerChannelDistribution,
-    useWorkloadPerChannelDistributionForPreviousPeriod,
-} from 'hooks/reporting/distributions'
-import {
-    useClosedTicketsTrend,
-    useCustomerSatisfactionTrend,
-    useMedianFirstResponseTimeTrend,
-    useMedianResolutionTimeTrend,
-    useMessagesPerTicketTrend,
-    useMessagesSentTrend,
-    useOpenTicketsTrend,
-    useTicketsCreatedTrend,
-    useTicketsRepliedTrend,
-} from 'hooks/reporting/metricTrends'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {
-    useMessagesSentTimeSeries,
-    useTicketsClosedTimeSeries,
-    useTicketsCreatedTimeSeries,
-    useTicketsRepliedTimeSeries,
-} from 'hooks/reporting/timeSeries'
+import {useDownloadOverViewData} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-import {saveReport} from 'services/reporting/supportPerformanceReportingService'
+
+import {saveZippedFiles} from 'utils/file'
 
 export const DownloadOverviewData = () => {
     const isDeferredLoadingEnabled: boolean | undefined =
@@ -44,136 +25,21 @@ export const DownloadOverviewData = () => {
                 : !isDeferredLoadingEnabled
         )
     }, [isDeferredLoadingEnabled])
-
     const [waitForTheReportData, setWaitForTheReportData] = useState(false)
 
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
-
-    const customerSatisfactionTrend = useCustomerSatisfactionTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const medianFirstResponseTimeTrend = useMedianFirstResponseTimeTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const medianResolutionTimeTrend = useMedianResolutionTimeTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const messagesPerTicketTrend = useMessagesPerTicketTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const openTicketsTrend = useOpenTicketsTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const closedTicketsTrend = useClosedTicketsTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const ticketsCreatedTrend = useTicketsCreatedTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const ticketsRepliedTrend = useTicketsRepliedTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-    const messagesSentTrend = useMessagesSentTrend(
-        cleanStatsFilters,
-        userTimezone
-    )
-
-    const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
-        cleanStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const ticketsClosedTimeSeries = useTicketsClosedTimeSeries(
-        cleanStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const ticketsRepliedTimeSeries = useTicketsRepliedTimeSeries(
-        cleanStatsFilters,
-        userTimezone,
-        granularity
-    )
-    const messagesSentTimeSeries = useMessagesSentTimeSeries(
-        cleanStatsFilters,
-        userTimezone,
-        granularity
-    )
-
-    const workloadPerChannel = useWorkloadPerChannelDistribution(
-        cleanStatsFilters,
-        userTimezone,
-        fetchingEnabled
-    )
-    const workloadPerChannelPrevious =
-        useWorkloadPerChannelDistributionForPreviousPeriod(
-            cleanStatsFilters,
-            userTimezone,
-            fetchingEnabled
-        )
-    const exportableData = useMemo(() => {
-        return {
-            customerSatisfactionTrend,
-            medianFirstResponseTimeTrend,
-            medianResolutionTimeTrend,
-            messagesPerTicketTrend,
-            openTicketsTrend,
-            closedTicketsTrend,
-            ticketsCreatedTrend,
-            ticketsRepliedTrend,
-            messagesSentTrend,
-            ticketsCreatedTimeSeries,
-            ticketsClosedTimeSeries,
-            ticketsRepliedTimeSeries,
-            messagesSentTimeSeries,
-            workloadPerChannel,
-            workloadPerChannelPrevious,
-        }
-    }, [
-        closedTicketsTrend,
-        customerSatisfactionTrend,
-        medianFirstResponseTimeTrend,
-        messagesPerTicketTrend,
-        messagesSentTimeSeries,
-        messagesSentTrend,
-        openTicketsTrend,
-        medianResolutionTimeTrend,
-        ticketsClosedTimeSeries,
-        ticketsCreatedTimeSeries,
-        ticketsCreatedTrend,
-        ticketsRepliedTimeSeries,
-        ticketsRepliedTrend,
-        workloadPerChannel,
-        workloadPerChannelPrevious,
-    ])
-
-    const loading = useMemo(() => {
-        return Object.values(exportableData).some((metric) => metric.isFetching)
-    }, [exportableData])
+    const {files, fileName, isLoading} =
+        useDownloadOverViewData(fetchingEnabled)
 
     useEffect(() => {
         const saveReportAsync = async () => {
-            await saveReport(exportableData, cleanStatsFilters.period)
+            await saveZippedFiles(files, fileName)
         }
-        if (fetchingEnabled && !loading && waitForTheReportData) {
+        if (fetchingEnabled && !isLoading && waitForTheReportData) {
             void saveReportAsync()
             setFetchingEnable(false)
             setWaitForTheReportData(false)
         }
-    }, [
-        fetchingEnabled,
-        loading,
-        exportableData,
-        cleanStatsFilters.period,
-        waitForTheReportData,
-    ])
+    }, [fetchingEnabled, isLoading, waitForTheReportData, files, fileName])
 
     return (
         <DownloadDataButton
@@ -184,7 +50,7 @@ export const DownloadOverviewData = () => {
                 setFetchingEnable(true)
                 setWaitForTheReportData(true)
             }}
-            disabled={loading}
+            disabled={isLoading}
         />
     )
 }

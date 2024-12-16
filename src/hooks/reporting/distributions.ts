@@ -2,6 +2,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
+    fetchPostReporting,
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
@@ -11,8 +12,15 @@ import {OneDimensionalDataItem} from 'pages/stats/types'
 import {humanizeChannel} from 'state/ticket/utils'
 import {getPreviousPeriod} from 'utils/reporting'
 
-const CHANNEL_DIMENSION = TicketDimension.Channel
-const TICKET_COUNT_MEASURE = TicketMeasure.TicketCount
+export const CHANNEL_DIMENSION = TicketDimension.Channel
+export const TICKET_COUNT_MEASURE = TicketMeasure.TicketCount
+
+export type MetricPerDimensionFetch = (
+    filters: StatsFilters,
+    timezone: string
+) => Promise<{
+    data: {label: string; value: number}[]
+}>
 
 export const useWorkloadPerChannelDistribution = (
     filters: StatsFilters,
@@ -32,6 +40,30 @@ export const useWorkloadPerChannelDistribution = (
         select: (data) =>
             selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
         enabled,
+    })
+}
+
+export const fetchWorkloadPerChannelDistribution = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    const query = workloadPerChannelDistributionQueryFactory(filters, timezone)
+
+    return fetchPostReporting<
+        {
+            [TICKET_COUNT_MEASURE]: string
+            [CHANNEL_DIMENSION]: TicketChannel
+        }[],
+        OneDimensionalDataItem[],
+        HelpdeskMessageCubeWithJoins
+    >([query]).then((res) => {
+        return {
+            data: selectPerChannel(
+                res,
+                CHANNEL_DIMENSION,
+                TICKET_COUNT_MEASURE
+            ),
+        }
     })
 }
 
@@ -58,6 +90,36 @@ export const useWorkloadPerChannelDistributionForPreviousPeriod = (
         select: (data) =>
             selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
         enabled,
+    })
+}
+
+export const fetchWorkloadPerChannelDistributionForPreviousPeriod = (
+    filters: StatsFilters,
+    timezone: string
+) => {
+    const query = workloadPerChannelDistributionQueryFactory(
+        {
+            ...filters,
+            period: getPreviousPeriod(filters.period),
+        },
+        timezone
+    )
+
+    return fetchPostReporting<
+        {
+            [TICKET_COUNT_MEASURE]: string
+            [CHANNEL_DIMENSION]: TicketChannel
+        }[],
+        OneDimensionalDataItem[],
+        HelpdeskMessageCubeWithJoins
+    >([query]).then((res) => {
+        return {
+            data: selectPerChannel(
+                res,
+                CHANNEL_DIMENSION,
+                TICKET_COUNT_MEASURE
+            ),
+        }
     })
 }
 

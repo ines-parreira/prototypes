@@ -1,4 +1,14 @@
 import {
+    fetchClosedTicketsTrend,
+    fetchCustomerSatisfactionTrend,
+    fetchMedianFirstResponseTimeTrend,
+    fetchMedianResolutionTimeTrend,
+    fetchMessagesPerTicketTrend,
+    fetchMessagesSentTrend,
+    fetchOpenTicketsTrend,
+    fetchTicketHandleTimeTrend,
+    fetchTicketsCreatedTrend,
+    fetchTicketsRepliedTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
@@ -11,14 +21,21 @@ import {
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
 import {
+    fetchOneTouchTicketsPercentageMetricTrend,
+    useOneTouchTicketsPercentageMetricTrend,
+} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import {
+    fetchMessagesSentTimeSeries,
+    fetchTicketsClosedTimeSeries,
+    fetchTicketsCreatedTimeSeries,
+    fetchTicketsRepliedTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
+import {TimeSeriesFetch, TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
 import {FilterKey} from 'models/stat/types'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 
@@ -57,6 +74,7 @@ export const OverviewMetricConfig: Record<
         hint: TooltipData
         title: string
         useTrend: MetricTrendHook
+        fetchTrend: MetricTrendFetch
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
     }
@@ -70,6 +88,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useCustomerSatisfactionTrend,
+        fetchTrend: fetchCustomerSatisfactionTrend,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
         title: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
@@ -80,6 +99,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
         useTrend: useMedianFirstResponseTimeTrend,
+        fetchTrend: fetchMedianFirstResponseTimeTrend,
     },
     [OverviewMetric.MedianResolutionTime]: {
         title: MEDIAN_RESOLUTION_TIME_LABEL,
@@ -90,6 +110,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
         useTrend: useMedianResolutionTimeTrend,
+        fetchTrend: fetchMedianResolutionTimeTrend,
     },
     [OverviewMetric.MessagesPerTicket]: {
         title: MESSAGES_PER_TICKET_LABEL,
@@ -100,6 +121,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'decimal',
         useTrend: useMessagesPerTicketTrend,
+        fetchTrend: fetchMessagesPerTicketTrend,
     },
     [OverviewMetric.OpenTickets]: {
         title: OPEN_TICKETS_LABEL,
@@ -110,6 +132,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         metricFormat: 'decimal',
         useTrend: useOpenTicketsTrend,
+        fetchTrend: fetchOpenTicketsTrend,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
@@ -120,6 +143,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         metricFormat: 'decimal',
         useTrend: useClosedTicketsTrend,
+        fetchTrend: fetchClosedTicketsTrend,
     },
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
@@ -130,6 +154,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         metricFormat: 'decimal',
         useTrend: useTicketsCreatedTrend,
+        fetchTrend: fetchTicketsCreatedTrend,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
@@ -140,6 +165,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         metricFormat: 'decimal',
         useTrend: useTicketsRepliedTrend,
+        fetchTrend: fetchTicketsRepliedTrend,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
@@ -150,6 +176,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'neutral',
         metricFormat: 'decimal',
         useTrend: useMessagesSentTrend,
+        fetchTrend: fetchMessagesSentTrend,
     },
     [OverviewMetric.OneTouchTickets]: {
         title: ONE_TOUCH_TICKETS_LABEL,
@@ -160,6 +187,7 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
         useTrend: useOneTouchTicketsPercentageMetricTrend,
+        fetchTrend: fetchOneTouchTicketsPercentageMetricTrend,
     },
     [OverviewMetric.TicketHandleTime]: {
         title: TICKET_HANDLE_TIME_LABEL,
@@ -170,24 +198,30 @@ export const OverviewMetricConfig: Record<
         interpretAs: 'less-is-better',
         metricFormat: 'duration',
         useTrend: useTicketHandleTimeTrend,
+        fetchTrend: fetchTicketHandleTimeTrend,
     },
 }
 
-export const OverviewChartConfig: Record<
+export type TimeSeriesMetric =
     | OverviewMetric.TicketsCreated
     | OverviewMetric.TicketsClosed
     | OverviewMetric.TicketsReplied
-    | OverviewMetric.MessagesSent,
+    | OverviewMetric.MessagesSent
+
+export const OverviewChartConfig: Record<
+    TimeSeriesMetric,
     {
         title: string
         hint: TooltipData
         useTimeSeries: TimeSeriesHook
+        fetchTimeSeries: TimeSeriesFetch
     }
 > = {
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
         hint: {title: 'Number of new tickets to handle'},
         useTimeSeries: useTicketsCreatedTimeSeries,
+        fetchTimeSeries: fetchTicketsCreatedTimeSeries,
     },
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
@@ -195,16 +229,19 @@ export const OverviewChartConfig: Record<
             title: 'Number of opened tickets solved by the end of the period',
         },
         useTimeSeries: useTicketsClosedTimeSeries,
+        fetchTimeSeries: fetchTicketsClosedTimeSeries,
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
         hint: {title: 'Number of tickets where the customer got a response'},
         useTimeSeries: useTicketsRepliedTimeSeries,
+        fetchTimeSeries: fetchTicketsRepliedTimeSeries,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
         hint: {title: 'Number of messages received by your customer'},
         useTimeSeries: useMessagesSentTimeSeries,
+        fetchTimeSeries: fetchMessagesSentTimeSeries,
     },
 }
 

@@ -10,9 +10,9 @@ import {
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
 

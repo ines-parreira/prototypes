@@ -1,10 +1,20 @@
 import moment from 'moment'
 
 import {Period} from 'models/stat/types'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
-    SupportPerformanceReportData,
-    saveReport,
+    DATE_TIME_FORMAT,
+    MESSAGES_SENT_LABEL,
+    NOT_AVAILABLE_LABEL,
+    OPEN_TICKETS_LABEL,
+    TICKETS_CLOSED_LABEL,
+    TICKETS_CREATED_LABEL,
+    TICKETS_REPLIED_LABEL,
+    WORKLOAD_BY_CHANNEL_LABEL,
+} from 'services/reporting/constants'
+import {
+    createTimeSeriesReport,
+    TimeSeriesDataWithLabels,
+    createTrendReport,
 } from 'services/reporting/supportPerformanceReportingService'
 import * as files from 'utils/file'
 
@@ -21,7 +31,7 @@ const trendReportData: TrendReportData = {
     prevValue: 1,
     value: 2,
 }
-const timeSeriesData = {
+const exampleTimeSeriesData = {
     dateTime: TODAY,
     value: 4,
 }
@@ -36,23 +46,63 @@ const buildQuery = <T>(isFetching: boolean, data?: T) => ({
     isError: false,
 })
 
-const data: SupportPerformanceReportData = {
-    customerSatisfactionTrend: buildQuery(false, trendReportData),
-    medianFirstResponseTimeTrend: buildQuery(false, trendReportData),
-    medianResolutionTimeTrend: buildQuery(false, trendReportData),
-    messagesPerTicketTrend: buildQuery(false, trendReportData),
-    openTicketsTrend: buildQuery(false, trendReportData),
-    closedTicketsTrend: buildQuery(false, trendReportData),
-    ticketsCreatedTrend: buildQuery(false, trendReportData),
-    ticketsRepliedTrend: buildQuery(false, trendReportData),
-    messagesSentTrend: buildQuery(false, trendReportData),
-    ticketsCreatedTimeSeries: buildQuery(false, [[timeSeriesData]]),
-    ticketsClosedTimeSeries: buildQuery(false, [[timeSeriesData]]),
-    ticketsRepliedTimeSeries: buildQuery(false, [[timeSeriesData]]),
-    messagesSentTimeSeries: buildQuery(false, [[timeSeriesData]]),
-    workloadPerChannel: buildQuery(false, [oneDimensionalData]),
-    workloadPerChannelPrevious: buildQuery(false, [oneDimensionalData]),
-}
+const exampleTrendReportResponse = buildQuery(false, trendReportData)
+const exampleWorkloadPerChannelData = buildQuery(false, [oneDimensionalData])
+
+const timeSeriesData: TimeSeriesDataWithLabels[] = [
+    {
+        label: 'someLabel',
+        data: buildQuery(false, [[exampleTimeSeriesData]]).data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, [[exampleTimeSeriesData]]).data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, [[exampleTimeSeriesData]]).data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, [[exampleTimeSeriesData]]).data,
+    },
+]
+
+const workloadDataSource = [
+    {
+        label: OPEN_TICKETS_LABEL,
+        value: exampleTrendReportResponse.data?.value,
+        prevValue: exampleTrendReportResponse.data?.prevValue,
+    },
+    {
+        label: TICKETS_CREATED_LABEL,
+        value: exampleTrendReportResponse.data?.value,
+        prevValue: exampleTrendReportResponse.data?.prevValue,
+    },
+    {
+        label: TICKETS_REPLIED_LABEL,
+        value: exampleTrendReportResponse.data?.value,
+        prevValue: exampleTrendReportResponse.data?.prevValue,
+    },
+    {
+        label: TICKETS_CLOSED_LABEL,
+        value: exampleTrendReportResponse.data?.value,
+        prevValue: exampleTrendReportResponse.data?.prevValue,
+    },
+    {
+        label: MESSAGES_SENT_LABEL,
+        value: exampleTrendReportResponse.data?.value,
+        prevValue: exampleTrendReportResponse.data?.prevValue,
+    },
+    ...(exampleWorkloadPerChannelData.data?.map((channelData) => ({
+        label: `${WORKLOAD_BY_CHANNEL_LABEL} - ${channelData.label}`,
+        value: channelData.value,
+        prevValue:
+            exampleWorkloadPerChannelData.data?.find(
+                (row) => row.label === channelData.label
+            )?.value || NOT_AVAILABLE_LABEL,
+    })) || []),
+]
 
 const period = {
     start_datetime: '2023-06-07',
@@ -60,108 +110,109 @@ const period = {
 }
 
 const timeSeriesDateTimeOverriddenByYesterdayDate = [
-    [{...timeSeriesData, dateTime: YESTERDAY}],
+    [{...exampleTimeSeriesData, dateTime: YESTERDAY}],
 ]
 
 const timeSeriesNoValue = [
     [
         {
-            ...timeSeriesData,
+            ...exampleTimeSeriesData,
             value: null,
         } as any,
     ],
 ]
 
-const timeSeriesDataOverrides = {
-    ticketsClosedTimeSeries: buildQuery(
-        false,
-        timeSeriesDateTimeOverriddenByYesterdayDate
-    ),
-    ticketsRepliedTimeSeries: buildQuery(
-        false,
-        timeSeriesDateTimeOverriddenByYesterdayDate
-    ),
-    messagesSentTimeSeries: buildQuery(
-        false,
-        timeSeriesDateTimeOverriddenByYesterdayDate
-    ),
-    ticketsCreatedTimeSeries: buildQuery(false, timeSeriesNoValue),
-}
-
-const oneDimensionalDataLabelOverride = {
-    workloadPerChannelPrevious: buildQuery(false, [
-        {
-            label: 'alternate string',
-            value: oneDimensionalData.value,
-        },
-    ]),
-}
-
-const emptyOneDimensionalDataOverrides = {
-    workloadPerChannel: buildQuery(false, undefined),
-    ticketsCreatedTimeSeries: buildQuery(false, undefined),
-}
+const timeSeriesDataOverrides = [
+    {
+        label: 'someLabel',
+        data: buildQuery(false, timeSeriesDateTimeOverriddenByYesterdayDate)
+            .data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, timeSeriesDateTimeOverriddenByYesterdayDate)
+            .data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, timeSeriesDateTimeOverriddenByYesterdayDate)
+            .data,
+    },
+    {
+        label: 'someLabel',
+        data: buildQuery(false, timeSeriesNoValue).data,
+    },
+]
 
 const testDataFactory = (
-    data: SupportPerformanceReportData,
-    dataOverrides: Partial<SupportPerformanceReportData> | undefined = {},
+    data: TimeSeriesDataWithLabels[],
     period: Period,
     testName: string | undefined = ''
 ) => {
-    const testData = {...data, ...dataOverrides}
     return {
-        data: testData,
+        data,
         period,
         testName,
     }
 }
 
 const testData = [
-    testDataFactory(data, undefined, period, 'Default report data'),
     testDataFactory(
-        data,
-        {...timeSeriesDataOverrides, ...oneDimensionalDataLabelOverride},
+        timeSeriesData,
         period,
         'Overridden time series report data'
     ),
     testDataFactory(
-        data,
-        emptyOneDimensionalDataOverrides,
+        timeSeriesDataOverrides,
         period,
         'Overridden one dimensional report data'
     ),
+    testDataFactory([], period, 'No data'),
 ]
 
-describe('reporting', () => {
-    it.each(testData)(
-        'should call saveReport with a report $testName',
-        async ({data, period}) => {
+describe('supportPerformanceReportingService', () => {
+    describe('saveTimeSeriesReport', () => {
+        it.each(testData)(
+            'should call saveReport with a report $testName',
+            ({data, period}) => {
+                const fakeReport = 'someValue'
+                const fileSuffix = 'some-name'
+                jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
+
+                const result = createTimeSeriesReport(data, period, fileSuffix)
+
+                expect(result).toEqual({
+                    files: {
+                        [`${period.start_datetime}_${
+                            period.end_datetime
+                        }-${fileSuffix}-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                            fakeReport,
+                    },
+                })
+            }
+        )
+    })
+
+    describe('saveTrendReport', () => {
+        it('should call saveTrendReport with a report', () => {
             const fakeReport = 'someValue'
+            const fileSuffix = 'some-name'
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
-            const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-            await saveReport(data, period)
+            const result = createTrendReport(
+                workloadDataSource,
+                period,
+                fileSuffix
+            )
 
-            expect(zipperMock).toHaveBeenCalledWith(
-                {
+            expect(result).toEqual({
+                files: {
                     [`${period.start_datetime}_${
                         period.end_datetime
-                    }-customer-experience-${moment().format(
-                        DATE_TIME_FORMAT
-                    )}.csv`]: fakeReport,
-                    [`${period.start_datetime}_${
-                        period.end_datetime
-                    }-ticket-volume-${moment().format(DATE_TIME_FORMAT)}.csv`]:
-                        fakeReport,
-                    [`${period.start_datetime}_${
-                        period.end_datetime
-                    }-workload-${moment().format(DATE_TIME_FORMAT)}.csv`]:
+                    }-${fileSuffix}-${moment().format(DATE_TIME_FORMAT)}.csv`]:
                         fakeReport,
                 },
-                `${period.start_datetime}_${
-                    period.end_datetime
-                }-overview-metrics-${moment().format(DATE_TIME_FORMAT)}`
-            )
-        }
-    )
+            })
+        })
+    })
 })

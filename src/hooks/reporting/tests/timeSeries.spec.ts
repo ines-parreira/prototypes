@@ -3,6 +3,10 @@ import {renderHook} from '@testing-library/react-hooks'
 import {TicketChannel} from 'business/types/ticket'
 
 import {
+    fetchMessagesSentTimeSeries,
+    fetchTicketsClosedTimeSeries,
+    fetchTicketsCreatedTimeSeries,
+    fetchTicketsRepliedTimeSeries,
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
@@ -14,6 +18,7 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {
+    fetchTimeSeries,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
@@ -34,6 +39,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
+const fetchTimeSeriesMock = assumeMock(fetchTimeSeries)
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
 
 describe('time series', () => {
@@ -48,92 +54,110 @@ describe('time series', () => {
     const timezone = 'UTC'
     const granularity = ReportingGranularity.Day
 
-    describe.each([['useTicketsClosedTimeSeries', useTicketsClosedTimeSeries]])(
-        '%s',
-        (_testName, useTrendFn) => {
-            it('should create reporting filters', () => {
-                const filters = {
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+02:00',
+    describe.each([
+        [
+            'useTicketsClosedTimeSeries',
+            useTicketsClosedTimeSeries,
+            closedTicketsTimeSeriesQueryFactory,
+        ],
+        [
+            'useTicketsCreatedTimeSeries',
+            useTicketsCreatedTimeSeries,
+            ticketsCreatedTimeSeriesQueryFactory,
+        ],
+        [
+            'useTicketsRepliedTimeSeries',
+            useTicketsRepliedTimeSeries,
+            ticketsRepliedTimeSeriesQueryFactory,
+        ],
+        [
+            'useMessagesSentTimeSeries',
+            useMessagesSentTimeSeries,
+            messagesSentTimeSeriesQueryFactory,
+        ],
+    ])('%s', (testName, useTrendFn, queryFactory) => {
+        it('should use query factory for $testName', () => {
+            const filters = {
+                period: {
+                    start_datetime: '2021-05-29T00:00:00+02:00',
+                    end_datetime: '2021-06-04T23:59:59+02:00',
+                },
+                channels: [TicketChannel.Email, TicketChannel.Chat],
+                integrations: [1],
+                agents: [2],
+                tags: [1, 2],
+            }
+
+            renderHook(() => useTrendFn(filters, timezone, granularity))
+
+            expect(useTimeSeriesMock).toHaveBeenCalledWith(
+                queryFactory(filters, timezone, granularity)
+            )
+        })
+    })
+
+    describe.each([
+        [
+            'fetchTicketsClosedTimeSeries',
+            fetchTicketsClosedTimeSeries,
+            closedTicketsTimeSeriesQueryFactory,
+        ],
+        [
+            'fetchTicketsCreatedTimeSeries',
+            fetchTicketsCreatedTimeSeries,
+            ticketsCreatedTimeSeriesQueryFactory,
+        ],
+        [
+            'fetchTicketsRepliedTimeSeries',
+            fetchTicketsRepliedTimeSeries,
+            ticketsRepliedTimeSeriesQueryFactory,
+        ],
+        [
+            'fetchMessagesSentTimeSeries',
+            fetchMessagesSentTimeSeries,
+            messagesSentTimeSeriesQueryFactory,
+        ],
+    ])('%s', (_testName, fetchTimeSeriesFn, queryFactory) => {
+        it('should use fetchMethod $testName', async () => {
+            const filters = {
+                period: {
+                    start_datetime: '2021-05-29T00:00:00+02:00',
+                    end_datetime: '2021-06-04T23:59:59+02:00',
+                },
+                channels: [TicketChannel.Email, TicketChannel.Chat],
+                integrations: [1],
+                agents: [2],
+                tags: [1, 2],
+            }
+
+            await fetchTimeSeriesFn(filters, timezone, granularity)
+
+            expect(fetchTimeSeriesMock).toHaveBeenCalledWith(
+                queryFactory(filters, timezone, granularity)
+            )
+        })
+    })
+
+    describe('useTagsTicketCountTimeSeries', () => {
+        it('should render expected query', () => {
+            renderHook(
+                ({statsFilters, timezone, granularity}) =>
+                    useTagsTicketCountTimeSeries(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                {
+                    initialProps: {
+                        statsFilters,
+                        timezone,
+                        granularity,
                     },
-                    channels: [TicketChannel.Email, TicketChannel.Chat],
-                    integrations: [1],
-                    agents: [2],
-                    tags: [1, 2],
                 }
-
-                renderHook(() => useTrendFn(filters, timezone, granularity))
-
-                expect(useTimeSeriesMock).toHaveBeenCalledWith(
-                    closedTicketsTimeSeriesQueryFactory(
-                        filters,
-                        timezone,
-                        granularity
-                    )
-                )
-            })
-        }
-    )
-
-    describe('useTicketsCreatedTimeSeries', () => {
-        it('should pass the query to the useTimeSeriesHook', () => {
-            renderHook(
-                ({statsFilters, timezone}) =>
-                    useTicketsCreatedTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                {initialProps: {statsFilters, timezone, granularity}}
             )
 
-            expect(useTimeSeriesMock).toHaveBeenCalledWith(
-                ticketsCreatedTimeSeriesQueryFactory(
-                    statsFilters,
-                    timezone,
-                    granularity
-                )
-            )
-        })
-    })
-
-    describe('useTicketsRepliedTimeSeries', () => {
-        it('should render expected query', () => {
-            renderHook(
-                ({statsFilters, timezone}) =>
-                    useTicketsRepliedTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                {initialProps: {statsFilters, timezone, granularity}}
-            )
-
-            expect(useTimeSeriesMock).toHaveBeenCalledWith(
-                ticketsRepliedTimeSeriesQueryFactory(
-                    statsFilters,
-                    timezone,
-                    granularity
-                )
-            )
-        })
-    })
-
-    describe('useMessagesSentTimeSeries', () => {
-        it('should render expected query', () => {
-            renderHook(
-                ({statsFilters, timezone}) =>
-                    useMessagesSentTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                {initialProps: {statsFilters, timezone, granularity}}
-            )
-
-            expect(useTimeSeriesMock).toHaveBeenCalledWith(
-                messagesSentTimeSeriesQueryFactory(
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                tagsTicketCountTimeSeriesFactory(
                     statsFilters,
                     timezone,
                     granularity
@@ -169,34 +193,6 @@ describe('time series', () => {
                     timezone,
                     granularity,
                     customFieldId
-                )
-            )
-        })
-    })
-
-    describe('useTagsTicketCountTimeSeries', () => {
-        it('should render expected query', () => {
-            renderHook(
-                ({statsFilters, timezone, granularity}) =>
-                    useTagsTicketCountTimeSeries(
-                        statsFilters,
-                        timezone,
-                        granularity
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                }
-            )
-
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                tagsTicketCountTimeSeriesFactory(
-                    statsFilters,
-                    timezone,
-                    granularity
                 )
             )
         })

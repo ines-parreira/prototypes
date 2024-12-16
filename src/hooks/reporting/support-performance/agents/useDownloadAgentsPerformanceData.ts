@@ -1,5 +1,5 @@
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 

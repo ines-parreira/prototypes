@@ -6,7 +6,7 @@ import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
+import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {LegacyStatsFilters} from 'models/stat/types'

@@ -20,9 +20,9 @@ import {
     useTicketsRepliedTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {ReportingGranularity} from 'models/reporting/types'
 import {LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge, {
@@ -58,7 +58,9 @@ const trendBadgeMock = assumeMock(TrendBadge)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
-jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetricTrend')
+jest.mock(
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+)
 
 const useCustomerSatisfactionTrendMock = assumeMock(
     useCustomerSatisfactionTrend

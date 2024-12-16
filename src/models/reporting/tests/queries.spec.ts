@@ -1,15 +1,17 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
+import {
+    fetchPostReporting,
+    useEnrichedPostReporting,
+    usePostReporting,
+} from 'models/reporting/queries'
+import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
+import {ReportingParams} from 'models/reporting/types'
 import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 
-import {useEnrichedPostReporting, usePostReporting} from '../queries'
-import {postEnrichedReporting, postReporting} from '../resources'
-
-import {ReportingParams} from '../types'
-
-jest.mock('../resources')
+jest.mock('models/reporting/resources')
 const postReportingMock = assumeMock(postReporting)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
 
@@ -73,6 +75,15 @@ describe('Reporting queries', () => {
                 payload.query,
                 payload.enrichment_fields
             )
+        })
+    })
+
+    describe('fetchPostReporting', () => {
+        it('should call postReporting', async () => {
+            const result = await fetchPostReporting(cubeQueries)
+
+            expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
+            expect(result.data?.data).toEqual([42])
         })
     })
 })

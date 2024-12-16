@@ -1,17 +1,17 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {agents} from 'fixtures/agents'
+import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import {useDownloadAgentsPerformanceData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/useAgentsMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
-jest.mock('hooks/reporting/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)

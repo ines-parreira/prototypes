@@ -10,9 +10,9 @@ import {
     useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
 import useAppSelector from 'hooks/useAppSelector'
@@ -35,7 +35,9 @@ const useMedianResolutionTimeMetricMock = assumeMock(
     useMedianResolutionTimeMetric
 )
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
-jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetricTrend')
+jest.mock(
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+)
 const useOneTouchTicketsPercentageMetricTrendMock = assumeMock(
     useOneTouchTicketsPercentageMetricTrend
 )

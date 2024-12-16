@@ -1,8 +1,10 @@
 import {
+    fetchTimeSeries,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
+import {Cubes} from 'models/reporting/cubes'
 
 import {
     interactionsByEventTypeTimeSeriesQueryFactory,
@@ -15,48 +17,82 @@ import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactor
 import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {ReportingGranularity} from 'models/reporting/types'
+import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
-export function useTicketsCreatedTimeSeries(
+type TimeSeriesQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        ticketsCreatedTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
+) => TimeSeriesQuery<TCube>
 
-export function useTicketsClosedTimeSeries(
+type TimeSeriesPerDimensionQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        closedTicketsTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
+    granularity: ReportingGranularity,
+    sorting?: OrderDirection
+) => TimeSeriesQuery<TCube>
 
-export function useTicketsRepliedTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        ticketsRepliedTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
+const getTimeSeriesHook =
+    <TCube extends Cubes>(query: TimeSeriesQueryFactory<TCube>) =>
+    (
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity
+    ) => {
+        return useTimeSeries(query(filters, timezone, granularity))
+    }
 
-export function useMessagesSentTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        messagesSentTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
+const getTimeSeriesFetch =
+    <TCube extends Cubes>(query: TimeSeriesQueryFactory<TCube>) =>
+    (
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity
+    ) => {
+        return fetchTimeSeries(query(filters, timezone, granularity))
+    }
+
+const getTimeSeriesPerDimensionHook =
+    <TCube extends Cubes>(query: TimeSeriesPerDimensionQueryFactory<TCube>) =>
+    (
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+        sorting?: OrderDirection
+    ) => {
+        return useTimeSeriesPerDimension(
+            query(filters, timezone, granularity, sorting)
+        )
+    }
+
+export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
+    ticketsCreatedTimeSeriesQueryFactory
+)
+export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
+    ticketsCreatedTimeSeriesQueryFactory
+)
+
+export const useTicketsClosedTimeSeries = getTimeSeriesHook(
+    closedTicketsTimeSeriesQueryFactory
+)
+export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
+    closedTicketsTimeSeriesQueryFactory
+)
+
+export const useTicketsRepliedTimeSeries = getTimeSeriesHook(
+    ticketsRepliedTimeSeriesQueryFactory
+)
+export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
+    ticketsRepliedTimeSeriesQueryFactory
+)
+
+export const useMessagesSentTimeSeries = getTimeSeriesHook(
+    messagesSentTimeSeriesQueryFactory
+)
+export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
+    messagesSentTimeSeriesQueryFactory
+)
 
 export const useCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
@@ -76,21 +112,9 @@ export const useCustomFieldsTicketCountTimeSeries = (
     )
 }
 
-export const useTagsTicketCountTimeSeries = (
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity,
-    sorting?: OrderDirection
-) => {
-    return useTimeSeriesPerDimension(
-        tagsTicketCountTimeSeriesFactory(
-            filters,
-            timezone,
-            granularity,
-            sorting
-        )
-    )
-}
+export const useTagsTicketCountTimeSeries = getTimeSeriesPerDimensionHook(
+    tagsTicketCountTimeSeriesFactory
+)
 
 // Automate V2
 export function useAutomationDatasetTimeSeries(

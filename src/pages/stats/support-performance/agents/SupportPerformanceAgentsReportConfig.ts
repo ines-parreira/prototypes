@@ -1,4 +1,3 @@
-import {useDownloadAgentsPerformanceData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
 import {ReportConfig} from 'pages/stats/common/CustomReport/types'
 
 import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutout'
@@ -21,12 +20,12 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
         [AgentsChart.Table]: {
             chartComponent: AgentsTableChart,
             label: AGENT_PERFORMANCE_SECTION_TITLE,
-            csvProducer: useDownloadAgentsPerformanceData,
+            csvProducer: null,
         },
         [AgentsChart.TopPerformers]: {
             chartComponent: AgentsShoutOuts,
             label: AGENTS_SHOUT_OUTS_TITLE,
-            csvProducer: useDownloadAgentsPerformanceData,
+            csvProducer: null,
         },
     },
 }

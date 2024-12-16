@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 
 import {DataResponse} from 'hooks/reporting/withDeciles'
 import {Cubes} from 'models/reporting/cubes'
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
@@ -15,6 +15,12 @@ export type TimeSeriesHook = (
     timezone: string,
     granularity: ReportingGranularity
 ) => UseQueryResult<TimeSeriesDataItem[][]>
+
+export type TimeSeriesFetch = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) => Promise<TimeSeriesDataItem[][]>
 
 export type TimeSeriesDataItem = {
     dateTime: string
@@ -87,6 +93,16 @@ export function useTimeSeries<TCube extends Cubes>(
     >([query], {
         select: (res) => select<TCube>(query)(res.data.data),
     })
+}
+
+export function fetchTimeSeries<TCube extends Cubes>(
+    query: TimeSeriesQuery<TCube>
+) {
+    return fetchPostReporting<
+        Record<string, string>[],
+        TimeSeriesDataItem[][],
+        TCube
+    >([query], {}).then((res) => select<TCube>(query)(res.data.data))
 }
 
 export function useTimeSeriesPerDimension<TCube extends Cubes>(

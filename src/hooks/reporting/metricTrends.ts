@@ -1,4 +1,9 @@
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {
+    fetchMetricTrend,
+    MetricTrendFetch,
+} from 'hooks/reporting/useMetricTrend'
+import {OrderDirection} from 'models/api/types'
+import {Cubes} from 'models/reporting/cubes'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -10,152 +15,109 @@ import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/suppo
 import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
 import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 
-export const useCustomerSatisfactionTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        customerSatisfactionQueryFactory(filters, timezone),
-        customerSatisfactionQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
-        )
-    )
+type QueryFactory<TCube extends Cubes> = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+) => ReportingQuery<TCube>
 
-export const useMedianFirstResponseTimeTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        medianFirstResponseTimeQueryFactory(filters, timezone),
-        medianFirstResponseTimeQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
+export const getTrendFetch =
+    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricTrendFetch =>
+    (filters: StatsFilters, timezone: string) =>
+        fetchMetricTrend(
+            query(filters, timezone),
+            query(
+                {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone
+            )
         )
-    )
 
-export const useMessagesPerTicketTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        messagesPerTicketQueryFactory(filters, timezone),
-        messagesPerTicketQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
+export const getTrendHook =
+    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    (filters: StatsFilters, timezone: string) =>
+        useMetricTrend(
+            query(filters, timezone),
+            query(
+                {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone
+            )
         )
-    )
 
-export const useMedianResolutionTimeTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        medianResolutionTimeQueryFactory(filters, timezone),
-        medianResolutionTimeQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
-        )
-    )
+export const useCustomerSatisfactionTrend = getTrendHook(
+    customerSatisfactionQueryFactory
+)
+export const fetchCustomerSatisfactionTrend = getTrendFetch(
+    customerSatisfactionQueryFactory
+)
 
-export const useOpenTicketsTrend = (filters: StatsFilters, timezone: string) =>
-    useMetricTrend(
-        openTicketsQueryFactory(filters, timezone),
-        openTicketsQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
-        )
-    )
+export const useMedianFirstResponseTimeTrend = getTrendHook(
+    medianFirstResponseTimeQueryFactory
+)
 
-export const useClosedTicketsTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        closedTicketsQueryFactory(filters, timezone),
-        closedTicketsQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
-        )
-    )
+export const fetchMedianFirstResponseTimeTrend = getTrendFetch(
+    medianFirstResponseTimeQueryFactory
+)
 
-export const useOneTouchTicketsTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        oneTouchTicketsQueryFactory(filters, timezone),
-        oneTouchTicketsQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone
-        )
-    )
+export const useMessagesPerTicketTrend = getTrendHook(
+    messagesPerTicketQueryFactory
+)
 
-export const useTicketsCreatedTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        ticketsCreatedQueryFactory(filters, timezone),
-        ticketsCreatedQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
+export const fetchMessagesPerTicketTrend = getTrendFetch(
+    messagesPerTicketQueryFactory
+)
 
-export const useTicketsRepliedTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        ticketsRepliedQueryFactory(filters, timezone),
-        ticketsRepliedQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
+export const useMedianResolutionTimeTrend = getTrendHook(
+    medianResolutionTimeQueryFactory
+)
 
-export const useMessagesSentTrend = (filters: StatsFilters, timezone: string) =>
-    useMetricTrend(
-        messagesSentQueryFactory(filters, timezone),
-        messagesSentQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
+export const fetchMedianResolutionTimeTrend = getTrendFetch(
+    medianResolutionTimeQueryFactory
+)
 
-export const useTicketHandleTimeTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        ticketAverageHandleTimeQueryFactory(filters, timezone),
-        ticketAverageHandleTimeQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
+export const useOpenTicketsTrend = getTrendHook(openTicketsQueryFactory)
+
+export const fetchOpenTicketsTrend = getTrendFetch(openTicketsQueryFactory)
+
+export const useClosedTicketsTrend = getTrendHook(closedTicketsQueryFactory)
+
+export const fetchClosedTicketsTrend = getTrendFetch(closedTicketsQueryFactory)
+
+export const useOneTouchTicketsTrend = getTrendHook(oneTouchTicketsQueryFactory)
+
+export const fetchOneTouchTicketsTrend = getTrendFetch(
+    oneTouchTicketsQueryFactory
+)
+
+export const useTicketsCreatedTrend = getTrendHook(ticketsCreatedQueryFactory)
+
+export const fetchTicketsCreatedTrend = getTrendFetch(
+    ticketsCreatedQueryFactory
+)
+
+export const useTicketsRepliedTrend = getTrendHook(ticketsRepliedQueryFactory)
+
+export const fetchTicketsRepliedTrend = getTrendFetch(
+    ticketsRepliedQueryFactory
+)
+
+export const useMessagesSentTrend = getTrendHook(messagesSentQueryFactory)
+
+export const fetchMessagesSentTrend = getTrendFetch(messagesSentQueryFactory)
+
+export const useTicketHandleTimeTrend = getTrendHook(
+    ticketAverageHandleTimeQueryFactory
+)
+
+export const fetchTicketHandleTimeTrend = getTrendFetch(
+    ticketAverageHandleTimeQueryFactory
+)

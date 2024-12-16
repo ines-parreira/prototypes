@@ -10,10 +10,10 @@ import {
 } from 'hooks/reporting/automate/useAutomateStatsMeasureLabelMap'
 import {useAutomateMetricsTimeseriesV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {calculateGreyArea} from 'hooks/reporting/automate/utils'
+import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
@@ -33,10 +33,10 @@ import {AiAgentStatsDownloadButton} from '../AiAgentStatsDownloadButton'
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-jest.mock('hooks/reporting/useAgentsMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 
-jest.mock('hooks/reporting/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')

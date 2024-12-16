@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {AxiosResponse} from 'axios'
 
 import {
+    fetchTimeSeries,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
@@ -22,7 +23,7 @@ import {
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {
     ReportingResponse,
     ReportingGranularity,
@@ -33,6 +34,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 describe('useTimeSeries', () => {
     const defaultTimeDimension = {
@@ -79,6 +81,63 @@ describe('useTimeSeries', () => {
         query: defaultQuery,
     }
 
+    const expectedTimeSeriesResult = [
+        [
+            {
+                dateTime: '2022-01-02T00:00:00.000',
+                label: TicketMessagesMeasure.MedianFirstResponseTime,
+                value: 65,
+            },
+            {
+                dateTime: '2022-01-02T01:00:00.000',
+                label: TicketMessagesMeasure.MedianFirstResponseTime,
+                value: 32,
+            },
+            {
+                dateTime: '2022-01-02T02:00:00.000',
+                label: TicketMessagesMeasure.MedianFirstResponseTime,
+                value: 0,
+            },
+            {
+                dateTime: '2022-01-02T03:00:00.000',
+                label: TicketMessagesMeasure.MedianFirstResponseTime,
+                value: 0,
+            },
+            {
+                dateTime: '2022-01-02T04:00:00.000',
+                label: TicketMessagesMeasure.MedianFirstResponseTime,
+                value: 139,
+            },
+        ],
+        [
+            {
+                dateTime: '2022-01-02T00:00:00.000',
+                label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                value: 3.4,
+            },
+            {
+                dateTime: '2022-01-02T01:00:00.000',
+                label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                value: 0,
+            },
+            {
+                dateTime: '2022-01-02T02:00:00.000',
+                label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                value: 4.1,
+            },
+            {
+                dateTime: '2022-01-02T03:00:00.000',
+                label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                value: 0,
+            },
+            {
+                dateTime: '2022-01-02T04:00:00.000',
+                label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                value: 1.2,
+            },
+        ],
+    ]
+
     it('should call usePostReportingMock with the query', () => {
         renderHook(() => useTimeSeries(defaultQuery))
         const select = usePostReportingMock.mock.calls[0][1]?.select
@@ -101,62 +160,7 @@ describe('useTimeSeries', () => {
             } as unknown as AxiosResponse<
                 ReportingResponse<typeof defaultData>
             >)
-        ).toEqual([
-            [
-                {
-                    dateTime: '2022-01-02T00:00:00.000',
-                    label: TicketMessagesMeasure.MedianFirstResponseTime,
-                    value: 65,
-                },
-                {
-                    dateTime: '2022-01-02T01:00:00.000',
-                    label: TicketMessagesMeasure.MedianFirstResponseTime,
-                    value: 32,
-                },
-                {
-                    dateTime: '2022-01-02T02:00:00.000',
-                    label: TicketMessagesMeasure.MedianFirstResponseTime,
-                    value: 0,
-                },
-                {
-                    dateTime: '2022-01-02T03:00:00.000',
-                    label: TicketMessagesMeasure.MedianFirstResponseTime,
-                    value: 0,
-                },
-                {
-                    dateTime: '2022-01-02T04:00:00.000',
-                    label: TicketMessagesMeasure.MedianFirstResponseTime,
-                    value: 139,
-                },
-            ],
-            [
-                {
-                    dateTime: '2022-01-02T00:00:00.000',
-                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                    value: 3.4,
-                },
-                {
-                    dateTime: '2022-01-02T01:00:00.000',
-                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                    value: 0,
-                },
-                {
-                    dateTime: '2022-01-02T02:00:00.000',
-                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                    value: 4.1,
-                },
-                {
-                    dateTime: '2022-01-02T03:00:00.000',
-                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                    value: 0,
-                },
-                {
-                    dateTime: '2022-01-02T04:00:00.000',
-                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                    value: 1.2,
-                },
-            ],
-        ])
+        ).toEqual(expectedTimeSeriesResult)
     })
 
     it('should make Monday the beginning of the week', () => {
@@ -202,6 +206,19 @@ describe('useTimeSeries', () => {
                 },
             ],
         ])
+    })
+
+    describe('fetchTimeSeries', () => {
+        beforeEach(() => {
+            fetchPostReportingMock.mockResolvedValue({
+                data: {data: defaultData},
+            } as any)
+        })
+        it('should use fetchPostReporting and return formatted data', async () => {
+            const result = await fetchTimeSeries(defaultQuery)
+
+            expect(result).toEqual(expectedTimeSeriesResult)
+        })
     })
 })
 

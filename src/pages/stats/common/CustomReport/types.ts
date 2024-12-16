@@ -1,10 +1,14 @@
 import {FunctionComponent, ReactNode} from 'react'
 
-export type DataExportHook = () => {
-    files: Record<string, string>
-    fileName: string
-    isLoading: boolean
-}
+import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
+
+import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
+import {TimeSeriesFetch} from 'hooks/reporting/useTimeSeries'
+
+type DataExportFetch =
+    | MetricTrendFetch
+    | TimeSeriesFetch
+    | MetricPerDimensionFetch[]
 
 export type ReportConfig<T extends string> = {
     reportName: string
@@ -14,7 +18,7 @@ export type ReportConfig<T extends string> = {
         {
             chartComponent: FunctionComponent
             label: ReactNode
-            csvProducer: DataExportHook | null
+            csvProducer: DataExportFetch | null
         }
     >
 }

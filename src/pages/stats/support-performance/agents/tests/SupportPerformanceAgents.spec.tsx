@@ -13,8 +13,8 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
+import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {FilterKey} from 'models/stat/types'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -62,9 +62,9 @@ const DownloadAgentsPerformanceDataButtonMock = assumeMock(
 )
 jest.mock('pages/stats/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
-jest.mock('hooks/reporting/useAgentsMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
-jest.mock('hooks/reporting/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/support-performance/agents/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)

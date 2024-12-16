@@ -8,27 +8,31 @@ import {
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 
-import {usePostReporting} from 'models/reporting/queries'
+import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
-import useMetricTrend, {selectMeasure} from '../useMetricTrend'
+import useMetricTrend, {
+    fetchMetricTrend,
+    selectMeasure,
+} from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const fetchPostReportingMock = assumeMock(fetchPostReporting)
+
+const defaultReporting = {
+    isFetching: false,
+    isError: false,
+} as UseQueryResult
+
+const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
+    measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+    dimensions: [],
+    filters: [],
+}
 
 describe('useMetricTrend', () => {
-    const defaultReporting = {
-        isFetching: false,
-        isError: false,
-    } as UseQueryResult
-
-    const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
-        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
-        dimensions: [],
-        filters: [],
-    }
-
     beforeEach(() => {
         usePostReportingMock.mockReturnValue(defaultReporting)
     })
@@ -164,6 +168,56 @@ describe('useMetricTrend', () => {
             expect(
                 selectMeasure(HelpdeskMessageMeasure.TicketCount, data)
             ).toEqual(null)
+        })
+    })
+})
+
+describe('fetchMetricTrend', () => {
+    beforeEach(() => {
+        fetchPostReportingMock.mockResolvedValue({
+            data: defaultReporting,
+        } as any)
+    })
+
+    it('should fetch both queries', async () => {
+        const result = await fetchMetricTrend(defaultQuery, defaultQuery)
+
+        expect(result).toEqual({
+            data: {
+                value: null,
+                prevValue: null,
+            },
+            isError: false,
+            isFetching: false,
+        })
+    })
+
+    it('should return undefined if one of the queries is empty', async () => {
+        fetchPostReportingMock.mockResolvedValueOnce({
+            data: defaultReporting,
+        } as any)
+        fetchPostReportingMock.mockResolvedValueOnce({
+            data: undefined,
+        } as any)
+
+        const result = await fetchMetricTrend(defaultQuery, defaultQuery)
+
+        expect(result).toEqual({
+            data: undefined,
+            isError: false,
+            isFetching: false,
+        })
+    })
+
+    it('should return error', async () => {
+        fetchPostReportingMock.mockRejectedValue({})
+
+        const result = await fetchMetricTrend(defaultQuery, defaultQuery)
+
+        expect(result).toEqual({
+            data: undefined,
+            isError: true,
+            isFetching: false,
         })
     })
 })

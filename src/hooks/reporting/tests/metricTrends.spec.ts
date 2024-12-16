@@ -13,8 +13,19 @@ import {
     useTicketsRepliedTrend,
     useOneTouchTicketsTrend,
     useTicketHandleTimeTrend,
+    fetchOpenTicketsTrend,
+    fetchTicketHandleTimeTrend,
+    fetchMessagesPerTicketTrend,
+    fetchCustomerSatisfactionTrend,
+    fetchMedianFirstResponseTimeTrend,
+    fetchClosedTicketsTrend,
+    fetchOneTouchTicketsTrend,
+    fetchMedianResolutionTimeTrend,
+    fetchTicketsCreatedTrend,
+    fetchTicketsRepliedTrend,
+    fetchMessagesSentTrend,
 } from 'hooks/reporting/metricTrends'
-import useMetricTrend from 'hooks/reporting/useMetricTrend'
+import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -33,6 +44,7 @@ import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
+const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
 
 describe('metric trends', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -106,6 +118,84 @@ describe('metric trends', () => {
             renderHook(() => useTrendFn(statsFilters, timezone))
 
             expect(useMetricTrendMock).toHaveBeenCalledWith(
+                queryFactory(statsFilters, timezone),
+                queryFactory(
+                    {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone
+                )
+            )
+        })
+    })
+
+    describe.each([
+        [
+            'fetchOpenTicketsTrend',
+            fetchOpenTicketsTrend,
+            openTicketsQueryFactory,
+        ],
+        [
+            'fetchCustomerSatisfactionTrend',
+            fetchCustomerSatisfactionTrend,
+            customerSatisfactionQueryFactory,
+        ],
+        [
+            'fetchMedianFirstResponseTimeTrend',
+            fetchMedianFirstResponseTimeTrend,
+            medianFirstResponseTimeQueryFactory,
+        ],
+        [
+            'fetchMedianResolutionTimeTrend',
+            fetchMedianResolutionTimeTrend,
+            medianResolutionTimeQueryFactory,
+        ],
+        [
+            'fetchClosedTicketsTrend',
+            fetchClosedTicketsTrend,
+            closedTicketsQueryFactory,
+        ],
+        [
+            'fetchTicketsCreatedTrend',
+            fetchTicketsCreatedTrend,
+            ticketsCreatedQueryFactory,
+        ],
+        [
+            'fetchOneTouchTicketsTrend',
+            fetchOneTouchTicketsTrend,
+            oneTouchTicketsQueryFactory,
+        ],
+        [
+            'fetchOpenTicketsTrend',
+            fetchOpenTicketsTrend,
+            openTicketsQueryFactory,
+        ],
+        [
+            'fetchTicketsRepliedTrend',
+            fetchTicketsRepliedTrend,
+            ticketsRepliedQueryFactory,
+        ],
+        [
+            'fetchMessagesSentTrend',
+            fetchMessagesSentTrend,
+            messagesSentQueryFactory,
+        ],
+        [
+            'fetchMessagesPerTicketTrend',
+            fetchMessagesPerTicketTrend,
+            messagesPerTicketQueryFactory,
+        ],
+        [
+            'fetchTicketHandleTimeTrend',
+            fetchTicketHandleTimeTrend,
+            ticketAverageHandleTimeQueryFactory,
+        ],
+    ])('%s', (_testName, fetchTrendFn, queryFactory) => {
+        it('should create reporting filters', async () => {
+            await fetchTrendFn(statsFilters, timezone)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone),
                 queryFactory(
                     {
