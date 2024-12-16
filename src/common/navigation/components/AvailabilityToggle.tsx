@@ -4,7 +4,6 @@ import React, {useCallback} from 'react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import css from 'pages/common/components/Navbar.less'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {submitSetting} from 'state/currentUser/actions'
 import {
@@ -12,6 +11,8 @@ import {
     getPreferences,
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
+
+import css from './UserMenu.less'
 
 export default function AvailabilityToggle() {
     const dispatch = useAppDispatch()

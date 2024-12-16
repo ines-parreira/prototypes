@@ -1,16 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import type {ComponentProps, ReactNode} from 'react'
 import {StaticRouter} from 'react-router-dom'
 
 import {ActiveContent} from 'common/navigation'
-import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {user} from 'fixtures/users'
-import {THEME_NAME} from 'theme'
-import type {ColorTokens} from 'theme'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {Navbar} from '../Navbar'
@@ -35,8 +31,6 @@ jest.mock('common/notifications/components/Button', () => ({
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
-
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock(
     'common/navigation',
@@ -67,12 +61,6 @@ describe('Navbar', () => {
         currentUser: fromJS(user),
         isMobileResolution: false,
         isOpenedPanel: false,
-        setTheme: jest.fn(),
-        theme: {
-            name: THEME_NAME.Classic,
-            resolvedName: THEME_NAME.Classic,
-            tokens: {} as ColorTokens,
-        },
         title: '',
     }
 
@@ -133,105 +121,6 @@ describe('Navbar', () => {
         expect(el).toHaveStyle({'background-color': 'rgb(255, 150, 0)'})
     })
 
-    it('should render the availability toggle', () => {
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-        userEvent.click(getByText(user.name))
-        expect(getByText('AvailabilityToggle')).toBeInTheDocument()
-    })
-
-    it('should render the office hours', () => {
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        userEvent.click(getByText(user.name))
-        expect(getByText('OfficeHours')).toBeInTheDocument()
-    })
-
-    it.each([
-        ['your profile', 'your-profile', {}, () => {}],
-        ['refer a friend & earn', 'referral-program', {}, () => {}],
-        ['log out', 'log-out', {}, () => {}],
-        [
-            'help center',
-            'helpdocs',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/learn/i))
-            },
-        ],
-        [
-            'gorgias webinars',
-            'gorgiaswebinars',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/learn/i))
-            },
-        ],
-        [
-            'gorgias academy',
-            'gorgiasacademy',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/learn/i))
-            },
-        ],
-        [
-            'gorgias community',
-            'gorgiascommunity',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/learn/i))
-            },
-        ],
-        [
-            'keyboard shortcuts',
-            'keyboard-shortcuts',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/learn/i))
-            },
-        ],
-        [
-            'latest updates',
-            'latest-updates',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/gorgias updates/i))
-            },
-        ],
-        [
-            'roadmap',
-            'roadmap',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/gorgias updates/i))
-            },
-        ],
-        [
-            'service status',
-            'service-status',
-            {},
-            () => {
-                userEvent.click(screen.getByText(/gorgias updates/i))
-            },
-        ],
-    ])(
-        `should log ${SegmentEvent.MenuUserLinkClicked} event clicking on %s dropdown item`,
-        (text, segmentValue, props, extraActions) => {
-            render(<Navbar {...minProps} {...props} />, {wrapper})
-
-            userEvent.click(screen.getByText(user.name))
-            extraActions()
-            userEvent.click(screen.getByText(new RegExp(text, 'i')))
-
-            expect(logEventMock).toHaveBeenLastCalledWith(
-                SegmentEvent.MenuUserLinkClicked,
-                {
-                    link: segmentValue,
-                }
-            )
-        }
-    )
-
     it('should fallback user name to email', () => {
         const {getByText} = render(
             <Navbar
@@ -245,30 +134,6 @@ describe('Navbar', () => {
         )
 
         expect(getByText(user.email)).toBeInTheDocument()
-    })
-
-    it('should render the noticeable widget when the user menu displays the updates', () => {
-        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
-
-        userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/gorgias updates/i))
-        expect(getByText('NoticeableIndicator')).toBeInTheDocument()
-    })
-
-    it('should reopen the user menu at the initial main screen', () => {
-        const {getByText, queryByText} = render(<Navbar {...minProps} />, {
-            wrapper,
-        })
-
-        userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/gorgias updates/i))
-        userEvent.click(getByText(user.name))
-
-        expect(queryByText(/your profile/i)).not.toBeInTheDocument()
-
-        userEvent.click(getByText(user.name))
-
-        expect(getByText(/your profile/i)).toBeInTheDocument()
     })
 
     it.each([['tickets'], ['customers']])(

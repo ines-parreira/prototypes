@@ -2,9 +2,10 @@ import cn from 'classnames'
 import React, {useCallback} from 'react'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import css from 'pages/common/components/Navbar.less'
 import {THEME_CONFIGS, useSetTheme, useTheme} from 'theme'
 import type {HelpdeskThemeName} from 'theme'
+
+import css from './UserMenu.less'
 
 export default function ThemeMenu() {
     const setTheme = useSetTheme()

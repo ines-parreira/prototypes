@@ -5,9 +5,10 @@ import {useFlag} from 'common/flags'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import css from 'pages/common/components/Navbar.less'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
+
+import css from './UserMenu.less'
 
 type Props = {
     onToggleDropdown: () => void
