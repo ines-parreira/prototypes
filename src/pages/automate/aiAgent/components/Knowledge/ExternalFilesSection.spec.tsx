@@ -28,7 +28,9 @@ const notifyMock = assumeMock(notify)
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
 let onSuccess: (() => void) | undefined
-let onFailure: (() => void) | undefined
+let onFailure:
+    | ((file: Components.Schemas.RetrieveFileIngestionLogDto) => void)
+    | undefined
 
 const renderComponent = ({
     ingestedFiles = null,
@@ -193,26 +195,48 @@ describe('ExternalFilesSection', () => {
     })
 
     it('should show an error message when ingestion fails', () => {
+        const file = {
+            id: 1,
+            help_center_id: 1,
+            filename: 'test.pdf',
+            status: 'FAILED' as const,
+            google_storage_url: 'https://storage.googleapis.com/test.pdf',
+            uploaded_datetime: '2024-11-04T19:24:08Z',
+        }
+
         renderComponent({
-            ingestedFiles: [
-                {
-                    id: 1,
-                    help_center_id: 1,
-                    filename: 'test.pdf',
-                    status: 'FAILED',
-                    google_storage_url:
-                        'https://storage.googleapis.com/test.pdf',
-                    uploaded_datetime: '2024-11-04T19:24:08Z',
-                },
-            ],
+            ingestedFiles: [file],
         })
 
-        onFailure && onFailure()
+        onFailure && onFailure(file)
 
         expect(notifyMock).toHaveBeenCalledWith({
             status: NotificationStatus.Error,
             message:
-                'Failed to upload to due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
+                'Failed to upload due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
+        })
+    })
+
+    it('should show a specific error message when ingestion of DOCX/PPTX fails', () => {
+        const file = {
+            id: 1,
+            help_center_id: 1,
+            filename: 'test.docx',
+            status: 'FAILED' as const,
+            google_storage_url: 'https://storage.googleapis.com/test.docx',
+            uploaded_datetime: '2024-11-04T19:24:08Z',
+        }
+
+        renderComponent({
+            ingestedFiles: [file],
+        })
+
+        onFailure && onFailure(file)
+
+        expect(notifyMock).toHaveBeenCalledWith({
+            status: NotificationStatus.Error,
+            message:
+                'Failed to upload due to corrupted, incomplete, or mislabeled data. Please try saving the file through Microsoft Office or converting it to PDF.',
         })
     })
 

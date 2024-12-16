@@ -18,7 +18,7 @@ export const useFileIngestion = ({
 }: {
     helpCenterId: number
     onSuccess?: () => void
-    onFailure?: () => void
+    onFailure?: (dto: Components.Schemas.RetrieveFileIngestionLogDto) => void
 }): {
     ingestFile: (
         createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto
@@ -86,7 +86,7 @@ export const useFileIngestion = ({
         if (!ingestingFile || ingestingFile.status === 'PENDING') return
 
         if (ingestingFile.status === 'FAILED') {
-            onFailure && onFailure()
+            onFailure && onFailure(ingestingFile)
         }
 
         if (ingestingFile.status === 'SUCCESSFUL') {

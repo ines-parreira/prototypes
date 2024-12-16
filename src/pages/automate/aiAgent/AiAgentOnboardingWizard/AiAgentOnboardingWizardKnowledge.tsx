@@ -308,7 +308,6 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                                     setHasExternalFiles(!isEmpty)
                                 }
                                 disableNavigationPrompt={isFinishingWizard}
-                                uploadFailedMessage="Failed to upload. Please try again."
                             />
                         </div>
                     )}

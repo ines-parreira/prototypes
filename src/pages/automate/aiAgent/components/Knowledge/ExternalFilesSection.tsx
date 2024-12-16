@@ -34,7 +34,6 @@ type Props = {
     helpCenterId: number
     onLoadingStateChange?: (isLoading: boolean) => void
     onEmptyStateChange?: (isEmpty: boolean) => void
-    uploadFailedMessage?: string
     disableNavigationPrompt?: boolean
 }
 
@@ -42,7 +41,6 @@ export const ExternalFilesSection = ({
     helpCenterId,
     onLoadingStateChange,
     onEmptyStateChange,
-    uploadFailedMessage,
     disableNavigationPrompt,
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -60,13 +58,21 @@ export const ExternalFilesSection = ({
                     })
                 )
             },
-            onFailure: () => {
+            onFailure: (file) => {
+                const filename = file.filename.toLowerCase()
+                const isMSOfficeFile =
+                    filename.endsWith('.docx') || filename.endsWith('.pptx')
+
+                const errorMessage =
+                    'Failed to upload due to corrupted, incomplete, or mislabeled data. ' +
+                    (isMSOfficeFile
+                        ? 'Please try saving the file through Microsoft Office or converting it to PDF.'
+                        : 'Please double-check the file or upload a different one.')
+
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message:
-                            uploadFailedMessage ??
-                            'Failed to upload to due to corrupted, incomplete, or mislabeled data. Please double-check the file or upload a different one.',
+                        message: errorMessage,
                     })
                 )
             },
