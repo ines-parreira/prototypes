@@ -21,6 +21,7 @@ import {
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
 import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
+import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
 import {StripePaymentFields} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import {
     ISubscriptionSummaryProps,
@@ -62,9 +63,12 @@ export const FormContainer: React.FC<
         getIsCurrentSubscriptionTrialingOrCanceled
     )
 
+    const shouldDisplayBillingInformationFields =
+        getIsMissingBillingtInformation(billingInformation)
+
     const defaultValues = useDefaultValues(
         billingInformation,
-        isStartingSubscription
+        shouldDisplayBillingInformationFields
     )
 
     const handleValidSubmit = useHandleValidSubmit()
@@ -81,15 +85,16 @@ export const FormContainer: React.FC<
                     <div className={css.cardContent}>
                         <StripePaymentFields />
                         <VerificationChargeDisclaimer />
-                        {isStartingSubscription ? (
+                        {shouldDisplayBillingInformationFields ? (
                             <BillingInformationFields />
-                        ) : (
+                        ) : null}
+                        {!isStartingSubscription ? (
                             <FormSubmitButton className={css.submitButton}>
                                 {hasCreditCard
                                     ? 'Update card'
                                     : 'Add payment method'}
                             </FormSubmitButton>
-                        )}
+                        ) : null}
                     </div>
                 </Card>
                 <SubscriptionSummary
@@ -103,45 +108,50 @@ export const FormContainer: React.FC<
 
 const useDefaultValues = (
     billingInformation: BillingContactDetailResponse,
-    isStartingSubscription: boolean
+    shouldDisplayBillingInformationFields: boolean
 ) => {
     const isTaxIdFieldEnabled = useFlags()[FeatureFlagKey.BillingTaxIdField]
 
     return useMemo(() => {
-        let defaultValues: FormFields = {
+        const baseValues: FormFields = {
             paymentMethod: {
                 complete: false,
             },
         }
 
-        if (isStartingSubscription) {
-            defaultValues = {
-                ...defaultValues,
-                email: billingInformation.email,
-                address: {
-                    complete: false,
-                    ...billingInformation.shipping,
-                    address: {
-                        ...billingInformation.shipping.address,
-                        state: billingInformation.shipping.address.state ?? '',
-                    },
-                    phone: billingInformation.shipping.phone ?? undefined,
-                },
-            }
-
-            if (isTaxIdFieldEnabled) {
-                defaultValues = {
-                    ...defaultValues,
-                    ...mapValues(
-                        billingInformation.tax_ids,
-                        (taxId) => taxId?.value
-                    ),
-                }
-            }
+        if (!shouldDisplayBillingInformationFields) {
+            return baseValues
         }
 
-        return defaultValues
-    }, [billingInformation, isStartingSubscription, isTaxIdFieldEnabled])
+        const withBillingInfo: FormFields = {
+            ...baseValues,
+            email: billingInformation.email,
+            address: {
+                complete: false,
+                ...billingInformation.shipping,
+                address: {
+                    ...billingInformation.shipping?.address,
+                    state: billingInformation.shipping?.address?.state ?? '',
+                },
+                phone: billingInformation.shipping?.phone ?? undefined,
+            },
+        }
+
+        if (!isTaxIdFieldEnabled) {
+            return withBillingInfo
+        }
+
+        const withTaxIds: FormFields = {
+            ...withBillingInfo,
+            ...mapValues(billingInformation.tax_ids, (taxId) => taxId?.value),
+        }
+
+        return withTaxIds
+    }, [
+        billingInformation,
+        shouldDisplayBillingInformationFields,
+        isTaxIdFieldEnabled,
+    ])
 }
 
 const useHandleValidSubmit = (): SubmitHandler<FormFields> => {

@@ -17,10 +17,8 @@ import {BillingInformationFields} from 'pages/settings/new_billing/components/Bi
 import {BillingInformationSetupForm} from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
 import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
-import {
-    PaymentMethodType,
-    type BillingContactDetailResponse,
-} from 'state/billing/types'
+import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
+import {PaymentMethodType} from 'state/billing/types'
 import {
     paymentMethod as getPaymentMethod,
     hasCreditCard as getHasCreditCard,
@@ -49,7 +47,7 @@ export default function MissingBillingInformationRow() {
 
     const billingInformation = useBillingContact({refetchOnWindowFocus: false})
 
-    const isMissingContactInformation = getIsMissingContactInformation(
+    const isMissingContactInformation = getIsMissingBillingtInformation(
         billingInformation.data?.data
     )
 
@@ -111,18 +109,5 @@ export default function MissingBillingInformationRow() {
                 )}
             </Modal>
         </>
-    )
-}
-
-const getIsMissingContactInformation = (
-    state?: BillingContactDetailResponse
-) => {
-    return (
-        state &&
-        (!state.email ||
-            !state.shipping.address.country ||
-            !state.shipping.address.postal_code ||
-            (state.shipping.address.country === 'US' &&
-                !state.shipping.address.state))
     )
 }

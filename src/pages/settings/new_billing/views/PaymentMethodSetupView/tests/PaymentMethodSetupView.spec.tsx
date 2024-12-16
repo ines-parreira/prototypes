@@ -103,11 +103,19 @@ describe('PaymentMethodSetupView', () => {
         })
     })
 
-    it('should not render EmailInputField and StripeAddressElement if user has credit card', async () => {
+    it('should not render EmailInputField and StripeAddressElement if user is not missing billing information', async () => {
         mockedServer
             .onGet('/api/billing/credit-card/')
             .reply(200, {brand: 'visa'})
-        mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
+        mockedServer.onGet('/api/billing/contact/').reply(200, {
+            email: 'example@gorgias.com',
+            shipping: {
+                address: {
+                    country: 'FR',
+                    postal_code: '75001',
+                },
+            },
+        })
 
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {client_secret: 'client-secret', id: 'id'},

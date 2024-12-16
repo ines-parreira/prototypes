@@ -1,5 +1,9 @@
 import {useElements, useStripe} from '@stripe/react-stripe-js'
-import {SetupIntentResult, StripeError} from '@stripe/stripe-js'
+import {
+    SetupIntentResult,
+    StripeError,
+    type StripeErrorType,
+} from '@stripe/stripe-js'
 import {useMutation} from '@tanstack/react-query'
 
 import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
@@ -77,10 +81,25 @@ export const useConfirmStripeSetupIntent = (
                 handleError(error, 'Failed to confirm stripe setup intent')
             }
 
+            const userFacingErrorTypes: StripeErrorType[] = [
+                'card_error',
+                'validation_error',
+            ]
+
+            let errorMessage =
+                'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.'
+
+            if (
+                stripeError.message &&
+                userFacingErrorTypes.includes(stripeError.type)
+            ) {
+                errorMessage = stripeError.message
+            }
+
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: error.message as string,
+                    message: errorMessage,
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
                 })

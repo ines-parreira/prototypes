@@ -40,19 +40,23 @@ mockedServer
     .reply(200, mockBillingContactResponse)
 
 describe('useConfirmStripeSetupIntent', () => {
+    let mockConfirmStripe: jest.Mock
+
+    beforeEach(() => {
+        assumeMock(useElements).mockReturnValue({} as any)
+
+        mockConfirmStripe = jest.fn()
+
+        assumeMock(useStripe).mockReturnValue({
+            confirmSetup: mockConfirmStripe,
+        } as any)
+    })
+
     it('should call stripe.confirmSetup with correct params', async () => {
         jest.spyOn(queries, 'useBillingContact').mockReturnValue({
             data: mockBillingContactResponse,
             isLoading: false,
         } as any)
-
-        const mockConfirmStripe = jest.fn()
-
-        assumeMock(useStripe).mockReturnValue({
-            confirmSetup: mockConfirmStripe,
-        } as any)
-
-        assumeMock(useElements).mockReturnValue('mockElements' as any)
 
         const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
@@ -64,7 +68,7 @@ describe('useConfirmStripeSetupIntent', () => {
 
         await waitFor(() => {
             expect(mockConfirmStripe).toHaveBeenCalledWith({
-                elements: 'mockElements',
+                elements: {},
                 redirect: 'if_required',
                 confirmParams: {
                     payment_method_data: {
@@ -95,12 +99,6 @@ describe('useConfirmStripeSetupIntent', () => {
     })
 
     it('should reject if elements is not initialized', async () => {
-        const mockConfirmStripe = jest.fn()
-
-        assumeMock(useStripe).mockReturnValue({
-            confirmSetup: mockConfirmStripe,
-        } as any)
-
         assumeMock(useElements).mockReturnValue(null)
 
         const {result} = renderHookWithStoreAndQueryClientProvider(
@@ -121,17 +119,11 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should not call sentry if the card is declined', async () => {
         const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
 
-        const mockConfirmStripe = jest.fn().mockResolvedValue({
+        mockConfirmStripe.mockResolvedValue({
             error: {
                 code: 'card_declined',
             },
         })
-
-        assumeMock(useStripe).mockReturnValue({
-            confirmSetup: mockConfirmStripe,
-        } as any)
-
-        assumeMock(useElements).mockReturnValue({} as any)
 
         const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
@@ -153,15 +145,9 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should call sentry in case of an error that is not card_declined', async () => {
         const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
 
-        const mockConfirmStripe = jest.fn().mockRejectedValue({
+        mockConfirmStripe.mockRejectedValue({
             code: 'some_error',
         })
-
-        assumeMock(useStripe).mockReturnValue({
-            confirmSetup: mockConfirmStripe,
-        } as any)
-
-        assumeMock(useElements).mockReturnValue({} as any)
 
         const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent
@@ -180,20 +166,72 @@ describe('useConfirmStripeSetupIntent', () => {
         expect(reportErrorSpy).toHaveBeenCalled()
     })
 
+    it('should notify users with error message from Stripe when the error type is card_error or validation_error', async () => {
+        mockConfirmStripe.mockRejectedValue({
+            type: 'card_error',
+            message: 'Card error message',
+        })
+
+        const {result, store} = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent
+        )
+
+        try {
+            await act(async () => {
+                await result.current.mutateAsync([])
+            })
+        } catch (e) {
+            expect(e).toEqual({
+                type: 'card_error',
+                message: 'Card error message',
+            })
+        }
+
+        const notificationAction: {payload: {message: string}} =
+            store.getActions()[0]
+
+        expect(notificationAction?.payload.message).toEqual(
+            'Card error message'
+        )
+    })
+
+    it('should notify users with the default error message when the Stripe error type is NOT card_error or validation_error', async () => {
+        mockConfirmStripe.mockRejectedValue({
+            type: 'invalid_request_error',
+            message: 'Invalid request error message',
+        })
+
+        const {result, store} = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent
+        )
+
+        try {
+            await act(async () => {
+                await result.current.mutateAsync([])
+            })
+        } catch (e) {
+            expect(e).toEqual({
+                type: 'invalid_request_error',
+                message: 'Invalid request error message',
+            })
+        }
+
+        const notificationAction: {payload: {message: string}} =
+            store.getActions()[0]
+
+        expect(notificationAction?.payload.message).toEqual(
+            'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.'
+        )
+    })
+
     it("should return setupIntent if the setup intent is successful, even when there's an error", async () => {
-        const mockConfirmStripe = jest.fn().mockResolvedValue({
+        mockConfirmStripe.mockResolvedValue({
             error: {
                 setup_intent: {
                     status: 'succeeded',
                 },
             },
         })
-
-        assumeMock(useStripe).mockReturnValue({
-            confirmSetup: mockConfirmStripe,
-        } as any)
-
-        assumeMock(useElements).mockReturnValue({} as any)
 
         const {result} = renderHookWithStoreAndQueryClientProvider(
             useConfirmStripeSetupIntent

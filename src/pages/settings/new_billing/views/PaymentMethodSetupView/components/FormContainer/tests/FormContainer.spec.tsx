@@ -28,6 +28,7 @@ import {
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import {FormContainer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 
+import type {BillingContactDetailResponse} from 'state/billing/types'
 import {RootState} from 'state/types'
 import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 import {assumeMock} from 'utils/testing'
@@ -180,7 +181,17 @@ describe('FormContainer', () => {
         const {history} = renderWithStoreAndQueryClientAndRouter(
             <FormContainer
                 hasCreditCard={true}
-                billingInformation={{} as any}
+                billingInformation={
+                    {
+                        email: 'example@gorgias.com',
+                        shipping: {
+                            address: {
+                                country: 'FR',
+                                postal_code: '75001',
+                            },
+                        },
+                    } as BillingContactDetailResponse
+                }
                 dispatchBillingError={() => {}}
             />,
             {
