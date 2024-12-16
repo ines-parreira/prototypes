@@ -429,7 +429,7 @@ exports[`<Magento2/> Integration should render 1`] = `
             <button
               aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"
@@ -741,7 +741,7 @@ exports[`<Magento2/> New should render 1`] = `
             <button
               aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"

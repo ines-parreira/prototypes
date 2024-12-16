@@ -326,7 +326,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
         <button
           aria-disabled="true"
           class="wrapper fill primary medium isDisabled"
-          type="submit"
+          type="button"
         >
           <span
             class="content"
@@ -676,7 +676,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
         <button
           aria-disabled="true"
           class="wrapper fill primary medium isDisabled"
-          type="submit"
+          type="button"
         >
           <span
             class="content"
@@ -1201,7 +1201,7 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
         <button
           aria-disabled="true"
           class="wrapper fill primary medium isDisabled"
-          type="submit"
+          type="button"
         >
           <span
             class="content"

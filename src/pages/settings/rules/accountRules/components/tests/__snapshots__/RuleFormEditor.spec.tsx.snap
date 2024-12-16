@@ -671,7 +671,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
               aria-disabled="true"
               class="wrapper ml-3 fill secondary medium isDisabled"
               id="rule-item-duplicate"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"

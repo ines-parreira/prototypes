@@ -16,7 +16,6 @@ import {
 } from '@floating-ui/react'
 import cn from 'classnames'
 import React, {
-    ComponentProps,
     PropsWithChildren,
     ReactNode,
     RefObject,
@@ -24,15 +23,13 @@ import React, {
     useRef,
 } from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import {THEME_NAME, useTheme} from 'theme'
 
 import css from './Popover.less'
 
 type Props = {
-    buttonProps?: React.PropsWithChildren<
-        Omit<ComponentProps<typeof Button>, 'children'>
-    >
+    buttonProps?: React.PropsWithChildren<Omit<ButtonProps, 'children'>>
     footer?: ReactNode
     isOpen: boolean
     offsetValue?: OffsetOptions

@@ -1359,7 +1359,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           <button
             aria-disabled="true"
             class="wrapper mr-2 fill primary medium isDisabled"
-            type="submit"
+            type="button"
           >
             <svg
               class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"

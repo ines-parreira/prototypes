@@ -103,7 +103,6 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 })
                 expect(button).toBeInTheDocument()
                 expect(button).toBeAriaDisabled()
-                expect(button.getAttribute('type')).toBe('submit')
             })
 
             it('should render a Next CTA (not disabled if already connected)', () => {
@@ -138,7 +137,6 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Loading... Next',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button.getAttribute('type')).toBe('submit')
             })
         })
 
@@ -156,7 +154,6 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 })
                 expect(button).toBeInTheDocument()
                 expect(button).toBeAriaDisabled()
-                expect(button.getAttribute('type')).toBe('submit')
             })
 
             it('should render a Next CTA if already requested', () => {
@@ -189,7 +186,6 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Loading... Begin Verification',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button.getAttribute('type')).toBe('submit')
             })
         })
 
@@ -238,7 +234,6 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                     name: 'Loading... Begin Verification',
                 })
                 expect(button).toBeInTheDocument()
-                expect(button.getAttribute('type')).toBe('submit')
             })
 
             it('should display next button when integration is verified', () => {

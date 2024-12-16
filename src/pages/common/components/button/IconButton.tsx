@@ -1,13 +1,13 @@
 import classnames from 'classnames'
-import React, {ComponentProps, ForwardedRef, forwardRef} from 'react'
+import React, {ForwardedRef, forwardRef} from 'react'
 
-import Button from './Button'
+import Button, {type ButtonProps} from './Button'
 import css from './IconButton.less'
 
 type Props = {
     children?: string
     iconClassName?: string
-} & Omit<ComponentProps<typeof Button>, 'children'>
+} & Omit<ButtonProps, 'children'>
 
 const IconButton = (
     {

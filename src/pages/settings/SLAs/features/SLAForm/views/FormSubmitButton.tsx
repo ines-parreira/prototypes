@@ -1,11 +1,11 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {useFormState} from 'react-hook-form'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 
 export default function FormSubmitButton({
     ...buttonProps
-}: React.PropsWithChildren<Omit<ComponentProps<typeof Button>, 'children'>>) {
+}: React.PropsWithChildren<Omit<ButtonProps, 'children'>>) {
     const {isDirty} = useFormState()
 
     return (

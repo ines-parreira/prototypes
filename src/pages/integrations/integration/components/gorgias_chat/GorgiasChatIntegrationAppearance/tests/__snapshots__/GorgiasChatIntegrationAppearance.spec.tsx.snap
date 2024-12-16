@@ -925,7 +925,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <button
                   aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  type="submit"
+                  type="button"
                 >
                   <span
                     class="content"
@@ -2406,7 +2406,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <button
                   aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  type="submit"
+                  type="button"
                 >
                   <svg
                     class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
@@ -13939,7 +13939,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <button
                   aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  type="submit"
+                  type="button"
                 >
                   <span
                     class="content"

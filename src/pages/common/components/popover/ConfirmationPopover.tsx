@@ -13,14 +13,14 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 import useIsMounted from 'hooks/useIsMounted'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import css from './ConfirmationPopover.less'
 
 type Props = {
-    buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>
-    cancelButtonProps?: Omit<ComponentProps<typeof Button>, 'children'>
+    buttonProps?: Omit<ButtonProps, 'children'>
+    cancelButtonProps?: Omit<ButtonProps, 'children'>
     children: (props: {
         uid: string
         onDisplayConfirmation: (event?: SyntheticEvent) => void

@@ -176,7 +176,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
             <button
               aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"

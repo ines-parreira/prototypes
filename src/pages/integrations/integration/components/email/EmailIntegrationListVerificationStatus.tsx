@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import Status, {StatusType} from 'pages/common/components/Status/Status'
 
 type Props = {
@@ -20,7 +20,7 @@ export default function EmailIntegrationListVerificationStatus({
     isDomainVerificationWarningVisible,
     isForwardEmail,
 }: Props) {
-    const commonButtonProps: Partial<ComponentProps<typeof Button>> = {
+    const commonButtonProps: Partial<ButtonProps> = {
         isLoading: isRowSubmitting,
         fillStyle: 'ghost',
         intent: 'secondary',

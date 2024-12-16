@@ -122,7 +122,7 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
           <button
             aria-disabled="true"
             class="wrapper fill primary medium isDisabled"
-            type="submit"
+            type="button"
           >
             <span
               class="content"

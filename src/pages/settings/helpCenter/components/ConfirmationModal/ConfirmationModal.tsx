@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import React, {ComponentProps} from 'react'
+import React from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.less'
 
@@ -9,7 +9,7 @@ export type ConfirmationModalProps = {
     children: React.ReactNode
     className?: string
     cancelText?: React.ReactNode
-    confirmIntent?: ComponentProps<typeof Button>['intent']
+    confirmIntent?: ButtonProps['intent']
     confirmIsLoading?: boolean
     confirmText: React.ReactNode
     isOpen: boolean
@@ -17,10 +17,7 @@ export type ConfirmationModalProps = {
     title: React.ReactNode
     onClose: () => void
     onConfirm: () => void
-    additionalActionButtonConfig?: Omit<
-        ComponentProps<typeof Button>,
-        'children'
-    >
+    additionalActionButtonConfig?: Omit<ButtonProps, 'children'>
 }
 
 export const ConfirmationModal = ({

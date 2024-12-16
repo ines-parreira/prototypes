@@ -1,6 +1,6 @@
 import React, {useState, useCallback, ComponentProps} from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 
 import PrivateReplyButton from './PrivateReplyButton'
 import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'
@@ -60,6 +60,6 @@ export default function PrivateReply({
     )
 }
 
-const ReplyButton = (props: ComponentProps<typeof Button>) => (
+const ReplyButton = (props: ButtonProps) => (
     <Button {...props} intent="secondary" />
 )

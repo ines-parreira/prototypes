@@ -406,7 +406,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
       <button
         aria-disabled="true"
         class="wrapper fill primary medium isDisabled"
-        type="submit"
+        type="button"
       >
         <svg
           class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"

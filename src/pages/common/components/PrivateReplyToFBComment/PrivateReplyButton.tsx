@@ -16,7 +16,6 @@ type ComponentProps = {
     onClick?: React.MouseEventHandler
     isDisabled?: boolean
     id?: string
-    href?: string
     type?: 'button' | 'reset' | 'submit'
     children: React.ReactNode
 }
@@ -72,7 +71,6 @@ export default function PrivateReplyButton({
                     className={classnames(css.container, css.button, className)}
                     onClick={onClick}
                     isDisabled={isDisabled}
-                    href="#"
                 >
                     <div className={css.logoWrapper}>
                         <div

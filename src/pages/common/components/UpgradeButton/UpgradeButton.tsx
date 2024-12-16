@@ -1,9 +1,9 @@
 import classnames from 'classnames'
-import React, {ComponentProps, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
 import {logEvent, SegmentEventToSend} from 'common/segment'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
@@ -16,7 +16,7 @@ type Props = {
     position?: ButtonIconPosition
     segmentEventToSend?: SegmentEventToSend
     state?: any
-} & Omit<ComponentProps<typeof Button>, 'children'>
+} & Omit<ButtonProps, 'children'>
 
 const UpgradeButton = ({
     className,

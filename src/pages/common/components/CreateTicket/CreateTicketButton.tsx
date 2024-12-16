@@ -1,16 +1,10 @@
 import {LocationDescriptor} from 'history'
 import _noop from 'lodash/noop'
-import React, {
-    cloneElement,
-    ComponentProps,
-    ReactElement,
-    useMemo,
-    useRef,
-} from 'react'
+import React, {cloneElement, ReactElement, useMemo, useRef} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -18,7 +12,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 type CreateTicketButtonProps = {
-    buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>
+    buttonProps?: Omit<ButtonProps, 'children'>
     isDisabled?: boolean
     to?: LocationDescriptor<{
         receiver: {

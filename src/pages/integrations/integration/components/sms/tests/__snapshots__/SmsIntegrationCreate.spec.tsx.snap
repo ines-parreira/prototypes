@@ -194,7 +194,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
         <button
           aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          type="submit"
+          type="button"
         >
           <svg
             class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"
@@ -640,7 +640,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
         <button
           aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          type="submit"
+          type="button"
         >
           <svg
             class="LoadingSpinner--spinner--a8Lrf LoadingSpinner--gloom--BV3WA spinner"

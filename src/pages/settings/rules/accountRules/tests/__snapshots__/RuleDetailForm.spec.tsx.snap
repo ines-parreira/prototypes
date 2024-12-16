@@ -329,7 +329,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
               aria-disabled="true"
               class="wrapper ml-3 fill secondary medium isDisabled"
               id="rule-item-duplicate"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"
@@ -695,7 +695,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
               aria-disabled="true"
               class="wrapper ml-3 fill secondary medium isDisabled"
               id="rule-item-duplicate"
-              type="submit"
+              type="button"
             >
               <span
                 class="content"

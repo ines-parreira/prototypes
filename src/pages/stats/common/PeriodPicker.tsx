@@ -1,12 +1,5 @@
 import moment, {Moment} from 'moment-timezone'
-import React, {
-    useEffect,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-    ComponentProps,
-} from 'react'
+import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react'
 import DateRangePicker, {
     EventHandler,
     Props as DateRangeProps,
@@ -19,7 +12,7 @@ import {
     DateTimeFormatMapper,
     DateTimeResultFormatType,
 } from 'constants/datetime'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from 'pages/stats/common/PeriodPicker.less'
 import {
@@ -48,7 +41,7 @@ export type Props = {
     startDatetime: Moment
     userTimezone?: string | null
     onOpen?: () => void
-    toggleProps?: Partial<ComponentProps<typeof Button>>
+    toggleProps?: Partial<ButtonProps>
     dateRanges?: {[label: string]: [Moment, Moment]}
     pickerV2Styles?: boolean
     rangesOnLeft?: boolean

@@ -3,7 +3,6 @@ import React, {
     ReactElement,
     useState,
     useRef,
-    ComponentProps,
     MutableRefObject,
     useEffect,
 } from 'react'
@@ -14,7 +13,7 @@ import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
+import Button, {type ButtonProps} from 'pages/common/components/button/Button'
 import {submitSetting} from 'state/currentUser/actions'
 import {getPreferences, getCurrentUser} from 'state/currentUser/selectors'
 import {getTicket} from 'state/ticket/selectors'
@@ -22,14 +21,14 @@ import {getTicket} from 'state/ticket/selectors'
 import css from './OnbordingMacroPopover.less'
 
 type Stages = 'info' | 'prompt'
-type ButtonProps = {
+type ButtonsProps = {
     label: string
     onClick: () => void
-    buttonsProp?: Omit<ComponentProps<typeof Button>, 'children'>
+    buttonsProp?: Omit<ButtonProps, 'children'>
 }
 interface StageProp {
     content: ReactElement
-    buttons: Array<ButtonProps>
+    buttons: Array<ButtonsProps>
 }
 
 interface Props {
@@ -174,7 +173,7 @@ function MacroPopOver({
     target,
 }: {
     content: ReactElement
-    buttons: Array<ButtonProps>
+    buttons: Array<ButtonsProps>
     target: MutableRefObject<HTMLElement | null>
 }) {
     const popoverBodyRef = useRef(null)
