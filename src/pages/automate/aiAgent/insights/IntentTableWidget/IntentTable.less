@@ -1,0 +1,36 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .bodyCell {
+        min-width: 85px;
+    }
+
+    .missing {
+        color: var(--feedback-error);
+    }
+
+    .skeletonWrapper {
+        width: 100%;
+        flex: 1;
+    }
+
+    .pagination {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .noData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        min-height: 400px;
+        color: var(--neutral-grey-5);
+
+        .noDataText {
+            .body-semibold();
+            color: var(--neutral-grey-5);
+        }
+    }
+}

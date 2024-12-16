@@ -11,14 +11,21 @@ import {
 import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
+    INTENT_SLICE_NAME,
 } from 'state/ui/stats/constants'
+import {
+    intentSlice,
+    initialState as intentInitialState,
+} from 'state/ui/stats/insightsSlice'
 
 export const initialState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: agentsPerformanceInitialState,
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAAgentsPerformanceInitialState,
+    [INTENT_SLICE_NAME]: intentInitialState,
 }
 
 export const statsTablesReducer = combineReducers({
     [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceSlice.reducer,
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAAgentPerformanceSlice.reducer,
+    [INTENT_SLICE_NAME]: intentSlice.reducer,
 })

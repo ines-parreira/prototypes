@@ -1,3 +1,4 @@
+import {IntentTableColumn} from 'pages/automate/aiAgent/insights/IntentTableWidget/types'
 import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 
@@ -5,7 +6,9 @@ import {AgentPerformanceState} from 'state/ui/stats/agentPerformanceSlice'
 import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
+    INTENT_SLICE_NAME,
 } from 'state/ui/stats/constants'
+import {IntentState} from 'state/ui/stats/insightsSlice'
 
 export enum AgentsTableColumn {
     AgentName = 'agent_name',
@@ -117,10 +120,12 @@ export type TableColumnSet =
     | AgentsTableColumn
     | ChannelsTableColumns
     | CampaignTableKeys
+    | IntentTableColumn
 
 export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
+    [INTENT_SLICE_NAME]: IntentState<IntentTableColumn>
 }
 
 export enum ValueMode {

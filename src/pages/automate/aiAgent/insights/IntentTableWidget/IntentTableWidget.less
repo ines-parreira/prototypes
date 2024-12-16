@@ -1,0 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .title {
+        .heading-page-semibold();
+    }
+
+    .description {
+        .body-regular();
+        margin-bottom: @layout-spacing-l;
+        color: var(--neutral-grey-6);
+    }
+}
