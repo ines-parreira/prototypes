@@ -7,7 +7,7 @@ import {SubmitHandler} from 'react-hook-form'
 
 import {useHistory} from 'react-router-dom'
 
-import {Form} from 'components/Form/Form'
+import {Form, type FormProps} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
@@ -27,20 +27,27 @@ type FormFields = {
     } & StripeAddressElementChangeEvent['value']
 } & BillingContactUpdatePayload['tax_ids']
 
+type Props = Omit<
+    FormProps<FormFields>,
+    'onValidSubmit' | 'defaultValues' | 'className'
+> & {
+    billingInformation: BillingContactDetailResponse
+    onSuccess?: () => void
+}
+
 export const BillingInformationSetupForm = ({
     billingInformation,
     onSuccess,
     children,
-}: React.PropsWithChildren<{
-    billingInformation: BillingContactDetailResponse
-    onSuccess?: () => void
-}>) => {
+    ...props
+}: React.PropsWithChildren<Props>) => {
     const defaultValues = useDefaultValues(billingInformation)
 
     const handleValidSubmit = useHandleValidSubmit({onSuccess})
 
     return (
         <Form
+            {...props}
             onValidSubmit={handleValidSubmit}
             defaultValues={defaultValues}
             className={css.container}

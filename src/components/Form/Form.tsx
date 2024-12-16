@@ -14,6 +14,15 @@ import {
     toFieldErrors,
 } from './validation'
 
+export type FormProps<TFieldValues extends FieldValues> = PropsWithChildren<
+    Omit<UseFormProps<TFieldValues>, 'resolver' | 'errors'> &
+        HandleSubmitProps<TFieldValues> &
+        FormElementProps & {
+            validator?: FormValidator<TFieldValues>
+            errors?: FormErrors<TFieldValues>
+        }
+>
+
 export function Form<TFieldValues extends FieldValues>({
     children,
     validator,
@@ -21,7 +30,7 @@ export function Form<TFieldValues extends FieldValues>({
     onValidSubmit,
     onInvalidSubmit,
     ...props
-}: Props<TFieldValues>) {
+}: FormProps<TFieldValues>) {
     const resolver = validator
         ? createResolver<TFieldValues>(validator)
         : undefined
@@ -57,13 +66,4 @@ type FormElementProps = Omit<
         HTMLFormElement
     >,
     'onSubmit' | 'noValidate'
->
-
-type Props<TFieldValues extends FieldValues> = PropsWithChildren<
-    Omit<UseFormProps<TFieldValues>, 'resolver' | 'errors'> &
-        HandleSubmitProps<TFieldValues> &
-        FormElementProps & {
-            validator?: FormValidator<TFieldValues>
-            errors?: FormErrors<TFieldValues>
-        }
 >

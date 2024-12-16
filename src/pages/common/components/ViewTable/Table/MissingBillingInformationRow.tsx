@@ -91,6 +91,7 @@ export default function MissingBillingInformationRow() {
                         <BillingInformationSetupForm
                             billingInformation={billingInformation.data.data}
                             onSuccess={() => setIsModalOpened(false)}
+                            mode="all"
                         >
                             <ModalHeader
                                 title="Missing information - Billing"
