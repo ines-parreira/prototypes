@@ -1,52 +1,93 @@
-import React, {ChangeEvent} from 'react'
-import {Input} from 'reactstrap'
+import classNames from 'classnames'
+import React, {useMemo, useRef, useState} from 'react'
 
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+
+import css from './CallExpression.less'
 import {OperatorType} from './types'
 
 type Option = {value: string; name: string}
 
-type Props = {
+type OperatorProps = {
     index: number
     operators: Record<string, OperatorType>
     selected: string
     onChange: (index: number, value: string) => void
 }
 
-export default class Operator extends React.Component<Props> {
-    render() {
-        const {onChange, selected, operators} = this.props
+export function Operator({
+    index,
+    operators,
+    selected,
+    onChange,
+}: OperatorProps) {
+    const [isOperatorOpen, setIsOperatorOpen] = useState<boolean>(false)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
-        const options: Option[] = Object.keys(operators).map(
-            (operator: string) => ({
-                value: operator,
-                name: operators[operator].label,
-            })
-        )
+    const options: Option[] = useMemo(() => {
+        const operatorKeys = Object.keys(operators)
+        const defaultOptions = operatorKeys.map((operator: string) => ({
+            value: operator,
+            name: operators[operator].label,
+        }))
 
-        if (!Object.keys(operators).includes(selected)) {
-            options.push({
+        if (!operatorKeys.includes(selected)) {
+            defaultOptions.push({
                 value: selected,
                 name: selected,
             })
         }
 
-        return (
-            <Input
-                className="d-inline"
-                style={{width: 'auto'}}
-                type="select"
-                value={selected}
-                bsSize="sm"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(this.props.index, e.target.value)
-                }
-            >
-                {options.map((option: Option, index: number) => (
-                    <option key={index} value={option.value}>
-                        {option.name}
-                    </option>
-                ))}
-            </Input>
-        )
-    }
+        return defaultOptions
+    }, [operators, selected])
+
+    const selectedOption = useMemo(
+        () => options.find((option) => option.value === selected),
+        [options, selected]
+    )
+
+    return (
+        <SelectInputBox
+            label={selectedOption?.name}
+            onToggle={setIsOperatorOpen}
+            floating={containerRef}
+            ref={dropdownRef}
+            className={classNames(css.operatorSelect, 'btn-light')}
+        >
+            <SelectInputBoxContext.Consumer>
+                {(context) => (
+                    <Dropdown
+                        isOpen={isOperatorOpen}
+                        onToggle={() => context!.onBlur()}
+                        ref={containerRef}
+                        target={dropdownRef}
+                        value={selected}
+                    >
+                        <DropdownBody>
+                            {options.map((option) => (
+                                <DropdownItem
+                                    key={option.value}
+                                    shouldCloseOnSelect
+                                    option={{
+                                        label: option.name,
+                                        value: option.value,
+                                    }}
+                                    onClick={() => {
+                                        onChange(index, option.value)
+                                    }}
+                                />
+                            ))}
+                        </DropdownBody>
+                    </Dropdown>
+                )}
+            </SelectInputBoxContext.Consumer>
+        </SelectInputBox>
+    )
 }

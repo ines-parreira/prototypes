@@ -47,40 +47,38 @@ export default function ViewFilters() {
     // counting call expressions so we can delete them later
     let callExprCounter = 0
 
-    const walk = (node: Expression, parentNode?: LogicalExpression) => {
+    const walk = (
+        node: Expression,
+        parentNode?: LogicalExpression
+    ): JSX.Element => {
         switch (node.type) {
             case 'CallExpression':
                 return (
-                    <div className="view-filters-item">
-                        <CallExpression
-                            node={node}
-                            parentNode={parentNode!}
-                            view={view}
-                            schemas={schemas}
-                            index={callExprCounter++}
-                            removeCondition={(index) =>
-                                dispatch(removeFieldFilter(index))
-                            }
-                            updateOperator={(index, value) =>
-                                dispatch(
-                                    updateFieldFilterOperator(index, value)
-                                )
-                            }
-                            agents={agents}
-                            teams={teams}
-                            updateFieldFilter={(index, value) =>
-                                dispatch(updateFieldFilter(index, value))
-                            }
-                        />
-                    </div>
+                    <CallExpression
+                        node={node}
+                        parentNode={parentNode!}
+                        view={view}
+                        schemas={schemas}
+                        index={callExprCounter++}
+                        removeCondition={(index) =>
+                            dispatch(removeFieldFilter(index))
+                        }
+                        updateOperator={(index, value) =>
+                            dispatch(updateFieldFilterOperator(index, value))
+                        }
+                        agents={agents}
+                        teams={teams}
+                        updateFieldFilter={(index, value) =>
+                            dispatch(updateFieldFilter(index, value))
+                        }
+                    />
                 )
             case 'LogicalExpression':
                 return (
-                    <div className="view-filters-item">
+                    <>
                         {walk(node.left, node)}
-
                         {walk(node.right, node)}
-                    </div>
+                    </>
                 )
             default:
                 throw Error(`Unknown type: ${node.type}`)

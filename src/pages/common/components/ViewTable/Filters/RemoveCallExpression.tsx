@@ -1,21 +1,24 @@
 import React from 'react'
 
-type Props = {
+import IconButton from 'pages/common/components/button/IconButton'
+
+type RemoveCallExpressionProps = {
     index: number
     onClick: (index: number) => void
 }
 
-export default class RemoveCallExpression extends React.Component<Props> {
-    render() {
-        const {index, onClick} = this.props
-
-        return (
-            <i
-                className="material-icons text-danger clickable"
-                onClick={() => onClick(index)}
-            >
-                clear
-            </i>
-        )
-    }
+export function RemoveCallExpression({
+    index,
+    onClick,
+}: RemoveCallExpressionProps) {
+    return (
+        <IconButton
+            intent="destructive"
+            fillStyle="ghost"
+            onClick={() => onClick(index)}
+            size="small"
+        >
+            clear
+        </IconButton>
+    )
 }

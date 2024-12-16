@@ -178,7 +178,7 @@ export class RightContainer extends Component<Props, State> {
             this.props
 
         if (empty) {
-            return <span />
+            return null
         }
 
         if (!field && 'value' in node) {
@@ -193,7 +193,7 @@ export class RightContainer extends Component<Props, State> {
 
         // not bound to happen, just a TS safety check
         if (!field) {
-            return <span />
+            return null
         }
 
         let displayedValue: Literal['value'] | ReactNode = (node as Literal)

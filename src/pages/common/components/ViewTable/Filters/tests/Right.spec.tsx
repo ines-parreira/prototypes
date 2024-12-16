@@ -311,7 +311,7 @@ describe('<Right />', () => {
         expect(getByText('true')).toHaveClass('btn-outline-danger')
     })
 
-    it('should render empty span when no field is present and no value is passed in node', () => {
+    it('should render nothing when no field is present and no value is passed in node', () => {
         const {container} = render(
             <Provider store={store}>
                 <RightContainer
@@ -323,6 +323,6 @@ describe('<Right />', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toBeEmpty()
+        expect(container).toBeEmptyDOMElement()
     })
 })

@@ -19,7 +19,6 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    UncontrolledDropdown,
 } from 'reactstrap'
 
 import {useFlag} from 'common/flags'
@@ -43,11 +42,13 @@ import {
 } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {Separator} from 'pages/common/components/Separator/Separator'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
@@ -86,6 +87,8 @@ import {
 import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
+
+import {AddFilterDropdown} from './AddFilterDropdown'
 
 import {getDefaultCustomFieldOperator} from './Filters/utils'
 import Filters from './Filters/ViewFilters'
@@ -283,20 +286,23 @@ export const FilterTopbar = ({
         await submitView(newActiveView)
     }
 
-    const handleClickFilter = (field: Map<any, any>) => {
-        const path = fieldPath(field)
-        const isCustomFieldsFilter = fieldPath(field) === 'custom_fields'
-        const left = `${config.get('singular') as string}.${path}`
-        const operator = isCustomFieldsFilter
-            ? getDefaultCustomFieldOperator(schemas, firstCustomField)
-            : (getDefaultOperator(left, schemas) as string)
-        const filter = {
-            left,
-            operator,
-        }
+    const handleClickFilter = useCallback(
+        (field: Map<any, any>) => {
+            const path = fieldPath(field)
+            const isCustomFieldsFilter = fieldPath(field) === 'custom_fields'
+            const left = `${config.get('singular') as string}.${path}`
+            const operator = isCustomFieldsFilter
+                ? getDefaultCustomFieldOperator(schemas, firstCustomField)
+                : (getDefaultOperator(left, schemas) as string)
+            const filter = {
+                left,
+                operator,
+            }
 
-        dispatch(addFieldFilter(field.toJS(), filter))
-    }
+            dispatch(addFieldFilter(field.toJS(), filter))
+        },
+        [dispatch, schemas, firstCustomField, config]
+    )
 
     const cancel = () => {
         if (isUpdate) {
@@ -377,7 +383,7 @@ export const FilterTopbar = ({
 
     return (
         <Card className={css.component}>
-            <CardBody className="filter-topbar-content">
+            <CardBody className={css.filterTopbarContent}>
                 {isUpdate && !isSearch && (
                     <div className={css.cardActions}>
                         {!tickets.isEmpty() && type === EntityType.Ticket && (
@@ -396,197 +402,199 @@ export const FilterTopbar = ({
                     </div>
                 )}
                 <p className={css.subtitle}>ADVANCED FILTERS</p>
-                <Filters />
-                <UncontrolledDropdown>
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        size="sm"
-                        className="mr-2"
-                        onClick={() => {
-                            logEvent(SegmentEvent.ViewFilterAddClicked)
-                        }}
-                    >
-                        <i className="material-icons mr-2">add</i>
-                        Add filter
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {filterableFields.map((field: Map<any, any>) => (
-                            <DropdownItem
-                                key={field.get('name')}
-                                type="button"
-                                onClick={() => handleClickFilter(field)}
-                            >
-                                {field.get('title')}
-                            </DropdownItem>
-                        ))}
-                    </DropdownMenu>
-                </UncontrolledDropdown>
+                <div className={css.advancedFilters}>
+                    <Filters />
+                    <AddFilterDropdown
+                        filterableFields={filterableFields}
+                        handleClickFilter={handleClickFilter}
+                    />
+                </div>
             </CardBody>
             {!isSearch && (
-                <CardFooter>
-                    <div className="d-flex align-items-center justify-content-between">
-                        <div className={css.footer}>
-                            {isSystemView ? (
-                                <span>
-                                    <i className="material-icons mr-2">info</i>
-                                    This view cannot be saved
+                <>
+                    <Separator />
+                    <CardFooter>
+                        <div className="d-flex align-items-center justify-content-between">
+                            <div className={css.footer}>
+                                {isSystemView ? (
+                                    <span>
+                                        <i className="material-icons mr-2">
+                                            info
+                                        </i>
+                                        This view cannot be saved
+                                    </span>
+                                ) : isUpdate ? (
+                                    <ButtonDropdown
+                                        isOpen={isDropdownOpen}
+                                        toggle={() => {
+                                            toggleDropdownOpen(!isDropdownOpen)
+                                        }}
+                                    >
+                                        <Group>
+                                            <ConfirmationPopover
+                                                buttonProps={{
+                                                    type: 'submit',
+                                                }}
+                                                content={
+                                                    <>
+                                                        You are about to edit
+                                                        this view for{' '}
+                                                        <b>all users</b>.
+                                                    </>
+                                                }
+                                                popperClassName={
+                                                    css.editPopover
+                                                }
+                                                onConfirm={handleClickUpdate}
+                                            >
+                                                {({
+                                                    uid,
+                                                    onDisplayConfirmation,
+                                                    elementRef,
+                                                }) => (
+                                                    <>
+                                                        <Button
+                                                            id={uid}
+                                                            isLoading={
+                                                                isSubmitting
+                                                            }
+                                                            isDisabled={
+                                                                !areFiltersValid ||
+                                                                !isActiveViewValid
+                                                            }
+                                                            onClick={
+                                                                onDisplayConfirmation
+                                                            }
+                                                            onClickCapture={
+                                                                handleClickValidation
+                                                            }
+                                                            ref={elementRef}
+                                                        >
+                                                            Update view
+                                                        </Button>
+                                                        {!isActiveViewValid && (
+                                                            <Tooltip
+                                                                target={uid}
+                                                            >
+                                                                You must give a
+                                                                name to your
+                                                                view before
+                                                                saving it.
+                                                            </Tooltip>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </ConfirmationPopover>
+                                            <IconButton
+                                                id="arrow-save-view-button"
+                                                onClick={() =>
+                                                    toggleDropdownOpen(
+                                                        !isDropdownOpen
+                                                    )
+                                                }
+                                                isDisabled={
+                                                    isSubmitting ||
+                                                    !areFiltersValid ||
+                                                    !isActiveViewValid
+                                                }
+                                            >
+                                                arrow_drop_down
+                                            </IconButton>
+                                            {!isActiveViewValid && (
+                                                <Tooltip target="arrow-save-view-button">
+                                                    You must give a name to your
+                                                    view before saving it.
+                                                </Tooltip>
+                                            )}
+                                        </Group>
+                                        <DropdownToggle tag="span" />
+                                        <DropdownMenu right>
+                                            <DropdownItem
+                                                key="open"
+                                                type="button"
+                                                disabled={
+                                                    isSubmitting ||
+                                                    !areFiltersValid
+                                                }
+                                                onClick={onClickNew}
+                                            >
+                                                Save as new view
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
+                                ) : (
+                                    <Button
+                                        isLoading={isSubmitting}
+                                        isDisabled={
+                                            isSubmitting ||
+                                            !areFiltersValid ||
+                                            !isActiveViewValid
+                                        }
+                                        onClick={createView}
+                                        type="submit"
+                                    >
+                                        Create view
+                                    </Button>
+                                )}
+                                {!isSearch && (
+                                    <Button
+                                        type="submit"
+                                        intent="secondary"
+                                        className="ml-2"
+                                        isDisabled={isSubmitting}
+                                        onClick={cancel}
+                                    >
+                                        Cancel
+                                    </Button>
+                                )}
+                                <span
+                                    className={classnames(
+                                        css.updateViewFeedback,
+                                        {
+                                            [css.visible]: showNoChangeFeedback,
+                                        }
+                                    )}
+                                >
+                                    No changes have been made.
                                 </span>
-                            ) : isUpdate ? (
-                                <ButtonDropdown
-                                    isOpen={isDropdownOpen}
-                                    toggle={() => {
-                                        toggleDropdownOpen(!isDropdownOpen)
+                            </div>
+                            {!isSearch && !isSystemView && isUpdate && (
+                                <ConfirmButton
+                                    id="delete-view"
+                                    intent="destructive"
+                                    confirmationContent={
+                                        <span>
+                                            You are about to <b>delete</b> this
+                                            view for <b>all users</b>.
+                                        </span>
+                                    }
+                                    onConfirm={async () => {
+                                        const destinationView = await dispatch(
+                                            deleteView(activeView)
+                                        )
+                                        dispatch(
+                                            viewDeleted(activeView.get('id'))
+                                        )
+                                        dispatch(
+                                            activeViewIdSet(
+                                                (
+                                                    destinationView as Map<
+                                                        any,
+                                                        any
+                                                    >
+                                                ).get('id')
+                                            )
+                                        )
                                     }}
                                 >
-                                    <Group>
-                                        <ConfirmationPopover
-                                            buttonProps={{
-                                                type: 'submit',
-                                            }}
-                                            content={
-                                                <>
-                                                    You are about to edit this
-                                                    view for <b>all users</b>.
-                                                </>
-                                            }
-                                            popperClassName={css.editPopover}
-                                            onConfirm={handleClickUpdate}
-                                        >
-                                            {({
-                                                uid,
-                                                onDisplayConfirmation,
-                                                elementRef,
-                                            }) => (
-                                                <>
-                                                    <Button
-                                                        id={uid}
-                                                        isLoading={isSubmitting}
-                                                        isDisabled={
-                                                            !areFiltersValid ||
-                                                            !isActiveViewValid
-                                                        }
-                                                        onClick={
-                                                            onDisplayConfirmation
-                                                        }
-                                                        onClickCapture={
-                                                            handleClickValidation
-                                                        }
-                                                        ref={elementRef}
-                                                    >
-                                                        Update view
-                                                    </Button>
-                                                    {!isActiveViewValid && (
-                                                        <Tooltip target={uid}>
-                                                            You must give a name
-                                                            to your view before
-                                                            saving it.
-                                                        </Tooltip>
-                                                    )}
-                                                </>
-                                            )}
-                                        </ConfirmationPopover>
-                                        <IconButton
-                                            id="arrow-save-view-button"
-                                            onClick={() =>
-                                                toggleDropdownOpen(
-                                                    !isDropdownOpen
-                                                )
-                                            }
-                                            isDisabled={
-                                                isSubmitting ||
-                                                !areFiltersValid ||
-                                                !isActiveViewValid
-                                            }
-                                        >
-                                            arrow_drop_down
-                                        </IconButton>
-                                        {!isActiveViewValid && (
-                                            <Tooltip target="arrow-save-view-button">
-                                                You must give a name to your
-                                                view before saving it.
-                                            </Tooltip>
-                                        )}
-                                    </Group>
-                                    <DropdownToggle tag="span" />
-                                    <DropdownMenu right>
-                                        <DropdownItem
-                                            key="open"
-                                            type="button"
-                                            disabled={
-                                                isSubmitting || !areFiltersValid
-                                            }
-                                            onClick={onClickNew}
-                                        >
-                                            Save as new view
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
-                            ) : (
-                                <Button
-                                    isLoading={isSubmitting}
-                                    isDisabled={
-                                        isSubmitting ||
-                                        !areFiltersValid ||
-                                        !isActiveViewValid
-                                    }
-                                    onClick={createView}
-                                    type="submit"
-                                >
-                                    Create view
-                                </Button>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete view
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             )}
-                            {!isSearch && (
-                                <Button
-                                    type="submit"
-                                    intent="secondary"
-                                    className="ml-2"
-                                    isDisabled={isSubmitting}
-                                    onClick={cancel}
-                                >
-                                    Cancel
-                                </Button>
-                            )}
-                            <span
-                                className={classnames(css.updateViewFeedback, {
-                                    [css.visible]: showNoChangeFeedback,
-                                })}
-                            >
-                                No changes have been made.
-                            </span>
                         </div>
-                        {!isSearch && !isSystemView && isUpdate && (
-                            <ConfirmButton
-                                id="delete-view"
-                                intent="destructive"
-                                confirmationContent={
-                                    <span>
-                                        You are about to <b>delete</b> this view
-                                        for <b>all users</b>.
-                                    </span>
-                                }
-                                onConfirm={async () => {
-                                    const destinationView = await dispatch(
-                                        deleteView(activeView)
-                                    )
-                                    dispatch(viewDeleted(activeView.get('id')))
-                                    dispatch(
-                                        activeViewIdSet(
-                                            (
-                                                destinationView as Map<any, any>
-                                            ).get('id')
-                                        )
-                                    )
-                                }}
-                            >
-                                <ButtonIconLabel icon="delete">
-                                    Delete view
-                                </ButtonIconLabel>
-                            </ConfirmButton>
-                        )}
-                    </div>
-                </CardFooter>
+                    </CardFooter>
+                </>
             )}
         </Card>
     )

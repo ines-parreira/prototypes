@@ -1,34 +1,20 @@
-import classNames from 'classnames'
 import {LogicalOperator} from 'estree'
 import React from 'react'
 
-import Button from '../../button/Button'
+import css from './CallExpression.less'
 
-import css from './OperatorLabel.less'
-
-type Props = {
-    operator: Exclude<LogicalOperator, '??'>
+type LabelledOperator = Exclude<LogicalOperator, '??'>
+type OperatorLabelProps = {
+    operator: LabelledOperator
 }
 
-export default class OperatorLabel extends React.Component<Props> {
-    render() {
-        const {operator} = this.props
+const OPERATOR_LABELS: Record<LabelledOperator, string> = {
+    '&&': 'And',
+    '||': 'Or',
+}
 
-        const operatorLabels = {
-            '&&': 'AND',
-            '||': 'OR',
-        }
-
-        return (
-            <Button
-                className={classNames(
-                    'OperatorLabel',
-                    'btn-frozen',
-                    css.operatorLabel
-                )}
-            >
-                {operatorLabels[operator]}
-            </Button>
-        )
-    }
+export function OperatorLabel({operator}: OperatorLabelProps) {
+    return (
+        <span className={css.operatorLabel}>{OPERATOR_LABELS[operator]}</span>
+    )
 }

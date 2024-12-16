@@ -1,4 +1,4 @@
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {CallExpression as ESCallExpression, LogicalExpression} from 'estree'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
@@ -138,10 +138,11 @@ describe('<CallExpression />', () => {
     })
 
     it('should update active view on update field operator', () => {
-        const {container} = render(<CallExpression {...minProps} />)
-        fireEvent.change(container.querySelector('select')!, {
-            target: {value: 'neq'},
-        })
+        render(<CallExpression {...minProps} />)
+        const dropdown = screen.getByRole('combobox')
+        fireEvent.focus(dropdown)
+        const neqOption = screen.getByRole('option', {name: 'is not'})
+        fireEvent.click(neqOption)
 
         expect(updateOperatorMock).toHaveBeenLastCalledWith(0, 'neq')
     })
@@ -159,7 +160,7 @@ describe('<CallExpression />', () => {
                 index={1}
             />
         )
-        expect(getByText('AND')).toBeInTheDocument()
+        expect(getByText('And')).toBeInTheDocument()
     })
 
     it('should render system condition badge if respective field is absent', () => {

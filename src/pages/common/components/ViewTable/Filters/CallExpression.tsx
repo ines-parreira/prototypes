@@ -18,11 +18,12 @@ import {updateFieldFilter} from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
 import {fieldPath, findProperty} from 'utils'
 
+import css from './CallExpression.less'
 import useCustomFieldsFilters from './hooks/useCustomFieldsFilters'
 import Left from './Left'
-import Operator from './Operator'
-import OperatorLabel from './OperatorLabel'
-import RemoveCallExpression from './RemoveCallExpression'
+import {Operator} from './Operator'
+import {OperatorLabel} from './OperatorLabel'
+import {RemoveCallExpression} from './RemoveCallExpression'
 import Right from './Right'
 import {OperatorType} from './types'
 import {getCustomFieldOperators, resolveObjectPath} from './utils'
@@ -124,7 +125,7 @@ export const CallExpression = ({
     )
 
     return (
-        <div className="CallExpression">
+        <div className={css.component}>
             {index > 0 && (
                 <OperatorLabel
                     operator={

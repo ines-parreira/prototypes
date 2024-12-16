@@ -14,6 +14,7 @@ import {getConfigByName} from 'config/views'
 import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {Separator} from 'pages/common/components/Separator/Separator'
 import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
 import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
 import Header from 'pages/common/components/ViewTable/Header'
@@ -385,12 +386,15 @@ export class ViewTableContainer extends Component<Props> {
                     />
                 </div>
                 {hasFilters && (activeView.get('editMode') || isSearch) && (
-                    <FilterTopbar
-                        isUpdate={isUpdate}
-                        isSearch={isSearch}
-                        type={type}
-                        activeView={activeView}
-                    />
+                    <>
+                        <Separator />
+                        <FilterTopbar
+                            isUpdate={isUpdate}
+                            isSearch={isSearch}
+                            type={type}
+                            activeView={activeView}
+                        />
+                    </>
                 )}
                 <div className={css.table}>{this._renderTable()}</div>
             </div>

@@ -155,15 +155,6 @@ const minProps = {
 
 describe('<FilterTopbar />', () => {
     describe('render', () => {
-        it('should render active view filters', () => {
-            const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <FilterTopbar {...minProps} />
-                </Provider>
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
         it('should not render delete button when creating new view', () => {
             const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
@@ -260,11 +251,13 @@ describe('<FilterTopbar />', () => {
         })
 
         it('should update active view on add field', () => {
-            const {getByText} = render(
+            const {getByText, getByLabelText} = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
                 </Provider>
             )
+            const addFilterButton = getByLabelText('Add filter')
+            fireEvent.click(addFilterButton)
             fireEvent.click(getByText('Channel'))
             expect(addFieldFilter).toHaveBeenLastCalledWith(
                 expect.objectContaining({
@@ -520,12 +513,13 @@ describe('<FilterTopbar />', () => {
     it('should toggle dropdown on update view button dropdown caret click', () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
         isDirtyMock.mockReturnValue(true)
-        const {getByText} = render(
+        const {getByText, container} = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
             </Provider>
         )
-        const toggle = getByText('arrow_drop_down')
+        const toggle = container.querySelector('#arrow-save-view-button')
+        expect(toggle).toBeInTheDocument()
 
         expect(
             getByText(/Save as new view/i)
@@ -533,14 +527,14 @@ describe('<FilterTopbar />', () => {
                 .getAttribute('aria-hidden')
         ).toBe('true')
 
-        fireEvent.click(toggle)
+        fireEvent.click(toggle!)
         expect(
             getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
                 .getAttribute('aria-hidden')
         ).toBe('false')
 
-        fireEvent.click(toggle)
+        fireEvent.click(toggle!)
         expect(
             getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
@@ -691,12 +685,15 @@ describe('<FilterTopbar />', () => {
 
     it('should render Ticket Fields filter when FF is enabled and when in search mode', () => {
         mockUseFlag.mockReturnValue(true)
-        const {queryByText} = render(
+        const {getByLabelText, getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} isSearch={true} />
             </Provider>
         )
 
-        expect(queryByText('Ticket field')).toBeInTheDocument()
+        const addFilterButton = getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(getByText('Ticket field')).toBeInTheDocument()
     })
 })

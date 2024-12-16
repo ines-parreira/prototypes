@@ -1,5 +1,6 @@
 @import '~css/new/util';
 @import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local .component {
     flex-shrink: 0;
@@ -8,24 +9,32 @@
 
     :global(.card-body),
     :global(.card-footer) {
-        padding-left: 28px;
-        padding-right: 28px;
-        background-color: var(--neutral-grey-2);
+        padding: @layout-spacing-m;
+        background-color: var(--neutral-grey-1);
     }
 
     :global(.card-footer) {
         border-width: 1px 0;
         border-style: solid;
-        border-color: var(--neutral-grey-3);
+        padding-top: @layout-spacing-xs;
+        padding-bottom: @layout-spacing-xs;
+        border-color: var(--neutral-grey-1);
     }
 
     .cardActions {
-        display: flex;
         float: right;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: @layout-spacing-s;
+    }
 
-        > :last-child {
-            margin-left: 16px;
-        }
+    .advancedFilters {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+        gap: @layout-spacing-xs;
     }
 
     .subtitle {
@@ -33,6 +42,7 @@
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 0.6px;
+        margin-bottom: @layout-spacing-s;
     }
 
     .footer {
@@ -56,47 +66,8 @@
     .editPopover {
         width: 170px;
     }
-}
 
-.filter-topbar-content,
-.filter-topbar-actions {
-    padding: 0.8em 1.6em;
-}
-
-.filter-topbar-content {
-    position: relative;
-}
-
-.view-filters-item {
-    .clearfix;
-}
-
-.CallExpression {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 12px;
-
-    > * {
-        margin-right: 8px;
+    .filterTopbarContent {
+        position: relative;
     }
-
-    .remove {
-        opacity: 0;
-        transition: all 0.2s linear;
-    }
-
-    &:hover > .remove {
-        opacity: 1;
-    }
-}
-
-// hide the last operator label
-.filter-topbar-content
-    > .view-filters-item
-    > .view-filters-item
-    .OperatorLabel {
-    cursor: default !important;
 }
