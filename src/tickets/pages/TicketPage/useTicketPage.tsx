@@ -4,6 +4,7 @@ import {useFlag} from 'common/flags'
 import {globalNavigationPanel} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import App from 'pages/App'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
@@ -21,10 +22,12 @@ export default function useTicketpage() {
         FeatureFlagKey.GlobalNavigation,
         false
     )
+    const isMobileResolution = useIsMobileResolution()
+    const showGlobalNav = hasGlobalNav && !isMobileResolution
 
     const config = useMemo(
         (): PanelLayoutConfig[] => [
-            ...(hasGlobalNav ? [globalNavigationPanel] : []),
+            ...(showGlobalNav ? [globalNavigationPanel] : []),
             {
                 key: 'navbar-panel',
                 content: <TicketNavbar disableResize />,
@@ -48,7 +51,7 @@ export default function useTicketpage() {
                 ],
             },
         ],
-        [hasGlobalNav]
+        [showGlobalNav]
     )
 
     return useMemo(

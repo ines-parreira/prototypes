@@ -4,6 +4,7 @@ import {useRouteMatch} from 'react-router-dom'
 import {useFlag} from 'common/flags'
 import {globalNavigationPanel} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -23,6 +24,8 @@ export default function useSplitTicketPage() {
         FeatureFlagKey.GlobalNavigation,
         false
     )
+    const isMobileResolution = useIsMobileResolution()
+    const showGlobalNav = hasGlobalNav && !isMobileResolution
 
     const match = useRouteMatch<{
         ticketId: string
@@ -42,7 +45,7 @@ export default function useSplitTicketPage() {
 
     const config = useMemo(
         (): PanelLayoutConfig[] => [
-            ...(hasGlobalNav ? [globalNavigationPanel] : []),
+            ...(showGlobalNav ? [globalNavigationPanel] : []),
             {
                 key: 'navbar-panel',
                 content: <TicketNavbar disableResize />,
@@ -86,7 +89,7 @@ export default function useSplitTicketPage() {
                 ],
             },
         ],
-        [hasGlobalNav, ticketId, viewId, onToggleUnread, registerToggleUnread]
+        [showGlobalNav, ticketId, viewId, onToggleUnread, registerToggleUnread]
     )
 
     return useMemo(() => ({config, layoutKey: LayoutKeys.TICKET}), [config])

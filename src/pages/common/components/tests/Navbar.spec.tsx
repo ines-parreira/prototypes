@@ -65,6 +65,7 @@ describe('Navbar', () => {
         children: null,
         closePanels: jest.fn(),
         currentUser: fromJS(user),
+        isMobileResolution: false,
         isOpenedPanel: false,
         setTheme: jest.fn(),
         theme: {

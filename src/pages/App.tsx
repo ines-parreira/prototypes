@@ -10,6 +10,7 @@ import {GlobalNavigation} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
@@ -50,6 +51,8 @@ const App = ({
         FeatureFlagKey.GlobalNavigation,
         false
     )
+    const isMobileResolution = useIsMobileResolution()
+    const showGlobalNav = hasGlobalNav && !isMobileResolution
     const dispatch = useAppDispatch()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
@@ -74,7 +77,7 @@ const App = ({
 
     return (
         <div id="app-root" className={css.app}>
-            {hasGlobalNav && <GlobalNavigation />}
+            {showGlobalNav && <GlobalNavigation />}
             {Navbar && <Navbar />}
 
             <div

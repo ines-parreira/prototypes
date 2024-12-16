@@ -23,6 +23,8 @@ import {
 import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import withIsMobileResolution from 'hooks/useIsMobileResolution/withIsMobileResolution'
+import type {WithIsMobileResolutionProps} from 'hooks/useIsMobileResolution/withIsMobileResolution'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import NoticeableIndicator from 'pages/common/components/NoticeableIndicator'
@@ -67,7 +69,10 @@ type OwnProps = {
     title: string
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector> & WithThemeProps
+type Props = OwnProps &
+    ConnectedProps<typeof connector> &
+    WithThemeProps &
+    WithIsMobileResolutionProps
 
 type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 
@@ -184,6 +189,7 @@ export class Navbar extends Component<Props, State> {
             available,
             currentUser,
             disableResize,
+            isMobileResolution,
             navbarContentRef,
             flags,
             splitTicketViewToggle,
@@ -193,6 +199,7 @@ export class Navbar extends Component<Props, State> {
         const {isResizing, navbarWidth} = this.state
 
         const hasGlobalNav = !!flags?.[FeatureFlagKey.GlobalNavigation]
+        const showGlobalNav = hasGlobalNav && !isMobileResolution
 
         const selectedTheme = THEME_CONFIGS.find(
             ({name}) => name === theme.name
@@ -212,7 +219,7 @@ export class Navbar extends Component<Props, State> {
                     })}
                 >
                     <div className={css['nav-dropdown-wrapper']}>
-                        {hasGlobalNav ? (
+                        {showGlobalNav ? (
                             <div className={css.title}>{title}</div>
                         ) : (
                             <MainNavigation activeContent={activeContent} />
@@ -220,7 +227,7 @@ export class Navbar extends Component<Props, State> {
                         {splitTicketViewToggle}
                     </div>
                     <div className={css['navbar-cta-group']}>
-                        {!hasGlobalNav && (
+                        {!showGlobalNav && (
                             <>
                                 <HomePageLink />
                                 <div data-candu-id="navbar-home-spacer" />
@@ -816,4 +823,6 @@ const connector = connect(
     }
 )
 
-export default connector(withTheme(withLDConsumer()(Navbar)))
+export default connector(
+    withTheme(withLDConsumer()(withIsMobileResolution(Navbar)))
+)

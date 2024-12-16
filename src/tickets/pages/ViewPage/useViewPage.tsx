@@ -5,6 +5,7 @@ import {globalNavigationPanel} from 'common/navigation'
 import {useIsOnboardingHidden} from 'common/onboarding'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import App from 'pages/App'
 import {PanelLayoutConfig} from 'pages/PanelLayout'
 import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
@@ -21,12 +22,14 @@ export default function useViewPage() {
         FeatureFlagKey.GlobalNavigation,
         false
     )
+    const isMobileResolution = useIsMobileResolution()
+    const showGlobalNav = hasGlobalNav && !isMobileResolution
 
     const [isHidden, onHide] = useIsOnboardingHidden()
 
     const defaultConfig = useMemo(
         (): PanelLayoutConfig[] => [
-            ...(hasGlobalNav ? [globalNavigationPanel] : []),
+            ...(showGlobalNav ? [globalNavigationPanel] : []),
             {
                 key: 'navbar-panel',
                 content: <TicketNavbar disableResize />,
@@ -56,15 +59,15 @@ export default function useViewPage() {
                 ],
             },
         ],
-        [hasGlobalNav, isHidden, onHide]
+        [showGlobalNav, isHidden, onHide]
     )
 
     const config = useMemo(
         () =>
             isHidden
-                ? defaultConfig.slice(0, hasGlobalNav ? 3 : 2)
+                ? defaultConfig.slice(0, showGlobalNav ? 3 : 2)
                 : defaultConfig,
-        [defaultConfig, hasGlobalNav, isHidden]
+        [defaultConfig, showGlobalNav, isHidden]
     )
 
     return useMemo(
