@@ -1,4 +1,5 @@
 import {Tooltip} from '@gorgias/merchant-ui-kit'
+import classNames from 'classnames'
 import {fromJS} from 'immutable'
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -72,15 +73,15 @@ export const ImportZendeskDetail = ({
     const ticketsCount = integrationMeta.sync_tickets.count || 0
     const synchronizationEnabled =
         integrationMeta.continuous_import_enabled || false
-    const shouldDisplayPercentage =
+    const shouldDisplayProgress =
         !synchronizationEnabled || importStatus !== ImportStatus.Success
-    const importedTicketsPercentage =
-        shouldDisplayPercentage &&
+    const showImportedTicketsProgress =
+        shouldDisplayProgress &&
         accountTicketsCount &&
         displayImportStats &&
         ticketsCount > 0
-            ? ~~((ticketsCount * 100) / accountTicketsCount)
-            : null
+
+    const currentNumberOfTicketsImported = ticketsCount === accountTicketsCount
 
     const displayStatisticsValue = (value: number | null): string => {
         if (typeof value === 'number') {
@@ -224,16 +225,25 @@ export const ImportZendeskDetail = ({
                                             {displayStatisticsValue(
                                                 ticketsCount
                                             )}
-                                            {importedTicketsPercentage ? (
-                                                <span className="text-muted">
-                                                    {` / ${
-                                                        importedTicketsPercentage >
-                                                        100
-                                                            ? 100
-                                                            : importedTicketsPercentage
-                                                    } %`}
-                                                </span>
-                                            ) : null}
+                                            {showImportedTicketsProgress && (
+                                                <>
+                                                    <span className="text-muted">
+                                                        {` / ${accountTicketsCount}`}
+                                                    </span>
+                                                    {currentNumberOfTicketsImported && (
+                                                        <i
+                                                            className={classNames(
+                                                                'material-icons-outlined',
+                                                                'pl-2',
+                                                                css.icon,
+                                                                css.success
+                                                            )}
+                                                        >
+                                                            check_circle
+                                                        </i>
+                                                    )}
+                                                </>
+                                            )}
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
@@ -266,20 +276,19 @@ export const ImportZendeskDetail = ({
                         </div>
                     </div>
                 ) : null}
-                {importStatus === ImportStatus.Success &&
-                    (synchronizationEnabled ? (
-                        <Button onClick={handleSyncClick}>
-                            <ButtonIconLabel icon="pause_circle_filled">
-                                Pause
-                            </ButtonIconLabel>
-                        </Button>
-                    ) : (
-                        <Button onClick={handleSyncClick}>
-                            <ButtonIconLabel icon="play_circle_filled">
-                                Resume
-                            </ButtonIconLabel>
-                        </Button>
-                    ))}
+                {importStatus === ImportStatus.Success && (
+                    <Button onClick={handleSyncClick}>
+                        <ButtonIconLabel
+                            icon={
+                                synchronizationEnabled
+                                    ? 'pause_circle_filled'
+                                    : 'play_circle_filled'
+                            }
+                        >
+                            {synchronizationEnabled ? 'Pause' : 'Resume'}
+                        </ButtonIconLabel>
+                    </Button>
+                )}
             </div>
         </div>
     )

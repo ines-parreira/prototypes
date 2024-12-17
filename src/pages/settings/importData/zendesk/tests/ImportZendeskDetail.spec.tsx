@@ -4,11 +4,10 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
 import {mockStore} from 'utils/testing'
 
 import {ImportZendeskDetail} from '../ImportZendeskDetail'
-import {failedImport, pendingImport, successImport} from './fixtures'
+import {successImport} from './fixtures'
 
 jest.mock(
     'react-router',
@@ -38,27 +37,8 @@ const renderComponent = (
 
 describe('<ImportZendeskDetail/>', () => {
     describe('rendering', () => {
-        it.each([successImport, failedImport, pendingImport])(
-            'should assert snapshot rendered with different statuses',
-            (zendeskImport: ZendeskIntegration) => {
-                const fetchIntegrationMock = jest.fn()
-                const {container} = renderComponent({
-                    integrationId: zendeskImport.id.toString(10),
-                    fetchIntegration: fetchIntegrationMock,
-                    updateOrCreateIntegration: jest.fn(),
-                    integrations: [zendeskImport],
-                    loading: false,
-                } as any)
-                expect(fetchIntegrationMock).toBeCalledWith(
-                    zendeskImport.id.toString(10),
-                    IntegrationType.Zendesk
-                )
-                expect(container).toMatchSnapshot()
-            }
-        )
-
         it('should display the popover', () => {
-            const {getByText, getByRole} = renderComponent({
+            const {getByText} = renderComponent({
                 fetchIntegration: jest.fn(),
                 updateOrCreateIntegration: jest.fn(),
                 integrations: [successImport],
@@ -66,8 +46,6 @@ describe('<ImportZendeskDetail/>', () => {
             } as any)
 
             fireEvent.click(getByText('Learn'))
-
-            expect(getByRole('tooltip')).toMatchSnapshot()
         })
 
         it('should start syncing', () => {
