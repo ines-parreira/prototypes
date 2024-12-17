@@ -345,4 +345,47 @@ describe('useAutoQA', () => {
         )[1].onSuccess()
         expect(refetchMock).toHaveBeenCalled()
     })
+
+    it('should save an empty string when no explanation is passed - with a delay', () => {
+        jest.useFakeTimers()
+        const mutateAsync = jest.fn()
+        useUpsertTicketQaScoreDimensionMock.mockReturnValue({
+            isLoading: false,
+            mutateAsync,
+        })
+
+        const {result} = renderHook(() => useAutoQA(1))
+
+        act(() => {
+            result.current.changeHandlers[TicketQAScoreDimensionName.Accuracy](
+                1,
+                undefined
+            )
+        })
+        act(() => {
+            jest.advanceTimersByTime(1500)
+        })
+
+        expect(mutateAsync).toHaveBeenCalledWith(
+            {
+                data: {
+                    dimensions: [
+                        {
+                            explanation: '',
+                            name: 'accuracy',
+                            prediction: 1,
+                        },
+                    ],
+                },
+                ticketId: 1,
+            },
+            {
+                onSuccess: expect.anything(),
+            }
+        )
+        ;(
+            mutateAsync.mock.calls[0] as [{data: []}, {onSuccess: () => void}]
+        )[1].onSuccess()
+        expect(refetchMock).toHaveBeenCalled()
+    })
 })

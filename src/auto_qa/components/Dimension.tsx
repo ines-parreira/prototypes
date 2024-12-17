@@ -89,6 +89,9 @@ export default function Dimension({
         [dimension.prediction, onChange]
     )
 
+    const scoreHasBeenSelected =
+        dimension.prediction !== null && dimension.prediction !== undefined
+
     const isManualDimension = dimensionOrderOfManualDimensions.includes(
         dimension.name
     )
@@ -176,6 +179,7 @@ export default function Dimension({
                         placeholder={config.placeholder}
                         value={dimension.explanation}
                         onChange={handleChangeExplanation}
+                        isDisabled={!scoreHasBeenSelected}
                     />
                     <div className={css.lastUpdateActor}>
                         {dimension.user_id ? (

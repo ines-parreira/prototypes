@@ -75,15 +75,23 @@ export default function useAutoQA(ticketId: number) {
     }, [data])
 
     const handleChange = useCallback(
-        (name: string, prediction: number, explanation: string) => {
+        (
+            name: string,
+            prediction: number,
+            explanation: string | undefined | null
+        ) => {
             dirtyRef.current = true
             setValues((dims) => ({
                 ...dims,
                 [name]: {explanation, prediction},
             }))
+            const explanationText =
+                explanation === null || explanation === undefined
+                    ? ''
+                    : explanation
             setNewDimensionValue({
                 name: name as TicketQAScoreDimensionName,
-                explanation,
+                explanation: explanationText,
                 prediction,
             })
         },
@@ -95,13 +103,19 @@ export default function useAutoQA(ticketId: number) {
             Object.values(TicketQAScoreDimensionName).reduce(
                 (acc, name) => ({
                     ...acc,
-                    [name]: (prediction: number, explanation: string) => {
+                    [name]: (
+                        prediction: number,
+                        explanation: string | undefined | null
+                    ) => {
                         handleChange(name, prediction, explanation)
                     },
                 }),
                 {} as Record<
                     TicketQAScoreDimensionName,
-                    (prediction: number, explanation: string) => void
+                    (
+                        prediction: number,
+                        explanation: string | undefined | null
+                    ) => void
                 >
             ),
         [handleChange]
