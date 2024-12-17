@@ -27,6 +27,10 @@ const SUPPORTED_TYPES = [
         ext: '.pptx',
         type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     },
+    {
+        ext: '.xlsx',
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    },
 ]
 
 type Props = {
