@@ -41,6 +41,10 @@ const DisableChatMessage = ({id}: {id: number}) => (
         <a href={`/app/settings/channels/gorgias_chat/${id}/installation`}>
             installed
         </a>{' '}
+        and{' '}
+        <a href={`/app/settings/channels/gorgias_chat/${id}/preferences`}>
+            visible
+        </a>{' '}
         to view it.
     </span>
 )
