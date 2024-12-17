@@ -128,7 +128,7 @@ const ApplySavedFilters = ({savedFilters, isAdmin, isDisabled}: Props) => {
                 isDisabled={isDisabled}
                 fillStyle="fill"
                 intent="primary"
-                size="medium"
+                size="small"
                 ref={buttonRef}
                 id={APPLY_SAVED_FILTER_ID}
                 className={css.applyFiltersButton}

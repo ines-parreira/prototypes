@@ -281,6 +281,7 @@ export type Icon =
     | 'refresh'
     | 'stop'
     | 'sync'
+    | 'tune'
     | 'unfold_less'
     | 'unfold_more'
     | 'update'
