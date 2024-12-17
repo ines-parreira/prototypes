@@ -15,6 +15,7 @@ import {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -100,6 +101,7 @@ const BillingProcessView = ({
     currentUsage,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
+    const hasCreditCard = useHasCreditCard()
     const [oldIsPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const newIsPaymentEnabled = !!useIsPaymentEnabled()
     const isPaymentEnabled = oldIsPaymentEnabled || newIsPaymentEnabled
@@ -155,15 +157,7 @@ const BillingProcessView = ({
         filterByInterval: true,
     })
 
-    const {data: hasCreditCard} = useHasCreditCard()
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-
-    const ctaText = useMemo(() => {
-        if (isCurrentSubscriptionCanceled && hasCreditCard) {
-            return 'Subscribe now'
-        }
-        return 'Update Subscription'
-    }, [isCurrentSubscriptionCanceled, hasCreditCard])
 
     // fetch card
     useEffect(() => {
@@ -207,6 +201,13 @@ const BillingProcessView = ({
 
         return message
     }, [selectedPlans, interval])
+
+    if (hasCreditCard.isLoading) return <Loader />
+
+    const ctaText =
+        isCurrentSubscriptionCanceled && hasCreditCard.data
+            ? 'Subscribe now'
+            : 'Update Subscription'
 
     const renderSummary = () => {
         if (isEnterpriseHelpdeskPlanSelected) {
@@ -327,7 +328,7 @@ const BillingProcessView = ({
                     periodEnd={periodEnd}
                     selectedPlans={selectedPlans}
                     ctaText={ctaText}
-                    hasCreditCard={hasCreditCard}
+                    hasCreditCard={hasCreditCard.data}
                     shouldPayWithShopify={shouldPayWithShopify}
                     isSubscriptionUpdating={isSubscriptionUpdating}
                     setUpdateProcessStarted={setUpdateProcessStarted}
@@ -336,6 +337,7 @@ const BillingProcessView = ({
             </Card>
         )
     }
+
     return (
         <div className={css.container}>
             <div className={css.header}>

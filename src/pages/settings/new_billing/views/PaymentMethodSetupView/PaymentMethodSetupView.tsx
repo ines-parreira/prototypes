@@ -14,7 +14,7 @@ type IProps = {
 export const PaymentMethodSetupView: React.FC<IProps> = ({
     dispatchBillingError,
 }) => {
-    const hasCreditCard = useHasCreditCard({refetchOnWindowFocus: false})
+    const hasCreditCard = useHasCreditCard()
     const billingInformation = useBillingContact({refetchOnWindowFocus: false})
     const setupIntent = useSetupIntent()
 

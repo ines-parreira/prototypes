@@ -1,10 +1,8 @@
-import {QueryClientProvider} from '@tanstack/react-query'
 import {screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import {
     HELPDESK_PRODUCT_ID,
@@ -12,18 +10,20 @@ import {
     currentProductsUsage,
     products,
 } from 'fixtures/productPrices'
+import client from 'models/api/resources'
 import {
     CommonReasonLabel,
     HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import {payingWithCreditCard} from 'pages/settings/new_billing/fixtures'
+import {RootState} from 'state/types'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import {assumeMock} from 'utils/testing'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import BillingProcessView from '../BillingProcessView'
 
-const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
@@ -43,7 +43,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
+const mockedServer = new MockAdapter(client)
 
 const storeInitialState = {
     billing: fromJS({
@@ -76,59 +76,62 @@ const storeInitialState = {
     }),
 }
 
-const store = mockedStore(storeInitialState)
-
 describe('UsageAndPlansView', () => {
-    it('should render', () => {
-        const {container} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <BillingProcessView
-                        currentUsage={currentProductsUsage}
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                        setDefaultMessage={jest.fn()}
-                        setIsModalOpen={jest.fn()}
-                        periodEnd="2021-01-01"
-                        isTrialing={false}
-                        isCurrentSubscriptionCanceled={false}
-                    />
-                </Provider>
-            </QueryClientProvider>
+    it('should render', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        const {container} = renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState
         )
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
 
         expect(container).toMatchSnapshot()
     })
 
-    it('should NOT render if subscription has been canceled', () => {
-        const {queryByTestId} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <BillingProcessView
-                        currentUsage={currentProductsUsage}
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                        setDefaultMessage={jest.fn()}
-                        setIsModalOpen={jest.fn()}
-                        periodEnd="2021-01-01"
-                        isTrialing={false}
-                        isCurrentSubscriptionCanceled={true}
-                    />
-                </Provider>
-            </QueryClientProvider>
+    it('should NOT render if subscription has been canceled', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={true}
+            />,
+            storeInitialState
         )
 
-        expect(
-            queryByTestId('scheduled-cancellation-summary')
-        ).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('scheduled-cancellation-summary')
+            ).not.toBeInTheDocument()
+        })
     })
+    it('should render a scheduled cancellation summary if the subscription is scheduled to cancel', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-    it('should render a scheduled cancellation summary if the subscription is scheduled to cancel', () => {
         const scheduledToCancelAt = '2021-01-01T00:00:00Z'
-        const alteredStore = mockedStore({
-            ...store.getState(),
+
+        const alteredStore = {
+            ...storeInitialState,
             currentAccount: fromJS({
-                ...store.getState().currentAccount,
+                ...storeInitialState.currentAccount,
                 current_subscription: fromJS({
                     products: {
                         [HELPDESK_PRODUCT_ID]:
@@ -137,28 +140,27 @@ describe('UsageAndPlansView', () => {
                     scheduled_to_cancel_at: scheduledToCancelAt,
                 }),
             }),
-        })
+        } as Partial<RootState>
 
-        const {queryByTestId} = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={alteredStore}>
-                    <BillingProcessView
-                        currentUsage={currentProductsUsage}
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                        setDefaultMessage={jest.fn()}
-                        setIsModalOpen={jest.fn()}
-                        periodEnd="2021-01-01"
-                        isTrialing={false}
-                        isCurrentSubscriptionCanceled={false}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        renderWithStoreAndQueryClientProvider(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            alteredStore
         )
 
-        expect(
-            queryByTestId('scheduled-cancellation-summary')
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('scheduled-cancellation-summary')
+            ).toBeInTheDocument()
+        })
 
         expect(ScheduledCancellationSummaryMock).toHaveBeenCalledWith(
             {
@@ -171,30 +173,34 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should be required to add additional details to the cancellation reason when "Other" is selected as secondary reason', async () => {
-        renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <BillingProcessView
-                        currentUsage={currentProductsUsage}
-                        contactBilling={jest.fn()}
-                        dispatchBillingError={jest.fn()}
-                        setDefaultMessage={jest.fn()}
-                        setIsModalOpen={jest.fn()}
-                        periodEnd="2021-01-01"
-                        isTrialing={false}
-                        isCurrentSubscriptionCanceled={true}
-                    />
-                </Provider>
-            </QueryClientProvider>
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={true}
+            />,
+            storeInitialState
         )
+
+        await waitFor(() => {
+            screen.getByRole('button', {
+                name: 'Cancel auto-renewal',
+            })
+            expect(
+                screen.queryByText('Cancel Helpdesk auto-renewal')
+            ).not.toBeInTheDocument()
+        })
 
         const cancelAutoRenewalButton = screen.getByRole('button', {
             name: 'Cancel auto-renewal',
         })
-
-        expect(
-            screen.queryByText('Cancel Helpdesk auto-renewal')
-        ).not.toBeInTheDocument()
 
         userEvent.click(cancelAutoRenewalButton)
 

@@ -1,12 +1,14 @@
 import React from 'react'
 
-import {useBillingState, useSalesCoupons} from 'models/billing/queries'
+import {useSalesCoupons} from 'models/billing/queries'
 import {BillingInternalViewUI} from 'pages/settings/new_billing/components/BillingInternalViewUI'
+import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 export default React.memo(BillingInternalView)
 
 export function BillingInternalView() {
-    const {data: billingState, ...billingStateQuery} = useBillingState()
+    const {data: billingState, ...billingStateQuery} =
+        useBillingStateWithSideEffects()
     const {data: coupons, ...salesCouponsQuery} = useSalesCoupons()
 
     if (billingStateQuery.isLoading || salesCouponsQuery.isLoading)

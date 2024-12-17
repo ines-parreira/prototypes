@@ -7,7 +7,9 @@ import React from 'react'
 import {account} from 'fixtures/account'
 import {products} from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import {payingWithCreditCard, trial} from 'pages/settings/new_billing/fixtures'
 import * as useSetupIntentModule from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
 import {assumeMock} from 'utils/testing'
 
@@ -42,7 +44,7 @@ const mockInitialStoreState = {
 
 describe('PaymentMethodSetupView', () => {
     it('should render Loader when setup intent is loading', () => {
-        mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
+        mockedServer.onGet('/billing/state').reply(200, trial)
         mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue(
             new Promise(() => {})
@@ -55,10 +57,8 @@ describe('PaymentMethodSetupView', () => {
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
-    it('should render Loader when hasCreditCard is loading', () => {
-        mockedServer
-            .onGet('/api/billing/credit-card/')
-            .reply(() => new Promise(() => {}))
+    it('should render Loader when useBillingState is loading', () => {
+        mockedServer.onGet('/billing/state').reply(() => new Promise(() => {}))
         mockedServer.onGet('/api/billing/contact/').reply(200, {shipping: {}})
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: {client_secret: 'client-secret', id: 'id'},
@@ -71,8 +71,8 @@ describe('PaymentMethodSetupView', () => {
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
-    it('should render StripeElementsProvider and form when setup intent and credit card are available', async () => {
-        mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
+    it('should render StripeElementsProvider and form when setup intent and BillingState are available', async () => {
+        mockedServer.onGet('/billing/state').reply(200, trial)
         mockedServer
             .onGet('/api/billing/contact/')
             .reply(200, {shipping: {address: {}}})
@@ -80,7 +80,7 @@ describe('PaymentMethodSetupView', () => {
             data: {client_secret: 'client-secret', id: 'id'},
         } as any)
 
-        renderWithStoreAndQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <PaymentMethodSetupView dispatchBillingError={jest.fn()} />,
             mockInitialStoreState
         )
@@ -104,9 +104,7 @@ describe('PaymentMethodSetupView', () => {
     })
 
     it('should not render EmailInputField and StripeAddressElement if user is not missing billing information', async () => {
-        mockedServer
-            .onGet('/api/billing/credit-card/')
-            .reply(200, {brand: 'visa'})
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
         mockedServer.onGet('/api/billing/contact/').reply(200, {
             email: 'example@gorgias.com',
             shipping: {

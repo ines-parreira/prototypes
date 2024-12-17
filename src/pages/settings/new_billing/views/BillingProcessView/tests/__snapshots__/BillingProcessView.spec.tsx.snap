@@ -487,20 +487,27 @@ exports[`UsageAndPlansView should render 1`] = `
             </div>
           </div>
           <div
-            class="container loader"
+            class="container"
+            data-testid="noPaymentMethod"
           >
             <div
-              class="inner"
-              style="min-height: auto;"
+              class="method"
             >
               <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 40px;"
-              />
+                class="material-icons warningIcon"
+              >
+                warning
+              </i>
+              No payment method registered on your account
             </div>
+            <a
+              href="/app/settings/billing/payment/card"
+            >
+              Add Payment Method
+            </a>
           </div>
           <div
-            class="container rounded disabled"
+            class="container rounded"
           >
             <div
               class="button"

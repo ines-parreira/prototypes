@@ -3,7 +3,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import {useStore} from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {billingKeys} from 'models/billing/queries'
+import {getBillingStateQuery} from 'models/billing/queries'
 import {useStartSubscription} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
 import {ErrorResponse} from 'state/billing/types'
 import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
@@ -25,9 +25,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
         mutation: {
             ...overrides,
             onSuccess: (resp, ...args) => {
-                void queryClient.invalidateQueries({
-                    queryKey: billingKeys.creditCard(),
-                })
+                void queryClient.invalidateQueries(getBillingStateQuery)
 
                 void dispatch(
                     notify({

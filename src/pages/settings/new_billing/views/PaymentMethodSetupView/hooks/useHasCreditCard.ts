@@ -1,15 +1,14 @@
-import {useCreditCardWithSideEffects} from 'pages/settings/new_billing/hooks/useCreditCardWithSideEffects'
+import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 export const useHasCreditCard = (
-    overrides?: Parameters<typeof useCreditCardWithSideEffects>['0']
+    overrides?: Parameters<typeof useBillingStateWithSideEffects>['0']
 ) => {
-    const {data: {data: card} = {}, ...info} =
-        useCreditCardWithSideEffects(overrides)
+    const {data, ...result} = useBillingStateWithSideEffects(overrides)
 
-    const hasCreditCard = !!card?.brand
+    const hasCreditCard = !!data?.customer.credit_card
 
     return {
         data: hasCreditCard,
-        ...info,
+        ...result,
     }
 }

@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import {useBillingState} from 'models/billing/queries'
 import {
     BillingState,
     type CreditCard,
@@ -10,6 +9,7 @@ import {
 } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
 
+import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 import {isCardExpired} from 'pages/settings/new_billing/utils/isCardExpired'
 
 import {
@@ -24,38 +24,17 @@ type Props = React.DetailedHTMLProps<
 >
 
 export const NewSummaryPaymentSection = (props: Props) => {
-    const {data: billingState, ...billingStateQuery} = useBillingState()
+    const billingState = useBillingStateWithSideEffects()
 
-    if (billingStateQuery.isLoading)
+    if (!billingState.data)
         return <Loader minHeight="auto" className={css.loader} />
-
-    if (billingStateQuery.error) {
-        return <FetchError {...props} />
-    }
-
-    if (!billingState) {
-        return <MissingInformationError {...props} />
-    }
 
     return (
         <div {...props} className={classNames(css.container, props.className)}>
-            <PaymentState billingState={billingState} {...props} />
+            <PaymentState billingState={billingState.data} {...props} />
         </div>
     )
 }
-
-const FetchError = (props: Props) => (
-    <div {...props}>
-        An error has occurred: could not fetch the billing state
-    </div>
-)
-
-const MissingInformationError = (props: Props) => (
-    <div {...props}>
-        An error has occurred: cannot proceed further, missing information
-    </div>
-)
-
 function PaymentState({billingState}: {billingState: BillingState}) {
     const {
         credit_card: creditCard,

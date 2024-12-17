@@ -2,19 +2,19 @@ import {useMemo} from 'react'
 
 import {AlertBannerTypes} from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useBillingState} from 'models/billing/queries'
 
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
 } from 'pages/settings/new_billing/constants'
+import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 import {isCardExpired} from 'pages/settings/new_billing/utils/isCardExpired'
 import {notify} from 'state/notifications/actions'
 import {NotificationStyle} from 'state/notifications/types'
 
 export const useIsPaymentEnabled = () => {
     const dispatch = useAppDispatch()
-    const {data: billingState} = useBillingState()
+    const {data: billingState} = useBillingStateWithSideEffects()
 
     return useMemo(() => {
         if (!billingState) {

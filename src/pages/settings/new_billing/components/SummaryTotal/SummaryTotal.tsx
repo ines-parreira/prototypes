@@ -2,8 +2,9 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useBillingState} from 'models/billing/queries'
 import {CouponSummary, Plan, PlanInterval} from 'models/billing/types'
+
+import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 import {formatAmount} from '../../utils/formatAmount'
 import {getTotalWithDiscounts} from '../../utils/getTotalWithDiscounts'
@@ -90,7 +91,7 @@ function usePriceSummary(selectedPlans: SelectedPlans) {
     const billingSummaryTotalWithCouponsEnabled =
         !!useFlags()[FeatureFlagKey.BillingSummaryTotalWithCoupons]
 
-    const {data: billingState} = useBillingState()
+    const {data: billingState} = useBillingStateWithSideEffects()
     const coupon: CouponSummary | null =
         billingState?.subscription?.coupon ||
         billingState?.customer?.coupon ||

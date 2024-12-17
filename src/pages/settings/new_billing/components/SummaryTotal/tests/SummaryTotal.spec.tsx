@@ -12,7 +12,7 @@ import client from 'models/api/resources'
 import {PlanInterval} from 'models/billing/types'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
 
@@ -51,7 +51,7 @@ describe('SummaryTotal without coupons', () => {
     })
 
     it('should render total price without old price', () => {
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -64,7 +64,7 @@ describe('SummaryTotal without coupons', () => {
     })
 
     it('should render total price with old price', () => {
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmountDifferent}
@@ -100,7 +100,7 @@ describe('SummaryTotal with coupons', () => {
             subscription: {},
         })
 
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -132,7 +132,7 @@ describe('SummaryTotal with coupons', () => {
             },
             subscription: {},
         })
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -175,7 +175,7 @@ describe('SummaryTotal with coupons', () => {
                 },
             },
         })
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -196,7 +196,7 @@ describe('SummaryTotal with coupons', () => {
             subscription: {},
         })
 
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
@@ -219,7 +219,7 @@ describe('SummaryTotal with coupons', () => {
 
         mockedServer.onGet('/billing/state').reply(mockEndpoint)
 
-        renderWithQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}
