@@ -8,6 +8,7 @@ import {hasRole} from 'utils'
 import useActiveItem from '../hooks/useActiveItem'
 import css from './GlobalNavigation.less'
 import Item from './GlobalNavigationItem'
+import {GlobalNavigationSpotlight} from './GlobalNavigationSpotlight'
 
 export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
@@ -22,6 +23,7 @@ export default function GlobalNavigation() {
                         isActive={activeItem === 'home'}
                         url="/app/home"
                     />
+                    <GlobalNavigationSpotlight />
                 </div>
                 <hr className={css.separator} />
                 <div className={css.items}>

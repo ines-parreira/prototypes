@@ -14,4 +14,12 @@ describe('GlobalNavigationItem', () => {
         render(<GlobalNavigationItem icon="home" isActive url="/app/home" />)
         expect(screen.getByText('home').parentNode).toHaveClass(css.active)
     })
+    it('should render an link item', () => {
+        render(<GlobalNavigationItem icon="home" isActive url="/app/home" />)
+        expect(screen.getByText('home').closest('a')).toBeInTheDocument()
+    })
+    it('should render an button item', () => {
+        render(<GlobalNavigationItem icon="home" isActive onClick={() => {}} />)
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
 })
