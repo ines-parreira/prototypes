@@ -35,8 +35,12 @@ const AutomateView = ({
     className,
     fullWidth = true,
 }: Props) => {
-    const content = (
-        <>
+    return (
+        <div
+            className={classnames(css.parentContainer, {
+                'full-width': fullWidth,
+            })}
+        >
             <div className={css.pageHeaderContainer}>
                 {title && <PageHeader title={title}>{action}</PageHeader>}
                 {headerNavbarItems && (
@@ -56,7 +60,7 @@ const AutomateView = ({
                             )
                         )}
                     </SecondaryNavbar>
-                )}{' '}
+                )}
             </div>
             <Container
                 fluid
@@ -72,10 +76,8 @@ const AutomateView = ({
                     children
                 )}
             </Container>
-        </>
+        </div>
     )
-
-    return fullWidth ? <div className="full-width">{content}</div> : content
 }
 
 export default AutomateView
