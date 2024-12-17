@@ -30,7 +30,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: 'Credit card updated successfully!',
+                        message: 'Payment method updated successfully!',
                         style: NotificationStyle.Alert,
                         showDismissButton: true,
                     })
@@ -48,7 +48,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                 const error = err as ErrorResponse
 
                 let errorMsg =
-                    'Failed to update credit card. Please try again in a few seconds.'
+                    'Failed to update payment method. Please try again in a few seconds.'
                 if (error.response && error.response.data?.error) {
                     // Gorgias API error
                     errorMsg = error.response.data.error.msg

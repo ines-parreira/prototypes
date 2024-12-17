@@ -212,7 +212,9 @@ describe('FormContainer', () => {
 
         expect(history.location.pathname).toBe('/')
 
-        fireEvent.click(screen.getByRole('button', {name: 'Update card'}))
+        fireEvent.click(
+            screen.getByRole('button', {name: 'Update payment method'})
+        )
 
         await waitFor(() => {
             expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)

@@ -99,7 +99,7 @@ const SummaryPaymentSection = ({
                         CTA: {
                             type: 'internal',
                             to: BILLING_PAYMENT_CARD_PATH,
-                            text: 'Change Card',
+                            text: 'Change payment method',
                         },
                         id: 'payment-method-expired',
                     })
@@ -320,7 +320,9 @@ const SummaryPaymentSection = ({
                         ending with <strong>{card.get('last4')}</strong> is
                         expired
                     </div>
-                    <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
+                    <Link to={BILLING_PAYMENT_CARD_PATH}>
+                        Change payment method
+                    </Link>
                 </div>
             )
         }
@@ -345,7 +347,9 @@ const SummaryPaymentSection = ({
                     </strong>{' '}
                     ending with <strong>{card.get('last4')}</strong>
                 </div>
-                <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
+                <Link to={BILLING_PAYMENT_CARD_PATH}>
+                    Change payment method
+                </Link>
             </div>
         )
     }, [card, cardIsExpired, isPaymentInformationView, hasSmallFont])

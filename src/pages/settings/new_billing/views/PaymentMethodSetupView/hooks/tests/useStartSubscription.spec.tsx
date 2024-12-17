@@ -166,7 +166,7 @@ describe('useStartSubscription', () => {
 
             expect(notifySpy).toHaveBeenCalledWith({
                 status: NotificationStatus.Error,
-                title: 'Failed to update credit card. Please try again in a few seconds.',
+                title: 'Failed to update payment method. Please try again in a few seconds.',
             })
         })
     })

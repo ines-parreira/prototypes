@@ -62,7 +62,7 @@ export const useStartSubscription = () => {
             const error = exception as Record<string, unknown>
             const errorMsg = isGorgiasApiError(error)
                 ? error.response.data.error.msg
-                : 'Failed to update credit card. Please try again in a few seconds.'
+                : 'Failed to update payment method. Please try again in a few seconds.'
             await dispatch(
                 notify({
                     status: NotificationStatus.Error,

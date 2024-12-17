@@ -91,7 +91,7 @@ export const FormContainer: React.FC<
                         {!isStartingSubscription ? (
                             <FormSubmitButton className={css.submitButton}>
                                 {hasCreditCard
-                                    ? 'Update card'
+                                    ? 'Update payment method'
                                     : 'Add payment method'}
                             </FormSubmitButton>
                         ) : null}
