@@ -1,8 +1,8 @@
 import {Map} from 'immutable'
 import React from 'react'
 
+import {AlertBannerTypes} from 'AlertBanners'
 import {AlertBanner} from 'AlertBanners/components/AlertBanner'
-import {AlertBannerTypes} from 'AlertBanners/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {IntegrationType} from 'models/integration/types'
 import {Tab} from 'pages/integrations/integration/types'

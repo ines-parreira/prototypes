@@ -311,7 +311,7 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should save selected fonts in local storage, sorted in alphabetical order', () => {
-        const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
+        const setItem = jest.spyOn(Storage.prototype, 'setItem')
 
         render(
             <Provider store={mockStore({})}>
@@ -330,7 +330,7 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should disable save button if no changes have been made, and allow to save otherwise', () => {
-        const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
+        const setItem = jest.spyOn(Storage.prototype, 'setItem')
 
         render(
             <Provider store={mockStore({})}>

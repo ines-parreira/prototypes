@@ -438,7 +438,7 @@ describe('YourProfileView', () => {
 
     describe('change theme from Settings', () => {
         it('should change the existing theme', async () => {
-            jest.spyOn(localStorage, 'getItem').mockReturnValue('"dark"')
+            jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('"dark"')
             const setThemeSpy = jest.fn()
 
             render(

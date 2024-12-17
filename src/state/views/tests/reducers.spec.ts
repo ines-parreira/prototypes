@@ -497,7 +497,7 @@ describe('reducers', () => {
         })
 
         it('should handle SET_FIELD_VISIBILITY', () => {
-            const localStorageSpy = jest.spyOn(window.localStorage, 'setItem')
+            const localStorageSpy = jest.spyOn(Storage.prototype, 'setItem')
             const field = 'details_with_highlights'
             const state = fromJS({
                 active: {

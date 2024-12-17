@@ -25,9 +25,7 @@ describe('useBackToConvert', () => {
             result.current.removeBackIntegrationId()
         })
 
-        expect(sessionStorage.getItem(BACK_TO_CONVERT_ONBOARDING_KEY)).toBe(
-            null
-        )
+        expect(sessionStorage.getItem(BACK_TO_CONVERT_ONBOARDING_KEY)).toBe('')
 
         expect(result.current.backIntegrationId).toBe('')
     })

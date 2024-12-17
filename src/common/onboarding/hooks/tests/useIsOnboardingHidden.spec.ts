@@ -44,9 +44,9 @@ describe('useIsOnboardingHidden', () => {
         )
 
         getItemSpy = jest
-            .spyOn(global.localStorage, 'getItem')
+            .spyOn(Storage.prototype, 'getItem')
             .mockReturnValue('')
-        setItemSpy = jest.spyOn(global.localStorage, 'setItem')
+        setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
 
         jest.useFakeTimers()
         jest.setSystemTime(systemTime)

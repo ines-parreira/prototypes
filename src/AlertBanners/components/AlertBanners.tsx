@@ -2,13 +2,13 @@ import React from 'react'
 
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 
-import {useBannerContext} from '../context/BannerContext'
+import {useBannersContext} from '../ccontext'
 
 import {AlertBanner} from './AlertBanner'
 
 export default function AlertBanners() {
     const legacyBanners = useLegacyAlertBanners()
-    const banners = useBannerContext()
+    const banners = useBannersContext()
 
     return (
         <div>

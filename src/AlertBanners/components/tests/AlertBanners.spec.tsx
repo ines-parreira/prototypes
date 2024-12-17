@@ -5,22 +5,20 @@ import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 import {BannerNotification, NotificationStyle} from 'state/notifications/types'
 import {assumeMock} from 'utils/testing'
 
-import {useBannerContext} from '../../context/BannerContext'
+import {useBannersContext} from '../../ccontext'
 import {AlertBannerTypes, BannerCategories, ContextBanner} from '../../types'
 import {AlertBanner} from '../AlertBanner'
 import AlertBanners from '../AlertBanners'
 
 jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())
-jest.mock('../../context/BannerContext', () => ({
-    ...jest.requireActual<Record<string, unknown>>(
-        '../../context/BannerContext'
-    ),
-    useBannerContext: jest.fn(),
+jest.mock('../../ccontext', () => ({
+    ...jest.requireActual<Record<string, unknown>>('../../ccontext'),
+    useBannersContext: jest.fn(),
 }))
 jest.mock('../AlertBanner', () => ({AlertBanner: jest.fn(() => null)}))
 
 const useLegacyAlertBannersMock = assumeMock(useLegacyAlertBanners)
-const useBannerContextMock = assumeMock(useBannerContext)
+const useBannersContextMock = assumeMock(useBannersContext)
 
 const legacyBanner: BannerNotification = {
     id: '1',
@@ -42,7 +40,7 @@ describe('<AlertBanners/>', () => {
     ]
     beforeEach(() => {
         useLegacyAlertBannersMock.mockReturnValue(legacyBanners)
-        useBannerContextMock.mockReturnValue([
+        useBannersContextMock.mockReturnValue([
             banner,
             {...banner, instanceId: '2'},
         ])

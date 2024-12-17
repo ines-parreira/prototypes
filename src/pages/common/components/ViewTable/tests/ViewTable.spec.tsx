@@ -182,7 +182,7 @@ describe('<ViewTable />', () => {
 
         it('should update the active view with stored field config', () => {
             const mockFields = ['details', 'status']
-            jest.spyOn(window.localStorage, 'getItem').mockReturnValueOnce(
+            jest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce(
                 JSON.stringify(mockFields)
             )
             const searchView = minProps.activeView.set('search', 'foo')
@@ -202,7 +202,7 @@ describe('<ViewTable />', () => {
         })
 
         it('should not update the active view with stored field config when value is not a stringified array', () => {
-            jest.spyOn(window.localStorage, 'getItem').mockReturnValueOnce(
+            jest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce(
                 'not an array'
             )
             const searchView = minProps.activeView.set('search', 'foo')

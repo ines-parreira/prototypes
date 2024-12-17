@@ -21,16 +21,16 @@ declare global {
 const useLocalStorage = <T>(
     key: string,
     defaultValue: T
-): [T, Dispatch<SetStateAction<T | undefined>>, () => void] => {
+): [T, Dispatch<SetStateAction<T>>, () => void] => {
     const initializer = useRef((key: string): T => {
         try {
             const localStorageValue = localStorage.getItem(key)
             if (localStorageValue !== null) {
                 return JSON.parse(localStorageValue) as T
             }
-            if (defaultValue) {
-                localStorage.setItem(key, JSON.stringify(defaultValue))
-            }
+
+            localStorage.setItem(key, JSON.stringify(defaultValue))
+
             return defaultValue
         } catch {
             // localStorage, JSON.parse and JSON.stringify can throw
@@ -45,34 +45,30 @@ const useLocalStorage = <T>(
 
     useLayoutEffect(() => setState(initializer.current(key)), [key])
 
-    const resultingSetState: Dispatch<SetStateAction<T | undefined>> =
-        useCallback(
-            (valOrFunc) => {
-                try {
-                    const newState =
-                        valOrFunc instanceof Function
-                            ? valOrFunc(stateRef.current)
-                            : valOrFunc
+    const resultingSetState: Dispatch<SetStateAction<T>> = useCallback(
+        (valOrFunc) => {
+            try {
+                const newState =
+                    valOrFunc instanceof Function
+                        ? valOrFunc(stateRef.current)
+                        : valOrFunc
+                localStorage.setItem(key, JSON.stringify(newState))
+                setState(newState)
 
-                    if (newState === undefined) return
-
-                    localStorage.setItem(key, JSON.stringify(newState))
-                    setState(newState)
-
-                    window.dispatchEvent(
-                        new CustomEvent<CustomLocalStorageEventPayload>(
-                            'local-storage',
-                            {
-                                detail: {key},
-                            }
-                        )
+                window.dispatchEvent(
+                    new CustomEvent<CustomLocalStorageEventPayload>(
+                        'local-storage',
+                        {
+                            detail: {key},
+                        }
                     )
-                } catch {
-                    // localStorage, JSON.parse and JSON.stringify can throw
-                }
-            },
-            [key, setState]
-        )
+                )
+            } catch {
+                // localStorage, JSON.parse and JSON.stringify can throw
+            }
+        },
+        [key, setState]
+    )
 
     const remove = useCallback(() => {
         try {

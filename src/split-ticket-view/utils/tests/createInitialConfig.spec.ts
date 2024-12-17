@@ -36,7 +36,7 @@ describe('createInitialConfig', () => {
             [3, 100, 100],
         ]
 
-        jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
             switch (key) {
                 case 'navbar-width':
                     return '1'
@@ -64,7 +64,7 @@ describe('createInitialConfig', () => {
             [7, 100, 100],
         ]
 
-        jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
             switch (key) {
                 case LayoutKeys.TICKET:
                     return 'v2;4,5,6,7'
@@ -86,7 +86,7 @@ describe('createInitialConfig', () => {
             [4, 100, 100],
         ]
 
-        jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
             switch (key) {
                 case 'navbar-width':
                     return '1'
@@ -111,7 +111,7 @@ describe('createInitialConfig', () => {
             [3, 100, 100],
         ]
 
-        jest.spyOn(window.localStorage, 'getItem').mockImplementation((key) => {
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
             switch (key) {
                 case 'navbar-width':
                     return '1'

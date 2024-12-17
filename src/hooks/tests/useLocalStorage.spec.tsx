@@ -61,13 +61,37 @@ describe('useLocalStorage', () => {
         expect(foo2).toEqual(null)
     })
 
-    it('should do nothing when calling with `undefined`', () => {
-        const {result} = renderHook(() => useLocalStorage('foo', 'bar'))
+    it('should work fine if default value is undefined', () => {
+        const {rerender, result} = renderHook(() =>
+            useLocalStorage<string | undefined>('foo', undefined)
+        )
         const [, setFoo] = result.current
-        jest.spyOn(localStorage, 'setItem')
-        act(() => setFoo(undefined))
-        expect(localStorage.setItem).not.toHaveBeenCalled()
+
+        act(() => setFoo('bar'))
         expect(localStorage.getItem('foo')).toEqual('"bar"')
+
+        act(() => setFoo(undefined))
+        rerender()
+        const [foo] = result.current
+
+        expect(foo).toEqual(undefined)
+        expect(localStorage.getItem('foo')).toEqual('undefined')
+    })
+
+    it('should work fine if default value is null', () => {
+        const {rerender, result} = renderHook(() =>
+            useLocalStorage<string | null>('foo', null)
+        )
+        const [, setFoo] = result.current
+        act(() => setFoo('bar'))
+        expect(localStorage.getItem('foo')).toEqual('"bar"')
+
+        act(() => setFoo(null))
+        rerender()
+        const [foo] = result.current
+
+        expect(foo).toEqual(null)
+        expect(localStorage.getItem('foo')).toEqual('null')
     })
 
     it('should set initialState if initialState is an object', () => {
@@ -150,7 +174,7 @@ describe('useLocalStorage', () => {
 
         const [, setFoo] = result.current
 
-        act(() => setFoo((state) => ({...state!, fizz: 'buzz'})))
+        act(() => setFoo((state) => ({...state, fizz: 'buzz'})))
         rerender()
 
         const [value] = result.current
@@ -158,7 +182,7 @@ describe('useLocalStorage', () => {
         expect(value.fizz).toEqual('buzz')
 
         // Make sure it doesn't use the initial state as argument for the next calls
-        act(() => setFoo((state) => ({...state!})))
+        act(() => setFoo((state) => ({...state})))
         rerender()
 
         const [sameValue] = result.current
@@ -223,7 +247,6 @@ describe('useLocalStorage', () => {
     it("should not react to local storage updates from other tab if it's not the same key", () => {
         const hook = renderHook(() => useLocalStorage('foo', 'default'))
 
-        jest.spyOn(localStorage, 'getItem')
         act(() => {
             localStorage.setItem('moo', '"bizz"')
             window.dispatchEvent(
@@ -231,11 +254,15 @@ describe('useLocalStorage', () => {
                     key: 'moo',
                 })
             )
+            window.dispatchEvent(
+                new StorageEvent('local-storage', {
+                    key: 'moo',
+                })
+            )
         })
 
         const [value] = hook.result.current
         expect(value).toEqual('default')
-        expect(localStorage.getItem).not.toHaveBeenCalled()
     })
 
     it('should clear local storage when calling remove and fallback to defaultValue', () => {

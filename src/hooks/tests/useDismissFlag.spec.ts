@@ -15,7 +15,7 @@ describe('useDismissFlag', () => {
 
     describe('flag is dismissed using the api', () => {
         it('saves the dismiss state in localStorage', () => {
-            const lsSpy = jest.spyOn(window.localStorage, 'setItem')
+            const lsSpy = jest.spyOn(Storage.prototype, 'setItem')
             const {result} = renderHook(() => useDismissFlag('key'))
 
             act(() => {

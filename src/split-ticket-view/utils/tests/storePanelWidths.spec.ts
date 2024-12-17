@@ -9,7 +9,7 @@ describe('storePanelWidths', () => {
     it('should store widths in localStorage', () => {
         jest.useFakeTimers()
         const widths = [1, 2, 3, 4]
-        const localStorageSpy = jest.spyOn(window.localStorage, 'setItem')
+        const localStorageSpy = jest.spyOn(Storage.prototype, 'setItem')
 
         storePanelWidths(LayoutKeys.TICKET, widths)
         jest.runOnlyPendingTimers()
@@ -29,7 +29,7 @@ describe('storePanelWidths', () => {
     it('should not store ticket-list-width if not on a TICKET or VIEW layout', () => {
         jest.useFakeTimers()
         const widths = [1, 2, 3]
-        const localStorageSpy = jest.spyOn(window.localStorage, 'setItem')
+        const localStorageSpy = jest.spyOn(Storage.prototype, 'setItem')
 
         storePanelWidths(LayoutKeys.FULL_TICKET, widths)
         jest.runOnlyPendingTimers()

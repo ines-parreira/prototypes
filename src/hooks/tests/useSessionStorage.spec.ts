@@ -78,7 +78,7 @@ describe('useSessionStorage', () => {
     })
 
     it('should handle sessionStorage errors when setting values', () => {
-        jest.spyOn(sessionStorage, 'setItem').mockImplementation(() => {
+        jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
             throw new Error('Mocked storage error')
         })
 

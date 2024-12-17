@@ -100,19 +100,18 @@ describe('Services common utils', () => {
             'should return true when localStorage has no more space available with code %i and name %s exception',
             (code, name) => {
                 Object.defineProperty(window.localStorage, 'length', {value: 1})
-                jest.spyOn(
-                    window.localStorage,
-                    'setItem'
-                ).mockImplementationOnce(() => {
-                    throw DOMExceptionMock(code, name)
-                })
+                jest.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(
+                    () => {
+                        throw DOMExceptionMock(code, name)
+                    }
+                )
 
                 expect(utils.isLocalStorageAvailable()).toBe(true)
             }
         )
 
         it('should return false when localStorage is not available because of an exception other than quota exceeded ones', () => {
-            jest.spyOn(window.localStorage, 'setItem').mockImplementationOnce(
+            jest.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(
                 () => {
                     throw new DOMException()
                 }

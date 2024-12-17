@@ -60,51 +60,6 @@ Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
 // https://github.com/testing-library/react-testing-library/issues/731
 global.MutationObserver = MutationObserver
 
-// Mock for localStorage and sessionStorage APIs
-// to be able to test portion of code which access these APIs
-class WebStorageMock {
-    store: Record<string, unknown>
-
-    constructor() {
-        this.store = {}
-    }
-
-    get length() {
-        return Object.keys(this.store).length
-    }
-
-    key(index: number) {
-        if (index > this.length) {
-            return null
-        }
-        return Object.keys(this.store)[index]
-    }
-
-    clear() {
-        this.store = {}
-    }
-
-    getItem(key: string) {
-        return this.store[key] || null
-    }
-
-    setItem(key: string, value: string | number) {
-        this.store[key] = value.toString()
-    }
-
-    removeItem(key: string) {
-        delete this.store[key]
-    }
-}
-
-Object.defineProperty(window, 'localStorage', {
-    value: new WebStorageMock(),
-})
-
-Object.defineProperty(window, 'sessionStorage', {
-    value: new WebStorageMock(),
-})
-
 // Mock historyAPI
 history.push = jest.fn()
 history.replace = jest.fn()

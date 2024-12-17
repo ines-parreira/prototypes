@@ -1,11 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React, {useContext} from 'react'
 
-import {
-    BannersContext,
-    BannersContextProvider,
-    BannersDispatchContext,
-} from '../BannerContext'
+import {BannersContext, BannersDispatchContext} from '../../context'
+import {BannersContextProvider} from '../BannerContext'
 
 describe('BannersContextProvider', () => {
     it('should render children', () => {
