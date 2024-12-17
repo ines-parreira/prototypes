@@ -6,7 +6,6 @@ import {useFlag} from 'common/flags'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 
 import useEnabledActionTemplates from '../hooks/useEnabledActionTemplates'
@@ -80,12 +79,11 @@ const ActionsTemplatesCards = ({
                         onClick={() => {
                             history.push(routes.actionsTemplates)
                         }}
+                        trailingIcon="arrow_forward"
                     >
-                        <ButtonIconLabel position="right" icon="arrow_forward">
-                            {isMultiStepActionEnabled
-                                ? 'See all Templates'
-                                : 'See all Actions'}
-                        </ButtonIconLabel>
+                        {isMultiStepActionEnabled
+                            ? 'See all Templates'
+                            : 'See all Actions'}
                     </Button>
                 </div>
             )}

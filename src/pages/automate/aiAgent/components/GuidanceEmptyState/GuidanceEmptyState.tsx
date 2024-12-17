@@ -6,7 +6,6 @@ import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import {SegmentEvent, logEvent} from 'common/segment'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import history from 'pages/history'
 
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
@@ -117,13 +116,9 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                     <Button
                                         intent="secondary"
                                         fillStyle="ghost"
+                                        trailingIcon="arrow_forward"
                                     >
-                                        <ButtonIconLabel
-                                            position="right"
-                                            icon="arrow_forward"
-                                        >
-                                            See All Templates
-                                        </ButtonIconLabel>
+                                        See All Templates
                                     </Button>
                                 </Link>
                             </li>

@@ -11,7 +11,6 @@ import SelfServicePreview from 'pages/automate/common/components/preview/SelfSer
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
 
@@ -141,10 +140,9 @@ export default function TrackOrderFlowPreview({
                                 className={css.previewButton}
                                 onClick={handleTrackOrderPreviewClick}
                                 fillStyle="ghost"
+                                leadingIcon="play_circle_filled"
                             >
-                                <ButtonIconLabel icon="play_circle_filled">
-                                    Preview
-                                </ButtonIconLabel>
+                                Preview
                             </Button>
                         )}
                         <div

@@ -4,7 +4,6 @@ import {useHistory} from 'react-router-dom'
 
 import {IntegrationType} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -59,10 +58,9 @@ const ActionsPlatformAppForm = ({
                     history.push('/app/automation/actions-platform/apps')
                 }}
                 className={css.backButton}
+                leadingIcon="arrow_back"
             >
-                <ButtonIconLabel icon="arrow_back">
-                    Back to Apps
-                </ButtonIconLabel>
+                Back to Apps
             </Button>
             <div className={css.section}>
                 <Controller

@@ -2,7 +2,6 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 interface Props {
     isDirty: boolean
@@ -22,10 +21,9 @@ export const WorkflowAnalyticsActionButtons = ({
                 intent="secondary"
                 isDisabled={isTestDisabled}
                 id="test-disabled"
+                leadingIcon="play_circle"
             >
-                <ButtonIconLabel icon="play_circle" position="left">
-                    Test
-                </ButtonIconLabel>
+                Test
             </Button>
             {isTestDisabled && (
                 <Tooltip target="test-disabled">

@@ -13,7 +13,6 @@ import {
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
@@ -350,10 +349,9 @@ export default function ConditionsNodeEditor({
                             <Button
                                 intent="secondary"
                                 onClick={handleAddConditionBranch}
+                                leadingIcon="add"
                             >
-                                <ButtonIconLabel icon="add">
-                                    Add Branch
-                                </ButtonIconLabel>
+                                Add Branch
                             </Button>
                         </div>
                     </div>

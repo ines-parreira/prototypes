@@ -4,7 +4,6 @@ import React from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {ConfirmationButton} from './ConfirmationButton'
@@ -54,10 +53,9 @@ export const WorkflowEditorActionButtons = ({
                         intent="secondary"
                         isDisabled={isTestDisabled}
                         id="test-disabled"
+                        leadingIcon="play_circle"
                     >
-                        <ButtonIconLabel icon="play_circle" position="left">
-                            Test
-                        </ButtonIconLabel>
+                        Test
                     </Button>
                 )}
                 {isPreviewTestButtonVisible && isTestDisabled && (
@@ -115,10 +113,9 @@ export const WorkflowEditorActionButtons = ({
                     intent="secondary"
                     isDisabled={isTestDisabled}
                     id="test-disabled"
+                    leadingIcon="play_circle"
                 >
-                    <ButtonIconLabel icon="play_circle" position="left">
-                        Test
-                    </ButtonIconLabel>
+                    Test
                 </Button>
             )}
             {isPreviewTestButtonVisible && isTestDisabled && (

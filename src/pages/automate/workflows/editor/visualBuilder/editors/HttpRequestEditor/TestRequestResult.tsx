@@ -8,7 +8,6 @@ import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -157,14 +156,9 @@ const TestRequestResult = ({
                         isLoading={isLoading}
                         onClick={onRetest}
                         fillStyle="ghost"
+                        leadingIcon="refresh"
                     >
-                        {isLoading ? (
-                            'Retest'
-                        ) : (
-                            <ButtonIconLabel icon="refresh">
-                                Retest
-                            </ButtonIconLabel>
-                        )}
+                        Retest
                     </Button>
                 </div>
                 <div className={css.field}>
@@ -315,10 +309,9 @@ const TestRequestResult = ({
                         onClick={onAddVariable}
                         className={css.addVariableButton}
                         size="small"
+                        leadingIcon="add"
                     >
-                        <ButtonIconLabel icon="add">
-                            Add Variable
-                        </ButtonIconLabel>
+                        Add Variable
                     </Button>
                 </div>
             </ModalBody>

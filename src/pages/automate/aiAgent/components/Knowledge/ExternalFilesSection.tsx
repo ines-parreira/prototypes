@@ -4,7 +4,6 @@ import React, {createRef, useEffect, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useFileIngestion} from 'pages/automate/aiAgent/hooks/useFileIngestion'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import {ConfirmNavigationPrompt} from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -296,14 +295,9 @@ export const ExternalFilesSection = ({
                         onClick={() => inputRef.current?.click()}
                         isLoading={isLoading}
                         isDisabled={isLoading || maxFilesReached}
+                        leadingIcon="cloud_upload"
                     >
-                        {!isLoading ? (
-                            <ButtonIconLabel icon="cloud_upload">
-                                Upload File
-                            </ButtonIconLabel>
-                        ) : (
-                            <>Uploading..</>
-                        )}
+                        {!isLoading ? 'Upload File' : 'Uploading..'}
                     </Button>
 
                     <div className={css.buttonInfo}>

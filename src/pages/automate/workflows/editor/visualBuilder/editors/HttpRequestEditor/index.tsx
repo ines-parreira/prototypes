@@ -19,7 +19,6 @@ import {
     isTriggerNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -199,10 +198,9 @@ export default function HttpRequestEditor({
                             onClick={() => {
                                 void handleDownloadHttpRequestEventLogs()
                             }}
+                            leadingIcon="download"
                         >
-                            <ButtonIconLabel icon="download">
-                                Download Event logs
-                            </ButtonIconLabel>
+                            Download Event logs
                         </Button>
                         {isNodeNew && (
                             <Tooltip target={downloadLogsButtonRef}>

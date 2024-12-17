@@ -5,7 +5,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -158,10 +157,9 @@ export const AutomateSavingsCard = ({
                             fillStyle="ghost"
                             intent="secondary"
                             onClick={() => exploreDataModal.current?.open()}
+                            leadingIcon="calculate"
                         >
-                            <ButtonIconLabel icon="calculate">
-                                Explore Data
-                            </ButtonIconLabel>
+                            Explore Data
                         </Button>
                         <AutomateExploreDataModal
                             monthlySupportTickets={automatedInteractions}

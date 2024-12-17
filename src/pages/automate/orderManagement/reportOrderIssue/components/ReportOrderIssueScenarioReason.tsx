@@ -9,7 +9,6 @@ import EmptyResponseMessageContentError from 'pages/automate/common/components/E
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
 import css from './ReportOrderIssueScenarioReason.less'
@@ -59,8 +58,9 @@ const ReportOrderIssueScenarioReason = ({
                         intent="destructive"
                         fillStyle="ghost"
                         onClick={handleDelete}
+                        leadingIcon="delete"
                     >
-                        <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
+                        Delete
                     </Button>
                 </div>
             </AccordionBody>

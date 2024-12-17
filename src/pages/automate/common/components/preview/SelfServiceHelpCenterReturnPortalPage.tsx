@@ -3,7 +3,6 @@ import React from 'react'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import {HelpCenter} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import useOrderDates from './hooks/useOrderDates'
 
@@ -33,10 +32,8 @@ const SelfServiceHelpCenterReturnPortalPage = ({helpCenter}: Props) => {
             </div>
             <div className={css.returnPortal}>
                 {helpCenterTexts.completeReturnDeepLink}
-                <Button>
-                    <ButtonIconLabel icon="launch" position="right">
-                        {helpCenterTexts.goToReturnPortal}
-                    </ButtonIconLabel>
+                <Button trailingIcon="launch">
+                    {helpCenterTexts.goToReturnPortal}
                 </Button>
             </div>
         </div>

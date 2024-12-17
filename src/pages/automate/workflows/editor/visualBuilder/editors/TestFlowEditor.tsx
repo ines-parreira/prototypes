@@ -18,7 +18,6 @@ import LanguageSelector from 'pages/automate/workflows/components/LanguageSelect
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -287,10 +286,9 @@ export const TestFlowEditor = ({
                             2000
                         )}
                         intent="secondary"
+                        leadingIcon="refresh"
                     >
-                        <ButtonIconLabel icon="refresh" position="left">
-                            Restart
-                        </ButtonIconLabel>
+                        Restart
                     </Button>
 
                     <div className={classNames(css['iframe-container'])}>

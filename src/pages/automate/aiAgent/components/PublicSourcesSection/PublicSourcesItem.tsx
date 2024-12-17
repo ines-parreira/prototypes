@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
@@ -195,12 +194,9 @@ export const PublicSourcesItem = ({
                 isDisabled={!isValid || !!inputError || isSyncDisabled}
                 onClick={handleSync}
                 isLoading={source.status === 'loading'}
+                leadingIcon="sync"
             >
-                {source.status === 'loading' ? (
-                    'Sync URL'
-                ) : (
-                    <ButtonIconLabel icon="sync">Sync URL</ButtonIconLabel>
-                )}
+                Sync URL
             </Button>
 
             <div className={css.buttonGroup}>

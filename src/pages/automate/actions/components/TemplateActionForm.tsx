@@ -23,7 +23,6 @@ import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automa
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
@@ -668,10 +667,9 @@ const TemplateActionForm = ({configuration, template}: Props) => {
                                             isDeletingAction
                                         }
                                         onClick={onClick}
+                                        leadingIcon="delete"
                                     >
-                                        <ButtonIconLabel icon="delete">
-                                            Delete Action
-                                        </ButtonIconLabel>
+                                        Delete Action
                                     </Button>
                                 )}
                             </ConfirmModalAction>

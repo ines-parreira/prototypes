@@ -4,7 +4,6 @@ import React, {useEffect, useState} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {useSearchParam} from 'hooks/useSearchParam'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import {notify} from 'state/notifications/actions'
@@ -244,8 +243,9 @@ export const PublicSourcesSection = ({
                     intent="secondary"
                     onClick={onAddClick}
                     isDisabled={isLimitReached}
+                    leadingIcon="add"
                 >
-                    <ButtonIconLabel icon="add">Add URL</ButtonIconLabel>
+                    Add URL
                 </Button>
             </div>
         </div>

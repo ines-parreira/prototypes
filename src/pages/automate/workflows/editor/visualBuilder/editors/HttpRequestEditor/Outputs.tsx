@@ -6,7 +6,6 @@ import React, {useMemo, useRef, useState} from 'react'
 
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -124,8 +123,9 @@ const Outputs = ({
                 }}
                 size="small"
                 isDisabled={!availableVariables.length}
+                leadingIcon="add"
             >
-                <ButtonIconLabel icon="add">Add Output</ButtonIconLabel>
+                Add Output
             </Button>
             <Dropdown isOpen={isOpen} onToggle={setIsOpen} target={buttonRef}>
                 <DropdownBody>

@@ -18,7 +18,6 @@ import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Chip} from 'pages/common/components/Chip'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -340,19 +339,17 @@ export default function UseCaseTemplateConfirmationModal({
                             fillStyle="ghost"
                             onClick={handleCustomize}
                             isDisabled={isActionUpserting}
+                            leadingIcon="edit"
                         >
-                            <ButtonIconLabel icon="edit">
-                                Customize
-                            </ButtonIconLabel>
+                            Customize
                         </Button>
                         <Button
                             intent="primary"
                             isDisabled={isActionUpserting}
                             onClick={handleCreateAndEnable}
+                            leadingIcon="play_arrow"
                         >
-                            <ButtonIconLabel icon="play_arrow">
-                                Create and enable
-                            </ButtonIconLabel>
+                            Create and enable
                         </Button>
                     </div>
                 )}

@@ -8,7 +8,6 @@ import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -126,10 +125,9 @@ const ReportOrderIssueScenarioReasons = ({
                 ref={buttonRef}
                 intent="secondary"
                 className={css.addReasonButton}
+                trailingIcon="arrow_drop_down"
             >
-                <ButtonIconLabel icon="arrow_drop_down" position="right">
-                    Add Option
-                </ButtonIconLabel>
+                Add Option
             </Button>
             <Dropdown
                 isOpen={isDropdownOpen}

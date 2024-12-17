@@ -8,7 +8,6 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 
 import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
@@ -136,10 +135,9 @@ const EditReportOrderIssueFlowScenarioView = () => {
                             placement="top"
                             showCancelButton
                             isDisabled={isUpdatePending}
+                            leadingIcon="delete"
                         >
-                            <ButtonIconLabel icon="delete">
-                                Delete Scenario
-                            </ButtonIconLabel>
+                            Delete Scenario
                         </ConfirmButton>
                     )
                 }

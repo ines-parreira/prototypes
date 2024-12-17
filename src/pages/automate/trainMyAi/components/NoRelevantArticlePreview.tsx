@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './NoRelevantArticlePreview.less'
 
@@ -20,10 +19,8 @@ export default function NoRelevantArticlePreview({helpCenterId}: Props) {
                     to={`/app/settings/help-center/${helpCenterId}/articles?create_article=from_scratch`}
                     target="_blank"
                 >
-                    <Button size="small">
-                        <ButtonIconLabel icon="open_in_new" position="left">
-                            Create An Article
-                        </ButtonIconLabel>
+                    <Button size="small" leadingIcon="open_in_new">
+                        Create An Article
                     </Button>
                 </Link>
             )}

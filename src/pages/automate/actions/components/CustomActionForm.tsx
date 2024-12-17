@@ -19,7 +19,6 @@ import {
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
@@ -422,10 +421,9 @@ const CustomActionForm = ({configuration}: Props) => {
                                             isDeletingAction
                                         }
                                         onClick={onClick}
+                                        leadingIcon="delete"
                                     >
-                                        <ButtonIconLabel icon="delete">
-                                            Delete Action
-                                        </ButtonIconLabel>
+                                        Delete Action
                                     </Button>
                                 )}
                             </ConfirmModalAction>

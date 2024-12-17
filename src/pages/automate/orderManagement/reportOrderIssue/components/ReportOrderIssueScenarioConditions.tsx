@@ -10,7 +10,6 @@ import {
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -181,13 +180,9 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
                         ref={buttonRef}
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         intent="secondary"
+                        trailingIcon="arrow_drop_down"
                     >
-                        <ButtonIconLabel
-                            icon="arrow_drop_down"
-                            position="right"
-                        >
-                            Add Condition
-                        </ButtonIconLabel>
+                        Add Condition
                     </Button>
                     <Dropdown
                         isOpen={isDropdownOpen}

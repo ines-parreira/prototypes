@@ -3,7 +3,6 @@ import _noop from 'lodash/noop'
 import React, {useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {Input} from '../types'
 import ActionFormInput from './ActionFormInput'
@@ -91,10 +90,9 @@ const ActionFormInputs = ({
                         isDisabled={isDisabled}
                         onClick={onAdd}
                         size="small"
+                        leadingIcon="add"
                     >
-                        <ButtonIconLabel icon="add">
-                            Add Variable
-                        </ButtonIconLabel>
+                        Add Variable
                     </Button>
                 </div>
             </div>
