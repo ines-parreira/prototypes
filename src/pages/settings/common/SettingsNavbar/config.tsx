@@ -3,9 +3,15 @@ import React from 'react'
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import {IntegrationType} from 'models/integration/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
+
+import {
+    CUSTOM_FIELD_CONDITIONS_ROUTE,
+    CUSTOM_FIELD_ROUTES,
+} from 'routes/constants'
 
 import {Category} from './types'
 
@@ -72,7 +78,7 @@ export const NavbarConfig: Category[] = [
         links: [
             {
                 requiredRole: ADMIN_ROLE,
-                to: 'customer-fields',
+                to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER],
                 text: 'Customer Fields',
                 requiredFeatureFlags: [FeatureFlagKey.CustomerFields],
                 extra: (
@@ -83,8 +89,19 @@ export const NavbarConfig: Category[] = [
             },
             {
                 requiredRole: ADMIN_ROLE,
-                to: 'ticket-fields',
+                to: CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET],
                 text: 'Ticket Fields',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: CUSTOM_FIELD_CONDITIONS_ROUTE,
+                text: 'Field Conditions',
+                requiredFeatureFlags: [FeatureFlagKey.TicketConditionalFields],
+                extra: (
+                    <Badge type={ColorType.Blue} className={cssNavbar.badge}>
+                        BETA
+                    </Badge>
+                ),
             },
             {
                 requiredRole: AGENT_ROLE,

@@ -6,11 +6,15 @@ import {PageSection} from 'config/pages'
 import {ADMIN_ROLE} from 'config/user'
 
 import IntegrationDetail from 'pages/integrations/integration/Integration'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import {
+    CUSTOM_FIELD_CONDITIONS_ROUTE,
+    CUSTOM_FIELD_ROUTES,
+} from 'routes/constants'
 import {assumeMock} from 'utils/testing'
 
 import {Billing} from '../Billing'
 import {Channels} from '../Channels'
+import {ConditionalFields} from '../ConditionalFields'
 import {ContactForm} from '../ContactForm'
 import {Convert} from '../Convert'
 import {CustomFields} from '../CustomFields'
@@ -25,6 +29,10 @@ import {SettingRoutes} from '../Settings'
 import {SLA} from '../SLA'
 import {Teams} from '../Teams'
 import {Users} from '../Users'
+
+jest.mock('../SLA', () => ({
+    SLA: jest.fn(() => <div>SLA</div>),
+}))
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
@@ -97,53 +105,59 @@ const testingMap = [
     {
         callOrder: 7,
         exact: undefined,
+        path: `${basePath}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
+        component: ConditionalFields,
+    },
+    {
+        callOrder: 8,
+        exact: undefined,
         path: `${basePath}/help-center`,
         component: HelpCenter,
     },
     {
-        callOrder: 8,
+        callOrder: 9,
         exact: undefined,
         path: `${basePath}/import-data`,
         component: Import,
     },
     {
-        callOrder: 9,
+        callOrder: 10,
         exact: undefined,
         path: `${basePath}/integrations`,
         component: Integrations,
     },
     {
-        callOrder: 10,
+        callOrder: 11,
         exact: undefined,
         path: `${basePath}/phone-numbers`,
         component: PhoneNumbers,
     },
     {
-        callOrder: 11,
+        callOrder: 12,
         exact: undefined,
         path: `${basePath}/macros`,
         component: Macros,
     },
     {
-        callOrder: 12,
+        callOrder: 13,
         exact: undefined,
         path: `${basePath}/rules`,
         component: Rules,
     },
     {
-        callOrder: 13,
+        callOrder: 14,
         exact: undefined,
         path: `${basePath}/sla`,
         component: SLA,
     },
     {
-        callOrder: 14,
+        callOrder: 15,
         exact: undefined,
         path: `${basePath}/teams`,
         component: Teams,
     },
     {
-        callOrder: 15,
+        callOrder: 16,
         exact: undefined,
         path: `${basePath}/users`,
         component: Users,

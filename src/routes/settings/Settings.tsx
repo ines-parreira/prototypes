@@ -10,6 +10,7 @@ import {
 } from 'config/paywalls'
 
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {OBJECT_TYPES} from 'custom-fields/constants'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
@@ -23,12 +24,16 @@ import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
 import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import {
+    CUSTOM_FIELD_CONDITIONS_ROUTE,
+    CUSTOM_FIELD_ROUTES,
+} from 'routes/constants'
 import {AccountFeature} from 'state/currentAccount/types'
 import {assetsUrl} from 'utils'
 
 import {Billing} from './Billing'
 import {Channels} from './Channels'
+import {ConditionalFields} from './ConditionalFields'
 import {ContactForm} from './ContactForm'
 import {Convert} from './Convert'
 import {CustomFields} from './CustomFields'
@@ -70,11 +75,16 @@ export function SettingRoutes() {
             <Route path={`${path}/convert`}>
                 <Convert />
             </Route>
-            <Route path={`${path}/${CUSTOM_FIELD_ROUTES['Customer']}`}>
-                <CustomFields objectType={'Customer'} />
+            <Route
+                path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}`}
+            >
+                <CustomFields objectType={OBJECT_TYPES.CUSTOMER} />
             </Route>
-            <Route path={`${path}/${CUSTOM_FIELD_ROUTES['Ticket']}`}>
-                <CustomFields objectType={'Ticket'} />
+            <Route path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}`}>
+                <CustomFields objectType={OBJECT_TYPES.TICKET} />
+            </Route>
+            <Route path={`${path}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`}>
+                <ConditionalFields />
             </Route>
             <Route path={`${path}/help-center`}>
                 <HelpCenter />
