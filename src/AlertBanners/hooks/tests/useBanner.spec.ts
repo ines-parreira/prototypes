@@ -2,13 +2,13 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {assumeMock} from 'utils/testing'
 
-import {BannerActionTypes, useBannersDispatchContext} from '../../ccontext'
+import {BannerActionTypes, useBannersDispatchContext} from '../../Context'
 import {useDismissedStorage} from '../../Storage'
 import {BannerCategories, ContextBanner} from '../../types'
 import {useBanners} from '../useBanners'
 
-jest.mock('../../ccontext', () => ({
-    ...jest.requireActual<Record<string, unknown>>('../../ccontext'),
+jest.mock('../../Context', () => ({
+    ...jest.requireActual<Record<string, unknown>>('../../Context'),
     useBannersDispatchContext: jest.fn(),
 }))
 jest.mock('../../Storage', () => {

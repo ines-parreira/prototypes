@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 
-import {useBannersContext} from '../../ccontext'
+import {useBannersContext} from '../../Context'
 import {BannerCategory} from '../../types'
 
 import {AlertBannerStorage} from '../types'

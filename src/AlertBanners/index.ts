@@ -1,5 +1,5 @@
 export {default} from './components/AlertBanners'
-export {BannersContextProvider} from './ccontext'
+export {BannersContextProvider} from './Context'
 export {useBanners} from './hooks/useBanners'
 export {AlertBanner} from './components/AlertBanner'
 export type {AlertBannerProps} from './components/AlertBanner'

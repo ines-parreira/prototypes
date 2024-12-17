@@ -1,6 +1,6 @@
 import {useCallback, useMemo} from 'react'
 
-import {useBannersDispatchContext, BannerActionTypes} from '../ccontext'
+import {useBannersDispatchContext, BannerActionTypes} from '../Context'
 import {useDismissedStorage} from '../Storage'
 
 import {BannerCategory, ContextBanner} from '../types'

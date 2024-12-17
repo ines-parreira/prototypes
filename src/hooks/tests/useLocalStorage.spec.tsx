@@ -14,7 +14,7 @@ describe('useLocalStorage', () => {
         expect(state).toEqual('bar')
     })
 
-    it('should return defaultValue if localStorage empty and set that to localStorage', () => {
+    it('should return defaultValue if localStorage not set, and set that to localStorage', () => {
         const {result} = renderHook(() => useLocalStorage('foo', 'bar'))
         const [state] = result.current
         expect(state).toEqual('bar')
@@ -26,6 +26,13 @@ describe('useLocalStorage', () => {
         const {result} = renderHook(() => useLocalStorage('foo', 'baz'))
         const [state] = result.current
         expect(state).toEqual('bar')
+    })
+
+    it('should prefer existing value over defaultValue even when value is "undefined"', () => {
+        localStorage.setItem('foo', 'undefined')
+        const {result} = renderHook(() => useLocalStorage('foo', 'baz'))
+        const [state] = result.current
+        expect(state).toEqual(undefined)
     })
 
     it('should not clobber existing localStorage with defaultValue', () => {
@@ -59,6 +66,20 @@ describe('useLocalStorage', () => {
         const [foo2] = result.current
         expect(foo1).toEqual(null)
         expect(foo2).toEqual(null)
+    })
+
+    it('should return and allow undefined setting', () => {
+        localStorage.setItem('foo', 'undefined')
+        const {result, rerender} = renderHook(() =>
+            useLocalStorage<string | undefined>('foo', 'hum')
+        )
+        const [foo1, setFoo] = result.current
+        act(() => setFoo(undefined))
+        rerender()
+
+        const [foo2] = result.current
+        expect(foo1).toEqual(undefined)
+        expect(foo2).toEqual(undefined)
     })
 
     it('should work fine if default value is undefined', () => {
@@ -242,6 +263,26 @@ describe('useLocalStorage', () => {
 
         const [updatedValue] = hook.result.current
         expect(updatedValue).toEqual('default')
+    })
+
+    it('should take "undefined" into account when set from another tab', () => {
+        localStorage.setItem('foo', '"bar"')
+        const hook = renderHook(() => useLocalStorage('foo', 'default'))
+
+        const [firstValue] = hook.result.current
+        expect(firstValue).toEqual('bar')
+
+        act(() => {
+            localStorage.setItem('foo', 'undefined')
+            window.dispatchEvent(
+                new StorageEvent('storage', {
+                    key: 'foo',
+                })
+            )
+        })
+
+        const [updatedValue] = hook.result.current
+        expect(updatedValue).toEqual(undefined)
     })
 
     it("should not react to local storage updates from other tab if it's not the same key", () => {

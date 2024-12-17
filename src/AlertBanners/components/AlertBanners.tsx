@@ -2,7 +2,7 @@ import React from 'react'
 
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 
-import {useBannersContext} from '../ccontext'
+import {useBannersContext} from '../Context'
 
 import {AlertBanner} from './AlertBanner'
 

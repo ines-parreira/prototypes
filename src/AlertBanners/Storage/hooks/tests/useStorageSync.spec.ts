@@ -2,11 +2,11 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {assumeMock} from 'utils/testing'
 
-import {useBannersContext} from '../../../ccontext'
+import {useBannersContext} from '../../../Context'
 import {BannerCategories, ContextBanner} from '../../../types'
 import {useStorageSync} from '../useStorageSync'
 
-jest.mock('../../../ccontext', () => ({
+jest.mock('../../../Context', () => ({
     useBannersContext: jest.fn(),
 }))
 const useBannersContextMock = assumeMock(useBannersContext)

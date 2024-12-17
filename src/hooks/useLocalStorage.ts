@@ -26,6 +26,9 @@ const useLocalStorage = <T>(
         try {
             const localStorageValue = localStorage.getItem(key)
             if (localStorageValue !== null) {
+                if (localStorageValue === 'undefined') {
+                    return undefined as T
+                }
                 return JSON.parse(localStorageValue) as T
             }
 
@@ -93,6 +96,9 @@ const useLocalStorage = <T>(
                 const localStorageValue = localStorage.getItem(key)
                 if (localStorageValue === null) {
                     return setState(defaultValue)
+                }
+                if (localStorageValue === 'undefined') {
+                    return setState(undefined as T)
                 }
                 setState(JSON.parse(localStorageValue) as T)
             } catch {
