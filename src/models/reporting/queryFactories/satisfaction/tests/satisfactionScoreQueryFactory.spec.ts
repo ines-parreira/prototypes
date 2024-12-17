@@ -8,9 +8,9 @@ import {
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    averageScoreQueryFactory,
-    averageScoreDrillDownQueryFactory,
-} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+    satisfactionScoreQueryFactory,
+    satisfactionScoreDrillDownQueryFactory,
+} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
@@ -19,7 +19,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-describe('averageScoreQueryFactory', () => {
+describe('satisfactionScoreQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -32,10 +32,10 @@ describe('averageScoreQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = averageScoreQueryFactory(statsFilters, timezone)
+        const query = satisfactionScoreQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
-            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -49,10 +49,14 @@ describe('averageScoreQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = averageScoreQueryFactory(statsFilters, timezone, sorting)
+        const query = satisfactionScoreQueryFactory(
+            statsFilters,
+            timezone,
+            sorting
+        )
 
         expect(query).toEqual({
-            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
             dimensions: [],
             segments: [],
             filters: [
@@ -62,12 +66,14 @@ describe('averageScoreQueryFactory', () => {
                 ),
             ],
             timezone,
-            order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
+            order: [
+                [TicketSatisfactionSurveyMeasure.SatisfactionScore, sorting],
+            ],
         })
     })
 })
 
-describe('averageScoreDrillDownQueryFactory', () => {
+describe('satisfactionScoreDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {
@@ -80,11 +86,14 @@ describe('averageScoreDrillDownQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     it('should produce the query', () => {
-        const query = averageScoreDrillDownQueryFactory(statsFilters, timezone)
+        const query = satisfactionScoreDrillDownQueryFactory(
+            statsFilters,
+            timezone
+        )
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -103,7 +112,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
     })
 
     it('should produce the query with sorting', () => {
-        const query = averageScoreDrillDownQueryFactory(
+        const query = satisfactionScoreDrillDownQueryFactory(
             statsFilters,
             timezone,
             sorting
@@ -111,7 +120,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             limit: DRILLDOWN_QUERY_LIMIT,
-            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
             dimensions: [TicketDimension.TicketId],
             segments: [],
             filters: [
@@ -126,7 +135,9 @@ describe('averageScoreDrillDownQueryFactory', () => {
                 },
             ],
             timezone,
-            order: [[TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting]],
+            order: [
+                [TicketSatisfactionSurveyMeasure.SatisfactionScore, sorting],
+            ],
         })
     })
 })

@@ -220,7 +220,7 @@ describe('getDrillDownQuery', () => {
     ]
     const satisfactionMetrics: SatisfactionMetrics[] = [
         {
-            metricName: SatisfactionMetric.AverageScore,
+            metricName: SatisfactionMetric.SatisfactionScore,
         },
         {metricName: SatisfactionMetric.ResponseRate},
         {metricName: SatisfactionMetric.SurveysSent},

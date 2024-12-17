@@ -13,7 +13,7 @@ import {createCsv, saveZippedFiles} from 'utils/file'
 import {getPreviousPeriod} from 'utils/reporting'
 
 export interface SatisfactionReportData {
-    averageScoreTrend: MetricTrend
+    satisfactionScoreTrend: MetricTrend
     responseRateTrend: MetricTrend
     surveysSentTrend: MetricTrend
 }
@@ -48,14 +48,15 @@ export const saveReport = async (
             `${previousStartDate} - ${previousEndDate}`,
         ],
         [
-            SatisfactionMetricConfig[SatisfactionMetric.AverageScore].title,
+            SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
+                .title,
             formatTrendMetric(
-                SatisfactionMetric.AverageScore,
-                data.averageScoreTrend.data?.value
+                SatisfactionMetric.SatisfactionScore,
+                data.satisfactionScoreTrend.data?.value
             ),
             formatTrendMetric(
-                SatisfactionMetric.AverageScore,
-                data.averageScoreTrend.data?.prevValue
+                SatisfactionMetric.SatisfactionScore,
+                data.satisfactionScoreTrend.data?.prevValue
             ),
         ],
         [

@@ -1,12 +1,15 @@
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {averageScoreQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import {satisfactionScoreQueryFactory} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 
-export const useAverageScoreTrend = (filters: StatsFilters, timezone: string) =>
+export const useSatisfactionScoreTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
     useMetricTrend(
-        averageScoreQueryFactory(filters, timezone),
-        averageScoreQueryFactory(
+        satisfactionScoreQueryFactory(filters, timezone),
+        satisfactionScoreQueryFactory(
             {
                 ...filters,
                 period: getPreviousPeriod(filters.period),

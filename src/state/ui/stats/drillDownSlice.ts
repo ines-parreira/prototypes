@@ -211,7 +211,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.ClosedTicketsPerHour,
     AutoQAMetric.ReviewedClosedTickets,
     AutoQAMetric.ResolutionCompleteness,
-    SatisfactionMetric.AverageScore,
+    SatisfactionMetric.SatisfactionScore,
     SatisfactionMetric.ResponseRate,
     SatisfactionMetric.SurveysSent,
     AutoQAAgentsTableColumn.ReviewedClosedTickets,
@@ -383,7 +383,7 @@ export const getDrillDownMetricColumn = (
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
     } else if (
-        metricData.metricName === SatisfactionMetric.AverageScore ||
+        metricData.metricName === SatisfactionMetric.SatisfactionScore ||
         metricData.metricName === SatisfactionMetric.ResponseRate ||
         metricData.metricName === SatisfactionMetric.SurveysSent
     ) {

@@ -2,22 +2,22 @@ import {screen} from '@testing-library/react'
 
 import React from 'react'
 
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {AverageScoreTrendCard} from 'pages/stats/quality-management/satisfaction/AverageScoreTrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 )
-const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
+const useSatisfactionScoreTrendMock = assumeMock(useSatisfactionScoreTrend)
 
-describe('AverageScoreTrendCard', () => {
+describe('SatisfactionScoreTrendCard', () => {
     const defaultState = {
         stats: {
             filters: {
@@ -35,7 +35,7 @@ describe('AverageScoreTrendCard', () => {
     const prevValue = 10
 
     beforeEach(() => {
-        useAverageScoreTrendMock.mockReturnValue({
+        useSatisfactionScoreTrendMock.mockReturnValue({
             isError: false,
             isFetching: false,
             data: {
@@ -45,15 +45,16 @@ describe('AverageScoreTrendCard', () => {
         })
     })
 
-    it('should render AverageScoreTrendCard Trend', () => {
-        renderWithStore(<AverageScoreTrendCard />, defaultState)
+    it('should render SatisfactionScoreTrendCard Trend', () => {
+        renderWithStore(<SatisfactionScoreTrendCard />, defaultState)
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     value,
-                    SatisfactionMetricConfig[SatisfactionMetric.AverageScore]
-                        .metricFormat
+                    SatisfactionMetricConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].metricFormat
                 )
             )
         ).toBeInTheDocument()

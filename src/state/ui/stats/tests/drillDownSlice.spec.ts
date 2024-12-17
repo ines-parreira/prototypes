@@ -317,17 +317,17 @@ describe('drillDownSlice', () => {
             },
             {
                 metricData: {
-                    metricName: SatisfactionMetric.AverageScore,
+                    metricName: SatisfactionMetric.SatisfactionScore,
                 },
                 expectedValues: {
                     metricTitle:
                         SatisfactionTrendCardConfig[
-                            SatisfactionMetric.AverageScore
+                            SatisfactionMetric.SatisfactionScore
                         ].title,
                     showMetric: false,
                     metricValueFormat:
                         SatisfactionTrendCardConfig[
-                            SatisfactionMetric.AverageScore
+                            SatisfactionMetric.SatisfactionScore
                         ].metricFormat,
                 },
             },

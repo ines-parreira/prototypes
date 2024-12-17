@@ -28,7 +28,7 @@ describe('satisfactionReportingService', () => {
     const periodPrefix = `${startDate}_${endDate}`
 
     const defaultData = {
-        averageScoreTrend: {data: undefined},
+        satisfactionScoreTrend: {data: undefined},
         responseRateTrend: {data: undefined},
         surveysSentTrend: {data: undefined},
     } as any
@@ -64,7 +64,7 @@ describe('satisfactionReportingService', () => {
         }
 
         const data = {
-            averageScoreTrend: exampleTrendData,
+            satisfactionScoreTrend: exampleTrendData,
             responseRateTrend: exampleTrendData,
             surveysSentTrend: exampleTrendData,
         }
@@ -78,16 +78,19 @@ describe('satisfactionReportingService', () => {
         expect(createCsvSpy).toHaveBeenCalledWith([
             headers,
             [
-                SatisfactionMetricConfig[SatisfactionMetric.AverageScore].title,
+                SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]
+                    .title,
                 formatMetricValue(
                     exampleTrendData.data.value,
-                    SatisfactionMetricConfig[SatisfactionMetric.AverageScore]
-                        .metricFormat
+                    SatisfactionMetricConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].metricFormat
                 ),
                 formatMetricValue(
                     exampleTrendData.data.prevValue,
-                    SatisfactionMetricConfig[SatisfactionMetric.AverageScore]
-                        .metricFormat
+                    SatisfactionMetricConfig[
+                        SatisfactionMetric.SatisfactionScore
+                    ].metricFormat
                 ),
             ],
             [

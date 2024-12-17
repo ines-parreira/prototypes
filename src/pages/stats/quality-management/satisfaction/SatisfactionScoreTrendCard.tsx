@@ -4,10 +4,10 @@ import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
 import {SatisfactionMetric} from 'state/ui/stats/types'
 
-export const AverageScoreTrendCard = () => {
+export const SatisfactionScoreTrendCard = () => {
     return (
         <TrendCard
-            {...SatisfactionMetricConfig[SatisfactionMetric.AverageScore]}
+            {...SatisfactionMetricConfig[SatisfactionMetric.SatisfactionScore]}
         />
     )
 }

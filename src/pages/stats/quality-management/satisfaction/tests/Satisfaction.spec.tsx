@@ -6,12 +6,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {AverageScoreTrendCard} from 'pages/stats/quality-management/satisfaction/AverageScoreTrendCard'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import Satisfaction, {
     SATISFACTION_OPTIONAL_FILTERS,
     SATISFACTION_TITLE,
 } from 'pages/stats/quality-management/satisfaction/Satisfaction'
+import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {fromLegacyStatsFilters} from 'state/stats/utils'
@@ -34,8 +34,10 @@ jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 
-jest.mock('pages/stats/quality-management/satisfaction/AverageScoreTrendCard')
-const AverageScoreTrendCardMock = assumeMock(AverageScoreTrendCard)
+jest.mock(
+    'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+)
+const SatisfactionScoreTrendCardMock = assumeMock(SatisfactionScoreTrendCard)
 
 jest.mock('pages/stats/quality-management/satisfaction/ResponseRateTrendCard')
 const ResponseRateTrendCardMock = assumeMock(ResponseRateTrendCard)
@@ -78,7 +80,7 @@ describe('<Satisfaction>', () => {
             isLoading,
             period,
         })
-        AverageScoreTrendCardMock.mockImplementation(componentMock)
+        SatisfactionScoreTrendCardMock.mockImplementation(componentMock)
         ResponseRateTrendCardMock.mockImplementation(componentMock)
         SurveysSentTrendCardMock.mockImplementation(componentMock)
     })
@@ -87,7 +89,7 @@ describe('<Satisfaction>', () => {
         const {getByText} = renderWithStore(<Satisfaction />, defaultState)
 
         expect(getByText(SATISFACTION_TITLE)).toBeInTheDocument()
-        expect(AverageScoreTrendCardMock).toHaveBeenCalled()
+        expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
         expect(ResponseRateTrendCardMock).toHaveBeenCalled()
         expect(SurveysSentTrendCardMock).toHaveBeenCalled()
     })
@@ -97,7 +99,7 @@ describe('<Satisfaction>', () => {
 
         SATISFACTION_OPTIONAL_FILTERS.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
-            expect(AverageScoreTrendCardMock).toHaveBeenCalled()
+            expect(SatisfactionScoreTrendCardMock).toHaveBeenCalled()
             expect(ResponseRateTrendCardMock).toHaveBeenCalled()
             expect(SurveysSentTrendCardMock).toHaveBeenCalled()
         })

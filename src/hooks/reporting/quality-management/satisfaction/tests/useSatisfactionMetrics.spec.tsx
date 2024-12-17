@@ -4,9 +4,9 @@ import React from 'react'
 import {Provider} from 'react-redux'
 
 import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction//useSurveysSentTrend'
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
 import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
 import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -14,9 +14,9 @@ import {initialState} from 'state/stats/statsSlice'
 import {assumeMock, mockStore} from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 )
-const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
+const useSatisfactionScoreTrendMock = assumeMock(useSatisfactionScoreTrend)
 
 jest.mock(
     'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
@@ -42,7 +42,7 @@ describe('useSatisfactionMetrics', () => {
     const defaultState = {
         stats: initialState,
     }
-    useAverageScoreTrendMock.mockReturnValue(someTrendData)
+    useSatisfactionScoreTrendMock.mockReturnValue(someTrendData)
     useResponseRateTrendMock.mockReturnValue(someTrendData)
     useSurveysSentTrendMock.mockReturnValue(someTrendData)
 
@@ -62,7 +62,7 @@ describe('useSatisfactionMetrics', () => {
 
         expect(result.current).toEqual({
             reportData: {
-                averageScoreTrend: someTrendData,
+                satisfactionScoreTrend: someTrendData,
                 responseRateTrend: someTrendData,
                 surveysSentTrend: someTrendData,
             },
@@ -87,7 +87,7 @@ describe('useSatisfactionMetrics', () => {
 
         expect(result.current).toEqual({
             reportData: {
-                averageScoreTrend: someTrendData,
+                satisfactionScoreTrend: someTrendData,
                 responseRateTrend: loadingTrendData,
                 surveysSentTrend: someTrendData,
             },

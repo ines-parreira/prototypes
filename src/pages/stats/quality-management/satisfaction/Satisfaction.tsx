@@ -10,9 +10,9 @@ import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {AverageScoreTrendCard} from 'pages/stats/quality-management/satisfaction/AverageScoreTrendCard'
 import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
 import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
+import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
 import StatsPage from 'pages/stats/StatsPage'
 import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
@@ -69,7 +69,7 @@ export default function Satisfaction() {
                 )}
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(4)}>
-                        <AverageScoreTrendCard />
+                        <SatisfactionScoreTrendCard />
                     </DashboardGridCell>
                     <DashboardGridCell size={getGridCellSize(4)}>
                         <ResponseRateTrendCard />

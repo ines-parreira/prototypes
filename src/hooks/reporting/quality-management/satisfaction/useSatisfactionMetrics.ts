@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
 import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
 
 import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
@@ -9,7 +9,7 @@ import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStat
 export const useSatisfactionMetrics = () => {
     const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
 
-    const averageScoreTrend = useAverageScoreTrend(
+    const satisfactionScoreTrend = useSatisfactionScoreTrend(
         cleanStatsFilters,
         userTimezone
     )
@@ -23,14 +23,16 @@ export const useSatisfactionMetrics = () => {
     )
 
     const loading = useMemo(() => {
-        return [averageScoreTrend, responseRateTrend, surveysSentTrend].some(
-            (data) => data.isFetching
-        )
-    }, [averageScoreTrend, responseRateTrend, surveysSentTrend])
+        return [
+            satisfactionScoreTrend,
+            responseRateTrend,
+            surveysSentTrend,
+        ].some((data) => data.isFetching)
+    }, [satisfactionScoreTrend, responseRateTrend, surveysSentTrend])
 
     return {
         reportData: {
-            averageScoreTrend,
+            satisfactionScoreTrend,
             responseRateTrend,
             surveysSentTrend,
         },

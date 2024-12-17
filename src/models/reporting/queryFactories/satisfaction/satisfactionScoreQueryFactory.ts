@@ -13,12 +13,12 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const averageScoreQueryFactory = (
+export const satisfactionScoreQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+    measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
     dimensions: [],
     segments: [],
     filters: [
@@ -28,19 +28,19 @@ export const averageScoreQueryFactory = (
     ...(sorting
         ? {
               order: [
-                  [TicketSatisfactionSurveyMeasure.AvgSurveyScore, sorting],
+                  [TicketSatisfactionSurveyMeasure.SatisfactionScore, sorting],
               ],
           }
         : {}),
 })
 
-export const averageScoreDrillDownQueryFactory = (
+export const satisfactionScoreDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...averageScoreQueryFactory(filters, timezone, sorting),
-    measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+    ...satisfactionScoreQueryFactory(filters, timezone, sorting),
+    measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
         {

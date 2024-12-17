@@ -1,9 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {averageScoreQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import {satisfactionScoreQueryFactory} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
@@ -12,7 +12,7 @@ import {assumeMock} from 'utils/testing'
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 
-describe('useAverageScoreTrend', () => {
+describe('useSatisfactionScoreTrend', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -28,11 +28,11 @@ describe('useAverageScoreTrend', () => {
     )
 
     it('should pass query factories with two periods', () => {
-        renderHook(() => useAverageScoreTrend(statsFilters, timezone))
+        renderHook(() => useSatisfactionScoreTrend(statsFilters, timezone))
 
         expect(useMetricTrendMock).toHaveBeenCalledWith(
-            averageScoreQueryFactory(statsFilters, timezone),
-            averageScoreQueryFactory(
+            satisfactionScoreQueryFactory(statsFilters, timezone),
+            satisfactionScoreQueryFactory(
                 {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),
