@@ -57,7 +57,6 @@ describe('Navbar', () => {
         activeContent: ActiveContent.Tickets,
         available: true,
         children: null,
-        closePanels: jest.fn(),
         currentUser: fromJS(user),
         isMobileResolution: false,
         isOpenedPanel: false,

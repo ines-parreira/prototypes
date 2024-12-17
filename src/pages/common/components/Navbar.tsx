@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import PropTypes from 'prop-types'
 import React, {
     Component,
     createRef,
@@ -22,7 +21,6 @@ import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import {tryLocalStorage} from 'services/common/utils'
 import {getCurrentUser, isAvailable} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 
@@ -60,20 +58,10 @@ export class Navbar extends Component<Props, State> {
     menuToggleRef = createRef<HTMLButtonElement>()
     navbarRef = createRef<HTMLDivElement>()
 
-    static childContextTypes = {
-        closePanel: PropTypes.func.isRequired,
-    }
-
     state = {
         bottomDropdownOpen: false,
         isResizing: false,
         navbarWidth: 238,
-    }
-
-    getChildContext() {
-        return {
-            closePanel: this._closePanel,
-        }
     }
 
     UNSAFE_componentWillMount() {
@@ -97,10 +85,6 @@ export class Navbar extends Component<Props, State> {
         window.removeEventListener('mouseup', this.stopResizing)
         window.removeEventListener('touchmove', this.resize)
         window.removeEventListener('touchend', this.stopResizing)
-    }
-
-    _closePanel = () => {
-        return this.props.closePanels()
     }
 
     _toggleBottomDropdown = () => {
@@ -281,9 +265,7 @@ const connector = connect(
         available: isAvailable(state),
         isOpenedPanel: isOpenedPanel('navbar')(state),
     }),
-    {
-        closePanels,
-    }
+    {}
 )
 
 export default connector(withLDConsumer()(withIsMobileResolution(Navbar)))

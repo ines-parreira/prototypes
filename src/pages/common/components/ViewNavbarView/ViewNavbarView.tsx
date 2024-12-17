@@ -2,7 +2,6 @@ import {Tooltip} from '@gorgias/merchant-ui-kit'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import PropTypes from 'prop-types'
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -20,6 +19,7 @@ import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/index'
 import {makeGetSettingsByType} from 'state/currentUser/selectors'
+import {closePanels} from 'state/layout/actions'
 import {RootState} from 'state/types'
 import {
     getActiveView,
@@ -47,10 +47,6 @@ type State = {
 
 // Component used to display a list of views in the navbar
 class ViewNavbarView extends Component<Props, State> {
-    static contextTypes = {
-        closePanel: PropTypes.func.isRequired,
-    }
-
     state = {
         hasEditMode: false,
         viewCursor: 0,
@@ -137,7 +133,8 @@ class ViewNavbarView extends Component<Props, State> {
     }
 
     render() {
-        const {activeView, viewType, settings, isLoading} = this.props
+        const {activeView, viewType, settings, isLoading, closePanels} =
+            this.props
         const {hasEditMode} = this.state
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
@@ -246,11 +243,7 @@ class ViewNavbarView extends Component<Props, State> {
                                                 view.get('name') as string
                                             } ${count}`}
                                             onClick={() => {
-                                                ;(
-                                                    this.context as {
-                                                        closePanel: () => void
-                                                    }
-                                                ).closePanel()
+                                                closePanels()
                                             }}
                                         >
                                             <span
@@ -288,16 +281,19 @@ class ViewNavbarView extends Component<Props, State> {
     }
 }
 
-const connector = connect((state: RootState, props: OwnProps) => {
-    const getSettingsByType = makeGetSettingsByType()
-    const getViewsByType = makeGetViewsByType()
-    return {
-        getView: makeGetView(state),
-        getViewCount: makeGetViewCount(state),
-        activeView: getActiveView(state),
-        views: getViewsByType(state, props.viewType),
-        settings: getSettingsByType(state, props.settingType),
-    }
-})
+const connector = connect(
+    (state: RootState, props: OwnProps) => {
+        const getSettingsByType = makeGetSettingsByType()
+        const getViewsByType = makeGetViewsByType()
+        return {
+            getView: makeGetView(state),
+            getViewCount: makeGetViewCount(state),
+            activeView: getActiveView(state),
+            views: getViewsByType(state, props.viewType),
+            settings: getSettingsByType(state, props.settingType),
+        }
+    },
+    {closePanels}
+)
 
 export default connector(ViewNavbarView)

@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import {Map, fromJS, List} from 'immutable'
-import PropTypes from 'prop-types'
 import React, {useCallback, useEffect, useState} from 'react'
 import {Link, useLocation} from 'react-router-dom'
 
@@ -10,6 +9,7 @@ import {MAX_RECENT_CHATS} from 'config/recentChats'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
+import {closePanels} from 'state/layout/actions'
 import {activeViewIdSet} from 'state/ui/views/actions'
 import {setViewActive} from 'state/views/actions'
 import {isCurrentlyOnTicket} from 'utils'
@@ -22,10 +22,7 @@ type ItemProps = {
     position: number
 }
 
-const RecentChatsItem = (
-    {recentTicket, position}: ItemProps,
-    context: {closePanel: () => void}
-) => {
+const RecentChatsItem = ({recentTicket, position}: ItemProps) => {
     const dispatch = useAppDispatch()
     const channel = recentTicket.get('channel')
     const customer: Map<any, any> = recentTicket.get('customer') || fromJS({})
@@ -46,7 +43,7 @@ const RecentChatsItem = (
             position,
             ticket: recentTicket.toJS(),
         })
-        context.closePanel()
+        dispatch(closePanels())
         dispatch(setViewActive(fromJS({})))
         dispatch(activeViewIdSet(null))
     }
@@ -66,10 +63,6 @@ const RecentChatsItem = (
             </Link>
         </div>
     )
-}
-
-RecentChatsItem.contextTypes = {
-    closePanel: PropTypes.func.isRequired,
 }
 
 const RecentChats = () => {
