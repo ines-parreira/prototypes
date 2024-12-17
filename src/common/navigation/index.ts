@@ -3,5 +3,5 @@ export {
     default as MainNavigation,
     ActiveContent,
 } from './components/MainNavigation'
-export {default as UserMenu} from './components/UserMenu'
+export {default as UserMenuWithToggle} from './components/UserMenuWithToggle'
 export {globalNavigationPanel} from './config'

@@ -11,22 +11,23 @@ import React, {
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {ActiveContent, MainNavigation, UserMenu} from 'common/navigation'
+import {
+    ActiveContent,
+    MainNavigation,
+    UserMenuWithToggle,
+} from 'common/navigation'
 import {NotificationsButton} from 'common/notifications'
 import {FeatureFlagKey} from 'config/featureFlags'
 import withIsMobileResolution from 'hooks/useIsMobileResolution/withIsMobileResolution'
 import type {WithIsMobileResolutionProps} from 'hooks/useIsMobileResolution/withIsMobileResolution'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import {tryLocalStorage} from 'services/common/utils'
-import {getCurrentUser, isAvailable} from 'state/currentUser/selectors'
 import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 
 import {isTouchEvent} from 'utils'
 
-import Avatar from './Avatar/Avatar'
 import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
 import css from './Navbar.less'
 import PlaceCallNavbarButton from './PlaceCallNavbarButton'
@@ -49,17 +50,14 @@ type Props = OwnProps &
     WithIsMobileResolutionProps
 
 type State = {
-    bottomDropdownOpen: boolean
     isResizing: boolean
     navbarWidth: number
 }
 
 export class Navbar extends Component<Props, State> {
-    menuToggleRef = createRef<HTMLButtonElement>()
     navbarRef = createRef<HTMLDivElement>()
 
     state = {
-        bottomDropdownOpen: false,
         isResizing: false,
         navbarWidth: 238,
     }
@@ -85,12 +83,6 @@ export class Navbar extends Component<Props, State> {
         window.removeEventListener('mouseup', this.stopResizing)
         window.removeEventListener('touchmove', this.resize)
         window.removeEventListener('touchend', this.stopResizing)
-    }
-
-    _toggleBottomDropdown = () => {
-        this.setState((prevState) => ({
-            bottomDropdownOpen: !prevState.bottomDropdownOpen,
-        }))
     }
 
     startResizing = (event: MouseEventReact | TouchEventReact) => {
@@ -141,8 +133,6 @@ export class Navbar extends Component<Props, State> {
     render() {
         const {
             activeContent,
-            available,
-            currentUser,
             disableResize,
             isMobileResolution,
             navbarContentRef,
@@ -206,44 +196,7 @@ export class Navbar extends Component<Props, State> {
                     </div>
 
                     <div data-candu-id="navbar-menu-spacer" />
-
-                    <button
-                        ref={this.menuToggleRef}
-                        className={classnames(
-                            css['dropdown-toggle'],
-                            css['dropdown-toggle-dropup'],
-                            {[css.active]: this.state.bottomDropdownOpen}
-                        )}
-                        onClick={this._toggleBottomDropdown}
-                        data-candu-id="navbar-user-menu"
-                    >
-                        <div>
-                            {currentUser.get('name') ||
-                                currentUser.get('email')}
-                        </div>
-                        <Avatar
-                            name={
-                                currentUser.get('name') ||
-                                currentUser.get('email')
-                            }
-                            url={currentUser.getIn([
-                                'meta',
-                                'profile_picture_url',
-                            ])}
-                            size={36}
-                            badgeColor={available ? '#24d69d' : '#FF9600'}
-                        />
-                    </button>
-                    <Dropdown
-                        className={css.menuContent}
-                        isOpen={this.state.bottomDropdownOpen}
-                        onToggle={this._toggleBottomDropdown}
-                        target={this.menuToggleRef}
-                        placement="top-start"
-                        offset={0}
-                    >
-                        <UserMenu onClose={this._toggleBottomDropdown} />
-                    </Dropdown>
+                    <UserMenuWithToggle />
                 </div>
                 {!disableResize && (
                     <div
@@ -261,8 +214,6 @@ export class Navbar extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        currentUser: getCurrentUser(state),
-        available: isAvailable(state),
         isOpenedPanel: isOpenedPanel('navbar')(state),
     }),
     {}

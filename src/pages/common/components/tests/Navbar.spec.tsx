@@ -1,19 +1,16 @@
 import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 import type {ComponentProps, ReactNode} from 'react'
 import {StaticRouter} from 'react-router-dom'
 
 import {ActiveContent} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {user} from 'fixtures/users'
 import {getLDClient} from 'utils/launchDarkly'
 
 import {Navbar} from '../Navbar'
 import css from '../Navbar.less'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
-jest.mock('common/segment')
 
 jest.mock(
     'pages/common/components/CreateTicket/CreateTicketNavbarButton',
@@ -37,10 +34,8 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('common/navigation'),
-            AvailabilityToggle: () => <div>AvailabilityToggle</div>,
             MainNavigation: () => <div>main navigation</div>,
-            OfficeHours: () => <div>OfficeHours</div>,
-            ThemeMenu: () => <div>ThemeMenu</div>,
+            UserMenuWithToggle: () => <div>UserMenuWithToggle</div>,
         }) as typeof import('common/navigation')
 )
 
@@ -55,9 +50,7 @@ const wrapper = ({children}: {children: ReactNode}) => (
 describe('Navbar', () => {
     const minProps: ComponentProps<typeof Navbar> = {
         activeContent: ActiveContent.Tickets,
-        available: true,
         children: null,
-        currentUser: fromJS(user),
         isMobileResolution: false,
         isOpenedPanel: false,
         title: '',
@@ -103,6 +96,11 @@ describe('Navbar', () => {
         expect(getByText('main navigation')).toBeInTheDocument()
     })
 
+    it('should render the user menu', () => {
+        const {getByText} = render(<Navbar {...minProps} />, {wrapper})
+        expect(getByText('UserMenuWithToggle')).toBeInTheDocument()
+    })
+
     it('should render the opened panel', () => {
         const {container} = render(<Navbar {...minProps} isOpenedPanel />, {
             wrapper,
@@ -110,29 +108,6 @@ describe('Navbar', () => {
         expect(
             container.querySelector(`.${css['hidden-panel']}`)
         ).not.toBeInTheDocument()
-    })
-
-    it('should render the user as unavailable', () => {
-        const {container} = render(<Navbar {...minProps} available={false} />, {
-            wrapper,
-        })
-        const el = container.querySelector('.dropdown-toggle-dropup .badge')
-        expect(el).toHaveStyle({'background-color': 'rgb(255, 150, 0)'})
-    })
-
-    it('should fallback user name to email', () => {
-        const {getByText} = render(
-            <Navbar
-                {...minProps}
-                currentUser={fromJS({
-                    ...user,
-                    name: '',
-                })}
-            />,
-            {wrapper}
-        )
-
-        expect(getByText(user.email)).toBeInTheDocument()
     })
 
     it.each([['tickets'], ['customers']])(
