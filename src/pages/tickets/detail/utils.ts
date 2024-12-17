@@ -2,7 +2,8 @@ import {Tag} from '@gorgias/api-queries'
 
 import {TicketStatus} from 'business/types/ticket'
 import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
+import {TicketElement, TicketMessage} from 'models/ticket/types'
+import {isVoiceCall} from 'models/voiceCall/types'
 import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 export const getActionAndTagsFromMessage = (
@@ -44,4 +45,20 @@ export const getActionAndTagsFromMessage = (
             : null
 
     return {tags: messageTags, action: actionType}
+}
+
+export const getVoiceCallIndex = (
+    voiceCallId: string,
+    elements: ('header' | TicketElement | TicketMessage[])[]
+): number | 'LAST' => {
+    const index = elements.findIndex((element) => {
+        if (element === 'header') return false
+
+        return (
+            isVoiceCall(element) &&
+            element.id.toString() === voiceCallId.toString()
+        )
+    })
+
+    return index === -1 ? 'LAST' : index
 }

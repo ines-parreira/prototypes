@@ -1,5 +1,5 @@
 import {fireEvent, render} from '@testing-library/react'
-import React from 'react'
+import React, {useState} from 'react'
 
 import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
 
@@ -13,7 +13,7 @@ describe('VoiceRecordingsProvider', () => {
             </VoiceRecordingsProvider>
         )
 
-        expect(getByText('Test children')).toBeInTheDocument
+        expect(getByText('Test children')).toBeInTheDocument()
     })
 
     it('should toggle recording opened', () => {
@@ -78,5 +78,56 @@ describe('VoiceRecordingsProvider', () => {
 
         fireEvent.click(getByTestId('recording-1'))
         expect(getByText('Opened')).toBeInTheDocument()
+    })
+
+    it('should toggle recording opened with voiceCallId', () => {
+        const Consumer = ({voiceCallId}: {voiceCallId: number}) => {
+            const {toggleRecordingOpened, isRecordingOpened} =
+                useVoiceRecordingsContext()
+
+            return (
+                <button
+                    onClick={() => {
+                        toggleRecordingOpened(voiceCallId)
+                    }}
+                    data-testid={`recording-${voiceCallId}`}
+                >
+                    {isRecordingOpened(voiceCallId) ? 'Opened' : 'Closed'}
+                </button>
+            )
+        }
+        const ParentOfProvider = () => {
+            const [voiceCallId, setVoiceCallId] = useState<number | null>(1)
+            return (
+                <>
+                    <button
+                        onClick={() => {
+                            setVoiceCallId(2)
+                        }}
+                        data-testid="open-recording-2"
+                    >
+                        open recording 2
+                    </button>
+                    <VoiceRecordingsProvider voiceCallId={voiceCallId}>
+                        <Consumer voiceCallId={1} />
+                        <Consumer voiceCallId={2} />
+                    </VoiceRecordingsProvider>
+                </>
+            )
+        }
+        const {getByTestId} = render(<ParentOfProvider />)
+
+        // initial state
+        expect(getByTestId('recording-1')).toHaveTextContent('Opened')
+        expect(getByTestId('recording-2')).toHaveTextContent('Closed')
+
+        // open recording 2
+        fireEvent.click(getByTestId('open-recording-2'))
+        expect(getByTestId('recording-1')).toHaveTextContent('Opened')
+        expect(getByTestId('recording-2')).toHaveTextContent('Opened')
+
+        // can close selected recording
+        fireEvent.click(getByTestId('recording-2'))
+        expect(getByTestId('recording-2')).toHaveTextContent('Closed')
     })
 })

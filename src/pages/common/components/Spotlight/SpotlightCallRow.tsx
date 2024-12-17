@@ -46,7 +46,7 @@ const SpotlightCallRow = ({
             icon={<TicketIcon channel={'phone'} status={TicketStatus.Open} />}
             title={`${itemWithHighlights.phone_number_source} called ${itemWithHighlights.phone_number_destination}`}
             info={<SpotlightCallInfo voiceCall={item} />}
-            link={`/app/ticket/${item.ticket_id}`}
+            link={`/app/ticket/${item.ticket_id}?call_id=${item.id}`}
             onCloseModal={onCloseModal}
             onHover={onHover}
             selected={selected}

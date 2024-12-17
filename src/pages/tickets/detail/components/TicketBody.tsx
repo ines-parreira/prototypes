@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useMemo, useRef} from 'react'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
 import useAppSelector from 'hooks/useAppSelector'
+import useSearch from 'hooks/useSearch'
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {TicketElement, TicketMessage} from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
@@ -18,6 +19,7 @@ import {
     useKeyboardNavigation,
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
+import {getVoiceCallIndex} from '../utils'
 import MessageQuoteContext from './MessageQuoteContext'
 import css from './TicketBody.less'
 import TicketBodyElement from './TicketBodyElement'
@@ -54,6 +56,7 @@ export default function TicketBody({
         useHighlightedElements()
     const lastMessageDatetimeAfterMount =
         useLastMessageDatetimeAfterMount(elements)
+    const {call_id: voiceCallId} = useSearch<{call_id?: string}>()
 
     const maxIndex = elements.size - 1
     const {
@@ -65,9 +68,15 @@ export default function TicketBody({
 
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
     useEffect(() => {
-        if (!isHistoryDisplayed) return
-        virtuosoRef.current?.scrollTo({top: 0})
-    }, [isHistoryDisplayed])
+        if (voiceCallId) {
+            virtuosoRef.current?.scrollToIndex({
+                index: getVoiceCallIndex(voiceCallId, groupedElements),
+            })
+        } else {
+            if (!isHistoryDisplayed) return
+            virtuosoRef.current?.scrollTo({top: 0})
+        }
+    }, [groupedElements, isHistoryDisplayed, voiceCallId])
 
     const getFollowOutput = useCallback(
         (isAtBottom: boolean) => (isAtBottom ? 'smooth' : false),
@@ -130,7 +139,9 @@ export default function TicketBody({
     )
 
     return (
-        <VoiceRecordingsProvider>
+        <VoiceRecordingsProvider
+            voiceCallId={voiceCallId ? parseInt(voiceCallId) : null}
+        >
             <MessageQuoteContext.Provider
                 value={{
                     expandedQuotes: expandedMessages,
@@ -150,7 +161,11 @@ export default function TicketBody({
                     }
                     data={groupedElements}
                     followOutput={getFollowOutput}
-                    initialTopMostItemIndex={{index: 'LAST'}}
+                    initialTopMostItemIndex={{
+                        index: voiceCallId
+                            ? getVoiceCallIndex(voiceCallId, groupedElements)
+                            : 'LAST',
+                    }}
                     itemContent={getItemContent}
                     topItemCount={1}
                 />

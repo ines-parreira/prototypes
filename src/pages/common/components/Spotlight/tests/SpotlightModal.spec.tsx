@@ -1184,7 +1184,9 @@ describe('<SpotlightModal/>', () => {
                 {
                     KBkey: '{enter}',
                     shouldCall: history.push,
-                    expectedResult: [`/app/ticket/${voiceCall.ticket_id}`],
+                    expectedResult: [
+                        `/app/ticket/${voiceCall.ticket_id}?call_id=${voiceCall.id}`,
+                    ],
                 },
             ],
             [
@@ -1220,7 +1222,7 @@ describe('<SpotlightModal/>', () => {
                     KBkey: '{ctrl}{enter}',
                     shouldCall: window.open,
                     expectedResult: [
-                        `/app/ticket/${voiceCall.ticket_id}`,
+                        `/app/ticket/${voiceCall.ticket_id}?call_id=${voiceCall.id}`,
                         '_blank',
                         'noopener',
                     ],
@@ -1311,7 +1313,9 @@ describe('<SpotlightModal/>', () => {
                 {
                     KBkey: '{enter}',
                     shouldCall: history.push,
-                    expectedResult: [`/app/ticket/${voiceCall.ticket_id}`],
+                    expectedResult: [
+                        `/app/ticket/${voiceCall.ticket_id}?call_id=${voiceCall.id}`,
+                    ],
                 },
             ],
             [
@@ -1347,7 +1351,7 @@ describe('<SpotlightModal/>', () => {
                     KBkey: '{meta}{enter}',
                     shouldCall: window.open,
                     expectedResult: [
-                        `/app/ticket/${voiceCall.ticket_id}`,
+                        `/app/ticket/${voiceCall.ticket_id}?call_id=${voiceCall.id}`,
                         '_blank',
                         'noopener',
                     ],

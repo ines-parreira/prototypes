@@ -1,30 +1,44 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {VoiceRecordingsContext} from './VoiceRecordingsContext'
 
 export default function VoiceRecordingsProvider({
     children,
+    voiceCallId = null,
 }: {
     children: React.ReactNode
+    voiceCallId?: number | null
 }) {
-    const [openedRecordings, setOpenedRecordings] = React.useState<number[]>([])
+    const [openedRecordings, setOpenedRecordings] = React.useState<number[]>(
+        voiceCallId ? [voiceCallId] : []
+    )
     const [closedTranscriptions, setClosedTranscriptions] = React.useState<
         number[]
     >([])
-    const toggleRecordingOpened = (recordingId: number) => {
-        setOpenedRecordings((prev) =>
-            prev.includes(recordingId)
-                ? prev.filter((id) => id !== recordingId)
-                : [...prev, recordingId]
+
+    useEffect(() => {
+        if (voiceCallId && !openedRecordings.includes(voiceCallId)) {
+            setOpenedRecordings([...openedRecordings, voiceCallId])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [voiceCallId])
+
+    const toggleResourceOpened = (
+        resourceId: number,
+        setFn: React.Dispatch<React.SetStateAction<number[]>>
+    ) => {
+        setFn((prev) =>
+            prev.includes(resourceId)
+                ? prev.filter((id) => id !== resourceId)
+                : [...prev, resourceId]
         )
     }
-    const toggleTranscriptionOpened = (transcriptionId: number) => {
-        setClosedTranscriptions((prev) =>
-            prev.includes(transcriptionId)
-                ? prev.filter((id) => id !== transcriptionId)
-                : [...prev, transcriptionId]
-        )
-    }
+
+    const toggleRecordingOpened = (id: number) =>
+        toggleResourceOpened(id, setOpenedRecordings)
+
+    const toggleTranscriptionOpened = (id: number) =>
+        toggleResourceOpened(id, setClosedTranscriptions)
 
     return (
         <VoiceRecordingsContext.Provider

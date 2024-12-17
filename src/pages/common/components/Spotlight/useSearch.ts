@@ -100,7 +100,7 @@ const getSelectedItemUrl = (
         return `/app/ticket/${selectedItem.id}`
     }
     if (isVoiceCall(selectedItem)) {
-        return `/app/ticket/${selectedItem.ticket_id}`
+        return `/app/ticket/${selectedItem.ticket_id}?call_id=${selectedItem.id}`
     }
     return `/app/customer/${selectedItem.id}`
 }
@@ -632,7 +632,9 @@ export const useSearch = () => {
                 logRecentlyAccessedSegmentEvent(
                     isCustomer(selectedItem)
                         ? 'spotlight-customer'
-                        : 'spotlight-ticket'
+                        : isTicket(selectedItem)
+                          ? 'spotlight-ticket'
+                          : 'spotlight-call'
                 )
                 if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
                     window.open(selectedItemUrl, '_blank', 'noopener')
