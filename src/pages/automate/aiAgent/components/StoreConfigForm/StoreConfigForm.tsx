@@ -888,10 +888,7 @@ export const StoreConfigForm = ({
                                 time and ensuring consistent categorization.
                             </IconTooltip>
                         </h2>
-                        <div
-                            className={css.sectionDescription}
-                            style={{marginBottom: '16px'}}
-                        >
+                        <div className={css.sectionDescription}>
                             Use AI tagging to let AI Agent automatically label
                             tickets based on their content.
                         </div>
@@ -907,10 +904,7 @@ export const StoreConfigForm = ({
                     <section>
                         <Button
                             onClick={onSubmit}
-                            isDisabled={
-                                isPendingCreateOrUpdate ||
-                                (!isFormDirty && !isCreate)
-                            }
+                            isDisabled={isPendingCreateOrUpdate}
                             className="mb-3"
                         >
                             Save Changes

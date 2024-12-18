@@ -97,7 +97,6 @@ export default class ListField extends Component<Props> {
                 ))}
                 <Button
                     className="d-flex align-items-center"
-                    size="sm"
                     disabled={disabled === true || items.size === maxItems}
                     onClick={this.addRow}
                     {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}

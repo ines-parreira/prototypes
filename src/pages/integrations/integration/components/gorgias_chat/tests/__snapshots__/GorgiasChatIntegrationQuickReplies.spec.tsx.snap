@@ -175,7 +175,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               </div>
             </div>
             <button
-              class="d-flex align-items-center btn btn-secondary btn-sm disabled"
+              class="d-flex align-items-center btn btn-secondary disabled"
               disabled=""
               type="button"
             >
@@ -623,7 +623,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               </div>
             </div>
             <button
-              class="d-flex align-items-center btn btn-secondary btn-sm"
+              class="d-flex align-items-center btn btn-secondary"
               type="button"
             >
               <i
