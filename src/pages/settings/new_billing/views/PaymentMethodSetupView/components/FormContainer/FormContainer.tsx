@@ -12,6 +12,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {Form} from 'components/Form/Form'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import {StripePaymentMethodType} from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
 import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
@@ -20,6 +21,7 @@ import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
+import {useStripeElementPaymentState} from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
 import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
 import {StripePaymentFields} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
@@ -62,6 +64,9 @@ export const FormContainer: React.FC<
     const isStartingSubscription = useAppSelector(
         getIsCurrentSubscriptionTrialingOrCanceled
     )
+    const selectedPaymentMethodType = useStripeElementPaymentState(
+        (event) => event.value.type
+    ) as Maybe<StripePaymentMethodType>
 
     const shouldDisplayBillingInformationFields =
         getIsMissingBillingtInformation(billingInformation)
@@ -84,7 +89,9 @@ export const FormContainer: React.FC<
                 <Card title="Payment Method">
                     <div className={css.cardContent}>
                         <StripePaymentFields />
-                        <VerificationChargeDisclaimer />
+                        {selectedPaymentMethodType === 'card' ? (
+                            <VerificationChargeDisclaimer />
+                        ) : null}
                         {shouldDisplayBillingInformationFields ? (
                             <BillingInformationFields />
                         ) : null}

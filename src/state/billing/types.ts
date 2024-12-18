@@ -3,13 +3,6 @@ import {Map} from 'immutable'
 import {Product, ProductType} from 'models/billing/types'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 
-export type CreditCard = {
-    expDate: string
-    name: string
-    number: string
-    cvc: string
-}
-
 export type CurrentUsage = {
     cost: number
     extra_tickets: number

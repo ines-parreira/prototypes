@@ -153,6 +153,11 @@ export enum SubscriptionStatus {
     TRIALING = 'trialing',
 }
 
+export type StripePaymentMethodType =
+    | 'ach_credit_transfer'
+    | 'us_bank_account' // ACH debit
+    | 'card'
+
 export type SubscriptionSummary = {
     status: SubscriptionStatus
     cadence: PlanInterval

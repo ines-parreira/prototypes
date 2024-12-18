@@ -54,6 +54,10 @@ assumeMock(useStripe).mockReturnValue({
     confirmSetup: jest.fn().mockResolvedValue({setupIntent: {id: 'si_123'}}),
 } as any)
 
+let handlePaymentElementOnChangeEvent:
+    | ((event: StripePaymentElementChangeEvent) => void)
+    | undefined
+
 const mockStripeElementsValue = ({
     address = {address: {}} as any,
     paymentMethod,
@@ -68,11 +72,17 @@ const mockStripeElementsValue = ({
                 .mockResolvedValue(
                     element === 'address' ? address : paymentMethod
                 ),
+            on: jest.fn().mockImplementation((event, callback) => {
+                if (event === 'change') {
+                    handlePaymentElementOnChangeEvent = callback
+                }
+            }),
         }),
     } as any)
 
     act(() => {
         handlePaymentElementChange?.(paymentMethod as any)
+        handlePaymentElementOnChangeEvent?.(paymentMethod as any)
     })
 }
 
@@ -110,6 +120,9 @@ describe('FormContainer', () => {
             },
             paymentMethod: {
                 complete: true,
+                value: {
+                    type: 'card',
+                },
             },
         })
 
@@ -151,6 +164,9 @@ describe('FormContainer', () => {
             },
             paymentMethod: {
                 complete: true,
+                value: {
+                    type: 'card',
+                },
             },
         })
 
@@ -175,6 +191,9 @@ describe('FormContainer', () => {
         mockStripeElementsValue({
             paymentMethod: {
                 complete: true,
+                value: {
+                    type: 'card',
+                },
             },
         })
 
@@ -207,6 +226,9 @@ describe('FormContainer', () => {
         mockStripeElementsValue({
             paymentMethod: {
                 complete: true,
+                value: {
+                    type: 'card',
+                },
             },
         })
 
