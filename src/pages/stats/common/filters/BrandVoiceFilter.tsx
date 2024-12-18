@@ -29,7 +29,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -41,6 +44,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -51,9 +55,11 @@ export function BrandVoiceFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const brandVoice = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -125,7 +131,7 @@ export function BrandVoiceFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
@@ -134,6 +140,7 @@ export function BrandVoiceFilter({
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
             showSearch={false}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -148,6 +155,10 @@ export const BrandVoiceFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 brandVoice: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                brandVoice: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -164,6 +175,10 @@ export const BrandVoiceFilterWithSavedState = connect(
                 member: FilterKey.BrandVoice,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.BrandVoice,
             }),
     }
 )(BrandVoiceFilter)

@@ -29,7 +29,10 @@ import {
 import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {upsertSavedFilterFilter} from 'state/ui/stats/filtersSlice'
+import {
+    removeFilterFromSavedFilterDraft,
+    upsertSavedFilterFilter,
+} from 'state/ui/stats/filtersSlice'
 
 export const MAX_SCORE_VALUE = 5
 
@@ -41,6 +44,7 @@ type Props = {
             undefined
         >
     ) => void
+    dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
     dispatchStatFiltersClean?: () => void
 } & RemovableFilter &
@@ -51,9 +55,11 @@ export function EfficiencyFilter({
     initializeAsOpen = false,
     onRemove,
     dispatchUpdate,
+    dispatchRemove,
     dispatchStatFiltersDirty = noop,
     dispatchStatFiltersClean = noop,
     warningType,
+    isDisabled,
 }: Props) {
     const efficiency = getScoreLabelsAndValues(MAX_SCORE_VALUE, true)
 
@@ -125,7 +131,7 @@ export function EfficiencyFilter({
                 handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatchUpdate(emptyFilter)
+                dispatchRemove()
 
                 onRemove?.()
             }}
@@ -134,6 +140,7 @@ export function EfficiencyFilter({
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
             showSearch={false}
+            isDisabled={isDisabled}
         />
     )
 }
@@ -148,6 +155,10 @@ export const EfficiencyFilterWithState = connect(
         dispatchUpdate: (filter: Props['value']) =>
             mergeStatsFiltersWithLogicalOperator({
                 efficiency: filter,
+            }),
+        dispatchRemove: () =>
+            mergeStatsFiltersWithLogicalOperator({
+                efficiency: emptyFilter,
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
@@ -164,6 +175,10 @@ export const EfficiencyFilterWithSavedState = connect(
                 member: FilterKey.Efficiency,
                 operator: filter.operator,
                 values: filter.values,
+            }),
+        dispatchRemove: () =>
+            removeFilterFromSavedFilterDraft({
+                filterKey: FilterKey.Efficiency,
             }),
     }
 )(EfficiencyFilter)
