@@ -309,6 +309,7 @@ export const ExternalFilesSection = ({
                         {SUPPORTED_TYPES.map(
                             (supportedType) => supportedType.ext
                         ).join(', ')}
+                        . Max {MAX_FILE_SIZE_MB} MB.
                     </div>
                 </div>
             </div>
