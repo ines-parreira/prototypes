@@ -170,7 +170,7 @@ module.exports = (env = {}) => {
         devServer,
         devtool,
         entry: {
-            build: `${srcDir}/core/init`,
+            build: `${srcDir}/main/init`,
             ...(__PRODUCTION__ && {font: `${srcDir}/assets/css/font.less`}),
         },
         output: {

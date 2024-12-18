@@ -7,9 +7,9 @@ import {
 } from '@testing-library/react'
 import React from 'react'
 
-import useHasPhone from 'core/app/hooks/useHasPhone'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
+import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import * as platform from 'utils/platform'
@@ -24,7 +24,7 @@ jest.mock('../DeactivatedViewIcon', () => () => (
 ))
 jest.mock('pages/integrations/integration/components/phone/PhoneDevice')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
-jest.mock('core/app/hooks/useHasPhone')
+jest.mock('hooks/useHasPhone')
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)

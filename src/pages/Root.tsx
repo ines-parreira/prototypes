@@ -12,8 +12,8 @@ import {Router} from 'react-router-dom'
 import {Store} from 'redux'
 
 import {appQueryClient} from 'api/queryClient'
-import {Core} from 'core/app'
 import useEffectOnce from 'hooks/useEffectOnce'
+import {Main} from 'main/app'
 import Routes from 'routes/'
 import activityTracker from 'services/activityTracker'
 import {RootState} from 'state/types'
@@ -70,9 +70,9 @@ const Root = ({store}: Props) => {
                         context={LDContext}
                     >
                         <Router history={history}>
-                            <Core>
+                            <Main>
                                 <Routes />
-                            </Core>
+                            </Main>
                         </Router>
                     </LDProvider>
                 </DndProvider>

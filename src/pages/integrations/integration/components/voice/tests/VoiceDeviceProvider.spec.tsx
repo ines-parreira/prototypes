@@ -5,9 +5,9 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import useHasPhone from 'core/app/hooks/useHasPhone'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import {connectDevice, disconnectDevice} from 'hooks/integrations/phone/utils'
+import useHasPhone from 'hooks/useHasPhone'
 import {isDesktopDevice} from 'utils/device'
 import {assumeMock} from 'utils/testing'
 
@@ -15,7 +15,7 @@ import {VoiceDeviceContextState} from '../VoiceDeviceContext'
 import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
-jest.mock('core/app/hooks/useHasPhone')
+jest.mock('hooks/useHasPhone')
 jest.mock('utils/device')
 
 const useHasPhoneMock = assumeMock(useHasPhone)

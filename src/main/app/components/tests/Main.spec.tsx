@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import Core from '../Core' // Adjust the import path as necessary
+import Main from '../Main'
 
 jest.mock('common/notifications', () => ({
     NotificationsProvider: ({children}: {children: React.ReactNode}) => (
@@ -62,13 +62,13 @@ jest.mock('../App', () => ({
     ),
 }))
 
-describe('Core component', () => {
+describe('Main', () => {
     it('should render all providers and pass children to App component', () => {
         const childrenText = 'Test Child'
         render(
-            <Core>
+            <Main>
                 <div>{childrenText}</div>
-            </Core>
+            </Main>
         )
 
         expect(screen.getByTestId('error-boundary')).toBeInTheDocument()

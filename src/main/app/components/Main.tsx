@@ -16,7 +16,7 @@ type Props = {
     children: ReactElement | ReactElement[]
 }
 
-export default function Core({children}: Props) {
+export default function Main({children}: Props) {
     return (
         <ErrorBoundary>
             <ThemeProvider>

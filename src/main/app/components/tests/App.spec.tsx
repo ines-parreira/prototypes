@@ -7,6 +7,7 @@ import App from '../App'
 jest.mock('common/notifications', () => ({
     NotificationsToasts: jest.fn(() => <div>toasts</div>),
 }))
+jest.mock('hooks/useHasPhone', () => jest.fn(() => true))
 jest.mock('notifications', () => ({
     AlertNotifications: jest.fn(() => <div>alerts</div>),
 }))
@@ -53,7 +54,6 @@ jest.mock('theme', () => ({useTheme: () => 'theme'}))
 jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
-jest.mock('../../hooks/useHasPhone', () => jest.fn(() => true))
 jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
 jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))

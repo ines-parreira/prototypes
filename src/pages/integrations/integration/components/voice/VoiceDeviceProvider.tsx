@@ -2,7 +2,6 @@ import {Dispatch, bindActionCreators} from '@reduxjs/toolkit'
 import {Device} from '@twilio/voice-sdk'
 import React, {useEffect, useMemo, useReducer} from 'react'
 
-import useHasPhone from 'core/app/hooks/useHasPhone'
 import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
 import {
     connectDevice,
@@ -11,6 +10,7 @@ import {
 } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasPhone from 'hooks/useHasPhone'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import {isActive} from 'state/currentUser/selectors'
 import {initialState} from 'state/twilio/voiceDevice'
