@@ -73,8 +73,7 @@ export default function Navbar({
                             <div data-candu-id="navbar-home-spacer" />
                         </>
                     )}
-
-                    <SpotlightButton />
+                    {!showGlobalNav && <SpotlightButton />}
                     <NotificationsButton />
                     {activeContent === ActiveContent.Tickets ? (
                         <>
