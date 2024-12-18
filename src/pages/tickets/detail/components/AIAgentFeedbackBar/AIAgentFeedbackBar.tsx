@@ -15,10 +15,12 @@ import {
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
 
+import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import css from './AIAgentFeedbackBar.less'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
+import {ActionStatus} from './types'
 import {isTrialMessageFromAIAgent} from './utils'
 
 export const FEEDBACK_TICKET_SUMMARY_TEST_ID = 'feedback-bar'
@@ -39,6 +41,8 @@ const AIAgentFeedbackBar = () => {
     const ticketFeedback = data?.data
 
     const messageFeedback = useAiAgentMessageFeedback()
+    const resourceWithFeedback =
+        useAIAgentResourcesWithFeedback(messageFeedback)
 
     const selectedMessage = useAppSelector(getSelectedAIMessage)
 
@@ -59,7 +63,38 @@ const AIAgentFeedbackBar = () => {
         )
     }
 
-    const ticketMessageFeedbackSummary = ticketFeedback?.messages[0].summary
+    const updateTicketMessageFeedbackSummary = (summary: string) => {
+        if (
+            resourceWithFeedback?.actions &&
+            resourceWithFeedback?.actions.length > 0
+        ) {
+            // check if there is a action with type 'hard_action' and status 'not_confirmed'
+            const hardAction = resourceWithFeedback.actions.find(
+                (action) =>
+                    action.type === 'hard_action' &&
+                    action.status === ActionStatus.NOT_CONFIRMED
+            )
+
+            if (hardAction) {
+                return `AI Agent didn’t perform the "${hardAction.name}" Action because the customer didn’t confirm the action.`
+            }
+        }
+
+        return summary
+    }
+
+    const getResponseSummary = () => {
+        if (messageFeedback?.summary) {
+            return updateTicketMessageFeedbackSummary(messageFeedback.summary)
+        }
+
+        const ticketMessageFeedbackSummary = ticketFeedback?.messages[0].summary
+
+        return ticketFeedback?.messages.length === 1 &&
+            ticketMessageFeedbackSummary !== undefined
+            ? ticketMessageFeedbackSummary
+            : ticketFeedbackSummary
+    }
 
     return (
         <>
@@ -74,12 +109,7 @@ const AIAgentFeedbackBar = () => {
                         className={css.summary}
                         data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}
                         dangerouslySetInnerHTML={{
-                            __html: messageFeedback?.summary
-                                ? messageFeedback.summary
-                                : ticketFeedback?.messages.length === 1 &&
-                                    ticketMessageFeedbackSummary !== undefined
-                                  ? ticketMessageFeedbackSummary
-                                  : ticketFeedbackSummary,
+                            __html: getResponseSummary(),
                         }}
                     />
                     {aiMessages.length > 1 && !messageFeedback && (

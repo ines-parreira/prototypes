@@ -52,17 +52,16 @@ const FeedbackSectionTitleContainer = ({
     messageFeedbackStatus,
     resourceSection,
 }: FeedbackSectionTitleContainerProps) => {
-    if (!messageFeedbackStatus || !messageFeedbackStatus[resourceSection]) {
-        return null
-    }
-
     return (
         <div className={css.sectionWithBadge}>
             <div className={css.subtitle}>{resourceSection}</div>
-            <FeedbackStatusBadge
-                status={messageFeedbackStatus[resourceSection]}
-                resourceSection={resourceSection}
-            />
+            {messageFeedbackStatus &&
+                messageFeedbackStatus[resourceSection] && (
+                    <FeedbackStatusBadge
+                        status={messageFeedbackStatus[resourceSection]}
+                        resourceSection={resourceSection}
+                    />
+                )}
         </div>
     )
 }

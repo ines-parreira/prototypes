@@ -16,3 +16,8 @@ export enum FeedbackStatus {
     SAVING = 'saving',
     ERROR = 'error',
 }
+
+export enum ActionStatus {
+    NOT_CONFIRMED = 'Not confirmed',
+    CONFIRMED = 'confirmed',
+}

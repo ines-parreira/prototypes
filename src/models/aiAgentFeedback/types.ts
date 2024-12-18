@@ -1,5 +1,7 @@
 import {MacroAction} from 'models/macroAction/types'
 
+import {ActionStatus} from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
+
 import {ReportIssueOption} from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
@@ -20,6 +22,7 @@ export type Action = {
     type: 'soft_action' | 'hard_action'
     id: number
     name: string
+    status?: ActionStatus
 }
 
 export type FeedbackOnResource = {

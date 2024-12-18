@@ -69,12 +69,14 @@ type Props = {
     message: TicketMessage
     messageFeedback?: MessageFeedback
     isTrialMessage?: boolean
+    isTwoStepMessage?: boolean
 }
 
 const AIAgentFeedback: React.FC<Props> = ({
     message,
     messageFeedback,
     isTrialMessage,
+    isTwoStepMessage,
 }) => {
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
@@ -214,10 +216,13 @@ const AIAgentFeedback: React.FC<Props> = ({
         void submitFeedback(message, feedbackPayload)
     }
 
+    const shouldShowTitleAndReviewButton = isMessagePublic || isTwoStepMessage
     return (
         <div className={css.feedbackContainer}>
             <div className={css.feedbackQuestion}>
-                {isMessagePublic ? CORRECT_RESPONSE : ACCURATE_RESPONSE}
+                {shouldShowTitleAndReviewButton
+                    ? CORRECT_RESPONSE
+                    : ACCURATE_RESPONSE}
             </div>
             <div className={css.feedbackButtons}>
                 {(messageFeedback?.allowsFeedback || isTrialMessage) && (
@@ -252,7 +257,7 @@ const AIAgentFeedback: React.FC<Props> = ({
                     </>
                 )}
 
-                {(isMessagePublic || isTrialMessage) && (
+                {(shouldShowTitleAndReviewButton || isTrialMessage) && (
                     <Button
                         intent="secondary"
                         size="small"

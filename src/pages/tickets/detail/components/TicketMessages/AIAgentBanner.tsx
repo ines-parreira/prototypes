@@ -6,6 +6,7 @@ import {TicketMessage} from 'models/ticket/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 
+import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
 import css from './AIAgentBanner.less'
 import AIAgentFeedback from './AIAgentFeedback'
@@ -36,6 +37,9 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
         ?.find((messageFeedback) =>
             messageIds.includes(messageFeedback.messageId)
         )
+
+    const resourceWithFeedback =
+        useAIAgentResourcesWithFeedback(messageFeedback)
 
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
@@ -76,6 +80,18 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
         return null
     }
 
+    const twoStepMessageIndex = resourceWithFeedback?.actions.findIndex(
+        (action) => action.type === 'hard_action' && action.status
+    )
+    const currentMessageIndex =
+        ticketFeedback?.messages.findIndex(
+            (msg) => msg.messageId === message.id
+        ) || -1
+
+    const isTwoStepMessage = twoStepMessageIndex === currentMessageIndex - 1
+
+    const shouldDisplayAiAgentFeedback = allowsFeedback || isTwoStepMessage
+
     return (
         <AIBanner className={className} hasError={messageSummaryHasError}>
             {!isTrialMessage && (
@@ -87,11 +103,12 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
                     {messageToDisplay}
                 </div>
             )}
-            {allowsFeedback && (
+            {shouldDisplayAiAgentFeedback && (
                 <AIAgentFeedback
                     message={message}
                     messageFeedback={messageFeedback}
                     isTrialMessage={isTrialMessage}
+                    isTwoStepMessage={isTwoStepMessage}
                 />
             )}
         </AIBanner>

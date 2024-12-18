@@ -5,6 +5,8 @@ import {useCookies} from 'react-cookie'
 
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import {SegmentEvent} from '../../../../../common/segment'
 import {logEventWithSampling} from '../../../../../common/segment/segment'
 import {
@@ -16,7 +18,7 @@ import {
 } from '../../../../../models/aiAgentFeedback/types'
 import IconButton from '../../../../common/components/button/IconButton'
 import css from './AIAgentFeedbackBar.less'
-import {ResourceSection} from './types'
+import {ActionStatus, ResourceSection} from './types'
 
 export const TOOLTIP_COOKIE_NAME =
     'helpdesk-show-ticket-ai-agent-message-feedback-tooltip'
@@ -78,32 +80,8 @@ export const FeedbackResourceSection: React.FC<
         }
     }
 
-    return (
-        <a
-            href={hasAgentPrivileges ? href : undefined}
-            target="_blank"
-            rel="noreferrer noopener"
-            className={classNames(css.section, {
-                [css.clickable]: hasAgentPrivileges,
-            })}
-            data-testid={dataTestId}
-        >
-            <div className={css.sectionText}>
-                <div className={css.text}>{resource.name}</div>
-                <i
-                    className={classNames('material-icons', css.openIcon)}
-                    onClick={() => {
-                        logEventWithSampling(
-                            SegmentEvent.AiAgentFeedbackResourceClicked,
-                            {
-                                type: resourceType,
-                            }
-                        )
-                    }}
-                >
-                    open_in_new
-                </i>
-            </div>
+    const renderThumbButtons = () => {
+        return (
             <div className={css.feedback}>
                 <IconButton
                     fillStyle="fill"
@@ -180,6 +158,81 @@ export const FeedbackResourceSection: React.FC<
                     </Tooltip>
                 )}
             </div>
+        )
+    }
+
+    const renderBadge = () => {
+        if (!(resource && 'status' in resource)) {
+            return null
+        }
+        const successTooltip =
+            'The Action was completed because the customer confirmed the details were correct.'
+        const errorTooltip =
+            'The Action was cancelled because the customer did not confirm the details were correct.'
+        return (
+            <div className={css.section}>
+                <Badge
+                    data-testid="badge-test-id"
+                    id={`badge-${resourceId}-${resourceType}`}
+                    upperCase={false}
+                    style={{textTransform: 'capitalize', flexShrink: 0}}
+                    type={
+                        resource.status === ActionStatus.CONFIRMED
+                            ? ColorType.LightSuccess
+                            : ColorType.Error
+                    }
+                >
+                    <div>{resource.status}</div>
+                </Badge>
+                <Tooltip
+                    target={`badge-${resourceId}-${resourceType}`}
+                    placement="bottom"
+                    className={css.tooltip}
+                    aria-label={`badge tooltip for ${resourceId}`}
+                    trigger={['hover']}
+                >
+                    {resource.status === ActionStatus.CONFIRMED
+                        ? successTooltip
+                        : errorTooltip}
+                </Tooltip>
+            </div>
+        )
+    }
+
+    const shouldRenderBadge = () => {
+        return (
+            resourceType === 'hard_action' && resource && 'status' in resource
+        )
+    }
+
+    return (
+        <a
+            href={hasAgentPrivileges ? href : undefined}
+            target="_blank"
+            rel="noreferrer noopener"
+            className={classNames(css.section, {
+                [css.clickable]: hasAgentPrivileges,
+            })}
+            data-testid={dataTestId}
+        >
+            <div className={css.sectionText}>
+                <div className={css.text}>{resource.name}</div>
+                <i
+                    className={classNames('material-icons', css.openIcon)}
+                    onClick={() => {
+                        logEventWithSampling(
+                            SegmentEvent.AiAgentFeedbackResourceClicked,
+                            {
+                                type: resourceType,
+                            }
+                        )
+                    }}
+                >
+                    open_in_new
+                </i>
+            </div>
+
+            {shouldRenderBadge() ? renderBadge() : renderThumbButtons()}
         </a>
     )
 }

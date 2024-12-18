@@ -20,6 +20,7 @@ import AIAgentBanner from '../AIAgentBanner'
 jest.mock('../AIAgentFeedback', () => () => <div data-testid="feedback" />)
 
 jest.mock('models/aiAgentFeedback/queries')
+jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const useSubmitAIAgentTicketMessagesFeedbackMock = assumeMock(
