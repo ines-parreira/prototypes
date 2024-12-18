@@ -4,10 +4,9 @@ import React from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
 import {useFlag} from 'common/flags'
-import {ActiveContent} from 'common/navigation'
+import {ActiveContent, Navbar} from 'common/navigation'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import Navbar from 'pages/common/components/Navbar'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import {getHasAutomate} from 'state/billing/selectors'
 

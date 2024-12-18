@@ -29,11 +29,11 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
 }))
 
-jest.mock(
-    'pages/common/components/Navbar',
-    () =>
-        ({children}: {children: ReactNode}) => <div>{children}</div>
-)
+jest.mock('common/navigation', () => ({
+    ActiveContent: {Tickets: 'tickets'},
+    Navbar: ({children}: {children: ReactNode}) => <div>{children}</div>,
+}))
+
 jest.mock('pages/common/components/RecentChats', () => () => (
     <div>RecentChats</div>
 ))

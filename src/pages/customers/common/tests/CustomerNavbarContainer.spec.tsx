@@ -1,19 +1,23 @@
 import {createMemoryHistory} from 'history'
 import React, {ComponentProps} from 'react'
 
-import {renderWithRouter} from '../../../../utils/testing'
-import Navbar from '../../../common/components/Navbar'
-import ViewNavbarView from '../../../common/components/ViewNavbarView/ViewNavbarView'
+import {Navbar} from 'common/navigation'
+import ViewNavbarView from 'pages/common/components/ViewNavbarView/ViewNavbarView'
+import {renderWithRouter} from 'utils/testing'
+
 import {CustomerNavbarContainer} from '../CustomerNavbarContainer'
 
 jest.mock(
-    '../../../common/components/Navbar',
+    'common/navigation',
     () =>
-        ({children}: ComponentProps<typeof Navbar>) => (
-            <div>
-                Navbar: <div>children: {children}</div>
-            </div>
-        )
+        ({
+            ...jest.requireActual('common/navigation'),
+            Navbar: ({children}: ComponentProps<typeof Navbar>) => (
+                <div>
+                    Navbar: <div>children: {children}</div>
+                </div>
+            ),
+        }) as typeof import('common/navigation')
 )
 
 jest.mock(

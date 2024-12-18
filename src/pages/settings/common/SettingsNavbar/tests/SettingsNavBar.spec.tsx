@@ -20,16 +20,12 @@ const mockedDispatch = jest.fn()
 jest.mock('utils')
 jest.mock('common/navigation', () => ({
     ActiveContent: {Settings: 'settings'},
+    Navbar: ({children}: {children: React.ReactNode}) => <div>{children}</div>,
 }))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {SettingsNavigationClicked: 'navEvent'},
 }))
-jest.mock(
-    'pages/common/components/Navbar',
-    () =>
-        ({children}: {children: React.ReactNode}) => <div>{children}</div>
-)
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors', () => ({

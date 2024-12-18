@@ -6,7 +6,7 @@ import {useHistory, useParams} from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 
-import {ActiveContent} from 'common/navigation'
+import {ActiveContent, Navbar} from 'common/navigation'
 import {
     UserRole,
     UserSetting,
@@ -27,7 +27,6 @@ import {Section, SectionDraft} from 'models/section/types'
 import {createUserSetting, updateUserSetting} from 'models/user/resources'
 import {fetchViewsPaginated, updateView} from 'models/view/resources'
 import {View, ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
-import Navbar from 'pages/common/components/Navbar'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import RecentChats from 'pages/common/components/RecentChats'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'

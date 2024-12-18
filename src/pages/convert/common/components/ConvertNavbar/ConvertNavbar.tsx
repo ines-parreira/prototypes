@@ -2,8 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 
 import navbarCss from 'assets/css/navbar.less'
-import {ActiveContent} from 'common/navigation'
-import Navbar from 'pages/common/components/Navbar'
+import {ActiveContent, Navbar} from 'common/navigation'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 
 import {useIsOverviewPageEnabled} from '../../hooks/useIsOverviewPageEnabled'

@@ -6,11 +6,10 @@ import {useLocation} from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
 
-import {ActiveContent} from 'common/navigation'
+import {ActiveContent, Navbar} from 'common/navigation'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Navbar from 'pages/common/components/Navbar'
 import {buildPasswordAnd2FaText} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
