@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 
 import {PageSection} from 'config/pages'
 import {AGENT_ROLE} from 'config/user'
@@ -15,18 +15,21 @@ export function Macros() {
 
     return (
         <Switch>
-            <Route path={`${path}`} exact>
-                {renderAppSettings(MacrosSettingsContent)}
+            <Route exact path={`${path}/`}>
+                <Redirect to={`${path}/active`} />
             </Route>
-
             <Route path={`${path}/new`} exact>
                 {renderAppSettings(MacrosSettingsForm, {
                     roleParams: [AGENT_ROLE, PageSection.SidebarSettings],
                 })}
             </Route>
 
-            <Route path={`${path}/:macroId`} exact>
+            <Route path={`${path}/:macroId/edit`} exact>
                 {renderAppSettings(MacrosSettingsForm)}
+            </Route>
+
+            <Route path={`${path}/:activeTab`} exact>
+                {renderAppSettings(MacrosSettingsContent)}
             </Route>
         </Switch>
     )

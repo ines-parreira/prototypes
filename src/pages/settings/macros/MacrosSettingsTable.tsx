@@ -139,7 +139,7 @@ export function MacrosSettingsTable({
                         }
 
                         const {name, language, updated_datetime, usage} = macro
-                        const to = `/app/settings/macros/${macro.id}`
+                        const to = `/app/settings/macros/${macro.id}/edit`
 
                         const tags = macro.actions
                             ?.filter(

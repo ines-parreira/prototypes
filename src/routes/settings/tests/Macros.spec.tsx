@@ -1,6 +1,6 @@
 import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
+import {Redirect, Route, useRouteMatch} from 'react-router-dom'
 
 import {PageSection} from 'config/pages'
 import {AGENT_ROLE} from 'config/user'
@@ -12,6 +12,7 @@ import {renderAppSettings} from '../helpers/settingsRenderer'
 import {Macros} from '../Macros'
 
 jest.mock('react-router-dom', () => ({
+    Redirect: jest.fn(() => <div>redirect</div>),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({children}) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
@@ -26,7 +27,7 @@ const mockedRoute = Route as jest.Mock
 const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
-const basePath = 'macro'
+const basePath = 'macros'
 
 describe('Macros', () => {
     beforeEach(() => {
@@ -35,19 +36,29 @@ describe('Macros', () => {
         } as ReturnType<typeof useRouteMatch>)
     })
 
+    it('should call Redirect with correct props', () => {
+        render(<Macros />)
+
+        expect(mockedRoute.mock.calls[0]).toEqual([
+            {
+                exact: true,
+                path: basePath + '/',
+                children: expect.objectContaining({
+                    type: Redirect,
+                    props: expect.objectContaining({
+                        to: `${basePath}/active`,
+                    }),
+                }),
+            },
+            {},
+        ])
+    })
+
     it.each([
         [
             {
                 callOrder: 0,
-                path: basePath,
-                role: undefined,
-                pageSection: undefined,
-                component: MacrosSettingsContent,
-            },
-        ],
-        [
-            {
-                callOrder: 1,
+                routeCallOrder: 1,
                 path: basePath + '/new',
                 role: AGENT_ROLE,
                 pageSection: PageSection.SidebarSettings,
@@ -56,16 +67,27 @@ describe('Macros', () => {
         ],
         [
             {
-                callOrder: 2,
-                path: basePath + '/:macroId',
+                callOrder: 1,
+                routeCallOrder: 2,
+                path: basePath + '/:macroId/edit',
                 role: undefined,
                 pageSection: undefined,
                 component: MacrosSettingsForm,
             },
         ],
+        [
+            {
+                callOrder: 2,
+                routeCallOrder: 3,
+                path: basePath + '/:activeTab',
+                role: undefined,
+                pageSection: undefined,
+                component: MacrosSettingsContent,
+            },
+        ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, path, role, pageSection, component}) => {
+        ({callOrder, routeCallOrder, path, role, pageSection, component}) => {
             render(<Macros />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -75,7 +97,8 @@ describe('Macros', () => {
                 }) ||
                     undefined,
             ])
-            expect(mockedRoute.mock.calls[callOrder]).toEqual([
+
+            expect(mockedRoute.mock.calls[routeCallOrder]).toEqual([
                 {
                     path,
                     exact: true,

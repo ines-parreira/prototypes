@@ -63,11 +63,14 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should display a list of macros', () => {
-        const {container} = render(
-            <MacrosSettingsTable {...minProps} macros={macrosFixtures} />
-        )
+        render(<MacrosSettingsTable {...minProps} macros={macrosFixtures} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Macro')).toBeInTheDocument()
+        expect(screen.getByText('Tags')).toBeInTheDocument()
+        expect(screen.getByText('Language')).toBeInTheDocument()
+        expect(screen.getByText('Usage count')).toBeInTheDocument()
+        expect(screen.getByText(macrosFixtures[0].name!)).toBeInTheDocument()
+        expect(screen.getByText(macrosFixtures[1].name!)).toBeInTheDocument()
     })
 
     it('should duplicate a macro', () => {

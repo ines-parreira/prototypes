@@ -9,7 +9,10 @@ import {
 import {useQueryClient} from '@tanstack/react-query'
 import classnames from 'classnames'
 import React, {useEffect, useState} from 'react'
+import {NavLink} from 'react-router-dom'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {OrderDirection, GorgiasApiError} from 'models/api/types'
 import {MacroSortableProperties} from 'models/macro/types'
@@ -17,6 +20,7 @@ import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Video from 'pages/common/components/Video/Video'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
@@ -47,6 +51,7 @@ export function MacrosSettingsContent() {
 
     const {mutateAsync: createMacro} = useCreateMacro()
     const {mutateAsync: deleteMacro} = useDeleteMacro()
+    const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives, false)
 
     useEffect(() => {
         if (isError) {
@@ -136,7 +141,7 @@ export function MacrosSettingsContent() {
                     })
                 },
                 onSuccess: (resp) => {
-                    history.push(`/app/settings/macros/${resp.data.id}`)
+                    history.push(`/app/settings/macros/${resp.data.id}/edit`)
                 },
             }
         )
@@ -196,6 +201,17 @@ export function MacrosSettingsContent() {
                 </div>
                 <Video youtubeId="RevBOdLYeYo" legend="Working with macros" />
             </div>
+
+            {isArchivingAvailable && (
+                <SecondaryNavbar>
+                    <NavLink to="/app/settings/macros/active" exact>
+                        Active
+                    </NavLink>
+                    <NavLink to="/app/settings/macros/archived" exact>
+                        Archived
+                    </NavLink>
+                </SecondaryNavbar>
+            )}
 
             <MacrosSettingsTable
                 isLoading={isLoading}

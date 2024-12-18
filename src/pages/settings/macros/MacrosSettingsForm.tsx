@@ -165,7 +165,7 @@ export function MacrosSettingsFormContainer({
                     message: `Successfully duplicated macro.`,
                     status: NotificationStatus.Success,
                 })
-                history.push(`/app/settings/macros/${res.id}`)
+                history.push(`/app/settings/macros/${res.id}/edit`)
             } catch (error) {
                 void notify({
                     message: 'Failed to duplicate macro.',

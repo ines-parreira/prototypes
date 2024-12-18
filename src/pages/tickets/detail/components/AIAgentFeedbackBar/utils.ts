@@ -15,7 +15,7 @@ export const getKnowledgeUrl = (
         case 'file_external_snippet':
             return `/app/automation/${shopType}/${shopName}/ai-agent/knowledge`
         case 'macro':
-            return `/app/settings/macros/${knowledge.id}`
+            return `/app/settings/macros/${knowledge.id}/edit`
         default:
             return ''
     }

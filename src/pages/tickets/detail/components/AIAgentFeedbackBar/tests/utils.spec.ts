@@ -48,6 +48,6 @@ describe('getKnowledgeUrl', () => {
             name: 'macro 123',
         } as Knowledge
         const result = getKnowledgeUrl(knowledge, shopType, shopName)
-        expect(result).toBe(`/app/settings/macros/123`)
+        expect(result).toBe(`/app/settings/macros/123/edit`)
     })
 })

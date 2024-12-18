@@ -423,7 +423,9 @@ describe('<MacrosSettingsContent/>', () => {
             }[]
         )[1].onSuccess({data: {id}})
 
-        expect(history.push).toHaveBeenCalledWith(`/app/settings/macros/${id}`)
+        expect(history.push).toHaveBeenCalledWith(
+            `/app/settings/macros/${id}/edit`
+        )
     })
 
     it('should fail to duplicate macro', () => {
